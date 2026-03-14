@@ -294,5 +294,70 @@
     ],
     "FO": [],
     "MO": []
+  },
+  "TAI_HAO": {
+    "XIAN": [
+      {
+        "SkillID": "TH_XIAN_SKILL_TDJX",
+        "SkillName": "天地绝·玄",
+        "RequiredClass": "TAI_HAO",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 0,
+        "CastTime": 0.3,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 200,
+          "SkillAttackFixedBonus": 2750,
+          "SkillHealthPercentBonus": 26,
+          "SkillManaPercentBonus": 26,
+          "SkillCriticalDamagePercentBonus": 100,
+          "SkillDamageBonus": 1
+        }
+      }
+    ],
+    "FO": [
+      {
+        "SkillID": "TH_FO_SKILL_TDJC",
+        "SkillName": "天地绝·禅",
+        "RequiredClass": "TAI_HAO",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 0,
+        "CastTime": 0.3,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 200,
+          "SkillAttackFixedBonus": 2750,
+          "SkillHealthPercentBonus": 26,
+          "SkillManaPercentBonus": 26,
+          "SkillCriticalDamagePercentBonus": 100,
+          "SkillDamageBonus": 1
+        }
+      }
+    ],
+    "MO": [
+      {
+        "SkillID": "TH_MO_SKILL_TDJS",
+        "SkillName": "天地绝·煞",
+        "RequiredClass": "TAI_HAO",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 0,
+        "CastTime": 0.3,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 200,
+          "SkillAttackFixedBonus": 2750,
+          "SkillHealthPercentBonus": 26,
+          "SkillManaPercentBonus": 26,
+          "SkillCriticalDamagePercentBonus": 100,
+          "SkillDamageBonus": 1
+        }
+      }
+    ]
   }
 }
