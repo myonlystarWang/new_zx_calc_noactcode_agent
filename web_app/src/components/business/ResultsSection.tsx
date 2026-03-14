@@ -216,7 +216,7 @@ export const ResultSection: React.FC = () => {
             {/* Total Power Card - Compact & Fixed Styles */}
             <div className="glass-panel p-6 relative overflow-hidden bg-gradient-to-b from-slate-800/90 to-slate-900/90 border-2 border-cyan-500/30">
                 {/* Background Decoration */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-24 bg-cyan-500/5 blur-3xl rounded-full pointer-events-none"></div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-32 bg-cyan-500/10 blur-[50px] rounded-full pointer-events-none animate-glow"></div>
 
                 <div className="relative flex flex-col items-center text-center z-10">
                     {/* Header - Compact */}
@@ -243,7 +243,7 @@ export const ResultSection: React.FC = () => {
                     {/* Rank Badge - Dynamic Styles */}
                     <div className="mb-5">
                         <div className={clsx(
-                            'px-6 py-1 rounded-full backdrop-blur-md transition-all duration-500',
+                            'px-6 py-1 rounded-full backdrop-blur-md transition-all duration-500 animate-pulse-slow',
                             currentRankConfig.Color,
                             currentRankConfig.Shadow,
                             currentRankConfig.Border,
