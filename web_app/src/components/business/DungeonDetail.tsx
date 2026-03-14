@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
 import { calculateDamage } from '../../utils/calculator';
-import type { Dungeon, RankConfig } from '../../types';
-import { Sword } from 'lucide-react';
+import type { Dungeon, RankConfig, Skill } from '../../types';
+import { Sword, Info } from 'lucide-react';
+import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 
 interface DungeonDetailProps {
@@ -26,6 +27,20 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
     const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
     const tabsContainerRef = React.useRef<HTMLDivElement>(null);
+    
+    const [tooltipState, setTooltipState] = useState<{ visible: boolean; x: number; y: number; skill: Skill | null }>({ visible: false, x: 0, y: 0, skill: null });
+
+    const getImportanceText = (weight: number) => {
+        if (weight >= 0.8) return '重要';
+        if (weight >= 0.5) return '一般';
+        return '次要';
+    };
+
+    const getFrequencyText = (freq: number) => {
+        if (freq >= 0.8) return '高';
+        if (freq >= 0.4) return '中';
+        return '低';
+    };
 
     // Reset selected monster when dungeon changes
     useEffect(() => {
@@ -231,7 +246,21 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                 return (
                                                     <tr key={skill.SkillID} className="hover:bg-slate-800/30 transition-colors group relative">
                                                         <td className="py-3 px-2 text-slate-200 font-medium relative z-10 whitespace-nowrap">
-                                                            <div>{skill.SkillName}</div>
+                                                            <div className="flex items-center gap-2 relative">
+                                                                <span>{skill.SkillName}</span>
+                                                                <Info 
+                                                                    className="w-4 h-4 text-slate-500 hover:text-cyan-400 cursor-pointer transition-colors"
+                                                                    onMouseEnter={(e) => {
+                                                                        setTooltipState({ visible: true, x: e.clientX, y: e.clientY, skill });
+                                                                    }}
+                                                                    onMouseMove={(e) => {
+                                                                        setTooltipState(prev => prev.visible ? { ...prev, x: e.clientX, y: e.clientY } : prev);
+                                                                    }}
+                                                                    onMouseLeave={() => {
+                                                                        setTooltipState(prev => ({ ...prev, visible: false }));
+                                                                    }}
+                                                                />
+                                                            </div>
                                                             <div className="text-xs md:text-sm text-slate-400 mt-1 font-mono flex items-center gap-1.5">
                                                                 <span className="text-cyan-400 font-semibold">{formatDamage(dmg.minFinalDamage, false)}</span>
                                                                 <span className="text-slate-500">~</span>
@@ -264,6 +293,35 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                         </div>
                     )}
                 </div>
+            )}
+
+            {/* Tooltip Portal */}
+            {tooltipState.visible && tooltipState.skill && createPortal(
+                <div 
+                    className="fixed z-[9999] pointer-events-none w-[320px] p-4 bg-slate-900/95 border border-slate-700/80 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-opacity animate-in fade-in"
+                    style={{ 
+                        left: Math.min(tooltipState.x + 15, window.innerWidth - 340), 
+                        top: Math.max(10, Math.min(tooltipState.y - 150, window.innerHeight - 200))
+                    }}
+                >
+                    <div className="flex flex-col gap-3 font-normal whitespace-normal">
+                        <div className="text-cyan-400 font-bold border-b border-slate-700/50 pb-2 flex items-center justify-between">
+                            <span>技能详细信息</span>
+                            <span className="text-xs text-slate-500 truncate max-w-[120px]">{tooltipState.skill.SkillName}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+                            <div className="text-slate-400">附加攻击比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillAttackPercentBonus || 0}%</span></div>
+                            <div className="text-slate-400">附加固定攻击: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillAttackFixedBonus || 0}</span></div>
+                            <div className="text-slate-400">附加气血比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillHealthPercentBonus || 0}%</span></div>
+                            <div className="text-slate-400">附加真气比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillManaPercentBonus || 0}%</span></div>
+                            <div className="text-slate-400">附加爆伤: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus || 0}%</span></div>
+                            <div className="text-slate-400">伤害增加倍数: <span className="text-emerald-400 font-medium">{tooltipState.skill.SkillBonusAttributes?.SkillDamageBonus || 1}</span></div>
+                            <div className="text-slate-400">重要性: <span className={clsx("font-medium", tooltipState.skill.SkillImportanceWeight >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillImportanceWeight >= 0.5 ? "text-blue-300" : "text-slate-400")}>{getImportanceText(tooltipState.skill.SkillImportanceWeight)}</span></div>
+                            <div className="text-slate-400">使用频次: <span className={clsx("font-medium", tooltipState.skill.SkillFrequency >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillFrequency >= 0.4 ? "text-blue-300" : "text-slate-400")}>{getFrequencyText(tooltipState.skill.SkillFrequency)}</span></div>
+                        </div>
+                    </div>
+                </div>,
+                document.body
             )}
         </div>
     );
