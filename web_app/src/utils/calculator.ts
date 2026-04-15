@@ -1,4 +1,4 @@
-import type { CharacterAttributes, Skill, Monster, Buff, MultiHitConfig } from '../types';
+import type { CharacterAttributes, Skill, Monster, Buff } from '../types';
 
 export interface HitDamageResult {
     hitIndex: number;

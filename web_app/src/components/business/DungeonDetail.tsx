@@ -1,8 +1,8 @@
-import React, { useState, useMemo, memo, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronDown, Swords, ShieldAlert, Crosshair, Sword, Info } from 'lucide-react';
-import type { Dungeon, CharacterAttributes, Skill, Buff, RankConfig } from '../../types';
-import { calculateDungeonPower, calculateDamage } from '../../utils/calculator';
+import { Sword, Info } from 'lucide-react';
+import type { Dungeon, Skill, RankConfig } from '../../types';
+import { calculateDamage } from '../../utils/calculator';
 import { clsx } from 'clsx';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
