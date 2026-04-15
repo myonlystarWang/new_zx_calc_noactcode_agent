@@ -315,6 +315,9 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                             <div className="text-slate-400">附加气血比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillHealthPercentBonus || 0}%</span></div>
                             <div className="text-slate-400">附加真气比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillManaPercentBonus || 0}%</span></div>
                             <div className="text-slate-400">附加爆伤: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus || 0}%</span></div>
+                            {tooltipState.skill.SkillBonusAttributes?.SkillDefensePercentBonus ? (
+                                <div className="text-slate-400">附加防御比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes.SkillDefensePercentBonus}%</span></div>
+                            ) : null}
                             <div className="text-slate-400">伤害增加倍数: <span className="text-emerald-400 font-medium">{tooltipState.skill.SkillBonusAttributes?.SkillDamageBonus || 1}</span></div>
                             <div className="text-slate-400">重要性: <span className={clsx("font-medium", tooltipState.skill.SkillImportanceWeight >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillImportanceWeight >= 0.5 ? "text-blue-300" : "text-slate-400")}>{getImportanceText(tooltipState.skill.SkillImportanceWeight)}</span></div>
                             <div className="text-slate-400">使用频次: <span className={clsx("font-medium", tooltipState.skill.SkillFrequency >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillFrequency >= 0.4 ? "text-blue-300" : "text-slate-400")}>{getFrequencyText(tooltipState.skill.SkillFrequency)}</span></div>

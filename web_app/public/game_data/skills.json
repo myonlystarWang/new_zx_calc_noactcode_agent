@@ -70,7 +70,7 @@
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 210,
           "SkillAttackFixedBonus": 3300,
-          "SkillHealthPercentBonus": 18,
+          "SkillHealthPercentBonus": 28,
           "SkillManaPercentBonus": 4,
           "SkillCriticalDamagePercentBonus": 80,
           "SkillDamageBonus": 1
@@ -205,7 +205,7 @@
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 210,
           "SkillAttackFixedBonus": 3300,
-          "SkillHealthPercentBonus": 18,
+          "SkillHealthPercentBonus": 28,
           "SkillManaPercentBonus": 4,
           "SkillCriticalDamagePercentBonus": 80,
           "SkillDamageBonus": 1
@@ -355,6 +355,125 @@
           "SkillHealthPercentBonus": 26,
           "SkillManaPercentBonus": 26,
           "SkillCriticalDamagePercentBonus": 100,
+          "SkillDamageBonus": 1
+        }
+      }
+    ]
+  },
+  "GUI_WANG": {
+    "XIAN": [
+      {
+        "SkillID": "GW_XIAN_SKILL_WMZX",
+        "SkillName": "未名斩·玄",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.8,
+        "Cooldown": 12,
+        "CastTime": 2,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 168,
+          "SkillAttackFixedBonus": 2720,
+          "SkillManaPercentBonus": 15,
+          "SkillDefensePercentBonus": 400,
+          "SkillCriticalDamagePercentBonus": 100,
+          "SkillDamageBonus": 1
+        }
+      },
+      {
+        "SkillID": "GW_XIAN_SKILL_JB",
+        "SkillName": "九变",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.2,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 130,
+          "SkillAttackFixedBonus": 2720,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 20,
+          "SkillDamageBonus": 1
+        }
+      }
+    ],
+    "FO": [
+      {
+        "SkillID": "GW_FO_SKILL_WMZC",
+        "SkillName": "未名斩·禅",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.8,
+        "Cooldown": 12,
+        "CastTime": 2,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 168,
+          "SkillAttackFixedBonus": 2720,
+          "SkillManaPercentBonus": 15,
+          "SkillDefensePercentBonus": 400,
+          "SkillCriticalDamagePercentBonus": 100,
+          "SkillDamageBonus": 1
+        }
+      },
+      {
+        "SkillID": "GW_FO_SKILL_JB",
+        "SkillName": "九变",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.2,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 130,
+          "SkillAttackFixedBonus": 2720,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 20,
+          "SkillDamageBonus": 1
+        }
+      }
+    ],
+    "MO": [
+      {
+        "SkillID": "GW_MO_SKILL_WMZS",
+        "SkillName": "未名斩·煞",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.8,
+        "Cooldown": 12,
+        "CastTime": 2,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 168,
+          "SkillAttackFixedBonus": 2720,
+          "SkillManaPercentBonus": 15,
+          "SkillDefensePercentBonus": 400,
+          "SkillCriticalDamagePercentBonus": 100,
+          "SkillDamageBonus": 1
+        }
+      },
+      {
+        "SkillID": "GW_MO_SKILL_JB",
+        "SkillName": "九变",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.2,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 130,
+          "SkillAttackFixedBonus": 2720,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 20,
           "SkillDamageBonus": 1
         }
       }
