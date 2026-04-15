@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
                         </h1>
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
                             <p className="text-sm text-slate-400 font-mono tracking-wider flex items-center gap-2">
-                                <span className="px-1.5 py-0.5 rounded bg-slate-800/80 border border-slate-700/50 text-cyan-400/80 text-xs font-bold">V 2.0.1</span>
+                                <span className="px-1.5 py-0.5 rounded bg-slate-800/80 border border-slate-700/50 text-cyan-400/80 text-xs font-bold">V 2.1.1</span>
                                 <span className="w-1 h-1 rounded-full bg-slate-600"></span>
                                 <span>by 星耀-萝卜</span>
                             </p>

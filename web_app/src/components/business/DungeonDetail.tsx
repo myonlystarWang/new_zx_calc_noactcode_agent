@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, memo, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { ChevronDown, Swords, ShieldAlert, Crosshair, Sword, Info } from 'lucide-react';
+import type { Dungeon, CharacterAttributes, Skill, Buff, RankConfig } from '../../types';
+import { calculateDungeonPower, calculateDamage } from '../../utils/calculator';
+import { clsx } from 'clsx';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
-import { calculateDamage } from '../../utils/calculator';
-import type { Dungeon, RankConfig, Skill } from '../../types';
-import { Sword, Info } from 'lucide-react';
-import { createPortal } from 'react-dom';
-import clsx from 'clsx';
 
 interface DungeonDetailProps {
     dungeon: Dungeon;
@@ -26,7 +26,21 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
 }) => {
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
     const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
-    const tabsContainerRef = React.useRef<HTMLDivElement>(null);
+    const tabsContainerRef = useRef<HTMLDivElement>(null);
+    const [expandedSkillIds, setExpandedSkillIds] = useState<Set<string>>(new Set());
+
+    const toggleSkillExpand = (skillId: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        setExpandedSkillIds(prev => {
+            const next = new Set(prev);
+            if (next.has(skillId)) {
+                next.delete(skillId);
+            } else {
+                next.add(skillId);
+            }
+            return next;
+        });
+    };
     
     const [tooltipState, setTooltipState] = useState<{ visible: boolean; x: number; y: number; skill: Skill | null }>({ visible: false, x: 0, y: 0, skill: null });
 
@@ -229,7 +243,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                         >
                             <div className="p-3 md:p-4">
                                 {/* Skills Damage Table */}
-                                <div className="overflow-x-auto">
+                                <div className="overflow-x-auto overflow-y-auto max-h-[380px] md:max-h-[450px] scrollbar-thin scrollbar-thumb-slate-700/80 scrollbar-track-transparent">
                                     <table className="w-full text-sm">
                                         <thead>
                                             <tr className="border-b border-slate-700/50">
@@ -242,15 +256,26 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                         <tbody className="divide-y divide-slate-700/30">
                                             {skillDamages.map(({ skill, dmg }) => {
                                                 const barWidth = maxAvgDamage > 0 ? (dmg.avgFinalDamage / maxAvgDamage) * 100 : 0;
+                                                const isMultiHit = !!skill.SkillBonusAttributes?.MultiHitConfig;
+                                                const isExpanded = expandedSkillIds.has(skill.SkillID);
+                                                const hitCount = skill.SkillBonusAttributes?.MultiHitConfig?.HitCount || 1;
 
                                                 return (
-                                                    <tr key={skill.SkillID} className="hover:bg-slate-800/30 transition-colors group relative">
+                                                    <React.Fragment key={skill.SkillID}>
+                                                    <tr 
+                                                        className={clsx(
+                                                            "hover:bg-slate-800/30 transition-colors group relative",
+                                                            isMultiHit && "cursor-pointer"
+                                                        )}
+                                                        onClick={(e) => isMultiHit && toggleSkillExpand(skill.SkillID, e)}
+                                                    >
                                                         <td className="py-3 px-2 text-slate-200 font-medium relative z-10 whitespace-nowrap">
                                                             <div className="flex items-center gap-2 relative">
-                                                                <span>{skill.SkillName}</span>
+                                                                <span className="shrink line-clamp-1 max-w-[100px] sm:max-w-[120px]">{skill.SkillName}</span>
                                                                 <Info 
-                                                                    className="w-4 h-4 text-slate-500 hover:text-cyan-400 cursor-pointer transition-colors"
+                                                                    className="w-4 h-4 text-slate-500 hover:text-cyan-400 transition-colors shrink-0"
                                                                     onMouseEnter={(e) => {
+                                                                        e.stopPropagation();
                                                                         setTooltipState({ visible: true, x: e.clientX, y: e.clientY, skill });
                                                                     }}
                                                                     onMouseMove={(e) => {
@@ -260,11 +285,16 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                         setTooltipState(prev => ({ ...prev, visible: false }));
                                                                     }}
                                                                 />
+                                                                {isMultiHit && (
+                                                                    <span className="text-[10px] bg-slate-700/80 px-1.5 py-0.5 rounded text-slate-300 shadow-sm border border-slate-600/50 shrink-0">
+                                                                        共{hitCount}段
+                                                                    </span>
+                                                                )}
                                                             </div>
                                                             <div className="text-xs md:text-sm text-slate-400 mt-1 font-mono flex items-center gap-1.5">
-                                                                <span className="text-cyan-400 font-semibold">{formatDamage(dmg.minFinalDamage, false)}</span>
+                                                                <span className="font-semibold text-cyan-400">{formatDamage(dmg.minFinalDamage, false)}</span>
                                                                 <span className="text-slate-500">~</span>
-                                                                <span className="text-purple-400 font-semibold">{formatDamage(dmg.maxFinalDamage)}</span>
+                                                                <span className="font-semibold text-purple-400">{formatDamage(dmg.maxFinalDamage)}</span>
                                                             </div>
                                                         </td>
                                                         <td className="hidden py-3 px-2 text-right text-cyan-300 font-mono text-sm font-medium relative z-10 whitespace-nowrap">
@@ -284,6 +314,36 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                             </span>
                                                         </td>
                                                     </tr>
+                                                    {isExpanded && dmg.hits && dmg.hits.map(hit => {
+                                                        const hitBarWidth = maxAvgDamage > 0 ? (hit.avgFinalDamage / maxAvgDamage) * 100 : 0;
+                                                        return (
+                                                            <tr key={`${skill.SkillID}-hit-${hit.hitIndex}`} className="bg-slate-900/30 hover:bg-slate-800/50 transition-colors border-t border-slate-700/20">
+                                                                <td className="py-2.5 px-2 pl-8 md:pl-10 text-slate-400 font-medium relative z-10 whitespace-nowrap">
+                                                                    <div className="flex items-center gap-2 mb-1">
+                                                                        <div className="w-1 h-1 rounded-full bg-slate-600"></div>
+                                                                        <span className="text-xs">第 {hit.hitIndex} 段</span>
+                                                                    </div>
+                                                                    <div className="text-[11px] md:text-xs text-slate-500 font-mono flex items-center gap-1.5 pl-3">
+                                                                        <span className="text-cyan-400/70">{formatDamage(hit.minFinalDamage, false)}</span>
+                                                                        <span className="text-slate-600">~</span>
+                                                                        <span className="text-purple-400/70">{formatDamage(hit.maxFinalDamage)}</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="hidden py-2 px-2"></td>
+                                                                <td className="hidden py-2 px-2"></td>
+                                                                <td className="py-2 px-2 text-right relative">
+                                                                    <div
+                                                                        className="absolute inset-y-1.5 right-1 bg-yellow-500/10 rounded-sm transition-all duration-500"
+                                                                        style={{ width: `${hitBarWidth * 0.95}%` }}
+                                                                    />
+                                                                    <span className="relative z-10 text-yellow-500/90 font-mono font-semibold text-xs md:text-sm drop-shadow-sm whitespace-nowrap">
+                                                                        {formatDamage(hit.avgFinalDamage)}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                    </React.Fragment>
                                                 );
                                             })}
                                         </tbody>

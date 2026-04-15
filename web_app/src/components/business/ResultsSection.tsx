@@ -290,7 +290,7 @@ export const ResultSection: React.FC = () => {
 
                 <div
                     ref={containerRef}
-                    className="relative w-full h-[650px] flex items-start justify-center perspective-1000 touch-pan-y overflow-hidden"
+                    className="relative w-full h-[680px] md:h-[750px] flex items-start justify-center perspective-1000 touch-pan-y overflow-hidden"
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
