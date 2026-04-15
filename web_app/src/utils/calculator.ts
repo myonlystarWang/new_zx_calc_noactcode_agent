@@ -1,11 +1,19 @@
-import type { CharacterAttributes, Skill, Monster, Buff } from '../types';
+import type { CharacterAttributes, Skill, Monster, Buff, MultiHitConfig } from '../types';
 
-interface DamageResult {
+export interface HitDamageResult {
+    hitIndex: number;
+    minFinalDamage: number;
+    maxFinalDamage: number;
+    avgFinalDamage: number;
+}
+
+export interface DamageResult {
     minBaseDamage: number;
     maxBaseDamage: number;
     minFinalDamage: number;
     maxFinalDamage: number;
     avgFinalDamage: number;
+    hits?: HitDamageResult[];
 }
 
 export const calculateDamage = (
@@ -51,114 +59,114 @@ export const calculateDamage = (
         buffMonHarmed += getVal('BuffMonsterHarmedPercentEffect');
     });
 
-    // 2. Calculate Base Damage
-    // Formula: (CharAttack * (1 + SkillAtt%)) + SkillFixed + (Health * SkillHealth%) + (Mana * SkillMana%) + (Def * SkillDef%)
-    // Note: Buffs might affect CharAttack/Health/etc directly or be additive to Skill%. 
-    // The design doc says "BuffAttackPercentEffect" but doesn't explicitly say if it adds to SkillAttackPercent or multiplies CharacterAttack.
-    // Usually in games: BaseAttack = CharAttack * (1 + BuffAttack%). 
-    // But the doc formula for Base Damage is:
-    // (角色最小攻击 * (1 + 技能附加攻击百分比 / 100)) + ...
-    // It doesn't show where BuffAttackPercent goes in Base Damage.
-    // However, in Final Damage, it lists specific buffs like Focus, HolyWrath.
-    // Let's assume generic attribute buffs (Attack%, Health%) modify the Character Attributes BEFORE the skill formula, 
-    // OR they are additive to the skill multipliers.
-    // Given the doc lists "BuffAttackPercentEffect" under "Combat Buffs" but the formula for Final Damage ONLY lists Focus, HolyWrath, MonHarmed, etc.
-    // I will assume for now that Attribute Buffs modify the Character Attributes.
-    // EffectiveCharMinAttack = CharacterMinAttack * (1 + buffAttackPercent / 100) + buffAttackFixed
-
     const effMinAttack = character.CharacterMinAttack * (1 + buffAttackPercent / 100) + buffAttackFixed;
     const effMaxAttack = character.CharacterMaxAttack * (1 + buffAttackPercent / 100) + buffAttackFixed;
-    const effHealth = character.CharacterHealth * (1 + buffHealthPercent / 100); // + fixed if any
+    const effHealth = character.CharacterHealth * (1 + buffHealthPercent / 100); 
     const effMana = character.CharacterMana * (1 + buffManaPercent / 100);
     const effDefense = character.CharacterDefense * (1 + buffDefensePercent / 100);
 
-    const skillBonus = skill.SkillBonusAttributes;
+    const baseSkillBonus = skill.SkillBonusAttributes;
+    const multiHit = baseSkillBonus.MultiHitConfig;
+    const hitCount = multiHit ? multiHit.HitCount : 1;
 
-    const minBaseDamage =
-        (effMinAttack * (1 + (skillBonus.SkillAttackPercentBonus || 0) / 100)) +
-        (skillBonus.SkillAttackFixedBonus || 0) +
-        (effHealth * (skillBonus.SkillHealthPercentBonus || 0) / 100) +
-        (effMana * (skillBonus.SkillManaPercentBonus || 0) / 100) +
-        (effDefense * (skillBonus.SkillDefensePercentBonus || 0) / 100);
+    let totalMinFinalDamage = 0;
+    let totalMaxFinalDamage = 0;
+    let totalAvgFinalDamage = 0;
+    const hits: HitDamageResult[] = [];
+    
+    // Keep track of first hit base damage for the overall return value
+    let firstHitMinBaseDamage = 0;
+    let firstHitMaxBaseDamage = 0;
 
-    const maxBaseDamage =
-        (effMaxAttack * (1 + (skillBonus.SkillAttackPercentBonus || 0) / 100)) +
-        (skillBonus.SkillAttackFixedBonus || 0) +
-        (effHealth * (skillBonus.SkillHealthPercentBonus || 0) / 100) +
-        (effMana * (skillBonus.SkillManaPercentBonus || 0) / 100) +
-        (effDefense * (skillBonus.SkillDefensePercentBonus || 0) / 100);
+    for (let i = 1; i <= hitCount; i++) {
+        // Apply scaling attribute if configured
+        let currentSkillBonus = { ...baseSkillBonus };
+        if (multiHit && multiHit.ScalingAttribute && multiHit.ScalingStartValue !== undefined && multiHit.ScalingEndValue !== undefined) {
+            const start = multiHit.ScalingStartValue;
+            const end = multiHit.ScalingEndValue;
+            const step = hitCount > 1 ? (end - start) / (hitCount - 1) : 0;
+            // Type assertion since we know the key is valid
+            (currentSkillBonus as any)[multiHit.ScalingAttribute] = start + step * (i - 1);
+        }
 
-    // 3. Calculate Final Damage
-    // Multipliers:
-    // CritMultiplier = (CharCritDmg + BuffCritDmg + BuffMonCritDmg + SkillCritDmg - MonCritReduc) / 100
-    // DmgBonusMultiplier = (1 + SkillDmgBonus / 100)  <-- Note: SkillDamageBonus might be a multiplier (e.g. 1) or percent. Doc says "SkillDamageBonus" (e.g. 1) and formula says "1 + SkillDamageBonus / 100". 
-    // Wait, in skills.json, "SkillDamageBonus": 1. If it's 1, and formula is /100, that's 1.01x. That seems low. 
-    // Or maybe "SkillDamageBonus" in json is 1 meaning 100%? Or is it a multiplier like 1.5?
-    // Doc says: "技能伤害增加倍数 (SkillDamageBonus)". If it's "倍数" (Multiplier), then it might be just `SkillDamageBonus`.
-    // BUT the formula says `(1 + 技能伤害增加倍数 / 100)`. This implies it's a percentage value in the formula context.
-    // Let's check skills.json again. "SkillDamageBonus": 1. 
-    // If it is "倍数", maybe it means "Increases by 1x" (i.e. +100%)?
-    // Or maybe the formula meant `* SkillDamageBonus` directly?
-    // Let's look at "SkillAttackPercentBonus": 240. This is clearly %.
-    // "SkillDamageBonus": 1. If this is %, it's negligible.
-    // If it is a multiplier, e.g. 1.0, then `* 1` does nothing.
-    // If it is "Add 100% damage", then it should be 100?
-    // Let's assume for now it is a multiplier value that should be treated as (1 + Value) or just Value.
-    // Re-reading doc: "技能伤害增加倍数 (SkillDamageBonus)".
-    // Formula: `(1 + 技能伤害增加倍数 / 100)`.
-    // If json has 1, and it means 1%, it's tiny.
-    // If json has 1, and it means 1x (doubled), then the formula should be `(1 + SkillDamageBonus)` if SkillDamageBonus is 1.
-    // OR `(1 + SkillDamageBonus * 100 / 100)`.
-    // Let's look at other skills. "SkillDamageBonus": 3 for "九刃齐歌".
-    // If it's 3%, it's small. If it's 3x (300% increase), it's huge.
-    // "倍数" usually means "times". "增加倍数" means "increased by X times".
-    // So 1 means +100% (2x total). 3 means +300% (4x total).
-    // So the formula `(1 + Value)` makes sense if Value is 1 or 3.
-    // But the formula written in doc is `(1 + ... / 100)`. This suggests the author might have copied the pattern or the unit in JSON is different.
-    // Given "SkillAttackPercentBonus": 240 (240%), I suspect "SkillDamageBonus": 1 means 100% or 1.0 coefficient.
-    // I will assume `SkillDamageBonus` in JSON is a direct multiplier addition (e.g. 1 = +100%).
-    // So the term is `(1 + skillBonus.SkillDamageBonus)`.
-    // I will IGNORE the `/ 100` from the doc for this specific field if the value is small like 1 or 3, 
-    // OR I will assume the doc meant `(1 + SkillDamageBonus)` and the `/ 100` was a typo from copy-paste.
-    // Let's stick to `(1 + skillBonus.SkillDamageBonus)` for now.
+        const minBaseDamage =
+            (effMinAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100)) +
+            (currentSkillBonus.SkillAttackFixedBonus || 0) +
+            (effHealth * (currentSkillBonus.SkillHealthPercentBonus || 0) / 100) +
+            (effMana * (currentSkillBonus.SkillManaPercentBonus || 0) / 100) +
+            (effDefense * (currentSkillBonus.SkillDefensePercentBonus || 0) / 100);
 
-    const critDmgTotal =
-        character.CharacterCriticalHitDamagePercent +
-        buffCritDmg +
-        buffMonCritDmg +
-        (skillBonus.SkillCriticalDamagePercentBonus || 0) -
-        monster.MonsterAttributeModifiers.MonsterCriticalDamagePercentReduction;
+        const maxBaseDamage =
+            (effMaxAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100)) +
+            (currentSkillBonus.SkillAttackFixedBonus || 0) +
+            (effHealth * (currentSkillBonus.SkillHealthPercentBonus || 0) / 100) +
+            (effMana * (currentSkillBonus.SkillManaPercentBonus || 0) / 100) +
+            (effDefense * (currentSkillBonus.SkillDefensePercentBonus || 0) / 100);
 
-    // Ensure crit multiplier doesn't go below 0 (or 100%?)
-    // Usually Crit Damage floor is 100% (normal hit) or 120% etc.
-    // If CritDmgTotal is e.g. 500, multiplier is 5.0.
-    const critMultiplier = Math.max(1, critDmgTotal / 100);
+        if (i === 1) {
+            firstHitMinBaseDamage = minBaseDamage;
+            firstHitMaxBaseDamage = maxBaseDamage;
+        }
 
-    const damageBonusMultiplier = skillBonus.SkillDamageBonus !== undefined ? skillBonus.SkillDamageBonus : 1;
+        const critDmgTotal =
+            character.CharacterCriticalHitDamagePercent +
+            buffCritDmg +
+            buffMonCritDmg +
+            (currentSkillBonus.SkillCriticalDamagePercentBonus || 0) -
+            monster.MonsterAttributeModifiers.MonsterCriticalDamagePercentReduction;
 
-    const charMonDmgInc = 1 + character.CharacterMonsterDamageIncreasePercent / 100;
+        const critMultiplier = Math.max(1, critDmgTotal / 100);
+        const damageBonusMultiplier = currentSkillBonus.SkillDamageBonus !== undefined ? currentSkillBonus.SkillDamageBonus : 1;
+        const charMonDmgInc = 1 + character.CharacterMonsterDamageIncreasePercent / 100;
+        const monHarmedMultiplier = 1 + buffMonHarmed / 100;
+        const focusMultiplier = 1 + buffFocus / 100;
+        const holyWrathMultiplier = 1 + buffHolyWrath / 100;
 
-    const monHarmedMultiplier = 1 + buffMonHarmed / 100;
-    const focusMultiplier = 1 + buffFocus / 100;
-    const holyWrathMultiplier = 1 + buffHolyWrath / 100;
+        const finalMultipliers =
+            critMultiplier *
+            damageBonusMultiplier *
+            charMonDmgInc *
+            monHarmedMultiplier *
+            focusMultiplier *
+            holyWrathMultiplier;
 
-    const finalMultipliers =
-        critMultiplier *
-        damageBonusMultiplier *
-        charMonDmgInc *
-        monHarmedMultiplier *
-        focusMultiplier *
-        holyWrathMultiplier;
+        let minFinal = minBaseDamage * finalMultipliers;
+        let maxFinal = maxBaseDamage * finalMultipliers;
 
-    const minFinalDamage = minBaseDamage * finalMultipliers;
-    const maxFinalDamage = maxBaseDamage * finalMultipliers;
+        // Apply MultiHit specific multipliers (e.g. 1.3^n)
+        if (multiHit && multiHit.DamageMultiplierPerHit) {
+            const multiplier = Math.pow(multiHit.DamageMultiplierPerHit, i - 1);
+            minFinal *= multiplier;
+            maxFinal *= multiplier;
+        }
+
+        // Apply MultiHit damage cap
+        if (multiHit && multiHit.DamageCap) {
+            minFinal = Math.min(minFinal, multiHit.DamageCap);
+            maxFinal = Math.min(maxFinal, multiHit.DamageCap);
+        }
+
+        const avgFinal = (minFinal + maxFinal) / 2;
+
+        totalMinFinalDamage += minFinal;
+        totalMaxFinalDamage += maxFinal;
+        totalAvgFinalDamage += avgFinal;
+
+        hits.push({
+            hitIndex: i,
+            minFinalDamage: minFinal,
+            maxFinalDamage: maxFinal,
+            avgFinalDamage: avgFinal
+        });
+    }
 
     return {
-        minBaseDamage,
-        maxBaseDamage,
-        minFinalDamage,
-        maxFinalDamage,
-        avgFinalDamage: (minFinalDamage + maxFinalDamage) / 2
+        minBaseDamage: firstHitMinBaseDamage,
+        maxBaseDamage: firstHitMaxBaseDamage,
+        minFinalDamage: totalMinFinalDamage,
+        maxFinalDamage: totalMaxFinalDamage,
+        avgFinalDamage: totalAvgFinalDamage,
+        hits: multiHit ? hits : undefined
     };
 };
 

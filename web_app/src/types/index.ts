@@ -28,6 +28,15 @@ export interface UserCharacter {
 }
 
 // Skills
+export interface MultiHitConfig {
+  HitCount: number;
+  DamageMultiplierPerHit?: number; // 每段伤害的倍增系数（基于第1段），例如1.3代表1.3^n
+  DamageCap?: number; // 每段伤害的最高上限
+  ScalingAttribute?: keyof SkillBonusAttributes; // 随段数线性递增的属性名
+  ScalingStartValue?: number; // 第1段的属性值
+  ScalingEndValue?: number; // 最后1段的属性值
+}
+
 export interface SkillBonusAttributes {
   SkillAttackPercentBonus?: number;
   SkillAttackFixedBonus?: number;
@@ -36,6 +45,7 @@ export interface SkillBonusAttributes {
   SkillManaPercentBonus?: number;
   SkillCriticalDamagePercentBonus?: number;
   SkillDamageBonus?: number; // 伤害增加倍数
+  MultiHitConfig?: MultiHitConfig; // 多段伤害配置
   // Add others as needed
 }
 
