@@ -1,0 +1,22 @@
+{
+  "className": "逐霜",
+  "factionName": "魔",
+  "attributes": {
+    "health": 4000000,
+    "mana": 4500000,
+    "minAttack": 300000,
+    "maxAttack": 350000,
+    "critDamage": 2800,
+    "monsterDamageIncrease": 40
+  },
+  "buffs": {
+    "useDefaults": true,
+    "overrides": {
+      "专注": 241
+    }
+  },
+  "target": {
+    "dungeon": "T21",
+    "bossIndex": 1
+  }
+}

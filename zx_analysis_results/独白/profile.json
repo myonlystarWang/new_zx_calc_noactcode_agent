@@ -1,0 +1,51 @@
+{
+ "playerName": "独白",
+ "className": "逐霜",
+ "factionName": "仙",
+ "attributes": {
+ "minAttack": 300000,
+ "maxAttack": 352000,
+ "defense": 500000,
+ "critDamage": 2820,
+ "mana": 5490000,
+ "health": 4000000,
+ "monsterDamageIncrease": 43.8
+ },
+ "buffs": {
+ "focus": 271,
+ "greenPoint": 900,
+ "monsterDamageTaken": 120,
+ "witchCurse": 22.5
+ },
+ "target": {
+ "dungeon": "T20",
+ "bossIndex": 1
+ },
+  "skillUsage": {
+    "ZS_XIAN_SKILL_CLXX": {
+      "damageShare": 0.39,
+      "observedHitCount": 1,
+      "note": "截图总伤害行；计算器已按9段总和输出"
+ },
+    "ZS_XIAN_SKILL_CLX": {
+      "damageShare": 0.2463,
+      "observedHitCount": 1,
+      "note": "截图总伤害行；计算器已按9段总和输出"
+    },
+    "ZS_XIAN_SKILL_YLXB": {
+      "damageShare": 0.1201,
+      "observedHitCount": 1,
+      "note": "由 100% 减去截图中其他4个技能占比得到"
+    },
+    "ZS_XIAN_SKILL_SY3": {
+      "damageShare": 0.1279,
+      "observedHitCount": 6,
+      "note": "实战技能统计约6段，计算器当前按单段技能输出"
+ },
+ "ZS_XIAN_SKILL_LYLZ": {
+ "damageShare": 0.1157,
+ "observedHitCount": 4,
+ "note": "实战技能统计约4段，计算器当前按单段技能输出"
+ }
+ }
+}

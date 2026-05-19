@@ -55,7 +55,7 @@
         "CastTime": 2,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 345,
+          "SkillAttackPercentBonus": 395,
           "SkillAttackFixedBonus": 1800,
           "SkillHealthPercentBonus": 26,
           "SkillManaPercentBonus": 0,
@@ -99,10 +99,10 @@
         "CastTime": 1,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 123,
+          "SkillAttackPercentBonus": 158,
           "SkillAttackFixedBonus": 600,
-          "SkillHealthPercentBonus": 3,
-          "SkillManaPercentBonus": 3,
+          "SkillHealthPercentBonus": 8,
+          "SkillManaPercentBonus": 4,
           "SkillCriticalDamagePercentBonus": 50,
           "SkillDamageBonus": 1
         }
@@ -149,6 +149,7 @@
           "SkillAttackPercentBonus": 240,
           "SkillAttackFixedBonus": 4000,
           "SkillHealthPercentBonus": 30,
+          "SkillManaPercentBonus": 5,          
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
@@ -189,10 +190,10 @@
         "CastTime": 2,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 345,
+          "SkillAttackPercentBonus": 395,
           "SkillAttackFixedBonus": 1800,
-          "SkillHealthPercentBonus": 29,
-          "SkillManaPercentBonus": 3,
+          "SkillHealthPercentBonus": 31,
+          "SkillManaPercentBonus": 5,
           "SkillCriticalDamagePercentBonus": 105,
           "SkillDamageBonus": 1
         }
@@ -252,10 +253,10 @@
         "CastTime": 1,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 123,
+          "SkillAttackPercentBonus": 158,
           "SkillAttackFixedBonus": 600,
-          "SkillHealthPercentBonus": 6,
-          "SkillManaPercentBonus": 6,
+          "SkillHealthPercentBonus": 11,
+          "SkillManaPercentBonus": 7,
           "SkillCriticalDamagePercentBonus": 50,
           "SkillDamageBonus": 1
         }
