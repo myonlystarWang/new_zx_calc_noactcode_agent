@@ -41,10 +41,10 @@ export const Footer: React.FC = () => {
     };
 
     return (
-        <footer className="w-full py-8 mt-12 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm">
-            <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-400">
+        <footer className="w-full py-3 mt-4 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm">
+            <div className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-400">
                 <div className="text-xs font-mono tracking-wider text-center md:text-left">
-                    <p>&copy; 2024 诛仙3副本战力计算器</p>
+                    <p>&copy; 2024 诛仙3副本战斗实验室</p>
                     <p className="mt-1 text-slate-500">Designed & Developed by 星耀-萝卜</p>
                 </div>
 

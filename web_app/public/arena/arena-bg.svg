@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="abstract dungeon arena background">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#20304a"/>
+      <stop offset="0.46" stop-color="#14243a"/>
+      <stop offset="1" stop-color="#06101f"/>
+    </linearGradient>
+    <radialGradient id="ground" cx="50%" cy="74%" r="48%">
+      <stop offset="0" stop-color="#2e6d83" stop-opacity="0.64"/>
+      <stop offset="0.42" stop-color="#15536a" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#020617" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <path d="M0 410 C180 345 296 390 454 342 C640 286 780 340 962 302 C1180 256 1360 310 1600 248 L1600 1000 L0 1000 Z" fill="#091323"/>
+  <path d="M0 514 C210 470 300 505 485 462 C676 420 795 468 982 427 C1185 383 1395 424 1600 368 L1600 1000 L0 1000 Z" fill="#0b1930"/>
+  <path d="M0 644 C250 600 435 650 642 612 C865 571 1036 614 1244 584 C1430 558 1515 574 1600 548 L1600 1000 L0 1000 Z" fill="#0c2136"/>
+
+  <rect width="1600" height="1000" fill="url(#ground)"/>
+
+  <g opacity="0.68" filter="url(#soft)">
+    <ellipse cx="800" cy="760" rx="520" ry="155" fill="#0e7490" opacity="0.46"/>
+    <ellipse cx="800" cy="760" rx="320" ry="86" fill="#22d3ee" opacity="0.14"/>
+  </g>
+
+  <g fill="none" stroke-linecap="round" opacity="0.78">
+    <ellipse cx="800" cy="760" rx="508" ry="148" stroke="#67e8f9" stroke-width="2" opacity="0.28"/>
+    <ellipse cx="800" cy="760" rx="376" ry="108" stroke="#fbbf24" stroke-width="2" opacity="0.22"/>
+    <ellipse cx="800" cy="760" rx="212" ry="61" stroke="#67e8f9" stroke-width="2" opacity="0.24"/>
+    <path d="M315 759 L1285 759" stroke="#67e8f9" stroke-width="1.5" opacity="0.2"/>
+    <path d="M800 612 L800 907" stroke="#67e8f9" stroke-width="1.5" opacity="0.2"/>
+    <path d="M445 668 L1155 852" stroke="#fbbf24" stroke-width="1.5" opacity="0.18"/>
+    <path d="M1155 668 L445 852" stroke="#fbbf24" stroke-width="1.5" opacity="0.18"/>
+  </g>
+
+  <g opacity="0.28" fill="none" stroke="#94a3b8">
+    <path d="M80 230 H360 M420 210 H580 M1080 220 H1500"/>
+    <path d="M155 295 H462 M970 300 H1340"/>
+    <path d="M0 720 C220 690 365 728 540 700 C700 674 855 706 1010 681 C1200 652 1390 690 1600 662"/>
+  </g>
+
+  <g opacity="0.74">
+    <path d="M742 558 C764 498 781 430 800 360 C819 430 836 498 858 558 C838 570 763 570 742 558 Z" fill="#111827"/>
+    <circle cx="800" cy="392" r="28" fill="#151f2d"/>
+    <path d="M760 562 C715 600 702 656 712 711 C746 684 785 673 800 620 C815 673 854 684 888 711 C898 656 885 600 840 562 Z" fill="#0f172a"/>
+  </g>
+</svg>

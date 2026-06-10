@@ -53,12 +53,23 @@ const attrAliases: Record<keyof CharacterAttributes, string[]> = {
     'criticalDamage',
     '爆伤'
   ],
+  CharacterCriticalHitRatePercent: [
+    'CharacterCriticalHitRatePercent',
+    'critRate',
+    'criticalRate',
+    '暴击率',
+    '暴击'
+  ],
   CharacterMonsterDamageIncreasePercent: [
     'CharacterMonsterDamageIncreasePercent',
     'monsterDamageIncrease',
     'monsterDamage',
     '对怪增伤'
-  ]
+  ],
+  CharacterOnePercentAttack: ['CharacterOnePercentAttack', 'onePercentAttack', '1%攻击', '一分攻击'],
+  CharacterOnePercentDefense: ['CharacterOnePercentDefense', 'onePercentDefense', '1%防御', '一分防御'],
+  CharacterOnePercentHealth: ['CharacterOnePercentHealth', 'onePercentHealth', '1%气血', '一分气血'],
+  CharacterOnePercentMana: ['CharacterOnePercentMana', 'onePercentMana', '1%真气', '一分真气']
 };
 
 const requiredAttributes: Array<keyof CharacterAttributes> = [
@@ -264,7 +275,7 @@ const normalizeBuffs = (input: AgentCalcInput, allBuffs: Buff[], issues: Validat
     const hermesProfileAliases: Record<string, string> = {
       focus: '专注',
       greenPoint: '绿点',
-      monsterDamageTaken: '怪物受到伤害',
+      monsterDamageTaken: '易伤',
       witchCurse: '巫咒'
     };
     for (const [profileKey, buffName] of Object.entries(hermesProfileAliases)) {

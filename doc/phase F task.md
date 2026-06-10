@@ -1,0 +1,23 @@
+# Phase F: Web 副本模拟训练场 UI 开发任务清单
+
+- `[x]` **1. 扩展数据模型与游戏数据描述**
+  - `[x]` 扩展 [types.ts](file:///e:/ww/personal%20work/new_zx_calc_noactcode_agent/packages/simulation-engine/src/types.ts) 中的 `Skill` 接口，增加 `Description?: string` 属性。
+  - `[x]` 更新 [skills.json](file:///e:/ww/personal%20work/new_zx_calc_noactcode_agent/web_app/public/game_data/skills.json)，为 14 个核心辅助/限制技能补全中文 `Description`。
+- `[x]` **2. 暴露数据加载接口**
+  - `[x]` 修改 [DataService.ts](file:///e:/ww/personal%20work/new_zx_calc_noactcode_agent/web_app/src/services/DataService.ts)，新增 `getAllSkills()` 和 `getDungeonsMonsters()` 接口。
+- `[x]` **3. 实现前端容器与模式切换**
+  - `[x]` 修改 [App.tsx](file:///e:/ww/personal%20work/new_zx_calc_noactcode_agent/web_app/src/App.tsx)，加入 `activeTab` 状态及视图切换逻辑。
+  - `[x]` 修改 [Header.tsx](file:///e:/ww/personal%20work/new_zx_calc_noactcode_agent/web_app/src/components/layout/Header.tsx)，设计微动玻璃质感导航栏，实现 Tab 切换。
+- `[x]` **4. 开发副本模拟训练场核心配置面板**
+  - `[x]` 在 [NEW] `web_app/src/components/arena/` 目录下创建组件。
+  - `[x]` 开发 `TeamConfigPanel.tsx`，支持添加 5 个辅助职业（天音、焚香、天华、英招、昭冥），显示其限制技能的中文描述及启用/限制状态标签，支持属性覆盖。
+  - `[x]` 开发 `StrategyEditor.tsx`，包含法宝栏（SKILL_BAR）优先级、固定循环（FIXED_ROTATION）和手动时间轴（MANUAL_TIMELINE）三种编辑模式。
+  - `[x]` 开发 `BossConfigPanel.tsx`，实现副本与 Boss 的联动下拉，支持 HP 上限覆盖。
+  - `[x]` 开发 `SimulationArena.tsx` 整合组件，集成计算并调用模拟引擎得出结果，支持 Baseline A/B 对比。
+- `[x]` **5. 仿真结果可视化与战斗大屏**
+  - `[x]` 开发 `SimulationReport.tsx`，使用毛玻璃卡片展示各项核心通关指标。
+  - `[x]` 绘制 Recharts 总伤占比饼图及 DPS/Boss HP 双 Y 轴折线图。
+  - `[x]` 绘制泳道 Timeline，仅包含 DPS 身上的 Buff 与 Boss 身上的 Debuff。
+  - `[x]` 设计支持分页和按秒过滤的精细战斗日志查看器。
+- `[x]` **6. 最终验证与编译**
+  - `[x]` 运行 `npm run check:all` 确保没有 TS/编译错误，且可在浏览器中流畅运行。

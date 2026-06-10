@@ -1,0 +1,130 @@
+{
+  "scenarioId": "phase-d-minimal",
+  "maxTimeMs": 6000,
+  "dpsActorId": "dps",
+  "boss": {
+    "MonsterID": "PHASE_D_TEST_BOSS",
+    "MonsterName": "Phase D 测试木桩",
+    "DungeonLevel": 1,
+    "MonsterAttributeModifiers": {
+      "MonsterCriticalDamagePercentReduction": 0,
+      "MonsterHealth": 6000
+    }
+  },
+  "actors": [
+    {
+      "actorId": "support",
+      "classId": "TEST_SUPPORT",
+      "role": "SUPPORT",
+      "baseSkills": [
+        {
+          "SkillID": "TEAM_ATTACK_BUFF",
+          "SkillName": "团队攻击增益",
+          "RequiredClass": "TEST_SUPPORT",
+          "Faction": "COMMON",
+          "SkillImportanceWeight": 0,
+          "SkillFrequency": 0,
+          "Cooldown": 30,
+          "CastTime": 0,
+          "IsAOE": false,
+          "ActionType": "BUFF",
+          "SkillBonusAttributes": {
+            "SkillDamageBonus": 1
+          },
+          "AppliesEffects": [
+            {
+              "EffectId": "TEAM_ATTACK_UP",
+              "EffectName": "团队攻击提升",
+              "Target": "TEAM",
+              "Duration": 2,
+              "RefreshOnReapply": true,
+              "BuffEffects": {
+                "BuffAttackPercentEffect": 100
+              }
+            }
+          ]
+        },
+        {
+          "SkillID": "BOSS_HARMED_DEBUFF",
+          "SkillName": "怪物易伤",
+          "RequiredClass": "TEST_SUPPORT",
+          "Faction": "COMMON",
+          "SkillImportanceWeight": 0,
+          "SkillFrequency": 0,
+          "Cooldown": 30,
+          "CastTime": 0,
+          "IsAOE": false,
+          "ActionType": "DEBUFF",
+          "SkillBonusAttributes": {
+            "SkillDamageBonus": 1
+          },
+          "AppliesEffects": [
+            {
+              "EffectId": "BOSS_HARMED_UP",
+              "EffectName": "易伤提升",
+              "Target": "ENEMY",
+              "Duration": 3,
+              "RefreshOnReapply": true,
+              "BuffEffects": {
+                "BuffMonsterHarmedPercentEffect": 20
+              }
+            }
+          ]
+        }
+      ],
+      "strategy": {
+        "type": "SETUP_PHASE",
+        "actions": [
+          {
+            "timeMs": 0,
+            "skillId": "TEAM_ATTACK_BUFF"
+          },
+          {
+            "timeMs": 1000,
+            "skillId": "BOSS_HARMED_DEBUFF"
+          }
+        ]
+      }
+    },
+    {
+      "actorId": "dps",
+      "classId": "TEST_DPS",
+      "role": "DPS",
+      "gcdMs": 1000,
+      "baseAttributes": {
+        "CharacterMinAttack": 100,
+        "CharacterMaxAttack": 100,
+        "CharacterDefense": 0,
+        "CharacterHealth": 1000,
+        "CharacterMana": 1000,
+        "CharacterCriticalHitDamagePercent": 100,
+        "CharacterMonsterDamageIncreasePercent": 0
+      },
+      "baseSkills": [
+        {
+          "SkillID": "DPS_TEST_HIT",
+          "SkillName": "测试输出",
+          "RequiredClass": "TEST_DPS",
+          "Faction": "COMMON",
+          "SkillImportanceWeight": 1,
+          "SkillFrequency": 1,
+          "Cooldown": 1,
+          "CastTime": 0,
+          "IsAOE": false,
+          "ActionType": "DAMAGE",
+          "SkillBonusAttributes": {
+            "SkillAttackPercentBonus": 0,
+            "SkillAttackFixedBonus": 900,
+            "SkillDamageBonus": 1
+          }
+        }
+      ],
+      "strategy": {
+        "type": "FIXED_ROTATION",
+        "skillIds": [
+          "DPS_TEST_HIT"
+        ]
+      }
+    }
+  ]
+}

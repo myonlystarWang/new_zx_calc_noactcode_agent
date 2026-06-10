@@ -1,0 +1,24 @@
+{
+  "playerName": "测试魔逐霜首击",
+  "className": "逐霜",
+  "factionName": "魔",
+  "attributes": {
+    "minAttack": 300000,
+    "maxAttack": 352000,
+    "defense": 500000,
+    "critDamage": 2821,
+    "mana": 5490000,
+    "health": 4000000,
+    "monsterDamageIncrease": 43.8
+  },
+  "buffs": {
+    "focus": 184,
+    "greenPoint": 600,
+    "monsterDamageTaken": 115,
+    "witchCurse": 7.5
+  },
+  "target": {
+    "dungeon": "ZHENHAI_DUANLANG_T20",
+    "bossIndex": 1
+  }
+}

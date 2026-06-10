@@ -208,3 +208,94 @@ input[type="number"] {
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
+
+/* --- Zhuxian 3 Guofeng Themes --- */
+:root, [data-theme='XIAN'] {
+  --theme-primary: #5c8a75; /* 竹青玉色 */
+  --theme-primary-hover: #4b705f;
+  --theme-glow: rgba(92, 138, 117, 0.12);
+  --theme-text: #e2eae6; /* 羊脂淡青 */
+  --theme-accent: #5897a8; /* 碧水蓝 */
+  --theme-accent-glow: rgba(88, 151, 168, 0.08);
+  --theme-panel-bg: rgba(12, 18, 16, 0.88); /* 深竹黛黑 */
+}
+
+[data-theme='FO'] {
+  --theme-primary: #a3855c; /* 沉砂古铜金 */
+  --theme-primary-hover: #856c4a;
+  --theme-glow: rgba(163, 133, 92, 0.12);
+  --theme-text: #f5f2eb; /* 温润白玉 */
+  --theme-accent: #c5a67c; /* 琥珀金 */
+  --theme-accent-glow: rgba(197, 166, 124, 0.08);
+  --theme-panel-bg: rgba(18, 16, 14, 0.88); /* 玄木檀黑 */
+}
+
+[data-theme='MO'] {
+  --theme-primary: #8a4f6e; /* 幽黛紫檀 */
+  --theme-primary-hover: #703f59;
+  --theme-glow: rgba(138, 79, 110, 0.1);
+  --theme-text: #faeff3; /* 羊脂粉黛 */
+  --theme-accent: #b55151; /* 铁锈暗红 */
+  --theme-accent-glow: rgba(181, 81, 81, 0.07);
+  --theme-panel-bg: rgba(18, 14, 16, 0.90); /* 冷玄铁黑 */
+}
+
+/* Classical Chinese Card */
+.zx-card {
+  position: relative;
+  background: var(--theme-panel-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.zx-card:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px var(--theme-glow), inset 0 0 16px rgba(255, 255, 255, 0.01);
+  transform: translateY(-1px);
+}
+
+/* Classical Button */
+.zx-btn {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--theme-primary) !important;
+  font-weight: 700;
+  border: 1px solid var(--theme-primary);
+  border-radius: 9999px;
+  box-shadow: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.zx-btn:hover {
+  background: var(--theme-primary);
+  color: var(--theme-panel-bg) !important;
+  box-shadow: 0 0 15px var(--theme-glow);
+  transform: translateY(-1px);
+}
+
+.zx-btn:active {
+  transform: translateY(0.5px);
+}
+
+/* Water particles bg pulse */
+.zx-ink-bg {
+  background-image:
+    radial-gradient(at 0% 0%, var(--theme-glow) 0, transparent 40%),
+    radial-gradient(at 100% 100%, var(--theme-accent-glow) 0, transparent 40%);
+  transition: all 1s ease-in-out;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 15s linear infinite;
+}

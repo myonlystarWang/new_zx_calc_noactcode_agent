@@ -1,0 +1,158 @@
+{
+  "scenarios": [
+    {
+      "label": "A_QUICK_THEN_BIG",
+      "scenario": {
+        "scenarioId": "phase-d-compare-a",
+        "maxTimeMs": 5000,
+        "dpsActorId": "dps",
+        "boss": {
+          "MonsterID": "PHASE_D_COMPARE_BOSS",
+          "MonsterName": "Phase D 对比木桩",
+          "DungeonLevel": 1,
+          "MonsterAttributeModifiers": {
+            "MonsterCriticalDamagePercentReduction": 0,
+            "MonsterHealth": 5000
+          }
+        },
+        "actors": [
+          {
+            "actorId": "dps",
+            "classId": "TEST_DPS",
+            "role": "DPS",
+            "gcdMs": 500,
+            "baseAttributes": {
+              "CharacterMinAttack": 100,
+              "CharacterMaxAttack": 100,
+              "CharacterDefense": 0,
+              "CharacterHealth": 1000,
+              "CharacterMana": 1000,
+              "CharacterCriticalHitDamagePercent": 100,
+              "CharacterMonsterDamageIncreasePercent": 0
+            },
+            "baseSkills": [
+              {
+                "SkillID": "QUICK_HIT",
+                "SkillName": "小技能",
+                "RequiredClass": "TEST_DPS",
+                "Faction": "COMMON",
+                "SkillImportanceWeight": 1,
+                "SkillFrequency": 1,
+                "Cooldown": 1,
+                "CastTime": 0,
+                "IsAOE": false,
+                "ActionType": "DAMAGE",
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 0,
+                  "SkillAttackFixedBonus": 900,
+                  "SkillDamageBonus": 1
+                }
+              },
+              {
+                "SkillID": "BIG_HIT",
+                "SkillName": "大技能",
+                "RequiredClass": "TEST_DPS",
+                "Faction": "COMMON",
+                "SkillImportanceWeight": 1,
+                "SkillFrequency": 1,
+                "Cooldown": 4,
+                "CastTime": 0,
+                "IsAOE": false,
+                "ActionType": "DAMAGE",
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 0,
+                  "SkillAttackFixedBonus": 2900,
+                  "SkillDamageBonus": 1
+                }
+              }
+            ],
+            "strategy": {
+              "type": "FIXED_ROTATION",
+              "skillIds": [
+                "QUICK_HIT",
+                "BIG_HIT"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "B_BIG_THEN_QUICK",
+      "scenario": {
+        "scenarioId": "phase-d-compare-b",
+        "maxTimeMs": 5000,
+        "dpsActorId": "dps",
+        "boss": {
+          "MonsterID": "PHASE_D_COMPARE_BOSS",
+          "MonsterName": "Phase D 对比木桩",
+          "DungeonLevel": 1,
+          "MonsterAttributeModifiers": {
+            "MonsterCriticalDamagePercentReduction": 0,
+            "MonsterHealth": 5000
+          }
+        },
+        "actors": [
+          {
+            "actorId": "dps",
+            "classId": "TEST_DPS",
+            "role": "DPS",
+            "gcdMs": 500,
+            "baseAttributes": {
+              "CharacterMinAttack": 100,
+              "CharacterMaxAttack": 100,
+              "CharacterDefense": 0,
+              "CharacterHealth": 1000,
+              "CharacterMana": 1000,
+              "CharacterCriticalHitDamagePercent": 100,
+              "CharacterMonsterDamageIncreasePercent": 0
+            },
+            "baseSkills": [
+              {
+                "SkillID": "QUICK_HIT",
+                "SkillName": "小技能",
+                "RequiredClass": "TEST_DPS",
+                "Faction": "COMMON",
+                "SkillImportanceWeight": 1,
+                "SkillFrequency": 1,
+                "Cooldown": 1,
+                "CastTime": 0,
+                "IsAOE": false,
+                "ActionType": "DAMAGE",
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 0,
+                  "SkillAttackFixedBonus": 900,
+                  "SkillDamageBonus": 1
+                }
+              },
+              {
+                "SkillID": "BIG_HIT",
+                "SkillName": "大技能",
+                "RequiredClass": "TEST_DPS",
+                "Faction": "COMMON",
+                "SkillImportanceWeight": 1,
+                "SkillFrequency": 1,
+                "Cooldown": 4,
+                "CastTime": 0,
+                "IsAOE": false,
+                "ActionType": "DAMAGE",
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 0,
+                  "SkillAttackFixedBonus": 2900,
+                  "SkillDamageBonus": 1
+                }
+              }
+            ],
+            "strategy": {
+              "type": "FIXED_ROTATION",
+              "skillIds": [
+                "BIG_HIT",
+                "QUICK_HIT"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

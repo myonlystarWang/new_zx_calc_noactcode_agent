@@ -5,12 +5,17 @@
   "type": "module",
   "scripts": {
     "calc": "tsx src/cli.ts",
-    "check": "tsc --noEmit",
-    "test:example": "npm run calc -- --input examples/zhu_shuang_mo_t21_boss1.json"
+    "sim": "npm --prefix ../packages/simulation-engine run build && tsx src/sim_cli.ts",
+    "check": "npm --prefix ../packages/simulation-engine run build && tsc --noEmit",
+    "test:example": "npm run calc -- --input examples/zhu_shuang_mo_t21_boss1.json",
+    "test:sim": "npm run sim -- --input examples/simulation_minimal.json"
+  },
+  "dependencies": {
+    "@zx/simulation-engine": "*"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
-    "tsx": "^4.21.0",
+    "tsx": "^4.22.3",
     "typescript": "~5.9.3"
   }
 }

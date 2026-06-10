@@ -1,0 +1,124 @@
+{
+  "playerName": "独白",
+  "className": "逐霜",
+  "factionName": "仙",
+  "dungeon": "T20",
+  "bossIndex": 1,
+  "skillUsage": {
+    "ZS_XIAN_SKILL_CLXX": {
+      "damageShare": 0.39,
+      "normalizedShare": 0.39
+    },
+    "ZS_XIAN_SKILL_CLX": {
+      "damageShare": 0.2463,
+      "normalizedShare": 0.2463
+    },
+    "ZS_XIAN_SKILL_YLXB": {
+      "damageShare": 0.1201,
+      "normalizedShare": 0.1201
+    },
+    "ZS_XIAN_SKILL_SY3": {
+      "damageShare": 0.1279,
+      "normalizedShare": 0.1279
+    },
+    "ZS_XIAN_SKILL_LYLZ": {
+      "damageShare": 0.1157,
+      "normalizedShare": 0.1157
+    }
+  },
+  "scenarioA": {
+    "name": "方案 A：对怪增伤 +3%",
+    "components": [
+      {
+        "attr": "monsterDamageIncrease",
+        "delta": 3.0,
+        "unit": 0.1
+      }
+    ]
+  },
+  "scenarioB": {
+    "name": "方案 B：2000气血+2000真气+3000攻击+33爆伤",
+    "components": [
+      {
+        "attr": "health",
+        "delta": 2000,
+        "unit": 1000
+      },
+      {
+        "attr": "mana",
+        "delta": 2000,
+        "unit": 1000
+      },
+      {
+        "attr": "attack",
+        "delta": 3000,
+        "unit": 100
+      },
+      {
+        "attr": "critDamage",
+        "delta": 33,
+        "unit": 1
+      }
+    ]
+  },
+  "skillComparison": [
+    {
+      "skillName": "苍龙啸·玄",
+      "skillId": "ZS_XIAN_SKILL_CLXX",
+      "damageShare": 0.39,
+      "normalizedShare": 0.39,
+      "scenarioAGain": 20376.9,
+      "scenarioBGain": 17189.26,
+      "weightedAGain": 7946.991000000001,
+      "weightedBGain": 6703.8114,
+      "better": "A"
+    },
+    {
+      "skillName": "苍龙啸",
+      "skillId": "ZS_XIAN_SKILL_CLX",
+      "damageShare": 0.2463,
+      "normalizedShare": 0.2463,
+      "scenarioAGain": 12377.699999999999,
+      "scenarioBGain": 11417.38,
+      "weightedAGain": 3048.62751,
+      "weightedBGain": 2812.1006939999997,
+      "better": "A"
+    },
+    {
+      "skillName": "银鳞玄冰",
+      "skillId": "ZS_XIAN_SKILL_YLXB",
+      "damageShare": 0.1201,
+      "normalizedShare": 0.1201,
+      "scenarioAGain": 3530.4,
+      "scenarioBGain": 2850.68,
+      "weightedAGain": 424.00104,
+      "weightedBGain": 342.366668,
+      "better": "A"
+    },
+    {
+      "skillName": "山雨欲来III",
+      "skillId": "ZS_XIAN_SKILL_SY3",
+      "damageShare": 0.1279,
+      "normalizedShare": 0.1279,
+      "scenarioAGain": 1851.8999999999999,
+      "scenarioBGain": 1773.8200000000002,
+      "weightedAGain": 236.85801,
+      "weightedBGain": 226.87157800000006,
+      "better": "A"
+    },
+    {
+      "skillName": "临渊敛爪",
+      "skillId": "ZS_XIAN_SKILL_LYLZ",
+      "damageShare": 0.1157,
+      "normalizedShare": 0.1157,
+      "scenarioAGain": 940.5,
+      "scenarioBGain": 915.8199999999999,
+      "weightedAGain": 108.81585,
+      "weightedBGain": 105.96037399999999,
+      "better": "A"
+    }
+  ],
+  "totalScenarioA": 11765.29341,
+  "totalScenarioB": 10191.110714,
+  "overallBetter": "A"
+}

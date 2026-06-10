@@ -11,7 +11,7 @@ export const Card: React.FC<CardProps> = ({ children, className, title, ...props
     return (
         <div
             className={clsx(
-                'glass-panel p-4 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10',
+                'zx-card p-4 transition-all duration-300',
                 className
             )}
             {...props}

@@ -1,2 +1,19 @@
 zx_analysis_results/**/logs/
 zx_analysis_results/**/profile_test.json
+
+# Dependencies and build output
+node_modules/
+**/node_modules/
+agent_tool/node_modules_win/
+dist/
+**/dist/
+*.tsbuildinfo
+
+# Local generated profiles and temporary analysis input
+agent_tool/profile_test_*.json
+agent_tool/temp_profile_*.json
+
+# Temporary logs, scratch scripts, and learnings
+*.log
+scratch/
+.learnings/

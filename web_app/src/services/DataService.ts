@@ -75,6 +75,14 @@ export class DataService {
         return this.skills ? this.skills[classId] : null;
     }
 
+    public getAllSkills(): AllSkills | null {
+        return this.skills;
+    }
+
+    public getDungeonsMonsters(): Record<string, Monster[]> | null {
+        return this.dungeonsMonsters;
+    }
+
     public getDungeons(): Dungeon[] {
         if (!this.dungeonsMetadata || !this.dungeonsMonsters) return [];
 

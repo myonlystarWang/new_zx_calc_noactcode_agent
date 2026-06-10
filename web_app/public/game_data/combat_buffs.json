@@ -31,7 +31,7 @@
   },
   {
     "BuffID": "BUFF_MON_HARMED_EFFECT",
-    "BuffName": "怪物受到伤害",
+    "BuffName": "易伤",
     "IsDefaultActive": true,
     "IsEditable": true,
     "DefaultEffectValue": 120,
