@@ -218,6 +218,13 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
                 if (instanceId && instanceMap[instanceId]) {
                     instanceMap[instanceId].end = event.timeMs;
                 }
+            } else if (event.type === 'BUFF_EXTEND') {
+                const data = event.data || {};
+                const instanceId = data.instanceId as string;
+                const newEndTimeMs = data.newEndTimeMs as number;
+                if (instanceId && instanceMap[instanceId] && newEndTimeMs > 0) {
+                    instanceMap[instanceId].end = newEndTimeMs;
+                }
             }
         });
 

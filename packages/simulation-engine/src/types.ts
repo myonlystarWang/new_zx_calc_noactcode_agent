@@ -76,6 +76,7 @@ export interface Skill {
   SkillLevel?: number;
   Variant?: string;
   FourthGenQuality?: 'YING_JU' | 'HAO_YUE' | 'XI_RI';
+  RyhgPhase2DelaySeconds?: number;
 }
 
 export interface ClassSkills {
@@ -286,6 +287,7 @@ export interface PlayerSkillOverride {
   BuffDurationExtensionSeconds?: number;
   SkillLevel?: number;
   Variant?: string;
+  RyhgPhase2DelaySeconds?: number;
 }
 
 // --- Phase C: Discrete Event Simulation Core ---
@@ -296,6 +298,7 @@ export type SimEventType =
   | 'HIT'
   | 'BUFF_APPLY'
   | 'BUFF_EXPIRE'
+  | 'BUFF_EXTEND'
   | 'COOLDOWN_READY'
   | 'PHASE_TRANSITION'
   | 'BOSS_DEAD'

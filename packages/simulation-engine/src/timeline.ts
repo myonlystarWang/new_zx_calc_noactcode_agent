@@ -4,6 +4,7 @@ const EVENT_PRIORITY: Record<SimEventType, number> = {
   BOSS_DEAD: 0,
   BUFF_EXPIRE: 10,
   BUFF_APPLY: 20,
+  BUFF_EXTEND: 25,
   CAST_START: 30,
   HIT: 40,
   CAST_COMPLETE: 50,

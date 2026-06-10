@@ -31,6 +31,7 @@ import type {
     Skill
 } from '../../types';
 import { DataService } from '../../services/DataService';
+import defaultOverrides from '../../../public/game_data/default_overrides.json';
 import { StrategyEditor } from './StrategyEditor';
 import { SimulationReport } from './SimulationReport';
 import clsx from 'clsx';
@@ -74,7 +75,7 @@ const DEFAULT_SKILL_EXPIRY_MS_BY_FACTION: Record<'XIAN' | 'MO', Record<string, n
     }
 };
 
-const DEFAULT_DPS_START_DELAY_MS = 5000;
+const DEFAULT_DPS_START_DELAY_MS = defaultOverrides.dpsStartDelayMs;
 
 interface DpsCommonEffectToggles {
     sanwanFocus: boolean;
@@ -183,19 +184,7 @@ const SEARCH_ALIASES: Record<string, string[]> = {
     ZM_FO_SKILL_FGSL: ['fugushengling', 'fgsl']
 };
 
-const initialDpsAttributes: CharacterAttributes = {
-    CharacterMinAttack: 300000,
-    CharacterMaxAttack: 352000,
-    CharacterDefense: 500000,
-    CharacterHealth: 4000000,
-    CharacterMana: 5490000,
-    CharacterCriticalHitDamagePercent: 2821,
-    CharacterMonsterDamageIncreasePercent: 43.8,
-    CharacterOnePercentAttack: 1500,
-    CharacterOnePercentDefense: 2000,
-    CharacterOnePercentHealth: 25000,
-    CharacterOnePercentMana: 35000
-};
+const initialDpsAttributes: CharacterAttributes = defaultOverrides.dpsAttributes as CharacterAttributes;
 
 const defaultSupportAttributes: CharacterAttributes = {
     CharacterMinAttack: 200000,
@@ -218,6 +207,7 @@ interface SkillOverrideConfig {
     SkillLevel?: number;
     Variant?: string;
     Enabled?: boolean;
+    RyhgPhase2DelaySeconds?: number;
 }
 
 interface DpsSkillConfig extends SkillOverrideConfig {}
@@ -231,11 +221,41 @@ interface SupportConfig {
 }
 
 const initialSupports: SupportConfig[] = [
-    { actorId: 'tianyin_sup', classId: 'TIAN_YIN', faction: 'FO', profileAttributes: { ...defaultSupportAttributes } },
-    { actorId: 'fenxiang_sup', classId: 'FEN_XIANG', faction: 'FO', profileAttributes: { ...defaultSupportAttributes } },
-    { actorId: 'zhaoming_sup', classId: 'ZHAO_MING', faction: 'FO', profileAttributes: { ...defaultSupportAttributes } },
-    { actorId: 'yingzhao_sup', classId: 'YING_ZHAO', faction: 'FO', profileAttributes: { ...defaultSupportAttributes } },
-    { actorId: 'tianhua_sup', classId: 'TIAN_HUA', faction: 'FO', profileAttributes: { ...defaultSupportAttributes } }
+    {
+        actorId: 'tianyin_sup',
+        classId: 'TIAN_YIN',
+        faction: 'FO',
+        profileAttributes: { ...defaultSupportAttributes },
+        skillOverrides: (defaultOverrides.supportOverrides as any)['tianyin_sup']
+    },
+    {
+        actorId: 'fenxiang_sup',
+        classId: 'FEN_XIANG',
+        faction: 'FO',
+        profileAttributes: { ...defaultSupportAttributes },
+        skillOverrides: (defaultOverrides.supportOverrides as any)['fenxiang_sup']
+    },
+    {
+        actorId: 'zhaoming_sup',
+        classId: 'ZHAO_MING',
+        faction: 'FO',
+        profileAttributes: { ...defaultSupportAttributes },
+        skillOverrides: (defaultOverrides.supportOverrides as any)['zhaoming_sup']
+    },
+    {
+        actorId: 'yingzhao_sup',
+        classId: 'YING_ZHAO',
+        faction: 'FO',
+        profileAttributes: { ...defaultSupportAttributes },
+        skillOverrides: (defaultOverrides.supportOverrides as any)['yingzhao_sup']
+    },
+    {
+        actorId: 'tianhua_sup',
+        classId: 'TIAN_HUA',
+        faction: 'FO',
+        profileAttributes: { ...defaultSupportAttributes },
+        skillOverrides: (defaultOverrides.supportOverrides as any)['tianhua_sup']
+    }
 ];
 
 type DrawerMode = 'dps' | 'team' | 'strategy' | 'boss' | 'analysis' | 'data' | 'skill' | 'event' | null;
@@ -262,7 +282,7 @@ interface ActiveEffectView {
     effects: Record<string, number>;
 }
 
-const DEFAULT_DPS_FOURTH_GEN_QUALITY: Exclude<FourthGenQuality, 'NONE'> = 'XI_RI';
+const DEFAULT_DPS_FOURTH_GEN_QUALITY: Exclude<FourthGenQuality, 'NONE'> = defaultOverrides.dpsDefaultFourthGenQuality as Exclude<FourthGenQuality, 'NONE'>;
 const SIMULATION_MAX_TIME_MS = 300000;
 const DAMAGE_AUDIT_RANDOM_SEED = 20260609;
 const YBJH_GREEN_MULTIPLIER_FIELD = 'BuffMonsterCriticalDamageMultiplierEffect';
@@ -432,7 +452,7 @@ export const SimulationArena: React.FC = () => {
     const [selectedDungeonId, setSelectedDungeonId] = useState<string>('ZHENHAI_DUANLANG_T20');
     const [selectedBossId, setSelectedBossId] = useState<string>('CHI_SUO_T20');
     const [customBossHp, setCustomBossHp] = useState<string>('');
-    const [damageAuditEnabled, setDamageAuditEnabled] = useState<boolean>(false);
+    const [damageAuditEnabled, setDamageAuditEnabled] = useState<boolean>(true);
 
     const [simulationResult, setSimulationResult] = useState<SimulationResult | undefined>(undefined);
     const [baselineResult, setBaselineResult] = useState<SimulationResult | undefined>(undefined);
@@ -1246,6 +1266,17 @@ function buildActiveEffectViews(
             return;
         }
 
+        if (event.type === 'BUFF_EXTEND') {
+            const instanceId = String(data.instanceId || '');
+            const newEndTimeMs = Number(data.newEndTimeMs || 0);
+            const existing = active.get(instanceId);
+            if (existing && newEndTimeMs > 0) {
+                existing.endTimeMs = newEndTimeMs;
+                existing.remainingMs = Math.max(0, newEndTimeMs - currentTimeMs);
+            }
+            return;
+        }
+
         if (event.type !== 'BUFF_APPLY') return;
 
         const replacedInstanceIds = Array.isArray(data.replacedInstanceIds)
@@ -1263,7 +1294,7 @@ function buildActiveEffectViews(
         } | undefined;
         const instanceId = String(data.appliedInstanceId || '');
         const endTimeMs = Number(data.appliedEndTimeMs || 0);
-        if (!effect || !instanceId || endTimeMs <= currentTimeMs) return;
+        if (!effect || !instanceId) return;
 
         const sourceSkillId = String(data.sourceSkillId || event.skillId || '');
         const effectId = String(effect.EffectId || effect.EffectID || data.appliedEffectId || instanceId);
@@ -2065,7 +2096,7 @@ function TeamDrawerPanel({
         }
         Object.keys(nextOverride).forEach(key => {
             const typedKey = key as keyof SkillOverrideConfig;
-            if (nextOverride[typedKey] === undefined || nextOverride[typedKey] === '' || nextOverride[typedKey] === 0) {
+            if (nextOverride[typedKey] === undefined || nextOverride[typedKey] === '' || (nextOverride[typedKey] === 0 && typedKey !== 'RyhgPhase2DelaySeconds')) {
                 delete nextOverride[typedKey];
             }
         });
@@ -2240,6 +2271,24 @@ function TeamDrawerPanel({
                                                 <option value="HAO">凤求凰·浩</option>
                                                 <option value="HUA">凤求凰·华</option>
                                             </select>
+                                        )}
+                                        {skill.SkillID === 'ZM_FO_SKILL_RYHG' && (
+                                            <div className="flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-2 py-1.5 text-xs text-slate-200">
+                                                <span className="text-slate-400">二段延迟:</span>
+                                                <input
+                                                    type="number"
+                                                    min="0"
+                                                    max="45"
+                                                    value={override.RyhgPhase2DelaySeconds !== undefined ? override.RyhgPhase2DelaySeconds : ''}
+                                                    placeholder="30"
+                                                    onChange={(event) => {
+                                                        const val = event.target.value === '' ? undefined : Math.max(0, parseInt(event.target.value) || 0);
+                                                        updateSkillOverride(skill.SkillID, { RyhgPhase2DelaySeconds: val });
+                                                    }}
+                                                    className="w-10 bg-transparent text-center font-bold text-cyan-400 outline-none placeholder:text-slate-600"
+                                                />
+                                                <span className="text-slate-500">秒</span>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
