@@ -1,0 +1,29 @@
+{
+  "name": "new-zx-calc-root",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "agent_tool",
+    "web_app",
+    "packages/*"
+  ],
+  "scripts": {
+    "agent:calc": "npm --workspace=agent_tool run calc --",
+    "agent:sim": "npm --workspace=agent_tool run sim --",
+    "agent:check": "npm --workspace=agent_tool run check",
+    "agent:test:example": "npm --workspace=agent_tool run test:example",
+    "agent:test:sim": "npm --workspace=agent_tool run test:sim",
+    "engine:check": "npm --workspace=@zx/simulation-engine run check",
+    "web:dev": "npm --workspace=web_app run dev",
+    "web:build": "npm --workspace=web_app run build",
+    "check:all": "npm --workspace=@zx/simulation-engine run check && npm --workspace=agent_tool run check && npm --workspace=web_app run build",
+    "test:b": "tsx packages/simulation-engine/src/test_b.ts",
+    "test:c": "tsx packages/simulation-engine/src/test_c.ts",
+    "test:e": "tsx packages/simulation-engine/src/test_assembler.ts",
+    "test:f": "tsx packages/simulation-engine/src/test_6person_team.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.22.3",
+    "typescript": "~5.9.3"
+  }
+}

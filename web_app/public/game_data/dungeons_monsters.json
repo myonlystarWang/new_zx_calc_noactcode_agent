@@ -373,7 +373,10 @@
       "MonsterName": "赤梭",
       "DungeonLevel": 1,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1300
+        "MonsterCriticalDamagePercentReduction": 1300,
+        "MonsterDefense": 340000,
+        "MonsterHealth": 101532777550,
+        "MonsterCriticalHitRateReduction": 210
       }
     },
     {
@@ -381,7 +384,10 @@
       "MonsterName": "玄铠",
       "DungeonLevel": 1,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1450
+        "MonsterCriticalDamagePercentReduction": 1450,
+        "MonsterDefense": 370000,
+        "MonsterHealth": 94798273250,
+        "MonsterCriticalHitRateReduction": 225
       }
     },
     {
@@ -389,7 +395,10 @@
       "MonsterName": "望潮",
       "DungeonLevel": 2,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1400
+        "MonsterCriticalDamagePercentReduction": 1400,
+        "MonsterDefense": 360000,
+        "MonsterHealth": 153914937900,
+        "MonsterCriticalHitRateReduction": 220
       }
     },
     {
@@ -397,7 +406,10 @@
       "MonsterName": "裂魂",
       "DungeonLevel": 3,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1350
+        "MonsterCriticalDamagePercentReduction": 1350,
+        "MonsterDefense": 355000,
+        "MonsterHealth": 176009734770,
+        "MonsterCriticalHitRateReduction": 215
       }
     },
     {
@@ -405,7 +417,10 @@
       "MonsterName": "璃音",
       "DungeonLevel": 4,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1400
+        "MonsterCriticalDamagePercentReduction": 1400,
+        "MonsterDefense": 345000,
+        "MonsterHealth": 192834424465,
+        "MonsterCriticalHitRateReduction": 215
       }
     },
     {
@@ -413,7 +428,10 @@
       "MonsterName": "沧渊",
       "DungeonLevel": 5,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1400
+        "MonsterCriticalDamagePercentReduction": 1400,
+        "MonsterDefense": 365000,
+        "MonsterHealth": 202542363000,
+        "MonsterCriticalHitRateReduction": 225
       }
     }
   ],
@@ -423,7 +441,10 @@
       "MonsterName": "赤梭",
       "DungeonLevel": 1,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1500
+        "MonsterCriticalDamagePercentReduction": 1500,
+        "MonsterDefense": 450000,
+        "MonsterHealth": 124474606860,
+        "MonsterCriticalHitRateReduction": 250
       }
     },
     {
@@ -431,7 +452,10 @@
       "MonsterName": "玄铠",
       "DungeonLevel": 1,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1700
+        "MonsterCriticalDamagePercentReduction": 1700,
+        "MonsterDefense": 480000,
+        "MonsterHealth": 109159405740,
+        "MonsterCriticalHitRateReduction": 265
       }
     },
     {
@@ -439,7 +463,10 @@
       "MonsterName": "望潮",
       "DungeonLevel": 2,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1650
+        "MonsterCriticalDamagePercentReduction": 1650,
+        "MonsterDefense": 470000,
+        "MonsterHealth": 177485347945,
+        "MonsterCriticalHitRateReduction": 260
       }
     },
     {
@@ -447,7 +474,10 @@
       "MonsterName": "裂魂",
       "DungeonLevel": 3,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1550
+        "MonsterCriticalDamagePercentReduction": 1550,
+        "MonsterDefense": 460000,
+        "MonsterHealth": 217642059075,
+        "MonsterCriticalHitRateReduction": 255
       }
     },
     {
@@ -455,7 +485,10 @@
       "MonsterName": "璃音",
       "DungeonLevel": 4,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1600
+        "MonsterCriticalDamagePercentReduction": 1600,
+        "MonsterDefense": 455000,
+        "MonsterHealth": 235428990610,
+        "MonsterCriticalHitRateReduction": 255
       }
     },
     {
@@ -463,7 +496,10 @@
       "MonsterName": "沧渊",
       "DungeonLevel": 5,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1650
+        "MonsterCriticalDamagePercentReduction": 2200,
+        "MonsterDefense": 475000,
+        "MonsterHealth": 249611905440,
+        "MonsterCriticalHitRateReduction": 265
       }
     }
   ],
@@ -473,7 +509,10 @@
       "MonsterName": "赤梭",
       "DungeonLevel": 1,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1600
+        "MonsterCriticalDamagePercentReduction": 1600,
+        "MonsterDefense": 500000,
+        "MonsterHealth": 196829815000,
+        "MonsterCriticalHitRateReduction": 295
       }
     },
     {
@@ -481,7 +520,10 @@
       "MonsterName": "玄铠",
       "DungeonLevel": 1,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1800
+        "MonsterCriticalDamagePercentReduction": 1800,
+        "MonsterDefense": 540000,
+        "MonsterHealth": 179420395200,
+        "MonsterCriticalHitRateReduction": 310
       }
     },
     {
@@ -489,7 +531,10 @@
       "MonsterName": "望潮",
       "DungeonLevel": 2,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1750
+        "MonsterCriticalDamagePercentReduction": 1750,
+        "MonsterDefense": 530000,
+        "MonsterHealth": 286991488560,
+        "MonsterCriticalHitRateReduction": 305
       }
     },
     {
@@ -497,7 +542,10 @@
       "MonsterName": "裂魂",
       "DungeonLevel": 3,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1650
+        "MonsterCriticalDamagePercentReduction": 1650,
+        "MonsterDefense": 520000,
+        "MonsterHealth": 346174769750,
+        "MonsterCriticalHitRateReduction": 300
       }
     },
     {
@@ -505,7 +553,10 @@
       "MonsterName": "璃音",
       "DungeonLevel": 4,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1700
+        "MonsterCriticalDamagePercentReduction": 1700,
+        "MonsterDefense": 510000,
+        "MonsterHealth": 376183763750,
+        "MonsterCriticalHitRateReduction": 300
       }
     },
     {
@@ -513,7 +564,10 @@
       "MonsterName": "沧渊",
       "DungeonLevel": 5,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1700
+        "MonsterCriticalDamagePercentReduction": 1700,
+        "MonsterDefense": 535000,
+        "MonsterHealth": 410384512400,
+        "MonsterCriticalHitRateReduction": 310
       }
     }
   ],
@@ -607,7 +661,8 @@
       "MonsterName": "噬人花",
       "DungeonLevel": 1,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1800
+        "MonsterCriticalDamagePercentReduction": 1800,
+        "MonsterHealth": 120000000000
       }
     },
     {
@@ -615,7 +670,8 @@
       "MonsterName": "金瓶儿",
       "DungeonLevel": 2,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1830
+        "MonsterCriticalDamagePercentReduction": 1830,
+        "MonsterHealth": 150000000000
       }
     },
     {
@@ -623,7 +679,8 @@
       "MonsterName": "陆雪琪",
       "DungeonLevel": 3,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1860
+        "MonsterCriticalDamagePercentReduction": 1860,
+        "MonsterHealth": 180000000000
       }
     },
     {
@@ -631,7 +688,8 @@
       "MonsterName": "玄蛇",
       "DungeonLevel": 4,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1890
+        "MonsterCriticalDamagePercentReduction": 1890,
+        "MonsterHealth": 200000000000
       }
     },
     {
@@ -639,7 +697,8 @@
       "MonsterName": "小灰",
       "DungeonLevel": 5,
       "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1920
+        "MonsterCriticalDamagePercentReduction": 1920,
+        "MonsterHealth": 250000000000
       }
     }
   ],

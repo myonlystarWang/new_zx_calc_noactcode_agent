@@ -32,7 +32,7 @@ export const AttributeRadarChart: React.FC<AttributeRadarChartProps> = ({ attrib
         },
         {
             subject: '气血',
-            value: (attributes.CharacterHealth / 6000000) * 100,
+            value: (attributes.CharacterHealth / 4000000) * 100,
             fullMark: 100
         },
         {

@@ -1,0 +1,53 @@
+{
+  "playerName": "霜华",
+  "className": "逐霜",
+  "factionName": "魔",
+  "attributes": {
+    "minAttack": 261000,
+    "maxAttack": 312000,
+    "defense": 500000,
+    "critDamage": 2702,
+    "mana": 4544000,
+    "health": 4000000,
+    "monsterDamageIncrease": 30.5
+  },
+  "buffs": {
+    "focus": 221
+  },
+  "target": {
+    "dungeon": "T21",
+    "bossIndex": 1
+  },
+  "skillUsage": {
+    "ZS_MO_SKILL_SY3": {
+      "damageShare": 0.2554,
+      "observedHitCount": 1,
+      "note": "实战占比25.54%"
+    },
+    "ZS_MO_SKILL_CLXS": {
+      "damageShare": 0.2307,
+      "observedHitCount": 1,
+      "note": "实战占比23.07%"
+    },
+    "ZS_MO_SKILL_CLX": {
+      "damageShare": 0.2306,
+      "observedHitCount": 1,
+      "note": "实战占比23.06%"
+    },
+    "ZS_MO_SKILL_SY2": {
+      "damageShare": 0.1910,
+      "observedHitCount": 1,
+      "note": "实战占比19.10%"
+    },
+    "ZS_MO_SKILL_YLXB": {
+      "damageShare": 0.0469,
+      "observedHitCount": 1,
+      "note": "实战占比4.69%"
+    },
+    "ZS_MO_SKILL_LYLZ": {
+      "damageShare": 0.0454,
+      "observedHitCount": 1,
+      "note": "临渊敛爪占剩余的4.54%"
+    }
+  }
+}

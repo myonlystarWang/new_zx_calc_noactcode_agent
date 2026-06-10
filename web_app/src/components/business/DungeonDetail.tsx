@@ -66,6 +66,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     const service = DataService.getInstance();
     const skillsMap = service.getSkills(userCharacter.ClassID);
     const skills = skillsMap ? skillsMap[userCharacter.Faction] || [] : [];
+    const outputSkills = skills.filter(skill => !skill.ActionType || skill.ActionType === 'DAMAGE');
     const activeBuffs = buffs.filter(b => activeBuffIds.includes(b.BuffID));
 
     const formatDamage = (damage: number, withUnit: boolean = true): string => {
@@ -89,7 +90,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     const selectedMonster = dungeon.Monsters.find(m => m.MonsterID === selectedMonsterId) || dungeon.Monsters[0];
 
     // Pre-calculate damages for the selected monster
-    const skillDamages = selectedMonster ? skills.map(skill => {
+    const skillDamages = selectedMonster ? outputSkills.map(skill => {
         const dmg = calculateDamage(userCharacter.BaseAttributes, skill, selectedMonster, activeBuffs, buffValues);
         return { skill, dmg };
     }).sort((a, b) => b.skill.SkillImportanceWeight - a.skill.SkillImportanceWeight) : [];
@@ -98,10 +99,10 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
 
     return (
         <div className={clsx(
-            "relative overflow-hidden transition-all duration-300 rounded-2xl",
+            "zx-card relative overflow-hidden transition-all duration-300",
             isExpanded
-                ? "bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-slate-950/95 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)]"
-                : "bg-slate-900/80 border-white/5 shadow-lg"
+                ? "shadow-[0_8px_32px_rgba(0,0,0,0.5)] border-white/10"
+                : "shadow-lg border-white/5"
         )}>
             {/* Ambient Glow Effects - Only for active card */}
             {isExpanded && (
@@ -167,16 +168,15 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                         {power !== undefined && (
                             <div className="flex items-baseline gap-2">
                                 <span className="text-xs md:text-sm text-slate-600 font-bold tracking-wide mb-1">
-                                    参考战力
-                                </span>
-                                <div className="flex items-baseline gap-1">
-                                    <span className={clsx(
-                                        "font-black text-xl md:text-2xl tracking-tighter leading-none",
-                                        "text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-cyan-200 to-blue-300 drop-shadow-sm"
-                                    )}>
-                                        {formatDamage(power)}
-                                    </span>
-                                </div>
+                                     参考战力
+                                 </span>
+                                 <div className="flex items-baseline gap-1">
+                                     <span className={clsx(
+                                         "font-black text-xl md:text-2xl tracking-tighter leading-none text-[var(--theme-accent)]"
+                                     )}>
+                                         {formatDamage(power)}
+                                     </span>
+                                 </div>
                             </div>
                         )}
                     </div>
@@ -218,7 +218,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                         className={clsx(
                                             "flex-none px-3 py-1.5 rounded-lg text-xs font-medium transition-all border flex items-center gap-1.5 whitespace-nowrap",
                                             isSelected
-                                                ? "bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.15)]"
+                                                ? "bg-[var(--theme-primary)]/10 border-[var(--theme-primary)]/30 text-[var(--theme-primary)] shadow-[0_0_8px_var(--theme-glow)]"
                                                 : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-300"
                                         )}
                                     >
@@ -226,7 +226,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                         <span>第{numberToChinese(monster.DungeonLevel)}关</span>
                                         <span className={clsx(
                                             "ml-1 opacity-75",
-                                            isSelected ? "text-cyan-200" : "text-slate-500"
+                                            isSelected ? "text-[var(--theme-accent)]" : "text-slate-500"
                                         )}>
                                             {monster.MonsterName}
                                         </span>
@@ -243,7 +243,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                         >
                             <div className="p-3 md:p-4">
                                 {/* Skills Damage Table */}
-                                <div className="overflow-x-auto overflow-y-auto max-h-[380px] md:max-h-[450px] scrollbar-thin scrollbar-thumb-slate-700/80 scrollbar-track-transparent">
+                                <div className="overflow-x-auto overflow-y-auto max-h-[400px] md:max-h-[550px] scrollbar-thin scrollbar-thumb-slate-700/80 scrollbar-track-transparent">
                                     <table className="w-full text-sm">
                                         <thead>
                                             <tr className="border-b border-slate-700/50">
@@ -273,7 +273,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                             <div className="flex items-center gap-2 relative">
                                                                 <span className="shrink line-clamp-1 max-w-[100px] sm:max-w-[120px]">{skill.SkillName}</span>
                                                                 <Info 
-                                                                    className="w-4 h-4 text-slate-500 hover:text-cyan-400 transition-colors shrink-0"
+                                                                    className="w-4 h-4 text-slate-500 hover:text-[var(--theme-primary)] transition-colors shrink-0"
                                                                     onMouseEnter={(e) => {
                                                                         e.stopPropagation();
                                                                         setTooltipState({ visible: true, x: e.clientX, y: e.clientY, skill });
@@ -292,15 +292,15 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                 )}
                                                             </div>
                                                             <div className="text-xs md:text-sm text-slate-400 mt-1 font-mono flex items-center gap-1.5">
-                                                                <span className="font-semibold text-cyan-400">{formatDamage(dmg.minFinalDamage, false)}</span>
-                                                                <span className="text-slate-500">~</span>
-                                                                <span className="font-semibold text-purple-400">{formatDamage(dmg.maxFinalDamage)}</span>
+                                                                <span className="font-semibold text-[var(--theme-primary)]">{formatDamage(dmg.minFinalDamage, false)}</span>
+                                                                <span className="text-slate-550">~</span>
+                                                                <span className="font-semibold text-[var(--theme-accent)]">{formatDamage(dmg.maxFinalDamage)}</span>
                                                             </div>
                                                         </td>
-                                                        <td className="hidden py-3 px-2 text-right text-cyan-300 font-mono text-sm font-medium relative z-10 whitespace-nowrap">
+                                                        <td className="hidden py-3 px-2 text-right text-[var(--theme-primary)] font-mono text-sm font-medium relative z-10 whitespace-nowrap">
                                                             {formatDamage(dmg.minFinalDamage)}
                                                         </td>
-                                                        <td className="hidden py-3 px-2 text-right text-purple-300 font-mono text-sm font-medium relative z-10 whitespace-nowrap">
+                                                        <td className="hidden py-3 px-2 text-right text-[var(--theme-accent)] font-mono text-sm font-medium relative z-10 whitespace-nowrap">
                                                             {formatDamage(dmg.maxFinalDamage)}
                                                         </td>
                                                         <td className="py-3 px-2 text-right relative">
@@ -320,13 +320,13 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                             <tr key={`${skill.SkillID}-hit-${hit.hitIndex}`} className="bg-slate-900/30 hover:bg-slate-800/50 transition-colors border-t border-slate-700/20">
                                                                 <td className="py-2.5 px-2 pl-8 md:pl-10 text-slate-400 font-medium relative z-10 whitespace-nowrap">
                                                                     <div className="flex items-center gap-2 mb-1">
-                                                                        <div className="w-1 h-1 rounded-full bg-slate-600"></div>
+                                                                        <div className="w-1 h-1 rounded-full bg-slate-650"></div>
                                                                         <span className="text-xs">第 {hit.hitIndex} 段</span>
                                                                     </div>
                                                                     <div className="text-[11px] md:text-xs text-slate-500 font-mono flex items-center gap-1.5 pl-3">
-                                                                        <span className="text-cyan-400/70">{formatDamage(hit.minFinalDamage, false)}</span>
+                                                                        <span className="text-[var(--theme-primary)]/70">{formatDamage(hit.minFinalDamage, false)}</span>
                                                                         <span className="text-slate-600">~</span>
-                                                                        <span className="text-purple-400/70">{formatDamage(hit.maxFinalDamage)}</span>
+                                                                        <span className="text-[var(--theme-accent)]/70">{formatDamage(hit.maxFinalDamage)}</span>
                                                                     </div>
                                                                 </td>
                                                                 <td className="hidden py-2 px-2"></td>
@@ -358,14 +358,14 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
             {/* Tooltip Portal */}
             {tooltipState.visible && tooltipState.skill && createPortal(
                 <div 
-                    className="fixed z-[9999] pointer-events-none w-[320px] p-4 bg-slate-900/95 border border-slate-700/80 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-opacity animate-in fade-in"
+                    className="fixed z-[9999] pointer-events-none w-[320px] p-4 bg-slate-955/95 border border-slate-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-opacity animate-in fade-in"
                     style={{ 
                         left: Math.min(tooltipState.x + 15, window.innerWidth - 340), 
                         top: Math.max(10, Math.min(tooltipState.y - 150, window.innerHeight - 200))
                     }}
                 >
                     <div className="flex flex-col gap-3 font-normal whitespace-normal">
-                        <div className="text-cyan-400 font-bold border-b border-slate-700/50 pb-2 flex items-center justify-between">
+                        <div className="text-[var(--theme-primary)] font-bold border-b border-slate-800 pb-2 flex items-center justify-between">
                             <span>技能详细信息</span>
                             <span className="text-xs text-slate-500 truncate max-w-[120px]">{tooltipState.skill.SkillName}</span>
                         </div>
@@ -379,8 +379,8 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                 <div className="text-slate-400">附加防御比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes.SkillDefensePercentBonus}%</span></div>
                             ) : null}
                             <div className="text-slate-400">伤害增加倍数: <span className="text-emerald-400 font-medium">{tooltipState.skill.SkillBonusAttributes?.SkillDamageBonus || 1}</span></div>
-                            <div className="text-slate-400">重要性: <span className={clsx("font-medium", tooltipState.skill.SkillImportanceWeight >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillImportanceWeight >= 0.5 ? "text-blue-300" : "text-slate-400")}>{getImportanceText(tooltipState.skill.SkillImportanceWeight)}</span></div>
-                            <div className="text-slate-400">使用频次: <span className={clsx("font-medium", tooltipState.skill.SkillFrequency >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillFrequency >= 0.4 ? "text-blue-300" : "text-slate-400")}>{getFrequencyText(tooltipState.skill.SkillFrequency)}</span></div>
+                            <div className="text-slate-400">重要性: <span className={clsx("font-medium", tooltipState.skill.SkillImportanceWeight >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillImportanceWeight >= 0.5 ? "text-[var(--theme-accent)]" : "text-slate-400")}>{getImportanceText(tooltipState.skill.SkillImportanceWeight)}</span></div>
+                            <div className="text-slate-400">使用频次: <span className={clsx("font-medium", tooltipState.skill.SkillFrequency >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillFrequency >= 0.4 ? "text-[var(--theme-accent)]" : "text-slate-400")}>{getFrequencyText(tooltipState.skill.SkillFrequency)}</span></div>
                         </div>
                     </div>
                 </div>,

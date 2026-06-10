@@ -11,6 +11,13 @@
         "Cooldown": 18,
         "CastTime": 3,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "MaxCharges": 3,
+        "ChargeReplenishTime": 18,
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "Description": "三层充能技能；第一次消耗后启动充能恢复计时，鹰扬折冲·玄可刷新为满层；命中会消耗龙怒层数并提升当段技能攻击百分比。",
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 240,
           "SkillAttackFixedBonus": 4000,
@@ -32,16 +39,23 @@
         "Faction": "XIAN",
         "SkillImportanceWeight": 0.95,
         "SkillFrequency": 0.2,
-        "Cooldown": 60,
+        "Cooldown": 150,
         "CastTime": 3,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 290,
           "SkillAttackFixedBonus": 6000,
           "SkillHealthPercentBonus": 40,
           "SkillManaPercentBonus": 40,
           "SkillCriticalDamagePercentBonus": 100,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 9
+          }
         }
       },
       {
@@ -51,15 +65,54 @@
         "Faction": "XIAN",
         "SkillImportanceWeight": 0.6,
         "SkillFrequency": 0.6,
-        "Cooldown": 6,
+        "Cooldown": 3,
         "CastTime": 2,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 395,
           "SkillAttackFixedBonus": 1800,
           "SkillHealthPercentBonus": 26,
           "SkillManaPercentBonus": 0,
           "SkillCriticalDamagePercentBonus": 105,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
+        }
+      },
+      {
+        "SkillID": "ZS_XIAN_SKILL_YYZC_XUAN",
+        "SkillName": "鹰扬折冲·玄",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.5,
+        "Cooldown": 90,
+        "CastTime": 0.5,
+        "IsAOE": false,
+        "ActionType": "UTILITY",
+        "CooldownResets": [
+          {
+            "TargetSkillId": "ZS_XIAN_SKILL_CLXX",
+            "ResetType": "REFRESH_CHARGES"
+          }
+        ],
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 84
+          },
+          "HAO_YUE": {
+            "Cooldown": 75
+          },
+          "XI_RI": {
+            "Cooldown": 60
+          }
+        },
+        "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
       },
@@ -73,6 +126,18 @@
         "Cooldown": 18,
         "CastTime": 3,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "MaxCharges": 3,
+        "ChargeReplenishTime": 18,
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "FourthGenPresets": {
+          "XI_RI": {
+            "ChargeReplenishTime": 12
+          }
+        },
+        "Description": "释放一次苍龙啸有30%概率刷新苍龙啸自身充能；命中会消耗龙怒层数并提升当段技能攻击百分比。",
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 210,
           "SkillAttackFixedBonus": 3300,
@@ -98,12 +163,248 @@
         "Cooldown": 0,
         "CastTime": 1,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_LONG_NU",
+            "EffectName": "龙怒",
+            "Target": "SELF",
+            "Duration": 15,
+            "Stackable": true,
+            "MaxStacks": 9,
+            "RefreshOnReapply": true,
+            "BuffEffects": {}
+          }
+        ],
+        "Description": "释放后获得1层龙怒，持续15秒；龙怒用于苍龙啸命中段伤害加成，不负责触发苍龙啸刷新。",
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 158,
           "SkillAttackFixedBonus": 600,
           "SkillHealthPercentBonus": 8,
           "SkillManaPercentBonus": 4,
           "SkillCriticalDamagePercentBonus": 50,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 3
+          }
+        }
+      },
+      {
+        "SkillID": "ZS_XIAN_SKILL_YYZC",
+        "SkillName": "鹰扬折冲",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.5,
+        "Cooldown": 90,
+        "CastTime": 0.5,
+        "IsAOE": false,
+        "ActionType": "UTILITY",
+        "CooldownResets": [
+          {
+            "TargetSkillId": "ZS_XIAN_SKILL_CLX",
+            "ResetType": "REFRESH_CHARGES"
+          }
+        ],
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 84
+          },
+          "HAO_YUE": {
+            "Cooldown": 75
+          },
+          "XI_RI": {
+            "Cooldown": 60
+          }
+        },
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        }
+      },
+      {
+        "SkillID": "ZS_XIAN_SKILL_LZYY",
+        "SkillName": "龙战于野",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.8,
+        "Cooldown": 40,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_LZYY_STATS",
+            "EffectName": "龙战于野属性增益",
+            "Target": "SELF",
+            "Duration": 60,
+            "BuffEffects": {
+              "BuffFocusPercentEffect": 15
+            }
+          },
+          {
+            "EffectId": "ZS_BUFF_LZYY_SPEED",
+            "EffectName": "龙战于野施法速度增益",
+            "Target": "SELF",
+            "Duration": 60,
+            "BuffEffects": {
+              "BuffSpeedPercentEffect": 36
+            }
+          }
+        ],
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "Description": "逐霜自身爆发增益，增加15%专注与36%施法速度，持续时间60秒，冷却时间40秒。"
+      },
+      {
+        "SkillID": "ZS_XIAN_SKILL_ZGDD",
+        "SkillName": "枕戈待旦",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.8,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_ZGDD_STATS",
+            "EffectName": "枕戈待旦属性增益",
+            "Target": "SELF",
+            "Duration": 24,
+            "BuffEffects": {
+              "BuffCriticalHitRatePercentEffect": 15,
+              "BuffCriticalDamagePercentEffect": 75,
+              "BuffFocusPercentEffect": 20
+            }
+          },
+          {
+            "EffectId": "ZS_BUFF_ZGDD_SPEED",
+            "EffectName": "枕戈待旦施法速度增益",
+            "Target": "SELF",
+            "Duration": 24,
+            "ExclusiveGroup": "ZS_HASTE_GROUP",
+            "ExclusivePolicy": "HIGHEST_EFFECT_VALUE",
+            "EffectPower": 50,
+            "BuffEffects": {
+              "BuffSpeedPercentEffect": 50
+            }
+          }
+        ],
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "Description": "逐霜自身爆发增益，增加15%暴击率、75%暴击伤害、20%专注与50%施法速度，持续时间24秒，冷却时间60秒。"
+      },
+      {
+        "SkillID": "ZS_XIAN_SKILL_QXHS",
+        "SkillName": "清啸横朔",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 6,
+        "CastTime": 1.4,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "FourthGenPresets": {
+          "YING_JU": {
+            "AppliesEffects": {
+              "ZS_BUFF_QXHS_SPEED": {
+                "EffectPower": 28,
+                "BuffEffects": {
+                  "BuffSpeedPercentEffect": 28
+                }
+              }
+            }
+          },
+          "HAO_YUE": {
+            "AppliesEffects": {
+              "ZS_BUFF_QXHS_SPEED": {
+                "EffectPower": 36,
+                "BuffEffects": {
+                  "BuffSpeedPercentEffect": 36
+                }
+              }
+            }
+          },
+          "XI_RI": {
+            "AppliesEffects": {
+              "ZS_BUFF_QXHS_SPEED": {
+                "EffectPower": 44,
+                "BuffEffects": {
+                  "BuffSpeedPercentEffect": 44
+                }
+              }
+            }
+          }
+        },
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_QXHS_STATS",
+            "EffectName": "清啸横朔属性增益",
+            "Target": "SELF",
+            "Duration": 80,
+            "BuffEffects": {
+              "BuffFocusPercentEffect": 44,
+              "BuffAttackPercentEffect": 14
+            }
+          },
+          {
+            "EffectId": "ZS_BUFF_QXHS_SPEED",
+            "EffectName": "清啸横朔施法速度增益",
+            "Target": "SELF",
+            "Duration": 16,
+            "ExclusiveGroup": "ZS_HASTE_GROUP",
+            "ExclusivePolicy": "HIGHEST_EFFECT_VALUE",
+            "EffectPower": 20,
+            "BuffEffects": {
+              "BuffSpeedPercentEffect": 20
+            }
+          }
+        ],
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "Description": "逐霜自身爆发增益，增加20%暴击率、100%暴击伤害、25%专注与50%施法速度，持续时间24秒，冷却时间60秒。"
+      },
+      {
+        "SkillID": "ZS_XIAN_SKILL_YZXW",
+        "SkillName": "云蒸霞蔚",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_YZXW_MANA",
+            "EffectName": "云蒸霞蔚真气比例增益",
+            "Target": "SELF",
+            "Duration": 120,
+            "BuffEffects": {
+              "BuffManaPercentEffect": 30
+            }
+          },
+          {
+            "EffectId": "ZS_BUFF_YZXW_CRIT_DMG",
+            "EffectName": "云蒸霞蔚爆伤与持续时间增益",
+            "Target": "SELF",
+            "Duration": 30,
+            "BuffEffects": {
+              "BuffCriticalDamagePercentEffect": 50
+            }
+          }
+        ],
+        "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
       }
@@ -119,6 +420,12 @@
         "Cooldown": 18,
         "CastTime": 3,
         "IsAOE": true,
+        "ActionType": "DAMAGE",
+        "MaxCharges": 3,
+        "ChargeReplenishTime": 18,
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 240,
           "SkillAttackFixedBonus": 4000,
@@ -145,11 +452,17 @@
         "Cooldown": 18,
         "CastTime": 3,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "MaxCharges": 3,
+        "ChargeReplenishTime": 18,
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 240,
           "SkillAttackFixedBonus": 4000,
           "SkillHealthPercentBonus": 30,
-          "SkillManaPercentBonus": 5,          
+          "SkillManaPercentBonus": 5,
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
@@ -167,16 +480,23 @@
         "Faction": "MO",
         "SkillImportanceWeight": 0.95,
         "SkillFrequency": 0.2,
-        "Cooldown": 60,
+        "Cooldown": 150,
         "CastTime": 3,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 290,
           "SkillAttackFixedBonus": 6000,
           "SkillHealthPercentBonus": 40,
           "SkillManaPercentBonus": 40,
           "SkillCriticalDamagePercentBonus": 100,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
         }
       },
       {
@@ -186,16 +506,23 @@
         "Faction": "MO",
         "SkillImportanceWeight": 0.6,
         "SkillFrequency": 0.4,
-        "Cooldown": 6,
+        "Cooldown": 3,
         "CastTime": 2,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 395,
           "SkillAttackFixedBonus": 1800,
           "SkillHealthPercentBonus": 31,
           "SkillManaPercentBonus": 5,
           "SkillCriticalDamagePercentBonus": 105,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
         }
       },
       {
@@ -208,12 +535,51 @@
         "Cooldown": 6,
         "CastTime": 2,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 400,
           "SkillAttackFixedBonus": 1600,
           "SkillHealthPercentBonus": 19,
           "SkillManaPercentBonus": 27,
           "SkillCriticalDamagePercentBonus": 50,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
+        }
+      },
+      {
+        "SkillID": "ZS_MO_SKILL_YYZC_SHA",
+        "SkillName": "鹰扬折冲·煞",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.5,
+        "Cooldown": 90,
+        "CastTime": 0.5,
+        "IsAOE": false,
+        "ActionType": "UTILITY",
+        "CooldownResets": [
+          {
+            "TargetSkillId": "ZS_MO_SKILL_CLXS",
+            "ResetType": "REFRESH_CHARGES"
+          }
+        ],
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 84
+          },
+          "HAO_YUE": {
+            "Cooldown": 75
+          },
+          "XI_RI": {
+            "Cooldown": 60
+          }
+        },
+        "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
       },
@@ -227,6 +593,17 @@
         "Cooldown": 18,
         "CastTime": 3,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "MaxCharges": 3,
+        "ChargeReplenishTime": 18,
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "FourthGenPresets": {
+          "XI_RI": {
+            "ChargeReplenishTime": 12
+          }
+        },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 210,
           "SkillAttackFixedBonus": 3300,
@@ -252,12 +629,227 @@
         "Cooldown": 0,
         "CastTime": 1,
         "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "Description": "三段伤害；最后一击额外附加真气上限10%，第三击有15%概率刷新苍龙啸或苍龙啸·煞充能。",
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 158,
           "SkillAttackFixedBonus": 600,
           "SkillHealthPercentBonus": 11,
           "SkillManaPercentBonus": 7,
           "SkillCriticalDamagePercentBonus": 50,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 3
+          }
+        }
+      },
+      {
+        "SkillID": "ZS_MO_SKILL_YYZC",
+        "SkillName": "鹰扬折冲",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.5,
+        "Cooldown": 90,
+        "CastTime": 0.5,
+        "IsAOE": false,
+        "ActionType": "UTILITY",
+        "CooldownResets": [
+          {
+            "TargetSkillId": "ZS_MO_SKILL_CLX",
+            "ResetType": "REFRESH_CHARGES"
+          }
+        ],
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 84
+          },
+          "HAO_YUE": {
+            "Cooldown": 75
+          },
+          "XI_RI": {
+            "Cooldown": 60
+          }
+        },
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        }
+      },
+      {
+        "SkillID": "ZS_MO_SKILL_LZYY",
+        "SkillName": "龙战于野",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.8,
+        "Cooldown": 40,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_LZYY_STATS",
+            "EffectName": "龙战于野属性增益",
+            "Target": "SELF",
+            "Duration": 60,
+            "BuffEffects": {
+              "BuffFocusPercentEffect": 15
+            }
+          },
+          {
+            "EffectId": "ZS_BUFF_LZYY_SPEED",
+            "EffectName": "龙战于野施法速度增益",
+            "Target": "SELF",
+            "Duration": 60,
+            "BuffEffects": {
+              "BuffSpeedPercentEffect": 36
+            }
+          }
+        ],
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "Description": "逐霜自身爆发增益，增加15%专注与36%施法速度，持续时间60秒，冷却时间40秒。"
+      },
+      {
+        "SkillID": "ZS_MO_SKILL_ZGDD",
+        "SkillName": "枕戈待旦",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.8,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_ZGDD_STATS",
+            "EffectName": "枕戈待旦属性增益",
+            "Target": "SELF",
+            "Duration": 24,
+            "BuffEffects": {
+              "BuffCriticalHitRatePercentEffect": 15,
+              "BuffCriticalDamagePercentEffect": 75,
+              "BuffFocusPercentEffect": 20
+            }
+          },
+          {
+            "EffectId": "ZS_BUFF_ZGDD_SPEED",
+            "EffectName": "枕戈待旦施法速度增益",
+            "Target": "SELF",
+            "Duration": 24,
+            "ExclusiveGroup": "ZS_HASTE_GROUP",
+            "ExclusivePolicy": "HIGHEST_EFFECT_VALUE",
+            "EffectPower": 50,
+            "BuffEffects": {
+              "BuffSpeedPercentEffect": 50
+            }
+          }
+        ],
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "Description": "逐霜自身爆发增益，增加15%暴击率、75%暴击伤害、20%专注与50%施法速度，持续时间24秒，冷却时间60秒。"
+      },
+      {
+        "SkillID": "ZS_MO_SKILL_QXHS",
+        "SkillName": "清啸横朔",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 6,
+        "CastTime": 1.4,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "FourthGenPresets": {
+          "YING_JU": {
+            "AppliesEffects": {
+              "ZS_BUFF_QXHS_SPEED": {
+                "EffectPower": 28,
+                "BuffEffects": {
+                  "BuffSpeedPercentEffect": 28
+                }
+              }
+            }
+          },
+          "HAO_YUE": {
+            "AppliesEffects": {
+              "ZS_BUFF_QXHS_SPEED": {
+                "EffectPower": 36,
+                "BuffEffects": {
+                  "BuffSpeedPercentEffect": 36
+                }
+              }
+            }
+          },
+          "XI_RI": {
+            "AppliesEffects": {
+              "ZS_BUFF_QXHS_SPEED": {
+                "EffectPower": 44,
+                "BuffEffects": {
+                  "BuffSpeedPercentEffect": 44
+                }
+              }
+            }
+          }
+        },
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_QXHS_STATS",
+            "EffectName": "清啸横朔属性增益",
+            "Target": "SELF",
+            "Duration": 70,
+            "BuffEffects": {
+              "BuffFocusPercentEffect": 14,
+              "BuffAttackPercentEffect": 14
+            }
+          },
+          {
+            "EffectId": "ZS_BUFF_QXHS_SPEED",
+            "EffectName": "清啸横朔施法速度增益",
+            "Target": "SELF",
+            "Duration": 16,
+            "ExclusiveGroup": "ZS_HASTE_GROUP",
+            "ExclusivePolicy": "HIGHEST_EFFECT_VALUE",
+            "EffectPower": 20,
+            "BuffEffects": {
+              "BuffSpeedPercentEffect": 20
+            }
+          }
+        ],
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "Description": "逐霜自身爆发增益，增加20%暴击率、100%暴击伤害、25%专注与50%施法速度，持续时间24秒，冷却时间60秒。"
+      },
+      {
+        "SkillID": "ZS_MO_SKILL_YZXW",
+        "SkillName": "云蒸霞蔚",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_YZXW_MANA",
+            "EffectName": "云蒸霞蔚真气比例增益",
+            "Target": "SELF",
+            "Duration": 120,
+            "BuffEffects": {
+              "BuffManaPercentEffect": 30
+            }
+          }
+        ],
+        "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
       }
@@ -524,5 +1116,863 @@
         }
       }
     ]
+  },
+  "TIAN_YIN": {
+    "FO": [
+      {
+        "SkillID": "TY_FO_SKILL_CHFY",
+        "SkillName": "慈航法愿",
+        "RequiredClass": "TIAN_YIN",
+        "Faction": "FO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 1,
+        "Cooldown": 0,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TY_BUFF_CHFY_FOCUS",
+            "EffectName": "慈航法愿专注",
+            "Target": "TEAM",
+            "Duration": 3600,
+            "BuffEffects": {
+              "BuffFocusPercentEffect": 18
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "TY_FO_SKILL_WLZY",
+        "SkillName": "无量真言",
+        "RequiredClass": "TIAN_YIN",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 6,
+        "CastTime": 3,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TY_DEBUFF_WLZY_HARMED",
+            "EffectName": "无量真言易伤",
+            "Target": "ENEMY",
+            "Duration": 15,
+            "BuffEffects": {
+              "BuffMonsterHarmedPercentEffect": 15
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "TY_FO_SKILL_WLZY_CHAN",
+        "SkillName": "无量真言·禅",
+        "RequiredClass": "TIAN_YIN",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 75,
+        "CastTime": 3,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TY_DEBUFF_WLZY_HARMED_CHAN",
+            "EffectName": "无量真言·禅易伤",
+            "Target": "ENEMY",
+            "Duration": 20,
+            "BuffEffects": {
+              "BuffMonsterHarmedPercentEffect": 15
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "TY_FO_SKILL_TWBL",
+        "SkillName": "天舞宝轮",
+        "RequiredClass": "TIAN_YIN",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.7,
+        "Cooldown": 8,
+        "CastTime": 2,
+        "IsAOE": true,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TY_DEBUFF_TWBL_DEFENSE",
+            "EffectName": "天舞宝轮破防",
+            "Target": "ENEMY",
+            "Duration": 60,
+            "BuffEffects": {
+              "BuffDefenseFixedEffect": -10000
+            },
+            "DynamicScalingAttribute": "CharacterMaxAttack",
+            "DynamicScalingMultiplier": -1,
+            "DynamicTargetField": "BuffDefenseFixedEffect"
+          }
+        ]
+      },
+      {
+        "SkillID": "TY_FO_SKILL_DCB",
+        "SkillName": "大慈悲",
+        "RequiredClass": "TIAN_YIN",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.5,
+        "SkillFrequency": 0.5,
+        "Cooldown": 0,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TY_BUFF_DCB_HEALTH_PCT",
+            "EffectName": "大慈悲增加气血百分比",
+            "Target": "TEAM",
+            "Duration": 3600,
+            "BuffEffects": {
+              "BuffHealthPercentEffect": 22
+            }
+          }
+        ],
+        "Description": "令队友增加22%气血上限，持续时间3600秒，冷却时间0秒（常驻常开）。"
+      },
+      {
+        "SkillID": "TY_FO_SKILL_MKXJ",
+        "SkillName": "摩柯心经",
+        "RequiredClass": "TIAN_YIN",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.6,
+        "SkillFrequency": 0.6,
+        "Cooldown": 180,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TY_BUFF_MKXJ_HEALTH",
+            "EffectName": "摩柯心经增加气血固定值",
+            "Target": "ALLY",
+            "Duration": 25,
+            "ExclusiveGroup": "HP_OVERRIDE_GROUP",
+            "ExclusivePolicy": "NO_OVERWRITE",
+            "BuffEffects": {
+              "BuffHealthFixedEffect": 500000
+            }
+          }
+        ],
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 150,
+            "AppliesEffects": {
+              "TY_BUFF_MKXJ_HEALTH": {
+                "DynamicScalingAttribute": "CharacterMaxAttack",
+                "DynamicScalingMultiplier": 4,
+                "DynamicTargetField": "BuffHealthFixedEffect"
+              }
+            }
+          },
+          "HAO_YUE": {
+            "Cooldown": 120,
+            "AppliesEffects": {
+              "TY_BUFF_MKXJ_HEALTH": {
+                "DynamicScalingAttribute": "CharacterMaxAttack",
+                "DynamicScalingMultiplier": 6,
+                "DynamicTargetField": "BuffHealthFixedEffect"
+              }
+            }
+          },
+          "XI_RI": {
+            "Cooldown": 90,
+            "AppliesEffects": {
+              "TY_BUFF_MKXJ_HEALTH": {
+                "DynamicScalingAttribute": "CharacterMaxAttack",
+                "DynamicScalingMultiplier": 8,
+                "DynamicTargetField": "BuffHealthFixedEffect"
+              }
+            }
+          }
+        },
+        "Description": "令队友增加500,000气血固定值，持续时间25秒，冷却时间180秒（受四代品质和最大攻击力缩放影响）。"
+      }
+    ],
+    "XIAN": [],
+    "MO": []
+  },
+  "FEN_XIANG": {
+    "FO": [
+      {
+        "SkillID": "FX_FO_SKILL_ZRZD2",
+        "SkillName": "祝融真典2",
+        "RequiredClass": "FEN_XIANG",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 180,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "FX_BUFF_ZRZD2_FOCUS",
+            "EffectName": "祝融真典2专注",
+            "Target": "TEAM",
+            "Duration": 45,
+            "BuffEffects": {
+              "BuffFocusPercentEffect": 30
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "FX_FO_SKILL_YBJH",
+        "SkillName": "炎兵灸魂",
+        "RequiredClass": "FEN_XIANG",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 6,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "FX_DEBUFF_YBJH_GREEN",
+            "EffectName": "炎兵灸魂令怪物受到的绿点翻倍",
+            "Target": "ENEMY",
+            "Duration": 20,
+            "BuffEffects": {
+              "BuffMonsterCriticalDamagePercentEffect": 0
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "FX_FO_SKILL_JQS",
+        "SkillName": "绝情殇",
+        "RequiredClass": "FEN_XIANG",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 120,
+        "CastTime": 1.5,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "FX_DEBUFF_JQS_HARMED",
+            "EffectName": "绝情殇令怪物易伤增加",
+            "Target": "ENEMY",
+            "Duration": 15,
+            "BuffEffects": {
+              "BuffMonsterHarmedPercentEffect": 60
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "FX_FO_SKILL_SWZH",
+        "SkillName": "赤乌·三味真火",
+        "RequiredClass": "FEN_XIANG",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 20,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "FX_DEBUFF_SWZH_HARMED",
+            "EffectName": "赤乌·三味真火令怪物易伤增加",
+            "Target": "ENEMY",
+            "Duration": 25,
+            "BuffEffects": {
+              "BuffMonsterHarmedPercentEffect": 50
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "FX_FO_SKILL_NWTH",
+        "SkillName": "南巫天火",
+        "RequiredClass": "FEN_XIANG",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 2,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "FX_DEBUFF_NWTH_DEFENSE",
+            "EffectName": "南巫天火破防",
+            "Target": "ENEMY",
+            "Duration": 15,
+            "BuffEffects": {
+              "BuffDefenseFixedEffect": -10000
+            },
+            "DynamicScalingAttribute": "CharacterMaxAttack",
+            "DynamicScalingMultiplier": -1,
+            "DynamicTargetField": "BuffDefenseFixedEffect"
+          }
+        ]
+      }
+    ],
+    "XIAN": [],
+    "MO": []
+  },
+  "ZHAO_MING": {
+    "FO": [
+      {
+        "SkillID": "ZM_FO_SKILL_TYNF",
+        "SkillName": "停云凝风",
+        "RequiredClass": "ZHAO_MING",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 135,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "UTILITY",
+        "SkillBonusAttributes": {},
+        "BuffDurationExtensionSeconds": 0,
+        "FourthGenPresets": {
+          "YING_JU": {
+            "BuffDurationExtensionSeconds": 12
+          },
+          "HAO_YUE": {
+            "BuffDurationExtensionSeconds": 13
+          },
+          "XI_RI": {
+            "BuffDurationExtensionSeconds": 14
+          }
+        }
+      },
+      {
+        "SkillID": "ZM_FO_SKILL_RYHG",
+        "SkillName": "日月弘光",
+        "RequiredClass": "ZHAO_MING",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 35,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "MultiPhaseConfig": {
+          "ManualActivationAllowed": false,
+          "Phases": [
+            {
+              "PhaseIndex": 1,
+              "Duration": 30,
+              "AutoTransition": true,
+              "AppliesEffects": [
+                {
+                  "EffectId": "ZM_BUFF_RYHG_PHASE_1",
+                  "EffectName": "日月弘光一段",
+                  "Target": "TEAM",
+                  "Duration": 30,
+                  "BuffEffects": {
+                    "BuffFocusPercentEffect": 45,
+                    "BuffHolyWrathPercentEffect": 7.5
+                  }
+                }
+              ]
+            },
+            {
+              "PhaseIndex": 2,
+              "Duration": 15,
+              "AutoTransition": false,
+              "AppliesEffects": [
+                {
+                  "EffectId": "ZM_BUFF_RYHG_PHASE_2",
+                  "EffectName": "日月弘光二段",
+                  "Target": "TEAM",
+                  "Duration": 15,
+                  "BuffEffects": {
+                    "BuffFocusPercentEffect": 60,
+                    "BuffHolyWrathPercentEffect": 22.5
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "SkillID": "ZM_FO_SKILL_FGSL",
+        "SkillName": "跗骨生灵",
+        "RequiredClass": "ZHAO_MING",
+        "Faction": "FO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 1,
+        "Cooldown": 0,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "ZM_BUFF_FGSL",
+            "EffectName": "跗骨生灵",
+            "Target": "ALLY",
+            "Duration": 10,
+            "BuffEffects": {
+              "BuffHealthFixedEffect": 0,
+              "BuffManaFixedEffect": 0,
+              "BuffAttackFixedEffect": 0,
+              "BuffCriticalDamagePercentEffect": 0,
+              "BuffCriticalHitRatePercentEffect": 0,
+              "BuffMonsterDamageIncreaseEffect": 0
+            }
+          }
+        ],
+        "Description": "昭冥诅咒技能，对目标施加跗骨生灵状态，增加其受到全队的伤害，冷却时间0秒。"
+      }
+    ],
+    "XIAN": [],
+    "MO": []
+  },
+  "YING_ZHAO": {
+    "FO": [
+      {
+        "SkillID": "YZ_FO_SKILL_BS",
+        "SkillName": "背水",
+        "RequiredClass": "YING_ZHAO",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.9,
+        "SkillFrequency": 0.9,
+        "Cooldown": 6,
+        "CastTime": 2,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "YZ_DEBUFF_BS_GREEN_HARMED",
+            "EffectName": "背水绿点与令怪物易伤增加",
+            "Target": "ENEMY",
+            "Duration": 27,
+            "BuffEffects": {
+              "BuffMonsterCriticalDamagePercentEffect": 300,
+              "BuffMonsterHarmedPercentEffect": 40
+            }
+          }
+        ],
+        "FourthGenPresets": {
+          "YING_JU": {
+            "AppliesEffects": {
+              "YZ_DEBUFF_BS_GREEN_HARMED": {
+                "BuffEffects": {
+                  "BuffMonsterHarmedPercentEffect": 50
+                }
+              }
+            }
+          },
+          "HAO_YUE": {
+            "AppliesEffects": {
+              "YZ_DEBUFF_BS_GREEN_HARMED": {
+                "BuffEffects": {
+                  "BuffMonsterHarmedPercentEffect": 50
+                }
+              }
+            }
+          },
+          "XI_RI": {
+            "AppliesEffects": {
+              "YZ_DEBUFF_BS_GREEN_HARMED": {
+                "BuffEffects": {
+                  "BuffMonsterHarmedPercentEffect": 50
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "SkillID": "YZ_FO_SKILL_GJ",
+        "SkillName": "攻坚",
+        "RequiredClass": "YING_ZHAO",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 2,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "YZ_DEBUFF_GJ_DEF_CRIT",
+            "EffectName": "攻坚减防与被暴击率提升",
+            "Target": "ENEMY",
+            "Duration": 20,
+            "BuffEffects": {
+              "BuffDefenseFixedEffect": 0,
+              "BuffMonsterCritRateIncreaseEffect": 35
+            },
+            "DynamicScalingAttribute": "CharacterMaxAttack",
+            "DynamicScalingMultiplier": -1,
+            "DynamicTargetField": "BuffDefenseFixedEffect"
+          }
+        ]
+      },
+      {
+        "SkillID": "YZ_FO_SKILL_TGFM",
+        "SkillName": "天罡伏魔",
+        "RequiredClass": "YING_ZHAO",
+        "Faction": "FO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 1,
+        "Cooldown": 0,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "YZ_BUFF_TGFM_ATTACK_PCT",
+            "EffectName": "天罡伏魔增加攻击百分比",
+            "Target": "TEAM",
+            "Duration": 3600,
+            "BuffEffects": {
+              "BuffAttackPercentEffect": 12
+            }
+          }
+        ],
+        "Description": "令全队增加25%攻击力，持续时间600秒，冷却时间0秒（常驻常开）。"
+      },
+      {
+        "SkillID": "YZ_FO_SKILL_JT",
+        "SkillName": "焦土",
+        "RequiredClass": "YING_ZHAO",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 12,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "YZ_DEBUFF_JT_GREEN",
+            "EffectName": "焦土绿点",
+            "Target": "ENEMY",
+            "Duration": 30,
+            "BuffEffects": {
+              "BuffMonsterCriticalDamagePercentEffect": 40
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "YZ_FO_SKILL_WXBG",
+        "SkillName": "五行八卦",
+        "RequiredClass": "YING_ZHAO",
+        "Faction": "FO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 1,
+        "Cooldown": 0,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "YZ_BUFF_WXBG_DEFENSE_PCT",
+            "EffectName": "五行八卦增加防御百分比",
+            "Target": "TEAM",
+            "Duration": 3600,
+            "BuffEffects": {
+              "BuffDefensePercentEffect": 12
+            }
+          }
+        ],
+        "Description": "令全队增加防御力百分比，持续时间600秒，冷却时间0秒（常驻常开）。"
+      }
+    ],
+    "XIAN": [],
+    "MO": []
+  },
+  "TIAN_HUA": {
+    "FO": [
+      {
+        "SkillID": "TH_FO_SKILL_MQYY",
+        "SkillName": "鸣泉雅韵",
+        "RequiredClass": "TIAN_HUA",
+        "Faction": "FO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 1,
+        "Cooldown": 12,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TH_BUFF_MQYY",
+            "EffectName": "鸣泉雅韵增加攻击百分比",
+            "Target": "TEAM",
+            "Duration": 1800,
+            "BuffEffects": {
+              "BuffAttackPercentEffect": 0
+            }
+          }
+        ],
+        "Description": "令队友增加18%攻击力（法宝技能+1则额外多增加2%攻击力，天华每多5万真气可以额外多增加队友1%攻击力），1s释放，持续时间30分钟，cd 12s。"
+      },
+      {
+        "SkillID": "TH_FO_SKILL_JSKW",
+        "SkillName": "金蛇狂舞",
+        "RequiredClass": "TIAN_HUA",
+        "Faction": "FO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 1,
+        "Cooldown": 0,
+        "CastTime": 1,
+        "IsAOE": true,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TH_BUFF_JSKW",
+            "EffectName": "金蛇狂舞团队增益",
+            "Target": "TEAM",
+            "Duration": 3600,
+            "BuffEffects": {
+              "BuffAttackPercentEffect": 40,
+              "BuffCriticalDamagePercentEffect": 60,
+              "BuffCriticalHitRatePercentEffect": 23,
+              "BuffFocusPercentEffect": 18
+            }
+          }
+        ],
+        "Description": "令队友增加40%攻击力，增加60暴击伤害，增加23暴击率（法宝+1则额外多增加2暴击率），增加专注18（法宝+1则额外多增加2专注），可以认为是持续存在的技能。"
+      },
+      {
+        "SkillID": "TH_FO_SKILL_QSYY",
+        "SkillName": "秋声雅韵",
+        "RequiredClass": "TIAN_HUA",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 80,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TH_BUFF_QSYY",
+            "EffectName": "秋声雅韵主输出增益",
+            "Target": "ALLY",
+            "Duration": 25,
+            "BuffEffects": {
+              "BuffFocusPercentEffect": 0,
+              "BuffDefenseFixedEffect": 0,
+              "BuffCriticalDamagePercentEffect": 0
+            }
+          }
+        ],
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 60,
+            "AppliesEffects": {
+              "TH_BUFF_QSYY": {
+                "Duration": 28
+              }
+            }
+          },
+          "HAO_YUE": {
+            "Cooldown": 45,
+            "AppliesEffects": {
+              "TH_BUFF_QSYY": {
+                "Duration": 31
+              }
+            }
+          },
+          "XI_RI": {
+            "Cooldown": 30,
+            "AppliesEffects": {
+              "TH_BUFF_QSYY": {
+                "Duration": 34
+              }
+            }
+          }
+        },
+        "Description": "令主输出增加19%专注（法宝+1则额外多增加3专注），天华每多5000最大攻击则额外增加1专注，最多可以额外增加20；令主输出增加防御，数值为天华最大攻击的1.5倍；令主输出增加爆伤，数值为天华每多100000真气额外增加1爆伤。1s释放，持续时间(25+x)s（法宝+1则持续时间额外多1s），cd (80-y)s。"
+      },
+      {
+        "SkillID": "TH_FO_SKILL_YSYY2",
+        "SkillName": "云水雅韵II",
+        "RequiredClass": "TIAN_HUA",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.7,
+        "SkillFrequency": 0.7,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TH_BUFF_YSYY2_HEALTH",
+            "EffectName": "云水雅韵II气血增益",
+            "Target": "ALLY",
+            "Duration": 30,
+            "ExclusiveGroup": "HP_OVERRIDE_GROUP",
+            "ExclusivePolicy": "NO_OVERWRITE",
+            "BuffEffects": {
+              "BuffHealthFixedEffect": 0
+            }
+          },
+          {
+            "EffectId": "TH_BUFF_YSYY2_MANA",
+            "EffectName": "云水雅韵II真气增益",
+            "Target": "ALLY",
+            "Duration": 30,
+            "BuffEffects": {
+              "BuffManaFixedEffect": 0
+            }
+          },
+          {
+            "EffectId": "TH_BUFF_YSYY2_ATTACK",
+            "EffectName": "云水雅韵II攻击增益",
+            "Target": "ALLY",
+            "Duration": 30,
+            "BuffEffects": {
+              "BuffAttackFixedEffect": 0
+            }
+          }
+        ],
+        "Description": "令主输出增加最大气血、真气和最大攻击力，持续时间30秒，冷却时间60秒。"
+      },
+      {
+        "SkillID": "TH_FO_SKILL_JLS",
+        "SkillName": "净莲生",
+        "RequiredClass": "TIAN_HUA",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.6,
+        "SkillFrequency": 0.6,
+        "Cooldown": 240,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TH_BUFF_YSYY2_HEALTH",
+            "EffectName": "净莲生-云水气血增益",
+            "Target": "ALLY",
+            "Duration": 30,
+            "ExclusiveGroup": "HP_OVERRIDE_GROUP",
+            "ExclusivePolicy": "NO_OVERWRITE",
+            "BuffEffects": {
+              "BuffHealthFixedEffect": 0
+            }
+          },
+          {
+            "EffectId": "TH_BUFF_YSYY2_MANA",
+            "EffectName": "净莲生-云水真气增益",
+            "Target": "ALLY",
+            "Duration": 30,
+            "BuffEffects": {
+              "BuffManaFixedEffect": 0
+            }
+          },
+          {
+            "EffectId": "TH_BUFF_YSYY2_ATTACK",
+            "EffectName": "净莲生-云水攻击增益",
+            "Target": "ALLY",
+            "Duration": 30,
+            "BuffEffects": {
+              "BuffAttackFixedEffect": 0
+            }
+          },
+          {
+            "EffectId": "TH_BUFF_QSYY",
+            "EffectName": "净莲生-秋声主输出增益",
+            "Target": "ALLY",
+            "Duration": 26,
+            "BuffEffects": {
+              "BuffFocusPercentEffect": 0,
+              "BuffDefenseFixedEffect": 0,
+              "BuffCriticalDamagePercentEffect": 0
+            }
+          }
+        ],
+        "Description": "根据技能等级分别应用云水雅韵II与秋声雅韵效果，冷却时间240秒。"
+      },
+      {
+        "SkillID": "TH_FO_SKILL_FQH",
+        "SkillName": "凤求凰",
+        "RequiredClass": "TIAN_HUA",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.6,
+        "SkillFrequency": 0.6,
+        "Cooldown": 120,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "BUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TH_BUFF_FQH",
+            "EffectName": "凤求凰爆伤增益",
+            "Target": "ALLY",
+            "Duration": 30,
+            "BuffEffects": {
+              "BuffCriticalDamagePercentEffect": 0
+            }
+          }
+        ],
+        "Description": "令主输出增加暴击伤害，持续时间30秒，冷却时间120秒（受品质及阵营变体影响）。"
+      },
+      {
+        "SkillID": "TH_FO_SKILL_YGSD_CHAN",
+        "SkillName": "阳关三叠·禅",
+        "RequiredClass": "TIAN_HUA",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0.8,
+        "SkillFrequency": 0.8,
+        "Cooldown": 6,
+        "CastTime": 1,
+        "IsAOE": false,
+        "ActionType": "DEBUFF",
+        "SkillBonusAttributes": {},
+        "AppliesEffects": [
+          {
+            "EffectId": "TH_DEBUFF_YGSD_CHAN",
+            "EffectName": "阳关三叠·禅破防",
+            "Target": "ENEMY",
+            "Duration": 20,
+            "BuffEffects": {
+              "BuffDefenseFixedEffect": -10000
+            },
+            "DynamicScalingAttribute": "CharacterMaxAttack",
+            "DynamicScalingMultiplier": -1,
+            "DynamicTargetField": "BuffDefenseFixedEffect"
+          }
+        ]
+      }
+    ],
+    "XIAN": [],
+    "MO": []
   }
 }

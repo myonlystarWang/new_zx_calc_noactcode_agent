@@ -26,7 +26,7 @@ export const BuffSelector: React.FC = () => {
             effects.push(`对怪暴伤 +${value}`);
         }
         if (buffEffects.BuffMonsterHarmedPercentEffect) {
-            effects.push(`怪物受伤 +${value}%`);
+            effects.push(`易伤 +${value}%`);
         }
         if (buffEffects.BuffAttackPercentEffect) {
             effects.push(`攻击 +${value}%`);
@@ -101,7 +101,7 @@ export const BuffSelector: React.FC = () => {
                             key={buff.BuffID}
                             onClick={() => toggleBuff(buff.BuffID)}
                             className={clsx(
-                                'glass-panel p-4 transition-all duration-300 hover:border-cyan-500/50 cursor-pointer group relative flex flex-col gap-3 items-center',
+                                'glass-panel p-4 h-[124px] justify-center transition-all duration-300 hover:border-cyan-500/50 cursor-pointer group relative flex flex-col gap-3 items-center',
                                 isActive
                                     ? 'border-cyan-500/70 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
                                     : 'border-slate-700 hover:bg-slate-800/50'

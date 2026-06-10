@@ -1,0 +1,24 @@
+{
+  "playerName": "小五",
+  "className": "太昊",
+  "factionName": "仙",
+  "attributes": {
+    "minAttack": 200000,
+    "maxAttack": 252000,
+    "defense": 500000,
+    "critDamage": 2620,
+    "mana": 2210000,
+    "health": 4000000,
+    "monsterDamageIncrease": 18
+  },
+  "buffs": {
+    "focus": 241,
+    "greenPoint": 900,
+    "monsterDamageTaken": 120,
+    "witchCurse": 22.5
+  },
+  "target": {
+    "dungeon": "T20",
+    "bossIndex": 1
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "playerName": "独白_魔",
+  "className": "逐霜",
+  "factionName": "魔",
+  "attributes": {
+    "minAttack": 329779,
+    "maxAttack": 390200,
+    "defense": 374395,
+    "critDamage": 2802,
+    "mana": 5346203,
+    "health": 4000000,
+    "monsterDamageIncrease": 49.6
+  },
+  "buffs": {
+    "focus": 241,
+    "greenPoint": 900,
+    "monsterDamageTaken": 120,
+    "witchCurse": 22.5
+  },
+  "target": {
+    "dungeon": "T20",
+    "bossIndex": 1
+  },
+  "skillUsage": {
+    "ZS_MO_SKILL_CLX": {
+      "damageShare": 0.3150,
+      "observedHitCount": 1,
+      "note": "苍龙啸实战占比31.50%"
+    },
+    "ZS_MO_SKILL_SY3": {
+      "damageShare": 0.2373,
+      "observedHitCount": 1,
+      "note": "山雨欲来III实战占比23.73%"
+    },
+    "ZS_MO_SKILL_CLXS": {
+      "damageShare": 0.1896,
+      "observedHitCount": 1,
+      "note": "苍龙啸·煞实战占比18.96%"
+    },
+    "ZS_MO_SKILL_SY2": {
+      "damageShare": 0.1749,
+      "observedHitCount": 1,
+      "note": "山雨欲来II实战占比17.49%"
+    },
+    "ZS_MO_SKILL_YLXB": {
+      "damageShare": 0.0437,
+      "observedHitCount": 1,
+      "note": "银鳞玄冰实战占比4.37%"
+    },
+    "ZS_MO_SKILL_LYLZ": {
+      "damageShare": 0.0395,
+      "observedHitCount": 1,
+      "note": "临渊敛爪实战占比3.95%"
+    }
+  }
+}
