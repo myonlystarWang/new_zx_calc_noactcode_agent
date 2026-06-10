@@ -12,7 +12,8 @@ import type {
   SimulationScenario,
   Skill,
   SkillActionType,
-  SupportStrategyConfig
+  SupportStrategyConfig,
+  ManualTimelineAction
 } from './types.js';
 
 const COMMON_FACTION = 'COMMON';
@@ -159,7 +160,7 @@ const assembleSupportActor = (
 
   const strategy = support.strategy
     ? clone(support.strategy)
-    : createDefaultSupportStrategy(selectedSkills, dpsActorId);
+    : createDefaultSupportStrategy(selectedSkills, dpsActorId, support.actorId);
 
   return {
     actorId: support.actorId,
@@ -175,12 +176,29 @@ const assembleSupportActor = (
 
 const createDefaultSupportStrategy = (
   skills: Skill[],
-  dpsActorId: string
-): SupportStrategyConfig => ({
-  type: 'CAST_ON_READY',
-  skillIds: skills.map(skill => skill.SkillID),
-  targetActorId: dpsActorId
-});
+  dpsActorId: string,
+  actorId: string
+): SupportStrategyConfig => {
+  if (actorId === 'zhaoming_sup') {
+    const skillIds = new Set(skills.map(s => s.SkillID));
+    const actions: ManualTimelineAction[] = [];
+    if (skillIds.has('ZM_FO_SKILL_RYHG')) {
+      actions.push({ timeMs: 1000, skillId: 'ZM_FO_SKILL_RYHG' });
+    }
+    if (skillIds.has('ZM_FO_SKILL_TYNF')) {
+      actions.push({ timeMs: 8000, skillId: 'ZM_FO_SKILL_TYNF', targetActorId: dpsActorId });
+    }
+    return {
+      type: 'SETUP_PHASE',
+      actions
+    };
+  }
+  return {
+    type: 'CAST_ON_READY',
+    skillIds: skills.map(skill => skill.SkillID),
+    targetActorId: dpsActorId
+  };
+};
 
 const selectSkills = (config: {
   actorPath: string;

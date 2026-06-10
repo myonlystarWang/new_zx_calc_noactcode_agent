@@ -182,6 +182,11 @@ export class Actor {
       return [];
     }
 
+    if (skill.SkillID === 'ZM_FO_SKILL_RYHG') {
+      state.cooldownReadyAtMs = Number.POSITIVE_INFINITY;
+      return [];
+    }
+
     if (skill.Cooldown === 0 && (skill.ActionType === 'BUFF' || skill.ActionType === 'DEBUFF' || skill.ActionType === 'UTILITY')) {
       state.cooldownReadyAtMs = Number.POSITIVE_INFINITY;
       return [];

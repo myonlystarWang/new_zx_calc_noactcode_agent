@@ -103,8 +103,11 @@ export class EffectManager {
     return this.activeEffects.find(effect => effect.InstanceId === instanceId);
   }
 
-  public extendActiveEffectsDuration(extensionMs: number): void {
+  public extendActiveEffectsDuration(extensionMs: number, excludeEffectIds?: Set<string>): void {
     for (const effect of this.activeEffects) {
+      if (excludeEffectIds && excludeEffectIds.has(effect.EffectId)) {
+        continue;
+      }
       effect.EndTimeMs += extensionMs;
     }
   }

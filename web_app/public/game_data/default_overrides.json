@@ -1,0 +1,48 @@
+{
+  "dpsStartDelayMs": 2000,
+  "dpsAttributes": {
+    "CharacterMinAttack": 329779,
+    "CharacterMaxAttack": 390200,
+    "CharacterDefense": 374395,
+    "CharacterHealth": 4000000,
+    "CharacterMana": 5346203,
+    "CharacterCriticalHitDamagePercent": 2802,
+    "CharacterMonsterDamageIncreasePercent": 49.6,
+    "CharacterOnePercentAttack": 1500,
+    "CharacterOnePercentDefense": 2000,
+    "CharacterOnePercentHealth": 25000,
+    "CharacterOnePercentMana": 35000
+  },
+  "dpsDefaultFourthGenQuality": "XI_RI",
+  "supportOverrides": {
+    "zhaoming_sup": {
+      "ZM_FO_SKILL_TYNF": {
+        "SkillLevel": 1,
+        "FourthGenQuality": "XI_RI"
+      },
+      "ZM_FO_SKILL_RYHG": {
+        "RyhgPhase2DelaySeconds": 15
+      }
+    },
+    "tianyin_sup": {
+      "TY_FO_SKILL_CHFY": {
+        "SkillLevel": 1
+      }
+    },
+    "tianhua_sup": {
+      "TH_FO_SKILL_JSKW": {
+        "SkillLevel": 1
+      },
+      "TH_FO_SKILL_QSYY": {
+        "SkillLevel": 1,
+        "FourthGenQuality": "XI_RI"
+      }
+    },
+    "yingzhao_sup": {
+      "YZ_FO_SKILL_BS": {
+        "SkillLevel": 1,
+        "FourthGenQuality": "HAO_YUE"
+      }
+    }
+  }
+}

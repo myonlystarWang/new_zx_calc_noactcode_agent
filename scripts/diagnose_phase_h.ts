@@ -13,12 +13,16 @@ const args = new Map(
   })
 );
 
+const gameDataDir = resolve('web_app/public/game_data');
+const loadJson = <T>(filename: string): T => JSON.parse(readFileSync(resolve(gameDataDir, filename), 'utf8')) as T;
+const defaultOverrides = loadJson<any>('default_overrides.json');
+
 const timelineSeconds = Number(args.get('timeline-seconds') ?? 50);
 const auditSeconds = Number(args.get('audit-seconds') ?? 12);
 const includeAblation = args.get('ablation') !== 'false';
 const bossTier = (args.get('tier') ?? 'T20').toUpperCase();
 const hitOutput = args.get('hit-output') ?? 'both';
-const dpsStartDelayMs = Number(args.get('dps-start-delay-ms') ?? 5000);
+const dpsStartDelayMs = Number(args.get('dps-start-delay-ms') ?? defaultOverrides.dpsStartDelayMs);
 const enableSanwanFocus = args.get('sanwan') !== 'false';
 const enableDungeonGreen150 = args.get('dungeon-green150') !== 'false';
 const auditSkillFilter = new Set(
@@ -30,8 +34,7 @@ const auditSkillFilter = new Set(
 const dungeonId = `ZHENHAI_DUANLANG_${bossTier}`;
 const bossId = `CHI_SUO_${bossTier}`;
 
-const gameDataDir = resolve('web_app/public/game_data');
-const loadJson = <T>(filename: string): T => JSON.parse(readFileSync(resolve(gameDataDir, filename), 'utf8')) as T;
+
 
 const dpsSkillIds = [
   'ZS_MO_SKILL_ZGDD',
@@ -52,17 +55,7 @@ const dpsSkillOverrides = Object.fromEntries(
 );
 
 let dpsAttributes = {
-  CharacterMinAttack: 300000,
-  CharacterMaxAttack: 352000,
-  CharacterDefense: 500000,
-  CharacterHealth: 4000000,
-  CharacterMana: 5490000,
-  CharacterCriticalHitDamagePercent: 2821,
-  CharacterMonsterDamageIncreasePercent: 43.8,
-  CharacterOnePercentAttack: 1500,
-  CharacterOnePercentDefense: 2000,
-  CharacterOnePercentHealth: 25000,
-  CharacterOnePercentMana: 35000
+  ...defaultOverrides.dpsAttributes
 };
 
 const profilePath = args.get('profile');
@@ -148,12 +141,14 @@ const buildSupports = (mode: SupportMode = {}) => {
         skillIds = skillIds.filter(skillId => !mode.exclude!.has(skillId));
       }
       if (skillIds.length === 0) return undefined;
+      const skillOverrides = defaultOverrides.supportOverrides?.[actorId];
       return {
         actorId,
         classId: config.classId,
         faction: config.faction,
         profileAttributes: supportAttributes,
-        skillIds
+        skillIds,
+        skillOverrides
       };
     })
     .filter(Boolean);

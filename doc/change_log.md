@@ -1,5 +1,19 @@
 # Change Log
 
+## [1.0.3] - 2026-06-10
+
+### Added
+- 创建统一收口配置文件 `web_app/public/game_data/default_overrides.json`。
+- 新增昭冥重构工作报告文档：[phase_h_default_overrides_and_zhaoming_fixes.md](file:///e:/ww/personal%20work/new_zx_calc_noactcode_agent/doc/phase_h_default_overrides_and_zhaoming_fixes.md)。
+
+### Modified
+- `web_app/src/components/arena/SimulationArena.tsx`：静态导入 `default_overrides.json` 并重构初始化钩子，消除 DPS 和辅助的所有硬编码初始参数；在 `buildActiveEffectViews` 中增加对 `BUFF_EXTEND` 事件的支持（在 `BUFF_EXTEND` 事件中同步更新 `remainingMs`，并移出 `BUFF_APPLY` 时的提前过期过滤）以便支持动态延长。
+- `web_app/src/components/arena/SimulationReport.tsx`：在 `swimlanes` 解析中增加对 `BUFF_EXTEND` 事件的支持，保证报表与回溯沙盘里的 Buff 持续时间能获得同步且正确的延长。
+- `packages/simulation-engine/src/actor.ts`：在 `beginCast` 中对 `ZM_FO_SKILL_RYHG`（日月弘光）进行初始 CD 屏蔽；还原 `getPhaseCooldownDelayMs` 使得日月弘光维持 35 秒基础 CD。
+- `packages/simulation-engine/src/combat_loop.ts`：进入日月弘光 2 段（`phaseIndex === 2`）的时刻正式排期并计时 35s 的 CD；重构 `applyBuffDurationExtensions` 为投递独立的 `BUFF_EXTEND` 事件。
+- `packages/simulation-engine/src/test_c.ts`：将 `ryhgShortCooldown` 的 `Cooldown` 调整为 `1.2` 确保测试用例顺利通过。
+- `scripts/diagnose_phase_h.ts` / `scratch/print_timeline.ts` / `read_dps_logs.ts` / `test_6person_team.ts`：统一重构为从配置文件中读取默认参数，消除了所有硬编码参数。
+
 ## [1.0.2] - 2026-03-14
 
 ### Added

@@ -283,7 +283,7 @@ export class SimulationEngine {
     }
 
     this.applyCooldownResets(runtime.actor, skill, event.timeMs);
-    this.applyBuffDurationExtensions(skill, event.timeMs, event.targetId);
+    this.applyBuffDurationExtensions(runtime.config.actorId, skill, event.timeMs, event.targetId);
     this.scheduleSkillEffects(runtime.config.actorId, skill, event.timeMs, event.targetId);
     this.scheduleSkillHits(runtime.config.actorId, skill, event.timeMs, actualCastTimeMs);
     this.schedulePhaseTransitions(runtime.config.actorId, skill, event.timeMs);
@@ -667,6 +667,28 @@ export class SimulationEngine {
       return;
     }
 
+    if (event.skillId) {
+      for (const [targetActorId, manager] of this.effects.entries()) {
+        const effectsToRemove = manager.getActiveEffects().filter(
+          eff => eff.SourceSkillId === event.skillId
+        );
+        for (const eff of effectsToRemove) {
+          manager.expireEffect(eff.InstanceId);
+          this.logEvent({
+            timeMs: event.timeMs,
+            type: 'BUFF_EXPIRE',
+            actorId: runtime.config.actorId,
+            targetId: targetActorId,
+            skillId: event.skillId,
+            data: {
+              instanceId: eff.InstanceId,
+              effectId: eff.EffectId
+            }
+          }, 'PROCESSED', `Effect ${eff.EffectId} removed due to phase transition.`);
+        }
+      }
+    }
+
     for (const effect of phase.AppliesEffects) {
       for (const targetId of this.resolveEffectTargets(runtime.config.actorId, effect.Target, undefined)) {
         this.timeline.schedule({
@@ -695,6 +717,20 @@ export class SimulationEngine {
           data: {
             phaseIndex: nextPhase.PhaseIndex
           }
+        });
+      }
+    }
+
+    if (event.skillId === 'ZM_FO_SKILL_RYHG' && phaseIndex === 2) {
+      const skillState = runtime.actor.SkillStates['ZM_FO_SKILL_RYHG'];
+      if (skillState) {
+        const readyAt = event.timeMs + Math.round(skill.Cooldown * 1000);
+        skillState.cooldownReadyAtMs = readyAt;
+        this.timeline.schedule({
+          timeMs: readyAt,
+          type: 'COOLDOWN_READY',
+          actorId: runtime.config.actorId,
+          skillId: event.skillId
         });
       }
     }
@@ -781,8 +817,11 @@ export class SimulationEngine {
     const secondPhase = skill.MultiPhaseConfig?.Phases.find(phase => phase.PhaseIndex === 2);
     if (!firstPhase?.AutoTransition || !secondPhase) return;
 
+    const delay = skill.RyhgPhase2DelaySeconds !== undefined ? skill.RyhgPhase2DelaySeconds : 30;
+    const transitionDelaySec = delay >= 30 ? firstPhase.Duration : Math.max(0, delay);
+
     this.timeline.schedule({
-      timeMs: castStartMs + Math.round(firstPhase.Duration * 1000),
+      timeMs: castStartMs + Math.round(transitionDelaySec * 1000),
       type: 'PHASE_TRANSITION',
       actorId,
       skillId: skill.SkillID,
@@ -798,13 +837,44 @@ export class SimulationEngine {
     }
   }
 
-  private applyBuffDurationExtensions(skill: Skill, timeMs: number, targetActorId?: string): void {
+  private applyBuffDurationExtensions(sourceActorId: string, skill: Skill, timeMs: number, targetActorId?: string): void {
     if (skill.BuffDurationExtensionSeconds && skill.BuffDurationExtensionSeconds > 0) {
       const extMs = Math.round(skill.BuffDurationExtensionSeconds * 1000);
       const targetId = targetActorId ?? BOSS_TARGET_ID;
       const targetManager = this.effects.get(targetId);
       if (targetManager) {
-        targetManager.extendActiveEffectsDuration(extMs);
+        const exclude = skill.SkillID === 'ZM_FO_SKILL_TYNF'
+          ? new Set(['ZM_BUFF_RYHG_PHASE_1', 'ZM_BUFF_RYHG_PHASE_2'])
+          : undefined;
+
+        const originalEndTimes = new Map<string, number>();
+        for (const effect of targetManager.getActiveEffects()) {
+          if (!exclude || !exclude.has(effect.EffectId)) {
+            originalEndTimes.set(effect.InstanceId, effect.EndTimeMs);
+          }
+        }
+
+        targetManager.extendActiveEffectsDuration(extMs, exclude);
+
+        for (const [instanceId, originalEndTime] of originalEndTimes.entries()) {
+          const newEndTime = originalEndTime + extMs;
+          const effect = targetManager.getEffectInstance(instanceId);
+          if (effect) {
+            this.logEvent({
+              timeMs,
+              type: 'BUFF_EXTEND',
+              actorId: sourceActorId,
+              targetId: targetId,
+              skillId: skill.SkillID,
+              data: {
+                instanceId,
+                effectId: effect.EffectId,
+                extendedMs: extMs,
+                newEndTimeMs: newEndTime
+              }
+            }, 'PROCESSED', `Effect ${effect.EffectId} duration extended by ${skill.BuffDurationExtensionSeconds}s.`);
+          }
+        }
       }
     }
   }

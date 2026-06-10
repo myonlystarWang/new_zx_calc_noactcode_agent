@@ -23,36 +23,34 @@ npx tsx scripts/diagnose_phase_h.ts --timeline-seconds=0 --audit-seconds=8.2 --a
 npx tsx scripts/diagnose_phase_h.ts --timeline-seconds=12 --audit-seconds=12 --ablation=false --hit-output=tsv --audit-skills=ZS_MO_SKILL_SY2,ZS_MO_SKILL_CLXS
 ```
 
-注意：当前主输出默认延迟 `5000ms`，第一段主输出伤害在 `7.264s`，所以 `audit-seconds` 需要大于 7.3 才能看到首段伤害。
+注意：当前主输出默认延迟 `2000ms`，第一段主输出伤害在 `4.600s`，所以 `audit-seconds` 需要大于 4.6 才能看到首段伤害。
 
 ## 本轮已完成
 
-- 引擎新增 `initialEffects`，支持场景开场注入 Buff/Debuff。
-- `AssembleScenarioInput` 新增 `dpsCommonEffects`、`dungeonEffects`。
-- 当前实际启用的通用主输出效果：三碗不过岗，专注 +20。
-- 当前实际启用的副本效果：0s 给 Boss 持续绿点 +150。
-- `FIXED_ROTATION` 和 `SKILL_BAR` 均支持 `startTimeMs`；默认魔逐霜主输出延迟 `5000ms` 开始。
-- Web 右侧上下文栏新增“主输出通用”和“副本效果”开关；九华、神爆、佛尊、家族技能、法宝特效、攻击/爆伤/紫点/易伤副本效果均为预留禁用项。
-- 技能策略抽屉新增“主输出开打延迟”，单位为秒。
-- 诊断脚本默认同步当前 UI/测试口径：5s 主输出延迟、三碗开启、副本绿点 150 开启。
+- 为昭冥的《慈航法愿》、《金蛇狂舞》和《秋声雅韵》正确支持了「法宝+1」在 UI 勾选时（通过 `SkillLevel: 1`）的动态缩放逻辑，并修正了金蛇狂舞的 0 级基础数值。
+- 昭冥辅助角色的默认技能施放策略调整为：在 `1.0s` 施放《日月弘光》，在 `8.0s` 施放《停云凝风》。
+- 限制了《停云凝风》的 Buff 持续时间延长效果，使其不能延长《日月弘光》的二段/一段专注与巫咒增益。
+- 在网页 UI 的昭冥技能设置处增加了一个“二段延迟”输入框（对应 `RyhgPhase2DelaySeconds`），支持 0~45s 的二段释放延迟设定；在二段转换时自动注销旧阶段的 Buff 状态，防止两段属性非法重叠。
+- 修复了 UI 状态处理函数 `updateSkillOverride` 误删除 `RyhgPhase2DelaySeconds: 0` 的问题，确保 0s 二段延迟能够被正确传递给模拟引擎。
+- 修复了 `scenario_assembler.ts` 缺少的类型引入，并重新编译构建了引擎包，解决了旧版编译包在网页端缓存导致新策略未生效的问题。
+- 逐霜（DPS）的起手前置等待时间从 `5.0s` 缩短至 `2.0s`，且默认基础属性更新为 @[zx_analysis_results/独白_魔] 的实际面板属性。
+- 诊断脚本默认同步当前 UI/测试口径：2s 主输出延迟、三碗开启、副本绿点 150 开启。
 
 ## 当前基准结论
 
 - 当前默认目标是 T20 赤梭，血量 `124,474,606,860`。
 - `196,829,815,000` 对应 T21 赤梭血量，不是 T20。
-- 当前 T20 默认团队结果为 `44.202s` 击杀，仍然明显偏快。
-- 当前实际伤害技能包括：山雨欲来II、山雨欲来III、苍龙啸、苍龙啸·煞。
-- `苍龙啸·煞` 已经能进入实际伤害；`银鳞玄冰` 未进入主要是因为当前 Boss 在 44.202s 死亡，而银鳞玄冰 CD 为 150s。
-- 主输出延迟后，辅助 0-5s 已经把增益和 Boss 减益基本铺满，因此首段主输出伤害更适合拿来对表。
+- 当前 T20 默认团队结果为 `39.740s` 击杀（由于主输出延迟缩短且停云凝风在 8s 成功延长爆发 Buff，击杀时间由 `44.202s` 缩短至 `39.74s`）。
+- 主输出延迟后，辅助 0-2s 已经把增益和 Boss 减益基本铺满，因此首段主输出伤害更适合拿来对表。
 
 当前第一段主输出伤害：
 
 ```text
-[7.264s] 山雨欲来II hit=1/6 dmg=909,555,396
-专注 204 / 巫咒 7.5
+[4.600s] 山雨欲来II hit=1/6 dmg=856,912,692
+专注 219 / 巫咒 7.5
 绿点 raw 490，炎兵灸魂翻倍后 980，cap 后 900
 易伤 raw 180，cap 后 120
-总乘区约 234.791x
+总乘区约 260.376x
 ```
 
 ## 必须保留的口径
@@ -95,8 +93,9 @@ npx tsx scripts/diagnose_phase_h.ts --timeline-seconds=0 --audit-seconds=8.2 --a
 
 - `npm --workspace=@zx/simulation-engine run check`：通过。
 - `npm --workspace=@zx/simulation-engine run build`：通过。
+- `npm run test:c`：通过。
 - `npm run test:e`：通过。
-- `npm run test:f`：通过，当前默认 T20 击杀时间 `44.20s`。
+- `npm run test:f`：通过，当前默认 T20 击杀时间 `39.74s`。
 - `npm --workspace=web_app run build`：通过；仅 Vite chunk size 警告。
 
 ## 后续优先级

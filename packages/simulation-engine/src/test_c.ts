@@ -1168,11 +1168,11 @@ const testZhaoMingSkills = () => {
   assert.ok(result.hitRecords[2]);
   console.log('hit2 active buffs:', result.hitRecords[2].ActiveEffectIds);
   console.log('hit2 average damage:', Math.round(result.hitRecords[2].AvgDamage));
-  assert.equal(Math.round(result.hitRecords[2].AvgDamage), 2665);
+  assert.equal(Math.round(result.hitRecords[2].AvgDamage), 1960);
 
   const ryhgShortCooldown: Skill = {
     ...ryhgSkill,
-    Cooldown: 0.1
+    Cooldown: 1.2
   };
   const ryhgCooldownResult = runSimulation({
     maxTimeMs: 3000,
