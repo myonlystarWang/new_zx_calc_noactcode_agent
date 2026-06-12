@@ -210,7 +210,7 @@ interface SkillOverrideConfig {
     RyhgPhase2DelaySeconds?: number;
 }
 
-interface DpsSkillConfig extends SkillOverrideConfig {}
+interface DpsSkillConfig extends SkillOverrideConfig { }
 
 interface SupportConfig {
     actorId: string;
@@ -1255,7 +1255,7 @@ function buildActiveEffectViews(
     const active = new Map<string, ActiveEffectView>();
     const events = result.events
         .filter(event => event.timeMs <= currentTimeMs)
-        .sort((a, b) => a.timeMs === b.timeMs ? a.sequence - b.sequence : a.timeMs - b.timeMs);
+        .sort((a, b) => a.timeMs === b.timeMs ? (a.sequence ?? 0) - (b.sequence ?? 0) : a.timeMs - b.timeMs);
 
     events.forEach(event => {
         const data = event.data || {};
@@ -1462,19 +1462,19 @@ function buildTimelineEvents(
         .map(event => {
             const isBossTarget = event.targetId === 'boss';
             const lane: TimelineEvent['lane'] = event.type === 'CAST_COMPLETE'
-                    ? 'cast'
-                    : isBossTarget
-                        ? 'debuff'
-                        : 'buff';
+                ? 'cast'
+                : isBossTarget
+                    ? 'debuff'
+                    : 'buff';
             const actorName = formatActorName(event.actorId, actorNameById);
             const targetName = formatActorName(event.targetId, actorNameById);
             const skillName = event.skillId ? (skillNameLookup[event.skillId] || event.skillId) : '';
             const effectName = getEventEffectName(event);
             const title = event.type === 'CAST_COMPLETE'
-                    ? `${actorName} 施放 ${skillName || '技能'}`
-                    : event.type === 'BUFF_APPLY'
-                        ? `${targetName} 获得 ${effectName}`
-                        : `${targetName} 的 ${effectName} 结束`;
+                ? `${actorName} 施放 ${skillName || '技能'}`
+                : event.type === 'BUFF_APPLY'
+                    ? `${targetName} 获得 ${effectName}`
+                    : `${targetName} 的 ${effectName} 结束`;
             return {
                 id: `event:${event.sequence}:${event.timeMs}`,
                 lane,
@@ -1678,6 +1678,8 @@ function buildEffectSummaryChips(effects: ActiveEffectView[], fields: string[]) 
 }
 
 function getEffectDisplayName(effect: ActiveEffectView) {
+    if (effect.effectId === 'ZM_BUFF_RYHG_PHASE_1') return '日月1';
+    if (effect.effectId === 'ZM_BUFF_RYHG_PHASE_2') return '日月2';
     const name = effect.sourceSkillName && !effect.sourceSkillName.includes('_')
         ? effect.sourceSkillName
         : effect.name;

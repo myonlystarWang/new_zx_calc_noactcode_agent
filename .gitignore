@@ -17,3 +17,4 @@ agent_tool/temp_profile_*.json
 *.log
 scratch/
 .learnings/
+*.mp4

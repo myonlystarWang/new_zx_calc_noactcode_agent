@@ -2529,9 +2529,9 @@ const testZhuShuangSkills = () => {
             type: 'MANUAL_TIMELINE',
             actions: [
               { timeMs: 0, skillId: 'ZS_XIAN_SKILL_LZYY' }, // independent +36% speed multiplier
-              { timeMs: 1500, skillId: 'ZS_XIAN_SKILL_ZGDD' }, // swift locked at +50%. Cast time: 3000 / (1.5 * 1.36) = 1471ms
+              { timeMs: 1500, skillId: 'ZS_XIAN_SKILL_ZGDD' }, // swift locked at +50%. Cast time: 3000 * 0.5 * 0.64 = 960ms
               { timeMs: 3000, skillId: 'ZS_XIAN_SKILL_CLXX' }, // Cast 1
-              { timeMs: 5000, skillId: 'ZS_XIAN_SKILL_QXHS' }, // lower swift does not overwrite ZGDD. Cast time remains 1471ms
+              { timeMs: 5000, skillId: 'ZS_XIAN_SKILL_QXHS' }, // lower swift does not overwrite ZGDD. Cast time remains 960ms
               { timeMs: 6500, skillId: 'ZS_XIAN_SKILL_CLXX' } // Cast 2
             ]
           }
@@ -2542,12 +2542,12 @@ const testZhuShuangSkills = () => {
     const cast1Start = result.events.find(e => e.type === 'CAST_START' && e.skillId === 'ZS_XIAN_SKILL_CLXX' && e.timeMs === 3000);
     const cast1End = result.events.find(e => e.type === 'CAST_COMPLETE' && e.skillId === 'ZS_XIAN_SKILL_CLXX' && e.timeMs > 3000);
     assert.ok(cast1Start && cast1End);
-    assert.equal(cast1End.timeMs - cast1Start.timeMs, 1471);
+    assert.equal(cast1End.timeMs - cast1Start.timeMs, 960);
 
     const cast2Start = result.events.find(e => e.type === 'CAST_START' && e.skillId === 'ZS_XIAN_SKILL_CLXX' && e.timeMs === 6500);
     const cast2End = result.events.find(e => e.type === 'CAST_COMPLETE' && e.skillId === 'ZS_XIAN_SKILL_CLXX' && e.timeMs > 6500);
     assert.ok(cast2Start && cast2End);
-    assert.equal(cast2End.timeMs - cast2Start.timeMs, 1471);
+    assert.equal(cast2End.timeMs - cast2Start.timeMs, 960);
   }
 
   // Test 2b: Xi Ri QXHS swift stacks multiplicatively with Long Zhan when ZGDD is absent
@@ -2580,7 +2580,7 @@ const testZhuShuangSkills = () => {
     const castStart = result.events.find(e => e.type === 'CAST_START' && e.skillId === 'ZS_XIAN_SKILL_CLXX' && e.timeMs === 3000);
     const castEnd = result.events.find(e => e.type === 'CAST_COMPLETE' && e.skillId === 'ZS_XIAN_SKILL_CLXX' && e.timeMs > 3000);
     assert.ok(castStart && castEnd);
-    assert.equal(castEnd.timeMs - castStart.timeMs, 1532);
+    assert.equal(castEnd.timeMs - castStart.timeMs, 1075);
   }
 
   // Test 3: LYLZ + Long Nu (Xian)
