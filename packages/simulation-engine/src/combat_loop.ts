@@ -1237,9 +1237,9 @@ export class SimulationEngine {
       swiftSpeedPercent = 50;
     }
 
-    const swiftMultiplier = 1 + swiftSpeedPercent / 100;
-    const dragonMultiplier = 1 + dragonSpeedPercent / 100;
-    return Math.round(baseCastTimeMs / (swiftMultiplier * dragonMultiplier));
+    const swiftMultiplier = 1 - swiftSpeedPercent / 100;
+    const dragonMultiplier = 1 - dragonSpeedPercent / 100;
+    return Math.round(baseCastTimeMs * swiftMultiplier * dragonMultiplier);
   }
 
   private shouldRecordDamageAudit(actorId: string, skillId: string): boolean {
