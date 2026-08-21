@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逐霜（仙/魔）多维网格伤害边际与属性逆转全景研究报告</title>
+    <style>
+        :root {
+            --bg-base: #0a0e17;
+            --bg-card: rgba(18, 26, 43, 0.8);
+            --bg-card-border: rgba(255, 255, 255, 0.08);
+            --bg-card-hover: rgba(26, 38, 64, 0.95);
+            --text-main: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.25);
+            --accent-purple: #a855f7;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --table-border: rgba(255, 255, 255, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            padding: 36px 24px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 16px;
+            padding: 32px 36px;
+            backdrop-filter: blur(14px);
+            margin-bottom: 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+        }
+
+        .hero-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .hero-title {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .badge-cyan {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .badge-purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .badge-emerald {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .hero-sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 14px;
+            padding: 22px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .metric-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid var(--bg-card-border);
+            width: fit-content;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.15);
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--table-border);
+            padding-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title-line {
+            width: 4px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .section-unit {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table.standard-matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            table-layout: auto;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--table-border);
+            white-space: nowrap !important;
+        }
+
+        th.th-left { text-align: left; }
+        th.th-center { text-align: center; }
+        th.th-right { text-align: right; }
+
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--table-border);
+            white-space: nowrap !important;
+        }
+
+        .nowrap-cell {
+            white-space: nowrap !important;
+            word-break: keep-all !important;
+        }
+
+        .text-left-cell {
+            text-align: left;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .num-cell {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+            color: #e2e8f0;
+            white-space: nowrap !important;
+        }
+
+        tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .total-num {
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .filter-select, .search-input {
+            background: rgba(10, 14, 23, 0.8);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #38bdf8;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-input {
+            color: #ffffff;
+            width: 200px;
+        }
+
+        .search-input:focus, .filter-select:focus {
+            border-color: #38bdf8;
+        }
+
+        .decision-box {
+            background: rgba(56, 189, 248, 0.04);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin-top: 20px;
+        }
+
+        .decision-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+
+        .decision-text {
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 40px;
+            padding-top: 18px;
+            border-top: 1px solid var(--table-border);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <div class="hero-title-wrap">
+                <span class="hero-title">诛仙3 · 逐霜（仙/魔）多维网格伤害边际与属性逆转研究报告</span>
+                <span class="badge badge-cyan">全样本 100 组</span>
+                <span class="badge badge-purple">700 次底层算伤</span>
+                <span class="badge badge-emerald">双轨逆转实证</span>
+            </div>
+            <div class="hero-sub">
+                覆盖 2 大阵营 × 5 大人物面板梯队 × 5 大核心副本场景 × 2 大战斗模式（长程持续循环 vs 秒怪短轴爆发）
+            </div>
+        </header>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">核心逆转现象</div>
+                <div class="metric-value nowrap-cell" style="color: #f43f5e;">20 组样本【气血反超攻击】</div>
+                <div class="metric-sub">魔逐霜秒怪爆发模式下气血边际收益超越攻击力</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">仙逐霜真气效能跃升</div>
+                <div class="metric-value nowrap-cell" style="color: #34d399;">+42.6% 相对增幅</div>
+                <div class="metric-sub">秒怪模式下苍龙玄真气附加边际贡献集中爆发</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">高阶副本爆伤饥渴度</div>
+                <div class="metric-value nowrap-cell" style="color: #38bdf8;">+58.5% 价值提升</div>
+                <div class="metric-sub">T21 超高减暴伤导致平民 1点爆伤边际价值暴涨</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">高真气硬上限效应</div>
+                <div class="metric-value nowrap-cell" style="color: #c084fc;">650w 真气溢出归零</div>
+                <div class="metric-sub">真气极高时达到单次消耗上限，边际收益归零</div>
+            </div>
+        </div>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-reversal', this)">核心逆转与机理解析</button>
+            <button class="tab-btn" onclick="switchTab('tab-all', this)">100 组全量网格检索库</button>
+            <button class="tab-btn" onclick="switchTab('tab-guide', this)">玩家洗练与配装决策指南</button>
+        </div>
+
+        <!-- Tab 1: 核心逆转 -->
+        <div id="tab-reversal" class="tab-pane" style="display: block;">
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-line" style="background: var(--accent-rose);"></span>
+                        魔逐霜【气血 vs 攻击】优先级逆转实证矩阵（20组样本精选）
+                    </div>
+                    <div class="section-unit">长程持续：攻击 > 气血 ｜ 秒怪爆发：气血 > 攻击</div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="standard-matrix-table">
+                        <thead>
+                            <tr>
+                                <th class="th-left">梯队与阵营</th>
+                                <th class="th-left">副本场景</th>
+                                <th class="th-left">长程优先级</th>
+                                <th class="th-left" style="color:#34d399;">秒怪爆发优先级</th>
+                                <th class="th-right">长程1%怪增等攻击</th>
+                                <th class="th-right" style="color:#34d399;">秒怪1%怪增等攻击</th>
+                                <th class="th-right">长程1%怪增等气血</th>
+                                <th class="th-right" style="color:#f43f5e;">秒怪1%怪增等气血</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">2,299.4 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">2,771.1 点</td>
+        <td class="num-cell nowrap-cell">32,978.5 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">27,526.0 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">2,299.2 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">2,771.3 点</td>
+        <td class="num-cell nowrap-cell">32,948.3 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">27,524.1 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">2,300.5 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">2,772.1 点</td>
+        <td class="num-cell nowrap-cell">32,925.5 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">27,510.2 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">2,300.4 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">2,771.5 点</td>
+        <td class="num-cell nowrap-cell">32,938.3 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">27,511.0 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">2,300.4 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">2,771.5 点</td>
+        <td class="num-cell nowrap-cell">32,938.3 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">27,511.0 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">3,977.9 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,800.4 点</td>
+        <td class="num-cell nowrap-cell">57,051.2 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">47,707.3 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">3,978.1 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,800.5 点</td>
+        <td class="num-cell nowrap-cell">57,040.4 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">47,708.2 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">3,978.0 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,800.7 点</td>
+        <td class="num-cell nowrap-cell">57,027.1 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">47,702.2 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">3,977.9 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,800.5 点</td>
+        <td class="num-cell nowrap-cell">56,994.5 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">47,690.9 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">3,977.9 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,800.5 点</td>
+        <td class="num-cell nowrap-cell">56,994.5 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">47,690.9 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell">3,971.2 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,845.3 点</td>
+        <td class="num-cell nowrap-cell">56,957.2 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">48,165.4 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell">3,970.1 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,844.6 点</td>
+        <td class="num-cell nowrap-cell">56,927.8 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">48,156.5 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell">3,969.9 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,844.8 点</td>
+        <td class="num-cell nowrap-cell">56,899.0 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">48,142.6 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell">3,969.8 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,845.6 点</td>
+        <td class="num-cell nowrap-cell">56,908.1 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">48,140.8 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell">3,969.8 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">4,845.6 点</td>
+        <td class="num-cell nowrap-cell">56,908.1 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">48,140.8 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">4,932.0 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">5,724.8 点</td>
+        <td class="num-cell nowrap-cell">70,767.2 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">56,919.0 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">4,932.7 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">5,725.0 点</td>
+        <td class="num-cell nowrap-cell">70,747.3 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">56,910.0 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">4,931.7 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">5,725.4 点</td>
+        <td class="num-cell nowrap-cell">70,747.0 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">56,911.2 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">4,932.9 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">5,725.6 点</td>
+        <td class="num-cell nowrap-cell">70,721.3 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">56,904.6 点</td>
+    </tr>
+    
+    <tr>
+        <td class="text-left-cell nowrap-cell" style="font-weight:700;">魔逐霜 · T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell">4,932.9 点</td>
+        <td class="num-cell nowrap-cell" style="color:#34d399; font-weight:700;">5,725.6 点</td>
+        <td class="num-cell nowrap-cell">70,721.3 点</td>
+        <td class="num-cell nowrap-cell" style="color:#f43f5e; font-weight:700;">56,904.6 点</td>
+    </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="decision-box" style="border-left-color: var(--accent-rose);">
+                    <div class="decision-title" style="color: var(--accent-rose);">底层机理解析：为什么魔逐霜秒怪爆发模式气血会反超攻击力？</div>
+                    <div class="decision-text">
+                        1. <strong>技能附加机制</strong>：【苍龙啸·煞】附带 15% 气血与 27% 真气伤害，【银鳞玄冰】附带 100% 气血与 100% 真气附加。在秒怪爆发模式下，这两大大招的归一化权重高达 <strong>80.6%</strong>，将气血的瞬间爆发伤害推至峰值！<br>
+                        2. <strong>长轴循环稀释</strong>：在长程输出中，【山雨欲来II/III】（高频多段，主吃基础攻击力乘区）占总循环的 40%~50%，在长时间作战中多段攻击力累积收益最终反超气血。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: 全量检索库 -->
+        <div id="tab-all" class="tab-pane" style="display: none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-line"></span>
+                        100 组多维网格全量模拟数据交互检索库
+                    </div>
+                    <div class="section-unit">支持按阵营、梯队、副本、模式即时筛选</div>
+                </div>
+
+                <div class="filter-bar">
+                    <span class="filter-label">阵营：</span>
+                    <select id="filter-faction" class="filter-select" onchange="filterGrid()">
+                        <option value="ALL">全部阵营</option>
+                        <option value="仙">仙逐霜</option>
+                        <option value="魔">魔逐霜</option>
+                    </select>
+
+                    <span class="filter-label">梯队：</span>
+                    <select id="filter-tier" class="filter-select" onchange="filterGrid()">
+                        <option value="ALL">全部梯队</option>
+                        <option value="T1_平民入门">T1 平民入门</option>
+                        <option value="T2_中坚进阶">T2 中坚进阶</option>
+                        <option value="T3_毕业高端">T3 毕业高端</option>
+                        <option value="T4_极限真气流">T4 极限真气流</option>
+                        <option value="T5_极限攻击流">T5 极限攻击流</option>
+                    </select>
+
+                    <span class="filter-label">副本：</span>
+                    <select id="filter-dungeon" class="filter-select" onchange="filterGrid()">
+                        <option value="ALL">全部副本</option>
+                        <option value="凌云T16">凌云T16</option>
+                        <option value="断浪T19">断浪T19</option>
+                        <option value="断浪T20">断浪T20</option>
+                        <option value="断浪T21">断浪T21</option>
+                        <option value="空桑困难">空桑困难</option>
+                    </select>
+
+                    <span class="filter-label">模式：</span>
+                    <select id="filter-mode" class="filter-select" onchange="filterGrid()">
+                        <option value="ALL">全部模式</option>
+                        <option value="长程持续模式">长程持续模式</option>
+                        <option value="秒怪爆发模式">秒怪爆发模式</option>
+                    </select>
+
+                    <input type="text" id="filter-search" class="search-input" placeholder="输入关键词搜索..." oninput="filterGrid()">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="standard-matrix-table" id="grid-table">
+                        <thead>
+                            <tr>
+                                <th class="th-left">阵营</th>
+                                <th class="th-left">面板梯队</th>
+                                <th class="th-left">副本场景</th>
+                                <th class="th-left">战斗模式</th>
+                                <th class="th-left">收益优先级排序</th>
+                                <th class="th-right">1%怪增等爆伤</th>
+                                <th class="th-right">1%怪增等攻击</th>
+                                <th class="th-right">1%怪增等气血</th>
+                                <th class="th-right">1%怪增等真气</th>
+                                <th class="th-right">基准总伤</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">18.1 pts</td>
+        <td class="num-cell nowrap-cell">2,814.3 点</td>
+        <td class="num-cell nowrap-cell">72,223.9 点</td>
+        <td class="num-cell nowrap-cell">40,862.7 点</td>
+        <td class="num-cell total-num nowrap-cell">711,345.74 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">18.1 pts</td>
+        <td class="num-cell nowrap-cell">3,238.6 点</td>
+        <td class="num-cell nowrap-cell">119,734.6 点</td>
+        <td class="num-cell nowrap-cell">32,975.0 点</td>
+        <td class="num-cell total-num nowrap-cell">711,345.74 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.2 pts</td>
+        <td class="num-cell nowrap-cell">2,815.8 点</td>
+        <td class="num-cell nowrap-cell">72,294.3 点</td>
+        <td class="num-cell nowrap-cell">40,860.9 点</td>
+        <td class="num-cell total-num nowrap-cell">561,128.16 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.3 pts</td>
+        <td class="num-cell nowrap-cell">3,238.6 点</td>
+        <td class="num-cell nowrap-cell">119,794.9 点</td>
+        <td class="num-cell nowrap-cell">32,971.3 点</td>
+        <td class="num-cell total-num nowrap-cell">561,128.16 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">12.3 pts</td>
+        <td class="num-cell nowrap-cell">2,815.9 点</td>
+        <td class="num-cell nowrap-cell">72,407.1 点</td>
+        <td class="num-cell nowrap-cell">40,846.6 点</td>
+        <td class="num-cell total-num nowrap-cell">486,019.37 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">12.4 pts</td>
+        <td class="num-cell nowrap-cell">3,239.9 点</td>
+        <td class="num-cell nowrap-cell">119,725.6 点</td>
+        <td class="num-cell nowrap-cell">32,964.3 点</td>
+        <td class="num-cell total-num nowrap-cell">486,019.37 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">11.4 pts</td>
+        <td class="num-cell nowrap-cell">2,816.2 点</td>
+        <td class="num-cell nowrap-cell">72,283.0 点</td>
+        <td class="num-cell nowrap-cell">40,835.6 点</td>
+        <td class="num-cell total-num nowrap-cell">448,464.97 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">11.4 pts</td>
+        <td class="num-cell nowrap-cell">3,238.7 点</td>
+        <td class="num-cell nowrap-cell">119,692.6 点</td>
+        <td class="num-cell nowrap-cell">32,972.1 点</td>
+        <td class="num-cell total-num nowrap-cell">448,464.97 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">11.4 pts</td>
+        <td class="num-cell nowrap-cell">2,816.2 点</td>
+        <td class="num-cell nowrap-cell">72,283.0 点</td>
+        <td class="num-cell nowrap-cell">40,835.6 点</td>
+        <td class="num-cell total-num nowrap-cell">448,464.97 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T1_平民入门" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">11.4 pts</td>
+        <td class="num-cell nowrap-cell">3,238.7 点</td>
+        <td class="num-cell nowrap-cell">119,692.6 点</td>
+        <td class="num-cell nowrap-cell">32,972.1 点</td>
+        <td class="num-cell total-num nowrap-cell">448,464.97 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.0 pts</td>
+        <td class="num-cell nowrap-cell">4,660.8 点</td>
+        <td class="num-cell nowrap-cell">119,677.2 点</td>
+        <td class="num-cell nowrap-cell">67,728.4 点</td>
+        <td class="num-cell total-num nowrap-cell">1,970,037.60 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.0 pts</td>
+        <td class="num-cell nowrap-cell">5,271.8 点</td>
+        <td class="num-cell nowrap-cell">194,740.1 点</td>
+        <td class="num-cell nowrap-cell">53,668.4 点</td>
+        <td class="num-cell total-num nowrap-cell">1,970,037.60 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.6 pts</td>
+        <td class="num-cell nowrap-cell">4,661.7 点</td>
+        <td class="num-cell nowrap-cell">119,633.7 点</td>
+        <td class="num-cell nowrap-cell">67,698.4 点</td>
+        <td class="num-cell total-num nowrap-cell">1,640,870.79 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.7 pts</td>
+        <td class="num-cell nowrap-cell">5,271.4 点</td>
+        <td class="num-cell nowrap-cell">194,835.9 点</td>
+        <td class="num-cell nowrap-cell">53,667.2 点</td>
+        <td class="num-cell total-num nowrap-cell">1,640,870.79 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.0 pts</td>
+        <td class="num-cell nowrap-cell">4,661.9 点</td>
+        <td class="num-cell nowrap-cell">119,691.0 点</td>
+        <td class="num-cell nowrap-cell">67,706.6 点</td>
+        <td class="num-cell total-num nowrap-cell">1,476,287.39 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.0 pts</td>
+        <td class="num-cell nowrap-cell">5,272.2 点</td>
+        <td class="num-cell nowrap-cell">194,731.2 点</td>
+        <td class="num-cell nowrap-cell">53,668.1 点</td>
+        <td class="num-cell total-num nowrap-cell">1,476,287.39 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.1 pts</td>
+        <td class="num-cell nowrap-cell">4,663.3 点</td>
+        <td class="num-cell nowrap-cell">119,692.6 点</td>
+        <td class="num-cell nowrap-cell">67,700.5 点</td>
+        <td class="num-cell total-num nowrap-cell">1,393,995.69 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.2 pts</td>
+        <td class="num-cell nowrap-cell">5,272.8 点</td>
+        <td class="num-cell nowrap-cell">194,737.5 点</td>
+        <td class="num-cell nowrap-cell">53,675.0 点</td>
+        <td class="num-cell total-num nowrap-cell">1,393,995.69 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.1 pts</td>
+        <td class="num-cell nowrap-cell">4,663.3 点</td>
+        <td class="num-cell nowrap-cell">119,692.6 点</td>
+        <td class="num-cell nowrap-cell">67,700.5 点</td>
+        <td class="num-cell total-num nowrap-cell">1,393,995.69 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T2_中坚进阶" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.2 pts</td>
+        <td class="num-cell nowrap-cell">5,272.8 点</td>
+        <td class="num-cell nowrap-cell">194,737.5 点</td>
+        <td class="num-cell nowrap-cell">53,675.0 点</td>
+        <td class="num-cell total-num nowrap-cell">1,393,995.69 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.0 pts</td>
+        <td class="num-cell nowrap-cell">6,058.7 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">88,054.1 点</td>
+        <td class="num-cell total-num nowrap-cell">4,531,983.02 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.0 pts</td>
+        <td class="num-cell nowrap-cell">6,826.2 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">69,503.6 点</td>
+        <td class="num-cell total-num nowrap-cell">4,531,983.02 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.2 pts</td>
+        <td class="num-cell nowrap-cell">6,059.0 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">88,054.6 点</td>
+        <td class="num-cell total-num nowrap-cell">3,905,569.07 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.2 pts</td>
+        <td class="num-cell nowrap-cell">6,826.4 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">69,495.8 点</td>
+        <td class="num-cell total-num nowrap-cell">3,905,569.07 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.8 pts</td>
+        <td class="num-cell nowrap-cell">6,058.9 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">88,041.5 点</td>
+        <td class="num-cell total-num nowrap-cell">3,592,362.09 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.9 pts</td>
+        <td class="num-cell nowrap-cell">6,827.0 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">69,499.9 点</td>
+        <td class="num-cell total-num nowrap-cell">3,592,362.09 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.1 pts</td>
+        <td class="num-cell nowrap-cell">6,058.6 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">88,006.8 点</td>
+        <td class="num-cell total-num nowrap-cell">3,435,758.60 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.2 pts</td>
+        <td class="num-cell nowrap-cell">6,826.8 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">69,500.6 点</td>
+        <td class="num-cell total-num nowrap-cell">3,435,758.60 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.1 pts</td>
+        <td class="num-cell nowrap-cell">6,058.6 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">88,006.8 点</td>
+        <td class="num-cell total-num nowrap-cell">3,435,758.60 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T3_毕业高端" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.2 pts</td>
+        <td class="num-cell nowrap-cell">6,826.8 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">69,500.6 点</td>
+        <td class="num-cell total-num nowrap-cell">3,435,758.60 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">19.2 pts</td>
+        <td class="num-cell nowrap-cell">5,472.3 点</td>
+        <td class="num-cell nowrap-cell">140,472.5 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,708,168.50 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">19.2 pts</td>
+        <td class="num-cell nowrap-cell">6,601.6 点</td>
+        <td class="num-cell nowrap-cell">243,927.7 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,708,168.50 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.1 pts</td>
+        <td class="num-cell nowrap-cell">5,473.0 点</td>
+        <td class="num-cell nowrap-cell">140,451.5 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,273,991.55 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.1 pts</td>
+        <td class="num-cell nowrap-cell">6,600.9 点</td>
+        <td class="num-cell nowrap-cell">243,938.5 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,273,991.55 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.6 pts</td>
+        <td class="num-cell nowrap-cell">5,473.4 点</td>
+        <td class="num-cell nowrap-cell">140,577.4 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,056,903.08 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.6 pts</td>
+        <td class="num-cell nowrap-cell">6,601.5 点</td>
+        <td class="num-cell nowrap-cell">243,881.9 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,056,903.08 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">13.8 pts</td>
+        <td class="num-cell nowrap-cell">5,474.7 点</td>
+        <td class="num-cell nowrap-cell">140,535.9 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">1,948,358.85 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">13.8 pts</td>
+        <td class="num-cell nowrap-cell">6,602.3 点</td>
+        <td class="num-cell nowrap-cell">243,916.2 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">1,948,358.85 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">13.8 pts</td>
+        <td class="num-cell nowrap-cell">5,474.7 点</td>
+        <td class="num-cell nowrap-cell">140,535.9 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">1,948,358.85 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T4_极限真气流" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">13.8 pts</td>
+        <td class="num-cell nowrap-cell">6,602.3 点</td>
+        <td class="num-cell nowrap-cell">243,916.2 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">1,948,358.85 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.7 pts</td>
+        <td class="num-cell nowrap-cell">5,245.3 点</td>
+        <td class="num-cell nowrap-cell">134,589.8 点</td>
+        <td class="num-cell nowrap-cell">76,231.5 点</td>
+        <td class="num-cell total-num nowrap-cell">3,737,375.57 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.7 pts</td>
+        <td class="num-cell nowrap-cell">5,621.6 点</td>
+        <td class="num-cell nowrap-cell">207,642.2 点</td>
+        <td class="num-cell nowrap-cell">57,234.8 点</td>
+        <td class="num-cell total-num nowrap-cell">3,737,375.57 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.8 pts</td>
+        <td class="num-cell nowrap-cell">5,245.4 点</td>
+        <td class="num-cell nowrap-cell">134,601.8 点</td>
+        <td class="num-cell nowrap-cell">76,217.9 点</td>
+        <td class="num-cell total-num nowrap-cell">3,220,583.58 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.9 pts</td>
+        <td class="num-cell nowrap-cell">5,621.8 点</td>
+        <td class="num-cell nowrap-cell">207,783.1 点</td>
+        <td class="num-cell nowrap-cell">57,240.1 点</td>
+        <td class="num-cell total-num nowrap-cell">3,220,583.58 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.4 pts</td>
+        <td class="num-cell nowrap-cell">5,246.2 点</td>
+        <td class="num-cell nowrap-cell">134,695.5 点</td>
+        <td class="num-cell nowrap-cell">76,223.8 点</td>
+        <td class="num-cell total-num nowrap-cell">2,962,187.59 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.4 pts</td>
+        <td class="num-cell nowrap-cell">5,621.9 点</td>
+        <td class="num-cell nowrap-cell">207,707.4 点</td>
+        <td class="num-cell nowrap-cell">57,231.4 点</td>
+        <td class="num-cell total-num nowrap-cell">2,962,187.59 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.7 pts</td>
+        <td class="num-cell nowrap-cell">5,245.9 点</td>
+        <td class="num-cell nowrap-cell">134,658.8 点</td>
+        <td class="num-cell nowrap-cell">76,205.0 点</td>
+        <td class="num-cell total-num nowrap-cell">2,832,989.59 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.7 pts</td>
+        <td class="num-cell nowrap-cell">5,622.1 点</td>
+        <td class="num-cell nowrap-cell">207,666.5 点</td>
+        <td class="num-cell nowrap-cell">57,233.6 点</td>
+        <td class="num-cell total-num nowrap-cell">2,832,989.59 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.7 pts</td>
+        <td class="num-cell nowrap-cell">5,245.9 点</td>
+        <td class="num-cell nowrap-cell">134,658.8 点</td>
+        <td class="num-cell nowrap-cell">76,205.0 点</td>
+        <td class="num-cell total-num nowrap-cell">2,832,989.59 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="仙" data-tier="T5_极限攻击流" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">仙逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.7 pts</td>
+        <td class="num-cell nowrap-cell">5,622.1 点</td>
+        <td class="num-cell nowrap-cell">207,666.5 点</td>
+        <td class="num-cell nowrap-cell">57,233.6 点</td>
+        <td class="num-cell total-num nowrap-cell">2,832,989.59 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.9 pts</td>
+        <td class="num-cell nowrap-cell">2,299.4 点</td>
+        <td class="num-cell nowrap-cell">32,978.5 点</td>
+        <td class="num-cell nowrap-cell">97,869.0 点</td>
+        <td class="num-cell total-num nowrap-cell">746,165.38 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">18.1 pts</td>
+        <td class="num-cell nowrap-cell">2,771.1 点</td>
+        <td class="num-cell nowrap-cell">27,526.0 点</td>
+        <td class="num-cell nowrap-cell">93,787.2 点</td>
+        <td class="num-cell total-num nowrap-cell">746,165.38 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.1 pts</td>
+        <td class="num-cell nowrap-cell">2,299.2 点</td>
+        <td class="num-cell nowrap-cell">32,948.3 点</td>
+        <td class="num-cell nowrap-cell">98,080.2 点</td>
+        <td class="num-cell total-num nowrap-cell">587,793.63 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.2 pts</td>
+        <td class="num-cell nowrap-cell">2,771.3 点</td>
+        <td class="num-cell nowrap-cell">27,524.1 点</td>
+        <td class="num-cell nowrap-cell">93,922.8 点</td>
+        <td class="num-cell total-num nowrap-cell">587,793.63 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">12.2 pts</td>
+        <td class="num-cell nowrap-cell">2,300.5 点</td>
+        <td class="num-cell nowrap-cell">32,925.5 点</td>
+        <td class="num-cell nowrap-cell">98,014.6 点</td>
+        <td class="num-cell total-num nowrap-cell">508,607.76 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">12.3 pts</td>
+        <td class="num-cell nowrap-cell">2,772.1 点</td>
+        <td class="num-cell nowrap-cell">27,510.2 点</td>
+        <td class="num-cell nowrap-cell">93,974.0 点</td>
+        <td class="num-cell total-num nowrap-cell">508,607.76 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">11.3 pts</td>
+        <td class="num-cell nowrap-cell">2,300.4 点</td>
+        <td class="num-cell nowrap-cell">32,938.3 点</td>
+        <td class="num-cell nowrap-cell">98,291.4 点</td>
+        <td class="num-cell total-num nowrap-cell">469,014.82 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">11.4 pts</td>
+        <td class="num-cell nowrap-cell">2,771.5 点</td>
+        <td class="num-cell nowrap-cell">27,511.0 点</td>
+        <td class="num-cell nowrap-cell">93,963.8 点</td>
+        <td class="num-cell total-num nowrap-cell">469,014.82 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">11.3 pts</td>
+        <td class="num-cell nowrap-cell">2,300.4 点</td>
+        <td class="num-cell nowrap-cell">32,938.3 点</td>
+        <td class="num-cell nowrap-cell">98,291.4 点</td>
+        <td class="num-cell total-num nowrap-cell">469,014.82 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T1_平民入门" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T1_平民入门</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">11.4 pts</td>
+        <td class="num-cell nowrap-cell">2,771.5 点</td>
+        <td class="num-cell nowrap-cell">27,511.0 点</td>
+        <td class="num-cell nowrap-cell">93,963.8 点</td>
+        <td class="num-cell total-num nowrap-cell">469,014.82 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">19.9 pts</td>
+        <td class="num-cell nowrap-cell">3,977.9 点</td>
+        <td class="num-cell nowrap-cell">57,051.2 点</td>
+        <td class="num-cell nowrap-cell">169,095.1 点</td>
+        <td class="num-cell total-num nowrap-cell">2,113,486.39 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.0 pts</td>
+        <td class="num-cell nowrap-cell">4,800.4 点</td>
+        <td class="num-cell nowrap-cell">47,707.3 点</td>
+        <td class="num-cell nowrap-cell">162,539.5 点</td>
+        <td class="num-cell total-num nowrap-cell">2,113,486.39 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.6 pts</td>
+        <td class="num-cell nowrap-cell">3,978.1 点</td>
+        <td class="num-cell nowrap-cell">57,040.4 点</td>
+        <td class="num-cell nowrap-cell">169,352.2 点</td>
+        <td class="num-cell total-num nowrap-cell">1,758,987.97 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.6 pts</td>
+        <td class="num-cell nowrap-cell">4,800.5 点</td>
+        <td class="num-cell nowrap-cell">47,708.2 点</td>
+        <td class="num-cell nowrap-cell">162,569.8 点</td>
+        <td class="num-cell total-num nowrap-cell">1,758,987.97 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.9 pts</td>
+        <td class="num-cell nowrap-cell">3,978.0 点</td>
+        <td class="num-cell nowrap-cell">57,027.1 点</td>
+        <td class="num-cell nowrap-cell">169,333.3 点</td>
+        <td class="num-cell total-num nowrap-cell">1,581,738.76 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.0 pts</td>
+        <td class="num-cell nowrap-cell">4,800.7 点</td>
+        <td class="num-cell nowrap-cell">47,702.2 点</td>
+        <td class="num-cell nowrap-cell">162,533.6 点</td>
+        <td class="num-cell total-num nowrap-cell">1,581,738.76 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.1 pts</td>
+        <td class="num-cell nowrap-cell">3,977.9 点</td>
+        <td class="num-cell nowrap-cell">56,994.5 点</td>
+        <td class="num-cell nowrap-cell">169,318.2 点</td>
+        <td class="num-cell total-num nowrap-cell">1,493,114.15 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.1 pts</td>
+        <td class="num-cell nowrap-cell">4,800.5 点</td>
+        <td class="num-cell nowrap-cell">47,690.9 点</td>
+        <td class="num-cell nowrap-cell">162,616.2 点</td>
+        <td class="num-cell total-num nowrap-cell">1,493,114.15 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.1 pts</td>
+        <td class="num-cell nowrap-cell">3,977.9 点</td>
+        <td class="num-cell nowrap-cell">56,994.5 点</td>
+        <td class="num-cell nowrap-cell">169,318.2 点</td>
+        <td class="num-cell total-num nowrap-cell">1,493,114.15 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T2_中坚进阶" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T2_中坚进阶</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.1 pts</td>
+        <td class="num-cell nowrap-cell">4,800.5 点</td>
+        <td class="num-cell nowrap-cell">47,690.9 点</td>
+        <td class="num-cell nowrap-cell">162,616.2 点</td>
+        <td class="num-cell total-num nowrap-cell">1,493,114.15 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">19.9 pts</td>
+        <td class="num-cell nowrap-cell">5,218.3 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">221,624.9 点</td>
+        <td class="num-cell total-num nowrap-cell">4,886,973.21 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.0 pts</td>
+        <td class="num-cell nowrap-cell">6,296.4 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">213,033.3 点</td>
+        <td class="num-cell total-num nowrap-cell">4,886,973.21 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.1 pts</td>
+        <td class="num-cell nowrap-cell">5,217.9 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">221,819.8 点</td>
+        <td class="num-cell total-num nowrap-cell">4,209,354.44 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.2 pts</td>
+        <td class="num-cell nowrap-cell">6,296.5 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">213,078.0 点</td>
+        <td class="num-cell total-num nowrap-cell">4,209,354.44 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.8 pts</td>
+        <td class="num-cell nowrap-cell">5,218.7 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">221,840.7 点</td>
+        <td class="num-cell total-num nowrap-cell">3,870,545.05 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.8 pts</td>
+        <td class="num-cell nowrap-cell">6,296.5 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">213,223.5 点</td>
+        <td class="num-cell total-num nowrap-cell">3,870,545.05 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.1 pts</td>
+        <td class="num-cell nowrap-cell">5,218.1 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">222,019.7 点</td>
+        <td class="num-cell total-num nowrap-cell">3,701,140.35 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.1 pts</td>
+        <td class="num-cell nowrap-cell">6,297.0 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">213,139.4 点</td>
+        <td class="num-cell total-num nowrap-cell">3,701,140.35 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.1 pts</td>
+        <td class="num-cell nowrap-cell">5,218.1 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">222,019.7 点</td>
+        <td class="num-cell total-num nowrap-cell">3,701,140.35 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T3_毕业高端" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T3_毕业高端</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.1 pts</td>
+        <td class="num-cell nowrap-cell">6,297.0 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell nowrap-cell">213,139.4 点</td>
+        <td class="num-cell total-num nowrap-cell">3,701,140.35 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">19.1 pts</td>
+        <td class="num-cell nowrap-cell">3,971.2 点</td>
+        <td class="num-cell nowrap-cell">56,957.2 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,689,346.34 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">19.2 pts</td>
+        <td class="num-cell nowrap-cell">4,845.3 点</td>
+        <td class="num-cell nowrap-cell">48,165.4 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,689,346.34 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.0 pts</td>
+        <td class="num-cell nowrap-cell">3,970.1 点</td>
+        <td class="num-cell nowrap-cell">56,927.8 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,256,356.45 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.1 pts</td>
+        <td class="num-cell nowrap-cell">4,844.6 点</td>
+        <td class="num-cell nowrap-cell">48,156.5 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,256,356.45 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.5 pts</td>
+        <td class="num-cell nowrap-cell">3,969.9 点</td>
+        <td class="num-cell nowrap-cell">56,899.0 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,039,861.50 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">14.6 pts</td>
+        <td class="num-cell nowrap-cell">4,844.8 点</td>
+        <td class="num-cell nowrap-cell">48,142.6 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">2,039,861.50 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">13.7 pts</td>
+        <td class="num-cell nowrap-cell">3,969.8 点</td>
+        <td class="num-cell nowrap-cell">56,908.1 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">1,931,614.02 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">13.8 pts</td>
+        <td class="num-cell nowrap-cell">4,845.6 点</td>
+        <td class="num-cell nowrap-cell">48,140.8 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">1,931,614.02 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">13.7 pts</td>
+        <td class="num-cell nowrap-cell">3,969.8 点</td>
+        <td class="num-cell nowrap-cell">56,908.1 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">1,931,614.02 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T4_极限真气流" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T4_极限真气流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">13.8 pts</td>
+        <td class="num-cell nowrap-cell">4,845.6 点</td>
+        <td class="num-cell nowrap-cell">48,140.8 点</td>
+        <td class="num-cell nowrap-cell">无收益/不适用</td>
+        <td class="num-cell total-num nowrap-cell">1,931,614.02 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="凌云T16" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.6 pts</td>
+        <td class="num-cell nowrap-cell">4,932.0 点</td>
+        <td class="num-cell nowrap-cell">70,767.2 点</td>
+        <td class="num-cell nowrap-cell">209,630.7 点</td>
+        <td class="num-cell total-num nowrap-cell">4,181,505.67 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="凌云T16" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">凌云T16</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">20.7 pts</td>
+        <td class="num-cell nowrap-cell">5,724.8 点</td>
+        <td class="num-cell nowrap-cell">56,919.0 点</td>
+        <td class="num-cell nowrap-cell">193,758.2 点</td>
+        <td class="num-cell total-num nowrap-cell">4,181,505.67 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="断浪T19" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.8 pts</td>
+        <td class="num-cell nowrap-cell">4,932.7 点</td>
+        <td class="num-cell nowrap-cell">70,747.3 点</td>
+        <td class="num-cell nowrap-cell">209,773.7 点</td>
+        <td class="num-cell total-num nowrap-cell">3,601,595.49 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="断浪T19" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T19</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">17.8 pts</td>
+        <td class="num-cell nowrap-cell">5,725.0 点</td>
+        <td class="num-cell nowrap-cell">56,910.0 点</td>
+        <td class="num-cell nowrap-cell">193,805.9 点</td>
+        <td class="num-cell total-num nowrap-cell">3,601,595.49 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="断浪T20" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.3 pts</td>
+        <td class="num-cell nowrap-cell">4,931.7 点</td>
+        <td class="num-cell nowrap-cell">70,747.0 点</td>
+        <td class="num-cell nowrap-cell">209,810.3 点</td>
+        <td class="num-cell total-num nowrap-cell">3,311,640.40 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="断浪T20" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T20</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">16.4 pts</td>
+        <td class="num-cell nowrap-cell">5,725.4 点</td>
+        <td class="num-cell nowrap-cell">56,911.2 点</td>
+        <td class="num-cell nowrap-cell">193,864.3 点</td>
+        <td class="num-cell total-num nowrap-cell">3,311,640.40 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="断浪T21" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.6 pts</td>
+        <td class="num-cell nowrap-cell">4,932.9 点</td>
+        <td class="num-cell nowrap-cell">70,721.3 点</td>
+        <td class="num-cell nowrap-cell">209,774.8 点</td>
+        <td class="num-cell total-num nowrap-cell">3,166,662.85 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="断浪T21" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">断浪T21</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.7 pts</td>
+        <td class="num-cell nowrap-cell">5,725.6 点</td>
+        <td class="num-cell nowrap-cell">56,904.6 点</td>
+        <td class="num-cell nowrap-cell">193,709.0 点</td>
+        <td class="num-cell total-num nowrap-cell">3,166,662.85 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="空桑困难" data-mode="长程持续模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#38bdf8; font-weight:600;">长程持续模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 攻击 > 气血 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.6 pts</td>
+        <td class="num-cell nowrap-cell">4,932.9 点</td>
+        <td class="num-cell nowrap-cell">70,721.3 点</td>
+        <td class="num-cell nowrap-cell">209,774.8 点</td>
+        <td class="num-cell total-num nowrap-cell">3,166,662.85 万</td>
+    </tr>
+    
+    <tr class="grid-row" data-faction="魔" data-tier="T5_极限攻击流" data-dungeon="空桑困难" data-mode="秒怪爆发模式">
+        <td class="text-left-cell nowrap-cell">魔逐霜</td>
+        <td class="nowrap-cell">T5_极限攻击流</td>
+        <td class="nowrap-cell" style="color:#94a3b8;">空桑困难</td>
+        <td class="nowrap-cell" style="color:#34d399; font-weight:600;">秒怪爆发模式</td>
+        <td class="nowrap-cell" style="font-weight:600;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+        <td class="num-cell nowrap-cell" style="color:#38bdf8;">15.7 pts</td>
+        <td class="num-cell nowrap-cell">5,725.6 点</td>
+        <td class="num-cell nowrap-cell">56,904.6 点</td>
+        <td class="num-cell nowrap-cell">193,709.0 点</td>
+        <td class="num-cell total-num nowrap-cell">3,166,662.85 万</td>
+    </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: 决策指南 -->
+        <div id="tab-guide" class="tab-pane" style="display: none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-line" style="background: var(--accent-emerald);"></span>
+                        玩家洗练与配装决策指南
+                    </div>
+                    <div class="section-unit">针对不同场景与职业流派的实战建议</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+                    <div class="decision-box" style="margin-top: 0; border-left-color: #f43f5e;">
+                        <div class="decision-title" style="color: #f43f5e;">魔逐霜（血煞流）洗练策略</div>
+                        <div class="decision-text">
+                            * <strong>打秒怪短轴本（空桑困难 / 四象七）</strong>：全力洗【对怪增伤】与【气血】。气血在苍龙煞与银鳞玄冰下的爆发转化率超越纯攻击！<br>
+                            * <strong>打长轴竞速本（T19~T21）</strong>：不可偏废【攻击力】，山雨高频多段极其依赖攻击力基础。
+                        </div>
+                    </div>
+
+                    <div class="decision-box" style="margin-top: 0; border-left-color: #38bdf8;">
+                        <div class="decision-title" style="color: #38bdf8;">仙逐霜（玄龙流）洗练策略</div>
+                        <div class="decision-text">
+                            * <strong>秒怪爆发模式</strong>：真气池是绝对斩杀线保障，秒怪模式下 1点真气收益比长程提高 43%（注意避免超过单次消耗上限）；<br>
+                            * <strong>高阶高减免本（T20/T21）</strong>：自身爆伤低于 2400% 时，提升爆伤的性价比显著高于攻击力。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            诛仙3 多维网格仿真分析报告 · 遵循严格排版与防折行标准
+        </footer>
+    </div>
+
+    <script>
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            const target = document.getElementById(tabId);
+            if (target) target.style.display = 'block';
+            if (btn) btn.classList.add('active');
+        }
+
+        function filterGrid() {
+            const fFaction = document.getElementById('filter-faction').value;
+            const fTier = document.getElementById('filter-tier').value;
+            const fDungeon = document.getElementById('filter-dungeon').value;
+            const fMode = document.getElementById('filter-mode').value;
+            const search = document.getElementById('filter-search').value.toLowerCase();
+
+            const rows = document.querySelectorAll('.grid-row');
+            rows.forEach(row => {
+                const faction = row.getAttribute('data-faction');
+                const tier = row.getAttribute('data-tier');
+                const dungeon = row.getAttribute('data-dungeon');
+                const mode = row.getAttribute('data-mode');
+                const text = row.innerText.toLowerCase();
+
+                let show = true;
+                if (fFaction !== 'ALL' && faction !== fFaction) show = false;
+                if (fTier !== 'ALL' && tier !== fTier) show = false;
+                if (fDungeon !== 'ALL' && dungeon !== fDungeon) show = false;
+                if (fMode !== 'ALL' && mode !== fMode) show = false;
+                if (search && !text.includes(search)) show = false;
+
+                row.style.display = show ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
