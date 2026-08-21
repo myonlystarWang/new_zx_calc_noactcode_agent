@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小贝贝 - 诛仙3 伤害边际分析报告</title>
+    <style>
+        :root {
+            --bg-base: #0a0e17;
+            --bg-card: rgba(18, 26, 43, 0.75);
+            --bg-card-border: rgba(255, 255, 255, 0.08);
+            --bg-card-hover: rgba(26, 38, 64, 0.9);
+            --text-main: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.25);
+            --accent-purple: #a855f7;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --table-border: rgba(255, 255, 255, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.6;
+            padding: 32px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 16px;
+            padding: 28px 32px;
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .hero-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .player-title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            letter-spacing: 0.2px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .badge-class {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .badge-dungeon {
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .badge-mode {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .hero-sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .hero-right {
+            text-align: right;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px 20px;
+            border-radius: 12px;
+        }
+
+        .hero-right-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-right-val {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 14px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .metric-priority {
+            color: #38bdf8;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--table-border);
+            padding-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title-line {
+            width: 4px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .section-unit {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--table-border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        .skill-row:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .skill-name-cell {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .weight-cell {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .sub-row {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .sub-row:hover {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .sub-name-cell {
+            color: var(--text-muted);
+            padding-left: 28px;
+            font-size: 13px;
+        }
+
+        .sub-icon {
+            color: var(--text-muted);
+            margin-right: 4px;
+        }
+
+        .num-cell {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            color: #e2e8f0;
+        }
+
+        .sub-num {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .total-row {
+            background: rgba(56, 189, 248, 0.06);
+            font-weight: 700;
+            border-top: 2px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .total-title {
+            color: #38bdf8;
+            font-size: 15px;
+        }
+
+        .total-weight {
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        .total-num {
+            color: #38bdf8;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .conv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+        }
+
+        .conv-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--table-border);
+            border-radius: 12px;
+            padding: 18px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .conv-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .conv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .conv-tag {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .conv-attr {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .conv-body {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .conv-val {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .conv-unit {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .decision-box {
+            background: rgba(56, 189, 248, 0.04);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 12px 12px 0;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .decision-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+
+        .decision-text {
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 36px;
+            padding-top: 16px;
+            border-top: 1px solid var(--table-border);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <div class="hero-left">
+                <div class="hero-title-wrap">
+                    <span class="player-title">小贝贝</span>
+                    <span class="badge badge-class">逐霜 · 仙</span>
+                    <span class="badge badge-dungeon">T19</span>
+                    <span class="badge badge-mode">秒怪爆发加权</span>
+                </div>
+                <div class="hero-sub">生成时间：2026-08-21T11:12:35.429313 ｜ 计算引擎：agent_tool 2.0</div>
+            </div>
+            <div class="hero-right">
+                <div class="hero-right-label">基准总伤</div>
+                <div class="hero-right-val">584,897.25 万</div>
+            </div>
+        </header>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">属性收益优先级</div>
+                <div class="metric-value metric-priority">怪增 > 爆伤 > 攻击 > 真气 > 气血</div>
+                <div class="metric-sub">按边际收益降序排列</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">首要核心技能</div>
+                <div class="metric-value">苍龙啸·玄</div>
+                <div class="metric-sub">占比 69.0% ｜ 基准 161,339.32 万</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">无效/低效属性</div>
+                <div class="metric-value" style="color: #94a3b8;">防御</div>
+                <div class="metric-sub">收益为 0 的属性维度</div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title">
+                    <span class="section-title-line"></span>
+                    标准 6 维边际贡献矩阵
+                </div>
+                <div class="section-unit">单位：万伤害</div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>技能名称</th>
+                            <th class='text-center'>归一权重</th>
+                            <th>爆伤 (+1)</th><th>攻击 (+100)</th><th>气血 (+1K)</th><th>真气 (+1K)</th><th>防御 (+1K)</th><th>怪增 (+0.1%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>苍龙啸·玄</td>
+            <td class='text-center weight-cell'>69.0%</td>
+            <td class='num-cell'>74.10</td><td class='num-cell'>31.48</td><td class='num-cell'>0.00</td><td class='num-cell'>36.11</td><td class='num-cell'>0.00</td><td class='num-cell'>105.97</td>
+        </tr>
+        
+            <tr class='sub-row'>
+                <td class='sub-name-cell'><span class='sub-icon'>└─</span> 第1段</td>
+                <td class='text-center text-muted'>-</td>
+                <td class='num-cell sub-num'>6.88</td><td class='num-cell sub-num'>3.50</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>3.09</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>9.84</td>
+            </tr>
+            
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>银鳞玄冰</td>
+            <td class='text-center weight-cell'>17.2%</td>
+            <td class='num-cell'>27.28</td><td class='num-cell'>9.03</td><td class='num-cell'>9.26</td><td class='num-cell'>9.26</td><td class='num-cell'>0.00</td><td class='num-cell'>39.02</td>
+        </tr>
+        
+            <tr class='sub-row'>
+                <td class='sub-name-cell'><span class='sub-icon'>└─</span> 第1段</td>
+                <td class='text-center text-muted'>-</td>
+                <td class='num-cell sub-num'>3.03</td><td class='num-cell sub-num'>1.00</td><td class='num-cell sub-num'>1.03</td><td class='num-cell sub-num'>1.03</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>4.34</td>
+            </tr>
+            
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>山雨欲来III</td>
+            <td class='text-center weight-cell'>8.6%</td>
+            <td class='num-cell'>4.22</td><td class='num-cell'>3.83</td><td class='num-cell'>2.01</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>6.05</td>
+        </tr>
+        
+            <tr class='sub-row'>
+                <td class='sub-name-cell'><span class='sub-icon'>└─</span> 第1段</td>
+                <td class='text-center text-muted'>-</td>
+                <td class='num-cell sub-num'>0.70</td><td class='num-cell sub-num'>0.64</td><td class='num-cell sub-num'>0.34</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>1.01</td>
+            </tr>
+            
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>苍龙啸</td>
+            <td class='text-center weight-cell'>5.2%</td>
+            <td class='num-cell'>2.95</td><td class='num-cell'>2.12</td><td class='num-cell'>1.30</td><td class='num-cell'>0.27</td><td class='num-cell'>0.00</td><td class='num-cell'>4.16</td>
+        </tr>
+        
+            <tr class='sub-row'>
+                <td class='sub-name-cell'><span class='sub-icon'>└─</span> 第1段</td>
+                <td class='text-center text-muted'>-</td>
+                <td class='num-cell sub-num'>0.27</td><td class='num-cell sub-num'>0.24</td><td class='num-cell sub-num'>0.08</td><td class='num-cell sub-num'>0.03</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>0.38</td>
+            </tr>
+            
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>鹰扬折冲·玄</td>
+            <td class='text-center weight-cell'>0.0%</td>
+            <td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td>
+        </tr>
+        
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>临渊敛爪</td>
+            <td class='text-center weight-cell'>0.0%</td>
+            <td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td>
+        </tr>
+        
+            <tr class='sub-row'>
+                <td class='sub-name-cell'><span class='sub-icon'>└─</span> 第1段</td>
+                <td class='text-center text-muted'>-</td>
+                <td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>0.00</td><td class='num-cell sub-num'>0.00</td>
+            </tr>
+            
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>鹰扬折冲</td>
+            <td class='text-center weight-cell'>0.0%</td>
+            <td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td>
+        </tr>
+        
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>龙战于野</td>
+            <td class='text-center weight-cell'>0.0%</td>
+            <td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td>
+        </tr>
+        
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>枕戈待旦</td>
+            <td class='text-center weight-cell'>0.0%</td>
+            <td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td>
+        </tr>
+        
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>清啸横朔</td>
+            <td class='text-center weight-cell'>0.0%</td>
+            <td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td>
+        </tr>
+        
+        <tr class='skill-row'>
+            <td class='skill-name-cell'>云蒸霞蔚</td>
+            <td class='text-center weight-cell'>0.0%</td>
+            <td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td><td class='num-cell'>0.00</td>
+        </tr>
+        
+    <tr class='total-row'>
+        <td class='total-title'>合计</td>
+        <td class='text-center total-weight'>100.0%</td>
+        <td class='num-cell total-num'>108.55</td><td class='num-cell total-num'>46.46</td><td class='num-cell total-num'>12.57</td><td class='num-cell total-num'>45.64</td><td class='num-cell total-num'>0.00</td><td class='num-cell total-num'>155.20</td>
+    </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header">
+                <div class="section-title">
+                    <span class="section-title-line" style="background: var(--accent-purple);"></span>
+                    属性等值换算（以 1% 对怪增伤为基准锚点）
+                </div>
+                <div class="section-unit">用于指导词条/属性洗练与选择</div>
+            </div>
+            <div class="conv-grid">
+                
+        <div class='conv-card bg-cyan'>
+            <div class='conv-header'>
+                <span class='conv-tag'>1% 对怪增伤等价</span>
+                <span class='conv-attr'>爆伤</span>
+            </div>
+            <div class='conv-body'>
+                <div class='conv-val'>14.3</div>
+                <div class='conv-unit'>pts</div>
+            </div>
+        </div>
+        
+        <div class='conv-card bg-blue'>
+            <div class='conv-header'>
+                <span class='conv-tag'>1% 对怪增伤等价</span>
+                <span class='conv-attr'>攻击</span>
+            </div>
+            <div class='conv-body'>
+                <div class='conv-val'>3,340.5</div>
+                <div class='conv-unit'>点</div>
+            </div>
+        </div>
+        
+        <div class='conv-card bg-emerald'>
+            <div class='conv-header'>
+                <span class='conv-tag'>1% 对怪增伤等价</span>
+                <span class='conv-attr'>气血</span>
+            </div>
+            <div class='conv-body'>
+                <div class='conv-val'>123,468.6</div>
+                <div class='conv-unit'>点</div>
+            </div>
+        </div>
+        
+        <div class='conv-card bg-purple'>
+            <div class='conv-header'>
+                <span class='conv-tag'>1% 对怪增伤等价</span>
+                <span class='conv-attr'>真气</span>
+            </div>
+            <div class='conv-body'>
+                <div class='conv-val'>34,005.3</div>
+                <div class='conv-unit'>点</div>
+            </div>
+        </div>
+        
+        <div class='conv-card bg-amber'>
+            <div class='conv-header'>
+                <span class='conv-tag'>1% 对怪增伤等价</span>
+                <span class='conv-attr'>防御</span>
+            </div>
+            <div class='conv-body'>
+                <div class='conv-val'>无收益/不适用</div>
+                <div class='conv-unit'></div>
+            </div>
+        </div>
+        
+            </div>
+            <div class="decision-box">
+                <div class="decision-title">优化建议与决策总结</div>
+                <div class="decision-text">
+                    根据 秒怪爆发加权 模拟，建议配装与属性洗练优先确保 <strong>怪增</strong> 最大化。对于核心技能【苍龙啸·玄】，提升 1% 怪增等价于提升约 <strong>3340.5 攻击</strong> 或 <strong>14.3 爆伤</strong>。
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            诛仙3 伤害分析报告 · 由 zhuxian-damage-analysis Skill 自动生成
+        </footer>
+    </div>
+</body>
+</html>
