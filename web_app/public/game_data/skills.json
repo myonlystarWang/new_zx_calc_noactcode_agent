@@ -1116,7 +1116,7 @@
           "SkillAttackFixedBonus": 2720,
           "SkillManaPercentBonus": 15,
           "SkillDefensePercentBonus": 400,
-          "SkillCriticalDamagePercentBonus": 100,
+          "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
         }
       },
@@ -1160,7 +1160,7 @@
           "SkillAttackFixedBonus": 2720,
           "SkillManaPercentBonus": 15,
           "SkillDefensePercentBonus": 400,
-          "SkillCriticalDamagePercentBonus": 100,
+          "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
         }
       },
@@ -1204,7 +1204,7 @@
           "SkillAttackFixedBonus": 2720,
           "SkillManaPercentBonus": 15,
           "SkillDefensePercentBonus": 400,
-          "SkillCriticalDamagePercentBonus": 100,
+          "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
         }
       },
