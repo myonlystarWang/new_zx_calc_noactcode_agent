@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>枫 - 诛仙3 多场景伤害边际分析报告</title>
+    <title>小五 - 诛仙3 多场景伤害边际分析报告</title>
     <style>
         :root {
             --bg-base: #0a0e17;
@@ -567,16 +567,16 @@
         <header class="hero">
             <div class="hero-left">
                 <div class="hero-title-wrap">
-                    <span class="player-title">枫</span>
-                    <span class="badge badge-class">涅羽 · 佛</span>
+                    <span class="player-title">小五</span>
+                    <span class="badge badge-class">太昊 · 仙</span>
                     <span class="badge badge-system">双轨多场景集成分析</span>
                 </div>
-                <div class="hero-sub">生成时间：2026-08-21T18:43:31.854038 ｜ 计算引擎：agent_tool 2.0</div>
+                <div class="hero-sub">生成时间：2026-08-24T14:15:51.841696 ｜ 计算引擎：agent_tool 2.0</div>
             </div>
         </header>
 
         <div class="tabs-nav">
-            <button class="tab-btn active" onclick="switchTab('tab-long', this)">长轴持续模式 (ZHENHAI_DUANLANG_T19)</button>
+            <button class="tab-btn active" onclick="switchTab('tab-long', this)">长轴持续模式 (T20)</button>
             <button class="tab-btn" onclick="switchTab('tab-burst', this)">秒怪爆发模式 (劫起空桑困难)</button>
             <button class="tab-btn" onclick="switchTab('tab-comparison', this)">双场景横向对比</button>
         </div>
@@ -586,22 +586,22 @@
         <div class="metrics-grid">
             <div class="metric-card">
                 <div class="metric-label">当前场景与基准总伤</div>
-                <div class="metric-value nowrap-cell">标准总伤基准 · ZHENHAI_DUANLANG_T19</div>
-                <div class="metric-sub nowrap-cell">基准伤害：184,597.76 万 ｜ 未录入实战数据，采用全技能标准总伤降级基准</div>
+                <div class="metric-value nowrap-cell">标准总伤基准 · T20</div>
+                <div class="metric-sub nowrap-cell">基准伤害：52,769.13 万 ｜ 未录入实战数据，采用全技能标准总伤降级基准</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">属性收益优先级</div>
-                <div class="metric-value metric-priority nowrap-cell">怪增 > 爆伤 > 气血 > 攻击 > 真气</div>
+                <div class="metric-value metric-priority nowrap-cell">怪增 > 爆伤 > 攻击 > 真气</div>
                 <div class="metric-sub">按边际收益降序排列</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">首要核心技能</div>
-                <div class="metric-value nowrap-cell">赤乌·大业浮屠·曦日</div>
-                <div class="metric-sub nowrap-cell">基准 92,734.28 万</div>
+                <div class="metric-value nowrap-cell">天地绝·玄</div>
+                <div class="metric-sub nowrap-cell">基准 52,769.13 万</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">无效/低效属性</div>
-                <div class="metric-value nowrap-cell" style="color: #94a3b8;">防御</div>
+                <div class="metric-value nowrap-cell" style="color: #94a3b8;">气血, 防御</div>
                 <div class="metric-sub">边际收益为 0 的属性</div>
             </div>
         </div>
@@ -626,27 +626,15 @@
                     <tbody>
                         
         <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>赤乌·大业浮屠·曦日</td>
+            <td class='text-left-cell nowrap-cell skill-name-cell'>天地绝·玄</td>
             
-            <td class='num-cell nowrap-cell'>55.20</td><td class='num-cell nowrap-cell'>8.70</td><td class='num-cell nowrap-cell'>15.98</td><td class='num-cell nowrap-cell'>7.99</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>80.64</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>九刃齐歌</td>
-            
-            <td class='num-cell nowrap-cell'>37.70</td><td class='num-cell nowrap-cell'>11.12</td><td class='num-cell nowrap-cell'>7.01</td><td class='num-cell nowrap-cell'>4.51</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>51.80</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>刹羽无名</td>
-            
-            <td class='num-cell nowrap-cell'>20.44</td><td class='num-cell nowrap-cell'>5.26</td><td class='num-cell nowrap-cell'>5.01</td><td class='num-cell nowrap-cell'>1.67</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>28.08</td>
+            <td class='num-cell nowrap-cell'>24.89</td><td class='num-cell nowrap-cell'>6.90</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 5.98 🔴)</span></td><td class='num-cell nowrap-cell'>5.98</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>44.72</td>
         </tr>
         
     <tr class='total-row'>
         <td class='text-left-cell total-title nowrap-cell'>合计</td>
         
-        <td class='num-cell total-num nowrap-cell'>113.34</td><td class='num-cell total-num nowrap-cell'>25.08</td><td class='num-cell total-num nowrap-cell'>28.00</td><td class='num-cell total-num nowrap-cell'>14.17</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>160.52</td>
+        <td class='num-cell total-num nowrap-cell'>24.89</td><td class='num-cell total-num nowrap-cell'>6.90</td><td class='num-cell total-num nowrap-cell' style='color:#f43f5e;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 5.98 🔴)</span></td><td class='num-cell total-num nowrap-cell'>5.98</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>44.72</td>
     </tr>
     
                     </tbody>
@@ -680,32 +668,32 @@
                 
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>4,519.1</td><td class='num-cell nowrap-cell'>40,478.6</td><td class='num-cell nowrap-cell'>79,816.9</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.71%</td>
-            <td class='num-cell total-num nowrap-cell'>+1133.40 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>3,607.2</td><td class='num-cell nowrap-cell'>41,483.3</td><td class='num-cell nowrap-cell'>41,483.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.56%</td>
+            <td class='num-cell total-num nowrap-cell'>+248.90 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.21</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>8,957.1</td><td class='num-cell nowrap-cell'>17,662.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.16%</td>
-            <td class='num-cell total-num nowrap-cell'>+250.80 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.77</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>11,500.0</td><td class='num-cell nowrap-cell'>11,500.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.15%</td>
+            <td class='num-cell total-num nowrap-cell'>+69.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.47</td><td class='num-cell nowrap-cell'>1,116.4</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>19,718.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.17%</td>
-            <td class='num-cell total-num nowrap-cell'>+280.00 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.41</td><td class='num-cell nowrap-cell'>869.6</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.13%</td>
+            <td class='num-cell total-num nowrap-cell'>+60.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.25</td><td class='num-cell nowrap-cell'>566.2</td><td class='num-cell nowrap-cell'>5,071.4</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.09%</td>
-            <td class='num-cell total-num nowrap-cell'>+142.00 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.41</td><td class='num-cell nowrap-cell'>869.6</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.13%</td>
+            <td class='num-cell total-num nowrap-cell'>+60.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>14.16</td><td class='num-cell nowrap-cell'>6,400.3</td><td class='num-cell nowrap-cell'>57,328.6</td><td class='num-cell nowrap-cell'>113,042.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
-            <td class='num-cell total-num nowrap-cell'>+1605.20 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>17.97</td><td class='num-cell nowrap-cell'>6,481.2</td><td class='num-cell nowrap-cell'>74,533.3</td><td class='num-cell nowrap-cell'>74,533.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+447.20 万</td>
         </tr>
         
             </tbody>
@@ -779,7 +767,7 @@
 
         <script>
             window.scenarioData = window.scenarioData || {};
-            window.scenarioData['tab-long'] = {"critDamage_per_1": 113.34, "attack_per_1": 0.2508, "health_per_1": 0.028, "mana_per_1": 0.0142, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 1605.2};
+            window.scenarioData['tab-long'] = {"critDamage_per_1": 24.89, "attack_per_1": 0.069, "health_per_1": 0.006, "mana_per_1": 0.006, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 447.2};
         </script>
     </div>
     
@@ -788,7 +776,7 @@
             <div class="decision-box" style="margin-top: 24px;">
                 <div class="decision-title">场景决策总结与洗练建议</div>
                 <div class="decision-text">
-                    在 <strong>ZHENHAI_DUANLANG_T19 (标准总伤基准)</strong> 场景下，核心属性排序为 <strong>怪增 > 爆伤 > 气血 > 攻击 > 真气</strong>。洗练建议优先保障 <strong>怪增</strong>。针对核心技能【赤乌·大业浮屠·曦日】，提升 1% 怪增等价于提升约 <strong>6400.3 攻击</strong> 或 <strong>14.16 爆伤</strong>。
+                    在 <strong>T20 (标准总伤基准)</strong> 场景下，核心属性排序为 <strong>怪增 > 爆伤 > 攻击 > 真气</strong>。洗练建议优先保障 <strong>怪增</strong>。针对核心技能【天地绝·玄】，提升 1% 怪增等价于提升约 <strong>6481.2 攻击</strong> 或 <strong>17.97 爆伤</strong>。
                 </div>
             </div>
         </div>
@@ -799,22 +787,22 @@
         <div class="metrics-grid">
             <div class="metric-card">
                 <div class="metric-label">当前场景与基准总伤</div>
-                <div class="metric-value nowrap-cell">秒怪爆发加权 · ZHENHAI_DUANLANG_T19</div>
-                <div class="metric-sub nowrap-cell">基准伤害：184,597.76 万 ｜ 基于充能与爆发释放频次归一化加权</div>
+                <div class="metric-value nowrap-cell">秒怪爆发加权 · T20</div>
+                <div class="metric-sub nowrap-cell">基准伤害：52,769.13 万 ｜ 基于充能与爆发释放频次归一化加权</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">属性收益优先级</div>
-                <div class="metric-value metric-priority nowrap-cell">怪增 > 爆伤 > 气血 > 攻击 > 真气</div>
+                <div class="metric-value metric-priority nowrap-cell">怪增 > 爆伤 > 攻击 > 真气</div>
                 <div class="metric-sub">按边际收益降序排列</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">首要核心技能</div>
-                <div class="metric-value nowrap-cell">赤乌·大业浮屠·曦日</div>
-                <div class="metric-sub nowrap-cell">占比 66.7% ｜ 基准 92,734.28 万</div>
+                <div class="metric-value nowrap-cell">天地绝·玄</div>
+                <div class="metric-sub nowrap-cell">占比 100.0% ｜ 基准 52,769.13 万</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">无效/低效属性</div>
-                <div class="metric-value nowrap-cell" style="color: #94a3b8;">防御</div>
+                <div class="metric-value nowrap-cell" style="color: #94a3b8;">气血, 防御</div>
                 <div class="metric-sub">边际收益为 0 的属性</div>
             </div>
         </div>
@@ -839,27 +827,15 @@
                     <tbody>
                         
         <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>赤乌·大业浮屠·曦日</td>
-            <td class='text-center weight-cell nowrap-cell'>66.7%</td>
-            <td class='num-cell nowrap-cell'>36.80</td><td class='num-cell nowrap-cell'>5.80</td><td class='num-cell nowrap-cell'>10.65</td><td class='num-cell nowrap-cell'>5.33</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>53.76</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>刹羽无名</td>
-            <td class='text-center weight-cell nowrap-cell'>33.3%</td>
-            <td class='num-cell nowrap-cell'>6.81</td><td class='num-cell nowrap-cell'>1.75</td><td class='num-cell nowrap-cell'>1.67</td><td class='num-cell nowrap-cell'>0.56</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>9.36</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>九刃齐歌</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
+            <td class='text-left-cell nowrap-cell skill-name-cell'>天地绝·玄</td>
+            <td class='text-center weight-cell nowrap-cell'>100.0%</td>
+            <td class='num-cell nowrap-cell'>24.89</td><td class='num-cell nowrap-cell'>6.90</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 5.98 🔴)</span></td><td class='num-cell nowrap-cell'>5.98</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>44.72</td>
         </tr>
         
     <tr class='total-row'>
         <td class='text-left-cell total-title nowrap-cell'>合计</td>
         <td class='text-center total-weight nowrap-cell'>100.0%</td>
-        <td class='num-cell total-num nowrap-cell'>43.61</td><td class='num-cell total-num nowrap-cell'>7.55</td><td class='num-cell total-num nowrap-cell'>12.32</td><td class='num-cell total-num nowrap-cell'>5.89</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>63.12</td>
+        <td class='num-cell total-num nowrap-cell'>24.89</td><td class='num-cell total-num nowrap-cell'>6.90</td><td class='num-cell total-num nowrap-cell' style='color:#f43f5e;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 5.98 🔴)</span></td><td class='num-cell total-num nowrap-cell'>5.98</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>44.72</td>
     </tr>
     
                     </tbody>
@@ -893,32 +869,32 @@
                 
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>5,776.2</td><td class='num-cell nowrap-cell'>35,455.3</td><td class='num-cell nowrap-cell'>73,915.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.69%</td>
-            <td class='num-cell total-num nowrap-cell'>+436.10 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>3,607.2</td><td class='num-cell nowrap-cell'>41,483.3</td><td class='num-cell nowrap-cell'>41,483.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.56%</td>
+            <td class='num-cell total-num nowrap-cell'>+248.90 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.73</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>6,138.2</td><td class='num-cell nowrap-cell'>12,796.6</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.12%</td>
-            <td class='num-cell total-num nowrap-cell'>+75.50 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.77</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>11,500.0</td><td class='num-cell nowrap-cell'>11,500.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.15%</td>
+            <td class='num-cell total-num nowrap-cell'>+69.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.82</td><td class='num-cell nowrap-cell'>1,629.1</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>20,847.5</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.19%</td>
-            <td class='num-cell total-num nowrap-cell'>+123.00 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.41</td><td class='num-cell nowrap-cell'>869.6</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.13%</td>
+            <td class='num-cell total-num nowrap-cell'>+60.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.35</td><td class='num-cell nowrap-cell'>781.5</td><td class='num-cell nowrap-cell'>4,796.7</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.09%</td>
-            <td class='num-cell total-num nowrap-cell'>+59.00 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.41</td><td class='num-cell nowrap-cell'>869.6</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.13%</td>
+            <td class='num-cell total-num nowrap-cell'>+60.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>14.47</td><td class='num-cell nowrap-cell'>8,360.3</td><td class='num-cell nowrap-cell'>51,317.1</td><td class='num-cell nowrap-cell'>106,983.1</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
-            <td class='num-cell total-num nowrap-cell'>+631.20 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>17.97</td><td class='num-cell nowrap-cell'>6,481.2</td><td class='num-cell nowrap-cell'>74,533.3</td><td class='num-cell nowrap-cell'>74,533.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+447.20 万</td>
         </tr>
         
             </tbody>
@@ -992,7 +968,7 @@
 
         <script>
             window.scenarioData = window.scenarioData || {};
-            window.scenarioData['tab-burst'] = {"critDamage_per_1": 43.61, "attack_per_1": 0.0755, "health_per_1": 0.0123, "mana_per_1": 0.0059, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 631.2};
+            window.scenarioData['tab-burst'] = {"critDamage_per_1": 24.89, "attack_per_1": 0.069, "health_per_1": 0.006, "mana_per_1": 0.006, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 447.2};
         </script>
     </div>
     
@@ -1001,7 +977,7 @@
             <div class="decision-box" style="margin-top: 24px;">
                 <div class="decision-title">场景决策总结与洗练建议</div>
                 <div class="decision-text">
-                    在 <strong>ZHENHAI_DUANLANG_T19 (秒怪爆发加权)</strong> 场景下，核心属性排序为 <strong>怪增 > 爆伤 > 气血 > 攻击 > 真气</strong>。洗练建议优先保障 <strong>怪增</strong>。针对核心技能【赤乌·大业浮屠·曦日】，提升 1% 怪增等价于提升约 <strong>8360.3 攻击</strong> 或 <strong>14.47 爆伤</strong>。
+                    在 <strong>T20 (秒怪爆发加权)</strong> 场景下，核心属性排序为 <strong>怪增 > 爆伤 > 攻击 > 真气</strong>。洗练建议优先保障 <strong>怪增</strong>。针对核心技能【天地绝·玄】，提升 1% 怪增等价于提升约 <strong>6481.2 攻击</strong> 或 <strong>17.97 爆伤</strong>。
                 </div>
             </div>
         </div>
@@ -1023,7 +999,7 @@
                     <thead>
                         <tr>
                             <th class="th-left" style="width: 25%;">对比维度</th>
-                            <th class="th-left" style="width: 37.5%; color: #38bdf8;">长轴持续模式 (ZHENHAI_DUANLANG_T19)</th>
+                            <th class="th-left" style="width: 37.5%; color: #38bdf8;">长轴持续模式 (T20)</th>
                             <th class="th-left" style="width: 37.5%; color: #34d399;">秒怪爆发模式 (劫起空桑困难)</th>
                         </tr>
                     </thead>
@@ -1035,33 +1011,33 @@
                         </tr>
                         <tr>
                             <td class="text-left-cell nowrap-cell skill-name-cell">属性收益优先级</td>
-                            <td class="nowrap-cell" style="color: #38bdf8; font-weight: 700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
-                            <td class="nowrap-cell" style="color: #34d399; font-weight: 700;">怪增 > 爆伤 > 气血 > 攻击 > 真气</td>
+                            <td class="nowrap-cell" style="color: #38bdf8; font-weight: 700;">怪增 > 爆伤 > 攻击 > 真气</td>
+                            <td class="nowrap-cell" style="color: #34d399; font-weight: 700;">怪增 > 爆伤 > 攻击 > 真气</td>
                         </tr>
                         <tr>
                             <td class="text-left-cell nowrap-cell skill-name-cell">核心支柱技能</td>
-                            <td class="nowrap-cell">【赤乌·大业浮屠·曦日】</td>
-                            <td class="nowrap-cell">【赤乌·大业浮屠·曦日】</td>
+                            <td class="nowrap-cell">【天地绝·玄】</td>
+                            <td class="nowrap-cell">【天地绝·玄】</td>
                         </tr>
                         <tr>
                             <td class="text-left-cell nowrap-cell skill-name-cell">1% 怪增等价 爆伤</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left;">14.2 pts</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">14.5 pts</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left;">18.0 pts</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">18.0 pts</td>
                         </tr>
                         <tr>
                             <td class="text-left-cell nowrap-cell skill-name-cell">1% 怪增等价 攻击</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left;">6,400.3 点</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">8,360.3 点</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left;">6,481.2 点</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">6,481.2 点</td>
                         </tr>
                         <tr>
                             <td class="text-left-cell nowrap-cell skill-name-cell">1% 怪增等价 气血</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left;">57,328.6 点</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">51,233.8 点</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left;">74782.6 (理论值·实战已触顶)</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">74782.6 (理论值·实战已触顶)</td>
                         </tr>
                         <tr>
                             <td class="text-left-cell nowrap-cell skill-name-cell">1% 怪增等价 真气</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left;">113,281.6 点</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">107,164.7 点</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left;">74,782.6 点</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">74,782.6 点</td>
                         </tr>
                     </tbody>
                 </table>
