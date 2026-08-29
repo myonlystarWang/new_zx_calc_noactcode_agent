@@ -3,12 +3,12 @@
   "className": "涅羽",
   "factionName": "佛",
   "attributes": {
-    "minAttack": 150000,
-    "maxAttack": 170000,
+    "minAttack": 210000,
+    "maxAttack": 230000,
     "defense": 5000,
     "critDamage": 1980,
-    "mana": 1550000,
-    "health": 2600000,
+    "mana": 2800000,
+    "health": 3200000,
     "monsterDamageIncrease": 15
   },
   "buffs": {
@@ -18,7 +18,7 @@
     "witchCurse": 22.5
   },
   "target": {
-    "dungeon": "T20",
+    "dungeon": "ZHENHAI_DUANLANG_T19",
     "bossIndex": 1
   }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -344,7 +344,6 @@
             font-weight: 700;
         }
 
-        /* Interactive Calculator Styles */
         .interactive-calc-card {
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid rgba(56, 189, 248, 0.2);
@@ -540,6 +539,146 @@
             margin-top: 20px;
         }
 
+        /* ===== 技能伤害清单 ===== */
+        .sd-scenario {
+            margin-top: 18px;
+            border: 1px solid var(--table-border);
+            border-radius: 12px;
+            padding: 16px 18px;
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .sd-scenario-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .sd-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-amber);
+        }
+
+        .sd-grand {
+            font-size: 13px;
+            color: var(--text-secondary);
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        .sd-skill-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .sd-skill-name {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .sd-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 5px;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .sd-badge-mono {
+            background: rgba(148, 163, 184, 0.12);
+            color: var(--text-muted);
+            border-color: rgba(148, 163, 184, 0.25);
+        }
+
+        .sd-hit-table {
+            width: auto;
+            min-width: 340px;
+            border-collapse: collapse;
+            margin-left: 4px;
+        }
+
+        .sd-hit-row td {
+            padding: 3px 14px 3px 0;
+            font-size: 13px;
+            border: none;
+        }
+
+        .sd-hit-name {
+            color: var(--text-muted);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .sd-total {
+            font-weight: 700;
+            color: var(--accent-amber);
+        }
+
+        /* ===== 分技能换算矩阵（可折叠） ===== */
+        .psc-item {
+            border: 1px solid var(--table-border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.015);
+            overflow: hidden;
+        }
+
+        .psc-summary {
+            cursor: pointer;
+            padding: 13px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            list-style: none;
+            transition: background 0.15s;
+            user-select: none;
+        }
+
+        .psc-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .psc-summary:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .psc-caret {
+            color: var(--accent-purple);
+            font-size: 13px;
+            transition: transform 0.18s;
+            display: inline-block;
+        }
+
+        .psc-item[open] .psc-caret {
+            transform: rotate(90deg);
+        }
+
+        .psc-name {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .psc-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .psc-body {
+            padding: 4px 18px 18px;
+            border-top: 1px solid var(--table-border);
+        }
+
         .decision-title {
             font-size: 15px;
             font-weight: 700;
@@ -565,7 +704,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Hero Header -->
         <header class="hero">
             <div class="hero-left">
                 <div class="hero-title-wrap">
@@ -573,21 +711,18 @@
                     <span class="badge badge-class">逐霜 · 仙</span>
                     <span class="badge badge-system">双轨多场景集成分析</span>
                 </div>
-                <div class="hero-sub">生成时间：2026-08-21T11:12:44.313318 ｜ 计算引擎：agent_tool 2.0</div>
+                <div class="hero-sub">生成时间：2026-08-29T08:52:57.005211 ｜ 计算引擎：agent_tool 2.0</div>
             </div>
         </header>
 
-        <!-- Scenario Tabs Navigation -->
         <div class="tabs-nav">
             <button class="tab-btn active" onclick="switchTab('tab-long', this)">长轴持续模式 (T20)</button>
             <button class="tab-btn" onclick="switchTab('tab-burst', this)">秒怪爆发模式 (劫起空桑困难)</button>
             <button class="tab-btn" onclick="switchTab('tab-comparison', this)">双场景横向对比</button>
         </div>
 
-        <!-- Tab Contents -->
         
     <div id="tab-long" class="tab-pane" style="display: block;">
-        <!-- Metric Cards -->
         <div class="metrics-grid">
             <div class="metric-card">
                 <div class="metric-label">当前场景与基准总伤</div>
@@ -606,12 +741,175 @@
             </div>
             <div class="metric-card">
                 <div class="metric-label">无效/低效属性</div>
-                <div class="metric-value nowrap-cell" style="color: #94a3b8;">气血, 防御</div>
-                <div class="metric-sub">边际收益为 0 的属性</div>
+                <div class="metric-value nowrap-cell" style="color: #94a3b8;">防御</div>
+                <div class="metric-sub">真无收益，边际恒为 0</div>
+            </div>
+            <div class="metric-card" style="border-color: rgba(244, 63, 94, 0.35);">
+                <div class="metric-label" style="color: #f43f5e;">属性触顶（Cap Overflow）</div>
+                <div class="metric-value nowrap-cell" style="color: #f43f5e;">气血</div>
+                <div class="metric-sub">已触顶，实战收益 0；理论边际 气血 理论 35.93 万</div>
             </div>
         </div>
 
-        <!-- 6-Dimensional Matrix Table -->
+        
+    <div class="section-card">
+        <div class="section-header">
+            <div class="section-title">
+                <span class="section-title-line" style="background: var(--accent-amber);"></span>
+                技能伤害清单
+            </div>
+            <div class="section-unit">基于 profile 属性或用户指定属性 ｜ 多段技能展开全部段</div>
+        </div>
+        
+        <div class='sd-scenario'>
+            <div class='sd-scenario-head'>
+                <span class='sd-title'>当前 profile 配置</span>
+                <span class='sd-grand'>合计 3,760,964.16 万</span>
+            </div>
+            <div class="table-responsive">
+                <table class="standard-matrix-table sd-table">
+                    <thead>
+                        <tr>
+                            <th class="th-left">技能名称 / 分段明细（万）</th>
+                            <th class="th-right" style="min-width:130px;">技能总伤 (万)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>银鳞玄冰</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>1,523,074.56</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>苍龙啸·玄</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>92,043.73</td><td class='num-cell text-muted'>9.4%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>96,164.08</td><td class='num-cell text-muted'>9.8%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>100,284.44</td><td class='num-cell text-muted'>10.3%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>104,404.79</td><td class='num-cell text-muted'>10.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>108,525.14</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>112,645.49</td><td class='num-cell text-muted'>11.5%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>116,765.85</td><td class='num-cell text-muted'>11.9%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>120,886.20</td><td class='num-cell text-muted'>12.4%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>125,006.55</td><td class='num-cell text-muted'>12.8%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>976,726.27</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>苍龙啸</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>54,018.00</td><td class='num-cell text-muted'>9.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>56,994.20</td><td class='num-cell text-muted'>9.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>59,970.40</td><td class='num-cell text-muted'>10.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>62,946.60</td><td class='num-cell text-muted'>10.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>65,922.80</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>68,899.00</td><td class='num-cell text-muted'>11.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>71,875.20</td><td class='num-cell text-muted'>12.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>74,851.40</td><td class='num-cell text-muted'>12.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>77,827.59</td><td class='num-cell text-muted'>13.1%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>593,305.19</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>山雨欲来III</span>
+                        <span class='sd-badge'>6 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>532,613.39</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>临渊敛爪</span>
+                        <span class='sd-badge'>3 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>45,081.58</td><td class='num-cell text-muted'>33.3%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>45,081.58</td><td class='num-cell text-muted'>33.3%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>45,081.58</td><td class='num-cell text-muted'>33.3%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>135,244.75</td>
+            </tr>
+            </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class='sd-scenario'>
+            <div class='sd-scenario-head'>
+                <span class='sd-title'>爆伤 +150</span>
+                <span class='sd-grand'>合计 3,897,886.44 万</span>
+            </div>
+            <div class="table-responsive">
+                <table class="standard-matrix-table sd-table">
+                    <thead>
+                        <tr>
+                            <th class="th-left">技能名称 / 分段明细（万）</th>
+                            <th class="th-right" style="min-width:130px;">技能总伤 (万)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>银鳞玄冰</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>1,575,594.37</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>苍龙啸·玄</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>95,217.65</td><td class='num-cell text-muted'>9.4%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>99,480.09</td><td class='num-cell text-muted'>9.8%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>103,742.52</td><td class='num-cell text-muted'>10.3%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>108,004.95</td><td class='num-cell text-muted'>10.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>112,267.39</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>116,529.82</td><td class='num-cell text-muted'>11.5%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>120,792.26</td><td class='num-cell text-muted'>11.9%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>125,054.69</td><td class='num-cell text-muted'>12.4%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>129,317.12</td><td class='num-cell text-muted'>12.8%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>1,010,406.49</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>苍龙啸</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>56,366.61</td><td class='num-cell text-muted'>9.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>59,472.21</td><td class='num-cell text-muted'>9.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>62,577.81</td><td class='num-cell text-muted'>10.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>65,683.41</td><td class='num-cell text-muted'>10.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>68,789.01</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>71,894.61</td><td class='num-cell text-muted'>11.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>75,000.21</td><td class='num-cell text-muted'>12.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>78,105.80</td><td class='num-cell text-muted'>12.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>81,211.40</td><td class='num-cell text-muted'>13.1%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>619,101.07</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>山雨欲来III</span>
+                        <span class='sd-badge'>6 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>549,794.46</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>临渊敛爪</span>
+                        <span class='sd-badge'>3 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>47,663.35</td><td class='num-cell text-muted'>33.3%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>47,663.35</td><td class='num-cell text-muted'>33.3%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>47,663.35</td><td class='num-cell text-muted'>33.3%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>142,990.04</td>
+            </tr>
+            </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    
+
         <div class="section-card">
             <div class="section-header">
                 <div class="section-title">
@@ -634,7 +932,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>苍龙啸·玄</td>
             <td class='text-center weight-cell nowrap-cell'>39.0%</td>
-            <td class='num-cell nowrap-cell'>164.19</td><td class='num-cell nowrap-cell'>39.81</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>45.66</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>264.90</td>
+            <td class='num-cell nowrap-cell'>164.19</td><td class='num-cell nowrap-cell'>39.81</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 0.00 🔴)</span></td><td class='num-cell nowrap-cell'>45.66</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>264.90</td>
         </tr>
         
             <tr class='sub-row'>
@@ -646,7 +944,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>苍龙啸</td>
             <td class='text-center weight-cell nowrap-cell'>24.6%</td>
-            <td class='num-cell nowrap-cell'>63.54</td><td class='num-cell nowrap-cell'>22.72</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>2.93</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>101.62</td>
+            <td class='num-cell nowrap-cell'>63.54</td><td class='num-cell nowrap-cell'>22.72</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 13.93 🔴)</span></td><td class='num-cell nowrap-cell'>2.93</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>101.62</td>
         </tr>
         
             <tr class='sub-row'>
@@ -658,7 +956,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>山雨欲来III</td>
             <td class='text-center weight-cell nowrap-cell'>12.8%</td>
-            <td class='num-cell nowrap-cell'>29.30</td><td class='num-cell nowrap-cell'>12.70</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>47.37</td>
+            <td class='num-cell nowrap-cell'>29.30</td><td class='num-cell nowrap-cell'>12.70</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 6.67 🔴)</span></td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>47.37</td>
         </tr>
         
             <tr class='sub-row'>
@@ -670,7 +968,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>银鳞玄冰</td>
             <td class='text-center weight-cell nowrap-cell'>12.0%</td>
-            <td class='num-cell nowrap-cell'>78.85</td><td class='num-cell nowrap-cell'>14.06</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>14.42</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>127.21</td>
+            <td class='num-cell nowrap-cell'>78.85</td><td class='num-cell nowrap-cell'>14.06</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 14.42 🔴)</span></td><td class='num-cell nowrap-cell'>14.42</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>127.21</td>
         </tr>
         
             <tr class='sub-row'>
@@ -682,7 +980,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>临渊敛爪</td>
             <td class='text-center weight-cell nowrap-cell'>11.6%</td>
-            <td class='num-cell nowrap-cell'>6.89</td><td class='num-cell nowrap-cell'>2.92</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.45</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>10.88</td>
+            <td class='num-cell nowrap-cell'>6.89</td><td class='num-cell nowrap-cell'>2.92</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 0.91 🔴)</span></td><td class='num-cell nowrap-cell'>0.45</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>10.88</td>
         </tr>
         
             <tr class='sub-row'>
@@ -691,46 +989,10 @@
                 <td class='num-cell sub-num nowrap-cell'>2.30</td><td class='num-cell sub-num nowrap-cell'>0.97</td><td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>0.15</td><td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>3.63</td>
             </tr>
             
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>鹰扬折冲·玄</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>鹰扬折冲</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>龙战于野</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>枕戈待旦</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>清啸横朔</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>云蒸霞蔚</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
     <tr class='total-row'>
         <td class='text-left-cell total-title nowrap-cell'>合计</td>
         <td class='text-center total-weight nowrap-cell'>100.0%</td>
-        <td class='num-cell total-num nowrap-cell'>342.77</td><td class='num-cell total-num nowrap-cell'>92.21</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>63.46</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>551.98</td>
+        <td class='num-cell total-num nowrap-cell'>342.77</td><td class='num-cell total-num nowrap-cell'>92.21</td><td class='num-cell total-num nowrap-cell' style='color:#f43f5e;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 35.93 🔴)</span></td><td class='num-cell total-num nowrap-cell'>63.46</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>551.98</td>
     </tr>
     
                     </tbody>
@@ -738,7 +1000,6 @@
             </div>
         </div>
 
-        <!-- Full Equivalent Conversion Matrix & Dynamic Calculator -->
         <div class="section-card">
             <div class="section-header">
                 <div class="section-title">
@@ -765,31 +1026,31 @@
                 
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>3,717.3</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>53,979.5</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>3,717.3</td><td class='num-cell nowrap-cell'>95,479.1</td><td class='num-cell nowrap-cell'>53,979.5</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
             <td class='num-cell total-num nowrap-cell'>+3427.70 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.69</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>14,521.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.17%</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.69</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>25,685.2</td><td class='num-cell nowrap-cell'>14,521.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.17%</td>
             <td class='num-cell total-num nowrap-cell'>+922.10 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
-            <td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td>
-            <td class='num-cell total-num nowrap-cell'>+0.00 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.05</td><td class='num-cell nowrap-cell'>389.3</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>5,653.5</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.07%</td>
+            <td class='num-cell total-num nowrap-cell'>+359.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.85</td><td class='num-cell nowrap-cell'>688.6</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.12%</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.85</td><td class='num-cell nowrap-cell'>688.6</td><td class='num-cell nowrap-cell'>17,688.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.12%</td>
             <td class='num-cell total-num nowrap-cell'>+635.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.10</td><td class='num-cell nowrap-cell'>5,986.1</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>86,926.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.10</td><td class='num-cell nowrap-cell'>5,986.1</td><td class='num-cell nowrap-cell'>153,754.9</td><td class='num-cell nowrap-cell'>86,926.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
             <td class='num-cell total-num nowrap-cell'>+5519.80 万</td>
         </tr>
         
@@ -810,7 +1071,6 @@
         </div>
 
         <div class="calc-body">
-            <!-- Row 1: Source Attribute -->
             <div class="calc-input-group">
                 <label class="calc-label">我有 / 洗出属性：</label>
                 <div class="calc-control-wrap">
@@ -825,12 +1085,10 @@
                 </div>
             </div>
 
-            <!-- Arrow Divider -->
             <div class="calc-divider">
                 <span class="calc-eq-symbol">≈ 等价于</span>
             </div>
 
-            <!-- Row 2: Target Attribute -->
             <div class="calc-input-group">
                 <label class="calc-label">换算目标属性：</label>
                 <div class="calc-control-wrap">
@@ -845,7 +1103,6 @@
             </div>
         </div>
 
-        <!-- Result Showcase -->
         <div class="calc-result-box">
             <div class="calc-result-left">
                 <div class="calc-result-tag">等价折算结果</div>
@@ -857,7 +1114,6 @@
             </div>
         </div>
 
-        <!-- Quick Preset Buttons -->
         <div class="calc-presets">
             <span class="preset-label">快捷预设：</span>
             <button class="preset-btn" onclick="applyPreset('tab-long', 100, 'critDamage', 'attack')">+100 爆伤</button>
@@ -869,11 +1125,669 @@
 
         <script>
             window.scenarioData = window.scenarioData || {};
-            window.scenarioData['tab-long'] = {"critDamage_per_1": 342.77, "attack_per_1": 0.9221, "health_per_1": 0.0, "mana_per_1": 0.0635, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 5519.8};
+            window.scenarioData['tab-long'] = {"critDamage_per_1": 342.77, "attack_per_1": 0.9221, "health_per_1": 0.0359, "mana_per_1": 0.0635, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 5519.8};
         </script>
     </div>
     
             </div>
+
+            
+    <div class="section-card">
+        <div class="section-header">
+            <div class="section-title">
+                <span class="section-title-line" style="background: var(--accent-purple);"></span>
+                分技能全属性交叉等值换算矩阵
+            </div>
+            <div class="section-unit">点击技能名展开 ｜ 默认全部收起 ｜ 口径：单次施放（未乘实战占比）</div>
+        </div>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>苍龙啸·玄</span>
+                <span class='psc-meta'>占比 39.0% ｜ 基准 976,726.27 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>4,124.6</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>35,952.2</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
+            <td class='num-cell total-num nowrap-cell'>+4210.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.42</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>8,716.5</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.15%</td>
+            <td class='num-cell total-num nowrap-cell'>+1020.70 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td>
+            <td class='num-cell total-num nowrap-cell'>+0.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.78</td><td class='num-cell nowrap-cell'>1,147.3</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.17%</td>
+            <td class='num-cell total-num nowrap-cell'>+1171.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.13</td><td class='num-cell nowrap-cell'>6,654.6</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>58,004.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+6792.30 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-long-sk0" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-long-sk0')">
+                    <select id="calc-src-tab-long-sk0" class="calc-select" onchange="runDynamicCalc('tab-long-sk0')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-long-sk0" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-long-sk0')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-long-sk0">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-long-sk0">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk0', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk0', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk0', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk0', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk0', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-long-sk0'] = {"critDamage_per_1": 421.0, "attack_per_1": 1.0207, "health_per_1": 0.0, "mana_per_1": 0.1171, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 6792.3};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>苍龙啸</span>
+                <span class='psc-meta'>占比 24.6% ｜ 基准 593,305.19 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>2,796.0</td><td class='num-cell nowrap-cell'>45,656.6</td><td class='num-cell nowrap-cell'>216,773.1</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.63%</td>
+            <td class='num-cell total-num nowrap-cell'>+2579.60 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>3.58</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>16,329.2</td><td class='num-cell nowrap-cell'>77,529.4</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.22%</td>
+            <td class='num-cell total-num nowrap-cell'>+922.60 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.19</td><td class='num-cell nowrap-cell'>612.4</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>47,479.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.14%</td>
+            <td class='num-cell total-num nowrap-cell'>+565.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>0.46</td><td class='num-cell nowrap-cell'>129.0</td><td class='num-cell nowrap-cell'>2,106.2</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.03%</td>
+            <td class='num-cell total-num nowrap-cell'>+119.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>15.99</td><td class='num-cell nowrap-cell'>4,472.0</td><td class='num-cell nowrap-cell'>73,024.8</td><td class='num-cell nowrap-cell'>346,714.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+4125.90 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-long-sk1" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-long-sk1')">
+                    <select id="calc-src-tab-long-sk1" class="calc-select" onchange="runDynamicCalc('tab-long-sk1')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-long-sk1" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-long-sk1')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-long-sk1">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-long-sk1">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk1', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk1', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk1', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk1', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk1', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-long-sk1'] = {"critDamage_per_1": 257.96, "attack_per_1": 0.9226, "health_per_1": 0.0565, "mana_per_1": 0.0119, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 4125.9};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>山雨欲来III</span>
+                <span class='psc-meta'>占比 12.8% ｜ 基准 532,613.39 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>2,307.4</td><td class='num-cell nowrap-cell'>43,885.1</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
+            <td class='num-cell total-num nowrap-cell'>+2290.80 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>4.33</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>19,019.2</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.27%</td>
+            <td class='num-cell total-num nowrap-cell'>+992.80 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.28</td><td class='num-cell nowrap-cell'>525.8</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.14%</td>
+            <td class='num-cell total-num nowrap-cell'>+522.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td>
+            <td class='num-cell total-num nowrap-cell'>+0.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.17</td><td class='num-cell nowrap-cell'>3,730.7</td><td class='num-cell nowrap-cell'>70,954.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+3703.80 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-long-sk2" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-long-sk2')">
+                    <select id="calc-src-tab-long-sk2" class="calc-select" onchange="runDynamicCalc('tab-long-sk2')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-long-sk2" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-long-sk2')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-long-sk2">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-long-sk2">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk2', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk2', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk2', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk2', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk2', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-long-sk2'] = {"critDamage_per_1": 229.08, "attack_per_1": 0.9928, "health_per_1": 0.0522, "mana_per_1": 0.0, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 3703.8};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>银鳞玄冰</span>
+                <span class='psc-meta'>占比 12.0% ｜ 基准 1,523,074.56 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>5,607.3</td><td class='num-cell nowrap-cell'>54,662.8</td><td class='num-cell nowrap-cell'>54,662.8</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
+            <td class='num-cell total-num nowrap-cell'>+6565.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.78</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>9,748.5</td><td class='num-cell nowrap-cell'>9,748.5</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.11%</td>
+            <td class='num-cell total-num nowrap-cell'>+1170.80 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.83</td><td class='num-cell nowrap-cell'>1,025.8</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.11%</td>
+            <td class='num-cell total-num nowrap-cell'>+1201.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.83</td><td class='num-cell nowrap-cell'>1,025.8</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.11%</td>
+            <td class='num-cell total-num nowrap-cell'>+1201.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.13</td><td class='num-cell nowrap-cell'>9,046.5</td><td class='num-cell nowrap-cell'>88,189.8</td><td class='num-cell nowrap-cell'>88,189.8</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+10591.60 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-long-sk3" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-long-sk3')">
+                    <select id="calc-src-tab-long-sk3" class="calc-select" onchange="runDynamicCalc('tab-long-sk3')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-long-sk3" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-long-sk3')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-long-sk3">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-long-sk3">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk3', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk3', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk3', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk3', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk3', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-long-sk3'] = {"critDamage_per_1": 656.5, "attack_per_1": 1.1708, "health_per_1": 0.1201, "mana_per_1": 0.1201, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 10591.6};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>临渊敛爪</span>
+                <span class='psc-meta'>占比 11.6% ｜ 基准 135,244.75 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>2,358.7</td><td class='num-cell nowrap-cell'>76,384.6</td><td class='num-cell nowrap-cell'>152,769.2</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.63%</td>
+            <td class='num-cell total-num nowrap-cell'>+595.80 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>4.24</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>32,384.6</td><td class='num-cell nowrap-cell'>64,769.2</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.27%</td>
+            <td class='num-cell total-num nowrap-cell'>+252.60 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.31</td><td class='num-cell nowrap-cell'>308.8</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>20,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.08%</td>
+            <td class='num-cell total-num nowrap-cell'>+78.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>0.65</td><td class='num-cell nowrap-cell'>154.4</td><td class='num-cell nowrap-cell'>5,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.04%</td>
+            <td class='num-cell total-num nowrap-cell'>+39.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>15.79</td><td class='num-cell nowrap-cell'>3,723.3</td><td class='num-cell nowrap-cell'>120,576.9</td><td class='num-cell nowrap-cell'>241,153.8</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+940.50 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-long-sk4" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-long-sk4')">
+                    <select id="calc-src-tab-long-sk4" class="calc-select" onchange="runDynamicCalc('tab-long-sk4')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-long-sk4" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-long-sk4')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-long-sk4">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-long-sk4">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk4', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk4', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk4', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk4', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-long-sk4', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-long-sk4'] = {"critDamage_per_1": 59.58, "attack_per_1": 0.2526, "health_per_1": 0.0078, "mana_per_1": 0.0039, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 940.5};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+    </div>
+    
 
             <div class="decision-box" style="margin-top: 24px;">
                 <div class="decision-title">场景决策总结与洗练建议</div>
@@ -886,7 +1800,6 @@
     
         
     <div id="tab-burst" class="tab-pane" style="display: none;">
-        <!-- Metric Cards -->
         <div class="metrics-grid">
             <div class="metric-card">
                 <div class="metric-label">当前场景与基准总伤</div>
@@ -905,12 +1818,153 @@
             </div>
             <div class="metric-card">
                 <div class="metric-label">无效/低效属性</div>
-                <div class="metric-value nowrap-cell" style="color: #94a3b8;">气血, 防御</div>
-                <div class="metric-sub">边际收益为 0 的属性</div>
+                <div class="metric-value nowrap-cell" style="color: #94a3b8;">防御</div>
+                <div class="metric-sub">真无收益，边际恒为 0</div>
+            </div>
+            <div class="metric-card" style="border-color: rgba(244, 63, 94, 0.35);">
+                <div class="metric-label" style="color: #f43f5e;">属性触顶（Cap Overflow）</div>
+                <div class="metric-value nowrap-cell" style="color: #f43f5e;">气血</div>
+                <div class="metric-sub">已触顶，实战收益 0；理论边际 气血 理论 28.12 万</div>
             </div>
         </div>
 
-        <!-- 6-Dimensional Matrix Table -->
+        
+    <div class="section-card">
+        <div class="section-header">
+            <div class="section-title">
+                <span class="section-title-line" style="background: var(--accent-amber);"></span>
+                技能伤害清单
+            </div>
+            <div class="section-unit">基于 profile 属性或用户指定属性 ｜ 多段技能展开全部段</div>
+        </div>
+        
+        <div class='sd-scenario'>
+            <div class='sd-scenario-head'>
+                <span class='sd-title'>当前 profile 配置</span>
+                <span class='sd-grand'>合计 3,625,719.42 万</span>
+            </div>
+            <div class="table-responsive">
+                <table class="standard-matrix-table sd-table">
+                    <thead>
+                        <tr>
+                            <th class="th-left">技能名称 / 分段明细（万）</th>
+                            <th class="th-right" style="min-width:130px;">技能总伤 (万)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>银鳞玄冰</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>169,230.51</td><td class='num-cell text-muted'>11.1%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>1,523,074.56</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>苍龙啸·玄</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>92,043.73</td><td class='num-cell text-muted'>9.4%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>96,164.08</td><td class='num-cell text-muted'>9.8%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>100,284.44</td><td class='num-cell text-muted'>10.3%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>104,404.79</td><td class='num-cell text-muted'>10.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>108,525.14</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>112,645.49</td><td class='num-cell text-muted'>11.5%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>116,765.85</td><td class='num-cell text-muted'>11.9%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>120,886.20</td><td class='num-cell text-muted'>12.4%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>125,006.55</td><td class='num-cell text-muted'>12.8%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>976,726.27</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>苍龙啸</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>54,018.00</td><td class='num-cell text-muted'>9.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>56,994.20</td><td class='num-cell text-muted'>9.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>59,970.40</td><td class='num-cell text-muted'>10.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>62,946.60</td><td class='num-cell text-muted'>10.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>65,922.80</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>68,899.00</td><td class='num-cell text-muted'>11.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>71,875.20</td><td class='num-cell text-muted'>12.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>74,851.40</td><td class='num-cell text-muted'>12.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>77,827.59</td><td class='num-cell text-muted'>13.1%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>593,305.19</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>山雨欲来III</span>
+                        <span class='sd-badge'>6 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>88,768.90</td><td class='num-cell text-muted'>16.7%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>532,613.39</td>
+            </tr>
+            </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class='sd-scenario'>
+            <div class='sd-scenario-head'>
+                <span class='sd-title'>爆伤 +150</span>
+                <span class='sd-grand'>合计 3,754,896.40 万</span>
+            </div>
+            <div class="table-responsive">
+                <table class="standard-matrix-table sd-table">
+                    <thead>
+                        <tr>
+                            <th class="th-left">技能名称 / 分段明细（万）</th>
+                            <th class="th-right" style="min-width:130px;">技能总伤 (万)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>银鳞玄冰</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>175,066.04</td><td class='num-cell text-muted'>11.1%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>1,575,594.37</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>苍龙啸·玄</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>95,217.65</td><td class='num-cell text-muted'>9.4%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>99,480.09</td><td class='num-cell text-muted'>9.8%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>103,742.52</td><td class='num-cell text-muted'>10.3%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>108,004.95</td><td class='num-cell text-muted'>10.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>112,267.39</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>116,529.82</td><td class='num-cell text-muted'>11.5%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>120,792.26</td><td class='num-cell text-muted'>11.9%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>125,054.69</td><td class='num-cell text-muted'>12.4%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>129,317.12</td><td class='num-cell text-muted'>12.8%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>1,010,406.49</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>苍龙啸</span>
+                        <span class='sd-badge'>9 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>56,366.61</td><td class='num-cell text-muted'>9.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>59,472.21</td><td class='num-cell text-muted'>9.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>62,577.81</td><td class='num-cell text-muted'>10.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>65,683.41</td><td class='num-cell text-muted'>10.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>68,789.01</td><td class='num-cell text-muted'>11.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>71,894.61</td><td class='num-cell text-muted'>11.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第7段</td><td class='num-cell'>75,000.21</td><td class='num-cell text-muted'>12.1%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第8段</td><td class='num-cell'>78,105.80</td><td class='num-cell text-muted'>12.6%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第9段</td><td class='num-cell'>81,211.40</td><td class='num-cell text-muted'>13.1%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>619,101.07</td>
+            </tr>
+            
+            <tr class='sd-skill-row'>
+                <td class='sd-skill-cell'>
+                    <div class='sd-skill-head'>
+                        <span class='sd-skill-name'>山雨欲来III</span>
+                        <span class='sd-badge'>6 段</span>
+                    </div>
+                    <table class='sd-hit-table'><tbody><tr class='sd-hit-row'><td class='sd-hit-name'>第1段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第2段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第3段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第4段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第5段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr><tr class='sd-hit-row'><td class='sd-hit-name'>第6段</td><td class='num-cell'>91,632.41</td><td class='num-cell text-muted'>16.7%</td></tr></tbody></table>
+                </td>
+                <td class='num-cell sd-total'>549,794.46</td>
+            </tr>
+            </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    
+
         <div class="section-card">
             <div class="section-header">
                 <div class="section-title">
@@ -933,7 +1987,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>苍龙啸·玄</td>
             <td class='text-center weight-cell nowrap-cell'>69.0%</td>
-            <td class='num-cell nowrap-cell'>290.35</td><td class='num-cell nowrap-cell'>70.39</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>80.75</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>468.43</td>
+            <td class='num-cell nowrap-cell'>290.35</td><td class='num-cell nowrap-cell'>70.39</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 0.00 🔴)</span></td><td class='num-cell nowrap-cell'>80.75</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>468.43</td>
         </tr>
         
             <tr class='sub-row'>
@@ -945,7 +1999,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>银鳞玄冰</td>
             <td class='text-center weight-cell nowrap-cell'>17.2%</td>
-            <td class='num-cell nowrap-cell'>113.19</td><td class='num-cell nowrap-cell'>20.19</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>20.70</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>182.61</td>
+            <td class='num-cell nowrap-cell'>113.19</td><td class='num-cell nowrap-cell'>20.19</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 20.70 🔴)</span></td><td class='num-cell nowrap-cell'>20.70</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>182.61</td>
         </tr>
         
             <tr class='sub-row'>
@@ -957,7 +2011,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>山雨欲来III</td>
             <td class='text-center weight-cell nowrap-cell'>8.6%</td>
-            <td class='num-cell nowrap-cell'>19.75</td><td class='num-cell nowrap-cell'>8.56</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>31.93</td>
+            <td class='num-cell nowrap-cell'>19.75</td><td class='num-cell nowrap-cell'>8.56</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 4.50 🔴)</span></td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>31.93</td>
         </tr>
         
             <tr class='sub-row'>
@@ -969,7 +2023,7 @@
         <tr class='skill-row'>
             <td class='text-left-cell nowrap-cell skill-name-cell'>苍龙啸</td>
             <td class='text-center weight-cell nowrap-cell'>5.2%</td>
-            <td class='num-cell nowrap-cell'>13.34</td><td class='num-cell nowrap-cell'>4.77</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.62</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>21.34</td>
+            <td class='num-cell nowrap-cell'>13.34</td><td class='num-cell nowrap-cell'>4.77</td><td class='num-cell nowrap-cell' style='color:#f43f5e; font-weight:700;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 2.92 🔴)</span></td><td class='num-cell nowrap-cell'>0.62</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>21.34</td>
         </tr>
         
             <tr class='sub-row'>
@@ -978,58 +2032,10 @@
                 <td class='num-cell sub-num nowrap-cell'>1.21</td><td class='num-cell sub-num nowrap-cell'>0.53</td><td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>0.07</td><td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>1.94</td>
             </tr>
             
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>鹰扬折冲·玄</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>临渊敛爪</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-            <tr class='sub-row'>
-                <td class='sub-name-cell nowrap-cell'><span class='sub-icon'>└─</span> 第1段</td>
-                <td class='text-center text-muted nowrap-cell'>-</td>
-                <td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>0.00</td><td class='num-cell sub-num nowrap-cell'>0.00</td>
-            </tr>
-            
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>鹰扬折冲</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>龙战于野</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>枕戈待旦</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>清啸横朔</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
-        <tr class='skill-row'>
-            <td class='text-left-cell nowrap-cell skill-name-cell'>云蒸霞蔚</td>
-            <td class='text-center weight-cell nowrap-cell'>0.0%</td>
-            <td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td><td class='num-cell nowrap-cell'>0.00</td>
-        </tr>
-        
     <tr class='total-row'>
         <td class='text-left-cell total-title nowrap-cell'>合计</td>
         <td class='text-center total-weight nowrap-cell'>100.0%</td>
-        <td class='num-cell total-num nowrap-cell'>436.63</td><td class='num-cell total-num nowrap-cell'>103.91</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>102.07</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>704.31</td>
+        <td class='num-cell total-num nowrap-cell'>436.63</td><td class='num-cell total-num nowrap-cell'>103.91</td><td class='num-cell total-num nowrap-cell' style='color:#f43f5e;'>0.00 <span style='font-size:11px; color:#94a3b8; font-weight:normal;'>(理论 28.12 🔴)</span></td><td class='num-cell total-num nowrap-cell'>102.07</td><td class='num-cell total-num nowrap-cell'>0.00</td><td class='num-cell total-num nowrap-cell'>704.31</td>
     </tr>
     
                     </tbody>
@@ -1037,7 +2043,6 @@
             </div>
         </div>
 
-        <!-- Full Equivalent Conversion Matrix & Dynamic Calculator -->
         <div class="section-card">
             <div class="section-header">
                 <div class="section-title">
@@ -1064,31 +2069,31 @@
                 
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>4,202.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>42,764.9</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>4,202.0</td><td class='num-cell nowrap-cell'>155,384.3</td><td class='num-cell nowrap-cell'>42,764.9</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
             <td class='num-cell total-num nowrap-cell'>+4366.30 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.38</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>10,177.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.15%</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.38</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>36,978.6</td><td class='num-cell nowrap-cell'>10,177.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.15%</td>
             <td class='num-cell total-num nowrap-cell'>+1039.10 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
-            <td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td>
-            <td class='num-cell total-num nowrap-cell'>+0.00 万</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>0.64</td><td class='num-cell nowrap-cell'>270.4</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>2,752.2</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.04%</td>
+            <td class='num-cell total-num nowrap-cell'>+281.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.34</td><td class='num-cell nowrap-cell'>982.6</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.14%</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.34</td><td class='num-cell nowrap-cell'>982.6</td><td class='num-cell nowrap-cell'>36,334.5</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.14%</td>
             <td class='num-cell total-num nowrap-cell'>+1021.00 万</td>
         </tr>
         
         <tr>
             <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
-            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.13</td><td class='num-cell nowrap-cell'>6,778.1</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>68,982.4</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.13</td><td class='num-cell nowrap-cell'>6,778.1</td><td class='num-cell nowrap-cell'>250,644.1</td><td class='num-cell nowrap-cell'>68,982.4</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
             <td class='num-cell total-num nowrap-cell'>+7043.10 万</td>
         </tr>
         
@@ -1109,7 +2114,6 @@
         </div>
 
         <div class="calc-body">
-            <!-- Row 1: Source Attribute -->
             <div class="calc-input-group">
                 <label class="calc-label">我有 / 洗出属性：</label>
                 <div class="calc-control-wrap">
@@ -1124,12 +2128,10 @@
                 </div>
             </div>
 
-            <!-- Arrow Divider -->
             <div class="calc-divider">
                 <span class="calc-eq-symbol">≈ 等价于</span>
             </div>
 
-            <!-- Row 2: Target Attribute -->
             <div class="calc-input-group">
                 <label class="calc-label">换算目标属性：</label>
                 <div class="calc-control-wrap">
@@ -1144,7 +2146,6 @@
             </div>
         </div>
 
-        <!-- Result Showcase -->
         <div class="calc-result-box">
             <div class="calc-result-left">
                 <div class="calc-result-tag">等价折算结果</div>
@@ -1156,7 +2157,6 @@
             </div>
         </div>
 
-        <!-- Quick Preset Buttons -->
         <div class="calc-presets">
             <span class="preset-label">快捷预设：</span>
             <button class="preset-btn" onclick="applyPreset('tab-burst', 100, 'critDamage', 'attack')">+100 爆伤</button>
@@ -1168,11 +2168,540 @@
 
         <script>
             window.scenarioData = window.scenarioData || {};
-            window.scenarioData['tab-burst'] = {"critDamage_per_1": 436.63, "attack_per_1": 1.0391, "health_per_1": 0.0, "mana_per_1": 0.1021, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 7043.1};
+            window.scenarioData['tab-burst'] = {"critDamage_per_1": 436.63, "attack_per_1": 1.0391, "health_per_1": 0.0281, "mana_per_1": 0.1021, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 7043.1};
         </script>
     </div>
     
             </div>
+
+            
+    <div class="section-card">
+        <div class="section-header">
+            <div class="section-title">
+                <span class="section-title-line" style="background: var(--accent-purple);"></span>
+                分技能全属性交叉等值换算矩阵
+            </div>
+            <div class="section-unit">点击技能名展开 ｜ 默认全部收起 ｜ 口径：单次施放（未乘实战占比）</div>
+        </div>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>苍龙啸·玄</span>
+                <span class='psc-meta'>占比 69.0% ｜ 基准 976,726.27 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>4,124.6</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>35,952.2</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
+            <td class='num-cell total-num nowrap-cell'>+4210.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.42</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>8,716.5</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.15%</td>
+            <td class='num-cell total-num nowrap-cell'>+1020.70 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td>
+            <td class='num-cell total-num nowrap-cell'>+0.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.78</td><td class='num-cell nowrap-cell'>1,147.3</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.17%</td>
+            <td class='num-cell total-num nowrap-cell'>+1171.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.13</td><td class='num-cell nowrap-cell'>6,654.6</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell'>58,004.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+6792.30 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-burst-sk0" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-burst-sk0')">
+                    <select id="calc-src-tab-burst-sk0" class="calc-select" onchange="runDynamicCalc('tab-burst-sk0')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-burst-sk0" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-burst-sk0')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-burst-sk0">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-burst-sk0">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk0', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk0', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk0', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk0', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk0', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-burst-sk0'] = {"critDamage_per_1": 421.0, "attack_per_1": 1.0207, "health_per_1": 0.0, "mana_per_1": 0.1171, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 6792.3};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>银鳞玄冰</span>
+                <span class='psc-meta'>占比 17.2% ｜ 基准 1,523,074.56 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>5,607.3</td><td class='num-cell nowrap-cell'>54,662.8</td><td class='num-cell nowrap-cell'>54,662.8</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
+            <td class='num-cell total-num nowrap-cell'>+6565.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.78</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>9,748.5</td><td class='num-cell nowrap-cell'>9,748.5</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.11%</td>
+            <td class='num-cell total-num nowrap-cell'>+1170.80 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.83</td><td class='num-cell nowrap-cell'>1,025.8</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.11%</td>
+            <td class='num-cell total-num nowrap-cell'>+1201.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>1.83</td><td class='num-cell nowrap-cell'>1,025.8</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.11%</td>
+            <td class='num-cell total-num nowrap-cell'>+1201.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.13</td><td class='num-cell nowrap-cell'>9,046.5</td><td class='num-cell nowrap-cell'>88,189.8</td><td class='num-cell nowrap-cell'>88,189.8</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+10591.60 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-burst-sk1" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-burst-sk1')">
+                    <select id="calc-src-tab-burst-sk1" class="calc-select" onchange="runDynamicCalc('tab-burst-sk1')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-burst-sk1" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-burst-sk1')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-burst-sk1">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-burst-sk1">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk1', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk1', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk1', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk1', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk1', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-burst-sk1'] = {"critDamage_per_1": 656.5, "attack_per_1": 1.1708, "health_per_1": 0.1201, "mana_per_1": 0.1201, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 10591.6};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>山雨欲来III</span>
+                <span class='psc-meta'>占比 8.6% ｜ 基准 532,613.39 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>2,307.4</td><td class='num-cell nowrap-cell'>43,885.1</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.62%</td>
+            <td class='num-cell total-num nowrap-cell'>+2290.80 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>4.33</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>19,019.2</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.27%</td>
+            <td class='num-cell total-num nowrap-cell'>+992.80 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.28</td><td class='num-cell nowrap-cell'>525.8</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.14%</td>
+            <td class='num-cell total-num nowrap-cell'>+522.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td><td class='num-cell text-muted nowrap-cell'>无收益</td>
+            <td class='num-cell total-num nowrap-cell'>+0.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>16.17</td><td class='num-cell nowrap-cell'>3,730.7</td><td class='num-cell nowrap-cell'>70,954.0</td><td class='num-cell text-muted nowrap-cell'>-</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+3703.80 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-burst-sk2" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-burst-sk2')">
+                    <select id="calc-src-tab-burst-sk2" class="calc-select" onchange="runDynamicCalc('tab-burst-sk2')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-burst-sk2" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-burst-sk2')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-burst-sk2">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-burst-sk2">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk2', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk2', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk2', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk2', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk2', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-burst-sk2'] = {"critDamage_per_1": 229.08, "attack_per_1": 0.9928, "health_per_1": 0.0522, "mana_per_1": 0.0, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 3703.8};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+        <details class='psc-item'>
+            <summary class='psc-summary'>
+                <span class='psc-caret'>▸</span>
+                <span class='psc-name'>苍龙啸</span>
+                <span class='psc-meta'>占比 5.2% ｜ 基准 593,305.19 万</span>
+            </summary>
+            <div class='psc-body'>
+                
+    <div class="table-responsive" style="margin-top: 16px;">
+        <table class="standard-matrix-table">
+            <thead>
+                <tr>
+                    <th class="th-left">基准属性增量</th>
+                    <th class="th-right">等价爆伤 (pts)</th>
+                    <th class="th-right">等价攻击 (点)</th>
+                    <th class="th-right">等价气血 (点)</th>
+                    <th class="th-right">等价真气 (点)</th>
+                    <th class="th-right">等价怪增 (%)</th>
+                    <th class="th-right" style="min-width: 140px;">带来实际伤害</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>爆伤 (+10)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>10.00</td><td class='num-cell nowrap-cell'>2,796.0</td><td class='num-cell nowrap-cell'>45,656.6</td><td class='num-cell nowrap-cell'>216,773.1</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.63%</td>
+            <td class='num-cell total-num nowrap-cell'>+2579.60 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>攻击 (+1,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>3.58</td><td class='num-cell nowrap-cell'>1,000.0</td><td class='num-cell nowrap-cell'>16,329.2</td><td class='num-cell nowrap-cell'>77,529.4</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.22%</td>
+            <td class='num-cell total-num nowrap-cell'>+922.60 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>气血 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>2.19</td><td class='num-cell nowrap-cell'>612.4</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell'>47,479.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.14%</td>
+            <td class='num-cell total-num nowrap-cell'>+565.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>真气 (+10,000)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>0.46</td><td class='num-cell nowrap-cell'>129.0</td><td class='num-cell nowrap-cell'>2,106.2</td><td class='num-cell nowrap-cell'>10,000.0</td><td class='num-cell nowrap-cell' style='color:#34d399;'>0.03%</td>
+            <td class='num-cell total-num nowrap-cell'>+119.00 万</td>
+        </tr>
+        
+        <tr>
+            <td class='text-left-cell nowrap-cell' style='font-weight:700;'>怪增 (+1.0%)</td>
+            <td class='num-cell nowrap-cell' style='color:#38bdf8;'>15.99</td><td class='num-cell nowrap-cell'>4,472.0</td><td class='num-cell nowrap-cell'>73,024.8</td><td class='num-cell nowrap-cell'>346,714.3</td><td class='num-cell nowrap-cell' style='color:#34d399;'>1.00%</td>
+            <td class='num-cell total-num nowrap-cell'>+4125.90 万</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+    
+                <div style="margin-top: 20px;">
+    <div class="interactive-calc-card">
+        <div class="calc-header">
+            <div class="calc-title">
+                <span class="calc-indicator"></span>
+                属性等值即时计算器
+            </div>
+            <div class="calc-subtitle">自由输入任意属性数值，即时计算等价属性与预估增伤</div>
+        </div>
+
+        <div class="calc-body">
+            <div class="calc-input-group">
+                <label class="calc-label">我有 / 洗出属性：</label>
+                <div class="calc-control-wrap">
+                    <input type="number" id="calc-val-tab-burst-sk3" class="calc-input" value="100" min="0" step="any" oninput="runDynamicCalc('tab-burst-sk3')">
+                    <select id="calc-src-tab-burst-sk3" class="calc-select" onchange="runDynamicCalc('tab-burst-sk3')">
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="attack">攻击 (点)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-divider">
+                <span class="calc-eq-symbol">≈ 等价于</span>
+            </div>
+
+            <div class="calc-input-group">
+                <label class="calc-label">换算目标属性：</label>
+                <div class="calc-control-wrap">
+                    <select id="calc-dst-tab-burst-sk3" class="calc-select" style="width: 100%;" onchange="runDynamicCalc('tab-burst-sk3')">
+                        <option value="attack">攻击 (点)</option>
+                        <option value="critDamage">爆伤 (pts)</option>
+                        <option value="health">气血 (点)</option>
+                        <option value="mana">真气 (点)</option>
+                        <option value="monsterDamageIncrease">怪增 (%)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-result-box">
+            <div class="calc-result-left">
+                <div class="calc-result-tag">等价折算结果</div>
+                <div class="calc-result-val nowrap-cell" id="calc-res-val-tab-burst-sk3">0.0</div>
+            </div>
+            <div class="calc-result-right">
+                <div class="calc-result-tag">预估总伤提升</div>
+                <div class="calc-gain-val nowrap-cell" id="calc-res-gain-tab-burst-sk3">+0.00 万</div>
+            </div>
+        </div>
+
+        <div class="calc-presets">
+            <span class="preset-label">快捷预设：</span>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk3', 100, 'critDamage', 'attack')">+100 爆伤</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk3', 5000, 'attack', 'critDamage')">+5000 攻击</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk3', 100000, 'health', 'attack')">+10万 气血</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk3', 100000, 'mana', 'attack')">+10万 真气</button>
+            <button class="preset-btn" onclick="applyPreset('tab-burst-sk3', 1.0, 'monsterDamageIncrease', 'attack')">+1% 怪增</button>
+        </div>
+
+        <script>
+            window.scenarioData = window.scenarioData || {};
+            window.scenarioData['tab-burst-sk3'] = {"critDamage_per_1": 257.96, "attack_per_1": 0.9226, "health_per_1": 0.0565, "mana_per_1": 0.0119, "defense_per_1": 0.0, "monsterDamageIncrease_per_1pct": 4125.9};
+        </script>
+    </div>
+    </div>
+            </div>
+        </details>
+        
+    </div>
+    
 
             <div class="decision-box" style="margin-top: 24px;">
                 <div class="decision-title">场景决策总结与洗练建议</div>
@@ -1231,8 +2760,8 @@
                         </tr>
                         <tr>
                             <td class="text-left-cell nowrap-cell skill-name-cell">1% 怪增等价 气血</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left;">无收益/不适用</td>
-                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">无收益/不适用</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left;">153626.5 (理论值·实战已触顶)</td>
+                            <td class="num-cell nowrap-cell" style="text-align: left; color: #34d399;">250465.9 (理论值·实战已触顶)</td>
                         </tr>
                         <tr>
                             <td class="text-left-cell nowrap-cell skill-name-cell">1% 怪增等价 真气</td>
