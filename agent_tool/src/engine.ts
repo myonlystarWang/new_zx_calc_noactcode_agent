@@ -1,7 +1,7 @@
 import { calculateDamage } from './calculator.js';
 import { loadGameData } from './data.js';
 import { normalizeRequest } from './normalize.js';
-import type { AgentCalcInput, DamageResult, Skill } from './types.js';
+import type { AgentCalcInput, AttributeCapsConfig, DamageResult, Skill } from './types.js';
 
 const round = (value: number): number => Math.round(value);
 
@@ -40,14 +40,28 @@ export const calculateFromInput = async (input: AgentCalcInput) => {
     };
   }
 
+  // 按职业差异化的属性上限：DEFAULT < 职业(classInfo) < profile.attributeCaps
+  const effectiveCaps: AttributeCapsConfig = {
+    EnableCaps: true,
+    ...(normalized.classInfo?.CapHealth != null ? { CapHealth: normalized.classInfo.CapHealth } : {}),
+    ...(normalized.classInfo?.CapMana != null ? { CapMana: normalized.classInfo.CapMana } : {}),
+    ...(normalized.attributeCaps || {}),
+  };
+
+  // 过滤直伤技能：排除辅助/状态技能（BUFF/UTILITY/DEBUFF），避免产生无伤害技能的普攻伪伤害
+  const damageSkills = normalized.skills.filter(
+    (skill) => !skill.ActionType || skill.ActionType === 'DAMAGE'
+  );
+
   const bossResults = normalized.selectedMonsters.map((monster) => {
-    const skills = normalized.skills.map((skill) => {
+    const skills = damageSkills.map((skill) => {
       const damage = calculateDamage(
         normalized.attributes,
         skill,
         monster,
         normalized.activeBuffs,
-        normalized.buffValues
+        normalized.buffValues,
+        effectiveCaps
       );
       return serializeDamage(skill, damage);
     });

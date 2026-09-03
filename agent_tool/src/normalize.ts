@@ -1,5 +1,6 @@
 import type {
   AgentCalcInput,
+  AttributeCapsConfig,
   Buff,
   CharacterAttributes,
   CharacterClass,
@@ -21,6 +22,8 @@ export interface NormalizedRequest {
   monsters: Monster[];
   selectedMonsters: Monster[];
   skills: Skill[];
+  /** 属性上限覆盖（可选，来自 profile.attributeCaps） */
+  attributeCaps?: AttributeCapsConfig;
 }
 
 const factionAliases: Record<string, 'XIAN' | 'FO' | 'MO'> = {
@@ -338,6 +341,7 @@ export const normalizeRequest = (input: AgentCalcInput, data: GameData): Normali
     dungeon,
     monsters,
     selectedMonsters,
-    skills
+    skills,
+    attributeCaps: input.attributeCaps
   };
 };
