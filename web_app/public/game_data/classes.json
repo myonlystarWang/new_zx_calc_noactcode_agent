@@ -69,7 +69,9 @@
     "ClassID": "TAI_HAO",
     "ClassName": "太昊",
     "Description": "神裔近战输出，爆发力强，机动性高，消耗元力，对细节打造要求高。",
-    "Race": "神族"
+    "Race": "神族",
+    "CapHealth": 4000000,
+    "CapMana": 4000000
   },
   {
     "ClassID": "CHEN_HUANG",

@@ -874,7 +874,8 @@
           "SkillManaPercentBonus": 10,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "NY_XIAN_SKILL_DYFT_XR",
@@ -893,7 +894,8 @@
           "SkillManaPercentBonus": 45,
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "NY_XIAN_SKILL_JRQG",
@@ -912,7 +914,8 @@
           "SkillManaPercentBonus": 9,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 3
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ],
     "FO": [
@@ -933,7 +936,8 @@
           "SkillManaPercentBonus": 45,
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "NY_FO_SKILL_SYWM",
@@ -952,7 +956,8 @@
           "SkillManaPercentBonus": 10,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "NY_FO_SKILL_JRQG",
@@ -971,7 +976,8 @@
           "SkillManaPercentBonus": 9,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 3
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ],
     "MO": [
@@ -992,7 +998,8 @@
           "SkillManaPercentBonus": 45,
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "NY_MO_SKILL_SYWM",
@@ -1011,7 +1018,8 @@
           "SkillManaPercentBonus": 10,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "NY_MO_SKILL_JRQG",
@@ -1030,7 +1038,8 @@
           "SkillManaPercentBonus": 9,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 3
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ]
   },
@@ -1053,7 +1062,8 @@
           "SkillManaPercentBonus": 26,
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ],
     "FO": [
@@ -1074,7 +1084,8 @@
           "SkillManaPercentBonus": 26,
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ],
     "MO": [
@@ -1095,7 +1106,8 @@
           "SkillManaPercentBonus": 26,
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ]
   },
@@ -1118,7 +1130,8 @@
           "SkillDefensePercentBonus": 400,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "GW_XIAN_SKILL_JB",
@@ -1141,7 +1154,8 @@
             "DamageMultiplierPerHit": 1.3,
             "DamageCap": 2140000000
           }
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ],
     "FO": [
@@ -1162,7 +1176,8 @@
           "SkillDefensePercentBonus": 400,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "GW_FO_SKILL_JB",
@@ -1185,7 +1200,8 @@
             "DamageMultiplierPerHit": 1.3,
             "DamageCap": 2140000000
           }
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ],
     "MO": [
@@ -1206,7 +1222,8 @@
           "SkillDefensePercentBonus": 400,
           "SkillCriticalDamagePercentBonus": 0,
           "SkillDamageBonus": 1
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "GW_MO_SKILL_JB",
@@ -1229,7 +1246,8 @@
             "DamageMultiplierPerHit": 1.3,
             "DamageCap": 2140000000
           }
-        }
+        },
+        "ActionType": "DAMAGE"
       }
     ]
   },
@@ -2090,5 +2108,151 @@
     ],
     "XIAN": [],
     "MO": []
+  },
+  "SHI_LUO": {
+    "XIAN": [],
+    "FO": [],
+    "MO": [
+      {
+        "SkillID": "SL_MO_SKILL_SSXS",
+        "SkillName": "释罗生相·煞",
+        "RequiredClass": "SHI_LUO",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.0,
+        "SkillFrequency": 0.354,
+        "Cooldown": 18,
+        "CastTime": 3,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "Description": "附加4000固定攻击，160%攻击比，真气12%，气血12%。",
+        "SkillBonusAttributes": {
+          "SkillAttackFixedBonus": 4000,
+          "SkillAttackPercentBonus": 160,
+          "SkillManaPercentBonus": 12,
+          "SkillHealthPercentBonus": 12,
+          "MultiHitConfig": {
+            "HitCount": 96
+          }
+        },
+        "_todo": "SkillImportanceWeight/频率已就位(实战占比)/Cooldown/CastTime 为占位，待用户确认；段数未提供",
+        "_burstTrack": false
+      },
+      {
+        "SkillID": "SL_MO_SKILL_NSSXS",
+        "SkillName": "孽·释罗生相·煞",
+        "RequiredClass": "SHI_LUO",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.556,
+        "SkillFrequency": 0.2912,
+        "Cooldown": 18,
+        "CastTime": 3,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "Description": "（孽化变体）附加4000固定攻击，160%攻击比，真气12%，气血12%。与「释罗生相·煞」伤害构成相同。",
+        "SkillBonusAttributes": {
+          "SkillAttackFixedBonus": 4000,
+          "SkillAttackPercentBonus": 160,
+          "SkillManaPercentBonus": 12,
+          "SkillHealthPercentBonus": 12,
+          "MultiHitConfig": {
+            "HitCount": 120
+          }
+        },
+        "_todo": "SkillImportanceWeight/频率已就位(实战占比)/Cooldown/CastTime 为占位，待用户确认；段数未提供",
+        "_burstTrack": true,
+        "_burstWeightDerivation": "按段数×单hit伤害推导(每技能仅丢一次)：总伤比 NSSXS:CWJHG"
+      },
+      {
+        "SkillID": "SL_MO_SKILL_NCJHG3D",
+        "SkillName": "孽·敕戒祸根3·大地",
+        "RequiredClass": "SHI_LUO",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.0,
+        "SkillFrequency": 0.0783,
+        "Cooldown": 18,
+        "CastTime": 3,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "Description": "（三级属性）附加10000固定攻击，240%攻击比，75%爆伤，真气5%，气血5%。18段。",
+        "SkillBonusAttributes": {
+          "SkillAttackFixedBonus": 10000,
+          "SkillAttackPercentBonus": 240,
+          "SkillCriticalDamagePercentBonus": 75,
+          "SkillManaPercentBonus": 5,
+          "SkillHealthPercentBonus": 5,
+          "MultiHitConfig": {
+            "HitCount": 15
+          }
+        },
+        "_burstTrack": false
+      },
+      {
+        "SkillID": "SL_MO_SKILL_CWJHG",
+        "SkillName": "赤乌·敕戒祸根",
+        "RequiredClass": "SHI_LUO",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0.444,
+        "SkillFrequency": 0.2765,
+        "Cooldown": 18,
+        "CastTime": 3,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "Description": "（曦日属性）附加6500固定攻击，200%攻击比，100%爆伤，真气25%，气血25%。之后每一击递增附加10%本体攻击力与自身气血上限与真气上限1%的攻击力。【NOTE】该三因子每击递增引擎MultiHitConfig尚不支持，需引擎扩展或近似，见_todo。",
+        "SkillBonusAttributes": {
+          "SkillAttackFixedBonus": 6500,
+          "SkillAttackPercentBonus": 200,
+          "SkillCriticalDamagePercentBonus": 100,
+          "SkillManaPercentBonus": 25,
+          "SkillHealthPercentBonus": 25,
+          "MultiHitConfig": {
+            "HitCount": 34,
+            "PerHitCharacterBonus": {
+              "CharacterMaxAttackPercent": 10,
+              "CharacterHealthPercent": 1,
+              "CharacterManaPercent": 1
+            }
+          }
+        },
+        "_todo": "三因子每击递增已通过引擎 MultiHitConfig.PerHitCharacterBonus 实现(扩展后): 第k击(k>1)额外+(k-1)*(10%本体攻击+1%气血上限+1%真气上限)攻击力, 由引擎按角色effMin/effMaxAttack分别作用于min/max基础伤害, avg终伤精确。",
+        "_burstTrack": true,
+        "_burstWeightDerivation": "含三因子每击递增(10%本攻+1%气血+1%真气)手动累加; 暴击倍率含+100爆伤"
+      }
+    ],
+    "_PLACEHOLDER_META": {
+      "note": "已按截图实战占比归一化前4个技能的 SkillFrequency（最大余数法保留4位小数，严格 Σ=1.0000）。Cooldown/CastTime/SkillImportanceWeight 仍为占位。",
+      "updatedAt": "2026-08-31 20:22:51",
+      "factionsDone": [
+        "MO"
+      ],
+      "factionsPending": [
+        "XIAN",
+        "FO"
+      ],
+      "placeholderFields": [
+        "Cooldown",
+        "CastTime"
+      ],
+      "burstTrack": [
+        "SL_MO_SKILL_NSSXS",
+        "SL_MO_SKILL_CWJHG"
+      ],
+      "burstTrackNames": [
+        "孽·释罗生相·煞",
+        "赤乌·敕戒祸根"
+      ],
+      "burstWeightNote": "爆发权重由段数×单hit伤害推导(每技能仅丢一次): 孽·释罗生相·煞=0.5560, 赤乌·敕戒祸根=0.4440。已非占位。"
+    }
   }
 }
