@@ -1,0 +1,412 @@
+{
+  "ok": true,
+  "resolved": {
+    "classId": "ZHU_SHUANG",
+    "className": "逐霜",
+    "faction": "MO",
+    "factionName": "魔",
+    "dungeonId": "ZHENHAI_DUANLANG_T20",
+    "dungeonName": "镇海！断浪碎晶宫（T20）",
+    "attributes": {
+      "CharacterMinAttack": 335676,
+      "CharacterMaxAttack": 394784,
+      "CharacterDefense": 378364,
+      "CharacterHealth": 4000000,
+      "CharacterMana": 5223493,
+      "CharacterCriticalHitDamagePercent": 2849.5,
+      "CharacterMonsterDamageIncreasePercent": 53.7
+    },
+    "activeBuffs": [
+      {
+        "buffId": "BUFF_FOCUS_EFFECT",
+        "buffName": "专注增益",
+        "value": 241
+      },
+      {
+        "buffId": "BUFF_HOLYWRATH_EFFECT",
+        "buffName": "巫咒增益",
+        "value": 22.5
+      },
+      {
+        "buffId": "BUFF_MON_CRITDAMAGE_EFFECT",
+        "buffName": "绿点增益",
+        "value": 900
+      },
+      {
+        "buffId": "BUFF_MON_HARMED_EFFECT",
+        "buffName": "易伤",
+        "value": 120
+      }
+    ]
+  },
+  "bosses": [
+    {
+      "bossId": "CHI_SUO_T20",
+      "bossName": "赤梭",
+      "dungeonLevel": 1,
+      "monsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1500,
+        "MonsterDefense": 450000,
+        "MonsterHealth": 124474606860,
+        "MonsterCriticalHitRateReduction": 250
+      },
+      "skills": [
+        {
+          "skillId": "ZS_MO_SKILL_CLXS",
+          "skillName": "苍龙啸·煞",
+          "minBaseDamage": 2606473,
+          "maxBaseDamage": 2807440,
+          "minFinalDamage": 8860237880,
+          "maxFinalDamage": 9460485099,
+          "avgFinalDamage": 9160361489,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 864999197,
+              "maxFinalDamage": 931693332,
+              "avgFinalDamage": 898346265
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 894867117,
+              "maxFinalDamage": 961561252,
+              "avgFinalDamage": 928214184
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 924735036,
+              "maxFinalDamage": 991429172,
+              "avgFinalDamage": 958082104
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 954602956,
+              "maxFinalDamage": 1021297091,
+              "avgFinalDamage": 987950024
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 984470876,
+              "maxFinalDamage": 1051165011,
+              "avgFinalDamage": 1017817943
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 1014338795,
+              "maxFinalDamage": 1081032931,
+              "avgFinalDamage": 1047685863
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 1044206715,
+              "maxFinalDamage": 1110900850,
+              "avgFinalDamage": 1077553783
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 1074074635,
+              "maxFinalDamage": 1140768770,
+              "avgFinalDamage": 1107421702
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 1103942554,
+              "maxFinalDamage": 1170636690,
+              "avgFinalDamage": 1137289622
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_MO_SKILL_YLXB",
+          "skillName": "银鳞玄冰",
+          "minBaseDamage": 5004534,
+          "maxBaseDamage": 5235055,
+          "minFinalDamage": 9965000508,
+          "maxFinalDamage": 10424013087,
+          "avgFinalDamage": 10194506797,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 1660833418,
+              "maxFinalDamage": 1737335514,
+              "avgFinalDamage": 1699084466
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 1660833418,
+              "maxFinalDamage": 1737335514,
+              "avgFinalDamage": 1699084466
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 1660833418,
+              "maxFinalDamage": 1737335514,
+              "avgFinalDamage": 1699084466
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 1660833418,
+              "maxFinalDamage": 1737335514,
+              "avgFinalDamage": 1699084466
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 1660833418,
+              "maxFinalDamage": 1737335514,
+              "avgFinalDamage": 1699084466
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 1660833418,
+              "maxFinalDamage": 1737335514,
+              "avgFinalDamage": 1699084466
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_MO_SKILL_SY3",
+          "skillName": "山雨欲来III",
+          "minBaseDamage": 3164571,
+          "maxBaseDamage": 3457155,
+          "minFinalDamage": 6314686356,
+          "maxFinalDamage": 6898519069,
+          "avgFinalDamage": 6606602713,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 1052447726,
+              "maxFinalDamage": 1149753178,
+              "avgFinalDamage": 1101100452
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 1052447726,
+              "maxFinalDamage": 1149753178,
+              "avgFinalDamage": 1101100452
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 1052447726,
+              "maxFinalDamage": 1149753178,
+              "avgFinalDamage": 1101100452
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 1052447726,
+              "maxFinalDamage": 1149753178,
+              "avgFinalDamage": 1101100452
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 1052447726,
+              "maxFinalDamage": 1149753178,
+              "avgFinalDamage": 1101100452
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 1052447726,
+              "maxFinalDamage": 1149753178,
+              "avgFinalDamage": 1101100452
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_MO_SKILL_SY2",
+          "skillName": "山雨欲来II",
+          "minBaseDamage": 3850323,
+          "maxBaseDamage": 4145863,
+          "minFinalDamage": 7503585860,
+          "maxFinalDamage": 8079540059,
+          "avgFinalDamage": 7791562959,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 1250597643,
+              "maxFinalDamage": 1346590010,
+              "avgFinalDamage": 1298593827
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 1250597643,
+              "maxFinalDamage": 1346590010,
+              "avgFinalDamage": 1298593827
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 1250597643,
+              "maxFinalDamage": 1346590010,
+              "avgFinalDamage": 1298593827
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 1250597643,
+              "maxFinalDamage": 1346590010,
+              "avgFinalDamage": 1298593827
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 1250597643,
+              "maxFinalDamage": 1346590010,
+              "avgFinalDamage": 1298593827
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 1250597643,
+              "maxFinalDamage": 1346590010,
+              "avgFinalDamage": 1298593827
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_MO_SKILL_YYZC_SHA",
+          "skillName": "鹰扬折冲·煞",
+          "minBaseDamage": 335676,
+          "maxBaseDamage": 394784,
+          "minFinalDamage": 106657968,
+          "maxFinalDamage": 125438992,
+          "avgFinalDamage": 116048480
+        },
+        {
+          "skillId": "ZS_MO_SKILL_CLX",
+          "skillName": "苍龙啸",
+          "minBaseDamage": 1652835,
+          "maxBaseDamage": 1836070,
+          "minFinalDamage": 5960744199,
+          "maxFinalDamage": 6503369699,
+          "avgFinalDamage": 6232056949,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 543850229,
+              "maxFinalDamage": 604141951,
+              "avgFinalDamage": 573996090
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 573463899,
+              "maxFinalDamage": 633755622,
+              "avgFinalDamage": 603609761
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 603077570,
+              "maxFinalDamage": 663369292,
+              "avgFinalDamage": 633223431
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 632691240,
+              "maxFinalDamage": 692982963,
+              "avgFinalDamage": 662837102
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 662304911,
+              "maxFinalDamage": 722596633,
+              "avgFinalDamage": 692450772
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 691918582,
+              "maxFinalDamage": 752210304,
+              "avgFinalDamage": 722064443
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 721532252,
+              "maxFinalDamage": 781823974,
+              "avgFinalDamage": 751678113
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 751145923,
+              "maxFinalDamage": 811437645,
+              "avgFinalDamage": 781291784
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 780759593,
+              "maxFinalDamage": 841051315,
+              "avgFinalDamage": 810905454
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_MO_SKILL_LYLZ",
+          "skillName": "临渊敛爪",
+          "minBaseDamage": 1672289,
+          "maxBaseDamage": 1824787,
+          "minFinalDamage": 1629494546,
+          "maxFinalDamage": 1778090730,
+          "avgFinalDamage": 1703792638,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 543164849,
+              "maxFinalDamage": 592696910,
+              "avgFinalDamage": 567930879
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 543164849,
+              "maxFinalDamage": 592696910,
+              "avgFinalDamage": 567930879
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 543164849,
+              "maxFinalDamage": 592696910,
+              "avgFinalDamage": 567930879
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_MO_SKILL_YYZC",
+          "skillName": "鹰扬折冲",
+          "minBaseDamage": 335676,
+          "maxBaseDamage": 394784,
+          "minFinalDamage": 106657968,
+          "maxFinalDamage": 125438992,
+          "avgFinalDamage": 116048480
+        },
+        {
+          "skillId": "ZS_MO_SKILL_LZYY",
+          "skillName": "龙战于野",
+          "minBaseDamage": 335676,
+          "maxBaseDamage": 394784,
+          "minFinalDamage": 106657968,
+          "maxFinalDamage": 125438992,
+          "avgFinalDamage": 116048480
+        },
+        {
+          "skillId": "ZS_MO_SKILL_ZGDD",
+          "skillName": "枕戈待旦",
+          "minBaseDamage": 335676,
+          "maxBaseDamage": 394784,
+          "minFinalDamage": 106657968,
+          "maxFinalDamage": 125438992,
+          "avgFinalDamage": 116048480
+        },
+        {
+          "skillId": "ZS_MO_SKILL_QXHS",
+          "skillName": "清啸横朔",
+          "minBaseDamage": 335676,
+          "maxBaseDamage": 394784,
+          "minFinalDamage": 106657968,
+          "maxFinalDamage": 125438992,
+          "avgFinalDamage": 116048480
+        },
+        {
+          "skillId": "ZS_MO_SKILL_YZXW",
+          "skillName": "云蒸霞蔚",
+          "minBaseDamage": 335676,
+          "maxBaseDamage": 394784,
+          "minFinalDamage": 106657968,
+          "maxFinalDamage": 125438992,
+          "avgFinalDamage": 116048480
+        }
+      ]
+    }
+  ],
+  "wechatSummary": "逐霜/魔/镇海！断浪碎晶宫（T20）/赤梭，各技能平均伤害如下：\n苍龙啸·煞: 平均 91.604亿\n银鳞玄冰: 平均 101.945亿\n山雨欲来III: 平均 66.066亿\n山雨欲来II: 平均 77.916亿\n鹰扬折冲·煞: 平均 1.160亿\n苍龙啸: 平均 62.321亿\n临渊敛爪: 平均 17.038亿\n鹰扬折冲: 平均 1.160亿\n龙战于野: 平均 1.160亿\n枕戈待旦: 平均 1.160亿\n清啸横朔: 平均 1.160亿\n云蒸霞蔚: 平均 1.160亿"
+}

@@ -17,8 +17,37 @@
    "monsterDamageTaken": 120,
    "witchCurse": 22.5
  },
-  "target": {
-   "dungeon": "T19",
-   "bossIndex": 1
-  }
+   "target": {
+    "dungeon": "T19",
+    "bossIndex": 1,
+    "burstDungeon": "JIEQI_KONGSANG_HARD",
+    "burstBossIndex": 1
+   },
+   "skillUsage": {
+     "ZS_XIAN_SKILL_CLX": {
+       "damageShare": 0.3422,
+       "observedHitCount": 1,
+       "note": "苍龙啸实战占比33.4%（归一化34.22%）"
+     },
+     "ZS_XIAN_SKILL_CLXX": {
+       "damageShare": 0.3315,
+       "observedHitCount": 1,
+       "note": "苍龙啸·玄实战占比32.36%（归一化33.15%）"
+     },
+     "ZS_XIAN_SKILL_SY3": {
+       "damageShare": 0.1807,
+       "observedHitCount": 1,
+       "note": "山雨欲来III实战占比17.64%（归一化18.07%）"
+     },
+     "ZS_XIAN_SKILL_LYLZ": {
+       "damageShare": 0.0976,
+       "observedHitCount": 1,
+       "note": "临渊敛爪实战占比9.53%（归一化9.76%）"
+     },
+     "ZS_XIAN_SKILL_YLXB": {
+       "damageShare": 0.0480,
+       "observedHitCount": 1,
+       "note": "银鳞玄冰实战占比4.68%（归一化4.80%）"
+     }
+   }
 }

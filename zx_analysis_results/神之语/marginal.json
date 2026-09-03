@@ -1,0 +1,344 @@
+{
+  "generatedAt": "2026-09-01T16:18:22.910454",
+  "playerName": "神之语",
+  "long": {
+    "ok": true,
+    "playerName": "神之语",
+    "className": "太昊",
+    "factionName": "仙",
+    "dungeon": "T21",
+    "mode": "total",
+    "baseTotalDamageWan": 77987.46,
+    "weightedTotalDamageWan": 77987.46,
+    "skillMargins": [
+      {
+        "skillName": "天地绝·玄",
+        "skillId": "TH_XIAN_SKILL_TDJX",
+        "hasHits": false,
+        "baseDamage": 77987.4599,
+        "firstHitBaseDamage": null,
+        "weight": 1.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 34.69,
+            "theoreticalMarginal": 34.69,
+            "isCapped": false,
+            "rawMarginal": 34.69,
+            "rawTheoreticalMarginal": 34.69,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 7.2,
+            "theoreticalMarginal": 7.2,
+            "isCapped": false,
+            "rawMarginal": 7.2,
+            "rawTheoreticalMarginal": 7.2,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 6.24,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 6.24,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 6.24,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 6.24,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 57.47,
+            "theoreticalMarginal": 57.47,
+            "isCapped": false,
+            "rawMarginal": 57.47,
+            "rawTheoreticalMarginal": 57.47,
+            "firstHitMarginal": null
+          }
+        ]
+      }
+    ],
+    "totalMargins": [
+      {
+        "key": "critDamage",
+        "label": "爆伤 (+1)",
+        "delta": 1,
+        "marginal": 34.69,
+        "theoreticalMarginal": 34.69,
+        "isCapped": false
+      },
+      {
+        "key": "attack",
+        "label": "攻击 (+100)",
+        "delta": 100,
+        "marginal": 7.2,
+        "theoreticalMarginal": 7.2,
+        "isCapped": false
+      },
+      {
+        "key": "health",
+        "label": "气血 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 6.24,
+        "isCapped": true
+      },
+      {
+        "key": "mana",
+        "label": "真气 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 6.24,
+        "isCapped": true
+      },
+      {
+        "key": "defense",
+        "label": "防御 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 0.0,
+        "isCapped": false
+      },
+      {
+        "key": "monsterDamageIncrease",
+        "label": "怪增 (+0.1%)",
+        "delta": 0.1,
+        "marginal": 57.47,
+        "theoreticalMarginal": 57.47,
+        "isCapped": false
+      }
+    ],
+    "conversions": {
+      "critDamage": 16.57,
+      "attack": 7981.9,
+      "health": "92099.4 (理论值·实战已触顶)",
+      "mana": "92099.4 (理论值·实战已触顶)",
+      "defense": "无收益/不适用"
+    },
+    "perUnitGain": {
+      "critDamage_per_1": 34.69,
+      "attack_per_1": 0.072,
+      "health_per_1": 0.0062,
+      "mana_per_1": 0.0062,
+      "defense_per_1": 0.0,
+      "monsterDamageIncrease_per_1pct": 574.7
+    },
+    "skillDamageScenarios": [
+      {
+        "label": "当前 profile 配置",
+        "ok": true,
+        "grandTotalWan": 77987.46,
+        "skills": [
+          {
+            "skillId": "TH_XIAN_SKILL_TDJX",
+            "skillName": "天地绝·玄",
+            "totalWan": 77987.46,
+            "hitCount": 0,
+            "hits": []
+          }
+        ]
+      }
+    ],
+    "analysisTime": "2026-09-01T16:18:13.848346"
+  },
+  "burst": {
+    "ok": true,
+    "playerName": "神之语",
+    "className": "太昊",
+    "factionName": "仙",
+    "dungeon": "JIEQI_KONGSANG_HARD",
+    "mode": "burst_weighted",
+    "baseTotalDamageWan": 77987.46,
+    "weightedTotalDamageWan": 77987.46,
+    "skillMargins": [
+      {
+        "skillName": "天地绝·玄",
+        "skillId": "TH_XIAN_SKILL_TDJX",
+        "hasHits": false,
+        "baseDamage": 77987.4599,
+        "firstHitBaseDamage": null,
+        "weight": 1.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 34.69,
+            "theoreticalMarginal": 34.69,
+            "isCapped": false,
+            "rawMarginal": 34.69,
+            "rawTheoreticalMarginal": 34.69,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 7.2,
+            "theoreticalMarginal": 7.2,
+            "isCapped": false,
+            "rawMarginal": 7.2,
+            "rawTheoreticalMarginal": 7.2,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 6.24,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 6.24,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 6.24,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 6.24,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 57.47,
+            "theoreticalMarginal": 57.47,
+            "isCapped": false,
+            "rawMarginal": 57.47,
+            "rawTheoreticalMarginal": 57.47,
+            "firstHitMarginal": null
+          }
+        ]
+      }
+    ],
+    "totalMargins": [
+      {
+        "key": "critDamage",
+        "label": "爆伤 (+1)",
+        "delta": 1,
+        "marginal": 34.69,
+        "theoreticalMarginal": 34.69,
+        "isCapped": false
+      },
+      {
+        "key": "attack",
+        "label": "攻击 (+100)",
+        "delta": 100,
+        "marginal": 7.2,
+        "theoreticalMarginal": 7.2,
+        "isCapped": false
+      },
+      {
+        "key": "health",
+        "label": "气血 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 6.24,
+        "isCapped": true
+      },
+      {
+        "key": "mana",
+        "label": "真气 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 6.24,
+        "isCapped": true
+      },
+      {
+        "key": "defense",
+        "label": "防御 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 0.0,
+        "isCapped": false
+      },
+      {
+        "key": "monsterDamageIncrease",
+        "label": "怪增 (+0.1%)",
+        "delta": 0.1,
+        "marginal": 57.47,
+        "theoreticalMarginal": 57.47,
+        "isCapped": false
+      }
+    ],
+    "conversions": {
+      "critDamage": 16.57,
+      "attack": 7981.9,
+      "health": "92099.4 (理论值·实战已触顶)",
+      "mana": "92099.4 (理论值·实战已触顶)",
+      "defense": "无收益/不适用"
+    },
+    "perUnitGain": {
+      "critDamage_per_1": 34.69,
+      "attack_per_1": 0.072,
+      "health_per_1": 0.0062,
+      "mana_per_1": 0.0062,
+      "defense_per_1": 0.0,
+      "monsterDamageIncrease_per_1pct": 574.7
+    },
+    "skillDamageScenarios": [
+      {
+        "label": "当前 profile 配置",
+        "ok": true,
+        "grandTotalWan": 77987.46,
+        "skills": [
+          {
+            "skillId": "TH_XIAN_SKILL_TDJX",
+            "skillName": "天地绝·玄",
+            "totalWan": 77987.46,
+            "hitCount": 0,
+            "hits": []
+          }
+        ]
+      }
+    ],
+    "analysisTime": "2026-09-01T16:18:22.909424"
+  }
+}

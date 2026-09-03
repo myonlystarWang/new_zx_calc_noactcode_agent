@@ -1,0 +1,383 @@
+{
+  "ok": true,
+  "resolved": {
+    "classId": "ZHU_SHUANG",
+    "className": "逐霜",
+    "faction": "XIAN",
+    "factionName": "仙",
+    "dungeonId": "ZHENHAI_DUANLANG_T19",
+    "dungeonName": "镇海！断浪碎晶宫（T19）",
+    "attributes": {
+      "CharacterMinAttack": 92562,
+      "CharacterMaxAttack": 108741,
+      "CharacterDefense": 27158,
+      "CharacterHealth": 1235000,
+      "CharacterMana": 2194000,
+      "CharacterCriticalHitDamagePercent": 1801.7,
+      "CharacterMonsterDamageIncreasePercent": 5
+    },
+    "activeBuffs": [
+      {
+        "buffId": "BUFF_FOCUS_EFFECT",
+        "buffName": "专注增益",
+        "value": 251
+      },
+      {
+        "buffId": "BUFF_HOLYWRATH_EFFECT",
+        "buffName": "巫咒增益",
+        "value": 22.5
+      },
+      {
+        "buffId": "BUFF_MON_CRITDAMAGE_EFFECT",
+        "buffName": "绿点增益",
+        "value": 900
+      },
+      {
+        "buffId": "BUFF_MON_HARMED_EFFECT",
+        "buffName": "易伤",
+        "value": 120
+      }
+    ]
+  },
+  "bosses": [
+    {
+      "bossId": "CHI_SUO_T19",
+      "bossName": "赤梭",
+      "dungeonLevel": 1,
+      "monsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1300,
+        "MonsterDefense": 340000,
+        "MonsterHealth": 101532777550,
+        "MonsterCriticalHitRateReduction": 210
+      },
+      "skills": [
+        {
+          "skillId": "ZS_XIAN_SKILL_CLXX",
+          "skillName": "苍龙啸·玄",
+          "minBaseDamage": 976911,
+          "maxBaseDamage": 1031919,
+          "minFinalDamage": 1576471484,
+          "maxFinalDamage": 1650314847,
+          "avgFinalDamage": 1613393166,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 145711315,
+              "maxFinalDamage": 153916133,
+              "avgFinalDamage": 149813724
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 153074361,
+              "maxFinalDamage": 161279179,
+              "avgFinalDamage": 157176770
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 160437406,
+              "maxFinalDamage": 168642225,
+              "avgFinalDamage": 164539816
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 167800452,
+              "maxFinalDamage": 176005270,
+              "avgFinalDamage": 171902861
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 175163498,
+              "maxFinalDamage": 183368316,
+              "avgFinalDamage": 179265907
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 182526544,
+              "maxFinalDamage": 190731362,
+              "avgFinalDamage": 186628953
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 189889590,
+              "maxFinalDamage": 198094408,
+              "avgFinalDamage": 193991999
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 197252636,
+              "maxFinalDamage": 205457454,
+              "avgFinalDamage": 201355045
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 204615682,
+              "maxFinalDamage": 212820500,
+              "avgFinalDamage": 208718091
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_YLXB",
+          "skillName": "银鳞玄冰",
+          "minBaseDamage": 1738592,
+          "maxBaseDamage": 1801690,
+          "minFinalDamage": 2333879892,
+          "maxFinalDamage": 2418582573,
+          "avgFinalDamage": 2376231232,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 259319988,
+              "maxFinalDamage": 268731397,
+              "avgFinalDamage": 264025692
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_SY3",
+          "skillName": "山雨欲来III",
+          "minBaseDamage": 781082,
+          "maxBaseDamage": 861168,
+          "minFinalDamage": 701341920,
+          "maxFinalDamage": 773252054,
+          "avgFinalDamage": 737296987,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 116890320,
+              "maxFinalDamage": 128875342,
+              "avgFinalDamage": 122882831
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 116890320,
+              "maxFinalDamage": 128875342,
+              "avgFinalDamage": 122882831
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 116890320,
+              "maxFinalDamage": 128875342,
+              "avgFinalDamage": 122882831
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 116890320,
+              "maxFinalDamage": 128875342,
+              "avgFinalDamage": 122882831
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 116890320,
+              "maxFinalDamage": 128875342,
+              "avgFinalDamage": 122882831
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 116890320,
+              "maxFinalDamage": 128875342,
+              "avgFinalDamage": 122882831
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_YYZC_XUAN",
+          "skillName": "鹰扬折冲·玄",
+          "minBaseDamage": 92562,
+          "maxBaseDamage": 108741,
+          "minFinalDamage": 12886738,
+          "maxFinalDamage": 15139223,
+          "avgFinalDamage": 14012980
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_CLX",
+          "skillName": "苍龙啸",
+          "minBaseDamage": 501502,
+          "maxBaseDamage": 551657,
+          "minFinalDamage": 811469073,
+          "maxFinalDamage": 877900158,
+          "avgFinalDamage": 844684616,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 73805429,
+              "maxFinalDamage": 81186661,
+              "avgFinalDamage": 77496045
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 77894879,
+              "maxFinalDamage": 85276111,
+              "avgFinalDamage": 81585495
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 81984330,
+              "maxFinalDamage": 89365561,
+              "avgFinalDamage": 85674945
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 86073780,
+              "maxFinalDamage": 93455012,
+              "avgFinalDamage": 89764396
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 90163230,
+              "maxFinalDamage": 97544462,
+              "avgFinalDamage": 93853846
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 94252681,
+              "maxFinalDamage": 101633912,
+              "avgFinalDamage": 97943297
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 98342131,
+              "maxFinalDamage": 105723363,
+              "avgFinalDamage": 102032747
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 102431581,
+              "maxFinalDamage": 109812813,
+              "avgFinalDamage": 106122197
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 106521032,
+              "maxFinalDamage": 113902263,
+              "avgFinalDamage": 110211648
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_LYLZ",
+          "skillName": "临渊敛爪",
+          "minBaseDamage": 425970,
+          "maxBaseDamage": 467712,
+          "minFinalDamage": 184260519,
+          "maxFinalDamage": 202316650,
+          "avgFinalDamage": 193288584,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 61420173,
+              "maxFinalDamage": 67438883,
+              "avgFinalDamage": 64429528
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 61420173,
+              "maxFinalDamage": 67438883,
+              "avgFinalDamage": 64429528
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 61420173,
+              "maxFinalDamage": 67438883,
+              "avgFinalDamage": 64429528
+            }
+          ]
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_YYZC",
+          "skillName": "鹰扬折冲",
+          "minBaseDamage": 92562,
+          "maxBaseDamage": 108741,
+          "minFinalDamage": 12886738,
+          "maxFinalDamage": 15139223,
+          "avgFinalDamage": 14012980
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_LZYY",
+          "skillName": "龙战于野",
+          "minBaseDamage": 92562,
+          "maxBaseDamage": 108741,
+          "minFinalDamage": 12886738,
+          "maxFinalDamage": 15139223,
+          "avgFinalDamage": 14012980
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_ZGDD",
+          "skillName": "枕戈待旦",
+          "minBaseDamage": 92562,
+          "maxBaseDamage": 108741,
+          "minFinalDamage": 12886738,
+          "maxFinalDamage": 15139223,
+          "avgFinalDamage": 14012980
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_QXHS",
+          "skillName": "清啸横朔",
+          "minBaseDamage": 92562,
+          "maxBaseDamage": 108741,
+          "minFinalDamage": 12886738,
+          "maxFinalDamage": 15139223,
+          "avgFinalDamage": 14012980
+        },
+        {
+          "skillId": "ZS_XIAN_SKILL_YZXW",
+          "skillName": "云蒸霞蔚",
+          "minBaseDamage": 92562,
+          "maxBaseDamage": 108741,
+          "minFinalDamage": 12886738,
+          "maxFinalDamage": 15139223,
+          "avgFinalDamage": 14012980
+        }
+      ]
+    }
+  ],
+  "wechatSummary": "逐霜/仙/镇海！断浪碎晶宫（T19）/赤梭，各技能平均伤害如下：\n苍龙啸·玄: 平均 16.134亿\n银鳞玄冰: 平均 23.762亿\n山雨欲来III: 平均 7.373亿\n鹰扬折冲·玄: 平均 1401.298万\n苍龙啸: 平均 8.447亿\n临渊敛爪: 平均 1.933亿\n鹰扬折冲: 平均 1401.298万\n龙战于野: 平均 1401.298万\n枕戈待旦: 平均 1401.298万\n清啸横朔: 平均 1401.298万\n云蒸霞蔚: 平均 1401.298万"
+}

@@ -1,5 +1,5 @@
 {
-  "playerName": "独白_魔",
+  "playerName": "独白_魔_含瑛",
   "className": "逐霜",
   "factionName": "魔",
   "attributes": {
@@ -7,7 +7,7 @@
     "maxAttack": 394784,
     "defense": 378364,
     "critDamage": 2849.5,
-    "mana": 5323493,
+    "mana": 5223493,
     "health": 4000000,
     "monsterDamageIncrease": 53.7
   },
@@ -19,7 +19,9 @@
   },
   "target": {
     "dungeon": "T20",
-    "bossIndex": 1
+    "bossIndex": 1,
+    "burstDungeon": "JIEQI_KONGSANG_HARD",
+    "burstBossIndex": 1
   },
   "skillUsage": {
     "ZS_MO_SKILL_CLX": {

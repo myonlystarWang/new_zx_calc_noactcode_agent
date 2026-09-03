@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',sans-serif">
+<rect width="1080" height="1920" fill="#0e1117"/>
+<rect x="16" y="16" width="1048" height="1888" rx="18" fill="#161b22" stroke="#30363d"/>
+<text x="48" y="82" font-size="40" fill="#f0f6fc" font-weight="bold" text-anchor="start">神之语</text>
+<text x="194" y="82" font-size="22" fill="#a78bfa" font-weight="bold" text-anchor="start">太昊 · 仙</text>
+<text x="48" y="114" font-size="18" fill="#8b949e" font-weight="normal" text-anchor="start">伤害边际分析 · T21 (标准总伤基准) ｜ 空桑困难（劫起空桑） (秒怪爆发加权)</text>
+<rect x="48" y="144" width="984" height="96" rx="12" fill="#1c2230" stroke="#30363d"/>
+<text x="72" y="182" font-size="16" fill="#8b949e" font-weight="normal" text-anchor="start">攻击</text>
+<text x="72" y="214" font-size="22" fill="#f0f6fc" font-weight="bold" text-anchor="start">354,261-422,737</text>
+<text x="272" y="182" font-size="16" fill="#8b949e" font-weight="normal" text-anchor="start">爆伤</text>
+<text x="272" y="214" font-size="22" fill="#fbbf24" font-weight="bold" text-anchor="start">2848.3%</text>
+<text x="472" y="182" font-size="16" fill="#8b949e" font-weight="normal" text-anchor="start">对怪增伤</text>
+<text x="472" y="214" font-size="22" fill="#34d399" font-weight="bold" text-anchor="start">35.7%</text>
+<text x="672" y="182" font-size="16" fill="#8b949e" font-weight="normal" text-anchor="start">气血</text>
+<text x="672" y="214" font-size="22" fill="#f0f6fc" font-weight="bold" text-anchor="start">400.0万</text>
+<text x="872" y="182" font-size="16" fill="#8b949e" font-weight="normal" text-anchor="start">真气</text>
+<text x="872" y="214" font-size="22" fill="#f0f6fc" font-weight="bold" text-anchor="start">400.0万</text>
+<text x="1072" y="182" font-size="16" fill="#8b949e" font-weight="normal" text-anchor="start">专注</text>
+<text x="1072" y="214" font-size="22" fill="#f0f6fc" font-weight="bold" text-anchor="start">192</text>
+<text x="48" y="274" font-size="22" fill="#f0f6fc" font-weight="bold" text-anchor="start">重要技能 · 单段伤害</text>
+<rect x="48" y="290" width="984" height="60" rx="12" fill="#1c2230" stroke="#30363d"/>
+<text x="72" y="324" font-size="19" fill="#e6edf3" font-weight="bold" text-anchor="start">天地绝·玄</text>
+<text x="72" y="346" font-size="14" fill="#8b949e" font-weight="normal" text-anchor="start">1段 · 总伤 7.8亿</text>
+<text x="1008" y="334" font-size="22" fill="#a78bfa" font-weight="bold" text-anchor="end">7.80亿</text>
+<text x="48" y="380" font-size="22" fill="#f0f6fc" font-weight="bold" text-anchor="start">各属性边际贡献矩阵（万伤害）</text>
+<text x="72" y="420" font-size="15" fill="#8b949e" font-weight="bold" text-anchor="start">技能</text>
+<text x="128.0" y="420" font-size="15" fill="#8b949e" font-weight="bold" text-anchor="middle">占比</text>
+<text x="290.4" y="420" font-size="15" fill="#8b949e" font-weight="bold" text-anchor="middle">爆伤</text>
+<text x="455.20000000000005" y="420" font-size="15" fill="#8b949e" font-weight="bold" text-anchor="middle">攻击</text>
+<text x="620.0" y="420" font-size="15" fill="#8b949e" font-weight="bold" text-anchor="middle">气血</text>
+<text x="784.8000000000001" y="420" font-size="15" fill="#8b949e" font-weight="bold" text-anchor="middle">真气</text>
+<text x="949.6" y="420" font-size="15" fill="#8b949e" font-weight="bold" text-anchor="middle">怪增</text>
+<text x="72" y="450" font-size="16" fill="#e6edf3" font-weight="bold" text-anchor="start">天地绝·玄</text>
+<text x="128.0" y="450" font-size="15" fill="#34d399" font-weight="bold" text-anchor="middle">100.0%</text>
+<rect x="129.6" y="436" width="156.8" height="30" rx="6" fill="rgba(167,139,250,0.72)"/>
+<text x="208.0" y="456" font-size="14" fill="#e6edf3" font-weight="bold" text-anchor="middle">34.7</text>
+<rect x="294.4" y="436" width="156.8" height="30" rx="6" fill="rgba(167,139,250,0.72)"/>
+<text x="372.8" y="456" font-size="14" fill="#e6edf3" font-weight="bold" text-anchor="middle">7.2</text>
+<rect x="459.20000000000005" y="436" width="156.8" height="30" rx="6" fill="rgba(248,81,73,0.48)"/>
+<text x="537.6" y="456" font-size="13" fill="#f85149" font-weight="bold" text-anchor="middle">0.0 (6.2🔴)</text>
+<rect x="624.0000000000001" y="436" width="156.8" height="30" rx="6" fill="rgba(248,81,73,0.48)"/>
+<text x="702.4000000000001" y="456" font-size="13" fill="#f85149" font-weight="bold" text-anchor="middle">0.0 (6.2🔴)</text>
+<rect x="788.8000000000001" y="436" width="156.8" height="30" rx="6" fill="rgba(167,139,250,0.72)"/>
+<text x="867.2" y="456" font-size="14" fill="#e6edf3" font-weight="bold" text-anchor="middle">57.5</text>
+<rect x="48" y="498" width="984" height="22" rx="6" fill="#1f2937" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="60" y="513" font-size="14" fill="#fde68a" font-weight="bold" text-anchor="start">提升 1% 怪增的等价收益</text>
+<text x="72" y="536" font-size="12" fill="#8b949e" font-weight="bold" text-anchor="start">基准</text>
+<text x="258" y="536" font-size="12" fill="#8b949e" font-weight="bold" text-anchor="start">等价爆伤(pts)</text>
+<text x="428" y="536" font-size="12" fill="#8b949e" font-weight="bold" text-anchor="start">等价攻击(点)</text>
+<text x="588" y="536" font-size="12" fill="#8b949e" font-weight="bold" text-anchor="start">等价气血(点)</text>
+<text x="748" y="536" font-size="12" fill="#8b949e" font-weight="bold" text-anchor="start">等价真气(点)</text>
+<text x="908" y="536" font-size="12" fill="#8b949e" font-weight="bold" text-anchor="start">总伤害提升(万)</text>
+<rect x="48" y="542" width="984" height="22" rx="4" fill="#3a2a0d"/>
+<text x="72" y="558" font-size="12" fill="#fbbf24" font-weight="bold" text-anchor="start">怪增 (+1.0%)</text>
+<text x="258" y="558" font-size="12" fill="#fbbf24" font-weight="bold" text-anchor="start">16.57</text>
+<text x="428" y="558" font-size="12" fill="#fbbf24" font-weight="bold" text-anchor="start">7981.9</text>
+<text x="588" y="558" font-size="12" fill="#fbbf24" font-weight="bold" text-anchor="start">92693.5</text>
+<text x="748" y="558" font-size="12" fill="#fbbf24" font-weight="bold" text-anchor="start">92693.5</text>
+<text x="908" y="558" font-size="12" fill="#fbbf24" font-weight="bold" text-anchor="start">+574.70</text>
+<text x="48" y="600" font-size="22" fill="#f0f6fc" font-weight="bold" text-anchor="start">属性收益优先级</text>
+<rect x="52.0" y="624" width="238.0" height="40" rx="12" fill="#1c2230" stroke="#30363d"/>
+<text x="171.0" y="650" font-size="18" fill="#34d399" font-weight="bold" text-anchor="middle">怪增</text>
+<rect x="298.0" y="624" width="238.0" height="40" rx="12" fill="#1c2230" stroke="#30363d"/>
+<text x="417.0" y="650" font-size="18" fill="#58a6ff" font-weight="bold" text-anchor="middle">爆伤</text>
+<rect x="544.0" y="624" width="238.0" height="40" rx="12" fill="#1c2230" stroke="#30363d"/>
+<text x="663.0" y="650" font-size="18" fill="#58a6ff" font-weight="bold" text-anchor="middle">攻击</text>
+<rect x="790.0" y="624" width="238.0" height="40" rx="12" fill="#1c2230" stroke="#30363d"/>
+<text x="909.0" y="650" font-size="18" fill="#8b949e" font-weight="bold" text-anchor="middle">真气 = 气血</text>
+<text x="48" y="686" font-size="22" fill="#f0f6fc" font-weight="bold" text-anchor="start">结论与洗练建议</text>
+<rect x="48" y="704" width="984" height="90" rx="12" fill="#11251c" stroke="#30363d"/>
+<text x="68" y="734" font-size="17" fill="#9fe6c4" font-weight="normal" text-anchor="start">在 T21 (标准总伤基准) 场景下，核心属性排序为 怪增 &gt; 爆伤 &gt; 攻击 &gt; 真气 = 气血。</text>
+<text x="68" y="760" font-size="17" fill="#9fe6c4" font-weight="normal" text-anchor="start">洗练建议优先保障 怪增。针对核心技能【天地绝·玄】，</text>
+<text x="68" y="786" font-size="17" fill="#9fe6c4" font-weight="normal" text-anchor="start">提升 1% 怪增等价于提升约 7981.9 攻击 或 16.57 爆伤。</text>
+<text x="48" y="814" font-size="13" fill="#6e7681" font-weight="normal" text-anchor="start">数据来源：zhuxian-damage-analysis 计算引擎 · 精确数值以 analysis_brief.json / report.html 为准</text>
+</svg>

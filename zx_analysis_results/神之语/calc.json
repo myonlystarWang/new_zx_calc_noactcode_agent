@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "resolved": {
+    "classId": "TAI_HAO",
+    "className": "太昊",
+    "faction": "XIAN",
+    "factionName": "仙",
+    "dungeonId": "ZHENHAI_DUANLANG_T21",
+    "dungeonName": "镇海！断浪碎晶宫（T21）",
+    "attributes": {
+      "CharacterMinAttack": 354261,
+      "CharacterMaxAttack": 422737,
+      "CharacterDefense": 500000,
+      "CharacterHealth": 4000000,
+      "CharacterMana": 4000000,
+      "CharacterCriticalHitDamagePercent": 2848.3,
+      "CharacterMonsterDamageIncreasePercent": 35.7
+    },
+    "activeBuffs": [
+      {
+        "buffId": "BUFF_FOCUS_EFFECT",
+        "buffName": "专注增益",
+        "value": 192
+      },
+      {
+        "buffId": "BUFF_HOLYWRATH_EFFECT",
+        "buffName": "巫咒增益",
+        "value": 22.5
+      },
+      {
+        "buffId": "BUFF_MON_CRITDAMAGE_EFFECT",
+        "buffName": "绿点增益",
+        "value": 900
+      },
+      {
+        "buffId": "BUFF_MON_HARMED_EFFECT",
+        "buffName": "易伤",
+        "value": 120
+      }
+    ]
+  },
+  "bosses": [
+    {
+      "bossId": "CHI_SUO_T21",
+      "bossName": "赤梭",
+      "dungeonLevel": 1,
+      "monsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1600,
+        "MonsterDefense": 500000,
+        "MonsterHealth": 196829815000,
+        "MonsterCriticalHitRateReduction": 295
+      },
+      "skills": [
+        {
+          "skillId": "TH_XIAN_SKILL_TDJX",
+          "skillName": "天地绝·玄",
+          "minBaseDamage": 3145533,
+          "maxBaseDamage": 3350961,
+          "minFinalDamage": 755213900,
+          "maxFinalDamage": 804535297,
+          "avgFinalDamage": 779874599
+        }
+      ]
+    }
+  ],
+  "wechatSummary": "太昊/仙/镇海！断浪碎晶宫（T21）/赤梭，各技能平均伤害如下：\n天地绝·玄: 平均 7.799亿"
+}

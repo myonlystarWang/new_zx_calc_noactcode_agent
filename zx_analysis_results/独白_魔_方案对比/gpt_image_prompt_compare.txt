@@ -1,0 +1,454 @@
+===== 中文主版（直接复制喂 GPT 生图）=====
+
+请生成一张《诛仙3》玩家伤害分析「方案对比」信息图（竖版，1080×1920 左右），将两套方案并排对比。
+
+# 设计目标
+制作一张《诛仙3》玩家伤害测试「方案对比攻略图」，而非宣传海报。重点是双方案数据并排、可读性、专业分析感。所有中文文字、数字必须清晰准确，不得臆造，不得修改数据。
+
+# 基础规格
+- 竖版手机长图，1080×1920（9:16）左右，适合手机竖屏阅读；采用左右双栏布局对比两套方案。
+- 上下预留充足空间：顶部标题区与底部结论区各留足留白，信息分区不拥挤；不因长图压缩字体，正文最小字号保证清晰可读，数字优先于装饰。
+- 整体风格采用《诛仙3》官方仙侠 UI 风格（青蓝色仙侠、水墨云海、玉石面板、宣纸纹理、古典纹样边框、淡金色点缀）。
+- 避免暗黑魔幻风、科幻 HUD 风、手游充值界面风；不使用 emoji、现代扁平图标、不堆叠技能 icon。
+- 信息表达主要靠文字、表格、排版层级和颜色强调；装饰克制，保证高级感与可读性。
+
+# 顶部标题区域
+顶部主标题（单行最大字号）：「诛仙3 独白 魔逐霜 伤害方案对比（含瑛 vs 椒图）」
+- 玩家名「独白」作为视觉焦点，字号略大并金色/高亮描边突出；两套方案（含瑛/椒图）以左右双栏标识。
+
+# 对比双栏说明
+左栏：含瑛　右栏：椒图（均 魔逐霜）
+
+# 玩家信息区域（两栏并列）
+左栏 玩家：独白　方案：含瑛　阵营：魔　职业：逐霜　攻击 335676-394784　爆伤 2849.5%　对怪增伤 53.7%　气血 400.0万　真气 522.3万　专注 241
+右栏 玩家：独白　方案：椒图　阵营：魔　职业：逐霜　攻击 341131-400239　爆伤 2865.9%　对怪增伤 53.7%　气血 396.4万　真气 505.0万　专注 241
+
+# 重要技能单段伤害区域（两栏并列）
+左栏（含瑛）：
+  - 苍龙啸·煞：9段，单段最终伤害 8.98亿→11.37亿
+  - 银鳞玄冰：6段，单段最终伤害 16.99亿
+  - 山雨欲来III：6段，单段最终伤害 11.01亿
+  - 山雨欲来II：6段，单段最终伤害 12.99亿
+  - 苍龙啸：9段，单段最终伤害 5.74亿→8.11亿
+  - 临渊敛爪：3段，单段最终伤害 5.68亿
+右栏（椒图）：
+  - 苍龙啸·煞：9段，单段最终伤害 9.04亿→11.43亿
+  - 银鳞玄冰：6段，单段最终伤害 16.90亿
+  - 山雨欲来III：6段，单段最终伤害 11.11亿
+  - 山雨欲来II：6段，单段最终伤害 12.99亿
+  - 苍龙啸：9段，单段最终伤害 5.80亿→8.17亿
+  - 临渊敛爪：3段，单段最终伤害 5.71亿
+- 横向数据条或玉简列表；不制作 RPG 血条、不用紫色技能槽手游 UI；突出技能名·段数·最终伤害。
+
+# 总伤害对比横幅
+T20（长轴实战）：含瑛 4,238,517.44 万　vs　椒图 4,252,562.72 万　差值 +14,045.28 万（椒图 更优，+0.33%）
+  （总伤：含瑛 738,613.97 万　vs　椒图 742,605.69 万　差值 +3,991.72 万（椒图 更优，+0.54%））
+空桑困难（劫起空桑）（秒怪爆发）：含瑛 4,056,938.09 万　vs　椒图 4,071,651.14 万　差值 +14,713.05 万（椒图 更优，+0.36%）
+  （总伤：含瑛 855,442.80 万　vs　椒图 858,628.36 万　差值 +3,185.56 万（椒图 更优，+0.37%））
+- 注：report.html 顶部「基准总伤」为该模式在对应副本 boss 上的全技能合计（未），长轴=T20（断浪碎晶宫）、秒怪=空桑困难（劫起空桑），因副本 boss 不同两模式数值也不同；「总伤」= Σ(技能伤害×模式权重)。请分别列出长轴实战 / 秒怪爆发两行（含基准总伤与总伤）、照实呈现，不要合并或隐藏任一模式。两模式的差异同时体现在核心技能、边际贡献矩阵与等值换算中。
+
+# 核心技能总伤对比（绝对差 + 相对提升百分比）
+[T20（长轴实战）] 核心技能「苍龙啸」：含瑛 623,205.69万　vs　椒图 628,533.91万　差值 +5,328.22万（椒图 更优，+0.85%）
+[空桑困难（劫起空桑）（秒怪爆发）] 核心技能「苍龙啸·煞」：含瑛 877,047.59万　vs　椒图 882,257.91万　差值 +5,210.32万（椒图 更优，+0.59%）
+- 核心技能差值必须用红框/金色高亮标注，并同时写出「绝对提升」和「相对含瑛的提升百分比」。
+
+# 场景：T20（长轴实战）（两栏对比）
+左栏（含瑛）：
+# 核心区域：属性边际贡献矩阵（T20）
+矩阵高度约占整张图 30%，必须保证数字清晰可读。
+标题：各属性边际贡献矩阵（T20）
+说明：数字 = 该技能伤害增加量（万）。触顶属性（🔴）显示「实战边际 (理论边际🔴)」，实战收益为 0 但解封后可恢复。
+列步长：爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸（占比30.1%，总伤62.3亿）：爆伤 80.7 / 攻击 27.7 / 气血 0.0 (理论 16.96🔴) / 真气 3.6 / 怪增 122.2
+  - 山雨欲来III（占比27.7%，总伤66.1亿）：爆伤 77.8 / 攻击 27.4 / 气血 0.0 (理论 17.15🔴) / 真气 2.8 / 怪增 119.2
+  - 苍龙啸·煞（占比18.6%，总伤91.6亿）：爆伤 72.4 / 攻击 18.9 / 气血 0.0 (理论 21.62🔴) / 真气 2.8 / 怪增 110.6
+  - 山雨欲来II（占比17.8%，总伤77.9亿）：爆伤 60.2 / 攻击 17.3 / 气血 0.0 (理论 6.58🔴) / 真气 9.3 / 怪增 90.1
+  - 银鳞玄冰（占比5.8%，总伤101.9亿）：爆伤 25.1 / 攻击 4.5 / 气血 0.0 (理论 4.61🔴) / 真气 4.6 / 怪增 38.4
+- 浅色热力渐变突出收益高低；触顶单元格用红色/橙色底标记；数字优先于颜色效果，不能因背景导致数字难以阅读。
+- 防御 列已剔除：当前流派该属性边际贡献为 0（无收益），不展示。
+
+# 等值换算区域（T20）
+放置在六维贡献矩阵正下方，不单独制作复杂表格。
+★ 提升 1.0% 怪增的等价收益
+  爆伤 +15.20 pts
+  攻击 +5019.5 点
+  气血 +71834.1 点【已触顶·理论值】
+  真气 +208039.0 点
+  总伤害提升约 4805.70 万
+- 使用金色高亮显示 ★ 和关键数字。
+- 按当前技能组合计算，总伤害提升约 4805.70 万。
+
+# 属性收益优先级（T20）
+标题：属性收益优先级
+怪增 > 爆伤 > 攻击 > 真气 > 气血
+- 采用简洁排行榜形式，不使用大型按钮或游戏装备图标。
+
+# 最终结论区域（T20）
+标题：结论与建议
+在 T20（长轴实战） 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气 > 气血。洗练建议优先保障 怪增。
+- 采用玩家攻略总结框样式，而非论文报告样式。
+
+右栏（椒图）：
+# 核心区域：属性边际贡献矩阵（T20）
+矩阵高度约占整张图 30%，必须保证数字清晰可读。
+标题：各属性边际贡献矩阵（T20）
+说明：数字 = 该技能伤害增加量（万）。触顶属性（🔴）显示「实战边际 (理论边际🔴)」，实战收益为 0 但解封后可恢复。
+列步长：爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸（占比30.1%，总伤62.9亿）：爆伤 80.8 / 攻击 27.9 / 气血 17.1 / 真气 3.6 / 怪增 123.3
+  - 山雨欲来III（占比27.7%，总伤66.7亿）：爆伤 78.0 / 攻击 27.6 / 气血 17.3 / 真气 2.8 / 怪增 120.3
+  - 苍龙啸·煞（占比18.6%，总伤92.1亿）：爆伤 72.3 / 攻击 19.0 / 气血 21.8 / 真气 2.8 / 怪增 111.2
+  - 山雨欲来II（占比17.8%，总伤78.0亿）：爆伤 59.8 / 攻击 17.4 / 气血 6.6 / 真气 9.4 / 怪增 90.1
+  - 银鳞玄冰（占比5.8%，总伤101.4亿）：爆伤 24.8 / 攻击 4.5 / 气血 4.7 / 真气 4.7 / 怪增 38.2
+- 浅色热力渐变突出收益高低；触顶单元格用红色/橙色底标记；数字优先于颜色效果，不能因背景导致数字难以阅读。
+- 防御 列已剔除：当前流派该属性边际贡献为 0（无收益），不展示。
+
+# 等值换算区域（T20）
+放置在六维贡献矩阵正下方，不单独制作复杂表格。
+★ 提升 1.0% 怪增的等价收益
+  爆伤 +15.31 pts
+  攻击 +5011.9 点
+  气血 +71684.0 点
+  真气 +208254.3 点
+  总伤害提升约 4831.50 万
+- 使用金色高亮显示 ★ 和关键数字。
+- 按当前技能组合计算，总伤害提升约 4831.50 万。
+
+# 属性收益优先级（T20）
+标题：属性收益优先级
+怪增 > 爆伤 > 攻击 > 气血 > 真气
+- 采用简洁排行榜形式，不使用大型按钮或游戏装备图标。
+
+# 最终结论区域（T20）
+标题：结论与建议
+在 T20（长轴实战） 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 气血 > 真气。洗练建议优先保障 怪增。
+- 采用玩家攻略总结框样式，而非论文报告样式。
+
+# 对比结论（T20（长轴实战））
+总伤：椒图 4,252,562.72 万　vs　含瑛 4,238,517.44 万，差值 +14,045.28 万（椒图 更优，+0.33%）
+优势属性（B 边际更高）：气血 +67.40、怪增 +2.58、攻击 +0.66、真气 +0.18
+劣势属性（B 边际更低，因高基数边际递减）：爆伤 -0.50
+
+# 场景：空桑困难（劫起空桑）（秒怪爆发）（两栏对比）
+左栏（含瑛）：
+# 核心区域：属性边际贡献矩阵（空桑困难（劫起空桑））
+矩阵高度约占整张图 30%，必须保证数字清晰可读。
+标题：各属性边际贡献矩阵（空桑困难（劫起空桑））
+说明：数字 = 该技能伤害增加量（万）。触顶属性（🔴）显示「实战边际 (理论边际🔴)」，实战收益为 0 但解封后可恢复。
+列步长：爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸·煞（占比64.5%，总伤91.6亿）：爆伤 251.5 / 攻击 62.7 / 气血 0.0 (理论 71.95🔴) / 真气 9.2 / 怪增 368.1
+  - 银鳞玄冰（占比16.1%，总伤101.9亿）：爆伤 70.0 / 攻击 12.0 / 气血 0.0 (理论 12.30🔴) / 真气 12.3 / 怪增 102.4
+  - 山雨欲来II（占比9.7%，总伤77.9亿）：爆伤 32.8 / 攻击 9.0 / 气血 0.0 (理论 3.43🔴) / 真气 4.9 / 怪增 46.9
+  - 山雨欲来III（占比6.5%，总伤66.1亿）：爆伤 18.1 / 攻击 6.1 / 气血 0.0 (理论 3.82🔴) / 真气 0.6 / 怪增 26.6
+  - 苍龙啸（占比3.2%，总伤62.3亿）：爆伤 8.6 / 攻击 2.8 / 气血 0.0 (理论 1.74🔴) / 真气 0.4 / 怪增 12.5
+- 浅色热力渐变突出收益高低；触顶单元格用红色/橙色底标记；数字优先于颜色效果，不能因背景导致数字难以阅读。
+- 防御 列已剔除：当前流派该属性边际贡献为 0（无收益），不展示。
+
+# 等值换算区域（空桑困难（劫起空桑））
+放置在六维贡献矩阵正下方，不单独制作复杂表格。
+★ 提升 1.0% 怪增的等价收益
+  爆伤 +14.61 pts
+  攻击 +6005.8 点
+  气血 +59716.7 点【已触顶·理论值】
+  真气 +203124.1 点
+  总伤害提升约 5565.60 万
+- 使用金色高亮显示 ★ 和关键数字。
+- 按当前技能组合计算，总伤害提升约 5565.60 万。
+
+# 属性收益优先级（空桑困难（劫起空桑））
+标题：属性收益优先级
+怪增 > 爆伤 > 攻击 > 真气 > 气血
+- 采用简洁排行榜形式，不使用大型按钮或游戏装备图标。
+
+# 最终结论区域（空桑困难（劫起空桑））
+标题：结论与建议
+在 空桑困难（劫起空桑）（秒怪爆发） 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气 > 气血。洗练建议优先保障 怪增。
+- 采用玩家攻略总结框样式，而非论文报告样式。
+
+右栏（椒图）：
+# 核心区域：属性边际贡献矩阵（空桑困难（劫起空桑））
+矩阵高度约占整张图 30%，必须保证数字清晰可读。
+标题：各属性边际贡献矩阵（空桑困难（劫起空桑））
+说明：数字 = 该技能伤害增加量（万）。触顶属性（🔴）显示「实战边际 (理论边际🔴)」，实战收益为 0 但解封后可恢复。
+列步长：爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸·煞（占比64.5%，总伤92.1亿）：爆伤 251.2 / 攻击 63.2 / 气血 72.5 / 真气 9.3 / 怪增 370.3
+  - 银鳞玄冰（占比16.1%，总伤101.4亿）：爆伤 69.1 / 攻击 12.1 / 气血 12.4 / 真气 12.4 / 怪增 101.9
+  - 山雨欲来II（占比9.7%，总伤78.0亿）：爆伤 32.6 / 攻击 9.1 / 气血 3.5 / 真气 4.9 / 怪增 47.0
+  - 山雨欲来III（占比6.5%，总伤66.7亿）：爆伤 18.1 / 攻击 6.2 / 气血 3.9 / 真气 0.6 / 怪增 26.8
+  - 苍龙啸（占比3.2%，总伤62.9亿）：爆伤 8.6 / 攻击 2.9 / 气血 1.8 / 真气 0.4 / 怪增 12.6
+- 浅色热力渐变突出收益高低；触顶单元格用红色/橙色底标记；数字优先于颜色效果，不能因背景导致数字难以阅读。
+- 防御 列已剔除：当前流派该属性边际贡献为 0（无收益），不展示。
+
+# 等值换算区域（空桑困难（劫起空桑））
+放置在六维贡献矩阵正下方，不单独制作复杂表格。
+★ 提升 1.0% 怪增的等价收益
+  爆伤 +14.71 pts
+  攻击 +5983.1 点
+  气血 +59493.1 点
+  真气 +202405.8 点
+  总伤害提升约 5586.40 万
+- 使用金色高亮显示 ★ 和关键数字。
+- 按当前技能组合计算，总伤害提升约 5586.40 万。
+
+# 属性收益优先级（空桑困难（劫起空桑））
+标题：属性收益优先级
+怪增 > 爆伤 > 气血 > 攻击 > 真气
+- 采用简洁排行榜形式，不使用大型按钮或游戏装备图标。
+
+# 最终结论区域（空桑困难（劫起空桑））
+标题：结论与建议
+在 空桑困难（劫起空桑）（秒怪爆发） 场景下，核心属性排序为 怪增 > 爆伤 > 气血 > 攻击 > 真气。洗练建议优先保障 怪增。
+- 采用玩家攻略总结框样式，而非论文报告样式。
+
+# 对比结论（空桑困难（劫起空桑）（秒怪爆发））
+总伤：椒图 4,071,651.14 万　vs　含瑛 4,056,938.09 万，差值 +14,713.05 万（椒图 更优，+0.36%）
+优势属性（B 边际更高）：气血 +93.92、怪增 +2.08、攻击 +0.70、真气 +0.20
+劣势属性（B 边际更低，因高基数边际递减）：爆伤 -1.36
+
+
+# 矩阵差值可视化规则
+在「各属性边际贡献矩阵」的 Δ(椒图−含瑛) 行（或单独一行差值条），每个属性的绝对差值旁必须同时标注「相对含瑛的提升百分比」。示例格式：
+  - 爆伤 -0.50（相对含瑛 -0.16%）
+  - 攻击 +0.66（相对含瑛 +0.69%）
+  - 气血 +67.40（含瑛基准为 0，仅看绝对差）
+  - 真气 +0.18（相对含瑛 +0.78%）
+  - 怪增 +2.58（相对含瑛 +0.54%）
+- 气血列若双方均为 0（触顶），直接写「0（触顶）」，不标百分比。
+
+# 等值换算相对提升（绝对值 + 百分比）
+含瑛：提升 1.0% 怪增 → 总伤害 +4805.70万（相对该方案总伤 +0.11%）
+椒图：提升 1.0% 怪增 → 总伤害 +4831.50万（相对该方案总伤 +0.11%）
+- 等值换算的「总伤害提升」数字旁，必须同时标注「相对该方案全部技能合计总伤的百分比」。
+
+# 最终结论区域
+标题：结论与建议
+· T20（长轴实战）：椒图 更优，总伤 +14,045 万（+0.33%）；差异详见各场景对比结论。
+· 空桑困难（劫起空桑）（秒怪爆发）：椒图 更优，总伤 +14,713 万（+0.36%）；差异详见各场景对比结论。
+- 采用玩家攻略总结框样式，而非论文报告样式。
+
+# 最终生成要求
+- 整体保持高级仙侠资料片 UI 感；双栏对称、留白舒适、信息密度高但不拥挤。
+- 不要添加不存在的数据；不要修改任何数字。
+- 不要添加人物、装备、宠物、战斗场景插画；不要添加无意义装饰文字。
+- 最终效果应像《诛仙3》玩家社区大神制作的职业伤害「方案对比」攻略图。
+
+===== ENGLISH VERSION =====
+
+Generate a vertical (1080x1920) "Zhuxian 3" player damage-analysis "build comparison" infographic, comparing two builds side by side.
+
+# Design Goal
+Make a high-end player damage-test "build comparison" strategy infographic for "Zhuxian 3" — NOT a promo poster. Focus on side-by-side data, legibility, professional analysis feel. All text and numbers must be accurate — do not invent or alter data.
+
+# Basic spec
+- Vertical phone long-image ~1080x1920 (9:16), comfortable portrait mobile reading; left-right two-column layout comparing two builds.
+- Generous top/bottom whitespace; do NOT shrink fonts for the long format — keep smallest body font clearly legible. Official "Zhuxian 3" Xianxia UI style (azure-blue, ink-wash, jade panels, rice-paper, classical borders, pale-gold). Avoid dark-fantasy/sci-fi HUD/mobile top-up styles. NO emojis, NO flat icons, NO piled skill icons.
+
+# Top title
+Top title (largest): "Zhuxian 3 独白 魔逐霜 build comparison (含瑛 vs 椒图)"
+- Player name "独白" is the focus, slightly larger, gold/glow. Two builds (含瑛/椒图) as left/right columns.
+
+# Two-column note
+Left: 含瑛 | Right: 椒图 (both 魔逐霜)
+
+# Player info (two columns)
+Left  Player: 独白 | Build: 含瑛 | Faction: 魔 | Class: 逐霜 | 攻击 335676-394784　爆伤 2849.5%　对怪增伤 53.7%　气血 400.0万　真气 522.3万　专注 241
+Right Player: 独白 | Build: 椒图 | Faction: 魔 | Class: 逐霜 | 攻击 341131-400239　爆伤 2865.9%　对怪增伤 53.7%　气血 396.4万　真气 505.0万　专注 241
+
+# Per-hit damage (two columns)
+Left (含瑛):
+  - 苍龙啸·煞：9段，单段最终伤害 8.98亿→11.37亿
+  - 银鳞玄冰：6段，单段最终伤害 16.99亿
+  - 山雨欲来III：6段，单段最终伤害 11.01亿
+  - 山雨欲来II：6段，单段最终伤害 12.99亿
+  - 苍龙啸：9段，单段最终伤害 5.74亿→8.11亿
+  - 临渊敛爪：3段，单段最终伤害 5.68亿
+Right (椒图):
+  - 苍龙啸·煞：9段，单段最终伤害 9.04亿→11.43亿
+  - 银鳞玄冰：6段，单段最终伤害 16.90亿
+  - 山雨欲来III：6段，单段最终伤害 11.11亿
+  - 山雨欲来II：6段，单段最终伤害 12.99亿
+  - 苍龙啸：9段，单段最终伤害 5.80亿→8.17亿
+  - 临渊敛爪：3段，单段最终伤害 5.71亿
+
+# Total damage banner
+T20（长轴实战）：含瑛 4,238,517.44 万　vs　椒图 4,252,562.72 万　差值 +14,045.28 万（椒图 更优，+0.33%）
+  （总伤：含瑛 738,613.97 万　vs　椒图 742,605.69 万　差值 +3,991.72 万（椒图 更优，+0.54%））
+空桑困难（劫起空桑）（秒怪爆发）：含瑛 4,056,938.09 万　vs　椒图 4,071,651.14 万　差值 +14,713.05 万（椒图 更优，+0.36%）
+  （总伤：含瑛 855,442.80 万　vs　椒图 858,628.36 万　差值 +3,185.56 万（椒图 更优，+0.37%））
+- Note: report.html's top-card "base total damage" = sum of all skill base damages on that mode's boss (long-axis=T20（断浪碎晶宫）, burst=空桑困难（劫起空桑）; they differ because the bosses differ). "Weighted total" = Σ(skill damage × mode weight). List long and burst separately and truthfully, including both base and weighted totals; do not merge or hide either mode. The inter-mode difference also shows in core skills, marginal matrices and equivalence conversions.
+
+# Core-skill total-damage comparison (absolute + relative %)
+[T20（长轴实战）] 核心技能「苍龙啸」：含瑛 623,205.69万　vs　椒图 628,533.91万　差值 +5,328.22万（椒图 更优，+0.85%）
+[空桑困难（劫起空桑）（秒怪爆发）] 核心技能「苍龙啸·煞」：含瑛 877,047.59万　vs　椒图 882,257.91万　差值 +5,210.32万（椒图 更优，+0.59%）
+- Highlight core-skill delta with a red/gold box and show BOTH absolute gain and relative gain vs 含瑛.
+
+# Scene: T20（长轴实战） (two-column)
+Left (含瑛):
+# Core: attribute matrix (T20)
+Matrix ~30% height; numbers readable.
+Title: Attribute marginal contribution matrix (T20)
+Cells = damage gain (wan). Capped attrs (🔴) show "real (theoretical🔴)" — real gain is 0 but recovers if uncapped.
+Column step: 爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸 (weight 30.1%, total 62.3yi): 爆伤 80.7 / 攻击 27.7 / 气血 0.0 (理论 16.96🔴) / 真气 3.6 / 怪增 122.2
+  - 山雨欲来III (weight 27.7%, total 66.1yi): 爆伤 77.8 / 攻击 27.4 / 气血 0.0 (理论 17.15🔴) / 真气 2.8 / 怪增 119.2
+  - 苍龙啸·煞 (weight 18.6%, total 91.6yi): 爆伤 72.4 / 攻击 18.9 / 气血 0.0 (理论 21.62🔴) / 真气 2.8 / 怪增 110.6
+  - 山雨欲来II (weight 17.8%, total 77.9yi): 爆伤 60.2 / 攻击 17.3 / 气血 0.0 (理论 6.58🔴) / 真气 9.3 / 怪增 90.1
+  - 银鳞玄冰 (weight 5.8%, total 101.9yi): 爆伤 25.1 / 攻击 4.5 / 气血 0.0 (理论 4.61🔴) / 真气 4.6 / 怪增 38.4
+- Light heatmap; capped cells use red/orange tint; numbers prioritized.- 防御 column omitted: marginal contribution is 0 for this build (no gain).
+
+# Equivalence (T20)
+Below matrix, NOT a separate table.
+★ +1.0% MonsterDmg ≈ equivalent gain:
+  CritDmg 15.20 pts
+  ATK 5019.5 pts
+  HP 71834.1 pts
+  Mana 208039.0 pts
+- Gold-highlight ★ and keys.
+- Total damage increases by ~4805.70 wan.
+
+# Priority (T20)
+Title: Attribute priority
+怪增 > 爆伤 > 攻击 > 真气 > 气血
+- Simple ranking list.
+
+# Conclusion (T20)
+Title: Conclusion & suggestions
+在 T20（长轴实战） 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气 > 气血。洗练建议优先保障 怪增。
+- Player-guide summary box.
+
+Right (椒图):
+# Core: attribute matrix (T20)
+Matrix ~30% height; numbers readable.
+Title: Attribute marginal contribution matrix (T20)
+Cells = damage gain (wan). Capped attrs (🔴) show "real (theoretical🔴)" — real gain is 0 but recovers if uncapped.
+Column step: 爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸 (weight 30.1%, total 62.9yi): 爆伤 80.8 / 攻击 27.9 / 气血 17.1 / 真气 3.6 / 怪增 123.3
+  - 山雨欲来III (weight 27.7%, total 66.7yi): 爆伤 78.0 / 攻击 27.6 / 气血 17.3 / 真气 2.8 / 怪增 120.3
+  - 苍龙啸·煞 (weight 18.6%, total 92.1yi): 爆伤 72.3 / 攻击 19.0 / 气血 21.8 / 真气 2.8 / 怪增 111.2
+  - 山雨欲来II (weight 17.8%, total 78.0yi): 爆伤 59.8 / 攻击 17.4 / 气血 6.6 / 真气 9.4 / 怪增 90.1
+  - 银鳞玄冰 (weight 5.8%, total 101.4yi): 爆伤 24.8 / 攻击 4.5 / 气血 4.7 / 真气 4.7 / 怪增 38.2
+- Light heatmap; capped cells use red/orange tint; numbers prioritized.- 防御 column omitted: marginal contribution is 0 for this build (no gain).
+
+# Equivalence (T20)
+Below matrix, NOT a separate table.
+★ +1.0% MonsterDmg ≈ equivalent gain:
+  CritDmg 15.31 pts
+  ATK 5011.9 pts
+  HP 71684.0 pts
+  Mana 208254.3 pts
+- Gold-highlight ★ and keys.
+- Total damage increases by ~4831.50 wan.
+
+# Priority (T20)
+Title: Attribute priority
+怪增 > 爆伤 > 攻击 > 气血 > 真气
+- Simple ranking list.
+
+# Conclusion (T20)
+Title: Conclusion & suggestions
+在 T20（长轴实战） 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 气血 > 真气。洗练建议优先保障 怪增。
+- Player-guide summary box.
+
+# Compare conclusion (T20（长轴实战）)
+总伤：椒图 4,252,562.72 万　vs　含瑛 4,238,517.44 万，差值 +14,045.28 万（椒图 更优，+0.33%）
+优势属性（B 边际更高）：气血 +67.40、怪增 +2.58、攻击 +0.66、真气 +0.18
+劣势属性（B 边际更低，因高基数边际递减）：爆伤 -0.50
+
+# Scene: 空桑困难（劫起空桑）（秒怪爆发） (two-column)
+Left (含瑛):
+# Core: attribute matrix (空桑困难（劫起空桑）)
+Matrix ~30% height; numbers readable.
+Title: Attribute marginal contribution matrix (空桑困难（劫起空桑）)
+Cells = damage gain (wan). Capped attrs (🔴) show "real (theoretical🔴)" — real gain is 0 but recovers if uncapped.
+Column step: 爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸·煞 (weight 64.5%, total 91.6yi): 爆伤 251.5 / 攻击 62.7 / 气血 0.0 (理论 71.95🔴) / 真气 9.2 / 怪增 368.1
+  - 银鳞玄冰 (weight 16.1%, total 101.9yi): 爆伤 70.0 / 攻击 12.0 / 气血 0.0 (理论 12.30🔴) / 真气 12.3 / 怪增 102.4
+  - 山雨欲来II (weight 9.7%, total 77.9yi): 爆伤 32.8 / 攻击 9.0 / 气血 0.0 (理论 3.43🔴) / 真气 4.9 / 怪增 46.9
+  - 山雨欲来III (weight 6.5%, total 66.1yi): 爆伤 18.1 / 攻击 6.1 / 气血 0.0 (理论 3.82🔴) / 真气 0.6 / 怪增 26.6
+  - 苍龙啸 (weight 3.2%, total 62.3yi): 爆伤 8.6 / 攻击 2.8 / 气血 0.0 (理论 1.74🔴) / 真气 0.4 / 怪增 12.5
+- Light heatmap; capped cells use red/orange tint; numbers prioritized.- 防御 column omitted: marginal contribution is 0 for this build (no gain).
+
+# Equivalence (空桑困难（劫起空桑）)
+Below matrix, NOT a separate table.
+★ +1.0% MonsterDmg ≈ equivalent gain:
+  CritDmg 14.61 pts
+  ATK 6005.8 pts
+  HP 59716.7 pts
+  Mana 203124.1 pts
+- Gold-highlight ★ and keys.
+- Total damage increases by ~5565.60 wan.
+
+# Priority (空桑困难（劫起空桑）)
+Title: Attribute priority
+怪增 > 爆伤 > 攻击 > 真气 > 气血
+- Simple ranking list.
+
+# Conclusion (空桑困难（劫起空桑）)
+Title: Conclusion & suggestions
+在 空桑困难（劫起空桑）（秒怪爆发） 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气 > 气血。洗练建议优先保障 怪增。
+- Player-guide summary box.
+
+Right (椒图):
+# Core: attribute matrix (空桑困难（劫起空桑）)
+Matrix ~30% height; numbers readable.
+Title: Attribute marginal contribution matrix (空桑困难（劫起空桑）)
+Cells = damage gain (wan). Capped attrs (🔴) show "real (theoretical🔴)" — real gain is 0 but recovers if uncapped.
+Column step: 爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸·煞 (weight 64.5%, total 92.1yi): 爆伤 251.2 / 攻击 63.2 / 气血 72.5 / 真气 9.3 / 怪增 370.3
+  - 银鳞玄冰 (weight 16.1%, total 101.4yi): 爆伤 69.1 / 攻击 12.1 / 气血 12.4 / 真气 12.4 / 怪增 101.9
+  - 山雨欲来II (weight 9.7%, total 78.0yi): 爆伤 32.6 / 攻击 9.1 / 气血 3.5 / 真气 4.9 / 怪增 47.0
+  - 山雨欲来III (weight 6.5%, total 66.7yi): 爆伤 18.1 / 攻击 6.2 / 气血 3.9 / 真气 0.6 / 怪增 26.8
+  - 苍龙啸 (weight 3.2%, total 62.9yi): 爆伤 8.6 / 攻击 2.9 / 气血 1.8 / 真气 0.4 / 怪增 12.6
+- Light heatmap; capped cells use red/orange tint; numbers prioritized.- 防御 column omitted: marginal contribution is 0 for this build (no gain).
+
+# Equivalence (空桑困难（劫起空桑）)
+Below matrix, NOT a separate table.
+★ +1.0% MonsterDmg ≈ equivalent gain:
+  CritDmg 14.71 pts
+  ATK 5983.1 pts
+  HP 59493.1 pts
+  Mana 202405.8 pts
+- Gold-highlight ★ and keys.
+- Total damage increases by ~5586.40 wan.
+
+# Priority (空桑困难（劫起空桑）)
+Title: Attribute priority
+怪增 > 爆伤 > 气血 > 攻击 > 真气
+- Simple ranking list.
+
+# Conclusion (空桑困难（劫起空桑）)
+Title: Conclusion & suggestions
+在 空桑困难（劫起空桑）（秒怪爆发） 场景下，核心属性排序为 怪增 > 爆伤 > 气血 > 攻击 > 真气。洗练建议优先保障 怪增。
+- Player-guide summary box.
+
+# Compare conclusion (空桑困难（劫起空桑）（秒怪爆发）)
+总伤：椒图 4,071,651.14 万　vs　含瑛 4,056,938.09 万，差值 +14,713.05 万（椒图 更优，+0.36%）
+优势属性（B 边际更高）：气血 +93.92、怪增 +2.08、攻击 +0.70、真气 +0.20
+劣势属性（B 边际更低，因高基数边际递减）：爆伤 -1.36
+
+
+# Matrix-delta visualization rule
+In the Δ(椒图-含瑛) row of the attribute matrix, every attribute delta must show BOTH the absolute value and the relative gain vs 含瑛. Example format:
+  - 爆伤 -0.50（相对含瑛 -0.16%）
+  - 攻击 +0.66（相对含瑛 +0.69%）
+  - 气血 +67.40（含瑛基准为 0，仅看绝对差）
+  - 真气 +0.18（相对含瑛 +0.78%）
+  - 怪增 +2.58（相对含瑛 +0.54%）
+- If both values are 0 (cap hit), write "0 (cap)" without percentage.
+
+# Equivalence relative gain (absolute + %)
+含瑛：提升 1.0% 怪增 → 总伤害 +4805.70万（相对该方案总伤 +0.11%）
+椒图：提升 1.0% 怪增 → 总伤害 +4831.50万（相对该方案总伤 +0.11%）
+- Next to each "total damage increase" from equivalence, also show the relative gain vs that build's total damage.
+
+# Conclusion
+Title: Conclusion & suggestions
+· T20（长轴实战）：椒图 更优，总伤 +14,045 万（+0.33%）；差异详见各场景对比结论。
+· 空桑困难（劫起空桑）（秒怪爆发）：椒图 更优，总伤 +14,713 万（+0.36%）；差异详见各场景对比结论。
+Player-guide summary box style.
+
+# Final requirements
+- High-end xianxia database UI; symmetric two columns, comfortable whitespace. Do not add non-existent data; no character/equipment/pet illustrations; pro-player build-comparison guide look.
+
+===== 艺术底图变体（仅氛围，无文字，用于叠加精确数据卡）=====
+
+生成一张简洁、干净、留白充足的背景图（竖版 1080×1920，中心留出大面积干净区域用于叠加左右双栏数据面板），不要出现任何文字。用作玩家伤害分析「方案对比」信息图的底图。

@@ -1,0 +1,152 @@
+===== 中文主版（直接复制喂 GPT 生图）=====
+
+请生成一张《诛仙3》玩家伤害分析结果信息图（竖版，1080×1700 左右）。
+
+# 设计目标
+制作一张《诛仙3》高端玩家伤害测试攻略图，而非游戏宣传海报。重点是数据阅读效率、专业分析感和攻略帖视觉风格。所有中文文字、数字必须清晰准确，不得臆造，不得修改数据。
+
+# 基础规格
+- 竖版，1080×1700 左右。
+- 整体风格采用《诛仙3》官方仙侠 UI 风格（青蓝色仙侠、水墨云海、玉石面板、宣纸纹理、古典纹样边框、淡金色点缀）。
+- 视觉基调类似《诛仙3》官方资料站 / 玩家攻略手册 / 职业分析报告。
+- 避免暗黑魔幻风、科幻 HUD 风、手游充值界面风。
+- 不使用 emoji、不使用现代扁平图标、不堆叠大量技能 icon。
+- 信息表达主要依靠文字、表格、排版层级和颜色强调；装饰元素保持克制，保证高级感与可读性。
+
+# 顶部标题区域
+顶部主标题（单行最大字号）：「诛仙3 津威 魔释罗 副本伤害分析」
+- 玩家名「津威」作为视觉焦点，字号略大于其他标题文字，并使用金色 / 高亮描边 / 灵气效果突出。
+- 其余文字保持辅助标题级别，不抢占主体。
+
+# 玩家信息区域
+玩家：津威　阵营：魔　职业：释罗
+分析场景：T21 (长轴实战) / T21 (秒怪爆发)
+
+# 玩家属性区域
+攻击 153578-186215　爆伤 2035.4%　对怪增伤 31.4%　气血 267.6万　真气 165.2万　专注 250
+- 使用玉简式属性面板展示，不使用大量圆形属性 icon。
+
+# 重要技能单段伤害区域
+标题：重要技能单段伤害（每段最终伤害）
+  - 释罗生相·煞：96段，单段最终伤害 1.60亿
+  - 孽·释罗生相·煞：120段，单段最终伤害 1.60亿
+  - 孽·敕戒祸根3·大地：15段，单段最终伤害 1.41亿
+  - 赤乌·敕戒祸根：34段，单段最终伤害 2.84亿→6.38亿
+- 采用横向数据条或玉简列表形式展示；不制作成 RPG 血条，不使用紫色技能槽等手游 UI；重点突出技能名、段数和最终伤害数字。
+
+# 核心区域：六维属性边际贡献矩阵
+矩阵高度约占整张图 30%，必须保证数字清晰可读。
+标题：各属性边际贡献矩阵
+说明：数字 = 该技能伤害增加量（万）。
+列步长：爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 防御+1000 / 怪增+0.1%
+  - 释罗生相·煞（占比35.4%，总伤153.4亿）：爆伤 406.6 / 攻击 146.2 / 气血 67.5 / 真气 67.5 / 防御 0.0 / 怪增 413.2
+  - 孽·释罗生相·煞（占比29.1%，总伤191.7亿）：爆伤 418.0 / 攻击 150.4 / 气血 69.4 / 真气 69.4 / 防御 0.0 / 怪增 424.8
+  - 赤乌·敕戒祸根（占比27.7%，总伤156.8亿）：爆伤 302.1 / 攻击 77.8 / 气血 69.4 / 真气 69.4 / 防御 0.0 / 怪增 330.1
+  - 孽·敕戒祸根3·大地（占比7.8%，总伤21.1亿）：爆伤 11.7 / 攻击 7.0 / 气血 1.0 / 真气 1.0 / 防御 0.0 / 怪增 12.6
+- 浅色热力渐变突出收益高低；数字优先于颜色效果，不能因背景导致数字难以阅读。
+- 防御列全部显示 0.0，并体现「无收益」。
+
+# 等值换算区域
+放置在六维贡献矩阵正下方，不单独制作复杂表格。
+★ 提升 1.0% 怪增 ≈ 等价提升：
+  爆伤 10.37 pts
+  攻击 3095.7 点
+  气血 56952.2 点（≈5.70万）
+  真气 56952.2 点（≈5.70万）
+  怪增 1.00%
+- 使用金色高亮显示 ★ 和关键数字。
+- 按当前技能组合计算，总伤害提升约 11806.20 万。
+
+# 属性收益优先级
+标题：属性收益优先级
+怪增 > 爆伤 > 攻击 > 气血 > 真气
+- 采用简洁排行榜形式，不使用大型按钮或游戏装备图标。
+
+# 最终结论区域
+标题：结论与建议
+在 T21 (长轴实战) 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 气血 > 真气。洗练建议优先保障 怪增。
+- 采用玩家攻略总结框样式，而非论文报告样式。
+
+# 最终生成要求
+- 整体保持高级仙侠资料片 UI 感；留白舒适，信息密度高但不拥挤。
+- 不要添加不存在的数据；不要修改任何数字。
+- 不要添加人物、装备、宠物、战斗场景插画；不要添加无意义装饰文字。
+- 最终效果应像《诛仙3》玩家社区大神制作的职业伤害分析攻略图。
+
+===== ENGLISH VERSION =====
+
+Generate a vertical (1080x1700) "Zhuxian 3" player damage-analysis infographic.
+
+# Design Goal
+Make a high-end player damage-test strategy infographic for "Zhuxian 3" — NOT a game promo poster. Prioritize data legibility, professional analysis feel, and guide-post visual style. All Chinese text and numbers must be clear and accurate — do not invent or alter any data.
+
+# Basic spec
+- Vertical, ~1080x1700.
+- Use the official "Zhuxian 3" Xianxia (仙侠) UI style (azure-blue xianxia, ink-wash cloud sea, jade panels, rice-paper texture, classical pattern borders, pale-gold accents).
+- Visual tone like the official Zhuxian 3 database site / player strategy manual / class analysis report.
+- Avoid dark-fantasy, sci-fi HUD, and mobile top-up UI styles.
+- NO emojis, NO modern flat icons, NO piling up skill icons.
+- Convey info mainly through text, tables, layout hierarchy and color emphasis; keep decoration restrained, high-end and readable.
+
+# Top title
+Top main title (largest font, single line): "Zhuxian 3 津威 魔释罗 instance damage analysis"
+- Player name "津威" is the visual focus: slightly larger, highlighted with gold/glow.
+- Other text stays secondary.
+
+# Player info
+Player: 津威 | Faction: 魔 | Class: 释罗
+Modes: T21 (长轴实战) / T21 (秒怪爆发)
+
+# Attributes
+ATK 153578-186215 | CritDmg 2035.4% | MonsterDmg+ 31.4% | HP 267.6wan | Mana 165.2wan | Focus 250
+- Use a jade-slip style attribute panel; no lots of circular attribute icons.
+
+# Per-hit damage
+Title: Per-hit final damage (important skills)
+  - 释罗生相·煞：96段，单段最终伤害 1.60亿
+  - 孽·释罗生相·煞：120段，单段最终伤害 1.60亿
+  - 孽·敕戒祸根3·大地：15段，单段最终伤害 1.41亿
+  - 赤乌·敕戒祸根：34段，单段最终伤害 2.84亿→6.38亿
+- Horizontal data bars or jade-slip list; NOT RPG health bars, no purple skill-slot mobile UI; highlight skill name, hit count, final damage.
+
+# Core: 6-dim matrix
+Matrix ~30% of the image height; numbers must stay clearly readable.
+Title: Attribute marginal contribution matrix
+Cells = damage gain (wan) when ONLY that attribute is raised by its step.
+列步长：爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 防御+1000 / 怪增+0.1%
+  - 释罗生相·煞（占比35.4%，总伤153.4亿）：爆伤 406.6 / 攻击 146.2 / 气血 67.5 / 真气 67.5 / 防御 0.0 / 怪增 413.2
+  - 孽·释罗生相·煞（占比29.1%，总伤191.7亿）：爆伤 418.0 / 攻击 150.4 / 气血 69.4 / 真气 69.4 / 防御 0.0 / 怪增 424.8
+  - 赤乌·敕戒祸根（占比27.7%，总伤156.8亿）：爆伤 302.1 / 攻击 77.8 / 气血 69.4 / 真气 69.4 / 防御 0.0 / 怪增 330.1
+  - 孽·敕戒祸根3·大地（占比7.8%，总伤21.1亿）：爆伤 11.7 / 攻击 7.0 / 气血 1.0 / 真气 1.0 / 防御 0.0 / 怪增 12.6
+- Light heatmap gradient to show gain; numbers prioritized over color; Def column all 0.0 and marked "no gain".
+
+# Equivalence
+Directly below the matrix, NOT a separate complex table.
+★ +1.0% MonsterDmg ≈ equivalent gain:
+  CritDmg 10.37 pts
+  ATK 3095.7 pts
+  HP 56952.2 pts (~5.70 wan)
+  Mana 56952.2 pts (~5.70 wan)
+  MonsterDmg 1.00%
+- Gold-highlight the ★ and key numbers.
+- Based on the current skill combo, total damage increases by ~11806.20 wan.
+
+# Priority
+Title: Attribute priority
+怪增 > 爆伤 > 攻击 > 气血 > 真气
+- Simple ranking list; no big buttons or equipment icons.
+
+# Conclusion
+Title: Conclusion & suggestions
+在 T21 (长轴实战) 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 气血 > 真气。洗练建议优先保障 怪增。
+- Player-guide summary box style, not a thesis-report style.
+
+# Final requirements
+- High-end xianxia database UI feel; comfortable whitespace, high info density but not cramped.
+- Do not add non-existent data; do not alter any number.
+- No character/equipment/pet/battle-scene illustrations; no meaningless decorative text.
+- Final result should look like a pro player's class damage-analysis guide infographic.
+
+===== 艺术底图变体（仅氛围，无文字，用于叠加精确数据卡）=====
+
+生成一张简洁、干净、留白充足的背景图（竖版 1080×1700，中心留出大面积干净区域用于叠加数据面板），不要出现任何文字。用作玩家伤害分析信息图的底图。
