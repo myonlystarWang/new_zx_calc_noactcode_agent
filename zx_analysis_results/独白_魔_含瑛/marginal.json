@@ -1,0 +1,2442 @@
+{
+  "generatedAt": "2026-09-01T22:21:11.125229",
+  "playerName": "独白_魔_含瑛",
+  "long": {
+    "ok": true,
+    "playerName": "独白_魔_含瑛",
+    "className": "逐霜",
+    "factionName": "魔",
+    "dungeon": "T20",
+    "mode": "usage_weighted",
+    "baseTotalDamageWan": 4238517.44,
+    "weightedTotalDamageWan": 738613.97,
+    "skillMargins": [
+      {
+        "skillName": "苍龙啸",
+        "skillId": "ZS_MO_SKILL_CLX",
+        "hasHits": true,
+        "baseDamage": 623205.6949,
+        "firstHitBaseDamage": 57399.609,
+        "weight": 0.3014690668321953,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 80.65,
+            "theoreticalMarginal": 80.65,
+            "isCapped": false,
+            "rawMarginal": 267.53,
+            "rawTheoreticalMarginal": 267.53,
+            "firstHitMarginal": 7.43
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 27.68,
+            "theoreticalMarginal": 27.68,
+            "isCapped": false,
+            "rawMarginal": 91.8,
+            "rawTheoreticalMarginal": 91.8,
+            "firstHitMarginal": 3.08
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 16.96,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 56.27,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 3.57,
+            "theoreticalMarginal": 3.57,
+            "isCapped": false,
+            "rawMarginal": 11.85,
+            "rawTheoreticalMarginal": 11.85,
+            "firstHitMarginal": 0.4
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 122.24,
+            "theoreticalMarginal": 122.24,
+            "isCapped": false,
+            "rawMarginal": 405.47,
+            "rawTheoreticalMarginal": 405.47,
+            "firstHitMarginal": 11.26
+          }
+        ]
+      },
+      {
+        "skillName": "山雨欲来III",
+        "skillId": "ZS_MO_SKILL_SY3",
+        "hasHits": true,
+        "baseDamage": 660660.2713,
+        "firstHitBaseDamage": 110110.0452,
+        "weight": 0.2772605007241879,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 77.8,
+            "theoreticalMarginal": 77.8,
+            "isCapped": false,
+            "rawMarginal": 280.59,
+            "rawTheoreticalMarginal": 280.59,
+            "firstHitMarginal": 12.97
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 27.39,
+            "theoreticalMarginal": 27.39,
+            "isCapped": false,
+            "rawMarginal": 98.77,
+            "rawTheoreticalMarginal": 98.77,
+            "firstHitMarginal": 4.56
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 17.15,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 61.86,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 2.77,
+            "theoreticalMarginal": 2.77,
+            "isCapped": false,
+            "rawMarginal": 9.98,
+            "rawTheoreticalMarginal": 9.98,
+            "firstHitMarginal": 0.46
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 119.18,
+            "theoreticalMarginal": 119.18,
+            "isCapped": false,
+            "rawMarginal": 429.84,
+            "rawTheoreticalMarginal": 429.84,
+            "firstHitMarginal": 19.86
+          }
+        ]
+      },
+      {
+        "skillName": "苍龙啸·煞",
+        "skillId": "ZS_MO_SKILL_CLXS",
+        "hasHits": true,
+        "baseDamage": 916036.1489,
+        "firstHitBaseDamage": 89834.6265,
+        "weight": 0.1855990068280571,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 72.36,
+            "theoreticalMarginal": 72.36,
+            "isCapped": false,
+            "rawMarginal": 389.89,
+            "rawTheoreticalMarginal": 389.89,
+            "firstHitMarginal": 7.1
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 18.85,
+            "theoreticalMarginal": 18.85,
+            "isCapped": false,
+            "rawMarginal": 101.55,
+            "rawTheoreticalMarginal": 101.55,
+            "firstHitMarginal": 2.09
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 21.62,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 116.48,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 2.77,
+            "theoreticalMarginal": 2.77,
+            "isCapped": false,
+            "rawMarginal": 14.93,
+            "rawTheoreticalMarginal": 14.93,
+            "firstHitMarginal": 0.31
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 110.62,
+            "theoreticalMarginal": 110.62,
+            "isCapped": false,
+            "rawMarginal": 595.99,
+            "rawTheoreticalMarginal": 595.99,
+            "firstHitMarginal": 10.85
+          }
+        ]
+      },
+      {
+        "skillName": "山雨欲来II",
+        "skillId": "ZS_MO_SKILL_SY2",
+        "hasHits": true,
+        "baseDamage": 779156.2959,
+        "firstHitBaseDamage": 129859.3827,
+        "weight": 0.17773639561349058,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 60.22,
+            "theoreticalMarginal": 60.22,
+            "isCapped": false,
+            "rawMarginal": 338.84,
+            "rawTheoreticalMarginal": 338.84,
+            "firstHitMarginal": 10.04
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 17.32,
+            "theoreticalMarginal": 17.32,
+            "isCapped": false,
+            "rawMarginal": 97.44,
+            "rawTheoreticalMarginal": 97.44,
+            "firstHitMarginal": 2.89
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 6.58,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 37.03,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 9.35,
+            "theoreticalMarginal": 9.35,
+            "isCapped": false,
+            "rawMarginal": 52.62,
+            "rawTheoreticalMarginal": 52.62,
+            "firstHitMarginal": 1.56
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 90.1,
+            "theoreticalMarginal": 90.1,
+            "isCapped": false,
+            "rawMarginal": 506.93,
+            "rawTheoreticalMarginal": 506.93,
+            "firstHitMarginal": 15.02
+          }
+        ]
+      },
+      {
+        "skillName": "银鳞玄冰",
+        "skillId": "ZS_MO_SKILL_YLXB",
+        "hasHits": true,
+        "baseDamage": 1019450.6797,
+        "firstHitBaseDamage": 169908.4466,
+        "weight": 0.05793503000206911,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 25.14,
+            "theoreticalMarginal": 25.14,
+            "isCapped": false,
+            "rawMarginal": 433.9,
+            "rawTheoreticalMarginal": 433.9,
+            "firstHitMarginal": 4.19
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 4.5,
+            "theoreticalMarginal": 4.5,
+            "isCapped": false,
+            "rawMarginal": 77.66,
+            "rawTheoreticalMarginal": 77.66,
+            "firstHitMarginal": 0.75
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 4.61,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 79.65,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 4.61,
+            "theoreticalMarginal": 4.61,
+            "isCapped": false,
+            "rawMarginal": 79.65,
+            "rawTheoreticalMarginal": 79.65,
+            "firstHitMarginal": 0.77
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 38.43,
+            "theoreticalMarginal": 38.43,
+            "isCapped": false,
+            "rawMarginal": 663.27,
+            "rawTheoreticalMarginal": 663.27,
+            "firstHitMarginal": 6.4
+          }
+        ]
+      },
+      {
+        "skillName": "鹰扬折冲·煞",
+        "skillId": "ZS_MO_SKILL_YYZC_SHA",
+        "hasHits": false,
+        "baseDamage": 11604.848,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.18,
+            "rawTheoreticalMarginal": 3.18,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.55,
+            "rawTheoreticalMarginal": 7.55,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "临渊敛爪",
+        "skillId": "ZS_MO_SKILL_LYLZ",
+        "hasHits": true,
+        "baseDamage": 170379.2638,
+        "firstHitBaseDamage": 56793.0879,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 74.09,
+            "rawTheoreticalMarginal": 74.09,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 25.14,
+            "rawTheoreticalMarginal": 25.14,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 10.72,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 6.82,
+            "rawTheoreticalMarginal": 6.82,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 110.85,
+            "rawTheoreticalMarginal": 110.85,
+            "firstHitMarginal": 0.0
+          }
+        ]
+      },
+      {
+        "skillName": "鹰扬折冲",
+        "skillId": "ZS_MO_SKILL_YYZC",
+        "hasHits": false,
+        "baseDamage": 11604.848,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.18,
+            "rawTheoreticalMarginal": 3.18,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.55,
+            "rawTheoreticalMarginal": 7.55,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "龙战于野",
+        "skillId": "ZS_MO_SKILL_LZYY",
+        "hasHits": false,
+        "baseDamage": 11604.848,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.18,
+            "rawTheoreticalMarginal": 3.18,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.55,
+            "rawTheoreticalMarginal": 7.55,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "枕戈待旦",
+        "skillId": "ZS_MO_SKILL_ZGDD",
+        "hasHits": false,
+        "baseDamage": 11604.848,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.18,
+            "rawTheoreticalMarginal": 3.18,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.55,
+            "rawTheoreticalMarginal": 7.55,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "清啸横朔",
+        "skillId": "ZS_MO_SKILL_QXHS",
+        "hasHits": false,
+        "baseDamage": 11604.848,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.18,
+            "rawTheoreticalMarginal": 3.18,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.55,
+            "rawTheoreticalMarginal": 7.55,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "云蒸霞蔚",
+        "skillId": "ZS_MO_SKILL_YZXW",
+        "hasHits": false,
+        "baseDamage": 11604.848,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.18,
+            "rawTheoreticalMarginal": 3.18,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.55,
+            "rawTheoreticalMarginal": 7.55,
+            "firstHitMarginal": null
+          }
+        ]
+      }
+    ],
+    "totalMargins": [
+      {
+        "key": "critDamage",
+        "label": "爆伤 (+1)",
+        "delta": 1,
+        "marginal": 316.17,
+        "theoreticalMarginal": 316.17,
+        "isCapped": false
+      },
+      {
+        "key": "attack",
+        "label": "攻击 (+100)",
+        "delta": 100,
+        "marginal": 95.74,
+        "theoreticalMarginal": 95.74,
+        "isCapped": false
+      },
+      {
+        "key": "health",
+        "label": "气血 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 66.92,
+        "isCapped": true
+      },
+      {
+        "key": "mana",
+        "label": "真气 (+1K)",
+        "delta": 1000,
+        "marginal": 23.07,
+        "theoreticalMarginal": 23.07,
+        "isCapped": false
+      },
+      {
+        "key": "defense",
+        "label": "防御 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 0.0,
+        "isCapped": false
+      },
+      {
+        "key": "monsterDamageIncrease",
+        "label": "怪增 (+0.1%)",
+        "delta": 0.1,
+        "marginal": 480.57,
+        "theoreticalMarginal": 480.57,
+        "isCapped": false
+      }
+    ],
+    "conversions": {
+      "critDamage": 15.2,
+      "attack": 5019.5,
+      "health": "71812.6 (理论值·实战已触顶)",
+      "mana": 208309.5,
+      "defense": "无收益/不适用"
+    },
+    "perUnitGain": {
+      "critDamage_per_1": 316.17,
+      "attack_per_1": 0.9574,
+      "health_per_1": 0.0669,
+      "mana_per_1": 0.0231,
+      "defense_per_1": 0.0,
+      "monsterDamageIncrease_per_1pct": 4805.7
+    },
+    "skillDamageScenarios": [
+      {
+        "label": "当前 profile 配置",
+        "ok": true,
+        "grandTotalWan": 3998509.09,
+        "skills": [
+          {
+            "skillId": "ZS_MO_SKILL_CLXS",
+            "skillName": "苍龙啸·煞",
+            "totalWan": 916036.15,
+            "hitCount": 9,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 89834.63,
+                "sharePct": 9.81
+              },
+              {
+                "index": 2,
+                "damageWan": 92821.42,
+                "sharePct": 10.13
+              },
+              {
+                "index": 3,
+                "damageWan": 95808.21,
+                "sharePct": 10.46
+              },
+              {
+                "index": 4,
+                "damageWan": 98795.0,
+                "sharePct": 10.79
+              },
+              {
+                "index": 5,
+                "damageWan": 101781.79,
+                "sharePct": 11.11
+              },
+              {
+                "index": 6,
+                "damageWan": 104768.59,
+                "sharePct": 11.44
+              },
+              {
+                "index": 7,
+                "damageWan": 107755.38,
+                "sharePct": 11.76
+              },
+              {
+                "index": 8,
+                "damageWan": 110742.17,
+                "sharePct": 12.09
+              },
+              {
+                "index": 9,
+                "damageWan": 113728.96,
+                "sharePct": 12.42
+              }
+            ]
+          },
+          {
+            "skillId": "ZS_MO_SKILL_YLXB",
+            "skillName": "银鳞玄冰",
+            "totalWan": 1019450.68,
+            "hitCount": 6,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 169908.45,
+                "sharePct": 16.67
+              },
+              {
+                "index": 2,
+                "damageWan": 169908.45,
+                "sharePct": 16.67
+              },
+              {
+                "index": 3,
+                "damageWan": 169908.45,
+                "sharePct": 16.67
+              },
+              {
+                "index": 4,
+                "damageWan": 169908.45,
+                "sharePct": 16.67
+              },
+              {
+                "index": 5,
+                "damageWan": 169908.45,
+                "sharePct": 16.67
+              },
+              {
+                "index": 6,
+                "damageWan": 169908.45,
+                "sharePct": 16.67
+              }
+            ]
+          },
+          {
+            "skillId": "ZS_MO_SKILL_SY3",
+            "skillName": "山雨欲来III",
+            "totalWan": 660660.27,
+            "hitCount": 6,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 110110.05,
+                "sharePct": 16.67
+              },
+              {
+                "index": 2,
+                "damageWan": 110110.05,
+                "sharePct": 16.67
+              },
+              {
+                "index": 3,
+                "damageWan": 110110.05,
+                "sharePct": 16.67
+              },
+              {
+                "index": 4,
+                "damageWan": 110110.05,
+                "sharePct": 16.67
+              },
+              {
+                "index": 5,
+                "damageWan": 110110.05,
+                "sharePct": 16.67
+              },
+              {
+                "index": 6,
+                "damageWan": 110110.05,
+                "sharePct": 16.67
+              }
+            ]
+          },
+          {
+            "skillId": "ZS_MO_SKILL_SY2",
+            "skillName": "山雨欲来II",
+            "totalWan": 779156.3,
+            "hitCount": 6,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 129859.38,
+                "sharePct": 16.67
+              },
+              {
+                "index": 2,
+                "damageWan": 129859.38,
+                "sharePct": 16.67
+              },
+              {
+                "index": 3,
+                "damageWan": 129859.38,
+                "sharePct": 16.67
+              },
+              {
+                "index": 4,
+                "damageWan": 129859.38,
+                "sharePct": 16.67
+              },
+              {
+                "index": 5,
+                "damageWan": 129859.38,
+                "sharePct": 16.67
+              },
+              {
+                "index": 6,
+                "damageWan": 129859.38,
+                "sharePct": 16.67
+              }
+            ]
+          },
+          {
+            "skillId": "ZS_MO_SKILL_CLX",
+            "skillName": "苍龙啸",
+            "totalWan": 623205.69,
+            "hitCount": 9,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 57399.61,
+                "sharePct": 9.21
+              },
+              {
+                "index": 2,
+                "damageWan": 60360.98,
+                "sharePct": 9.69
+              },
+              {
+                "index": 3,
+                "damageWan": 63322.34,
+                "sharePct": 10.16
+              },
+              {
+                "index": 4,
+                "damageWan": 66283.71,
+                "sharePct": 10.64
+              },
+              {
+                "index": 5,
+                "damageWan": 69245.08,
+                "sharePct": 11.11
+              },
+              {
+                "index": 6,
+                "damageWan": 72206.44,
+                "sharePct": 11.59
+              },
+              {
+                "index": 7,
+                "damageWan": 75167.81,
+                "sharePct": 12.06
+              },
+              {
+                "index": 8,
+                "damageWan": 78129.18,
+                "sharePct": 12.54
+              },
+              {
+                "index": 9,
+                "damageWan": 81090.55,
+                "sharePct": 13.01
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "analysisTime": "2026-09-01T22:21:01.377171"
+  },
+  "burst": {
+    "ok": true,
+    "playerName": "独白_魔_含瑛",
+    "className": "逐霜",
+    "factionName": "魔",
+    "dungeon": "JIEQI_KONGSANG_HARD",
+    "mode": "burst_weighted",
+    "baseTotalDamageWan": 4056938.09,
+    "weightedTotalDamageWan": 855442.8,
+    "skillMargins": [
+      {
+        "skillName": "苍龙啸·煞",
+        "skillId": "ZS_MO_SKILL_CLXS",
+        "hasHits": true,
+        "baseDamage": 877047.5918,
+        "firstHitBaseDamage": 86011.0629,
+        "weight": 0.6451612903225806,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 251.54,
+            "theoreticalMarginal": 251.54,
+            "isCapped": false,
+            "rawMarginal": 389.89,
+            "rawTheoreticalMarginal": 389.89,
+            "firstHitMarginal": 24.67
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 62.73,
+            "theoreticalMarginal": 62.73,
+            "isCapped": false,
+            "rawMarginal": 97.23,
+            "rawTheoreticalMarginal": 97.23,
+            "firstHitMarginal": 6.97
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 71.95,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 111.53,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 9.22,
+            "theoreticalMarginal": 9.22,
+            "isCapped": false,
+            "rawMarginal": 14.3,
+            "rawTheoreticalMarginal": 14.3,
+            "firstHitMarginal": 1.02
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 368.14,
+            "theoreticalMarginal": 368.14,
+            "isCapped": false,
+            "rawMarginal": 570.62,
+            "rawTheoreticalMarginal": 570.62,
+            "firstHitMarginal": 36.1
+          }
+        ]
+      },
+      {
+        "skillName": "银鳞玄冰",
+        "skillId": "ZS_MO_SKILL_YLXB",
+        "hasHits": true,
+        "baseDamage": 976060.5678,
+        "firstHitBaseDamage": 162676.7613,
+        "weight": 0.16129032258064516,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 69.98,
+            "theoreticalMarginal": 69.98,
+            "isCapped": false,
+            "rawMarginal": 433.9,
+            "rawTheoreticalMarginal": 433.9,
+            "firstHitMarginal": 11.66
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 11.99,
+            "theoreticalMarginal": 11.99,
+            "isCapped": false,
+            "rawMarginal": 74.35,
+            "rawTheoreticalMarginal": 74.35,
+            "firstHitMarginal": 2.0
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 12.3,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 76.26,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 12.3,
+            "theoreticalMarginal": 12.3,
+            "isCapped": false,
+            "rawMarginal": 76.26,
+            "rawTheoreticalMarginal": 76.26,
+            "firstHitMarginal": 2.05
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 102.43,
+            "theoreticalMarginal": 102.43,
+            "isCapped": false,
+            "rawMarginal": 635.04,
+            "rawTheoreticalMarginal": 635.04,
+            "firstHitMarginal": 17.07
+          }
+        ]
+      },
+      {
+        "skillName": "山雨欲来II",
+        "skillId": "ZS_MO_SKILL_SY2",
+        "hasHits": true,
+        "baseDamage": 745272.5692,
+        "firstHitBaseDamage": 124212.0949,
+        "weight": 0.0967741935483871,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 32.79,
+            "theoreticalMarginal": 32.79,
+            "isCapped": false,
+            "rawMarginal": 338.84,
+            "rawTheoreticalMarginal": 338.84,
+            "firstHitMarginal": 5.47
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 9.02,
+            "theoreticalMarginal": 9.02,
+            "isCapped": false,
+            "rawMarginal": 93.2,
+            "rawTheoreticalMarginal": 93.2,
+            "firstHitMarginal": 1.5
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 3.43,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 35.42,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 4.87,
+            "theoreticalMarginal": 4.87,
+            "isCapped": false,
+            "rawMarginal": 50.33,
+            "rawTheoreticalMarginal": 50.33,
+            "firstHitMarginal": 0.81
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 46.92,
+            "theoreticalMarginal": 46.92,
+            "isCapped": false,
+            "rawMarginal": 484.89,
+            "rawTheoreticalMarginal": 484.89,
+            "firstHitMarginal": 7.82
+          }
+        ]
+      },
+      {
+        "skillName": "山雨欲来III",
+        "skillId": "ZS_MO_SKILL_SY3",
+        "hasHits": true,
+        "baseDamage": 632600.7991,
+        "firstHitBaseDamage": 105433.4665,
+        "weight": 0.06451612903225806,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 18.1,
+            "theoreticalMarginal": 18.1,
+            "isCapped": false,
+            "rawMarginal": 280.59,
+            "rawTheoreticalMarginal": 280.59,
+            "firstHitMarginal": 3.02
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 6.1,
+            "theoreticalMarginal": 6.1,
+            "isCapped": false,
+            "rawMarginal": 94.58,
+            "rawTheoreticalMarginal": 94.58,
+            "firstHitMarginal": 1.02
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 3.82,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 59.23,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.62,
+            "theoreticalMarginal": 0.62,
+            "isCapped": false,
+            "rawMarginal": 9.55,
+            "rawTheoreticalMarginal": 9.55,
+            "firstHitMarginal": 0.1
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 26.55,
+            "theoreticalMarginal": 26.55,
+            "isCapped": false,
+            "rawMarginal": 411.58,
+            "rawTheoreticalMarginal": 411.58,
+            "firstHitMarginal": 4.43
+          }
+        ]
+      },
+      {
+        "skillName": "苍龙啸",
+        "skillId": "ZS_MO_SKILL_CLX",
+        "hasHits": true,
+        "baseDamage": 596452.9284,
+        "firstHitBaseDamage": 54935.5777,
+        "weight": 0.03225806451612903,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 8.63,
+            "theoreticalMarginal": 8.63,
+            "isCapped": false,
+            "rawMarginal": 267.53,
+            "rawTheoreticalMarginal": 267.53,
+            "firstHitMarginal": 0.79
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 2.83,
+            "theoreticalMarginal": 2.83,
+            "isCapped": false,
+            "rawMarginal": 87.86,
+            "rawTheoreticalMarginal": 87.86,
+            "firstHitMarginal": 0.31
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 1.74,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 53.85,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.37,
+            "theoreticalMarginal": 0.37,
+            "isCapped": false,
+            "rawMarginal": 11.34,
+            "rawTheoreticalMarginal": 11.34,
+            "firstHitMarginal": 0.04
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 12.52,
+            "theoreticalMarginal": 12.52,
+            "isCapped": false,
+            "rawMarginal": 388.06,
+            "rawTheoreticalMarginal": 388.06,
+            "firstHitMarginal": 1.15
+          }
+        ]
+      },
+      {
+        "skillName": "鹰扬折冲·煞",
+        "skillId": "ZS_MO_SKILL_YYZC_SHA",
+        "hasHits": false,
+        "baseDamage": 11088.9623,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.04,
+            "rawTheoreticalMarginal": 3.04,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.21,
+            "rawTheoreticalMarginal": 7.21,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "临渊敛爪",
+        "skillId": "ZS_MO_SKILL_LYLZ",
+        "hasHits": true,
+        "baseDamage": 162969.859,
+        "firstHitBaseDamage": 54323.2863,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 74.09,
+            "rawTheoreticalMarginal": 74.09,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 24.05,
+            "rawTheoreticalMarginal": 24.05,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 10.25,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 6.52,
+            "rawTheoreticalMarginal": 6.52,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": 0.0
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 106.03,
+            "rawTheoreticalMarginal": 106.03,
+            "firstHitMarginal": 0.0
+          }
+        ]
+      },
+      {
+        "skillName": "鹰扬折冲",
+        "skillId": "ZS_MO_SKILL_YYZC",
+        "hasHits": false,
+        "baseDamage": 11088.9623,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.04,
+            "rawTheoreticalMarginal": 3.04,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.21,
+            "rawTheoreticalMarginal": 7.21,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "龙战于野",
+        "skillId": "ZS_MO_SKILL_LZYY",
+        "hasHits": false,
+        "baseDamage": 11088.9623,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.04,
+            "rawTheoreticalMarginal": 3.04,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.21,
+            "rawTheoreticalMarginal": 7.21,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "枕戈待旦",
+        "skillId": "ZS_MO_SKILL_ZGDD",
+        "hasHits": false,
+        "baseDamage": 11088.9623,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.04,
+            "rawTheoreticalMarginal": 3.04,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.21,
+            "rawTheoreticalMarginal": 7.21,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "清啸横朔",
+        "skillId": "ZS_MO_SKILL_QXHS",
+        "hasHits": false,
+        "baseDamage": 11088.9623,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.04,
+            "rawTheoreticalMarginal": 3.04,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.21,
+            "rawTheoreticalMarginal": 7.21,
+            "firstHitMarginal": null
+          }
+        ]
+      },
+      {
+        "skillName": "云蒸霞蔚",
+        "skillId": "ZS_MO_SKILL_YZXW",
+        "hasHits": false,
+        "baseDamage": 11088.9623,
+        "firstHitBaseDamage": null,
+        "weight": 0.0,
+        "dimensions": [
+          {
+            "key": "critDamage",
+            "label": "爆伤 (+1)",
+            "delta": 1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 5.16,
+            "rawTheoreticalMarginal": 5.16,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "attack",
+            "label": "攻击 (+100)",
+            "delta": 100,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 3.04,
+            "rawTheoreticalMarginal": 3.04,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "health",
+            "label": "气血 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": true,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "mana",
+            "label": "真气 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "defense",
+            "label": "防御 (+1K)",
+            "delta": 1000,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 0.0,
+            "rawTheoreticalMarginal": 0.0,
+            "firstHitMarginal": null
+          },
+          {
+            "key": "monsterDamageIncrease",
+            "label": "怪增 (+0.1%)",
+            "delta": 0.1,
+            "marginal": 0.0,
+            "theoreticalMarginal": 0.0,
+            "isCapped": false,
+            "rawMarginal": 7.21,
+            "rawTheoreticalMarginal": 7.21,
+            "firstHitMarginal": null
+          }
+        ]
+      }
+    ],
+    "totalMargins": [
+      {
+        "key": "critDamage",
+        "label": "爆伤 (+1)",
+        "delta": 1,
+        "marginal": 381.04,
+        "theoreticalMarginal": 381.04,
+        "isCapped": false
+      },
+      {
+        "key": "attack",
+        "label": "攻击 (+100)",
+        "delta": 100,
+        "marginal": 92.67,
+        "theoreticalMarginal": 92.67,
+        "isCapped": false
+      },
+      {
+        "key": "health",
+        "label": "气血 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 93.24,
+        "isCapped": true
+      },
+      {
+        "key": "mana",
+        "label": "真气 (+1K)",
+        "delta": 1000,
+        "marginal": 27.38,
+        "theoreticalMarginal": 27.38,
+        "isCapped": false
+      },
+      {
+        "key": "defense",
+        "label": "防御 (+1K)",
+        "delta": 1000,
+        "marginal": 0.0,
+        "theoreticalMarginal": 0.0,
+        "isCapped": false
+      },
+      {
+        "key": "monsterDamageIncrease",
+        "label": "怪增 (+0.1%)",
+        "delta": 0.1,
+        "marginal": 556.56,
+        "theoreticalMarginal": 556.56,
+        "isCapped": false
+      }
+    ],
+    "conversions": {
+      "critDamage": 14.61,
+      "attack": 6005.8,
+      "health": "59691.1 (理论值·实战已触顶)",
+      "mana": 203272.5,
+      "defense": "无收益/不适用"
+    },
+    "perUnitGain": {
+      "critDamage_per_1": 381.04,
+      "attack_per_1": 0.9267,
+      "health_per_1": 0.0932,
+      "mana_per_1": 0.0274,
+      "defense_per_1": 0.0,
+      "monsterDamageIncrease_per_1pct": 5565.6
+    },
+    "skillDamageScenarios": [
+      {
+        "label": "当前 profile 配置",
+        "ok": true,
+        "grandTotalWan": 3827434.46,
+        "skills": [
+          {
+            "skillId": "ZS_MO_SKILL_CLXS",
+            "skillName": "苍龙啸·煞",
+            "totalWan": 877047.59,
+            "hitCount": 9,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 86011.06,
+                "sharePct": 9.81
+              },
+              {
+                "index": 2,
+                "damageWan": 88870.73,
+                "sharePct": 10.13
+              },
+              {
+                "index": 3,
+                "damageWan": 91730.4,
+                "sharePct": 10.46
+              },
+              {
+                "index": 4,
+                "damageWan": 94590.07,
+                "sharePct": 10.79
+              },
+              {
+                "index": 5,
+                "damageWan": 97449.73,
+                "sharePct": 11.11
+              },
+              {
+                "index": 6,
+                "damageWan": 100309.4,
+                "sharePct": 11.44
+              },
+              {
+                "index": 7,
+                "damageWan": 103169.07,
+                "sharePct": 11.76
+              },
+              {
+                "index": 8,
+                "damageWan": 106028.73,
+                "sharePct": 12.09
+              },
+              {
+                "index": 9,
+                "damageWan": 108888.4,
+                "sharePct": 12.42
+              }
+            ]
+          },
+          {
+            "skillId": "ZS_MO_SKILL_YLXB",
+            "skillName": "银鳞玄冰",
+            "totalWan": 976060.57,
+            "hitCount": 6,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 162676.76,
+                "sharePct": 16.67
+              },
+              {
+                "index": 2,
+                "damageWan": 162676.76,
+                "sharePct": 16.67
+              },
+              {
+                "index": 3,
+                "damageWan": 162676.76,
+                "sharePct": 16.67
+              },
+              {
+                "index": 4,
+                "damageWan": 162676.76,
+                "sharePct": 16.67
+              },
+              {
+                "index": 5,
+                "damageWan": 162676.76,
+                "sharePct": 16.67
+              },
+              {
+                "index": 6,
+                "damageWan": 162676.76,
+                "sharePct": 16.67
+              }
+            ]
+          },
+          {
+            "skillId": "ZS_MO_SKILL_SY3",
+            "skillName": "山雨欲来III",
+            "totalWan": 632600.8,
+            "hitCount": 6,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 105433.47,
+                "sharePct": 16.67
+              },
+              {
+                "index": 2,
+                "damageWan": 105433.47,
+                "sharePct": 16.67
+              },
+              {
+                "index": 3,
+                "damageWan": 105433.47,
+                "sharePct": 16.67
+              },
+              {
+                "index": 4,
+                "damageWan": 105433.47,
+                "sharePct": 16.67
+              },
+              {
+                "index": 5,
+                "damageWan": 105433.47,
+                "sharePct": 16.67
+              },
+              {
+                "index": 6,
+                "damageWan": 105433.47,
+                "sharePct": 16.67
+              }
+            ]
+          },
+          {
+            "skillId": "ZS_MO_SKILL_SY2",
+            "skillName": "山雨欲来II",
+            "totalWan": 745272.57,
+            "hitCount": 6,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 124212.09,
+                "sharePct": 16.67
+              },
+              {
+                "index": 2,
+                "damageWan": 124212.09,
+                "sharePct": 16.67
+              },
+              {
+                "index": 3,
+                "damageWan": 124212.09,
+                "sharePct": 16.67
+              },
+              {
+                "index": 4,
+                "damageWan": 124212.09,
+                "sharePct": 16.67
+              },
+              {
+                "index": 5,
+                "damageWan": 124212.09,
+                "sharePct": 16.67
+              },
+              {
+                "index": 6,
+                "damageWan": 124212.09,
+                "sharePct": 16.67
+              }
+            ]
+          },
+          {
+            "skillId": "ZS_MO_SKILL_CLX",
+            "skillName": "苍龙啸",
+            "totalWan": 596452.93,
+            "hitCount": 9,
+            "hits": [
+              {
+                "index": 1,
+                "damageWan": 54935.58,
+                "sharePct": 9.21
+              },
+              {
+                "index": 2,
+                "damageWan": 57769.82,
+                "sharePct": 9.69
+              },
+              {
+                "index": 3,
+                "damageWan": 60604.06,
+                "sharePct": 10.16
+              },
+              {
+                "index": 4,
+                "damageWan": 63438.31,
+                "sharePct": 10.64
+              },
+              {
+                "index": 5,
+                "damageWan": 66272.55,
+                "sharePct": 11.11
+              },
+              {
+                "index": 6,
+                "damageWan": 69106.79,
+                "sharePct": 11.59
+              },
+              {
+                "index": 7,
+                "damageWan": 71941.03,
+                "sharePct": 12.06
+              },
+              {
+                "index": 8,
+                "damageWan": 74775.27,
+                "sharePct": 12.54
+              },
+              {
+                "index": 9,
+                "damageWan": 77609.52,
+                "sharePct": 13.01
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "analysisTime": "2026-09-01T22:21:11.123899"
+  }
+}

@@ -1,15 +1,15 @@
 {
-  "playerName": "小五",
+  "playerName": "神之语",
   "className": "太昊",
   "factionName": "仙",
   "attributes": {
-    "minAttack": 200000,
-    "maxAttack": 252000,
+    "minAttack": 354261,
+    "maxAttack": 422737,
     "defense": 500000,
-    "critDamage": 2620,
-    "mana": 2210000,
+    "critDamage": 2848.3,
+    "mana": 4000000,
     "health": 4000000,
-    "monsterDamageIncrease": 18
+    "monsterDamageIncrease": 35.7
   },
   "buffs": {
     "focus": 192,
@@ -18,7 +18,7 @@
     "witchCurse": 22.5
   },
   "target": {
-    "dungeon": "T20",
+    "dungeon": "T21",
     "bossIndex": 1
   }
 }

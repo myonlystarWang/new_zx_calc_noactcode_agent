@@ -1,0 +1,60 @@
+﻿{
+  "playerName": "津威",
+  "className": "释罗",
+  "factionName": "魔",
+  "attributes": {
+    "minAttack": 153578,
+    "maxAttack": 186215,
+    "defense": 0,
+    "critDamage": 2035.4,
+    "mana": 1652483,
+    "health": 2676401,
+    "monsterDamageIncrease": 31.4
+  },
+  "buffs": {
+    "focus": 250
+  },
+  "target": {
+    "dungeon": "T21",
+    "bossIndex": 1
+  },
+  "skillUsage": {
+    "SL_MO_SKILL_SSXS":   {"damageShare": 0.3540},
+    "SL_MO_SKILL_NSSXS":  {"damageShare": 0.2912},
+    "SL_MO_SKILL_CWJHG":  {"damageShare": 0.2765},
+    "SL_MO_SKILL_NCJHG3D":{"damageShare": 0.0783}
+  },
+  "_META": {
+    "note": "攻击=153578-186215(用户确认)。防御未提供=0占位。buffs仅写focus=200覆盖；绿点/易伤/巫咒为combat_buffs默认值不写。；专注改为212(用户确认)。；专注改为250(用户确认)。；秒怪爆发轨=A[孽·释罗生相·煞]+B[赤乌·敕戒祸根]，顺序见 tracks.burst。爆发权重SkillImportanceWeight待定(占位0.5/0.5)。CD/施放时间保持占位未动。",
+    "createdAt": "2026-08-31 16:25:42",
+    "lastUpdatedAt": "2026-08-31 20:06:50",
+    "knownAttributes": [
+      "minAttack",
+      "maxAttack",
+      "critDamage",
+      "mana",
+      "health",
+      "monsterDamageIncrease",
+      "focus"
+    ],
+    "unknownAttributes": [
+      "defense"
+    ],
+    "defaultBuffsNotWritten": [
+      "greenPoint",
+      "monsterDamageTaken",
+      "witchCurse"
+    ],
+    "source": "用户粘贴确认(2026-08-31)"
+  },
+  "tracks": {
+    "burst": [
+      "SL_MO_SKILL_NSSXS",
+      "SL_MO_SKILL_CWJHG"
+    ],
+    "burstNames": [
+      "孽·释罗生相·煞",
+      "赤乌·敕戒祸根"
+    ]
+  }
+}

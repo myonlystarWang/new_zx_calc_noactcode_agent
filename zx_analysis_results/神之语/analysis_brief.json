@@ -1,0 +1,320 @@
+{
+  "player": "神之语",
+  "player_short": "神之语",
+  "scheme": "神之语",
+  "badge": "太昊 · 仙",
+  "class": "太昊",
+  "faction": "仙",
+  "attributes": {
+    "minAttack": 354261,
+    "maxAttack": 422737,
+    "critDamage": 2848.3,
+    "monsterDamageIncrease": 35.7,
+    "health": 4000000,
+    "mana": 4000000,
+    "focus": 192
+  },
+  "singleHit": {
+    "天地绝·玄": {
+      "skillId": "TH_XIAN_SKILL_TDJX",
+      "hitCount": 1,
+      "isPlaceholder": false,
+      "perHitAvg": 779874599,
+      "firstHit": 779874599,
+      "lastHit": 779874599,
+      "minBase": 3145533,
+      "maxBase": 3350961,
+      "total": 779874599
+    }
+  },
+  "matrix_long": [
+    {
+      "name": "天地绝·玄",
+      "weight": "100.0%",
+      "contrib": {
+        "爆伤": 34.69,
+        "攻击": 7.2,
+        "气血": 0.0,
+        "真气": 0.0,
+        "防御": 0.0,
+        "怪增": 57.47
+      },
+      "capped": {
+        "气血": true,
+        "真气": true
+      },
+      "_dimensions": [
+        {
+          "key": "critDamage",
+          "label": "爆伤 (+1)",
+          "delta": 1,
+          "marginal": 34.69,
+          "theoreticalMarginal": 34.69,
+          "isCapped": false,
+          "rawMarginal": 34.69,
+          "rawTheoreticalMarginal": 34.69,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "attack",
+          "label": "攻击 (+100)",
+          "delta": 100,
+          "marginal": 7.2,
+          "theoreticalMarginal": 7.2,
+          "isCapped": false,
+          "rawMarginal": 7.2,
+          "rawTheoreticalMarginal": 7.2,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "health",
+          "label": "气血 (+1K)",
+          "delta": 1000,
+          "marginal": 0.0,
+          "theoreticalMarginal": 6.24,
+          "isCapped": true,
+          "rawMarginal": 0.0,
+          "rawTheoreticalMarginal": 6.24,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "mana",
+          "label": "真气 (+1K)",
+          "delta": 1000,
+          "marginal": 0.0,
+          "theoreticalMarginal": 6.24,
+          "isCapped": true,
+          "rawMarginal": 0.0,
+          "rawTheoreticalMarginal": 6.24,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "defense",
+          "label": "防御 (+1K)",
+          "delta": 1000,
+          "marginal": 0.0,
+          "theoreticalMarginal": 0.0,
+          "isCapped": false,
+          "rawMarginal": 0.0,
+          "rawTheoreticalMarginal": 0.0,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "monsterDamageIncrease",
+          "label": "怪增 (+0.1%)",
+          "delta": 0.1,
+          "marginal": 57.47,
+          "theoreticalMarginal": 57.47,
+          "isCapped": false,
+          "rawMarginal": 57.47,
+          "rawTheoreticalMarginal": 57.47,
+          "firstHitMarginal": null
+        }
+      ]
+    }
+  ],
+  "matrix_burst": [
+    {
+      "name": "天地绝·玄",
+      "weight": "100.0%",
+      "contrib": {
+        "爆伤": 34.69,
+        "攻击": 7.2,
+        "气血": 0.0,
+        "真气": 0.0,
+        "防御": 0.0,
+        "怪增": 57.47
+      },
+      "capped": {
+        "气血": true,
+        "真气": true
+      },
+      "_dimensions": [
+        {
+          "key": "critDamage",
+          "label": "爆伤 (+1)",
+          "delta": 1,
+          "marginal": 34.69,
+          "theoreticalMarginal": 34.69,
+          "isCapped": false,
+          "rawMarginal": 34.69,
+          "rawTheoreticalMarginal": 34.69,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "attack",
+          "label": "攻击 (+100)",
+          "delta": 100,
+          "marginal": 7.2,
+          "theoreticalMarginal": 7.2,
+          "isCapped": false,
+          "rawMarginal": 7.2,
+          "rawTheoreticalMarginal": 7.2,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "health",
+          "label": "气血 (+1K)",
+          "delta": 1000,
+          "marginal": 0.0,
+          "theoreticalMarginal": 6.24,
+          "isCapped": true,
+          "rawMarginal": 0.0,
+          "rawTheoreticalMarginal": 6.24,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "mana",
+          "label": "真气 (+1K)",
+          "delta": 1000,
+          "marginal": 0.0,
+          "theoreticalMarginal": 6.24,
+          "isCapped": true,
+          "rawMarginal": 0.0,
+          "rawTheoreticalMarginal": 6.24,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "defense",
+          "label": "防御 (+1K)",
+          "delta": 1000,
+          "marginal": 0.0,
+          "theoreticalMarginal": 0.0,
+          "isCapped": false,
+          "rawMarginal": 0.0,
+          "rawTheoreticalMarginal": 0.0,
+          "firstHitMarginal": null
+        },
+        {
+          "key": "monsterDamageIncrease",
+          "label": "怪增 (+0.1%)",
+          "delta": 0.1,
+          "marginal": 57.47,
+          "theoreticalMarginal": 57.47,
+          "isCapped": false,
+          "rawMarginal": 57.47,
+          "rawTheoreticalMarginal": 57.47,
+          "firstHitMarginal": null
+        }
+      ]
+    }
+  ],
+  "priority_long": "怪增 > 爆伤 > 攻击 > 真气 = 气血",
+  "priority_burst": "怪增 > 爆伤 > 攻击 > 真气 = 气血",
+  "conclusion_long": "在 T21 (标准总伤基准) 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气 = 气血。洗练建议优先保障 怪增。针对核心技能【天地绝·玄】，提升 1% 怪增等价于提升约 7981.9 攻击 或 16.57 爆伤。",
+  "conclusion_burst": "在 空桑困难（劫起空桑）（秒怪爆发） 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气 = 气血。洗练建议优先保障 怪增。针对核心技能【天地绝·玄】，提升 1% 怪增等价于提升约 7981.9 攻击 或 16.57 爆伤。",
+  "total_long": 77987.46,
+  "total_burst": 77987.46,
+  "weighted_long": 77987.46,
+  "weighted_burst": 77987.46,
+  "core_long": null,
+  "core_burst": {
+    "name": "天地绝·玄",
+    "share": 100.0,
+    "base": 77987.46
+  },
+  "modes": [
+    {
+      "mode": "T21 (标准总伤基准)"
+    },
+    {
+      "mode": "空桑困难（劫起空桑） (秒怪爆发加权)"
+    }
+  ],
+  "equivalence": {
+    "long": [
+      {
+        "基准": "爆伤 (+10)",
+        "等价爆伤 (pts)": "10.00",
+        "等价攻击 (点)": "4818.1",
+        "等价气血 (点)": "55951.6",
+        "等价真气 (点)": "55951.6",
+        "等价怪增 (%)": "0.60",
+        "带来实际伤害": "+346.90 "
+      },
+      {
+        "基准": "攻击 (+1,000)",
+        "等价爆伤 (pts)": "2.08",
+        "等价攻击 (点)": "1000.0",
+        "等价气血 (点)": "11612.9",
+        "等价真气 (点)": "11612.9",
+        "等价怪增 (%)": "0.13",
+        "带来实际伤害": "+72.00 "
+      },
+      {
+        "基准": "气血 (+10,000)",
+        "等价爆伤 (pts)": "1.79",
+        "等价攻击 (点)": "861.1",
+        "等价气血 (点)": "10000.0",
+        "等价真气 (点)": "10000.0",
+        "等价怪增 (%)": "0.11",
+        "带来实际伤害": "+62.00 "
+      },
+      {
+        "基准": "真气 (+10,000)",
+        "等价爆伤 (pts)": "1.79",
+        "等价攻击 (点)": "861.1",
+        "等价气血 (点)": "10000.0",
+        "等价真气 (点)": "10000.0",
+        "等价怪增 (%)": "0.11",
+        "带来实际伤害": "+62.00 "
+      },
+      {
+        "基准": "怪增 (+1.0%)",
+        "等价爆伤 (pts)": "16.57",
+        "等价攻击 (点)": "7981.9",
+        "等价气血 (点)": "92693.5",
+        "等价真气 (点)": "92693.5",
+        "等价怪增 (%)": "1.00",
+        "带来实际伤害": "+574.70 "
+      }
+    ],
+    "burst": [
+      {
+        "基准": "爆伤 (+10)",
+        "等价爆伤 (pts)": "10.00",
+        "等价攻击 (点)": "4818.1",
+        "等价气血 (点)": "55951.6",
+        "等价真气 (点)": "55951.6",
+        "等价怪增 (%)": "0.60",
+        "带来实际伤害": "+346.90 "
+      },
+      {
+        "基准": "攻击 (+1,000)",
+        "等价爆伤 (pts)": "2.08",
+        "等价攻击 (点)": "1000.0",
+        "等价气血 (点)": "11612.9",
+        "等价真气 (点)": "11612.9",
+        "等价怪增 (%)": "0.13",
+        "带来实际伤害": "+72.00 "
+      },
+      {
+        "基准": "气血 (+10,000)",
+        "等价爆伤 (pts)": "1.79",
+        "等价攻击 (点)": "861.1",
+        "等价气血 (点)": "10000.0",
+        "等价真气 (点)": "10000.0",
+        "等价怪增 (%)": "0.11",
+        "带来实际伤害": "+62.00 "
+      },
+      {
+        "基准": "真气 (+10,000)",
+        "等价爆伤 (pts)": "1.79",
+        "等价攻击 (点)": "861.1",
+        "等价气血 (点)": "10000.0",
+        "等价真气 (点)": "10000.0",
+        "等价怪增 (%)": "0.11",
+        "带来实际伤害": "+62.00 "
+      },
+      {
+        "基准": "怪增 (+1.0%)",
+        "等价爆伤 (pts)": "16.57",
+        "等价攻击 (点)": "7981.9",
+        "等价气血 (点)": "92693.5",
+        "等价真气 (点)": "92693.5",
+        "等价怪增 (%)": "1.00",
+        "带来实际伤害": "+574.70 "
+      }
+    ]
+  }
+}

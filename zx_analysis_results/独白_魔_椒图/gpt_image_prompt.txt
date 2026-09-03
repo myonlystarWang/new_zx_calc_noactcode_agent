@@ -1,0 +1,227 @@
+===== 中文主版（直接复制喂 GPT 生图）=====
+
+请生成一张《诛仙3》玩家伤害分析结果信息图（竖版，1080×1700 左右）。
+
+# 设计目标
+制作一张《诛仙3》高端玩家伤害测试攻略图，而非游戏宣传海报。重点是数据阅读效率、专业分析感和攻略帖视觉风格。所有中文文字、数字必须清晰准确，不得臆造，不得修改数据。
+
+# 基础规格
+- 竖版，1080×1700 左右。
+- 整体风格采用《诛仙3》官方仙侠 UI 风格（青蓝色仙侠、水墨云海、玉石面板、宣纸纹理、古典纹样边框、淡金色点缀）。
+- 视觉基调类似《诛仙3》官方资料站 / 玩家攻略手册 / 职业分析报告。
+- 避免暗黑魔幻风、科幻 HUD 风、手游充值界面风。
+- 不使用 emoji、不使用现代扁平图标、不堆叠大量技能 icon。
+- 信息表达主要依靠文字、表格、排版层级和颜色强调；装饰元素保持克制，保证高级感与可读性。
+
+# 顶部标题区域
+顶部主标题（单行最大字号）：「诛仙3 独白 魔逐霜 副本伤害分析」
+- 玩家名「独白」作为视觉焦点，字号略大于其他标题文字，并使用金色 / 高亮描边 / 灵气效果突出。
+- 其余文字保持辅助标题级别，不抢占主体。
+
+# 玩家信息区域
+玩家：独白　阵营：魔　职业：逐霜　方案：椒图
+分析场景：T20 (长轴实战) / JIEQI_KONGSANG_HARD (秒怪爆发)
+
+# 玩家属性区域
+攻击 341131-400239　爆伤 2865.9%　对怪增伤 53.7%　气血 400.0万　真气 520.4万　专注 241
+- 使用玉简式属性面板展示，不使用大量圆形属性 icon。
+
+# 重要技能单段伤害区域
+标题：重要技能单段伤害（每段最终伤害）
+  - 苍龙啸·煞：9段，单段最终伤害 9.10亿→11.51亿
+  - 银鳞玄冰：6段，单段最终伤害 17.15亿
+  - 山雨欲来III：6段，单段最终伤害 11.17亿
+  - 山雨欲来II：6段，单段最终伤害 13.15亿
+  - 苍龙啸：9段，单段最终伤害 5.83亿→8.22亿
+  - 临渊敛爪：3段，单段最终伤害 5.76亿
+- 采用横向数据条或玉简列表形式展示；不制作成 RPG 血条，不使用紫色技能槽等手游 UI；重点突出技能名、段数和最终伤害数字。
+
+# 场景：T20 (长轴实战)
+# 核心区域：属性边际贡献矩阵（T20 (长轴实战)）
+矩阵高度约占整张图 30%，必须保证数字清晰可读。
+标题：各属性边际贡献矩阵（T20 (长轴实战)）
+说明：数字 = 该技能伤害增加量（万）。
+列步长：爆伤+1 / 攻击+100 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸（占比30.1%，总伤63.2亿）：爆伤 81.3 / 攻击 27.9 / 真气 3.6 / 怪增 124.0
+  - 山雨欲来III（占比27.7%，总伤67.0亿）：爆伤 78.4 / 攻击 27.6 / 真气 2.8 / 怪增 121.0
+  - 苍龙啸·煞（占比18.6%，总伤92.8亿）：爆伤 72.8 / 攻击 19.0 / 真气 2.8 / 怪增 112.0
+  - 山雨欲来II（占比17.8%，总伤78.9亿）：爆伤 60.6 / 攻击 17.4 / 真气 9.4 / 怪增 91.2
+  - 银鳞玄冰（占比5.8%，总伤102.9亿）：爆伤 25.2 / 攻击 4.5 / 真气 4.7 / 怪增 38.8
+- 浅色热力渐变突出收益高低；数字优先于颜色效果，不能因背景导致数字难以阅读。
+- 防御列已全部剔除：当前流派防御边际贡献为 0（无收益），不展示。
+
+# 等值换算区域（T20 (长轴实战)）
+放置在六维贡献矩阵正下方，不单独制作复杂表格。
+★ 提升 1.0% 怪增 ≈ 等价提升：
+  爆伤 15.31 pts
+  攻击 5052.5 点
+  气血 72264.1 点（≈7.23万）
+  真气 209939.7 点（≈20.99万）
+  怪增 1.00%
+- 使用金色高亮显示 ★ 和关键数字。
+- 按当前技能组合计算，总伤害提升约 4870.60 万。
+
+# 属性收益优先级（T20 (长轴实战)）
+标题：属性收益优先级
+怪增 > 爆伤 > 攻击 > 真气
+- 采用简洁排行榜形式，不使用大型按钮或游戏装备图标。
+
+# 最终结论区域（T20 (长轴实战)）
+标题：结论与建议
+在 T20 (长轴实战) 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气。洗练建议优先保障 怪增。
+- 采用玩家攻略总结框样式，而非论文报告样式。
+# 场景：JIEQI_KONGSANG_HARD (秒怪爆发)
+# 核心区域：属性边际贡献矩阵（JIEQI_KONGSANG_HARD (秒怪爆发)）
+矩阵高度约占整张图 30%，必须保证数字清晰可读。
+标题：各属性边际贡献矩阵（JIEQI_KONGSANG_HARD (秒怪爆发)）
+说明：数字 = 该技能伤害增加量（万）。
+列步长：爆伤+1 / 攻击+100 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸·煞（占比64.5%，总伤92.8亿）：爆伤 253.0 / 攻击 63.2 / 真气 9.3 / 怪增 372.9
+  - 银鳞玄冰（占比16.1%，总伤102.9亿）：爆伤 70.2 / 攻击 12.1 / 真气 12.4 / 怪增 103.5
+  - 山雨欲来II（占比9.7%，总伤78.9亿）：爆伤 33.0 / 攻击 9.1 / 真气 4.9 / 怪增 47.5
+  - 山雨欲来III（占比6.5%，总伤67.0亿）：爆伤 18.2 / 攻击 6.2 / 真气 0.6 / 怪增 27.0
+  - 苍龙啸（占比3.2%，总伤63.2亿）：爆伤 8.7 / 攻击 2.9 / 真气 0.4 / 怪增 12.7
+- 浅色热力渐变突出收益高低；数字优先于颜色效果，不能因背景导致数字难以阅读。
+- 防御列已全部剔除：当前流派防御边际贡献为 0（无收益），不展示。
+
+# 等值换算区域（JIEQI_KONGSANG_HARD (秒怪爆发)）
+放置在六维贡献矩阵正下方，不单独制作复杂表格。
+★ 提升 1.0% 怪增 ≈ 等价提升：
+  爆伤 14.71 pts
+  攻击 6036.3 点
+  气血 60022.4 点（≈6.00万）
+  真气 204206.5 点（≈20.42万）
+  怪增 1.00%
+- 使用金色高亮显示 ★ 和关键数字。
+- 按当前技能组合计算，总伤害提升约 5636.10 万。
+
+# 属性收益优先级（JIEQI_KONGSANG_HARD (秒怪爆发)）
+标题：属性收益优先级
+怪增 > 爆伤 > 攻击 > 真气
+- 采用简洁排行榜形式，不使用大型按钮或游戏装备图标。
+
+# 最终结论区域（JIEQI_KONGSANG_HARD (秒怪爆发)）
+标题：结论与建议
+在 JIEQI_KONGSANG_HARD (秒怪爆发) 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气。洗练建议优先保障 怪增。
+- 采用玩家攻略总结框样式，而非论文报告样式。
+
+# 最终生成要求
+- 整体保持高级仙侠资料片 UI 感；留白舒适，信息密度高但不拥挤。
+- 不要添加不存在的数据；不要修改任何数字。
+- 不要添加人物、装备、宠物、战斗场景插画；不要添加无意义装饰文字。
+- 最终效果应像《诛仙3》玩家社区大神制作的职业伤害分析攻略图。
+
+===== ENGLISH VERSION =====
+
+Generate a vertical (1080x1700) "Zhuxian 3" player damage-analysis infographic.
+
+# Design Goal
+Make a high-end player damage-test strategy infographic for "Zhuxian 3" — NOT a game promo poster. Prioritize data legibility, professional analysis feel, and guide-post visual style. All Chinese text and numbers must be clear and accurate — do not invent or alter any data.
+
+# Basic spec
+- Vertical, ~1080x1700.
+- Use the official "Zhuxian 3" Xianxia (仙侠) UI style (azure-blue xianxia, ink-wash cloud sea, jade panels, rice-paper texture, classical pattern borders, pale-gold accents).
+- Visual tone like the official Zhuxian 3 database site / player strategy manual / class analysis report.
+- Avoid dark-fantasy, sci-fi HUD, and mobile top-up UI styles.
+- NO emojis, NO modern flat icons, NO piling up skill icons.
+- Convey info mainly through text, tables, layout hierarchy and color emphasis; keep decoration restrained, high-end and readable.
+
+# Top title
+Top main title (largest font, single line): "Zhuxian 3 独白 魔逐霜 instance damage analysis"
+- Player name "独白" is the visual focus: slightly larger, highlighted with gold/glow.
+- Other text stays secondary.
+
+# Player info
+Player: 独白 | Faction: 魔 | Class: 逐霜 | Build: 椒图
+Modes: T20 (长轴实战) / JIEQI_KONGSANG_HARD (秒怪爆发)
+
+# Attributes
+ATK 341131-400239 | CritDmg 2865.9% | MonsterDmg+ 53.7% | HP 400.0wan | Mana 520.4wan | Focus 241
+- Use a jade-slip style attribute panel; no lots of circular attribute icons.
+
+# Per-hit damage
+Title: Per-hit final damage (important skills)
+  - 苍龙啸·煞：9段，单段最终伤害 9.10亿→11.51亿
+  - 银鳞玄冰：6段，单段最终伤害 17.15亿
+  - 山雨欲来III：6段，单段最终伤害 11.17亿
+  - 山雨欲来II：6段，单段最终伤害 13.15亿
+  - 苍龙啸：9段，单段最终伤害 5.83亿→8.22亿
+  - 临渊敛爪：3段，单段最终伤害 5.76亿
+- Horizontal data bars or jade-slip list; NOT RPG health bars, no purple skill-slot mobile UI; highlight skill name, hit count, final damage.
+
+# Scene: T20 (长轴实战)
+# Core: attribute matrix (T20 (长轴实战))
+Matrix ~30% height; numbers readable.
+Title: Attribute marginal contribution matrix (T20 (长轴实战))
+Cells = damage gain (wan) when ONLY that attr raised by its step.
+Column step: 爆伤+1 / 攻击+100 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸 (weight 30.1%, total 63.2yi): 爆伤 81.3 / 攻击 27.9 / 真气 3.6 / 怪增 124.0
+  - 山雨欲来III (weight 27.7%, total 67.0yi): 爆伤 78.4 / 攻击 27.6 / 真气 2.8 / 怪增 121.0
+  - 苍龙啸·煞 (weight 18.6%, total 92.8yi): 爆伤 72.8 / 攻击 19.0 / 真气 2.8 / 怪增 112.0
+  - 山雨欲来II (weight 17.8%, total 78.9yi): 爆伤 60.6 / 攻击 17.4 / 真气 9.4 / 怪增 91.2
+  - 银鳞玄冰 (weight 5.8%, total 102.9yi): 爆伤 25.2 / 攻击 4.5 / 真气 4.7 / 怪增 38.8
+- Light heatmap; numbers prioritized.- Def column omitted: defense marginal contribution is 0 for this build (no gain).
+
+# Equivalence (T20 (长轴实战))
+Below matrix, NOT a separate table.
+★ +1.0% MonsterDmg ≈ equivalent gain:
+  CritDmg 15.31 pts
+  ATK 5052.5 pts
+  HP 72264.1 pts (~7.23 wan)
+  Mana 209939.7 pts (~20.99 wan)
+  MonsterDmg 1.00%
+- Gold-highlight ★ and keys.
+- Total damage increases by ~4870.60 wan.
+
+# Priority (T20 (长轴实战))
+Title: Attribute priority
+怪增 > 爆伤 > 攻击 > 真气
+- Simple ranking list.
+
+# Conclusion (T20 (长轴实战))
+Title: Conclusion & suggestions
+在 T20 (长轴实战) 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气。洗练建议优先保障 怪增。
+- Player-guide summary box.
+# Scene: JIEQI_KONGSANG_HARD (秒怪爆发)
+# Core: attribute matrix (JIEQI_KONGSANG_HARD (秒怪爆发))
+Matrix ~30% height; numbers readable.
+Title: Attribute marginal contribution matrix (JIEQI_KONGSANG_HARD (秒怪爆发))
+Cells = damage gain (wan) when ONLY that attr raised by its step.
+Column step: 爆伤+1 / 攻击+100 / 真气+1000 / 怪增+0.1%
+  - 苍龙啸·煞 (weight 64.5%, total 92.8yi): 爆伤 253.0 / 攻击 63.2 / 真气 9.3 / 怪增 372.9
+  - 银鳞玄冰 (weight 16.1%, total 102.9yi): 爆伤 70.2 / 攻击 12.1 / 真气 12.4 / 怪增 103.5
+  - 山雨欲来II (weight 9.7%, total 78.9yi): 爆伤 33.0 / 攻击 9.1 / 真气 4.9 / 怪增 47.5
+  - 山雨欲来III (weight 6.5%, total 67.0yi): 爆伤 18.2 / 攻击 6.2 / 真气 0.6 / 怪增 27.0
+  - 苍龙啸 (weight 3.2%, total 63.2yi): 爆伤 8.7 / 攻击 2.9 / 真气 0.4 / 怪增 12.7
+- Light heatmap; numbers prioritized.- Def column omitted: defense marginal contribution is 0 for this build (no gain).
+
+# Equivalence (JIEQI_KONGSANG_HARD (秒怪爆发))
+Below matrix, NOT a separate table.
+★ +1.0% MonsterDmg ≈ equivalent gain:
+  CritDmg 14.71 pts
+  ATK 6036.3 pts
+  HP 60022.4 pts (~6.00 wan)
+  Mana 204206.5 pts (~20.42 wan)
+  MonsterDmg 1.00%
+- Gold-highlight ★ and keys.
+- Total damage increases by ~5636.10 wan.
+
+# Priority (JIEQI_KONGSANG_HARD (秒怪爆发))
+Title: Attribute priority
+怪增 > 爆伤 > 攻击 > 真气
+- Simple ranking list.
+
+# Conclusion (JIEQI_KONGSANG_HARD (秒怪爆发))
+Title: Conclusion & suggestions
+在 JIEQI_KONGSANG_HARD (秒怪爆发) 场景下，核心属性排序为 怪增 > 爆伤 > 攻击 > 真气。洗练建议优先保障 怪增。
+- Player-guide summary box.
+
+# Final requirements
+- High-end xianxia database UI feel; comfortable whitespace, high info density but not cramped.
+- Do not add non-existent data; do not alter any number.
+- No character/equipment/pet/battle-scene illustrations; no meaningless decorative text.
+- Final result should look like a pro player's class damage-analysis guide infographic.
+
+===== 艺术底图变体（仅氛围，无文字，用于叠加精确数据卡）=====
+
+生成一张简洁、干净、留白充足的背景图（竖版 1080×1700，中心留出大面积干净区域用于叠加数据面板），不要出现任何文字。用作玩家伤害分析信息图的底图。

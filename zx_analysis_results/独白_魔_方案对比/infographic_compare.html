@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>诛仙3 独白 伤害方案对比（含瑛 vs 椒图）</title>
+<style>
+  :root{
+    --ink:#243b53; --ink2:#486581; --sub:#829ab1;
+    --line:#cdd9e5; --paper:#f7f3e9; --paper2:#fbf8f0;
+    --jade:#2f8f83; --azure:#2b6cb0; --gold:#b8860b; --gold2:#d4af37;
+    --red:#c0504d; --green:#2f855a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    background:#e9e3d4; color:var(--ink); padding:24px; display:flex; justify-content:center;}
+  .page{width:920px; background:var(--paper); border:1px solid var(--line);
+    border-radius:14px; box-shadow:0 6px 26px rgba(36,59,83,.14); overflow:hidden;}
+  .topbar{height:8px;background:linear-gradient(90deg,var(--azure),var(--jade),var(--gold2));}
+  .head{padding:22px 30px 14px; border-bottom:1px solid var(--line);}
+  .head h1{font-size:23px; letter-spacing:1px; color:var(--ink);}
+  .head h1 .pname{color:var(--gold); font-size:26px; text-shadow:0 1px 0 #fff;}
+  .head .meta{margin-top:6px; font-size:13px; color:var(--sub);}
+  .verdict{margin:16px 30px 0; padding:14px 18px; border-radius:10px;
+    background:linear-gradient(135deg,#fdf6e3,#fbeecb); border:1px solid var(--gold2);}
+  .verdict .star{color:var(--gold); font-weight:700; font-size:15px;}
+  .verdict .big{font-size:17px; font-weight:700; color:var(--green);}
+  .verdict ul{margin:8px 0 0 18px; font-size:13.5px; color:var(--ink2); line-height:1.7;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:18px 30px;}
+  .card{background:var(--paper2); border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+  .card h3{font-size:15px; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .tagA{color:var(--azure);} .tagB{color:var(--green);}
+  .attr{font-size:13px; line-height:1.95; color:var(--ink2);}
+  .attr b{color:var(--ink); font-weight:600;}
+  .cap{color:var(--red); font-size:12px;}
+  table{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px;}
+  th,td{border:1px solid var(--line); padding:5px 6px; text-align:center;}
+  th{background:#eef2f6; color:var(--ink2); font-weight:600;}
+  td.dim{color:var(--ink2); text-align:left; background:#f4f1e8;}
+  .hi{color:var(--green); font-weight:700;}
+  .neg{color:var(--red); font-weight:700;}
+  .section{padding:6px 30px 18px;}
+  .section h2{font-size:16px; color:var(--ink); margin:14px 0 8px; border-left:4px solid var(--gold2); padding-left:10px;}
+  .eq{background:#fbf8f0; border:1px solid var(--line); border-radius:8px; padding:12px 16px; font-size:13px; line-height:1.9;}
+  .eq .star{color:var(--gold); font-weight:700;}
+  .prio{display:flex; gap:10px; font-size:13px;}
+  .prio .col{flex:1; background:var(--paper2); border:1px solid var(--line); border-radius:8px; padding:10px 12px;}
+  .prio .chain{font-weight:700; color:var(--ink); letter-spacing:1px;}
+  .concl{background:linear-gradient(135deg,#f3f8f6,#eaf4ef); border:1px solid #bfe0cf; border-radius:10px; padding:14px 18px; font-size:13.5px; line-height:1.8; color:var(--ink2);}
+  .mode-sub{font-size:14px; font-weight:700; color:var(--azure); margin:14px 0 8px; padding:4px 10px; background:#eef4f9; border-radius:6px; border-left:4px solid var(--azure);}
+  .mode-sub.b{color:var(--jade); background:#eef6f3; border-left-color:var(--jade);}
+  .foot{padding:10px 30px 20px; font-size:11.5px; color:var(--sub); border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar"></div>
+  <div class="head">
+    <h1>诛仙3 <span class="pname">独白</span> 魔逐霜 T20 伤害方案对比<span style="color:var(--sub);font-size:15px;">（含瑛 vs 椒图）</span></h1>
+    <div class="meta">玩家：独白　阵营：魔　职业：逐霜　分析场景：长轴实战 T20 / 秒怪爆发 空桑困难　数据来源：zhuxian-damage-analysis 引擎实算</div>
+  </div>
+
+  <div class="verdict">
+    <div><span class="star">★ 结论：</span><span class="big">方案B「椒图」更优</span></div>
+    <ul>
+      <li>长轴(T20)基准总伤：椒图 <b>425.26亿</b> &gt; 含瑛 423.85亿（高 <b>+14,045万，+0.33%</b>）；秒怪(空桑困难)基准总伤：椒图 <b>407.17亿</b> &gt; 含瑛 405.69亿（<b>+14,713万，+0.36%</b>）</li>
+      <li>含瑛气血 <b>400万、触顶</b>（边际 0），椒图气血 <b>396.42万、未触顶</b>（边际转正）；差异来自 <b>爆伤+16.4 / 攻击+5455 / 真气（椒图 504.9万 vs 含瑛 522.3万，椒图少 17.4万）</b></li>
+      <li>椒图以 真气−173,777 的代价换取 爆伤+16.4、攻击+5455，增益盖过损失，净正向（并叠加未触顶气血的正收益）</li>
+    </ul>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 class="tagA">◈ 方案A　含瑛</h3>
+      <div class="attr">
+        攻击 <b>335676-394784</b><br>
+        爆伤 <b>2849.5%</b>　对怪增伤 <b>53.7%</b><br>
+        气血 <b>400.0万</b> <span class="cap">（触顶·无收益）</span><br>
+        真气 <b>522.3万</b>　专注 <b>241</b>
+      </div>
+    </div>
+    <div class="card">
+      <h3 class="tagB">◈ 方案B　椒图</h3>
+      <div class="attr">
+        攻击 <b>341131-400239</b><br>
+        爆伤 <b>2865.9%</b>　对怪增伤 <b>53.7%</b><br>
+        气血 <b>396.4万</b> <span class="cap" style="color:var(--green);">（未触顶·有正收益）</span><br>
+        真气 <b>504.9万</b>　专注 <b>241</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>总伤害 & 核心技能（按模式分开 · 长轴实战 / 秒怪爆发）</h2>
+
+    <div class="mode-sub">① 长轴实战（基于 skillUsage 占比加权）</div>
+    <div class="grid2" style="padding:0;">
+      <div class="card">
+        <h3 class="tagA">◈ 含瑛</h3>
+        <div class="attr">基准总伤：<b>4,238,517万</b>（423.85亿）</div>
+        <div class="attr">加权总伤：<b>738,614万</b>（73.86亿）</div>
+        <div class="attr">核心技能 苍龙啸：占比 <b>30.1%</b>　基准 <b>623,206万</b></div>
+      </div>
+      <div class="card">
+        <h3 class="tagB">◈ 椒图</h3>
+        <div class="attr">基准总伤：<b>4,252,562万</b>（425.26亿）<span class="hi"> +14,045万 (+0.33%)</span></div>
+        <div class="attr">加权总伤：<b>742,606万</b>（74.26亿）<span class="hi"> +3,992万 (+0.54%)</span></div>
+        <div class="attr">核心技能 苍龙啸：占比 <b>30.1%</b>　基准 <b>628,534万</b> <span class="hi">+5,328万 (+0.85%)</span></div>
+      </div>
+    </div>
+
+    <div class="mode-sub b">② 秒怪爆发（基于充能 / 爆发频次加权）</div>
+    <div class="grid2" style="padding:0;">
+      <div class="card">
+        <h3 class="tagA">◈ 含瑛</h3>
+        <div class="attr">基准总伤：<b>4,056,938万</b>（405.69亿）</div>
+        <div class="attr">加权总伤：<b>855,443万</b>（85.54亿）</div>
+        <div class="attr">核心技能 苍龙啸·煞：占比 <b>64.5%</b>　基准 <b>877,048万</b></div>
+      </div>
+      <div class="card">
+        <h3 class="tagB">◈ 椒图</h3>
+        <div class="attr">基准总伤：<b>4,071,651万</b>（407.17亿）<span class="hi"> +14,713万 (+0.36%)</span></div>
+        <div class="attr">加权总伤：<b>858,628万</b>（85.86亿）<span class="hi"> +3,186万 (+0.37%)</span></div>
+        <div class="attr">核心技能 苍龙啸·煞：占比 <b>64.5%</b>　基准 <b>882,258万</b> <span class="hi">+5,210万 (+0.59%)</span></div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--sub);margin-top:8px;">注：report.html 顶部「基准总伤」为该模式在对应副本 boss 上的全技能合计（未加权）；长轴=T20、秒怪=空桑困难，因副本 boss 不同两模式数值也不同。「加权总伤」= Σ(技能伤害×模式权重)，两模式权重不同也不同。核心技能两模式不同（长轴=苍龙啸，秒怪=苍龙啸·煞）。含瑛→椒图：长轴基准总伤 +14,045万 (+0.33%)、秒怪基准总伤 +14,713万 (+0.36%)，均椒图更优。</div>
+
+    <h2>各属性边际贡献矩阵（长轴实战 · 合计行 · 数字=伤害增加量，万）</h2>
+    <table>
+      <tr><th>方案</th><th>爆伤+1</th><th>攻击+100</th><th>气血+1000</th><th>真气+1000</th><th>怪增+0.1%</th></tr>
+      <tr><td class="dim">含瑛</td><td class="hi">316.17</td><td>95.74</td><td class="neg">0.00(触顶)</td><td>23.07</td><td>480.57</td></tr>
+      <tr style="background:#f0f7f3;"><td class="dim">椒图</td><td>315.67</td><td class="hi">96.40</td><td class="hi">67.40</td><td class="hi">23.25</td><td class="hi">483.15</td></tr>
+      <tr><td class="dim">Δ(椒−含)</td><td>-0.50 (-0.16%)</td><td class="hi">+0.66 (+0.69%)</td><td class="hi">+67.40 (椒图未触顶)</td><td class="hi">+0.18 (+0.78%)</td><td class="hi">+2.58 (+0.54%)</td></tr>
+    </table>
+      <div style="font-size:12px;color:var(--sub);margin-top:6px;">列步长：爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 防御+1000 / 怪增+0.1%；防御列全 0.0 无收益；含瑛气血触顶(边际0)、椒图气血未触顶(边际67.40)。</div>
+
+    <h2>等值换算（长轴实战 · 提升 1.0% 怪增 ≈ 等价提升）</h2>
+    <div class="eq">
+      <span class="star">★ 含瑛</span>：爆伤 15.20 pts ｜ 攻击 5019.5 点 ｜ 气血 71834.1 点 ｜ 真气 208039.0 点 ｜ 怪增 1.00%　→　总伤害提升 <b>+4805.70万 (+0.11%)</b><br>
+      <span class="star">★ 椒图</span>：爆伤 15.31 pts ｜ 攻击 5011.9 点 ｜ 气血 71684.0 点 ｜ 真气 208254.3 点 ｜ 怪增 1.00%　→　总伤害提升 <b>+4831.50万 (+0.11%)</b>
+    </div>
+
+    <h2>属性收益优先级（长轴实战）</h2>
+    <div class="prio">
+      <div class="col">含瑛<br><span class="chain">怪增 &gt; 爆伤 &gt; 攻击 &gt; 真气 &gt; 气血</span></div>
+      <div class="col">椒图<br><span class="chain">怪增 &gt; 爆伤 &gt; 攻击 &gt; 气血 &gt; 真气</span></div>
+    </div>
+
+    <h2>各属性边际贡献矩阵（秒怪爆发 · 合计行 · 数字=伤害增加量，万）</h2>
+    <table>
+      <tr><th>方案</th><th>爆伤+1</th><th>攻击+100</th><th>气血+1000</th><th>真气+1000</th><th>怪增+0.1%</th></tr>
+      <tr><td class="dim">含瑛</td><td class="hi">381.04</td><td>92.67</td><td class="neg">0.00(触顶)</td><td>27.38</td><td>556.56</td></tr>
+      <tr style="background:#f0f7f3;"><td class="dim">椒图</td><td>379.68</td><td class="hi">93.37</td><td class="hi">93.92</td><td class="hi">27.58</td><td class="hi">558.64</td></tr>
+      <tr><td class="dim">Δ(椒−含)</td><td>-1.36 (-0.36%)</td><td class="hi">+0.70 (+0.75%)</td><td class="hi">+93.92 (椒图未触顶)</td><td class="hi">+0.20 (+0.73%)</td><td class="hi">+2.08 (+0.37%)</td></tr>
+    </table>
+      <div style="font-size:12px;color:var(--sub);margin-top:6px;">列步长：爆伤+1 / 攻击+100 / 气血+1000 / 真气+1000 / 防御+1000 / 怪增+0.1%；防御列全 0.0 无收益；含瑛气血触顶(边际0)、椒图气血未触顶(边际93.92)。</div>
+
+    <h2>等值换算（秒怪爆发 · 提升 1.0% 怪增 ≈ 等价提升）</h2>
+    <div class="eq">
+      <span class="star">★ 含瑛</span>：爆伤 14.61 pts ｜ 攻击 6005.8 点 ｜ 气血 59716.7 点 ｜ 真气 203124.1 点 ｜ 怪增 1.00%　→　总伤害提升 <b>+5565.60万 (+0.14%)</b><br>
+      <span class="star">★ 椒图</span>：爆伤 14.71 pts ｜ 攻击 5983.1 点 ｜ 气血 59493.1 点 ｜ 真气 202405.8 点 ｜ 怪增 1.00%　→　总伤害提升 <b>+5586.40万 (+0.14%)</b>
+    </div>
+
+    <h2>属性收益优先级（秒怪爆发）</h2>
+    <div class="prio">
+      <div class="col">含瑛<br><span class="chain">怪增 &gt; 爆伤 &gt; 攻击 &gt; 真气 &gt; 气血</span></div>
+      <div class="col">椒图<br><span class="chain">怪增 &gt; 爆伤 &gt; 气血 &gt; 攻击 &gt; 真气</span></div>
+    </div>
+
+    <h2>结论与建议</h2>
+    <div class="concl">
+      在 T20 长轴实战与秒怪爆发两种场景下，方案B「椒图」整体仍更优，但领先幅度较此前（约 +0.7%）明显收窄至 +0.33%~+0.54%：长轴基准总伤高 +14,045万（+0.33%）、秒怪高 +14,713万（+0.36%），加权总伤各高约 +0.4%~0.5%。核心属性差异仍是 爆伤+16.4、攻击+5455 相对 真气−173,777 的权衡；此外椒图气血本次下调至 396.42万 已低于触顶线，长轴/秒怪边际中气血转正（长轴合计 +67.40、秒怪 +93.92），含瑛气血 400万仍触顶（边际 0）。净结果：椒图高爆伤 / 高攻击增益盖过真气损失，并叠加未触顶气血的正收益，整体小幅占优。<br>
+      <b>洗练建议</b>：优先保障 怪增 &gt; 爆伤 &gt; 攻击；含瑛气血已触顶不必再堆，椒图气血未触顶可小幅补；真气不宜过度削减。
+    </div>
+  </div>
+
+  <div class="foot">数据来源：zhuxian-damage-analysis 计算引擎 · 精确数值以 analysis_brief.json / report.html 为准 · 本图仅作数据层呈现，数字 1:1 取自引擎实算。</div>
+</div>
+</body>
+</html>
