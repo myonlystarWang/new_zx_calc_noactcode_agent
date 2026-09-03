@@ -91,19 +91,33 @@ export const resolveHitDamageWithTrace = (
     (currentSkillBonus as Record<string, unknown>)[multiHit.ScalingAttribute] = start + step * (hitIndex - 1);
   }
 
-  const minBaseDamage =
+  let minBaseDamage =
     effMinAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) +
     (currentSkillBonus.SkillAttackFixedBonus || 0) +
     (effHealth * (currentSkillBonus.SkillHealthPercentBonus || 0)) / 100 +
     (effMana * (currentSkillBonus.SkillManaPercentBonus || 0)) / 100 +
     (effDefense * (currentSkillBonus.SkillDefensePercentBonus || 0)) / 100;
 
-  const maxBaseDamage =
+  let maxBaseDamage =
     effMaxAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) +
     (currentSkillBonus.SkillAttackFixedBonus || 0) +
     (effHealth * (currentSkillBonus.SkillHealthPercentBonus || 0)) / 100 +
     (effMana * (currentSkillBonus.SkillManaPercentBonus || 0)) / 100 +
     (effDefense * (currentSkillBonus.SkillDefensePercentBonus || 0)) / 100;
+
+  // 每击按角色属性递增的附加攻击力（多因子：引用角色本体属性，第 k 击增量 = (k-1) * pct/100 * 角色属性）
+  if (multiHit && multiHit.PerHitCharacterBonus && hitIndex > 1) {
+    const ph = multiHit.PerHitCharacterBonus;
+    const steps = hitIndex - 1;
+    minBaseDamage +=
+      ((ph.CharacterMaxAttackPercent || 0) / 100) * effMinAttack * steps +
+      ((ph.CharacterHealthPercent || 0) / 100) * effHealth * steps +
+      ((ph.CharacterManaPercent || 0) / 100) * effMana * steps;
+    maxBaseDamage +=
+      ((ph.CharacterMaxAttackPercent || 0) / 100) * effMaxAttack * steps +
+      ((ph.CharacterHealthPercent || 0) / 100) * effHealth * steps +
+      ((ph.CharacterManaPercent || 0) / 100) * effMana * steps;
+  }
 
   const baseCritDmgBeforeCap = effectiveAttributes.CharacterCriticalHitDamagePercent + (currentSkillBonus.SkillCriticalDamagePercentBonus || 0);
   let baseCritDmg = baseCritDmgBeforeCap;

@@ -3,6 +3,18 @@ export interface CharacterClass {
   ClassName: string;
   Description: string;
   Race: string;
+  /**
+   * 气血上限，按职业差异化（单位：点）。
+   * 缺省走引擎 DEFAULT_ATTRIBUTE_CAPS.CapHealth。
+   * 例：太昊气血上限为 400 万。
+   */
+  CapHealth?: number;
+  /**
+   * 真气上限，按职业差异化（单位：点）。
+   * 缺省走引擎 DEFAULT_ATTRIBUTE_CAPS.CapMana。
+   * 例：太昊真气上限为 400 万（多数职业为 600 万）。
+   */
+  CapMana?: number;
 }
 
 export interface CharacterAttributes {
@@ -30,13 +42,21 @@ export interface UserCharacter {
   BaseAttributes: CharacterAttributes;
 }
 
+export interface PerHitCharacterBonus {
+  // 每击（从第2击起）额外附加的角色属性百分比攻击力，第 k 击增量 = (k-1) * pct/100 * 角色属性
+  CharacterMaxAttackPercent?: number; // 本体攻击力百分比（min/max 分别作用于 min/max 基础伤害）
+  CharacterHealthPercent?: number; // 气血上限百分比
+  CharacterManaPercent?: number; // 真气上限百分比
+}
+
 export interface MultiHitConfig {
   HitCount: number;
   DamageMultiplierPerHit?: number; // 每段伤害的倍增系数（基于第1段），例如1.3代表1.3^n
   DamageCap?: number; // 每段伤害的最高上限
-  ScalingAttribute?: keyof SkillBonusAttributes; // 随段数线性递增的属性名
+  ScalingAttribute?: keyof SkillBonusAttributes; // 随段数线性递增的属性名（单因子，作用于技能自身字段）
   ScalingStartValue?: number; // 第1段的属性值
   ScalingEndValue?: number; // 最后1段的属性值
+  PerHitCharacterBonus?: PerHitCharacterBonus; // 每击按角色属性递增的附加攻击力（多因子，引用角色本体属性）
 }
 
 export interface SkillBonusAttributes {
@@ -161,6 +181,11 @@ export interface AgentCalcInput {
   attributes?: Record<string, unknown>;
   buffs?: unknown;
   target?: Record<string, unknown>;
+  /**
+   * 属性上限覆盖（按职业差异化）。未传时走引擎 DEFAULT_ATTRIBUTE_CAPS。
+   * 典型用途：太昊气血/真气上限均为 400 万，而引擎默认真气上限为 600 万。
+   */
+  attributeCaps?: AttributeCapsConfig;
 }
 
 export interface HitDamageResult {
