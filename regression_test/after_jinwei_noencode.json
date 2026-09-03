@@ -1,0 +1,1692 @@
+{
+  "ok": true,
+  "resolved": {
+    "classId": "SHI_LUO",
+    "className": "释罗",
+    "faction": "MO",
+    "factionName": "魔",
+    "dungeonId": "ZHENHAI_DUANLANG_T20",
+    "dungeonName": "镇海！断浪碎晶宫（T20）",
+    "attributes": {
+      "CharacterMinAttack": 153578,
+      "CharacterMaxAttack": 186215,
+      "CharacterDefense": 0,
+      "CharacterHealth": 2676401,
+      "CharacterMana": 1652483,
+      "CharacterCriticalHitDamagePercent": 2035.4,
+      "CharacterMonsterDamageIncreasePercent": 31.4
+    },
+    "activeBuffs": [
+      {
+        "buffId": "BUFF_FOCUS_EFFECT",
+        "buffName": "专注增益",
+        "value": 250
+      },
+      {
+        "buffId": "BUFF_HOLYWRATH_EFFECT",
+        "buffName": "巫咒增益",
+        "value": 22.5
+      },
+      {
+        "buffId": "BUFF_MON_CRITDAMAGE_EFFECT",
+        "buffName": "绿点增益",
+        "value": 900
+      },
+      {
+        "buffId": "BUFF_MON_HARMED_EFFECT",
+        "buffName": "易伤",
+        "value": 120
+      }
+    ]
+  },
+  "bosses": [
+    {
+      "bossId": "CHI_SUO_T20",
+      "bossName": "赤梭",
+      "dungeonLevel": 1,
+      "monsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1500,
+        "MonsterDefense": 450000,
+        "MonsterHealth": 124474606860,
+        "MonsterCriticalHitRateReduction": 250
+      },
+      "skills": [
+        {
+          "skillId": "SL_MO_SKILL_SSXS",
+          "skillName": "释罗生相·煞",
+          "minBaseDamage": 922769,
+          "maxBaseDamage": 1007625,
+          "minFinalDamage": 15760111791,
+          "maxFinalDamage": 17209383897,
+          "avgFinalDamage": 16484747844,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 10,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 11,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 12,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 13,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 14,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 15,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 16,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 17,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 18,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 19,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 20,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 21,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 22,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 23,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 24,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 25,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 26,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 27,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 28,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 29,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 30,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 31,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 32,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 33,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 34,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 35,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 36,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 37,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 38,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 39,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 40,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 41,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 42,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 43,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 44,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 45,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 46,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 47,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 48,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 49,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 50,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 51,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 52,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 53,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 54,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 55,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 56,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 57,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 58,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 59,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 60,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 61,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 62,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 63,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 64,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 65,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 66,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 67,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 68,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 69,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 70,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 71,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 72,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 73,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 74,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 75,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 76,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 77,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 78,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 79,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 80,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 81,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 82,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 83,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 84,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 85,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 86,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 87,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 88,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 89,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 90,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 91,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 92,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 93,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 94,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 95,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 96,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            }
+          ]
+        },
+        {
+          "skillId": "SL_MO_SKILL_NSSXS",
+          "skillName": "孽·释罗生相·煞",
+          "minBaseDamage": 922769,
+          "maxBaseDamage": 1007625,
+          "minFinalDamage": 19700139738,
+          "maxFinalDamage": 21511729871,
+          "avgFinalDamage": 20605934804,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 10,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 11,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 12,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 13,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 14,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 15,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 16,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 17,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 18,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 19,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 20,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 21,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 22,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 23,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 24,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 25,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 26,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 27,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 28,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 29,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 30,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 31,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 32,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 33,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 34,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 35,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 36,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 37,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 38,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 39,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 40,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 41,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 42,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 43,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 44,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 45,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 46,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 47,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 48,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 49,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 50,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 51,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 52,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 53,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 54,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 55,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 56,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 57,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 58,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 59,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 60,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 61,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 62,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 63,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 64,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 65,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 66,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 67,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 68,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 69,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 70,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 71,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 72,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 73,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 74,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 75,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 76,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 77,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 78,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 79,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 80,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 81,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 82,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 83,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 84,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 85,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 86,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 87,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 88,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 89,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 90,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 91,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 92,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 93,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 94,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 95,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 96,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 97,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 98,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 99,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 100,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 101,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 102,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 103,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 104,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 105,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 106,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 107,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 108,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 109,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 110,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 111,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 112,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 113,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 114,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 115,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 116,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 117,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 118,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 119,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            },
+            {
+              "hitIndex": 120,
+              "minFinalDamage": 164167831,
+              "maxFinalDamage": 179264416,
+              "avgFinalDamage": 171716123
+            }
+          ]
+        },
+        {
+          "skillId": "SL_MO_SKILL_NCJHG3D",
+          "skillName": "孽·敕戒祸根3·大地",
+          "minBaseDamage": 748609,
+          "maxBaseDamage": 859575,
+          "minFinalDamage": 2102135426,
+          "maxFinalDamage": 2413733356,
+          "avgFinalDamage": 2257934391,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 10,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 11,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 12,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 13,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 14,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            },
+            {
+              "hitIndex": 15,
+              "minFinalDamage": 140142362,
+              "maxFinalDamage": 160915557,
+              "avgFinalDamage": 150528959
+            }
+          ]
+        },
+        {
+          "skillId": "SL_MO_SKILL_CWJHG",
+          "skillName": "赤乌·敕戒祸根",
+          "minBaseDamage": 1549455,
+          "maxBaseDamage": 1647366,
+          "minFinalDamage": 10025397479,
+          "maxFinalDamage": 10658908418,
+          "avgFinalDamage": 10342152948,
+          "hits": [
+            {
+              "hitIndex": 1,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 2,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 3,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 4,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 5,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 6,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 7,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 8,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 9,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 10,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 11,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 12,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 13,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 14,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 15,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 16,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 17,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 18,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 19,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 20,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 21,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 22,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 23,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 24,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 25,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 26,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 27,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 28,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 29,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 30,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 31,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 32,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 33,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            },
+            {
+              "hitIndex": 34,
+              "minFinalDamage": 294864632,
+              "maxFinalDamage": 313497306,
+              "avgFinalDamage": 304180969
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "wechatSummary": "释罗/魔/镇海！断浪碎晶宫（T20）/赤梭，各技能平均伤害如下：\n释罗生相·煞: 平均 164.847亿\n孽·释罗生相·煞: 平均 206.059亿\n孽·敕戒祸根3·大地: 平均 22.579亿\n赤乌·敕戒祸根: 平均 103.422亿"
+}
