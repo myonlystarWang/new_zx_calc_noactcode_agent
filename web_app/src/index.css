@@ -111,6 +111,14 @@ body {
   justify-content: center;
 }
 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Custom Range Slider Styling */
 input[type="range"] {
   -webkit-appearance: none;

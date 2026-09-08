@@ -7,10 +7,16 @@ import { BuffPanel } from './components/business/BuffPanel';
 import { ResultSection } from './components/business/ResultsSection';
 import { SimulationArena } from './components/arena/SimulationArena';
 import { CompendiumView } from './components/compendium/CompendiumView';
+import type { SearchTarget } from './components/GlobalSearch';
 
 const MainContent: React.FC = () => {
   const { isLoading, userCharacter, updateCharacterAttributes } = useApp();
   const [activeTab, setActiveTab] = useState<'calculator' | 'arena' | 'compendium'>('calculator');
+  const [searchNav, setSearchNav] = useState<SearchTarget | null>(null);
+  const handleSearchNav = (t: SearchTarget) => {
+    setActiveTab(t.tab);
+    setSearchNav(t);
+  };
 
   if (isLoading) {
     return (
@@ -30,7 +36,7 @@ const MainContent: React.FC = () => {
       }`}
       data-theme={activeTab === 'calculator' ? userCharacter.Faction : undefined}
     >
-      <Header activeTab={activeTab} onTabChange={setActiveTab} />
+      <Header activeTab={activeTab} onTabChange={setActiveTab} onSearchNavigate={handleSearchNav} />
 
       {activeTab === 'calculator' ? (
         <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 grid grid-cols-1 xl:grid-cols-12 gap-6 animate-in fade-in duration-300">
@@ -50,7 +56,7 @@ const MainContent: React.FC = () => {
           {/* Right Column: Results */}
           <div className="xl:col-span-4">
             <div className="xl:sticky xl:top-24">
-              <ResultSection />
+              <ResultSection searchNav={searchNav} onSearchConsumed={() => setSearchNav(null)} />
             </div>
           </div>
         </main>
@@ -60,7 +66,7 @@ const MainContent: React.FC = () => {
         </main>
       ) : (
         <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 animate-in fade-in duration-300">
-          <CompendiumView />
+          <CompendiumView searchNav={searchNav} onSearchConsumed={() => setSearchNav(null)} />
         </main>
       )}
 

@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 import { Clock, Zap, Swords, BookOpen, AlertCircle, FileText, CheckCircle2, Play, Pause, RotateCcw, Activity, BarChart2, Eye } from 'lucide-react';
 import type { SimulationResult } from '../../types';
 import clsx from 'clsx';
+import { formatNumber } from '../../utils/format';
 
 type DamageAuditRecord = NonNullable<SimulationResult['damageAuditRecords']>[number];
 
@@ -41,15 +42,7 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
     const isKilled = result.boss.currentHealth <= 0;
 
     // Format numbers helper (million/billion localization)
-    const formatLargeNumber = (num: number): string => {
-        if (num >= 100000000) {
-            return `${(num / 100000000).toFixed(2)} 亿`;
-        }
-        if (num >= 10000) {
-            return `${(num / 10000).toFixed(2)} 万`;
-        }
-        return Math.round(num).toLocaleString();
-    };
+    const formatLargeNumber = (num: number): string => formatNumber(num);
 
     const formatDamage = (damage: number): string => {
         return formatLargeNumber(damage);

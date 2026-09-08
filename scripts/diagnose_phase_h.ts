@@ -15,14 +15,14 @@ const args = new Map(
 
 const gameDataDir = resolve('web_app/public/game_data');
 const loadJson = <T>(filename: string): T => JSON.parse(readFileSync(resolve(gameDataDir, filename), 'utf8')) as T;
-const defaultOverrides = loadJson<any>('default_overrides.json');
+const meta = (loadJson<any>('skills.json'))._meta;
 
 const timelineSeconds = Number(args.get('timeline-seconds') ?? 50);
 const auditSeconds = Number(args.get('audit-seconds') ?? 12);
 const includeAblation = args.get('ablation') !== 'false';
 const bossTier = (args.get('tier') ?? 'T20').toUpperCase();
 const hitOutput = args.get('hit-output') ?? 'both';
-const dpsStartDelayMs = Number(args.get('dps-start-delay-ms') ?? defaultOverrides.dpsStartDelayMs);
+const dpsStartDelayMs = Number(args.get('dps-start-delay-ms') ?? meta.dpsStartDelayMs);
 const enableSanwanFocus = args.get('sanwan') !== 'false';
 const enableDungeonGreen150 = args.get('dungeon-green150') !== 'false';
 const auditSkillFilter = new Set(
@@ -55,7 +55,7 @@ const dpsSkillOverrides = Object.fromEntries(
 );
 
 let dpsAttributes = {
-  ...defaultOverrides.dpsAttributes
+  ...meta.defaultDpsAttributes
 };
 
 const profilePath = args.get('profile');
@@ -76,17 +76,7 @@ if (profilePath) {
 
 
 const supportAttributes = {
-  CharacterMinAttack: 200000,
-  CharacterMaxAttack: 220000,
-  CharacterDefense: 300000,
-  CharacterHealth: 3000000,
-  CharacterMana: 4000000,
-  CharacterCriticalHitDamagePercent: 800,
-  CharacterMonsterDamageIncreasePercent: 25,
-  CharacterOnePercentAttack: 1000,
-  CharacterOnePercentDefense: 1500,
-  CharacterOnePercentHealth: 20000,
-  CharacterOnePercentMana: 30000
+  ...meta.defaultSupportAttributes
 };
 
 const supportCatalog = {
@@ -141,7 +131,7 @@ const buildSupports = (mode: SupportMode = {}) => {
         skillIds = skillIds.filter(skillId => !mode.exclude!.has(skillId));
       }
       if (skillIds.length === 0) return undefined;
-      const skillOverrides = defaultOverrides.supportOverrides?.[actorId];
+      const skillOverrides = meta.supportOverrides?.[actorId];
       return {
         actorId,
         classId: config.classId,

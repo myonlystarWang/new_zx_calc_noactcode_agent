@@ -77,7 +77,7 @@ export class DataService {
     private rankConfigs: RankConfig[] | null = null;
     private attributeCeilingGuide: AttributeCeilingGuide | null = null;
     private statSourceLists: StatSourceLists | null = null;
-    private supportRoles: SupportRoles | null = null;
+    private skillMeta: any = null;
 
     private constructor() { }
 
@@ -106,7 +106,16 @@ export class DataService {
 
     private async loadSkills(): Promise<void> {
         const response = await fetch(`${DATA_BASE_URL}/skills.json`);
-        this.skills = await response.json();
+        const raw = await response.json();
+        this.skillMeta = (raw as any)?._meta ?? null;
+        // Strip the top-level _meta key so allSkills/getSkills expose a clean class-keyed map.
+        // (The _meta block would otherwise be iterated by consumers doing Object.entries(allSkills).)
+        if (raw && typeof raw === 'object' && '_meta' in raw) {
+            const { _meta, ...classMap } = raw as Record<string, unknown> & { _meta?: unknown };
+            this.skills = classMap as AllSkills;
+        } else {
+            this.skills = raw as AllSkills;
+        }
     }
 
     private async loadDungeons(): Promise<void> {
@@ -129,14 +138,12 @@ export class DataService {
     }
 
     private async loadCompendiumData(): Promise<void> {
-        const [guideResponse, sourcesResponse, supportResponse] = await Promise.all([
+        const [guideResponse, sourcesResponse] = await Promise.all([
             fetch(`${DATA_BASE_URL}/attribute_ceiling_guide.json`),
-            fetch(`${DATA_BASE_URL}/stat_source_lists.json`),
-            fetch(`${DATA_BASE_URL}/support_roles.json`)
+            fetch(`${DATA_BASE_URL}/stat_source_lists.json`)
         ]);
         this.attributeCeilingGuide = await guideResponse.json();
         this.statSourceLists = await sourcesResponse.json();
-        this.supportRoles = await supportResponse.json();
     }
 
     public getClasses(): CharacterClass[] {
@@ -183,7 +190,15 @@ export class DataService {
         return this.statSourceLists;
     }
 
+    public getSkillMeta(): any | null {
+        return this.skillMeta;
+    }
+
+    public getSupportClasses(): { id: string; name: string; defaultFaction: string }[] {
+        return this.skillMeta?.supportClasses ?? [];
+    }
+
     public getSupportRoles(): SupportRoles | null {
-        return this.supportRoles;
+        return this.skillMeta?.supportRoles ?? null;
     }
 }

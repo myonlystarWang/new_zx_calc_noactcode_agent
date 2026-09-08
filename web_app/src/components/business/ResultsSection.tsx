@@ -2,9 +2,11 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
 import { calculateDungeonPower, calculateTotalPower } from '../../utils/calculator';
+import { formatNumber } from '../../utils/format';
 import { Trophy, Copy, Check } from 'lucide-react';
 import clsx from 'clsx';
 import { DungeonDetail } from './DungeonDetail';
+import type { SearchTarget } from '../GlobalSearch';
 
 const RANK_STYLES: Record<string, any> = {
     'SSS': {
@@ -65,18 +67,6 @@ const getRankConfig = (power: number) => {
     return { ...config, ...style };
 };
 
-const formatDamage = (damage: number, withUnit: boolean = true): string => {
-    if (damage >= 100000000) {
-        const value = (damage / 100000000).toFixed(3);
-        return withUnit ? `${value} 亿` : value;
-    }
-    if (damage >= 10000) {
-        const value = (damage / 10000).toFixed(3);
-        return withUnit ? `${value} 万` : value;
-    }
-    return Math.round(damage).toLocaleString();
-};
-
 export const TotalPowerCard: React.FC = () => {
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
     const [copied, setCopied] = useState(false);
@@ -108,7 +98,7 @@ export const TotalPowerCard: React.FC = () => {
     const currentRankConfig = getRankConfig(totalPower);
 
     const copyData = async () => {
-        const text = `静态战力: ${formatDamage(totalPower)} (${currentRankConfig.Rank}级)`;
+        const text = `静态战力: ${formatNumber(totalPower)} (${currentRankConfig.Rank}级)`;
         try {
             if (navigator.clipboard && window.isSecureContext) {
                 await navigator.clipboard.writeText(text);
@@ -156,7 +146,7 @@ export const TotalPowerCard: React.FC = () => {
                 <div className="relative mb-2">
                     <div className="text-3xl sm:text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-[var(--theme-text)] to-[var(--theme-primary)] tracking-tighter drop-shadow-2xl"
                         style={{ filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.5))' }}>
-                        {formatDamage(totalPower)}
+                        {formatNumber(totalPower)}
                     </div>
                 </div>
 
@@ -198,9 +188,11 @@ export const TotalPowerCard: React.FC = () => {
     );
 };
 
-export const ResultSection: React.FC = () => {
+export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearchConsumed?: () => void }> = ({ searchNav, onSearchConsumed }) => {
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
     const [selectedDungeonId, setSelectedDungeonId] = useState<string | null>(null);
+    const [focusMonsterId, setFocusMonsterId] = useState<string | null>(null);
+    const [autoShowAttr, setAutoShowAttr] = useState(false);
 
     const results = useMemo(() => {
         const service = DataService.getInstance();
@@ -240,6 +232,18 @@ export const ResultSection: React.FC = () => {
             setSelectedDungeonId(results.dungeonPowers[0].DungeonID);
         }
     }, [results.dungeonPowers, selectedDungeonId]);
+
+    // Search-driven jump: bring the target dungeon card to front and focus its Boss.
+    // Persist focus in local state (searchNav is cleared by onSearchConsumed immediately,
+    // so we must capture the monster id before it disappears).
+    useEffect(() => {
+        if (searchNav && searchNav.tab === 'calculator') {
+            setSelectedDungeonId(searchNav.dungeonId);
+            setFocusMonsterId(searchNav.monsterId ?? null);
+            setAutoShowAttr(true);
+            onSearchConsumed?.();
+        }
+    }, [searchNav, onSearchConsumed]);
 
     const touchStartX = useRef<number>(0);
     const touchStartY = useRef<number>(0);
@@ -344,7 +348,12 @@ export const ResultSection: React.FC = () => {
                         return (
                             <div
                                 key={d.DungeonID}
-                                onClick={() => !isDragging && setSelectedDungeonId(d.DungeonID)}
+                                onClick={() => {
+                                    if (isDragging) return;
+                                    setSelectedDungeonId(d.DungeonID);
+                                    setFocusMonsterId(null);
+                                    setAutoShowAttr(false);
+                                }}
                                 className={clsx(
                                     "absolute ease-out cursor-pointer origin-top",
                                     isActive ? "z-50 w-full md:w-[90%] max-w-5xl h-auto" : "w-[85%] md:w-[80%] h-auto"
@@ -363,6 +372,8 @@ export const ResultSection: React.FC = () => {
                                     standalone={true}
                                     rankConfig={rankConfig}
                                     power={powerRaw}
+                                    focusMonsterId={focusMonsterId}
+                                    autoShowAttr={autoShowAttr}
                                 />
                             </div>
                         );

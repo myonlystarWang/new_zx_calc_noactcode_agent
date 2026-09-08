@@ -6,6 +6,7 @@ import { calculateDamage } from '../../utils/calculator';
 import { clsx } from 'clsx';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
+import { formatNumber } from '../../utils/format';
 
 interface DungeonDetailProps {
     dungeon: Dungeon;
@@ -14,6 +15,8 @@ interface DungeonDetailProps {
     standalone?: boolean;
     rankConfig?: RankConfig;
     power?: number;
+    focusMonsterId?: string | null;
+    autoShowAttr?: boolean;
 }
 
 export const DungeonDetail = React.memo<DungeonDetailProps>(({
@@ -22,10 +25,13 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     onToggle,
     standalone = false,
     rankConfig,
-    power
+    power,
+    focusMonsterId,
+    autoShowAttr
 }) => {
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
     const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
+    const [pinnedAttr, setPinnedAttr] = useState(false);
     const tabsContainerRef = useRef<HTMLDivElement>(null);
     const [expandedSkillIds, setExpandedSkillIds] = useState<Set<string>>(new Set());
 
@@ -64,23 +70,20 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
         }
     }, [dungeon.DungeonID]);
 
+    // Search-driven: select a specific Boss and pin its attribute card when focusMonsterId is provided.
+    // The pin is latched into local state so it persists after the parent clears searchNav.
+    useEffect(() => {
+        if (focusMonsterId && dungeon.Monsters.some(m => m.MonsterID === focusMonsterId)) {
+            setSelectedMonsterId(focusMonsterId);
+            if (autoShowAttr) setPinnedAttr(true);
+        }
+    }, [focusMonsterId, autoShowAttr, dungeon.DungeonID]);
+
     const service = DataService.getInstance();
     const skillsMap = service.getSkills(userCharacter.ClassID);
     const skills = skillsMap ? skillsMap[userCharacter.Faction] || [] : [];
     const outputSkills = skills.filter(skill => !skill.ActionType || skill.ActionType === 'DAMAGE');
     const activeBuffs = buffs.filter(b => activeBuffIds.includes(b.BuffID));
-
-    const formatDamage = (damage: number, withUnit: boolean = true): string => {
-        if (damage >= 100000000) {
-            const value = (damage / 100000000).toFixed(3);
-            return withUnit ? `${value} 亿` : value;
-        }
-        if (damage >= 10000) {
-            const value = (damage / 10000).toFixed(3);
-            return withUnit ? `${value} 万` : value;
-        }
-        return Math.round(damage).toLocaleString();
-    };
 
     const numberToChinese = (num: number): string => {
         const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
@@ -89,9 +92,11 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
 
     const formatBossValue = (key: string, value: number | undefined) => {
         if (value === undefined || value === null) return '-';
-        const bigNumberKeys = ['health', 'attack', 'defense', 'zhenQi', 'bonusDamage', 'damageReduction', 'normalHit', 'skillHit', 'resistance', 'ignoreReduction'];
-        if (bigNumberKeys.includes(key)) return formatDamage(value);
-        return Math.round(value).toLocaleString();
+        const percentKeys = ['critRate', 'critDamage', 'critRateReduction', 'critDamageReduction', 'ignoreReduction'];
+        if (percentKeys.includes(key)) return `${Math.round(value)}%`;
+        const bigNumberKeys = ['health', 'attack', 'defense', 'zhenQi', 'bonusDamage', 'damageReduction', 'normalHit', 'skillHit', 'resistance'];
+        if (bigNumberKeys.includes(key)) return formatNumber(value);
+        return String(Math.round(value));
     };
 
     const ATTR_LABELS: Record<string, string> = {
@@ -203,7 +208,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                      <span className={clsx(
                                          "font-black text-xl md:text-2xl tracking-tighter leading-none text-[var(--theme-accent)]"
                                      )}>
-                                         {formatDamage(power)}
+                                         {formatNumber(power)}
                                      </span>
                                  </div>
                             </div>
@@ -259,22 +264,27 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                         )}>
                                             {monster.MonsterName}
                                         </span>
-                                        {monster.displayAttributes && (
-                                            <Info
-                                                className="w-3.5 h-3.5 text-slate-600 hover:text-[var(--theme-primary)] transition-colors shrink-0 ml-0.5"
-                                                onClick={(e) => e.stopPropagation()}
-                                                onMouseEnter={(e) => {
-                                                    e.stopPropagation();
-                                                    setMonsterTooltipState({ visible: true, x: e.clientX, y: e.clientY, monster });
-                                                }}
-                                                onMouseMove={(e) => {
-                                                    setMonsterTooltipState(prev => prev.visible ? { ...prev, x: e.clientX, y: e.clientY } : prev);
-                                                }}
-                                                onMouseLeave={() => {
-                                                    setMonsterTooltipState(prev => ({ ...prev, visible: false }));
-                                                }}
-                                            />
-                                        )}
+                                        <Info
+                                            className="w-3.5 h-3.5 text-slate-400 hover:text-[var(--theme-primary)] active:text-[var(--theme-primary)] transition-colors shrink-0 ml-0.5 cursor-help"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setMonsterTooltipState(prev =>
+                                                    prev.visible && prev.monster?.MonsterID === monster.MonsterID
+                                                        ? { visible: false, x: 0, y: 0, monster: null }
+                                                        : { visible: true, x: e.clientX, y: e.clientY, monster }
+                                                );
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.stopPropagation();
+                                                setMonsterTooltipState({ visible: true, x: e.clientX, y: e.clientY, monster });
+                                            }}
+                                            onMouseMove={(e) => {
+                                                setMonsterTooltipState(prev => prev.visible ? { ...prev, x: e.clientX, y: e.clientY } : prev);
+                                            }}
+                                            onMouseLeave={() => {
+                                                setMonsterTooltipState(prev => ({ ...prev, visible: false }));
+                                            }}
+                                        />
                                     </button>
                                 );
                             })}
@@ -287,6 +297,29 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                             onTouchStart={(e) => e.stopPropagation()}
                         >
                             <div className="p-3 md:p-4">
+                                {/* Auto-shown Boss attribute card (pinned after a search jump) */}
+                                {pinnedAttr && selectedMonster?.displayAttributes && (
+                                    <div className="mb-4 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                                        <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                                            <span className="text-[var(--theme-primary)] font-bold">
+                                                Boss 属性详情（{selectedMonster.MonsterName}）
+                                            </span>
+                                            <button
+                                                onClick={() => setPinnedAttr(false)}
+                                                className="text-slate-500 hover:text-slate-200 transition-colors text-xs"
+                                                title="关闭"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+                                            <div className="text-slate-400">总血量: <span className="text-yellow-300 font-medium">{formatBossValue('health', (selectedMonster.displayAttributes.health || 0) * (selectedMonster.displayAttributes.healthBars || 1))}</span></div>
+                                            {Object.entries(selectedMonster.displayAttributes).map(([key, value]) => (
+                                                <div key={key} className="text-slate-400">{ATTR_LABELS[key] || key}: <span className="text-slate-200">{formatBossValue(key, value as number)}</span></div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                                 {/* Skills Damage Table */}
                                 <div className="overflow-x-auto overflow-y-auto max-h-[400px] md:max-h-[550px] scrollbar-thin scrollbar-thumb-slate-700/80 scrollbar-track-transparent">
                                     <table className="w-full text-sm">
@@ -337,16 +370,16 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                 )}
                                                             </div>
                                                             <div className="text-xs md:text-sm text-slate-400 mt-1 font-mono flex items-center gap-1.5">
-                                                                <span className="font-semibold text-[var(--theme-primary)]">{formatDamage(dmg.minFinalDamage, false)}</span>
+                                                                <span className="font-semibold text-[var(--theme-primary)]">{formatNumber(dmg.minFinalDamage, false)}</span>
                                                                 <span className="text-slate-550">~</span>
-                                                                <span className="font-semibold text-[var(--theme-accent)]">{formatDamage(dmg.maxFinalDamage)}</span>
+                                                                <span className="font-semibold text-[var(--theme-accent)]">{formatNumber(dmg.maxFinalDamage)}</span>
                                                             </div>
                                                         </td>
                                                         <td className="hidden py-3 px-2 text-right text-[var(--theme-primary)] font-mono text-sm font-medium relative z-10 whitespace-nowrap">
-                                                            {formatDamage(dmg.minFinalDamage)}
+                                                            {formatNumber(dmg.minFinalDamage)}
                                                         </td>
                                                         <td className="hidden py-3 px-2 text-right text-[var(--theme-accent)] font-mono text-sm font-medium relative z-10 whitespace-nowrap">
-                                                            {formatDamage(dmg.maxFinalDamage)}
+                                                            {formatNumber(dmg.maxFinalDamage)}
                                                         </td>
                                                         <td className="py-3 px-2 text-right relative">
                                                             {/* Damage Bar Background */}
@@ -355,7 +388,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                 style={{ width: `${barWidth * 0.95}%` }}
                                                             />
                                                             <span className="relative z-10 text-yellow-300 font-mono font-bold text-sm md:text-base shadow-black drop-shadow-sm whitespace-nowrap">
-                                                                {formatDamage(dmg.avgFinalDamage)}
+                                                                {formatNumber(dmg.avgFinalDamage)}
                                                             </span>
                                                         </td>
                                                     </tr>
@@ -369,9 +402,9 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                         <span className="text-xs">第 {hit.hitIndex} 段</span>
                                                                     </div>
                                                                     <div className="text-[11px] md:text-xs text-slate-500 font-mono flex items-center gap-1.5 pl-3">
-                                                                        <span className="text-[var(--theme-primary)]/70">{formatDamage(hit.minFinalDamage, false)}</span>
+                                                                        <span className="text-[var(--theme-primary)]/70">{formatNumber(hit.minFinalDamage, false)}</span>
                                                                         <span className="text-slate-600">~</span>
-                                                                        <span className="text-[var(--theme-accent)]/70">{formatDamage(hit.maxFinalDamage)}</span>
+                                                                        <span className="text-[var(--theme-accent)]/70">{formatNumber(hit.maxFinalDamage)}</span>
                                                                     </div>
                                                                 </td>
                                                                 <td className="hidden py-2 px-2"></td>
@@ -382,7 +415,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                         style={{ width: `${hitBarWidth * 0.95}%` }}
                                                                     />
                                                                     <span className="relative z-10 text-yellow-500/90 font-mono font-semibold text-xs md:text-sm drop-shadow-sm whitespace-nowrap">
-                                                                        {formatDamage(hit.avgFinalDamage)}
+                                                                        {formatNumber(hit.avgFinalDamage)}
                                                                     </span>
                                                                 </td>
                                                             </tr>
@@ -432,11 +465,11 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                 document.body
             )}
 
-            {monsterTooltipState.visible && monsterTooltipState.monster?.displayAttributes && createPortal(
-                <div 
+            {monsterTooltipState.visible && monsterTooltipState.monster && createPortal(
+                <div
                     className="fixed z-[9999] pointer-events-none w-[340px] p-4 bg-slate-955/95 border border-slate-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-opacity animate-in fade-in max-h-[460px] overflow-y-auto"
-                    style={{ 
-                        left: Math.min(monsterTooltipState.x + 15, window.innerWidth - 360), 
+                    style={{
+                        left: Math.min(monsterTooltipState.x + 15, window.innerWidth - 360),
                         top: Math.max(10, Math.min(monsterTooltipState.y - 150, window.innerHeight - 470))
                     }}
                 >
@@ -445,13 +478,19 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                             <span>Boss 属性详情</span>
                             <span className="text-xs text-slate-500 truncate max-w-[140px]">{monsterTooltipState.monster.MonsterName}</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
-                            <div className="text-slate-400">总血量: <span className="text-yellow-300 font-medium">{formatBossValue('health', (monsterTooltipState.monster.displayAttributes.health || 0) * (monsterTooltipState.monster.displayAttributes.healthBars || 1))}</span></div>
-                            {Object.entries(monsterTooltipState.monster.displayAttributes).map(([key, value]) => (
-                                <div key={key} className="text-slate-400">{ATTR_LABELS[key] || key}: <span className="text-slate-200">{formatBossValue(key, value as number)}</span></div>
-                            ))}
-                        </div>
-                        <div className="text-[10px] text-slate-600 pt-1 border-t border-slate-800">数据来自玩家截图录入，仅供参考</div>
+                        {monsterTooltipState.monster.displayAttributes ? (
+                            <>
+                                <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+                                    <div className="text-slate-400">总血量: <span className="text-yellow-300 font-medium">{formatBossValue('health', (monsterTooltipState.monster.displayAttributes.health || 0) * (monsterTooltipState.monster.displayAttributes.healthBars || 1))}</span></div>
+                                    {Object.entries(monsterTooltipState.monster.displayAttributes).map(([key, value]) => (
+                                        <div key={key} className="text-slate-400">{ATTR_LABELS[key] || key}: <span className="text-slate-200">{formatBossValue(key, value as number)}</span></div>
+                                    ))}
+                                </div>
+                                <div className="text-[10px] text-slate-600 pt-1 border-t border-slate-800">数据来自玩家截图录入，仅供参考</div>
+                            </>
+                        ) : (
+                            <div className="text-sm text-slate-500 py-2">暂无属性数据</div>
+                        )}
                     </div>
                 </div>,
                 document.body

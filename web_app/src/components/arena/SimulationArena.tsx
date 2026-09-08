@@ -31,10 +31,12 @@ import type {
     Skill
 } from '../../types';
 import { DataService } from '../../services/DataService';
-import defaultOverrides from '../../../public/game_data/default_overrides.json';
+import skillsData from '../../../public/game_data/skills.json';
+const META = (skillsData as any)._meta;
 import { StrategyEditor } from './StrategyEditor';
 import { SimulationReport } from './SimulationReport';
 import clsx from 'clsx';
+import { formatNumber } from '../../utils/format';
 
 const XIAN_RECOMMENDED_SKILLS = [
     'ZS_XIAN_SKILL_ZGDD',
@@ -75,7 +77,7 @@ const DEFAULT_SKILL_EXPIRY_MS_BY_FACTION: Record<'XIAN' | 'MO', Record<string, n
     }
 };
 
-const DEFAULT_DPS_START_DELAY_MS = defaultOverrides.dpsStartDelayMs;
+const DEFAULT_DPS_START_DELAY_MS = META.dpsStartDelayMs;
 
 interface DpsCommonEffectToggles {
     sanwanFocus: boolean;
@@ -128,77 +130,17 @@ const SUPPORT_ACTION_TYPES = new Set(['BUFF', 'DEBUFF', 'UTILITY']);
 const DISABLED_SIMULATION_SKILL_ID_SET = new Set<string>(DISABLED_SIMULATION_SKILL_IDS);
 const PARTIAL_SIMULATION_SKILL_ID_SET = new Set<string>(PARTIAL_SIMULATION_SKILL_IDS);
 
-const FACTION_LABEL: Record<string, string> = {
-    XIAN: '仙',
-    FO: '佛',
-    MO: '魔'
-};
+const FACTION_LABEL: Record<string, string> = META.factions;
 
-const CLASS_LABEL: Record<string, string> = {
-    ZHU_SHUANG: '逐霜',
-    TIAN_YIN: '天音',
-    FEN_XIANG: '焚香',
-    ZHAO_MING: '昭冥',
-    YING_ZHAO: '英招',
-    TIAN_HUA: '天华'
-};
+const CLASS_LABEL: Record<string, string> = META.classLabels;
 
-const ATTRIBUTE_FIELDS: { key: keyof CharacterAttributes; label: string; suffix?: string }[] = [
-    { key: 'CharacterMinAttack', label: '最小攻击' },
-    { key: 'CharacterMaxAttack', label: '最大攻击' },
-    { key: 'CharacterDefense', label: '防御' },
-    { key: 'CharacterHealth', label: '气血' },
-    { key: 'CharacterMana', label: '真气' },
-    { key: 'CharacterCriticalHitDamagePercent', label: '爆伤', suffix: '%' },
-    { key: 'CharacterCriticalHitRatePercent', label: '暴击率', suffix: '%' },
-    { key: 'CharacterMonsterDamageIncreasePercent', label: '对怪增伤', suffix: '%' },
-    { key: 'CharacterOnePercentAttack', label: '1%攻击折算' },
-    { key: 'CharacterOnePercentDefense', label: '1%防御折算' },
-    { key: 'CharacterOnePercentHealth', label: '1%气血折算' },
-    { key: 'CharacterOnePercentMana', label: '1%真气折算' }
-];
+const ATTRIBUTE_FIELDS: { key: keyof CharacterAttributes; label: string; suffix?: string }[] = META.attributeFields;
 
-const SEARCH_ALIASES: Record<string, string[]> = {
-    ZHU_SHUANG: ['zhushuang', 'zs', 'zhushuangxian', 'zhushuangmo'],
-    TIAN_YIN: ['tianyin', 'ty'],
-    FEN_XIANG: ['fenxiang', 'fx'],
-    ZHAO_MING: ['zhaoming', 'zm'],
-    YING_ZHAO: ['yingzhao', 'yz'],
-    TIAN_HUA: ['tianhua', 'th'],
-    ZHENHAI_DUANLANG_T20: ['zhenhai', 'duanlang', 't20'],
-    ZHENHAI_DUANLANG_T21: ['zhenhai', 'duanlang', 't21'],
-    CHI_SUO_T20: ['chisu', 'chisuo', 't20boss'],
-    CHI_SUO_T21: ['chisu', 'chisuo', 't21boss'],
-    ZS_XIAN_SKILL_CLX: ['canglongxiao', 'clx'],
-    ZS_MO_SKILL_CLX: ['canglongxiao', 'clx'],
-    ZS_XIAN_SKILL_YLXB: ['yinlinxuanbing', 'ylxb'],
-    ZS_MO_SKILL_YLXB: ['yinlinxuanbing', 'ylxb'],
-    ZS_XIAN_SKILL_LZYY: ['longzhanyuye', 'lzyy'],
-    ZS_MO_SKILL_LZYY: ['longzhanyuye', 'lzyy'],
-    ZS_XIAN_SKILL_ZGDD: ['zhenggedaidan', 'zgdd'],
-    ZS_MO_SKILL_ZGDD: ['zhenggedaidan', 'zgdd'],
-    ZS_XIAN_SKILL_QXHS: ['qingxiaohengshuo', 'qxhs'],
-    ZS_MO_SKILL_QXHS: ['qingxiaohengshuo', 'qxhs'],
-    TY_FO_SKILL_WLYZ: ['wuliangzhenyan', 'wlyz'],
-    TY_FO_SKILL_WLYZ_CHAN: ['wuliangzhenyanchan', 'wlyzc'],
-    ZM_FO_SKILL_FGSL: ['fugushengling', 'fgsl']
-};
+const SEARCH_ALIASES: Record<string, string[]> = META.searchAliases;
 
-const initialDpsAttributes: CharacterAttributes = defaultOverrides.dpsAttributes as CharacterAttributes;
+const initialDpsAttributes: CharacterAttributes = META.defaultDpsAttributes as CharacterAttributes;
 
-const defaultSupportAttributes: CharacterAttributes = {
-    CharacterMinAttack: 200000,
-    CharacterMaxAttack: 220000,
-    CharacterDefense: 300000,
-    CharacterHealth: 3000000,
-    CharacterMana: 4000000,
-    CharacterCriticalHitDamagePercent: 800,
-    CharacterMonsterDamageIncreasePercent: 25,
-    CharacterOnePercentAttack: 1000,
-    CharacterOnePercentDefense: 1500,
-    CharacterOnePercentHealth: 20000,
-    CharacterOnePercentMana: 30000
-};
+const defaultSupportAttributes: CharacterAttributes = META.defaultSupportAttributes as CharacterAttributes;
 
 type FourthGenQuality = 'YING_JU' | 'HAO_YUE' | 'XI_RI' | 'NONE';
 
@@ -226,35 +168,35 @@ const initialSupports: SupportConfig[] = [
         classId: 'TIAN_YIN',
         faction: 'FO',
         profileAttributes: { ...defaultSupportAttributes },
-        skillOverrides: (defaultOverrides.supportOverrides as any)['tianyin_sup']
+        skillOverrides: (META.supportOverrides as any)['tianyin_sup']
     },
     {
         actorId: 'fenxiang_sup',
         classId: 'FEN_XIANG',
         faction: 'FO',
         profileAttributes: { ...defaultSupportAttributes },
-        skillOverrides: (defaultOverrides.supportOverrides as any)['fenxiang_sup']
+        skillOverrides: (META.supportOverrides as any)['fenxiang_sup']
     },
     {
         actorId: 'zhaoming_sup',
         classId: 'ZHAO_MING',
         faction: 'FO',
         profileAttributes: { ...defaultSupportAttributes },
-        skillOverrides: (defaultOverrides.supportOverrides as any)['zhaoming_sup']
+        skillOverrides: (META.supportOverrides as any)['zhaoming_sup']
     },
     {
         actorId: 'yingzhao_sup',
         classId: 'YING_ZHAO',
         faction: 'FO',
         profileAttributes: { ...defaultSupportAttributes },
-        skillOverrides: (defaultOverrides.supportOverrides as any)['yingzhao_sup']
+        skillOverrides: (META.supportOverrides as any)['yingzhao_sup']
     },
     {
         actorId: 'tianhua_sup',
         classId: 'TIAN_HUA',
         faction: 'FO',
         profileAttributes: { ...defaultSupportAttributes },
-        skillOverrides: (defaultOverrides.supportOverrides as any)['tianhua_sup']
+        skillOverrides: (META.supportOverrides as any)['tianhua_sup']
     }
 ];
 
@@ -282,7 +224,7 @@ interface ActiveEffectView {
     effects: Record<string, number>;
 }
 
-const DEFAULT_DPS_FOURTH_GEN_QUALITY: Exclude<FourthGenQuality, 'NONE'> = defaultOverrides.dpsDefaultFourthGenQuality as Exclude<FourthGenQuality, 'NONE'>;
+const DEFAULT_DPS_FOURTH_GEN_QUALITY: Exclude<FourthGenQuality, 'NONE'> = META.dpsDefaultFourthGenQuality as Exclude<FourthGenQuality, 'NONE'>;
 const SIMULATION_MAX_TIME_MS = 300000;
 const DAMAGE_AUDIT_RANDOM_SEED = 20260609;
 const YBJH_GREEN_MULTIPLIER_FIELD = 'BuffMonsterCriticalDamageMultiplierEffect';
@@ -415,11 +357,7 @@ const drawerTitle: Record<Exclude<DrawerMode, null>, string> = {
 const normalizeSearch = (value: string) =>
     value.toLowerCase().replace(/[\s_\-·.()（）【】[\]]/g, '');
 
-const formatLargeNumber = (num: number): string => {
-    if (num >= 100000000) return `${(num / 100000000).toFixed(2)} 亿`;
-    if (num >= 10000) return `${(num / 10000).toFixed(2)} 万`;
-    return Math.round(num).toLocaleString();
-};
+const formatLargeNumber = (num: number): string => formatNumber(num);
 
 const formatMs = (ms: number) => `${(ms / 1000).toFixed(2)}s`;
 
