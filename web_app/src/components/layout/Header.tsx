@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { Calculator } from 'lucide-react';
+import { GlobalSearch, type SearchTarget } from '../GlobalSearch';
 
 interface HeaderProps {
     activeTab: 'calculator' | 'arena' | 'compendium';
     onTabChange: (tab: 'calculator' | 'arena' | 'compendium') => void;
+    onSearchNavigate: (target: SearchTarget) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
+export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onSearchNavigate }) => {
     useEffect(() => {
         const script = document.createElement('script');
         script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
@@ -43,37 +45,29 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 self-end md:self-auto">
-                    <button
-                        onClick={() => onTabChange('calculator')}
-                        className={`px-3 py-1.5 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 border backdrop-blur-md ${
-                            activeTab === 'calculator'
-                                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                                : 'bg-slate-850 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                        }`}
-                    >
-                        属性战力计算器
-                    </button>
-                    <button
-                        onClick={() => onTabChange('arena')}
-                        className={`px-3 py-1.5 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 border backdrop-blur-md ${
-                            activeTab === 'arena'
-                                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                                : 'bg-slate-850 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                        }`}
-                    >
-                        副本模拟训练场
-                    </button>
-                    <button
-                        onClick={() => onTabChange('compendium')}
-                        className={`px-3 py-1.5 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 border backdrop-blur-md ${
-                            activeTab === 'compendium'
-                                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                                : 'bg-slate-850 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                        }`}
-                    >
-                        资料图鉴
-                    </button>
+                <div className="flex items-center gap-2 sm:gap-3 self-end md:self-auto w-full md:w-auto">
+                    <GlobalSearch onNavigate={onSearchNavigate} />
+                    <div className="flex-1 md:flex-none flex items-center justify-end gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
+                        {[
+                            { id: 'calculator', short: '战力', full: '属性战力计算器' },
+                            { id: 'arena', short: '模拟', full: '副本模拟训练场' },
+                            { id: 'compendium', short: '图鉴', full: '资料图鉴' },
+                        ].map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => onTabChange(tab.id as HeaderProps['activeTab'])}
+                                className={`whitespace-nowrap px-2 sm:px-3 py-1.5 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 border backdrop-blur-md flex-shrink-0 ${
+                                    activeTab === tab.id
+                                        ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+                                        : 'bg-slate-850 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                                }`}
+                                title={tab.full}
+                            >
+                                <span className="md:hidden">{tab.short}</span>
+                                <span className="hidden md:inline">{tab.full}</span>
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
         </header>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { User, Users, Trash2, ShieldAlert } from 'lucide-react';
 import type { Skill, CharacterAttributes } from '../../types';
 import clsx from 'clsx';
+import { DataService } from '../../services/DataService';
 
 export interface SupportConfig {
     actorId: string;
@@ -9,28 +10,6 @@ export interface SupportConfig {
     faction: 'XIAN' | 'FO' | 'MO';
     profileAttributes: CharacterAttributes;
 }
-
-const SUPPORT_CLASSES = [
-    { id: 'TIAN_YIN', name: '天音', defaultFaction: 'FO' as const },
-    { id: 'FEN_XIANG', name: '焚香', defaultFaction: 'FO' as const },
-    { id: 'ZHAO_MING', name: '昭冥', defaultFaction: 'FO' as const },
-    { id: 'YING_ZHAO', name: '英招', defaultFaction: 'FO' as const },
-    { id: 'TIAN_HUA', name: '天华', defaultFaction: 'FO' as const }
-];
-
-const defaultSupportAttributes: CharacterAttributes = {
-    CharacterMinAttack: 200000,
-    CharacterMaxAttack: 220000,
-    CharacterDefense: 300000,
-    CharacterHealth: 3000000,
-    CharacterMana: 4000000,
-    CharacterCriticalHitDamagePercent: 800,
-    CharacterMonsterDamageIncreasePercent: 25,
-    CharacterOnePercentAttack: 1000,
-    CharacterOnePercentDefense: 1500,
-    CharacterOnePercentHealth: 20000,
-    CharacterOnePercentMana: 30000
-};
 
 interface DpsConfigPanelProps {
     dpsFaction: 'XIAN' | 'MO';
@@ -268,6 +247,8 @@ export const TeamConfigPanel: React.FC<TeamConfigPanelProps> = ({
     getSkillMiniStatus
 }) => {
     const [activeSupportIndex, setActiveSupportIndex] = useState<number | null>(null);
+    const SUPPORT_CLASSES = DataService.getInstance().getSupportClasses();
+    const defaultSupportAttributes = DataService.getInstance().getSkillMeta()?.defaultSupportAttributes as CharacterAttributes;
 
     const handleAddSupport = (classId: string) => {
         if (supports.length >= 5) return;
@@ -280,7 +261,7 @@ export const TeamConfigPanel: React.FC<TeamConfigPanelProps> = ({
         const newSupport: SupportConfig = {
             actorId,
             classId,
-            faction: classConfig.defaultFaction,
+            faction: classConfig.defaultFaction as SupportConfig['faction'],
             profileAttributes: { ...defaultSupportAttributes }
         };
 

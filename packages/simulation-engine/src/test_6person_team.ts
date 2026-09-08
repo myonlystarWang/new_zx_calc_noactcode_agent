@@ -52,7 +52,7 @@ const loadJson = <T>(filename: string): T => {
 const main = () => {
   console.log('=== 启动 6人真实团队仿真 ===');
 
-  const defaultOverrides = loadJson<any>('default_overrides.json');
+  const meta = (loadJson<any>('skills.json'))._meta;
 
   // 1. 加载真实游戏数据
   const gameData: AssembleScenarioGameData = {
@@ -61,21 +61,9 @@ const main = () => {
   };
 
   // 2. 玩家属性配置
-  const dpsAttributes: CharacterAttributes = defaultOverrides.dpsAttributes;
+  const dpsAttributes: CharacterAttributes = meta.defaultDpsAttributes;
 
-  const supportAttributes: CharacterAttributes = {
-    CharacterMinAttack: 200000,
-    CharacterMaxAttack: 220000,
-    CharacterDefense: 300000,
-    CharacterHealth: 3000000,
-    CharacterMana: 4000000,
-    CharacterCriticalHitDamagePercent: 800,
-    CharacterMonsterDamageIncreasePercent: 25,
-    CharacterOnePercentAttack: 1000,
-    CharacterOnePercentDefense: 1500,
-    CharacterOnePercentHealth: 20000,
-    CharacterOnePercentMana: 30000
-  };
+  const supportAttributes: CharacterAttributes = meta.defaultSupportAttributes;
 
   // 3. 构建装配输入
   const input: AssembleScenarioInput = {
@@ -98,7 +86,7 @@ const main = () => {
       strategy: {
         type: 'SKILL_BAR',
         skillIds: [...moRecommendedSkillIds],
-        startTimeMs: defaultOverrides.dpsStartDelayMs,
+        startTimeMs: meta.dpsStartDelayMs,
         scanMode: 'FROM_FIRST_EACH_DECISION',
         skillExpiryMs: {
           ZS_MO_SKILL_ZGDD: 0,
@@ -118,35 +106,35 @@ const main = () => {
         classId: 'TIAN_YIN',
         faction: 'FO',
         profileAttributes: supportAttributes,
-        skillOverrides: defaultOverrides.supportOverrides?.tianyin_sup
+        skillOverrides: meta.supportOverrides?.tianyin_sup
       },
       {
         actorId: 'fenxiang_sup',
         classId: 'FEN_XIANG',
         faction: 'FO',
         profileAttributes: supportAttributes,
-        skillOverrides: defaultOverrides.supportOverrides?.fenxiang_sup
+        skillOverrides: meta.supportOverrides?.fenxiang_sup
       },
       {
         actorId: 'zhaoming_sup',
         classId: 'ZHAO_MING',
         faction: 'FO',
         profileAttributes: supportAttributes,
-        skillOverrides: defaultOverrides.supportOverrides?.zhaoming_sup
+        skillOverrides: meta.supportOverrides?.zhaoming_sup
       },
       {
         actorId: 'yingzhao_sup',
         classId: 'YING_ZHAO',
         faction: 'FO',
         profileAttributes: supportAttributes,
-        skillOverrides: defaultOverrides.supportOverrides?.yingzhao_sup
+        skillOverrides: meta.supportOverrides?.yingzhao_sup
       },
       {
         actorId: 'tianhua_sup',
         classId: 'TIAN_HUA',
         faction: 'FO',
         profileAttributes: supportAttributes,
-        skillOverrides: defaultOverrides.supportOverrides?.tianhua_sup
+        skillOverrides: meta.supportOverrides?.tianhua_sup
       }
     ]
   };

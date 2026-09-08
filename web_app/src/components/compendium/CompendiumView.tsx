@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DataService } from '../../services/DataService';
 import { BookOpen, Shield, Swords, Target, Users, CheckCircle, AlertCircle, Search } from 'lucide-react';
 import clsx from 'clsx';
 import type { AttributeCeilingRow, SupportRole, StatSourceSection } from '../../services/DataService';
+import type { SearchTarget } from '../GlobalSearch';
 
-type SubTab = 'ignore' | 'reduction' | 'critReduction' | 'monsterDamageBonus' | 'dodge' | 'support';
+export type SubTab = 'ignore' | 'reduction' | 'critReduction' | 'monsterDamageBonus' | 'dodge' | 'support';
 
 const SUB_TABS: { id: SubTab; label: string; icon: React.ReactNode }[] = [
     { id: 'ignore', label: '极致无视', icon: <Target className="w-4 h-4" /> },
@@ -75,7 +76,7 @@ const catBarColor = (category: string) => CATEGORY_BG_COLORS[catIndex(category)]
 
 /* ---- 极致无视/减免/减暴击：移动端卡片行 ---- */
 const MobileAttrRow: React.FC<{ row: AttributeCeilingRow }> = ({ row }) => (
-    <div className="flex flex-col gap-1.5 py-2 border-b border-slate-700/30 last:border-0 last:pb-0">
+    <div data-item={row.item} className="flex flex-col gap-1.5 py-2 border-b border-slate-700/30 last:border-0 last:pb-0">
         <div className="text-base font-medium text-slate-100">{row.item}</div>
         <div className="grid grid-cols-4 gap-1.5">
             {[
@@ -141,6 +142,7 @@ const AttributeTable: React.FC<{ sectionKey: string; sectionTitle: string }> = (
                                 {rows.map((row, idx) => (
                                     <tr
                                         key={idx}
+                                        data-item={row.item}
                                         className={clsx(
                                             'border-l-4 hover:bg-slate-800/30 transition-colors',
                                             grouped.length > 1 ? catColor(category) : 'border-l-transparent',
@@ -192,7 +194,7 @@ const AttributeTable: React.FC<{ sectionKey: string; sectionTitle: string }> = (
 
 /* ---- 极致怪增/躲闪：移动端卡片行 ---- */
 const MobileSourceRow: React.FC<{ row: StatSourceSection['sources'][number]; category: string; showCategory: boolean }> = ({ row, category, showCategory }) => (
-    <div className="flex items-center justify-between py-2 border-b border-slate-700/30 last:border-0 last:pb-0">
+    <div data-item={row.item} className="flex items-center justify-between py-2 border-b border-slate-700/30 last:border-0 last:pb-0">
         <div className="flex flex-col min-w-0 pr-2">
             {showCategory && <span className="text-[10px] text-slate-500">{category}</span>}
             <span className="text-base text-slate-200 break-words">{row.item}</span>
@@ -244,6 +246,7 @@ const SourceSectionView: React.FC<{ section: StatSourceSection; showConditional?
                                 {rows.map((row, idx) => (
                                     <tr
                                         key={idx}
+                                        data-item={row.item}
                                         className={clsx(
                                             'border-l-4 hover:bg-slate-800/30 transition-colors',
                                             grouped.length > 1 ? catColor(category) : 'border-l-transparent',
@@ -321,6 +324,13 @@ const SourceSectionView: React.FC<{ section: StatSourceSection; showConditional?
     );
 };
 
+const isZeroValue = (v: number | string | undefined): boolean => {
+    if (v === undefined || v === null) return false;
+    if (typeof v === 'number') return v === 0;
+    const n = Number(v);
+    return !Number.isNaN(n) && n === 0;
+};
+
 const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role, metrics }) => {
     const metricPairs = [
         { label: metrics[0] ?? '增伤', value: role.damageBoost, color: 'text-amber-400' },
@@ -328,7 +338,7 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
         { label: metrics[2] ?? '紫点', value: role.purplePoint, color: 'text-purple-400' },
         { label: metrics[3] ?? '破防', value: role.defenseBreak, color: 'text-rose-400' },
         { label: metrics[4] ?? '专注', value: role.focus ?? 0, color: 'text-orange-400' },
-    ];
+    ].sort((a, b) => Number(isZeroValue(a.value)) - Number(isZeroValue(b.value)));
 
     const ratingColor = (r: string) => {
         if (r.startsWith('S+')) return 'text-yellow-400 border-yellow-400/50 bg-yellow-500/10';
@@ -345,7 +355,7 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
     };
 
     return (
-        <div className="zx-card p-3 flex flex-col gap-2">
+        <div data-role={role.name} className="zx-card p-3 flex flex-col gap-2">
             <div className="flex items-center justify-between gap-1">
                 <div className="flex items-center gap-1.5 min-w-0">
                     <span className="text-base font-bold text-slate-100 truncate">{role.name}</span>
@@ -358,12 +368,18 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                 </span>
             </div>
             <div className="grid grid-cols-5 gap-1.5">
-                {metricPairs.map((m) => (
-                    <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-0.5">
-                        <span className="text-[10px] text-slate-500 mb-0.5">{m.label}</span>
-                        <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>{renderValue(m.value)}</span>
-                    </div>
-                ))}
+                {metricPairs.map((m) =>
+                    isZeroValue(m.value) ? (
+                        <div key={m.label} className="rounded-lg py-1.5 px-0.5" aria-hidden="true" />
+                    ) : (
+                        <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-0.5">
+                            <span className="text-[10px] text-slate-500 mb-0.5">{m.label}</span>
+                            <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
+                                {renderValue(m.value)}
+                            </span>
+                        </div>
+                    )
+                )}
             </div>
             <div className="flex flex-wrap gap-1">
                 {role.abilities.map((ability, i) => (
@@ -435,20 +451,45 @@ const SupportView: React.FC = () => {
                     <SupportCard key={role.name} role={role} metrics={roles.metrics} />
                 ))}
             </div>
-            <div className="zx-card p-4">
-                <h3 className="text-base font-bold text-slate-200 mb-2">说明</h3>
-                <ul className="list-disc list-inside text-sm text-slate-400 space-y-1">
-                    {roles.notes.map((note, i) => (
-                        <li key={i}>{note}</li>
-                    ))}
-                </ul>
-            </div>
+            {roles.notes && roles.notes.length > 0 && (
+                <div className="zx-card p-4">
+                    <h3 className="text-base font-bold text-slate-200 mb-2">说明</h3>
+                    <ul className="list-disc list-inside text-sm text-slate-400 space-y-1">
+                        {roles.notes.map((note, i) => (
+                            <li key={i}>{note}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 };
 
-export const CompendiumView: React.FC = () => {
+export const CompendiumView: React.FC<{ searchNav?: SearchTarget | null; onSearchConsumed?: () => void }> = ({ searchNav, onSearchConsumed }) => {
     const [activeSubTab, setActiveSubTab] = useState<SubTab>('ignore');
+
+    // Jump to a sub-tab (and optional item) driven by global search
+    useEffect(() => {
+        if (!searchNav || searchNav.tab !== 'compendium') return;
+        setActiveSubTab(searchNav.sub);
+        if (searchNav.item) {
+            const escape = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape : (s: string) => s.replace(/(["'\\#$%&()*+,\/:;<=>?@[\\]^`{|}~])/g, '\\$1');
+            const sel = `[data-item="${escape(searchNav.item)}"], [data-role="${escape(searchNav.item)}"]`;
+            // wait a tick for the sub-tab content to render
+            const t = setTimeout(() => {
+                const el = document.querySelector(sel) as HTMLElement | null;
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.classList.add('ring-2', 'ring-cyan-400', 'bg-cyan-500/10', 'rounded-lg', 'transition-all');
+                    setTimeout(() => el.classList.remove('ring-2', 'ring-cyan-400', 'bg-cyan-500/10', 'rounded-lg'), 2000);
+                }
+                onSearchConsumed?.();
+            }, 120);
+            return () => clearTimeout(t);
+        } else {
+            onSearchConsumed?.();
+        }
+    }, [searchNav]);
 
     const content = useMemo(() => {
         switch (activeSubTab) {
