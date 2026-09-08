@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Calculator } from 'lucide-react';
 
 interface HeaderProps {
-    activeTab: 'calculator' | 'arena';
-    onTabChange: (tab: 'calculator' | 'arena') => void;
+    activeTab: 'calculator' | 'arena' | 'compendium';
+    onTabChange: (tab: 'calculator' | 'arena' | 'compendium') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
@@ -63,6 +63,16 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
                         }`}
                     >
                         副本模拟训练场
+                    </button>
+                    <button
+                        onClick={() => onTabChange('compendium')}
+                        className={`px-3 py-1.5 md:py-2 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 border backdrop-blur-md ${
+                            activeTab === 'compendium'
+                                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+                                : 'bg-slate-850 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                        }`}
+                    >
+                        资料图鉴
                     </button>
                 </div>
             </div>
