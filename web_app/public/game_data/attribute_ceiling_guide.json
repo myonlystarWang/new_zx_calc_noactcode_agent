@@ -1,0 +1,880 @@
+{
+  "_comment": "极致属性攻略三篇（无视/减免/减暴击）：各属性系统在 理论最高值/夯/顶级/大致毕业 四档的参考数值，供未来展示。来源：玩家总结分享图（抖音号 388633297，完美世界论坛 bbs.wanmei.com 转载），截至 2026-06-29 前更新，仅供参考。录入并核对完成 2026-09-08：三篇逐行求和均与原图『总共』一致（无视 181.27 / 减免 255.16 / 减暴击 515）。",
+  "asOf": "2026-06-29",
+  "tierLabels": {
+    "theoryMax": "理论最高值",
+    "floor": "夯",
+    "top": "顶级",
+    "graduation": "大致毕业"
+  },
+  "sections": {
+    "ignore": {
+      "title": "无视篇",
+      "total": 181.27,
+      "verified": true,
+      "rows": [
+        {
+          "category": "武器",
+          "item": "彰武（昭武）基础属性",
+          "theoryMax": 6,
+          "floor": "6",
+          "top": "5或6",
+          "graduation": 5
+        },
+        {
+          "category": "武器",
+          "item": "神机值",
+          "theoryMax": 16,
+          "floor": "11+",
+          "top": "10+",
+          "graduation": 8
+        },
+        {
+          "category": "武器",
+          "item": "灌注",
+          "theoryMax": 12,
+          "floor": 12,
+          "top": 12,
+          "graduation": 8
+        },
+        {
+          "category": "武器",
+          "item": "血祭十",
+          "theoryMax": 1.5,
+          "floor": 1.5,
+          "top": 1.5,
+          "graduation": 1.5
+        },
+        {
+          "category": "武器",
+          "item": "天缘（新天缘）",
+          "theoryMax": 4.5,
+          "floor": 3,
+          "top": 2,
+          "graduation": 2
+        },
+        {
+          "category": "武器",
+          "item": "天缘（天命10）",
+          "theoryMax": 4.7,
+          "floor": 2.9,
+          "top": "1.5+",
+          "graduation": 1.1
+        },
+        {
+          "category": "武器",
+          "item": "紫电石",
+          "theoryMax": 5,
+          "floor": 5,
+          "top": 4,
+          "graduation": 3
+        },
+        {
+          "category": "法身",
+          "item": "无常空相★★★",
+          "theoryMax": 4,
+          "floor": 4,
+          "top": 4,
+          "graduation": 2
+        },
+        {
+          "category": "玺绶",
+          "item": "覆天印·无极封耀",
+          "theoryMax": 14,
+          "floor": 14,
+          "top": 10,
+          "graduation": 8
+        },
+        {
+          "category": "元婴",
+          "item": "元婴（25级）",
+          "theoryMax": 10.5,
+          "floor": 10.5,
+          "top": "10+",
+          "graduation": "9+"
+        },
+        {
+          "category": "元婴",
+          "item": "十步一杀（曜空版）",
+          "theoryMax": 2,
+          "floor": 2,
+          "top": 2,
+          "graduation": 2
+        },
+        {
+          "category": "佩章",
+          "item": "佩章（圣萃+11）",
+          "theoryMax": 5.1,
+          "floor": 5.1,
+          "top": 5.1,
+          "graduation": 5.1
+        },
+        {
+          "category": "轩辕策",
+          "item": "玄武·英雄20级",
+          "theoryMax": 21,
+          "floor": "20+",
+          "top": "18+",
+          "graduation": "15+"
+        },
+        {
+          "category": "轩辕策",
+          "item": "帝鸿共鸣（基础+特殊：30%）",
+          "theoryMax": 6.3,
+          "floor": "5.5+",
+          "top": "5+",
+          "graduation": "4+"
+        },
+        {
+          "category": "星宿",
+          "item": "重华（8个无极五档）",
+          "theoryMax": 16,
+          "floor": 16,
+          "top": "14+",
+          "graduation": "10+"
+        },
+        {
+          "category": "阵灵",
+          "item": "人物",
+          "theoryMax": 9.67,
+          "floor": 9.67,
+          "top": "7+",
+          "graduation": "5+"
+        },
+        {
+          "category": "阵灵",
+          "item": "法宝",
+          "theoryMax": 0.8,
+          "floor": 0.8,
+          "top": 0.5,
+          "graduation": 0
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵集",
+          "theoryMax": 0.5,
+          "floor": 0.5,
+          "top": 0.5,
+          "graduation": 0.5
+        },
+        {
+          "category": "心法",
+          "item": "心法",
+          "theoryMax": 4,
+          "floor": 4,
+          "top": 4,
+          "graduation": 4
+        },
+        {
+          "category": "称号",
+          "item": "鲜花榜第一（2025年）",
+          "theoryMax": 5,
+          "floor": "2+",
+          "top": "1.5+",
+          "graduation": "1+"
+        },
+        {
+          "category": "时装",
+          "item": "且试3套",
+          "theoryMax": 1.2,
+          "floor": 1.2,
+          "top": 1.2,
+          "graduation": 1.2
+        },
+        {
+          "category": "时装",
+          "item": "桃夭裳",
+          "theoryMax": 0.5,
+          "floor": 0.5,
+          "top": 0.5,
+          "graduation": 0.5
+        },
+        {
+          "category": "宠物",
+          "item": "誓印",
+          "theoryMax": 8,
+          "floor": "7+",
+          "top": "6+",
+          "graduation": "5+"
+        },
+        {
+          "category": "宠物",
+          "item": "装备（宠物30星）",
+          "theoryMax": 3,
+          "floor": 3,
+          "top": 2.1,
+          "graduation": "1+"
+        },
+        {
+          "category": "帮会技能",
+          "item": "无视（10级）",
+          "theoryMax": 2,
+          "floor": 2,
+          "top": 2,
+          "graduation": 2
+        },
+        {
+          "category": "坐骑",
+          "item": "坐骑血脉",
+          "theoryMax": 4,
+          "floor": "3.5或4",
+          "top": "2.5+",
+          "graduation": "1+"
+        },
+        {
+          "category": "元神",
+          "item": "周天修为",
+          "theoryMax": 12,
+          "floor": 12,
+          "top": "9+",
+          "graduation": "6+"
+        },
+        {
+          "category": "仙府",
+          "item": "仙府供奉（昭武武器+15）",
+          "theoryMax": 2,
+          "floor": 2,
+          "top": 2,
+          "graduation": "1+"
+        }
+      ]
+    },
+    "reduction": {
+      "title": "减免篇",
+      "total": 255.16,
+      "verified": true,
+      "rows": [
+        {
+          "category": "衣服",
+          "item": "彰武（昭武）基础属性",
+          "theoryMax": 39,
+          "floor": 39,
+          "top": "39或37",
+          "graduation": 37
+        },
+        {
+          "category": "衣服",
+          "item": "神机",
+          "theoryMax": 16,
+          "floor": "11+",
+          "top": "10+",
+          "graduation": 8
+        },
+        {
+          "category": "衣服",
+          "item": "天缘（新天缘）",
+          "theoryMax": 2.2,
+          "floor": "2+",
+          "top": "1.5+",
+          "graduation": "1+"
+        },
+        {
+          "category": "衣服",
+          "item": "天缘（天命10）",
+          "theoryMax": 4.7,
+          "floor": "3+",
+          "top": "2+",
+          "graduation": "1+"
+        },
+        {
+          "category": "神隐之力",
+          "item": "神隐之力",
+          "theoryMax": 6,
+          "floor": 6,
+          "top": 5,
+          "graduation": 3
+        },
+        {
+          "category": "首饰",
+          "item": "项链（战队）",
+          "theoryMax": 6,
+          "floor": 6,
+          "top": 6,
+          "graduation": 6
+        },
+        {
+          "category": "首饰",
+          "item": "戒指：玄商（套装属性）",
+          "theoryMax": 6,
+          "floor": 6,
+          "top": 6,
+          "graduation": 6
+        },
+        {
+          "category": "首饰",
+          "item": "首饰插槽",
+          "theoryMax": 6,
+          "floor": 6,
+          "top": 5,
+          "graduation": 5
+        },
+        {
+          "category": "法身",
+          "item": "天道玄妙★★★",
+          "theoryMax": 20,
+          "floor": 20,
+          "top": "20或18",
+          "graduation": 18
+        },
+        {
+          "category": "勋章",
+          "item": "八荒凤琼",
+          "theoryMax": 6,
+          "floor": 6,
+          "top": "6或5",
+          "graduation": "－"
+        },
+        {
+          "category": "元婴",
+          "item": "元婴（25级）",
+          "theoryMax": 16.8,
+          "floor": "16+",
+          "top": "15+",
+          "graduation": "14+"
+        },
+        {
+          "category": "元婴",
+          "item": "冰清玉洁（曜空版）",
+          "theoryMax": 4,
+          "floor": 4,
+          "top": 4,
+          "graduation": 1
+        },
+        {
+          "category": "佩章",
+          "item": "佩章（圣萃+11）",
+          "theoryMax": 3,
+          "floor": 3,
+          "top": 3,
+          "graduation": 3
+        },
+        {
+          "category": "佩章",
+          "item": "九纹琅",
+          "theoryMax": 8,
+          "floor": 8,
+          "top": 8,
+          "graduation": 8
+        },
+        {
+          "category": "轩辕策",
+          "item": "帝鸿魄",
+          "theoryMax": 7,
+          "floor": 7,
+          "top": "6+",
+          "graduation": "5+"
+        },
+        {
+          "category": "星宿",
+          "item": "重华（8个减免五档）",
+          "theoryMax": 24,
+          "floor": "23+",
+          "top": "22+",
+          "graduation": "20+"
+        },
+        {
+          "category": "阵灵",
+          "item": "人物",
+          "theoryMax": 9.36,
+          "floor": 9.36,
+          "top": 9.36,
+          "graduation": 9.36
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵集",
+          "theoryMax": 0.5,
+          "floor": 0.5,
+          "top": 0.5,
+          "graduation": 0.5
+        },
+        {
+          "category": "心法",
+          "item": "心法",
+          "theoryMax": 4,
+          "floor": 4,
+          "top": 4,
+          "graduation": 4
+        },
+        {
+          "category": "称号",
+          "item": "鲜花榜第一（2025年）",
+          "theoryMax": 8.5,
+          "floor": "5+",
+          "top": 5,
+          "graduation": 5
+        },
+        {
+          "category": "时装",
+          "item": "且试3套+桃夭裳",
+          "theoryMax": 1.7,
+          "floor": 1.7,
+          "top": 1.7,
+          "graduation": 1.7
+        },
+        {
+          "category": "宠物",
+          "item": "誓印",
+          "theoryMax": 10,
+          "floor": "8+",
+          "top": "8+",
+          "graduation": "7+"
+        },
+        {
+          "category": "宠物",
+          "item": "装备（宠物30星）",
+          "theoryMax": 3,
+          "floor": 3,
+          "top": "－",
+          "graduation": "－"
+        },
+        {
+          "category": "宠物",
+          "item": "通灵御宝",
+          "theoryMax": 20,
+          "floor": 20,
+          "top": 20,
+          "graduation": 20
+        },
+        {
+          "category": "帮会技能",
+          "item": "减免（10级）",
+          "theoryMax": 2,
+          "floor": 2,
+          "top": 2,
+          "graduation": 2
+        },
+        {
+          "category": "幻灵石",
+          "item": "幻灵石·素娥（限时7天）",
+          "theoryMax": 2.4,
+          "floor": 2.4,
+          "top": "2.4或1.8",
+          "graduation": 1.8
+        },
+        {
+          "category": "坐骑",
+          "item": "坐骑血脉",
+          "theoryMax": 4,
+          "floor": "3.5或4",
+          "top": "2.5+",
+          "graduation": "1+"
+        },
+        {
+          "category": "元神",
+          "item": "周天",
+          "theoryMax": 12,
+          "floor": 12,
+          "top": "9+",
+          "graduation": "6+"
+        },
+        {
+          "category": "仙府",
+          "item": "仙府供奉（昭武武器+15）",
+          "theoryMax": 3,
+          "floor": 3,
+          "top": 3,
+          "graduation": "1+"
+        }
+      ]
+    },
+    "critReduction": {
+      "title": "减暴击篇",
+      "total": 515,
+      "verified": true,
+      "verification": {
+        "statedTotal": 515,
+        "summedTotal": 515,
+        "gap": 0,
+        "status": "已与原图核对完成（2026-09-08）：补入『罡气 基础属性 17』、修正『四灵 饕餮（充灵）理论最高值 8→6』及 13 处名称，逐行求和 515 与原图一致",
+        "suspects": []
+      },
+      "rows": [
+        {
+          "category": "头",
+          "item": "基础属性",
+          "theoryMax": 25,
+          "floor": 25,
+          "top": "25或23",
+          "graduation": 23
+        },
+        {
+          "category": "头",
+          "item": "天缘（新天缘）",
+          "theoryMax": 4,
+          "floor": "3.5+",
+          "top": "3+",
+          "graduation": "2+"
+        },
+        {
+          "category": "头",
+          "item": "天缘（天命10）",
+          "theoryMax": 14.1,
+          "floor": "10+",
+          "top": "8+",
+          "graduation": "6+"
+        },
+        {
+          "category": "头",
+          "item": "混虚",
+          "theoryMax": 2,
+          "floor": 2,
+          "top": 2,
+          "graduation": 2
+        },
+        {
+          "category": "衣服",
+          "item": "天缘（新天缘）",
+          "theoryMax": 8,
+          "floor": "8+",
+          "top": "5+",
+          "graduation": "4+"
+        },
+        {
+          "category": "衣服",
+          "item": "天缘（天命10）",
+          "theoryMax": 14.1,
+          "floor": "10+",
+          "top": "8+",
+          "graduation": "6+"
+        },
+        {
+          "category": "衣服",
+          "item": "神机",
+          "theoryMax": 9,
+          "floor": 9,
+          "top": "5或4.8",
+          "graduation": 4.8
+        },
+        {
+          "category": "鞋子",
+          "item": "血祭十",
+          "theoryMax": 19,
+          "floor": 19,
+          "top": 19,
+          "graduation": 19
+        },
+        {
+          "category": "鞋子",
+          "item": "神机",
+          "theoryMax": 9,
+          "floor": 9,
+          "top": "5或4.8",
+          "graduation": 4.8
+        },
+        {
+          "category": "腰带",
+          "item": "神机",
+          "theoryMax": 3,
+          "floor": 3,
+          "top": "3或2.4",
+          "graduation": 2.4
+        },
+        {
+          "category": "神隐之力",
+          "item": "神隐之力",
+          "theoryMax": 12,
+          "floor": 12,
+          "top": 12,
+          "graduation": 12
+        },
+        {
+          "category": "首饰",
+          "item": "项链（蚀天天循）",
+          "theoryMax": 10,
+          "floor": 10,
+          "top": 10,
+          "graduation": 10
+        },
+        {
+          "category": "首饰",
+          "item": "戒指：蚀天天循（基础+套装）",
+          "theoryMax": 14,
+          "floor": 14,
+          "top": 14,
+          "graduation": 14
+        },
+        {
+          "category": "首饰",
+          "item": "首饰插槽（8级完美宝石）",
+          "theoryMax": 25.2,
+          "floor": 25.2,
+          "top": 20.4,
+          "graduation": 20.4
+        },
+        {
+          "category": "法身",
+          "item": "天道玄妙★★★",
+          "theoryMax": 15,
+          "floor": 15,
+          "top": 15,
+          "graduation": 12
+        },
+        {
+          "category": "护符",
+          "item": "基础属性（丙午）",
+          "theoryMax": 11,
+          "floor": 11,
+          "top": 11,
+          "graduation": 11
+        },
+        {
+          "category": "护符",
+          "item": "灌注",
+          "theoryMax": 5,
+          "floor": 5,
+          "top": "5或3",
+          "graduation": 3
+        },
+        {
+          "category": "罡气",
+          "item": "基础属性",
+          "theoryMax": 17,
+          "floor": "17",
+          "top": "17",
+          "graduation": "17"
+        },
+        {
+          "category": "罡气",
+          "item": "灌注",
+          "theoryMax": 5,
+          "floor": 5,
+          "top": "5或3",
+          "graduation": 3
+        },
+        {
+          "category": "玺绶",
+          "item": "覆天印·龙象承脉",
+          "theoryMax": 8,
+          "floor": 8,
+          "top": 8,
+          "graduation": 8
+        },
+        {
+          "category": "轩辕策",
+          "item": "基础属性",
+          "theoryMax": 5,
+          "floor": 5,
+          "top": 5,
+          "graduation": 5
+        },
+        {
+          "category": "元婴",
+          "item": "元婴（25级）",
+          "theoryMax": 16.8,
+          "floor": "16+",
+          "top": "15+",
+          "graduation": "14+"
+        },
+        {
+          "category": "佩章",
+          "item": "含瑛（+7、+11）",
+          "theoryMax": 6.1,
+          "floor": 6.1,
+          "top": 5.1,
+          "graduation": 5.1
+        },
+        {
+          "category": "佩章",
+          "item": "九纹琅",
+          "theoryMax": 8,
+          "floor": 8,
+          "top": 8,
+          "graduation": 8
+        },
+        {
+          "category": "法宝",
+          "item": "附件隐藏属性（+9）",
+          "theoryMax": 2,
+          "floor": 2,
+          "top": 2,
+          "graduation": 2
+        },
+        {
+          "category": "法宝",
+          "item": "秘笈灌注",
+          "theoryMax": 8,
+          "floor": 8,
+          "top": 5,
+          "graduation": 2
+        },
+        {
+          "category": "轩辕策",
+          "item": "白虎（英雄20级）",
+          "theoryMax": 12.3,
+          "floor": "11+",
+          "top": "10+",
+          "graduation": "9+"
+        },
+        {
+          "category": "轩辕策",
+          "item": "帝鸿魄（20级）",
+          "theoryMax": 8,
+          "floor": "7.5+",
+          "top": "6+",
+          "graduation": "6+"
+        },
+        {
+          "category": "轩辕策",
+          "item": "帝鸿共鸣（基础+特殊：30%）",
+          "theoryMax": 3.6,
+          "floor": "3+",
+          "top": "2+",
+          "graduation": "1.5+"
+        },
+        {
+          "category": "星宿",
+          "item": "重华（8个减暴击五档）",
+          "theoryMax": 24,
+          "floor": "23+",
+          "top": "22+",
+          "graduation": "20+"
+        },
+        {
+          "category": "星魂",
+          "item": "基础+赤霄玄符",
+          "theoryMax": 23,
+          "floor": 23,
+          "top": 23,
+          "graduation": 23
+        },
+        {
+          "category": "阵灵",
+          "item": "人物",
+          "theoryMax": 20.3,
+          "floor": 20.3,
+          "top": 20.3,
+          "graduation": 20.3
+        },
+        {
+          "category": "阵灵",
+          "item": "法宝",
+          "theoryMax": 16,
+          "floor": 16,
+          "top": 8,
+          "graduation": "4+"
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵集",
+          "theoryMax": 4.5,
+          "floor": 4.5,
+          "top": 4.5,
+          "graduation": 4.5
+        },
+        {
+          "category": "心法",
+          "item": "心法",
+          "theoryMax": 7.5,
+          "floor": 7.5,
+          "top": 7.5,
+          "graduation": 7.5
+        },
+        {
+          "category": "四灵",
+          "item": "饕餮（充灵）",
+          "theoryMax": 6,
+          "floor": 6,
+          "top": 6,
+          "graduation": 6
+        },
+        {
+          "category": "称号",
+          "item": "鲜花榜第一（2025年）",
+          "theoryMax": 9,
+          "floor": "5+",
+          "top": 4,
+          "graduation": 4
+        },
+        {
+          "category": "造化",
+          "item": "三阵营通用技能（被动）",
+          "theoryMax": 10,
+          "floor": 10,
+          "top": 10,
+          "graduation": 10
+        },
+        {
+          "category": "宠物",
+          "item": "誓印",
+          "theoryMax": 24,
+          "floor": "20+",
+          "top": "18+",
+          "graduation": "15+"
+        },
+        {
+          "category": "宠物",
+          "item": "通灵（30星）",
+          "theoryMax": 5,
+          "floor": 5,
+          "top": 0.5,
+          "graduation": 0.5
+        },
+        {
+          "category": "生产精通",
+          "item": "制帽精通",
+          "theoryMax": 3,
+          "floor": 3,
+          "top": 3,
+          "graduation": 3
+        },
+        {
+          "category": "帮会技能",
+          "item": "减暴击（10级）",
+          "theoryMax": 3,
+          "floor": 3,
+          "top": 3,
+          "graduation": 3
+        },
+        {
+          "category": "幻灵石",
+          "item": "素娥强化版（限时7天）",
+          "theoryMax": 17,
+          "floor": 12,
+          "top": "12或9",
+          "graduation": 9
+        },
+        {
+          "category": "坐骑",
+          "item": "坐骑血脉",
+          "theoryMax": 7.5,
+          "floor": "7.5或6",
+          "top": "5+",
+          "graduation": "3+"
+        },
+        {
+          "category": "元神",
+          "item": "周天",
+          "theoryMax": 21,
+          "floor": 21,
+          "top": "15+",
+          "graduation": "9+"
+        },
+        {
+          "category": "炼丹",
+          "item": "丹息修真",
+          "theoryMax": 5,
+          "floor": 5,
+          "top": 5,
+          "graduation": 5
+        },
+        {
+          "category": "伙伴",
+          "item": "襄助",
+          "theoryMax": 4,
+          "floor": 4,
+          "top": 4,
+          "graduation": 4
+        },
+        {
+          "category": "仙府",
+          "item": "仙府供奉（昭武帽子+15）",
+          "theoryMax": 6,
+          "floor": 6,
+          "top": "2.5+",
+          "graduation": "2.5+"
+        }
+      ]
+    }
+  }
+}

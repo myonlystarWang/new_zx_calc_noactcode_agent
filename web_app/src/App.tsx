@@ -6,10 +6,11 @@ import { AttributePanel } from './components/business/AttributePanel';
 import { BuffPanel } from './components/business/BuffPanel';
 import { ResultSection } from './components/business/ResultsSection';
 import { SimulationArena } from './components/arena/SimulationArena';
+import { CompendiumView } from './components/compendium/CompendiumView';
 
 const MainContent: React.FC = () => {
   const { isLoading, userCharacter, updateCharacterAttributes } = useApp();
-  const [activeTab, setActiveTab] = useState<'calculator' | 'arena'>('calculator');
+  const [activeTab, setActiveTab] = useState<'calculator' | 'arena' | 'compendium'>('calculator');
 
   if (isLoading) {
     return (
@@ -53,13 +54,17 @@ const MainContent: React.FC = () => {
             </div>
           </div>
         </main>
-      ) : (
+      ) : activeTab === 'arena' ? (
         <main className="w-full max-w-none mx-auto px-3 xl:px-4 animate-in fade-in duration-300">
           <SimulationArena />
         </main>
+      ) : (
+        <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 animate-in fade-in duration-300">
+          <CompendiumView />
+        </main>
       )}
 
-      {activeTab === 'calculator' && <Footer />}
+      {activeTab !== 'arena' && <Footer />}
     </div>
   );
 };

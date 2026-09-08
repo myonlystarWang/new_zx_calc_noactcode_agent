@@ -1,0 +1,279 @@
+{
+  "_comment": "特殊属性来源清单（怪增/躲闪）：逐项来源与数值，供未来展示。来源：玩家总结分享图（完美世界论坛 bbs.wanmei.com），录入 2026-09-08。两项均已按合计逐行求和校验一致。",
+  "sections": {
+    "monsterDamageBonus": {
+      "title": "极致怪增攻略",
+      "total": 60.5,
+      "totalLabel": "完美 60.5",
+      "verified": true,
+      "sources": [
+        {
+          "category": "装备",
+          "item": "彰武武器",
+          "value": 8
+        },
+        {
+          "category": "法宝/印",
+          "item": "天命",
+          "value": 6
+        },
+        {
+          "category": "法宝/印",
+          "item": "覆天印",
+          "value": 6
+        },
+        {
+          "category": "星宿",
+          "item": "重华",
+          "value": 16
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵",
+          "value": 5.3
+        },
+        {
+          "category": "其他",
+          "item": "周天",
+          "value": 5
+        },
+        {
+          "category": "时装/活动",
+          "item": "贺岁2024",
+          "value": 1
+        },
+        {
+          "category": "时装/活动",
+          "item": "不知愁",
+          "value": 3
+        },
+        {
+          "category": "装备",
+          "item": "韵翎装",
+          "value": 1
+        },
+        {
+          "category": "宠物",
+          "item": "30星宠物",
+          "value": 3
+        },
+        {
+          "category": "其他",
+          "item": "仙府供奉",
+          "value": 1
+        },
+        {
+          "category": "法宝/印",
+          "item": "V8印",
+          "value": 1.2
+        },
+        {
+          "category": "法身/元婴",
+          "item": "元婴曜空",
+          "value": 3
+        },
+        {
+          "category": "首饰",
+          "item": "积分项链",
+          "value": 1
+        }
+      ]
+    },
+    "dodge": {
+      "title": "极致躲闪攻略",
+      "subtotal": 682.05,
+      "grandTotal": 701.05,
+      "verified": true,
+      "sources": [
+        {
+          "category": "衣服",
+          "item": "衣服天命+10",
+          "value": 29.1
+        },
+        {
+          "category": "衣服",
+          "item": "衣服神机",
+          "value": 12
+        },
+        {
+          "category": "衣服",
+          "item": "衣服血祭",
+          "value": 22
+        },
+        {
+          "category": "鞋子/腰带",
+          "item": "彰武鞋",
+          "value": 24.01
+        },
+        {
+          "category": "鞋子/腰带",
+          "item": "装备灌注4件",
+          "value": 20
+        },
+        {
+          "category": "鞋子/腰带",
+          "item": "腰带镶嵌",
+          "value": 13
+        },
+        {
+          "category": "法身/元婴",
+          "item": "法身",
+          "value": 30
+        },
+        {
+          "category": "法宝/印",
+          "item": "覆天印",
+          "value": 25
+        },
+        {
+          "category": "其他",
+          "item": "锦囊",
+          "value": 20
+        },
+        {
+          "category": "法身/元婴",
+          "item": "元婴",
+          "value": 31.5
+        },
+        {
+          "category": "法身/元婴",
+          "item": "元婴星语技能斗转参横",
+          "value": 4
+        },
+        {
+          "category": "法身/元婴",
+          "item": "星语镶嵌斗转参横·曜空",
+          "value": 10
+        },
+        {
+          "category": "首饰",
+          "item": "首饰翕忽",
+          "value": 35
+        },
+        {
+          "category": "首饰",
+          "item": "宝石",
+          "value": 21.6
+        },
+        {
+          "category": "首饰",
+          "item": "护符灌注",
+          "value": 4
+        },
+        {
+          "category": "首饰",
+          "item": "佩章九纹琅",
+          "value": 24
+        },
+        {
+          "category": "法宝/印",
+          "item": "法宝辅件",
+          "value": 2.02
+        },
+        {
+          "category": "星宿",
+          "item": "重华",
+          "value": 30
+        },
+        {
+          "category": "星宿",
+          "item": "帝鸿魄20级",
+          "value": 30
+        },
+        {
+          "category": "星宿",
+          "item": "星魂+赤霄符",
+          "value": 28
+        },
+        {
+          "category": "宠物",
+          "item": "宠物刻誓",
+          "value": 40
+        },
+        {
+          "category": "宠物",
+          "item": "宠物装备",
+          "value": 7
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵",
+          "value": 100.82
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵集",
+          "value": 8
+        },
+        {
+          "category": "心法/周天",
+          "item": "心法",
+          "value": 15
+        },
+        {
+          "category": "心法/周天",
+          "item": "周天",
+          "value": 21
+        },
+        {
+          "category": "称号/时装",
+          "item": "2026鲜花榜第一名称号",
+          "value": 26
+        },
+        {
+          "category": "称号/时装",
+          "item": "贺岁吉服2023",
+          "value": 1
+        },
+        {
+          "category": "称号/时装",
+          "item": "贺岁吉服2025",
+          "value": 1
+        },
+        {
+          "category": "其他",
+          "item": "生产专精",
+          "value": 3
+        },
+        {
+          "category": "称号/时装",
+          "item": "素娥强化版",
+          "value": 14
+        },
+        {
+          "category": "其他",
+          "item": "仙府供奉",
+          "value": 8
+        },
+        {
+          "category": "其他",
+          "item": "襄助",
+          "value": 2
+        },
+        {
+          "category": "其他",
+          "item": "造化20",
+          "value": 20
+        }
+      ],
+      "conditionals": [
+        {
+          "item": "鬼厉装（男号才有）",
+          "value": 2
+        },
+        {
+          "item": "佛阵营",
+          "value": 7
+        },
+        {
+          "item": "门派被动",
+          "value": 10,
+          "note": "原图注：门派被动如果再有10点以上就能到700"
+        }
+      ],
+      "notes": [
+        "682.05 为基础合计；+鬼厉装2 +佛阵营7 +门派被动10 = 701.05"
+      ]
+    }
+  }
+}

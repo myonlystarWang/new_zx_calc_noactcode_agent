@@ -1,5 +1,22 @@
 # Change Log
 
+## [1.0.4] - 2026-09-08
+
+### Added
+- `web_app/public/game_data/dungeons_monsters.json`：录入镇海！断浪碎晶宫（T21）全角色完整属性（来源：帮派内部参考 By：花千寻 截图）。六只 Boss 在原 `MonsterAttributeModifiers` 同级新增 `role: "boss"` 与 `displayAttributes`（18 项：等级／气血／血条／真气／攻击／防御／附加伤害／减免伤害／普攻命中／普攻躲闪／暴击率／暴击伤害／抗性／减免暴击／减免暴伤／技能躲闪／技能命中／无视减免）；三只小怪（缚魂触／化生触／潮音骨，含 `role: "add"`）置于同级顶层键 `ZHENHAI_DUANLANG_T21_ADDS`，避免破坏 "T19-T21 各 6 个 Boss" 的既有断言与前端 Boss 下拉。
+- `web_app/public/game_data/support_roles.json`：新增 PVE 辅助职业能力表（19 个职业的增伤／绿点／紫点／破防／其他能力／综合评定 S+~A，含回归玩家推荐与版本环境说明）。
+- 血缘关系已核对：T21 Boss 的 `MonsterHealth` = `displayAttributes.health × healthBars`，六只逐只比对一致。
+
+### Modified
+- `packages/simulation-engine/src/types.ts`：新增 `MonsterDisplayAttributes` 接口；`Monster` 增加可选字段 `role` 与 `displayAttributes`（计算器仍只读 `MonsterAttributeModifiers`，结算行为无变化）。
+
+### Removed
+- `web_app/public/game_data/skills.json`：移除 `SHI_LUO._PLACEHOLDER_META`（该元数据导致 `npm run test:b` 在 Skills Schema 校验阶段即报错）。其内容归档如下，供后续补齐释罗数据参考：
+  - note：已按截图实战占比归一化前 4 个技能的 `SkillFrequency`（最大余数法保留 4 位小数，严格 Σ=1.0000）；`Cooldown` / `CastTime` / `SkillImportanceWeight` 仍为占位（更新时间 2026-08-31 20:22:51）。
+  - 进度：已完成 `MO`（魔）；待补 `XIAN`（仙）、`FO`（佛）。
+  - 占位字段：`Cooldown`、`CastTime`。
+  - 爆发追踪：`SL_MO_SKILL_NSSXS`（孽·释罗生相·煞）= 0.5560、`SL_MO_SKILL_CWJHG`（赤乌·敕戒祸根）= 0.4440，由段数×单 hit 伤害推导，已非占位。
+
 ## [1.0.3] - 2026-06-10
 
 ### Added

@@ -2229,30 +2229,6 @@
         "_burstTrack": true,
         "_burstWeightDerivation": "含三因子每击递增(10%本攻+1%气血+1%真气)手动累加; 暴击倍率含+100爆伤"
       }
-    ],
-    "_PLACEHOLDER_META": {
-      "note": "已按截图实战占比归一化前4个技能的 SkillFrequency（最大余数法保留4位小数，严格 Σ=1.0000）。Cooldown/CastTime/SkillImportanceWeight 仍为占位。",
-      "updatedAt": "2026-08-31 20:22:51",
-      "factionsDone": [
-        "MO"
-      ],
-      "factionsPending": [
-        "XIAN",
-        "FO"
-      ],
-      "placeholderFields": [
-        "Cooldown",
-        "CastTime"
-      ],
-      "burstTrack": [
-        "SL_MO_SKILL_NSSXS",
-        "SL_MO_SKILL_CWJHG"
-      ],
-      "burstTrackNames": [
-        "孽·释罗生相·煞",
-        "赤乌·敕戒祸根"
-      ],
-      "burstWeightNote": "爆发权重由段数×单hit伤害推导(每技能仅丢一次): 孽·释罗生相·煞=0.5560, 赤乌·敕戒祸根=0.4440。已非占位。"
-    }
+    ]
   }
 }

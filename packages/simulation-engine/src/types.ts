@@ -116,11 +116,34 @@ export interface MonsterAttributeModifiers {
   MonsterCriticalHitRateReduction?: number;
 }
 
+export interface MonsterDisplayAttributes {
+  level?: number;
+  health?: number;
+  healthBars?: number;
+  zhenQi?: number;
+  attack?: number;
+  defense?: number;
+  bonusDamage?: number;
+  damageReduction?: number;
+  normalHit?: number;
+  normalDodge?: number;
+  critRate?: number;
+  critDamage?: number;
+  resistance?: number;
+  critRateReduction?: number;
+  critDamageReduction?: number;
+  skillDodge?: number;
+  skillHit?: number;
+  ignoreReduction?: number;
+}
+
 export interface Monster {
   MonsterID: string;
   MonsterName: string;
   DungeonLevel: number;
   MonsterAttributeModifiers: MonsterAttributeModifiers;
+  role?: 'boss' | 'add';
+  displayAttributes?: MonsterDisplayAttributes;
 }
 
 export interface DungeonMeta {

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Sword, Info } from 'lucide-react';
-import type { Dungeon, Skill, RankConfig } from '../../types';
+import type { Dungeon, Skill, RankConfig, Monster } from '../../types';
 import { calculateDamage } from '../../utils/calculator';
 import { clsx } from 'clsx';
 import { useApp } from '../../context/AppContext';
@@ -43,6 +43,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     };
     
     const [tooltipState, setTooltipState] = useState<{ visible: boolean; x: number; y: number; skill: Skill | null }>({ visible: false, x: 0, y: 0, skill: null });
+    const [monsterTooltipState, setMonsterTooltipState] = useState<{ visible: boolean; x: number; y: number; monster: Monster | null }>({ visible: false, x: 0, y: 0, monster: null });
 
     const getImportanceText = (weight: number) => {
         if (weight >= 0.8) return '重要';
@@ -84,6 +85,34 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     const numberToChinese = (num: number): string => {
         const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
         return chineseNumbers[num] || num.toString();
+    };
+
+    const formatBossValue = (key: string, value: number | undefined) => {
+        if (value === undefined || value === null) return '-';
+        const bigNumberKeys = ['health', 'attack', 'defense', 'zhenQi', 'bonusDamage', 'damageReduction', 'normalHit', 'skillHit', 'resistance', 'ignoreReduction'];
+        if (bigNumberKeys.includes(key)) return formatDamage(value);
+        return Math.round(value).toLocaleString();
+    };
+
+    const ATTR_LABELS: Record<string, string> = {
+        level: '等级',
+        health: '气血（单条）',
+        healthBars: '血条数',
+        zhenQi: '真气',
+        attack: '攻击',
+        defense: '防御',
+        bonusDamage: '附加伤害',
+        damageReduction: '减免伤害',
+        normalHit: '普攻命中',
+        normalDodge: '普攻躲闪',
+        critRate: '暴击率',
+        critDamage: '暴伤',
+        resistance: '抗性',
+        critRateReduction: '减暴击',
+        critDamageReduction: '减爆伤',
+        skillDodge: '技能躲闪',
+        skillHit: '技能命中',
+        ignoreReduction: '无视减免'
     };
 
     const showContent = standalone || isExpanded;
@@ -230,6 +259,22 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                         )}>
                                             {monster.MonsterName}
                                         </span>
+                                        {monster.displayAttributes && (
+                                            <Info
+                                                className="w-3.5 h-3.5 text-slate-600 hover:text-[var(--theme-primary)] transition-colors shrink-0 ml-0.5"
+                                                onClick={(e) => e.stopPropagation()}
+                                                onMouseEnter={(e) => {
+                                                    e.stopPropagation();
+                                                    setMonsterTooltipState({ visible: true, x: e.clientX, y: e.clientY, monster });
+                                                }}
+                                                onMouseMove={(e) => {
+                                                    setMonsterTooltipState(prev => prev.visible ? { ...prev, x: e.clientX, y: e.clientY } : prev);
+                                                }}
+                                                onMouseLeave={() => {
+                                                    setMonsterTooltipState(prev => ({ ...prev, visible: false }));
+                                                }}
+                                            />
+                                        )}
                                     </button>
                                 );
                             })}
@@ -382,6 +427,31 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                             <div className="text-slate-400">重要性: <span className={clsx("font-medium", tooltipState.skill.SkillImportanceWeight >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillImportanceWeight >= 0.5 ? "text-[var(--theme-accent)]" : "text-slate-400")}>{getImportanceText(tooltipState.skill.SkillImportanceWeight)}</span></div>
                             <div className="text-slate-400">使用频次: <span className={clsx("font-medium", tooltipState.skill.SkillFrequency >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillFrequency >= 0.4 ? "text-[var(--theme-accent)]" : "text-slate-400")}>{getFrequencyText(tooltipState.skill.SkillFrequency)}</span></div>
                         </div>
+                    </div>
+                </div>,
+                document.body
+            )}
+
+            {monsterTooltipState.visible && monsterTooltipState.monster?.displayAttributes && createPortal(
+                <div 
+                    className="fixed z-[9999] pointer-events-none w-[340px] p-4 bg-slate-955/95 border border-slate-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-opacity animate-in fade-in max-h-[460px] overflow-y-auto"
+                    style={{ 
+                        left: Math.min(monsterTooltipState.x + 15, window.innerWidth - 360), 
+                        top: Math.max(10, Math.min(monsterTooltipState.y - 150, window.innerHeight - 470))
+                    }}
+                >
+                    <div className="flex flex-col gap-3 font-normal whitespace-normal">
+                        <div className="text-[var(--theme-primary)] font-bold border-b border-slate-800 pb-2 flex items-center justify-between">
+                            <span>Boss 属性详情</span>
+                            <span className="text-xs text-slate-500 truncate max-w-[140px]">{monsterTooltipState.monster.MonsterName}</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+                            <div className="text-slate-400">总血量: <span className="text-yellow-300 font-medium">{formatBossValue('health', (monsterTooltipState.monster.displayAttributes.health || 0) * (monsterTooltipState.monster.displayAttributes.healthBars || 1))}</span></div>
+                            {Object.entries(monsterTooltipState.monster.displayAttributes).map(([key, value]) => (
+                                <div key={key} className="text-slate-400">{ATTR_LABELS[key] || key}: <span className="text-slate-200">{formatBossValue(key, value as number)}</span></div>
+                            ))}
+                        </div>
+                        <div className="text-[10px] text-slate-600 pt-1 border-t border-slate-800">数据来自玩家截图录入，仅供参考</div>
                     </div>
                 </div>,
                 document.body

@@ -513,6 +513,27 @@
         "MonsterDefense": 500000,
         "MonsterHealth": 196829815000,
         "MonsterCriticalHitRateReduction": 295
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 1968298150,
+        "healthBars": 100,
+        "zhenQi": 0,
+        "attack": 470000,
+        "defense": 500000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 290,
+        "critDamage": 2150,
+        "resistance": 9999,
+        "critRateReduction": 295,
+        "critDamageReduction": 1600,
+        "skillDodge": 230,
+        "skillHit": 999900,
+        "ignoreReduction": 145
       }
     },
     {
@@ -524,6 +545,27 @@
         "MonsterDefense": 540000,
         "MonsterHealth": 179420395200,
         "MonsterCriticalHitRateReduction": 310
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 1794203952,
+        "healthBars": 100,
+        "zhenQi": 0,
+        "attack": 460000,
+        "defense": 540000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 280,
+        "critDamage": 2100,
+        "resistance": 9999,
+        "critRateReduction": 310,
+        "critDamageReduction": 1800,
+        "skillDodge": 230,
+        "skillHit": 999900,
+        "ignoreReduction": 145
       }
     },
     {
@@ -535,6 +577,27 @@
         "MonsterDefense": 530000,
         "MonsterHealth": 286991488560,
         "MonsterCriticalHitRateReduction": 305
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 2049939204,
+        "healthBars": 140,
+        "zhenQi": 0,
+        "attack": 470000,
+        "defense": 530000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 285,
+        "critDamage": 2150,
+        "resistance": 9999,
+        "critRateReduction": 305,
+        "critDamageReduction": 1750,
+        "skillDodge": 230,
+        "skillHit": 999900,
+        "ignoreReduction": 145
       }
     },
     {
@@ -546,6 +609,27 @@
         "MonsterDefense": 520000,
         "MonsterHealth": 346174769750,
         "MonsterCriticalHitRateReduction": 300
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 2036322175,
+        "healthBars": 170,
+        "zhenQi": 0,
+        "attack": 480000,
+        "defense": 520000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 295,
+        "critDamage": 2250,
+        "resistance": 9999,
+        "critRateReduction": 300,
+        "critDamageReduction": 1650,
+        "skillDodge": 235,
+        "skillHit": 999900,
+        "ignoreReduction": 145
       }
     },
     {
@@ -557,6 +641,27 @@
         "MonsterDefense": 510000,
         "MonsterHealth": 376183763750,
         "MonsterCriticalHitRateReduction": 300
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 2033425750,
+        "healthBars": 185,
+        "zhenQi": 0,
+        "attack": 490000,
+        "defense": 510000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 290,
+        "critDamage": 2200,
+        "resistance": 9999,
+        "critRateReduction": 300,
+        "critDamageReduction": 1700,
+        "skillDodge": 235,
+        "skillHit": 999900,
+        "ignoreReduction": 145
       }
     },
     {
@@ -568,6 +673,27 @@
         "MonsterDefense": 535000,
         "MonsterHealth": 410384512400,
         "MonsterCriticalHitRateReduction": 310
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 2051922562,
+        "healthBars": 200,
+        "zhenQi": 0,
+        "attack": 500000,
+        "defense": 535000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 300,
+        "critDamage": 2300,
+        "resistance": 9999,
+        "critRateReduction": 310,
+        "critDamageReduction": 1700,
+        "skillDodge": 240,
+        "skillHit": 999900,
+        "ignoreReduction": 145
       }
     }
   ],
@@ -719,6 +845,104 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1700,
         "DamageCompressionPercent": 97
+      }
+    }
+  ],
+  "ZHENHAI_DUANLANG_T21_ADDS": [
+    {
+      "MonsterID": "FU_HUN_CHU_T21",
+      "MonsterName": "缚魂触",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1400,
+        "MonsterDefense": 400000,
+        "MonsterHealth": 3544530090,
+        "MonsterCriticalHitRateReduction": 230
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 1772265045,
+        "healthBars": 2,
+        "zhenQi": 0,
+        "attack": 0,
+        "defense": 400000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 0,
+        "critDamage": 0,
+        "resistance": 9999,
+        "critRateReduction": 230,
+        "critDamageReduction": 1400,
+        "skillDodge": 220,
+        "skillHit": 999900,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "HUA_SHENG_CHU_T21",
+      "MonsterName": "化生触",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1400,
+        "MonsterDefense": 410000,
+        "MonsterHealth": 569852222,
+        "MonsterCriticalHitRateReduction": 230
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 569852222,
+        "healthBars": 1,
+        "zhenQi": 0,
+        "attack": 310000,
+        "defense": 410000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 250,
+        "critDamage": 1520,
+        "resistance": 9999,
+        "critRateReduction": 230,
+        "critDamageReduction": 1400,
+        "skillDodge": 220,
+        "skillHit": 999900,
+        "ignoreReduction": 90
+      }
+    },
+    {
+      "MonsterID": "CHAO_YIN_GU_T21",
+      "MonsterName": "潮音骨",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1750,
+        "MonsterDefense": 430000,
+        "MonsterHealth": 18768103840,
+        "MonsterCriticalHitRateReduction": 270
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 1876810384,
+        "healthBars": 10,
+        "zhenQi": 0,
+        "attack": 0,
+        "defense": 430000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 0,
+        "critDamage": 0,
+        "resistance": 9999,
+        "critRateReduction": 270,
+        "critDamageReduction": 1750,
+        "skillDodge": 220,
+        "skillHit": 999900,
+        "ignoreReduction": 0
       }
     }
   ]
