@@ -449,57 +449,56 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     {role.rating}
                 </span>
             </div>
-            {/* 减益区：固定 5 列网格，空位占位 */}
-            <div>
-                <div className="flex items-center gap-1 mb-1">
-                    <span className="w-1 h-2.5 bg-rose-500/70 rounded-full"></span>
-                    <span className="text-[11px] font-medium text-rose-300">减益</span>
-                </div>
-                <div className="grid grid-cols-5 gap-1">
-                    {debuffItems.map((m) => {
-                        const empty = isZeroValue(m.value);
-                        return (
-                            <div key={m.label} className="flex flex-col items-center rounded-lg py-1.5 px-1 bg-slate-900/50">
+            {/* 减益区：仅显示非零，左对齐 flex-wrap */}
+            {debuffItems.some((m) => !isZeroValue(m.value)) && (
+                <div>
+                    <div className="flex items-center gap-1 mb-1">
+                        <span className="w-1 h-2.5 bg-rose-500/70 rounded-full"></span>
+                        <span className="text-[11px] font-medium text-rose-300">减益</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                        {debuffItems.filter((m) => !isZeroValue(m.value)).map((m) => (
+                            <div key={m.label} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.25rem] bg-slate-900/50">
                                 <span className={clsx(
-                                    'mb-0.5 leading-none text-center text-[10px]',
-                                    m.label.length > 2 ? 'text-[9px]' : '',
-                                    empty ? 'text-slate-700' : 'text-slate-500'
+                                    'mb-0.5 leading-none text-center text-[10px] text-slate-500',
+                                    m.label.length > 2 ? 'text-[9px]' : ''
                                 )}>
                                     {m.label}
                                 </span>
-                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', empty ? 'text-slate-700' : m.color)}>
-                                    {empty ? '—' : renderValue(m.value)}
+                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
+                                    {renderValue(m.value)}
                                 </span>
                             </div>
-                        );
-                    })}
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
-            {/* 增益区：固定 5 列网格，空位占位 */}
-            <div>
-                <div className="flex items-center gap-1 mb-1">
-                    <span className="w-1 h-2.5 bg-emerald-500/70 rounded-full"></span>
-                    <span className="text-[11px] font-medium text-emerald-300">增益</span>
+            {/* 增益区：仅显示非零，左对齐 flex-wrap */}
+            {buffItems.some((b) => !b.empty) && (
+                <div>
+                    <div className="flex items-center gap-1 mb-1">
+                        <span className="w-1 h-2.5 bg-emerald-500/70 rounded-full"></span>
+                        <span className="text-[11px] font-medium text-emerald-300">增益</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                        {buffItems.filter((b) => !b.empty).map((b) => (
+                            <div key={b.key} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.25rem] bg-slate-900/50">
+                                <span className={clsx(
+                                    'mb-0.5 leading-none text-center text-[10px] text-slate-500',
+                                    b.label.length > 3 ? 'text-[9px]' : ''
+                                )}>
+                                    {b.label}
+                                </span>
+                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', b.color)}>
+                                    {renderValue(b.value)}
+                                </span>
+                                {b.sub && <span className="text-[8px] text-slate-500 leading-tight mt-0.5 text-center">{b.sub}</span>}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-                <div className="grid grid-cols-5 gap-1">
-                    {buffItems.map((b) => (
-                        <div key={b.key} className="flex flex-col items-center rounded-lg py-1.5 px-1 bg-slate-900/50">
-                            <span className={clsx(
-                                'mb-0.5 leading-none text-center text-[10px]',
-                                b.label.length > 3 ? 'text-[9px]' : '',
-                                b.empty ? 'text-slate-700' : 'text-slate-500'
-                            )}>
-                                {b.label}
-                            </span>
-                            <span className={clsx('text-xs sm:text-sm font-mono font-bold', b.empty ? 'text-slate-700' : b.color)}>
-                                {b.empty ? '—' : renderValue(b.value)}
-                            </span>
-                            {!b.empty && b.sub && <span className="text-[8px] text-slate-500 leading-tight mt-0.5 text-center">{b.sub}</span>}
-                        </div>
-                    ))}
-                </div>
-            </div>
+            )}
 
             <div className="flex flex-wrap gap-1">
                 {role.abilities.map((ability, i) => (
