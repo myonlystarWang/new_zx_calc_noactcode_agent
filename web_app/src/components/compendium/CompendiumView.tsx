@@ -467,7 +467,9 @@ const FocusReferenceSection: React.FC = () => {
 
     return (
         <div data-item="专注值参考" className="zx-card p-4 sm:p-5">
-            <SectionTitle title="专注值参考" verified />
+            <h4 className="text-sm font-bold text-slate-400 mb-3 flex items-center gap-1.5">
+                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>专注值参考
+            </h4>
             <div className="flex flex-wrap gap-2">
                 {general.map((g: any, i: number) => (
                     <FocusRow key={`g${i}`} name={g.name} value={g.total} />
