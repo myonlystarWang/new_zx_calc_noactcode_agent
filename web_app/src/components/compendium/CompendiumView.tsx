@@ -371,7 +371,7 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
         { label: metrics[1] ?? '绿点', value: role.greenPoint, color: 'text-emerald-400' },
         { label: metrics[2] ?? '紫点', value: role.purplePoint, color: 'text-purple-400' },
         { label: metrics[3] ?? '破防', value: role.defenseBreak, color: 'text-rose-400' },
-    ].filter((m) => !isZeroValue(m.value));
+    ];
 
     // —— 增益区：仅非零，专注 label 由 focusType 推导 ——
     const focusLabel = ((): string => {
@@ -385,13 +385,15 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
     })();
     const scalingNote = focusScalingNote(role);
 
-    const buffItems: { key: string; label: string; color: string; value: number | string; sub?: string | null }[] = [];
-    if (!isZeroValue(role.focus))
-        buffItems.push({ key: 'focus', label: focusLabel, color: 'text-orange-400', value: role.focus ?? 0, sub: scalingNote });
-    (['critDamage', 'atkUp', 'healUp', 'manaUp', 'defUp', 'monsterDmgUp'] as BuffKey[]).forEach((k) => {
-        const v = (role as unknown as Record<string, number | string | undefined>)[k];
-        if (!isZeroValue(v) && v !== undefined) buffItems.push({ key: k, label: BUFF_FIELDS[k].label, color: BUFF_FIELDS[k].color, value: v });
-    });
+    const buffItems: { key: string; label: string; color: string; value: number | string; sub?: string | null; empty: boolean }[] = [
+        { key: 'focus', label: focusLabel, color: 'text-orange-400', value: role.focus ?? 0, sub: scalingNote, empty: isZeroValue(role.focus) },
+        { key: 'critDamage', label: BUFF_FIELDS.critDamage.label, color: BUFF_FIELDS.critDamage.color, value: role.critDamage ?? 0, empty: isZeroValue(role.critDamage) },
+        { key: 'atkUp', label: BUFF_FIELDS.atkUp.label, color: BUFF_FIELDS.atkUp.color, value: role.atkUp ?? 0, empty: isZeroValue(role.atkUp) },
+        { key: 'healUp', label: BUFF_FIELDS.healUp.label, color: BUFF_FIELDS.healUp.color, value: role.healUp ?? 0, empty: isZeroValue(role.healUp) },
+        { key: 'manaUp', label: BUFF_FIELDS.manaUp.label, color: BUFF_FIELDS.manaUp.color, value: role.manaUp ?? 0, empty: isZeroValue(role.manaUp) },
+        { key: 'defUp', label: BUFF_FIELDS.defUp.label, color: BUFF_FIELDS.defUp.color, value: role.defUp ?? 0, empty: isZeroValue(role.defUp) },
+        { key: 'monsterDmgUp', label: BUFF_FIELDS.monsterDmgUp.label, color: BUFF_FIELDS.monsterDmgUp.color, value: role.monsterDmgUp ?? 0, empty: isZeroValue(role.monsterDmgUp) },
+    ];
 
     const ratingColor = (r: string) => {
         if (r.startsWith('S+')) return 'text-yellow-400 border-yellow-400/50 bg-yellow-500/10';
@@ -447,52 +449,57 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     {role.rating}
                 </span>
             </div>
-            {/* 减益区：左对齐，统一卡片 */}
-            {debuffItems.length > 0 && (
-                <div>
-                    <div className="text-[10px] text-slate-500 mb-1">减益</div>
-                    <div className="flex flex-wrap gap-1.5">
-                        {debuffItems.map((m) => (
-                            <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-2 min-w-[3.5rem]">
+            {/* 减益区：固定 4 槽，空位占位 */}
+            <div>
+                <div className="flex items-center gap-1 mb-1">
+                    <span className="w-1 h-2.5 bg-rose-500/70 rounded-full"></span>
+                    <span className="text-[11px] font-medium text-rose-300">减益</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                    {debuffItems.map((m) => {
+                        const empty = isZeroValue(m.value);
+                        return (
+                            <div key={m.label} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.5rem] bg-slate-900/50">
                                 <span className={clsx(
                                     'mb-0.5 leading-none text-center text-[10px]',
                                     m.label.length > 2 ? 'text-[9px]' : '',
-                                    m.color
+                                    empty ? 'text-slate-700' : m.color
                                 )}>
                                     {m.label}
                                 </span>
-                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
-                                    {renderValue(m.value)}
+                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', empty ? 'text-slate-700' : m.color)}>
+                                    {empty ? '—' : renderValue(m.value)}
                                 </span>
                             </div>
-                        ))}
-                    </div>
+                        );
+                    })}
                 </div>
-            )}
+            </div>
 
-            {/* 增益区：与减益区统一卡片样式，左对齐 */}
-            {buffItems.length > 0 && (
-                <div>
-                    <div className="text-[10px] text-slate-500 mb-1">增益</div>
-                    <div className="flex flex-wrap gap-1.5">
-                        {buffItems.map((b) => (
-                            <div key={b.key} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-2 min-w-[3.5rem]">
-                                <span className={clsx(
-                                    'mb-0.5 leading-none text-center text-[10px]',
-                                    b.label.length > 3 ? 'text-[9px]' : '',
-                                    b.color
-                                )}>
-                                    {b.label}
-                                </span>
-                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', b.color)}>
-                                    {renderValue(b.value)}
-                                </span>
-                                {b.sub && <span className="text-[8px] text-slate-500 leading-tight mt-0.5 text-center">{b.sub}</span>}
-                            </div>
-                        ))}
-                    </div>
+            {/* 增益区：固定 7 槽，空位占位 */}
+            <div>
+                <div className="flex items-center gap-1 mb-1">
+                    <span className="w-1 h-2.5 bg-emerald-500/70 rounded-full"></span>
+                    <span className="text-[11px] font-medium text-emerald-300">增益</span>
                 </div>
-            )}
+                <div className="flex flex-wrap gap-1.5">
+                    {buffItems.map((b) => (
+                        <div key={b.key} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.5rem] bg-slate-900/50">
+                            <span className={clsx(
+                                'mb-0.5 leading-none text-center text-[10px]',
+                                b.label.length > 3 ? 'text-[9px]' : '',
+                                b.empty ? 'text-slate-700' : b.color
+                            )}>
+                                {b.label}
+                            </span>
+                            <span className={clsx('text-xs sm:text-sm font-mono font-bold', b.empty ? 'text-slate-700' : b.color)}>
+                                {b.empty ? '—' : renderValue(b.value)}
+                            </span>
+                            {!b.empty && b.sub && <span className="text-[8px] text-slate-500 leading-tight mt-0.5 text-center">{b.sub}</span>}
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             <div className="flex flex-wrap gap-1">
                 {role.abilities.map((ability, i) => (
