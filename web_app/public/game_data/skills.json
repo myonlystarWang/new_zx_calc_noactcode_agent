@@ -2356,8 +2356,7 @@
         "易伤",
         "绿点",
         "紫点",
-        "破防",
-        "专注"
+        "破防"
       ],
       "roles": [
         {
@@ -2470,6 +2469,26 @@
           "focusType": [
             "self"
           ],
+          "roleType": "support",
+          "critDamage": 200
+        },
+        {
+          "name": "青罗",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 300,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 0,
+          "critDamage": 280,
+          "abilities": [
+            "单体加暴伤",
+            "T1状态输出"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
           "roleType": "support"
         },
         {
@@ -2483,7 +2502,8 @@
           "abilities": [
             "群锁血",
             "免死",
-            "加攻击"
+            "加攻击",
+            "每40万真气+1群体专注"
           ],
           "rating": "S",
           "focusType": [
@@ -2696,9 +2716,10 @@
           "greenPoint": 120,
           "purplePoint": 39,
           "defenseBreak": 180,
-          "focus": 0,
+          "focus": "0+",
           "abilities": [
-            "T1状态输出"
+            "T1状态输出",
+            "每4万真气+1专注"
           ],
           "rating": "A",
           "focusType": [
@@ -2818,7 +2839,7 @@
           "defenseBreak": 0,
           "focus": 30,
           "abilities": [
-            "输出职业"
+            "T1输出"
           ],
           "rating": "A+",
           "focusType": [
@@ -2835,7 +2856,7 @@
           "defenseBreak": 0,
           "focus": 30,
           "abilities": [
-            "输出职业"
+            "T1输出"
           ],
           "rating": "A+",
           "focusType": [
@@ -2853,7 +2874,7 @@
           "focus": "70+",
           "abilities": [
             "T0输出",
-            "每10万真气+1专注"
+            "每10万真气+1自身专注"
           ],
           "rating": "S+",
           "focusType": [
