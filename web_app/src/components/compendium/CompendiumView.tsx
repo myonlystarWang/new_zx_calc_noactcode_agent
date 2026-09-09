@@ -333,7 +333,7 @@ const ratingRank = (rating?: string): number => {
 };
 
 const isZeroValue = (v: number | string | undefined): boolean => {
-    if (v === undefined || v === null) return false;
+    if (v === undefined || v === null) return true;
     if (typeof v === 'number') return v === 0;
     const n = Number(v);
     return !Number.isNaN(n) && n === 0;
