@@ -2376,7 +2376,8 @@
           "rating": "S+",
           "focusType": [
             "group"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "天音",
@@ -2397,7 +2398,8 @@
           "rating": "S+",
           "focusType": [
             "group"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "天华",
@@ -2414,7 +2416,8 @@
           "rating": "S+",
           "focusType": [
             "group"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "太昊",
@@ -2428,7 +2431,8 @@
             "增加急速",
             "T0状态输出"
           ],
-          "rating": "S"
+          "rating": "S",
+          "roleType": "support"
         },
         {
           "name": "昭冥",
@@ -2447,7 +2451,8 @@
           "rating": "S",
           "focusType": [
             "group"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "青罗",
@@ -2464,7 +2469,8 @@
           "rating": "S",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "画影",
@@ -2482,7 +2488,8 @@
           "rating": "S",
           "focusType": [
             "group"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "英招",
@@ -2496,7 +2503,8 @@
             "团队加攻防",
             "抗怪"
           ],
-          "rating": "S"
+          "rating": "S",
+          "roleType": "support"
         },
         {
           "name": "鬼王",
@@ -2510,7 +2518,8 @@
             "九变",
             "抗怪"
           ],
-          "rating": "S"
+          "rating": "S",
+          "roleType": "support"
         },
         {
           "name": "鬼王",
@@ -2524,7 +2533,8 @@
             "九变",
             "抗怪"
           ],
-          "rating": "S"
+          "rating": "S",
+          "roleType": "support"
         },
         {
           "name": "鬼王",
@@ -2538,7 +2548,8 @@
             "九变",
             "抗怪"
           ],
-          "rating": "S"
+          "rating": "S",
+          "roleType": "support"
         },
         {
           "name": "鬼道",
@@ -2551,7 +2562,8 @@
           "abilities": [
             "洞主"
           ],
-          "rating": "S"
+          "rating": "S",
+          "roleType": "support"
         },
         {
           "name": "释罗",
@@ -2569,7 +2581,8 @@
           "rating": "S",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "烈山",
@@ -2582,7 +2595,8 @@
           "abilities": [
             "最高紫点"
           ],
-          "rating": "S"
+          "rating": "S",
+          "roleType": "support"
         },
         {
           "name": "百灵",
@@ -2598,7 +2612,8 @@
             "加攻击",
             "加血上限"
           ],
-          "rating": "A+"
+          "rating": "A+",
+          "roleType": "support"
         },
         {
           "name": "百灵",
@@ -2614,7 +2629,8 @@
             "加攻击",
             "加血上限"
           ],
-          "rating": "A+"
+          "rating": "A+",
+          "roleType": "support"
         },
         {
           "name": "破军",
@@ -2627,7 +2643,8 @@
           "abilities": [
             "T1状态输出"
           ],
-          "rating": "A+"
+          "rating": "A+",
+          "roleType": "support"
         },
         {
           "name": "牵机",
@@ -2640,7 +2657,8 @@
           "abilities": [
             "群破防"
           ],
-          "rating": "A"
+          "rating": "A",
+          "roleType": "support"
         },
         {
           "name": "九黎",
@@ -2654,7 +2672,8 @@
             "增加气血上限",
             "技能伤害"
           ],
-          "rating": "A"
+          "rating": "A",
+          "roleType": "support"
         },
         {
           "name": "长生堂",
@@ -2667,7 +2686,8 @@
           "abilities": [
             "T1+输出"
           ],
-          "rating": "A"
+          "rating": "A",
+          "roleType": "support"
         },
         {
           "name": "怀光",
@@ -2683,7 +2703,8 @@
           "rating": "A",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "合欢",
@@ -2700,7 +2721,8 @@
           "rating": "A",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "support"
         },
         {
           "name": "逐霜",
@@ -2716,7 +2738,8 @@
           "rating": "S+",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "dps"
         },
         {
           "name": "逐霜",
@@ -2732,7 +2755,8 @@
           "rating": "S+",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "dps"
         },
         {
           "name": "归云",
@@ -2748,7 +2772,8 @@
           "rating": "S+",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "dps"
         },
         {
           "name": "归云",
@@ -2764,7 +2789,8 @@
           "rating": "S+",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "dps"
         },
         {
           "name": "青云",
@@ -2780,7 +2806,8 @@
           "rating": "A+",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "dps"
         },
         {
           "name": "青云",
@@ -2796,7 +2823,8 @@
           "rating": "A+",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "dps"
         },
         {
           "name": "青云",
@@ -2812,7 +2840,8 @@
           "rating": "A+",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "dps"
         },
         {
           "name": "涅羽",
@@ -2829,7 +2858,8 @@
           "rating": "S+",
           "focusType": [
             "self"
-          ]
+          ],
+          "roleType": "dps"
         }
       ],
       "notes": [

@@ -365,6 +365,12 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
         return 'text-slate-300 border-slate-500/50 bg-slate-500/10';
     };
 
+    const roleTypeBadge = (roleType?: 'dps' | 'support') => {
+        if (roleType === 'dps') return 'text-rose-300 border-rose-400/50 bg-rose-500/10';
+        if (roleType === 'support') return 'text-cyan-300 border-cyan-400/50 bg-cyan-500/10';
+        return 'text-slate-400 border-slate-500/30 bg-slate-500/10';
+    };
+
     const factionColor = (f: string) => {
         const key = f.charAt(0); // 支持组合阵营（如 魔佛/仙佛），按首字符取色
         if (key === '仙') return 'text-sky-300 border-sky-400/50 bg-sky-500/15 shadow-[0_0_10px_rgba(56,189,248,0.30)]';
@@ -407,6 +413,9 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                 <div className="flex items-center gap-1.5 min-w-0">
                     <span className="text-base font-bold text-slate-100 truncate">{role.name}</span>
                     <FactionBadge faction={role.faction} />
+                    <span className={clsx('text-[10px] font-bold px-1 py-0.5 rounded border flex-shrink-0', roleTypeBadge(role.roleType))}>
+                        {role.roleType === 'dps' ? '输出' : '辅助'}
+                    </span>
                 </div>
                 <span className={clsx('text-xs font-black px-1.5 py-0.5 rounded border flex-shrink-0', ratingColor(role.rating))}>
                     {role.rating}
@@ -428,13 +437,15 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     )
                 )}
             </div>
-            <div className="flex flex-wrap gap-1">
-                {role.abilities.map((ability, i) => (
-                    <span key={i} className="text-xs text-slate-300 bg-slate-800/70 border border-slate-700/50 px-1.5 py-0.5 rounded">
-                        {ability}
-                    </span>
-                ))}
-            </div>
+            {role.roleType !== 'dps' && (
+                <div className="flex flex-wrap gap-1">
+                    {role.abilities.map((ability, i) => (
+                        <span key={i} className="text-xs text-slate-300 bg-slate-800/70 border border-slate-700/50 px-1.5 py-0.5 rounded">
+                            {ability}
+                        </span>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
@@ -461,20 +472,20 @@ const FocusReferenceSection: React.FC = () => {
         <div data-item="专注值参考" className="zx-card p-4 sm:p-5">
             <SectionTitle title="专注值参考" verified />
             <p className="text-sm text-slate-500 -mt-2 mb-4">
-                专注分为 <span className="text-slate-300 font-semibold">自身专注</span> 与 <span className="text-slate-300 font-semibold">群体专注</span> 两类；有的职业两者兼具，会同时出现在两个分组中。数值带 <span className="text-orange-400 font-mono font-bold">+</span> 表示随真气等条件仍可继续提升。
+                <span className="text-slate-300 font-semibold">自身专注</span> 为输出职业个人属性；<span className="text-slate-300 font-semibold">群体专注</span> 为辅助职业给团队加的专注类增伤。数值带 <span className="text-orange-400 font-mono font-bold">+</span> 表示仍可继续提升。
             </p>
 
             <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
-                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>自身专注
+                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>自身专注（输出职业）
             </h4>
             <div className="flex flex-wrap gap-2 mb-4">
                 {selfRoles.sort(sortByFocus).map((r) => (
-                    <FocusRow key={`${r.name}-${r.faction}`} name={r.name} faction={r.faction} value={r.focus} />
+                    <FocusRow key={`${r.name}-${r.faction}`} name={r.name} faction={r.roleType === 'dps' ? undefined : r.faction} value={r.focus} />
                 ))}
             </div>
 
             <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
-                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>群体专注
+                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>群体专注（辅助职业）
             </h4>
             <div className="flex flex-wrap gap-2">
                 {general.map((g: any, i: number) => (
