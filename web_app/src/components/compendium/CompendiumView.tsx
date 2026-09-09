@@ -437,33 +437,30 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     )
                 )}
             </div>
-            {role.roleType !== 'dps' && (
-                <div className="flex flex-wrap gap-1">
-                    {role.abilities.map((ability, i) => (
-                        <span key={i} className="text-xs text-slate-300 bg-slate-800/70 border border-slate-700/50 px-1.5 py-0.5 rounded">
-                            {ability}
-                        </span>
-                    ))}
-                </div>
-            )}
+            <div className="flex flex-wrap gap-1">
+                {role.abilities.map((ability, i) => (
+                    <span key={i} className="text-xs text-slate-300 bg-slate-800/70 border border-slate-700/50 px-1.5 py-0.5 rounded">
+                        {ability}
+                    </span>
+                ))}
+            </div>
         </div>
     );
 };
 
-/* ---- 专注值参考：以灰色标题分组 自身专注 / 群体专注（可同时出现） ---- */
+/* ---- 专注值参考：输出职业自身专注 / 通用群体专注（三碗专注） ---- */
 const FocusReferenceSection: React.FC = () => {
     const allRoles = DataService.getInstance().getSupportRoles()?.roles ?? [];
     const general = DataService.getInstance().getSkillMeta()?.focusReference?.general ?? [];
 
-    const selfRoles = allRoles.filter((r) => Array.isArray(r.focusType) && r.focusType.includes('self'));
-    const groupRoles = allRoles.filter((r) => Array.isArray(r.focusType) && r.focusType.includes('group'));
-    if (selfRoles.length === 0 && groupRoles.length === 0 && general.length === 0) return null;
+    const dpsRoles = allRoles.filter((r) => r.roleType === 'dps' && Array.isArray(r.focusType) && r.focusType.includes('self'));
+    if (dpsRoles.length === 0 && general.length === 0) return null;
 
     const sortByFocus = (a: SupportRole, b: SupportRole) => metricValue(b.focus) - metricValue(a.focus);
 
-    const FocusRow: React.FC<{ name: string; faction?: string; value: number | string | undefined }> = ({ name, faction, value }) => (
+    const FocusRow: React.FC<{ name: string; value: number | string | undefined }> = ({ name, value }) => (
         <div data-item={name} className="bg-slate-900/50 rounded-xl px-3 py-2 border border-slate-700/40 flex items-center gap-2">
-            <span className="text-sm font-bold text-slate-200">{name}{faction && <span className="text-slate-500 text-xs ml-1">{faction}</span>}</span>
+            <span className="text-sm font-bold text-slate-200">{name}</span>
             <span className="text-base font-black text-orange-400 font-mono ml-auto">{isZeroValue(value) ? '—' : renderValue(value)}</span>
         </div>
     );
@@ -471,30 +468,32 @@ const FocusReferenceSection: React.FC = () => {
     return (
         <div data-item="专注值参考" className="zx-card p-4 sm:p-5">
             <SectionTitle title="专注值参考" verified />
-            <p className="text-sm text-slate-500 -mt-2 mb-4">
-                <span className="text-slate-300 font-semibold">自身专注</span> 为输出职业个人属性；<span className="text-slate-300 font-semibold">群体专注</span> 为辅助职业给团队加的专注类增伤。数值带 <span className="text-orange-400 font-mono font-bold">+</span> 表示仍可继续提升。
-            </p>
 
-            <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
-                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>自身专注（输出职业）
-            </h4>
-            <div className="flex flex-wrap gap-2 mb-4">
-                {selfRoles.sort(sortByFocus).map((r) => (
-                    <FocusRow key={`${r.name}-${r.faction}`} name={r.name} faction={r.roleType === 'dps' ? undefined : r.faction} value={r.focus} />
-                ))}
-            </div>
+            {dpsRoles.length > 0 && (
+                <>
+                    <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
+                        <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>输出职业
+                    </h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {dpsRoles.sort(sortByFocus).map((r) => (
+                            <FocusRow key={`${r.name}-${r.faction}`} name={r.name} value={r.focus} />
+                        ))}
+                    </div>
+                </>
+            )}
 
-            <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
-                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>群体专注（辅助职业）
-            </h4>
-            <div className="flex flex-wrap gap-2">
-                {general.map((g: any, i: number) => (
-                    <FocusRow key={`g${i}`} name={g.name} value={g.total} />
-                ))}
-                {groupRoles.sort(sortByFocus).map((r) => (
-                    <FocusRow key={`${r.name}-${r.faction}`} name={r.name} faction={r.faction} value={r.focus} />
-                ))}
-            </div>
+            {general.length > 0 && (
+                <>
+                    <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
+                        <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>群体专注
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                        {general.map((g: any, i: number) => (
+                            <FocusRow key={`g${i}`} name={g.name} value={g.total} />
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 };
@@ -553,6 +552,9 @@ const SupportView: React.FC = () => {
         setMetricFilter((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
     };
 
+    const supportRoles = filtered.filter((r) => r.roleType !== 'dps');
+    const dpsRoles = filtered.filter((r) => r.roleType === 'dps');
+
     return (
         <div className="flex flex-col gap-4">
             <div className="zx-card p-3 flex flex-col sm:flex-row sm:items-center gap-3">
@@ -595,12 +597,36 @@ const SupportView: React.FC = () => {
                     <span className="text-sm text-slate-500 flex-shrink-0">{filtered.length} / {roles.roles.length}</span>
                 </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                {filtered.map((role, idx) => (
-                    // 同名多阵营卡片共存（如 逐霜 仙 / 逐霜 魔佛），key 必须带阵营
-                    <SupportCard key={`${role.name}-${role.faction}-${idx}`} role={role} metrics={roles.metrics} />
-                ))}
-            </div>
+
+            {/* 辅助职业卡片网格 */}
+            {supportRoles.length > 0 && (
+                <div className="flex flex-col gap-3">
+                    <h3 className="text-sm font-bold text-slate-400 flex items-center gap-1.5">
+                        <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>辅助职业
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                        {supportRoles.map((role, idx) => (
+                            // 同名多阵营卡片共存（如 逐霜 仙 / 逐霜 魔佛），key 必须带阵营
+                            <SupportCard key={`${role.name}-${role.faction}-${idx}`} role={role} metrics={roles.metrics} />
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* 输出职业卡片网格 */}
+            {dpsRoles.length > 0 && (
+                <div className="flex flex-col gap-3">
+                    <h3 className="text-sm font-bold text-slate-400 flex items-center gap-1.5">
+                        <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>输出职业
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                        {dpsRoles.map((role, idx) => (
+                            <SupportCard key={`${role.name}-${role.faction}-${idx}`} role={role} metrics={roles.metrics} />
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <FocusReferenceSection />
             {roles.notes && roles.notes.length > 0 && (
                 <div className="zx-card p-4">
