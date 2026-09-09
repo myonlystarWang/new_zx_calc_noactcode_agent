@@ -2484,7 +2484,7 @@
           "name": "鬼王",
           "faction": "佛",
           "damageBoost": 0,
-          "greenPoint": 340,
+          "greenPoint": 345,
           "purplePoint": 6,
           "defenseBreak": 100,
           "focus": 0,
@@ -2508,6 +2508,20 @@
           ],
           "rating": "S"
         },		
+        {
+          "name": "鬼王",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 21,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S"
+        },			
         {
           "name": "鬼道",
           "faction": "佛",
