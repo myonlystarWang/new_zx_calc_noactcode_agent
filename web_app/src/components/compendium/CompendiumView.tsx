@@ -463,7 +463,7 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                                 <span className={clsx(
                                     'mb-0.5 leading-none text-center text-[10px]',
                                     m.label.length > 2 ? 'text-[9px]' : '',
-                                    empty ? 'text-slate-700' : m.color
+                                    empty ? 'text-slate-700' : 'text-slate-500'
                                 )}>
                                     {m.label}
                                 </span>
@@ -488,7 +488,7 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                             <span className={clsx(
                                 'mb-0.5 leading-none text-center text-[10px]',
                                 b.label.length > 3 ? 'text-[9px]' : '',
-                                b.empty ? 'text-slate-700' : b.color
+                                b.empty ? 'text-slate-700' : 'text-slate-500'
                             )}>
                                 {b.label}
                             </span>
