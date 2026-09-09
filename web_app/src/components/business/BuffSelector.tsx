@@ -1,12 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { Sparkles, Info } from 'lucide-react';
-import { createPortal } from 'react-dom';
 import clsx from 'clsx';
-import skillsData from '../../../public/game_data/skills.json';
-const META = (skillsData as any)._meta;
 
-export const BuffSelector: React.FC = () => {
+export const BuffSelector: React.FC<{ onNavigateToFocus?: () => void }> = ({ onNavigateToFocus }) => {
     const { buffs, activeBuffIds, toggleBuff, buffValues, updateBuffValue } = useApp();
 
     // Filter buffs: only show if IsDefaultActive or IsEditable is true (or if it's not explicitly false)
@@ -48,51 +45,15 @@ export const BuffSelector: React.FC = () => {
         }
     };
 
-    const [activeTab, setActiveTab] = React.useState<'general' | 'support' | 'dps'>('support');
-    const [tooltipVisible, setTooltipVisible] = useState(false);
-    const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
-    const iconRef = useRef<HTMLDivElement>(null);
-    const tooltipRef = useRef<HTMLDivElement>(null);
-
-    const focusData = META.focusReference;
-
-
     return (
         <div>
             <h2 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
                 <span className="w-1 h-5 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
                 战斗增益
                 <div
-                    ref={iconRef}
                     className="ml-0.5 p-1 text-cyan-500/80 hover:text-cyan-400 cursor-pointer transition-colors hover:bg-cyan-500/10 rounded-full"
-                    title="查看专注值参考"
-                    onMouseEnter={() => {
-                        const rect = iconRef.current?.getBoundingClientRect();
-                        if (rect) {
-                            const x = rect.left + rect.width / 2;
-                            const y = rect.bottom + 8;
-                            setTooltipPos({ x, y });
-                        }
-                        setTooltipVisible(true);
-                    }}
-                    onMouseMove={() => {
-                        const rect = iconRef.current?.getBoundingClientRect();
-                        if (rect) {
-                            setTooltipPos({ x: rect.left + rect.width / 2, y: rect.bottom + 8 });
-                        }
-                    }}
-                    onMouseLeave={() => {
-                        // 如果移入 tooltip 本身，保持显示
-                        if (!tooltipRef.current?.matches(':hover')) {
-                            setTooltipVisible(false);
-                        }
-                    }}
-                    onClick={() => {
-                        // 移动端 fallback：点击切换显隐
-                        setTooltipVisible(v => !v);
-                        const rect = iconRef.current?.getBoundingClientRect();
-                        if (rect) setTooltipPos({ x: rect.left + rect.width / 2, y: rect.bottom + 8 });
-                    }}
+                    title="点击跳转「资料图鉴 / 各职业状态」查看专注值参考"
+                    onClick={() => onNavigateToFocus?.()}
                 >
                     <Info className="w-5 h-5" />
                 </div>
@@ -198,75 +159,6 @@ export const BuffSelector: React.FC = () => {
                     );
                 })}
             </div>
-
-            {tooltipVisible && createPortal(
-                <div
-                    ref={tooltipRef}
-                    className="fixed z-[9999] w-[340px] max-w-[92vw] p-4 bg-slate-900/95 border border-slate-700 rounded-2xl shadow-2xl backdrop-blur-xl animate-in fade-in"
-                    style={{
-                        left: Math.min(Math.max(tooltipPos.x - 170, 8), window.innerWidth - 356),
-                        top: tooltipPos.y + (tooltipRef.current?.offsetHeight || 260) > window.innerHeight - tooltipPos.y - 16
-                            ? Math.max(8, tooltipPos.y - (tooltipRef.current?.offsetHeight || 260) - 8)
-                            : tooltipPos.y,
-                    }}
-                    onMouseEnter={() => setTooltipVisible(true)}
-                    onMouseLeave={() => setTooltipVisible(false)}
-                >
-                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
-                        <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
-                            <div className="p-1 rounded-lg bg-cyan-500/20 text-cyan-400">
-                                <Info className="w-4 h-4" />
-                            </div>
-                            专注值参考
-                        </h3>
-                        <button
-                            onClick={() => setTooltipVisible(false)}
-                            className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
-                        >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div className="flex gap-1 mb-3">
-                        {[
-                            { id: 'support', label: '辅助职业' },
-                            { id: 'dps', label: '输出职业' },
-                            { id: 'general', label: '通用' },
-                        ].map(tab => (
-                            <button
-                                key={tab.id}
-                                onClick={() => setActiveTab(tab.id as any)}
-                                className={clsx(
-                                    "flex-1 py-1.5 px-2 rounded-lg text-xs font-medium transition-all",
-                                    activeTab === tab.id
-                                        ? "bg-slate-800 text-cyan-400 border border-slate-700"
-                                        : "text-slate-500 hover:text-slate-300 hover:bg-slate-800/50"
-                                )}
-                            >
-                                {tab.label}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="max-h-[340px] overflow-y-auto custom-scrollbar space-y-2 pr-1">
-                        {focusData[activeTab].map((item: any, idx: number) => (
-                            <div key={idx} className="bg-slate-800/40 rounded-xl p-3 border border-slate-700/50">
-                                <div className="flex justify-between items-start mb-1.5">
-                                    <span className="text-sm font-bold text-slate-200">{item.name}</span>
-                                    <span className="text-lg font-black text-cyan-400 leading-none">{item.total}</span>
-                                </div>
-                                <div className="flex justify-between items-center text-xs">
-                                    <span className="text-slate-500 truncate mr-2" title={item.note}>{item.note || '基础数值'}</span>
-                                    <span className="font-mono text-slate-300 font-semibold whitespace-nowrap">{item.val}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>,
-                document.body
-            )}
         </div>
     );
 };
