@@ -371,7 +371,7 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
         { label: metrics[1] ?? '绿点', value: role.greenPoint, color: 'text-emerald-400' },
         { label: metrics[2] ?? '紫点', value: role.purplePoint, color: 'text-purple-400' },
         { label: metrics[3] ?? '破防', value: role.defenseBreak, color: 'text-rose-400' },
-    ];
+    ].filter((m) => !isZeroValue(m.value));
 
     // —— 增益区：仅非零，专注 label 由 focusType 推导 ——
     const focusLabel = ((): string => {
@@ -447,18 +447,17 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     {role.rating}
                 </span>
             </div>
-            {/* 减益区：4 列网格，优先级最高置顶 */}
-            <div>
-                <div className="text-[10px] text-slate-500 mb-1">减益</div>
-                <div className="grid grid-cols-4 gap-1.5">
-                    {debuffItems.map((m) =>
-                        isZeroValue(m.value) ? (
-                            <div key={m.label} className="rounded-lg py-1.5 px-0.5" aria-hidden="true" />
-                        ) : (
-                            <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-0.5">
+            {/* 减益区：左对齐，统一卡片 */}
+            {debuffItems.length > 0 && (
+                <div>
+                    <div className="text-[10px] text-slate-500 mb-1">减益</div>
+                    <div className="flex flex-wrap gap-1.5">
+                        {debuffItems.map((m) => (
+                            <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-2 min-w-[3.5rem]">
                                 <span className={clsx(
-                                    'text-slate-500 mb-0.5 leading-none text-center',
-                                    m.label.length > 2 ? 'text-[9px]' : 'text-[10px]'
+                                    'mb-0.5 leading-none text-center text-[10px]',
+                                    m.label.length > 2 ? 'text-[9px]' : '',
+                                    m.color
                                 )}>
                                     {m.label}
                                 </span>
@@ -466,22 +465,30 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                                     {renderValue(m.value)}
                                 </span>
                             </div>
-                        )
-                    )}
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
-            {/* 增益区：紧凑 chip，仅显示非零 */}
+            {/* 增益区：与减益区统一卡片样式，左对齐 */}
             {buffItems.length > 0 && (
                 <div>
                     <div className="text-[10px] text-slate-500 mb-1">增益</div>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1.5">
                         {buffItems.map((b) => (
-                            <span key={b.key} className={clsx('flex flex-col items-center rounded border px-1.5 py-0.5 bg-slate-900/40', b.color)}>
-                                <span className="text-[9px] font-normal text-slate-400 leading-none">{b.label}</span>
-                                <span className="text-xs font-mono font-bold leading-tight">{renderValue(b.value)}</span>
-                                {b.sub && <span className="text-[8px] font-normal text-slate-500 leading-tight mt-0.5">{b.sub}</span>}
-                            </span>
+                            <div key={b.key} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-2 min-w-[3.5rem]">
+                                <span className={clsx(
+                                    'mb-0.5 leading-none text-center text-[10px]',
+                                    b.label.length > 3 ? 'text-[9px]' : '',
+                                    b.color
+                                )}>
+                                    {b.label}
+                                </span>
+                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', b.color)}>
+                                    {renderValue(b.value)}
+                                </span>
+                                {b.sub && <span className="text-[8px] text-slate-500 leading-tight mt-0.5 text-center">{b.sub}</span>}
+                            </div>
                         ))}
                     </div>
                 </div>
