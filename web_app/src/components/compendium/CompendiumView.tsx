@@ -418,7 +418,9 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                         <div key={m.label} className="rounded-lg py-1.5 px-0.5" aria-hidden="true" />
                     ) : (
                         <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-0.5">
-                            <span className="text-[10px] text-slate-500 mb-0.5">{m.label}</span>
+                            <span className="text-[10px] text-slate-500 mb-0.5 leading-none">
+                                {m.label}
+                            </span>
                             <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
                                 {renderValue(m.value)}
                             </span>
@@ -437,25 +439,49 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
     );
 };
 
-/* ---- 专注值参考：通用项（各职业专注值见上方角色卡片） ---- */
+/* ---- 专注值参考：以灰色标题分组 自身专注 / 群体专注（可同时出现） ---- */
 const FocusReferenceSection: React.FC = () => {
-    const fr = DataService.getInstance().getSkillMeta()?.focusReference;
-    if (!fr) return null;
-    const general = fr.general ?? [];
-    if (general.length === 0) return null;
+    const allRoles = DataService.getInstance().getSupportRoles()?.roles ?? [];
+    const general = DataService.getInstance().getSkillMeta()?.focusReference?.general ?? [];
+
+    const selfRoles = allRoles.filter((r) => Array.isArray(r.focusType) && r.focusType.includes('self'));
+    const groupRoles = allRoles.filter((r) => Array.isArray(r.focusType) && r.focusType.includes('group'));
+    if (selfRoles.length === 0 && groupRoles.length === 0 && general.length === 0) return null;
+
+    const sortByFocus = (a: SupportRole, b: SupportRole) => metricValue(b.focus) - metricValue(a.focus);
+
+    const FocusRow: React.FC<{ name: string; faction?: string; value: number | string | undefined }> = ({ name, faction, value }) => (
+        <div data-item={name} className="bg-slate-900/50 rounded-xl px-3 py-2 border border-slate-700/40 flex items-center gap-2">
+            <span className="text-sm font-bold text-slate-200">{name}{faction && <span className="text-slate-500 text-xs ml-1">{faction}</span>}</span>
+            <span className="text-base font-black text-orange-400 font-mono ml-auto">{isZeroValue(value) ? '—' : renderValue(value)}</span>
+        </div>
+    );
 
     return (
         <div data-item="专注值参考" className="zx-card p-4 sm:p-5">
             <SectionTitle title="专注值参考" verified />
-            <p className="text-sm text-slate-500 -mt-2 mb-3">
-                各职业的专注值见上方卡片「专注」一格；数值带 <span className="text-orange-400 font-mono font-bold">+</span> 表示随真气等条件仍可继续提升
+            <p className="text-sm text-slate-500 -mt-2 mb-4">
+                专注分为 <span className="text-slate-300 font-semibold">自身专注</span> 与 <span className="text-slate-300 font-semibold">群体专注</span> 两类；有的职业两者兼具，会同时出现在两个分组中。数值带 <span className="text-orange-400 font-mono font-bold">+</span> 表示随真气等条件仍可继续提升。
             </p>
+
+            <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
+                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>自身专注
+            </h4>
+            <div className="flex flex-wrap gap-2 mb-4">
+                {selfRoles.sort(sortByFocus).map((r) => (
+                    <FocusRow key={`${r.name}-${r.faction}`} name={r.name} faction={r.faction} value={r.focus} />
+                ))}
+            </div>
+
+            <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
+                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>群体专注
+            </h4>
             <div className="flex flex-wrap gap-2">
                 {general.map((g: any, i: number) => (
-                    <div key={i} data-item={g.name} className="bg-slate-900/50 rounded-xl px-3 py-2 border border-slate-700/40 flex items-center gap-2">
-                        <span className="text-sm font-bold text-slate-200">{g.name}</span>
-                        <span className="text-base font-black text-orange-400 font-mono">{g.total}</span>
-                    </div>
+                    <FocusRow key={`g${i}`} name={g.name} value={g.total} />
+                ))}
+                {groupRoles.sort(sortByFocus).map((r) => (
+                    <FocusRow key={`${r.name}-${r.faction}`} name={r.name} faction={r.faction} value={r.focus} />
                 ))}
             </div>
         </div>
