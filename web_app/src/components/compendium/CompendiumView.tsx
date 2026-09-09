@@ -365,12 +365,6 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
         return 'text-slate-300 border-slate-500/50 bg-slate-500/10';
     };
 
-    const roleTypeBadge = (roleType?: 'dps' | 'support') => {
-        if (roleType === 'dps') return 'text-rose-300 border-rose-400/50 bg-rose-500/10';
-        if (roleType === 'support') return 'text-cyan-300 border-cyan-400/50 bg-cyan-500/10';
-        return 'text-slate-400 border-slate-500/30 bg-slate-500/10';
-    };
-
     const factionColor = (f: string) => {
         const key = f.charAt(0); // 支持组合阵营（如 魔佛/仙佛），按首字符取色
         if (key === '仙') return 'text-sky-300 border-sky-400/50 bg-sky-500/15 shadow-[0_0_10px_rgba(56,189,248,0.30)]';
@@ -413,9 +407,6 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                 <div className="flex items-center gap-1.5 min-w-0">
                     <span className="text-base font-bold text-slate-100 truncate">{role.name}</span>
                     <FactionBadge faction={role.faction} />
-                    <span className={clsx('text-[10px] font-bold px-1 py-0.5 rounded border flex-shrink-0', roleTypeBadge(role.roleType))}>
-                        {role.roleType === 'dps' ? '输出' : '辅助'}
-                    </span>
                 </div>
                 <span className={clsx('text-xs font-black px-1.5 py-0.5 rounded border flex-shrink-0', ratingColor(role.rating))}>
                     {role.rating}
@@ -448,15 +439,10 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
     );
 };
 
-/* ---- 专注值参考：输出职业自身专注 / 通用群体专注（三碗专注） ---- */
+/* ---- 专注值参考：只保留通用群体专注（三碗专注） ---- */
 const FocusReferenceSection: React.FC = () => {
-    const allRoles = DataService.getInstance().getSupportRoles()?.roles ?? [];
     const general = DataService.getInstance().getSkillMeta()?.focusReference?.general ?? [];
-
-    const dpsRoles = allRoles.filter((r) => r.roleType === 'dps' && Array.isArray(r.focusType) && r.focusType.includes('self'));
-    if (dpsRoles.length === 0 && general.length === 0) return null;
-
-    const sortByFocus = (a: SupportRole, b: SupportRole) => metricValue(b.focus) - metricValue(a.focus);
+    if (general.length === 0) return null;
 
     const FocusRow: React.FC<{ name: string; value: number | string | undefined }> = ({ name, value }) => (
         <div data-item={name} className="bg-slate-900/50 rounded-xl px-3 py-2 border border-slate-700/40 flex items-center gap-2">
@@ -468,32 +454,11 @@ const FocusReferenceSection: React.FC = () => {
     return (
         <div data-item="专注值参考" className="zx-card p-4 sm:p-5">
             <SectionTitle title="专注值参考" verified />
-
-            {dpsRoles.length > 0 && (
-                <>
-                    <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
-                        <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>输出职业
-                    </h4>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        {dpsRoles.sort(sortByFocus).map((r) => (
-                            <FocusRow key={`${r.name}-${r.faction}`} name={r.name} value={r.focus} />
-                        ))}
-                    </div>
-                </>
-            )}
-
-            {general.length > 0 && (
-                <>
-                    <h4 className="text-sm font-bold text-slate-400 mb-2 flex items-center gap-1.5">
-                        <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>群体专注
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                        {general.map((g: any, i: number) => (
-                            <FocusRow key={`g${i}`} name={g.name} value={g.total} />
-                        ))}
-                    </div>
-                </>
-            )}
+            <div className="flex flex-wrap gap-2">
+                {general.map((g: any, i: number) => (
+                    <FocusRow key={`g${i}`} name={g.name} value={g.total} />
+                ))}
+            </div>
         </div>
     );
 };
