@@ -2353,7 +2353,7 @@
     },
     "supportRoles": {
       "metrics": [
-        "增伤",
+        "易伤",
         "绿点",
         "紫点",
         "破防",
@@ -2370,7 +2370,8 @@
           "focus": 30,
           "abilities": [
             "群神佑",
-            "技能增伤"
+            "技能增伤",
+			"绿点翻倍"
           ],
           "rating": "S+"
         },
@@ -2396,12 +2397,12 @@
           "name": "天华",
           "faction": "佛",
           "damageBoost": 0,
-          "greenPoint": 60,
+          "greenPoint": 0,
           "purplePoint": 25,
           "defenseBreak": 100,
           "focus": 62,
           "abilities": [
-            "单体救人",
+            "救人",
             "超级单体增益"
           ],
           "rating": "S+"
@@ -2410,12 +2411,13 @@
           "name": "太昊",
           "faction": "仙",
           "damageBoost": 10,
-          "greenPoint": 180,
-          "purplePoint": 52,
+          "greenPoint": 220,
+          "purplePoint": 50,
           "defenseBreak": 0,
           "focus": 0,
           "abilities": [
-            "增加急速"
+            "增加急速",
+			"T0状态输出"
           ],
           "rating": "S"
         },
@@ -2445,7 +2447,7 @@
           "focus": 0,
           "abilities": [
             "单体加暴伤",
-            "T1输出能力"
+            "T1状态输出"
           ],
           "rating": "S"
         },
@@ -2456,10 +2458,10 @@
           "greenPoint": 120,
           "purplePoint": 24,
           "defenseBreak": 100,
-          "focus": 27,
+          "focus": "27+",
           "abilities": [
             "群锁血",
-            "提前免死",
+            "免死",
             "加攻击"
           ],
           "rating": "S"
@@ -2467,13 +2469,13 @@
         {
           "name": "英招",
           "faction": "佛",
-          "damageBoost": 46,
+          "damageBoost": 50,
           "greenPoint": 300,
           "purplePoint": 35,
           "defenseBreak": 100,
           "focus": 0,
           "abilities": [
-            "团队加攻",
+            "团队加攻防",
             "抗怪"
           ],
           "rating": "S"
@@ -2482,7 +2484,7 @@
           "name": "鬼王",
           "faction": "佛",
           "damageBoost": 0,
-          "greenPoint": 300,
+          "greenPoint": 340,
           "purplePoint": 6,
           "defenseBreak": 100,
           "focus": 0,
@@ -2493,15 +2495,29 @@
           "rating": "S"
         },
         {
+          "name": "鬼王",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 380,
+          "purplePoint": 6,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S"
+        },		
+        {
           "name": "鬼道",
           "faction": "佛",
           "damageBoost": 32,
           "greenPoint": 300,
-          "purplePoint": 10,
+          "purplePoint": 18,
           "defenseBreak": 100,
           "focus": 0,
           "abilities": [
-            "自身输出T1"
+            "洞主"
           ],
           "rating": "S"
         },
@@ -2514,7 +2530,7 @@
           "defenseBreak": 0,
           "focus": 0,
           "abilities": [
-            "自身输出T1",
+            "T1状态输出",
             "抗怪",
             "冰墙"
           ],
@@ -2522,14 +2538,14 @@
         },
         {
           "name": "烈山",
-          "faction": "仙",
+          "faction": "魔",
           "damageBoost": 30,
           "greenPoint": 300,
           "purplePoint": 60,
-          "defenseBreak": 0,
+          "defenseBreak": 80,
           "focus": 0,
           "abilities": [
-            "最高暴击"
+            "最高紫点"
           ],
           "rating": "S"
         },
@@ -2542,7 +2558,7 @@
           "defenseBreak": 100,
           "focus": 0,
           "abilities": [
-            "单体救人",
+            "救人",
             "群免死",
             "加攻击",
             "加血上限"
@@ -2558,7 +2574,7 @@
           "defenseBreak": 100,
           "focus": 0,
           "abilities": [
-            "T1输出能力"
+            "T1状态输出"
           ],
           "rating": "A+"
         },
@@ -2598,7 +2614,7 @@
           "defenseBreak": 0,
           "focus": 0,
           "abilities": [
-            "T1+输出能力"
+            "T1+输出"
           ],
           "rating": "A"
         },
@@ -2606,12 +2622,12 @@
           "name": "怀光",
           "faction": "仙",
           "damageBoost": 20,
-          "greenPoint": 20,
-          "purplePoint": 35,
-          "defenseBreak": 100,
+          "greenPoint": 120,
+          "purplePoint": 39,
+          "defenseBreak": 180,
           "focus": 0,
           "abilities": [
-            "T1输出能力"
+            "T1状态输出"
           ],
           "rating": "A"
         },
@@ -2625,9 +2641,101 @@
           "focus": 0,
           "abilities": [
             "结算",
-            "T1输出能力"
+            "T1输出"
           ],
           "rating": "A"
+        },
+        {
+          "name": "逐霜",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 79,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+"
+        },
+        {
+          "name": "逐霜",
+          "faction": "魔佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 49,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+"
+        },
+        {
+          "name": "归云",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 90,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+"
+        },
+        {
+          "name": "归云",
+          "faction": "仙佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+"
+        },
+        {
+          "name": "青云",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 50,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+"
+        },
+        {
+          "name": "青云",
+          "faction": "魔佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "输出职业"
+          ],
+          "rating": "A+"
+        },
+        {
+          "name": "涅羽",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": "70+",
+          "abilities": [
+            "T0输出",
+            "每10万真气+1"
+          ],
+          "rating": "S+"
         }
       ],
       "notes": [
@@ -2640,67 +2748,7 @@
       "general": [
         {
           "name": "三碗专注",
-          "val": "20",
-          "note": "",
           "total": 20
-        }
-      ],
-      "support": [
-        {
-          "name": "天音",
-          "val": "18 + 2",
-          "note": "法宝技能+1",
-          "total": 20
-        },
-        {
-          "name": "天华",
-          "val": "(40+2) + (18+2)",
-          "note": "均为法宝技能+1",
-          "total": 62
-        },
-        {
-          "name": "焚香",
-          "val": "30",
-          "note": "",
-          "total": 30
-        },
-        {
-          "name": "画影",
-          "val": "24 + 3 + X",
-          "note": "法宝技能+1，每40万真气X+1",
-          "total": "27+"
-        },
-        {
-          "name": "昭冥",
-          "val": "52.5 + 7.5",
-          "note": "需132万真气以上",
-          "total": 60
-        }
-      ],
-      "dps": [
-        {
-          "name": "逐霜",
-          "val": "79 / 49",
-          "note": "仙 / 魔佛",
-          "total": "79/49"
-        },
-        {
-          "name": "归云",
-          "val": "90 / 30",
-          "note": "魔 / 仙佛",
-          "total": "90/30"
-        },
-        {
-          "name": "青云",
-          "val": "50 / 30",
-          "note": "仙 / 魔佛",
-          "total": "50/30"
-        },
-        {
-          "name": "涅羽",
-          "val": "70 + X",
-          "note": "每10万真气X+1",
-          "total": "70+"
         }
       ]
     },

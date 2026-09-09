@@ -37,24 +37,40 @@ const SUB_PAGE_ENTRIES: IndexEntry[] = [
     { label: '极致减暴击攻略', group: '资料图鉴 / 极致减暴击攻略', sub: 'critReduction', target: { tab: 'compendium', sub: 'critReduction' }, keywords: ['减暴', '暴击减免', '减暴击'] },
     { label: '极致怪增攻略', group: '资料图鉴 / 极致怪增攻略', sub: 'monsterDamageBonus', target: { tab: 'compendium', sub: 'monsterDamageBonus' }, keywords: ['怪增', '怪物增伤', '增伤', '怪物伤害'] },
     { label: '极致躲闪攻略', group: '资料图鉴 / 极致躲闪攻略', sub: 'dodge', target: { tab: 'compendium', sub: 'dodge' }, keywords: ['躲闪', '闪避'] },
-    { label: '辅助职业', group: '资料图鉴 / 辅助职业', sub: 'support', target: { tab: 'compendium', sub: 'support' }, keywords: ['职业', '辅助', '易伤职业', '辅助职业'] },
+    { label: '各职业状态', group: '资料图鉴 / 各职业状态', sub: 'support', target: { tab: 'compendium', sub: 'support' }, keywords: ['职业', '辅助', '易伤职业', '辅助职业', '状态', '专注值参考', '专注'] },
 ];
 
 function buildIndex(): IndexEntry[] {
     const service = DataService.getInstance();
     const entries: IndexEntry[] = [...SUB_PAGE_ENTRIES];
 
-    // 辅助职业
+    // 各职业状态（辅助 + 输出阵营变体，如 逐霜仙/逐霜魔佛）
     const roles = service.getSupportRoles();
     if (roles) {
         for (const r of roles.roles) {
+            const isDps = r.rating === '输出';
             entries.push({
                 label: r.name,
-                group: '资料图鉴 / 辅助职业',
+                group: '资料图鉴 / 各职业状态',
                 sub: 'support',
                 item: r.name,
                 target: { tab: 'compendium', sub: 'support', item: r.name },
-                keywords: [r.name, '辅助', r.faction],
+                keywords: [r.name, r.faction, isDps ? '输出' : '辅助'],
+            });
+        }
+    }
+
+    // 专注值参考（通用项）
+    const focusRef = service.getSkillMeta()?.focusReference;
+    if (focusRef) {
+        for (const g of focusRef.general ?? []) {
+            entries.push({
+                label: g.name,
+                group: '资料图鉴 / 各职业状态',
+                sub: 'support',
+                item: '专注值参考',
+                target: { tab: 'compendium', sub: 'support', item: '专注值参考' },
+                keywords: [g.name, '专注', '通用'],
             });
         }
     }

@@ -3,11 +3,11 @@ import { Card } from '../ui/Card';
 import { TotalPowerCard } from './ResultsSection';
 import { BuffSelector } from './BuffSelector';
 
-export const BuffPanel: React.FC = () => {
+export const BuffPanel: React.FC<{ onNavigateToFocus?: () => void }> = ({ onNavigateToFocus }) => {
     return (
         <div className="flex flex-col gap-6">
             {/* Buff Selector - Moved back to top of middle column */}
-            <BuffSelector />
+            <BuffSelector onNavigateToFocus={onNavigateToFocus} />
 
             {/* Total Power Score */}
             <TotalPowerCard />

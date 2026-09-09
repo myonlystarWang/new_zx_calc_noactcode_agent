@@ -50,7 +50,7 @@ const MainContent: React.FC = () => {
 
           {/* Middle Column: Buff Selector & Radar */}
           <div className="xl:col-span-4">
-            <BuffPanel />
+            <BuffPanel onNavigateToFocus={() => handleSearchNav({ tab: 'compendium', sub: 'support', item: '专注值参考' })} />
           </div>
 
           {/* Right Column: Results */}

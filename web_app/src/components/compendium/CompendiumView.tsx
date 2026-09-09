@@ -13,7 +13,7 @@ const SUB_TABS: { id: SubTab; label: string; icon: React.ReactNode }[] = [
     { id: 'critReduction', label: '极致减暴击', icon: <Swords className="w-4 h-4" /> },
     { id: 'monsterDamageBonus', label: '极致怪增', icon: <BookOpen className="w-4 h-4" /> },
     { id: 'dodge', label: '极致躲闪', icon: <BookOpen className="w-4 h-4" /> },
-    { id: 'support', label: '辅助职业', icon: <Users className="w-4 h-4" /> },
+    { id: 'support', label: '各职业状态', icon: <Users className="w-4 h-4" /> },
 ];
 
 const CATEGORY_COLORS = [
@@ -333,7 +333,7 @@ const isZeroValue = (v: number | string | undefined): boolean => {
 
 const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role, metrics }) => {
     const metricPairs = [
-        { label: metrics[0] ?? '增伤', value: role.damageBoost, color: 'text-amber-400' },
+        { label: metrics[0] ?? '易伤', value: role.damageBoost, color: 'text-amber-400' },
         { label: metrics[1] ?? '绿点', value: role.greenPoint, color: 'text-emerald-400' },
         { label: metrics[2] ?? '紫点', value: role.purplePoint, color: 'text-purple-400' },
         { label: metrics[3] ?? '破防', value: role.defenseBreak, color: 'text-rose-400' },
@@ -348,10 +348,39 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
     };
 
     const factionColor = (f: string) => {
-        if (f === '仙') return 'text-sky-300 border-sky-400/50 bg-sky-500/15 shadow-[0_0_10px_rgba(56,189,248,0.30)]';
-        if (f === '佛') return 'text-amber-300 border-amber-400/50 bg-amber-500/15 shadow-[0_0_10px_rgba(251,191,36,0.30)]';
-        if (f === '魔') return 'text-purple-300 border-purple-400/50 bg-purple-500/15 shadow-[0_0_10px_rgba(168,85,247,0.35)]';
+        const key = f.charAt(0); // 支持组合阵营（如 魔佛/仙佛），按首字符取色
+        if (key === '仙') return 'text-sky-300 border-sky-400/50 bg-sky-500/15 shadow-[0_0_10px_rgba(56,189,248,0.30)]';
+        if (key === '佛') return 'text-amber-300 border-amber-400/50 bg-amber-500/15 shadow-[0_0_10px_rgba(251,191,36,0.30)]';
+        if (key === '魔') return 'text-purple-300 border-purple-400/50 bg-purple-500/15 shadow-[0_0_10px_rgba(168,85,247,0.35)]';
         return 'text-slate-400 border-slate-500/30 bg-slate-500/10';
+    };
+
+    // 组合阵营（魔佛/仙佛）：每字独立配色，拼接为一个徽章
+    const factionSegColor = (ch: string) => {
+        if (ch === '仙') return 'text-sky-300 border-sky-400/50 bg-sky-500/15';
+        if (ch === '佛') return 'text-amber-300 border-amber-400/50 bg-amber-500/15';
+        if (ch === '魔') return 'text-purple-300 border-purple-400/50 bg-purple-500/15';
+        return 'text-slate-400 border-slate-500/30 bg-slate-500/10';
+    };
+
+    const FactionBadge: React.FC<{ faction: string }> = ({ faction }) => {
+        if (faction.length <= 1) {
+            return (
+                <span className={clsx('text-xs px-1 py-0.5 rounded border flex-shrink-0', factionColor(faction))}>
+                    {faction}
+                </span>
+            );
+        }
+        const chars = Array.from(faction);
+        return (
+            <span className="flex flex-shrink-0 gap-1">
+                {chars.map((ch, i) => (
+                    <span key={i} className={clsx('text-xs px-1 py-0.5 rounded border', factionSegColor(ch))}>
+                        {ch}
+                    </span>
+                ))}
+            </span>
+        );
     };
 
     return (
@@ -359,9 +388,7 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
             <div className="flex items-center justify-between gap-1">
                 <div className="flex items-center gap-1.5 min-w-0">
                     <span className="text-base font-bold text-slate-100 truncate">{role.name}</span>
-                    <span className={clsx('text-xs px-1 py-0.5 rounded border flex-shrink-0', factionColor(role.faction))}>
-                        {role.faction}
-                    </span>
+                    <FactionBadge faction={role.faction} />
                 </div>
                 <span className={clsx('text-xs font-black px-1.5 py-0.5 rounded border flex-shrink-0', ratingColor(role.rating))}>
                     {role.rating}
@@ -392,45 +419,88 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
     );
 };
 
+/* ---- 专注值参考：通用项（各职业专注值见上方角色卡片） ---- */
+const FocusReferenceSection: React.FC = () => {
+    const fr = DataService.getInstance().getSkillMeta()?.focusReference;
+    if (!fr) return null;
+    const general = fr.general ?? [];
+    if (general.length === 0) return null;
+
+    return (
+        <div data-item="专注值参考" className="zx-card p-4 sm:p-5">
+            <SectionTitle title="专注值参考" verified />
+            <p className="text-sm text-slate-500 -mt-2 mb-3">
+                各职业的专注值见上方卡片「专注」一格；数值带 <span className="text-orange-400 font-mono font-bold">+</span> 表示随真气等条件仍可继续提升
+            </p>
+            <div className="flex flex-wrap gap-2">
+                {general.map((g: any, i: number) => (
+                    <div key={i} data-item={g.name} className="bg-slate-900/50 rounded-xl px-3 py-2 border border-slate-700/40 flex items-center gap-2">
+                        <span className="text-sm font-bold text-slate-200">{g.name}</span>
+                        <span className="text-base font-black text-orange-400 font-mono">{g.total}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const SupportView: React.FC = () => {
     const roles = DataService.getInstance().getSupportRoles();
-    const [ratingFilter, setRatingFilter] = useState<'all' | 'S+' | 'S' | 'A+' | 'A'>('all');
+    const [metricFilter, setMetricFilter] = useState<string[]>([]);
     const [query, setQuery] = useState('');
 
     if (!roles) return <div className="text-slate-400 text-base">数据加载中...</div>;
 
+    // 属性筛选字段映射（多选 = 必须同时具备所有选中属性且非 0）
+    const METRIC_FIELD: Record<string, (r: SupportRole) => number | string | undefined> = {
+        '易伤': (r) => r.damageBoost,
+        '绿点': (r) => r.greenPoint,
+        '紫点': (r) => r.purplePoint,
+        '破防': (r) => r.defenseBreak,
+        '专注': (r) => r.focus,
+    };
+
     const filtered = roles.roles.filter((r) => {
-        const passRating = ratingFilter === 'all' || r.rating === ratingFilter;
+        const passMetric = metricFilter.every((m) => {
+            const getter = METRIC_FIELD[m];
+            return getter ? !isZeroValue(getter(r)) : true;
+        });
         const q = query.trim();
         const passQuery = !q || r.name.includes(q) || r.abilities.some(a => a.includes(q));
-        return passRating && passQuery;
+        return passMetric && passQuery;
     });
+
+    const toggleMetric = (m: string) => {
+        setMetricFilter((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
+    };
 
     return (
         <div className="flex flex-col gap-4">
             <div className="zx-card p-3 flex flex-col sm:flex-row sm:items-center gap-3">
                 <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm text-slate-400 mr-1">评级筛选</span>
-                    {[
-                        { key: 'all', label: '全部' },
-                        { key: 'S+', label: 'S+' },
-                        { key: 'S', label: 'S' },
-                        { key: 'A+', label: 'A+' },
-                        { key: 'A', label: 'A' },
-                    ].map((btn) => (
+                    <span className="text-sm text-slate-400 mr-1">筛选</span>
+                    {['易伤', '绿点', '紫点', '破防', '专注'].map((m) => (
                         <button
-                            key={btn.key}
-                            onClick={() => setRatingFilter(btn.key as any)}
+                            key={m}
+                            onClick={() => toggleMetric(m)}
                             className={clsx(
                                 'px-3 py-1 rounded-lg text-sm font-medium border transition-all',
-                                ratingFilter === btn.key
+                                metricFilter.includes(m)
                                     ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
                                     : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
                             )}
                         >
-                            {btn.label}
+                            {m}
                         </button>
                     ))}
+                    {metricFilter.length > 0 && (
+                        <button
+                            onClick={() => setMetricFilter([])}
+                            className="px-2 py-1 rounded-lg text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                        >
+                            清除
+                        </button>
+                    )}
                 </div>
                 <div className="flex items-center gap-2 sm:ml-auto w-full sm:w-auto">
                     <div className="relative flex-1 sm:flex-none">
@@ -451,6 +521,7 @@ const SupportView: React.FC = () => {
                     <SupportCard key={role.name} role={role} metrics={roles.metrics} />
                 ))}
             </div>
+            <FocusReferenceSection />
             {roles.notes && roles.notes.length > 0 && (
                 <div className="zx-card p-4">
                     <h3 className="text-base font-bold text-slate-200 mb-2">说明</h3>
