@@ -2498,8 +2498,8 @@
           "name": "鬼王",
           "faction": "仙",
           "damageBoost": 0,
-          "greenPoint": 380,
-          "purplePoint": 6,
+          "greenPoint": 385,
+          "purplePoint": 16,
           "defenseBreak": 100,
           "focus": 0,
           "abilities": [
@@ -2716,7 +2716,7 @@
         {
           "name": "青云",
           "faction": "仙",
-          "damageBoost": 0,
+          "damageBoost": 5,
           "greenPoint": 0,
           "purplePoint": 0,
           "defenseBreak": 0,
@@ -2728,7 +2728,20 @@
         },
         {
           "name": "青云",
-          "faction": "魔佛",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 50,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "输出职业"
+          ],
+          "rating": "A+"
+        },
+        {
+          "name": "青云",
+          "faction": "佛",
           "damageBoost": 0,
           "greenPoint": 0,
           "purplePoint": 0,

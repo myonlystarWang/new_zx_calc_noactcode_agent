@@ -339,6 +339,16 @@ const isZeroValue = (v: number | string | undefined): boolean => {
     return !Number.isNaN(n) && n === 0;
 };
 
+// 把 '70+' / '27+' 这类字符串取首个整数，用于排序
+const metricValue = (v: number | string | undefined): number => {
+    if (typeof v === 'number') return v;
+    if (typeof v === 'string') {
+        const m = v.match(/^(\d+)(?:\+.*)?$/);
+        return m ? parseInt(m[1], 10) : 0;
+    }
+    return 0;
+};
+
 const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role, metrics }) => {
     const metricPairs = [
         { label: metrics[0] ?? '易伤', value: role.damageBoost, color: 'text-amber-400' },
@@ -468,15 +478,39 @@ const SupportView: React.FC = () => {
         '专注': (r) => r.focus,
     };
 
-    const filtered = roles.roles.filter((r) => {
-        const passMetric = metricFilter.every((m) => {
-            const getter = METRIC_FIELD[m];
-            return getter ? !isZeroValue(getter(r)) : true;
+    const filtered = roles.roles
+        .filter((r) => {
+            const passMetric = metricFilter.every((m) => {
+                const getter = METRIC_FIELD[m];
+                return getter ? !isZeroValue(getter(r)) : true;
+            });
+            const q = query.trim();
+            const passQuery = !q || r.name.includes(q) || r.abilities.some(a => a.includes(q));
+            return passMetric && passQuery;
+        })
+        .sort((a, b) => {
+            // 排序规则：
+            // 0 个筛选：按评级 S+→A
+            // 1 个筛选：按该属性数值从大到小（70+ 按 70）
+            // 2 个及以上：按所选属性数值之和从大到小
+            if (metricFilter.length === 0) {
+                const rc = ratingRank(a.rating) - ratingRank(b.rating);
+                if (rc !== 0) return rc;
+                return a.name.localeCompare(b.name);
+            }
+            const sumA = metricFilter.reduce((sum, m) => {
+                const getter = METRIC_FIELD[m];
+                return sum + (getter ? metricValue(getter(a)) : 0);
+            }, 0);
+            const sumB = metricFilter.reduce((sum, m) => {
+                const getter = METRIC_FIELD[m];
+                return sum + (getter ? metricValue(getter(b)) : 0);
+            }, 0);
+            if (sumA !== sumB) return sumB - sumA;
+            const rc = ratingRank(a.rating) - ratingRank(b.rating);
+            if (rc !== 0) return rc;
+            return a.name.localeCompare(b.name);
         });
-        const q = query.trim();
-        const passQuery = !q || r.name.includes(q) || r.abilities.some(a => a.includes(q));
-        return passMetric && passQuery;
-    }).sort((a, b) => ratingRank(a.rating) - ratingRank(b.rating)); // S+ → S → A+ → A → 其他
 
     const toggleMetric = (m: string) => {
         setMetricFilter((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
