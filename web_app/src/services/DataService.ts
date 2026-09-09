@@ -56,6 +56,12 @@ export interface SupportRole {
     defenseBreak: number | string;
     focus?: number | string;
     focusType?: ('group' | 'self')[];   // 群体专注 | 自身专注；可同时具备两者，分别归入两个分组
+    critDamage?: number | string;       // 加爆伤（如 200 / 280）
+    atkUp?: number | string;            // 加攻击
+    healUp?: number | string;           // 加血
+    manaUp?: number | string;           // 加蓝
+    defUp?: number | string;            // 加防御
+    monsterDmgUp?: number | string;     // 加怪增
     roleType: 'dps' | 'support';        // 输出职业完全没有团队增益；辅助职业提供团队增益
     abilities: string[];
     rating: string;

@@ -349,25 +349,49 @@ const metricValue = (v: number | string | undefined): number => {
     return 0;
 };
 
-const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role, metrics }) => {
-    // 根据 focusType 给「专注」指标打群体/自身标签
-    const focusTypeLabel = ((): string => {
-        const types = role.focusType ?? [];
-        const hasSelf = types.includes('self');
-        const hasGroup = types.includes('group');
-        if (hasSelf && hasGroup) return '自身/群体';
-        if (hasSelf) return '自身专注';
-        if (hasGroup) return '群体专注';
-        return metrics[4] ?? '专注';
-    })();
+// 增益区字段配置：label + 颜色（专注由 focusType 单独推导，不在此表）
+type BuffKey = 'critDamage' | 'atkUp' | 'healUp' | 'manaUp' | 'defUp' | 'monsterDmgUp';
+const BUFF_FIELDS: Record<BuffKey, { label: string; color: string }> = {
+    critDamage: { label: '加爆伤', color: 'text-rose-400' },
+    atkUp: { label: '加攻击', color: 'text-red-400' },
+    healUp: { label: '加血', color: 'text-emerald-400' },
+    manaUp: { label: '加蓝', color: 'text-sky-400' },
+    defUp: { label: '加防御', color: 'text-blue-400' },
+    monsterDmgUp: { label: '加怪增', color: 'text-purple-400' },
+};
 
-    const metricPairs = [
+// 从 abilities 中抽「每X万真气+1专注」类说明，作为专注 chip 的小字备注
+const focusScalingNote = (role: SupportRole): string | null =>
+    role.abilities.find((a) => /真气.*专注/.test(a)) ?? null;
+
+const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role, metrics }) => {
+    // —— 减益区：4 列网格（易伤/绿点/紫点/破防）——
+    const debuffItems = [
         { label: metrics[0] ?? '易伤', value: role.damageBoost, color: 'text-amber-400' },
         { label: metrics[1] ?? '绿点', value: role.greenPoint, color: 'text-emerald-400' },
         { label: metrics[2] ?? '紫点', value: role.purplePoint, color: 'text-purple-400' },
         { label: metrics[3] ?? '破防', value: role.defenseBreak, color: 'text-rose-400' },
-        { label: focusTypeLabel, value: role.focus ?? 0, color: 'text-orange-400' },
-    ].sort((a, b) => Number(isZeroValue(a.value)) - Number(isZeroValue(b.value)));
+    ];
+
+    // —— 增益区：仅非零，专注 label 由 focusType 推导 ——
+    const focusLabel = ((): string => {
+        const types = role.focusType ?? [];
+        const hasSelf = types.includes('self');
+        const hasGroup = types.includes('group');
+        if (hasSelf && hasGroup) return '自身/群体专注';
+        if (hasSelf) return '自身专注';
+        if (hasGroup) return '群体专注';
+        return '专注';
+    })();
+    const scalingNote = focusScalingNote(role);
+
+    const buffItems: { key: string; label: string; color: string; value: number | string; sub?: string | null }[] = [];
+    if (!isZeroValue(role.focus))
+        buffItems.push({ key: 'focus', label: focusLabel, color: 'text-orange-400', value: role.focus ?? 0, sub: scalingNote });
+    (['critDamage', 'atkUp', 'healUp', 'manaUp', 'defUp', 'monsterDmgUp'] as BuffKey[]).forEach((k) => {
+        const v = (role as unknown as Record<string, number | string | undefined>)[k];
+        if (!isZeroValue(v) && v !== undefined) buffItems.push({ key: k, label: BUFF_FIELDS[k].label, color: BUFF_FIELDS[k].color, value: v });
+    });
 
     const ratingColor = (r: string) => {
         if (r.startsWith('S+')) return 'text-yellow-400 border-yellow-400/50 bg-yellow-500/10';
@@ -423,25 +447,46 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     {role.rating}
                 </span>
             </div>
-            <div className="grid grid-cols-5 gap-1.5">
-                {metricPairs.map((m) =>
-                    isZeroValue(m.value) ? (
-                        <div key={m.label} className="rounded-lg py-1.5 px-0.5" aria-hidden="true" />
-                    ) : (
-                        <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-0.5">
-                            <span className={clsx(
-                                'text-slate-500 mb-0.5 leading-none text-center',
-                                m.label.length > 2 ? 'text-[9px]' : 'text-[10px]'
-                            )}>
-                                {m.label}
-                            </span>
-                            <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
-                                {renderValue(m.value)}
-                            </span>
-                        </div>
-                    )
-                )}
+            {/* 减益区：4 列网格，优先级最高置顶 */}
+            <div>
+                <div className="text-[10px] text-slate-500 mb-1">减益</div>
+                <div className="grid grid-cols-4 gap-1.5">
+                    {debuffItems.map((m) =>
+                        isZeroValue(m.value) ? (
+                            <div key={m.label} className="rounded-lg py-1.5 px-0.5" aria-hidden="true" />
+                        ) : (
+                            <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-0.5">
+                                <span className={clsx(
+                                    'text-slate-500 mb-0.5 leading-none text-center',
+                                    m.label.length > 2 ? 'text-[9px]' : 'text-[10px]'
+                                )}>
+                                    {m.label}
+                                </span>
+                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
+                                    {renderValue(m.value)}
+                                </span>
+                            </div>
+                        )
+                    )}
+                </div>
             </div>
+
+            {/* 增益区：紧凑 chip，仅显示非零 */}
+            {buffItems.length > 0 && (
+                <div>
+                    <div className="text-[10px] text-slate-500 mb-1">增益</div>
+                    <div className="flex flex-wrap gap-1">
+                        {buffItems.map((b) => (
+                            <span key={b.key} className={clsx('flex flex-col items-center rounded border px-1.5 py-0.5 bg-slate-900/40', b.color)}>
+                                <span className="text-[9px] font-normal text-slate-400 leading-none">{b.label}</span>
+                                <span className="text-xs font-mono font-bold leading-tight">{renderValue(b.value)}</span>
+                                {b.sub && <span className="text-[8px] font-normal text-slate-500 leading-tight mt-0.5">{b.sub}</span>}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <div className="flex flex-wrap gap-1">
                 {role.abilities.map((ability, i) => (
                     <span key={i} className="text-xs text-slate-300 bg-slate-800/70 border border-slate-700/50 px-1.5 py-0.5 rounded">
