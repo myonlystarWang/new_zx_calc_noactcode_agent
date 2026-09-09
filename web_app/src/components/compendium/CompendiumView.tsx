@@ -449,13 +449,13 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     {role.rating}
                 </span>
             </div>
-            {/* 减益区：仅显示非零，左对齐 flex-wrap */}
-            {debuffItems.some((m) => !isZeroValue(m.value)) && (
-                <div>
-                    <div className="flex items-center gap-1 mb-1">
-                        <span className="w-1 h-2.5 bg-rose-500/70 rounded-full"></span>
-                        <span className="text-[11px] font-medium text-rose-300">减益</span>
-                    </div>
+            {/* 减益区：始终显示标题，无数据时留白 */}
+            <div>
+                <div className="flex items-center gap-1 mb-1">
+                    <span className="w-1 h-2.5 bg-rose-500/70 rounded-full"></span>
+                    <span className="text-[11px] font-medium text-rose-300">减益</span>
+                </div>
+                {debuffItems.some((m) => !isZeroValue(m.value)) ? (
                     <div className="flex flex-wrap gap-1.5">
                         {debuffItems.filter((m) => !isZeroValue(m.value)).map((m) => (
                             <div key={m.label} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.25rem] bg-slate-900/50">
@@ -471,16 +471,18 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                             </div>
                         ))}
                     </div>
-                </div>
-            )}
+                ) : (
+                    <div className="min-h-[2.75rem]" aria-hidden="true"></div>
+                )}
+            </div>
 
-            {/* 增益区：仅显示非零，左对齐 flex-wrap */}
-            {buffItems.some((b) => !b.empty) && (
-                <div>
-                    <div className="flex items-center gap-1 mb-1">
-                        <span className="w-1 h-2.5 bg-emerald-500/70 rounded-full"></span>
-                        <span className="text-[11px] font-medium text-emerald-300">增益</span>
-                    </div>
+            {/* 增益区：始终显示标题，无数据时留白；真气缩放说明归到 abilities 标签，不放在 chip 内 */}
+            <div>
+                <div className="flex items-center gap-1 mb-1">
+                    <span className="w-1 h-2.5 bg-emerald-500/70 rounded-full"></span>
+                    <span className="text-[11px] font-medium text-emerald-300">增益</span>
+                </div>
+                {buffItems.some((b) => !b.empty) ? (
                     <div className="flex flex-wrap gap-1.5">
                         {buffItems.filter((b) => !b.empty).map((b) => (
                             <div key={b.key} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.25rem] bg-slate-900/50">
@@ -493,12 +495,13 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                                 <span className={clsx('text-xs sm:text-sm font-mono font-bold', b.color)}>
                                     {renderValue(b.value)}
                                 </span>
-                                {b.sub && <span className="text-[8px] text-slate-500 leading-tight mt-0.5 text-center">{b.sub}</span>}
                             </div>
                         ))}
                     </div>
-                </div>
-            )}
+                ) : (
+                    <div className="min-h-[2.75rem]" aria-hidden="true"></div>
+                )}
+            </div>
 
             <div className="flex flex-wrap gap-1">
                 {role.abilities.map((ability, i) => (
