@@ -449,17 +449,17 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     {role.rating}
                 </span>
             </div>
-            {/* 减益区：固定 4 槽，空位占位 */}
+            {/* 减益区：固定 5 列网格，空位占位 */}
             <div>
                 <div className="flex items-center gap-1 mb-1">
                     <span className="w-1 h-2.5 bg-rose-500/70 rounded-full"></span>
                     <span className="text-[11px] font-medium text-rose-300">减益</span>
                 </div>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="grid grid-cols-5 gap-1">
                     {debuffItems.map((m) => {
                         const empty = isZeroValue(m.value);
                         return (
-                            <div key={m.label} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.5rem] bg-slate-900/50">
+                            <div key={m.label} className="flex flex-col items-center rounded-lg py-1.5 px-1 bg-slate-900/50">
                                 <span className={clsx(
                                     'mb-0.5 leading-none text-center text-[10px]',
                                     m.label.length > 2 ? 'text-[9px]' : '',
@@ -476,15 +476,15 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                 </div>
             </div>
 
-            {/* 增益区：固定 7 槽，空位占位 */}
+            {/* 增益区：固定 5 列网格，空位占位 */}
             <div>
                 <div className="flex items-center gap-1 mb-1">
                     <span className="w-1 h-2.5 bg-emerald-500/70 rounded-full"></span>
                     <span className="text-[11px] font-medium text-emerald-300">增益</span>
                 </div>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="grid grid-cols-5 gap-1">
                     {buffItems.map((b) => (
-                        <div key={b.key} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.5rem] bg-slate-900/50">
+                        <div key={b.key} className="flex flex-col items-center rounded-lg py-1.5 px-1 bg-slate-900/50">
                             <span className={clsx(
                                 'mb-0.5 leading-none text-center text-[10px]',
                                 b.label.length > 3 ? 'text-[9px]' : '',
