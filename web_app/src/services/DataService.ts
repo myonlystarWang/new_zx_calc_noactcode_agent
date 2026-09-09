@@ -55,6 +55,7 @@ export interface SupportRole {
     purplePoint: number | string;
     defenseBreak: number | string;
     focus?: number | string;
+    focusType?: ('group' | 'self')[];   // 群体专注 | 自身专注；可同时具备两者，分别归入两个分组
     abilities: string[];
     rating: string;
 }
