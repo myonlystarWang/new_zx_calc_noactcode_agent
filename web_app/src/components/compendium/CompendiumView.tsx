@@ -350,12 +350,23 @@ const metricValue = (v: number | string | undefined): number => {
 };
 
 const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role, metrics }) => {
+    // 根据 focusType 给「专注」指标打群体/自身标签
+    const focusTypeLabel = ((): string => {
+        const types = role.focusType ?? [];
+        const hasSelf = types.includes('self');
+        const hasGroup = types.includes('group');
+        if (hasSelf && hasGroup) return '自身/群体';
+        if (hasSelf) return '自身专注';
+        if (hasGroup) return '群体专注';
+        return metrics[4] ?? '专注';
+    })();
+
     const metricPairs = [
         { label: metrics[0] ?? '易伤', value: role.damageBoost, color: 'text-amber-400' },
         { label: metrics[1] ?? '绿点', value: role.greenPoint, color: 'text-emerald-400' },
         { label: metrics[2] ?? '紫点', value: role.purplePoint, color: 'text-purple-400' },
         { label: metrics[3] ?? '破防', value: role.defenseBreak, color: 'text-rose-400' },
-        { label: metrics[4] ?? '专注', value: role.focus ?? 0, color: 'text-orange-400' },
+        { label: focusTypeLabel, value: role.focus ?? 0, color: 'text-orange-400' },
     ].sort((a, b) => Number(isZeroValue(a.value)) - Number(isZeroValue(b.value)));
 
     const ratingColor = (r: string) => {
@@ -418,7 +429,10 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                         <div key={m.label} className="rounded-lg py-1.5 px-0.5" aria-hidden="true" />
                     ) : (
                         <div key={m.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5 px-0.5">
-                            <span className="text-[10px] text-slate-500 mb-0.5 leading-none">
+                            <span className={clsx(
+                                'text-slate-500 mb-0.5 leading-none text-center',
+                                m.label.length > 2 ? 'text-[9px]' : 'text-[10px]'
+                            )}>
                                 {m.label}
                             </span>
                             <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
