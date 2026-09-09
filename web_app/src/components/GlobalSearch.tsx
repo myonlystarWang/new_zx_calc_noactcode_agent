@@ -44,10 +44,14 @@ function buildIndex(): IndexEntry[] {
     const service = DataService.getInstance();
     const entries: IndexEntry[] = [...SUB_PAGE_ENTRIES];
 
-    // 各职业状态（辅助 + 输出阵营变体，如 逐霜仙/逐霜魔佛）
+    // 各职业状态（同名多阵营卡片如 逐霜 仙 / 逐霜 魔佛，按 name+faction 去重）
     const roles = service.getSupportRoles();
     if (roles) {
+        const seen = new Set<string>();
         for (const r of roles.roles) {
+            const dedupeKey = `${r.name}-${r.faction}`;
+            if (seen.has(dedupeKey)) continue;
+            seen.add(dedupeKey);
             const isDps = r.rating === '输出';
             entries.push({
                 label: r.name,
