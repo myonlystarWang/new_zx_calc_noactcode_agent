@@ -324,6 +324,14 @@ const SourceSectionView: React.FC<{ section: StatSourceSection; showConditional?
     );
 };
 
+/** 评级排序权重：S+ → S → A+ → A → 其他（如输出职业） */
+const RATING_ORDER = ['S+', 'S', 'A+', 'A', 'B+', 'B', 'C'];
+const ratingRank = (rating?: string): number => {
+    if (!rating) return RATING_ORDER.length;
+    const idx = RATING_ORDER.indexOf(rating);
+    return idx >= 0 ? idx : RATING_ORDER.length;
+};
+
 const isZeroValue = (v: number | string | undefined): boolean => {
     if (v === undefined || v === null) return false;
     if (typeof v === 'number') return v === 0;
@@ -468,7 +476,7 @@ const SupportView: React.FC = () => {
         const q = query.trim();
         const passQuery = !q || r.name.includes(q) || r.abilities.some(a => a.includes(q));
         return passMetric && passQuery;
-    });
+    }).sort((a, b) => ratingRank(a.rating) - ratingRank(b.rating)); // S+ → S → A+ → A → 其他
 
     const toggleMetric = (m: string) => {
         setMetricFilter((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
@@ -517,8 +525,9 @@ const SupportView: React.FC = () => {
                 </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                {filtered.map((role) => (
-                    <SupportCard key={role.name} role={role} metrics={roles.metrics} />
+                {filtered.map((role, idx) => (
+                    // 同名多阵营卡片共存（如 逐霜 仙 / 逐霜 魔佛），key 必须带阵营
+                    <SupportCard key={`${role.name}-${role.faction}-${idx}`} role={role} metrics={roles.metrics} />
                 ))}
             </div>
             <FocusReferenceSection />
