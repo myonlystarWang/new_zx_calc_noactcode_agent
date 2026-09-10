@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DataService } from '../../services/DataService';
-import { BookOpen, Shield, Swords, Target, Users, CheckCircle, AlertCircle, Search, X } from 'lucide-react';
+import { BookOpen, Shield, Swords, Target, Users, CheckCircle, AlertCircle, X } from 'lucide-react';
 import clsx from 'clsx';
 import type { AttributeCeilingRow, SupportRole, StatSourceSection } from '../../services/DataService';
 import type { SearchTarget } from '../GlobalSearch';
@@ -659,19 +659,9 @@ const SupportView: React.FC = () => {
     return (
         <div className="flex flex-col gap-4">
             <div className="zx-card p-3 flex flex-col gap-3">
-                {/* 顶部：搜索 + 计数 */}
-                <div className="flex items-center gap-2">
-                    <div className="relative flex-1 sm:flex-none">
-                        <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
-                        <input
-                            type="text"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            placeholder="搜索职业或能力"
-                            className="bg-slate-900/60 border border-slate-700/60 rounded-lg pl-7 pr-2 py-1 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-500/50 w-full sm:w-40"
-                        />
-                    </div>
-                    <span className="text-sm text-slate-500 flex-shrink-0 sm:ml-auto">{filtered.length} / {roles.roles.length}</span>
+                {/* 顶部：计数 */}
+                <div className="flex items-center justify-end gap-2">
+                    <span className="text-sm text-slate-500 flex-shrink-0">{filtered.length} / {roles.roles.length}</span>
                 </div>
 
                 {/* 减益分类行：点击一级按钮才展开二级属性 */}
@@ -704,9 +694,12 @@ const SupportView: React.FC = () => {
                                 </button>
                             ))}
                             <button
-                                onClick={() => setDebuffFilter([])}
+                                onClick={() => {
+                                    setCategoryFilter((prev) => prev.filter((c) => c !== 'debuff'));
+                                    setDebuffFilter([]);
+                                }}
                                 className="px-2 py-0.5 rounded-lg text-xs font-medium border transition-all bg-slate-800/40 border-slate-700/40 text-slate-500 hover:text-rose-300 hover:border-rose-500/40 flex items-center justify-center"
-                                title="清除减益筛选"
+                                title="关闭减益"
                             >
                                 <X className="w-3 h-3" />
                             </button>
@@ -744,9 +737,12 @@ const SupportView: React.FC = () => {
                                 </button>
                             ))}
                             <button
-                                onClick={() => setBuffFilter([])}
+                                onClick={() => {
+                                    setCategoryFilter((prev) => prev.filter((c) => c !== 'buff'));
+                                    setBuffFilter([]);
+                                }}
                                 className="px-2 py-0.5 rounded-lg text-xs font-medium border transition-all bg-slate-800/40 border-slate-700/40 text-slate-500 hover:text-emerald-300 hover:border-emerald-500/40 flex items-center justify-center"
-                                title="清除增益筛选"
+                                title="关闭增益"
                             >
                                 <X className="w-3 h-3" />
                             </button>
