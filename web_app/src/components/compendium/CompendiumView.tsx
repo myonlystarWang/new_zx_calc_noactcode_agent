@@ -659,94 +659,94 @@ const SupportView: React.FC = () => {
     return (
         <div className="flex flex-col gap-4">
             <div className="zx-card p-3 flex flex-col gap-3">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm text-slate-400 mr-1">筛选</span>
-                        <button
-                            onClick={() => toggleCategory('debuff')}
-                            className={clsx(
-                                'px-3 py-1 rounded-lg text-sm font-medium border transition-all',
-                                showDebuff
-                                    ? 'bg-rose-500/20 border-rose-500/50 text-rose-300'
-                                    : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                            )}
-                        >
-                            减益
-                        </button>
-                        <button
-                            onClick={() => toggleCategory('buff')}
-                            className={clsx(
-                                'px-3 py-1 rounded-lg text-sm font-medium border transition-all',
-                                showBuff
-                                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
-                                    : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                            )}
-                        >
-                            增益
-                        </button>
-                        {hasAnySelection && (
-                            <button
-                                onClick={clearAll}
-                                className="px-2 py-1 rounded-lg text-xs text-slate-500 hover:text-slate-300 transition-colors"
-                            >
-                                清除
-                            </button>
-                        )}
+                {/* 顶部：搜索 + 计数 + 清除 */}
+                <div className="flex items-center gap-2">
+                    <div className="relative flex-1 sm:flex-none">
+                        <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder="搜索职业或能力"
+                            className="bg-slate-900/60 border border-slate-700/60 rounded-lg pl-7 pr-2 py-1 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-500/50 w-full sm:w-40"
+                        />
                     </div>
-                    <div className="flex items-center gap-2 sm:ml-auto w-full sm:w-auto">
-                        <div className="relative flex-1 sm:flex-none">
-                            <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
-                            <input
-                                type="text"
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                placeholder="搜索职业或能力"
-                                className="bg-slate-900/60 border border-slate-700/60 rounded-lg pl-7 pr-2 py-1 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-500/50 w-full sm:w-40"
-                            />
-                        </div>
-                        <span className="text-sm text-slate-500 flex-shrink-0">{filtered.length} / {roles.roles.length}</span>
-                    </div>
+                    {hasAnySelection && (
+                        <button
+                            onClick={clearAll}
+                            className="px-2 py-1 rounded-lg text-xs text-slate-500 hover:text-slate-300 transition-colors flex-shrink-0"
+                        >
+                            清除筛选
+                        </button>
+                    )}
+                    <span className="text-sm text-slate-500 flex-shrink-0 sm:ml-auto">{filtered.length} / {roles.roles.length}</span>
                 </div>
 
-                {/* 减益二级选项 */}
-                {showDebuff && (
-                    <div className="flex flex-wrap items-center gap-2 pl-0 sm:pl-10">
-                        {DEBUFF_OPTIONS.map((m) => (
-                            <button
-                                key={m}
-                                onClick={() => toggleDebuff(m)}
-                                className={clsx(
-                                    'px-2.5 py-0.5 rounded-lg text-xs font-medium border transition-all',
-                                    debuffFilter.includes(m)
-                                        ? 'bg-rose-500/15 border-rose-500/40 text-rose-300'
-                                        : 'bg-slate-800/40 border-slate-700/40 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                                )}
-                            >
-                                {m}
-                            </button>
-                        ))}
-                    </div>
-                )}
+                {/* 减益分类行：点击一级按钮才展开二级属性 */}
+                <div className="flex flex-wrap items-center gap-2">
+                    <button
+                        onClick={() => toggleCategory('debuff')}
+                        className={clsx(
+                            'px-3 py-1 rounded-lg text-sm font-semibold border transition-all flex-shrink-0',
+                            showDebuff
+                                ? 'bg-rose-500/20 border-rose-500/60 text-rose-300 shadow-[0_0_10px_rgba(244,63,94,0.25)]'
+                                : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                        )}
+                    >
+                        减益
+                    </button>
+                    {showDebuff && (
+                        <div className="flex flex-wrap items-center gap-1.5">
+                            {DEBUFF_OPTIONS.map((m) => (
+                                <button
+                                    key={m}
+                                    onClick={() => toggleDebuff(m)}
+                                    className={clsx(
+                                        'px-2 py-0.5 rounded-lg text-xs font-medium border transition-all',
+                                        debuffFilter.includes(m)
+                                            ? 'bg-rose-500/15 border-rose-500/40 text-rose-300'
+                                            : 'bg-slate-800/40 border-slate-700/40 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                                    )}
+                                >
+                                    {m}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
 
-                {/* 增益二级选项 */}
-                {showBuff && (
-                    <div className="flex flex-wrap items-center gap-2 pl-0 sm:pl-10">
-                        {BUFF_OPTIONS.map((m) => (
-                            <button
-                                key={m}
-                                onClick={() => toggleBuff(m)}
-                                className={clsx(
-                                    'px-2.5 py-0.5 rounded-lg text-xs font-medium border transition-all',
-                                    buffFilter.includes(m)
-                                        ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
-                                        : 'bg-slate-800/40 border-slate-700/40 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                                )}
-                            >
-                                {m}
-                            </button>
-                        ))}
-                    </div>
-                )}
+                {/* 增益分类行：点击一级按钮才展开二级属性 */}
+                <div className="flex flex-wrap items-center gap-2">
+                    <button
+                        onClick={() => toggleCategory('buff')}
+                        className={clsx(
+                            'px-3 py-1 rounded-lg text-sm font-semibold border transition-all flex-shrink-0',
+                            showBuff
+                                ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.25)]'
+                                : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                        )}
+                    >
+                        增益
+                    </button>
+                    {showBuff && (
+                        <div className="flex flex-wrap items-center gap-1.5">
+                            {BUFF_OPTIONS.map((m) => (
+                                <button
+                                    key={m}
+                                    onClick={() => toggleBuff(m)}
+                                    className={clsx(
+                                        'px-2 py-0.5 rounded-lg text-xs font-medium border transition-all',
+                                        buffFilter.includes(m)
+                                            ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
+                                            : 'bg-slate-800/40 border-slate-700/40 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                                    )}
+                                >
+                                    {m}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
 
             {!hasAnySelection && (
