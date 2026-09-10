@@ -360,11 +360,32 @@ const BUFF_FIELDS: Record<BuffKey, { label: string; color: string }> = {
     monsterDmgUp: { label: '加怪增', color: 'text-purple-400' },
 };
 
+// 新的两级筛选配置
+const DEBUFF_OPTIONS = ['易伤', '绿点', '紫点', '破防'];
+const BUFF_OPTIONS = ['专注', '加爆伤', '加攻击', '加血', '加蓝', '加防御', '加怪增'];
+
+const DEBUFF_FIELD: Record<string, (r: SupportRole) => number | string | undefined> = {
+    '易伤': (r) => r.damageBoost,
+    '绿点': (r) => r.greenPoint,
+    '紫点': (r) => r.purplePoint,
+    '破防': (r) => r.defenseBreak,
+};
+
+const BUFF_FIELD: Record<string, (r: SupportRole) => number | string | undefined> = {
+    '专注': (r) => r.focus,
+    '加爆伤': (r) => r.critDamage,
+    '加攻击': (r) => r.atkUp,
+    '加血': (r) => r.healUp,
+    '加蓝': (r) => r.manaUp,
+    '加防御': (r) => r.defUp,
+    '加怪增': (r) => r.monsterDmgUp,
+};
+
 // 从 abilities 中抽「每X万真气+1专注」类说明，作为专注 chip 的小字备注
 const focusScalingNote = (role: SupportRole): string | null =>
     role.abilities.find((a) => /真气.*专注/.test(a)) ?? null;
 
-const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role, metrics }) => {
+const SupportCard: React.FC<{ role: SupportRole; metrics: string[]; showDebuff?: boolean; showBuff?: boolean }> = ({ role, metrics, showDebuff = true, showBuff = true }) => {
     // —— 减益区：4 列网格（易伤/绿点/紫点/破防）——
     const debuffItems = [
         { label: metrics[0] ?? '易伤', value: role.damageBoost, color: 'text-amber-400' },
@@ -449,59 +470,61 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[] }> = ({ role,
                     {role.rating}
                 </span>
             </div>
-            {/* 减益区：始终显示标题，无数据时留白 */}
-            <div>
-                <div className="flex items-center gap-1 mb-1">
-                    <span className="w-1 h-2.5 bg-rose-500/70 rounded-full"></span>
-                    <span className="text-[11px] font-medium text-rose-300">减益</span>
-                </div>
-                {debuffItems.some((m) => !isZeroValue(m.value)) ? (
-                    <div className="flex flex-wrap gap-1.5">
-                        {debuffItems.filter((m) => !isZeroValue(m.value)).map((m) => (
-                            <div key={m.label} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.25rem] bg-slate-900/50">
-                                <span className={clsx(
-                                    'mb-0.5 leading-none text-center text-[10px] text-slate-500',
-                                    m.label.length > 2 ? 'text-[9px]' : ''
-                                )}>
-                                    {m.label}
-                                </span>
-                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
-                                    {renderValue(m.value)}
-                                </span>
-                            </div>
-                        ))}
+            {showDebuff && (
+                <div>
+                    <div className="flex items-center gap-1 mb-1">
+                        <span className="w-1 h-2.5 bg-rose-500/70 rounded-full"></span>
+                        <span className="text-[11px] font-medium text-rose-300">减益</span>
                     </div>
-                ) : (
-                    <div className="min-h-[2.75rem]" aria-hidden="true"></div>
-                )}
-            </div>
+                    {debuffItems.some((m) => !isZeroValue(m.value)) ? (
+                        <div className="flex flex-wrap gap-1.5">
+                            {debuffItems.filter((m) => !isZeroValue(m.value)).map((m) => (
+                                <div key={m.label} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.25rem] bg-slate-900/50">
+                                    <span className={clsx(
+                                        'mb-0.5 leading-none text-center text-[10px] text-slate-500',
+                                        m.label.length > 2 ? 'text-[9px]' : ''
+                                    )}>
+                                        {m.label}
+                                    </span>
+                                    <span className={clsx('text-xs sm:text-sm font-mono font-bold', m.color)}>
+                                        {renderValue(m.value)}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="min-h-[2.75rem]" aria-hidden="true"></div>
+                    )}
+                </div>
+            )}
 
-            {/* 增益区：始终显示标题，无数据时留白；真气缩放说明归到 abilities 标签，不放在 chip 内 */}
-            <div>
-                <div className="flex items-center gap-1 mb-1">
-                    <span className="w-1 h-2.5 bg-emerald-500/70 rounded-full"></span>
-                    <span className="text-[11px] font-medium text-emerald-300">增益</span>
-                </div>
-                {buffItems.some((b) => !b.empty) ? (
-                    <div className="flex flex-wrap gap-1.5">
-                        {buffItems.filter((b) => !b.empty).map((b) => (
-                            <div key={b.key} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.25rem] bg-slate-900/50">
-                                <span className={clsx(
-                                    'mb-0.5 leading-none text-center text-[10px] text-slate-500',
-                                    b.label.length > 3 ? 'text-[9px]' : ''
-                                )}>
-                                    {b.label}
-                                </span>
-                                <span className={clsx('text-xs sm:text-sm font-mono font-bold', b.color)}>
-                                    {renderValue(b.value)}
-                                </span>
-                            </div>
-                        ))}
+            {showBuff && (
+                <div>
+                    <div className="flex items-center gap-1 mb-1">
+                        <span className="w-1 h-2.5 bg-emerald-500/70 rounded-full"></span>
+                        <span className="text-[11px] font-medium text-emerald-300">增益</span>
                     </div>
-                ) : (
-                    <div className="min-h-[2.75rem]" aria-hidden="true"></div>
-                )}
-            </div>
+                    {buffItems.some((b) => !b.empty) ? (
+                        <div className="flex flex-wrap gap-1.5">
+                            {buffItems.filter((b) => !b.empty).map((b) => (
+                                <div key={b.key} className="flex flex-col items-center rounded-lg py-1.5 px-2 min-w-[3.25rem] bg-slate-900/50">
+                                    <span className={clsx(
+                                        'mb-0.5 leading-none text-center text-[10px] text-slate-500',
+                                        b.label.length > 3 ? 'text-[9px]' : ''
+                                    )}>
+                                        {b.label}
+                                    </span>
+                                    <span className={clsx('text-xs sm:text-sm font-mono font-bold', b.color)}>
+                                        {renderValue(b.value)}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="min-h-[2.75rem]" aria-hidden="true"></div>
+                    )}
+                </div>
+            )}
 
             <div className="flex flex-wrap gap-1">
                 {role.abilities.map((ability, i) => (
@@ -542,135 +565,238 @@ const FocusReferenceSection: React.FC = () => {
 
 const SupportView: React.FC = () => {
     const roles = DataService.getInstance().getSupportRoles();
-    const [metricFilter, setMetricFilter] = useState<string[]>([]);
+    const [categoryFilter, setCategoryFilter] = useState<Array<'debuff' | 'buff'>>([]);
+    const [debuffFilter, setDebuffFilter] = useState<string[]>([]);
+    const [buffFilter, setBuffFilter] = useState<string[]>([]);
     const [query, setQuery] = useState('');
 
     if (!roles) return <div className="text-slate-400 text-base">数据加载中...</div>;
 
-    // 属性筛选字段映射（多选 = 必须同时具备所有选中属性且非 0）
-    const METRIC_FIELD: Record<string, (r: SupportRole) => number | string | undefined> = {
-        '易伤': (r) => r.damageBoost,
-        '绿点': (r) => r.greenPoint,
-        '紫点': (r) => r.purplePoint,
-        '破防': (r) => r.defenseBreak,
-        '专注': (r) => r.focus,
-    };
+    const hasDebuff = (r: SupportRole) =>
+        !isZeroValue(r.damageBoost) || !isZeroValue(r.greenPoint) ||
+        !isZeroValue(r.purplePoint) || !isZeroValue(r.defenseBreak);
+
+    const hasBuff = (r: SupportRole) =>
+        !isZeroValue(r.focus) || !isZeroValue(r.critDamage) ||
+        !isZeroValue(r.atkUp) || !isZeroValue(r.healUp) ||
+        !isZeroValue(r.manaUp) || !isZeroValue(r.defUp) ||
+        !isZeroValue(r.monsterDmgUp);
 
     const filtered = roles.roles
         .filter((r) => {
-            const passMetric = metricFilter.every((m) => {
-                const getter = METRIC_FIELD[m];
-                return getter ? !isZeroValue(getter(r)) : true;
-            });
             const q = query.trim();
             const passQuery = !q || r.name.includes(q) || r.abilities.some(a => a.includes(q));
-            return passMetric && passQuery;
+            if (!passQuery) return false;
+
+            if (categoryFilter.length === 0) return false; // 未选分类时整页空白
+
+            // 分类级过滤：选中的分类中至少有一个有效果（OR）
+            const passCategory = categoryFilter.some((cat) => {
+                if (cat === 'debuff') return hasDebuff(r);
+                return hasBuff(r);
+            });
+            if (!passCategory) return false;
+
+            // 二级属性过滤：每个分类内选中的属性必须同时满足（AND），跨分类也是 AND
+            const passDebuffSub = debuffFilter.every((m) => {
+                const getter = DEBUFF_FIELD[m];
+                return getter ? !isZeroValue(getter(r)) : true;
+            });
+            const passBuffSub = buffFilter.every((m) => {
+                const getter = BUFF_FIELD[m];
+                return getter ? !isZeroValue(getter(r)) : true;
+            });
+            return passDebuffSub && passBuffSub;
         })
         .sort((a, b) => {
-            // 排序规则：
-            // 0 个筛选：按评级 S+→A
-            // 1 个筛选：按该属性数值从大到小（70+ 按 70）
-            // 2 个及以上：按所选属性数值之和从大到小
-            if (metricFilter.length === 0) {
+            const hasSubFilter = debuffFilter.length > 0 || buffFilter.length > 0;
+            if (!hasSubFilter) {
                 const rc = ratingRank(a.rating) - ratingRank(b.rating);
                 if (rc !== 0) return rc;
                 return a.name.localeCompare(b.name);
             }
-            const sumA = metricFilter.reduce((sum, m) => {
-                const getter = METRIC_FIELD[m];
-                return sum + (getter ? metricValue(getter(a)) : 0);
-            }, 0);
-            const sumB = metricFilter.reduce((sum, m) => {
-                const getter = METRIC_FIELD[m];
-                return sum + (getter ? metricValue(getter(b)) : 0);
-            }, 0);
+            const sumA =
+                debuffFilter.reduce((sum, m) => sum + metricValue(DEBUFF_FIELD[m](a)), 0) +
+                buffFilter.reduce((sum, m) => sum + metricValue(BUFF_FIELD[m](a)), 0);
+            const sumB =
+                debuffFilter.reduce((sum, m) => sum + metricValue(DEBUFF_FIELD[m](b)), 0) +
+                buffFilter.reduce((sum, m) => sum + metricValue(BUFF_FIELD[m](b)), 0);
             if (sumA !== sumB) return sumB - sumA;
             const rc = ratingRank(a.rating) - ratingRank(b.rating);
             if (rc !== 0) return rc;
             return a.name.localeCompare(b.name);
         });
 
-    const toggleMetric = (m: string) => {
-        setMetricFilter((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
+    const toggleCategory = (cat: 'debuff' | 'buff') => {
+        setCategoryFilter((prev) =>
+            prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+        );
+        if (cat === 'debuff') setDebuffFilter([]);
+        else setBuffFilter([]);
     };
+
+    const toggleDebuff = (m: string) => {
+        setDebuffFilter((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
+    };
+
+    const toggleBuff = (m: string) => {
+        setBuffFilter((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
+    };
+
+    const clearAll = () => {
+        setCategoryFilter([]);
+        setDebuffFilter([]);
+        setBuffFilter([]);
+    };
+
+    const showDebuff = categoryFilter.includes('debuff');
+    const showBuff = categoryFilter.includes('buff');
 
     const supportRoles = filtered.filter((r) => r.roleType !== 'dps');
     const dpsRoles = filtered.filter((r) => r.roleType === 'dps');
+    const hasAnySelection = categoryFilter.length > 0;
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="zx-card p-3 flex flex-col sm:flex-row sm:items-center gap-3">
-                <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm text-slate-400 mr-1">筛选</span>
-                    {['易伤', '绿点', '紫点', '破防', '专注'].map((m) => (
+            <div className="zx-card p-3 flex flex-col gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm text-slate-400 mr-1">筛选</span>
                         <button
-                            key={m}
-                            onClick={() => toggleMetric(m)}
+                            onClick={() => toggleCategory('debuff')}
                             className={clsx(
                                 'px-3 py-1 rounded-lg text-sm font-medium border transition-all',
-                                metricFilter.includes(m)
-                                    ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
+                                showDebuff
+                                    ? 'bg-rose-500/20 border-rose-500/50 text-rose-300'
                                     : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
                             )}
                         >
-                            {m}
+                            减益
                         </button>
-                    ))}
-                    {metricFilter.length > 0 && (
                         <button
-                            onClick={() => setMetricFilter([])}
-                            className="px-2 py-1 rounded-lg text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                            onClick={() => toggleCategory('buff')}
+                            className={clsx(
+                                'px-3 py-1 rounded-lg text-sm font-medium border transition-all',
+                                showBuff
+                                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
+                                    : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                            )}
                         >
-                            清除
+                            增益
                         </button>
-                    )}
-                </div>
-                <div className="flex items-center gap-2 sm:ml-auto w-full sm:w-auto">
-                    <div className="relative flex-1 sm:flex-none">
-                        <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
-                        <input
-                            type="text"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            placeholder="搜索职业或能力"
-                            className="bg-slate-900/60 border border-slate-700/60 rounded-lg pl-7 pr-2 py-1 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-500/50 w-full sm:w-40"
-                        />
+                        {hasAnySelection && (
+                            <button
+                                onClick={clearAll}
+                                className="px-2 py-1 rounded-lg text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                            >
+                                清除
+                            </button>
+                        )}
                     </div>
-                    <span className="text-sm text-slate-500 flex-shrink-0">{filtered.length} / {roles.roles.length}</span>
+                    <div className="flex items-center gap-2 sm:ml-auto w-full sm:w-auto">
+                        <div className="relative flex-1 sm:flex-none">
+                            <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+                            <input
+                                type="text"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder="搜索职业或能力"
+                                className="bg-slate-900/60 border border-slate-700/60 rounded-lg pl-7 pr-2 py-1 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-500/50 w-full sm:w-40"
+                            />
+                        </div>
+                        <span className="text-sm text-slate-500 flex-shrink-0">{filtered.length} / {roles.roles.length}</span>
+                    </div>
                 </div>
+
+                {/* 减益二级选项 */}
+                {showDebuff && (
+                    <div className="flex flex-wrap items-center gap-2 pl-0 sm:pl-10">
+                        {DEBUFF_OPTIONS.map((m) => (
+                            <button
+                                key={m}
+                                onClick={() => toggleDebuff(m)}
+                                className={clsx(
+                                    'px-2.5 py-0.5 rounded-lg text-xs font-medium border transition-all',
+                                    debuffFilter.includes(m)
+                                        ? 'bg-rose-500/15 border-rose-500/40 text-rose-300'
+                                        : 'bg-slate-800/40 border-slate-700/40 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                                )}
+                            >
+                                {m}
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {/* 增益二级选项 */}
+                {showBuff && (
+                    <div className="flex flex-wrap items-center gap-2 pl-0 sm:pl-10">
+                        {BUFF_OPTIONS.map((m) => (
+                            <button
+                                key={m}
+                                onClick={() => toggleBuff(m)}
+                                className={clsx(
+                                    'px-2.5 py-0.5 rounded-lg text-xs font-medium border transition-all',
+                                    buffFilter.includes(m)
+                                        ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
+                                        : 'bg-slate-800/40 border-slate-700/40 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                                )}
+                            >
+                                {m}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
+            {!hasAnySelection && (
+                <div className="zx-card p-8 text-center text-slate-500">
+                    选择增益/减益效果以查看职业状态
+                </div>
+            )}
+
             {/* 辅助职业卡片网格 */}
-            {supportRoles.length > 0 && (
+            {hasAnySelection && supportRoles.length > 0 && (
                 <div className="flex flex-col gap-3">
                     <h3 className="text-sm font-bold text-slate-400 flex items-center gap-1.5">
                         <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>辅助职业
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                         {supportRoles.map((role, idx) => (
-                            // 同名多阵营卡片共存（如 逐霜 仙 / 逐霜 魔佛），key 必须带阵营
-                            <SupportCard key={`${role.name}-${role.faction}-${idx}`} role={role} metrics={roles.metrics} />
+                            <SupportCard
+                                key={`${role.name}-${role.faction}-${idx}`}
+                                role={role}
+                                metrics={roles.metrics}
+                                showDebuff={showDebuff}
+                                showBuff={showBuff}
+                            />
                         ))}
                     </div>
                 </div>
             )}
 
             {/* 输出职业卡片网格 */}
-            {dpsRoles.length > 0 && (
+            {hasAnySelection && dpsRoles.length > 0 && (
                 <div className="flex flex-col gap-3">
                     <h3 className="text-sm font-bold text-slate-400 flex items-center gap-1.5">
                         <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>输出职业
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                         {dpsRoles.map((role, idx) => (
-                            <SupportCard key={`${role.name}-${role.faction}-${idx}`} role={role} metrics={roles.metrics} />
+                            <SupportCard
+                                key={`${role.name}-${role.faction}-${idx}`}
+                                role={role}
+                                metrics={roles.metrics}
+                                showDebuff={showDebuff}
+                                showBuff={showBuff}
+                            />
                         ))}
                     </div>
                 </div>
             )}
 
-            <FocusReferenceSection />
-            {roles.notes && roles.notes.length > 0 && (
+            {hasAnySelection && <FocusReferenceSection />}
+            {hasAnySelection && roles.notes && roles.notes.length > 0 && (
                 <div className="zx-card p-4">
                     <h3 className="text-base font-bold text-slate-200 mb-2">说明</h3>
                     <ul className="list-disc list-inside text-sm text-slate-400 space-y-1">
