@@ -18,3 +18,7 @@ agent_tool/temp_profile_*.json
 scratch/
 .learnings/
 *.mp4
+
+# Tool-generated working directories
+.refactor_baseline/
+.workbuddy/
