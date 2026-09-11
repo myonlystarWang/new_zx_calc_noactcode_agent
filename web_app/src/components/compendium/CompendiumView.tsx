@@ -659,11 +659,6 @@ const SupportView: React.FC = () => {
     return (
         <div className="flex flex-col gap-4">
             <div className="zx-card p-3 flex flex-col gap-3">
-                {/* 顶部：计数 */}
-                <div className="flex items-center justify-end gap-2">
-                    <span className="text-sm text-slate-500 flex-shrink-0">{filtered.length} / {roles.roles.length}</span>
-                </div>
-
                 {/* 减益分类行：点击一级按钮才展开二级属性 */}
                 <div className="flex flex-wrap items-center gap-2">
                     <button
@@ -762,6 +757,7 @@ const SupportView: React.FC = () => {
                 <div className="flex flex-col gap-3">
                     <h3 className="text-sm font-bold text-slate-400 flex items-center gap-1.5">
                         <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>辅助职业
+                        <span className="text-xs font-medium text-slate-600">· {supportRoles.length}</span>
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                         {supportRoles.map((role, idx) => (
@@ -782,6 +778,7 @@ const SupportView: React.FC = () => {
                 <div className="flex flex-col gap-3">
                     <h3 className="text-sm font-bold text-slate-400 flex items-center gap-1.5">
                         <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>输出职业
+                        <span className="text-xs font-medium text-slate-600">· {dpsRoles.length}</span>
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                         {dpsRoles.map((role, idx) => (
