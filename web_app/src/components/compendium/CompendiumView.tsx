@@ -565,7 +565,7 @@ const FocusReferenceSection: React.FC = () => {
 
 const SupportView: React.FC = () => {
     const roles = DataService.getInstance().getSupportRoles();
-    const [categoryFilter, setCategoryFilter] = useState<Array<'debuff' | 'buff'>>([]);
+    const [categoryFilter, setCategoryFilter] = useState<Array<'debuff' | 'buff'>>(['debuff', 'buff']);
     const [debuffFilter, setDebuffFilter] = useState<string[]>([]);
     const [buffFilter, setBuffFilter] = useState<string[]>([]);
     const [query, setQuery] = useState('');
