@@ -568,7 +568,6 @@ const SupportView: React.FC = () => {
     const [categoryFilter, setCategoryFilter] = useState<Array<'debuff' | 'buff'>>(['debuff', 'buff']);
     const [debuffFilter, setDebuffFilter] = useState<string[]>([]);
     const [buffFilter, setBuffFilter] = useState<string[]>([]);
-    const [query, setQuery] = useState('');
 
     if (!roles) return <div className="text-slate-400 text-base">数据加载中...</div>;
 
@@ -584,10 +583,6 @@ const SupportView: React.FC = () => {
 
     const filtered = roles.roles
         .filter((r) => {
-            const q = query.trim();
-            const passQuery = !q || r.name.includes(q) || r.abilities.some(a => a.includes(q));
-            if (!passQuery) return false;
-
             if (categoryFilter.length === 0) return false; // 未选分类时整页空白
 
             // 分类级过滤：选中的分类中至少有一个有效果（OR）
@@ -641,12 +636,6 @@ const SupportView: React.FC = () => {
 
     const toggleBuff = (m: string) => {
         setBuffFilter((prev) => (prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]));
-    };
-
-    const clearAll = () => {
-        setCategoryFilter([]);
-        setDebuffFilter([]);
-        setBuffFilter([]);
     };
 
     const showDebuff = categoryFilter.includes('debuff');
