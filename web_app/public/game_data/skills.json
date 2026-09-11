@@ -2362,8 +2362,8 @@
         {
           "name": "焚香",
           "faction": "佛",
-          "damageBoost": 110,
-          "greenPoint": "*2",
+          "damageBoost": 100,
+          "greenPoint": "×2",
           "purplePoint": 4,
           "defenseBreak": 100,
           "focus": 30,
@@ -2495,7 +2495,7 @@
           "name": "画影",
           "faction": "仙",
           "damageBoost": 60,
-          "greenPoint": 120,
+          "greenPoint": 150,
           "purplePoint": 30,
           "defenseBreak": 100,
           "focus": "27+",
@@ -2514,8 +2514,8 @@
         {
           "name": "英招",
           "faction": "佛",
-          "damageBoost": 50,
-          "greenPoint": 300,
+          "damageBoost": 40,
+          "greenPoint": 340,
           "purplePoint": 35,
           "defenseBreak": 100,
           "focus": 0,
@@ -2574,7 +2574,7 @@
         {
           "name": "鬼道",
           "faction": "佛",
-          "damageBoost": 32,
+          "damageBoost": 40,
           "greenPoint": 300,
           "purplePoint": 18,
           "defenseBreak": 100,
@@ -2683,17 +2683,20 @@
         {
           "name": "九黎",
           "faction": "佛",
-          "damageBoost": 0,
+          "damageBoost": 40,
           "greenPoint": 425,
-          "purplePoint": 25,
+          "purplePoint": 45,
           "defenseBreak": 190,
           "focus": 0,
           "abilities": [
             "增加气血上限",
-            "技能伤害"
+            "增加攻击上限",
+            "抗怪",
+            "增加爆伤"
           ],
           "rating": "A",
-          "roleType": "support"
+          "roleType": "support",
+          "critDamage": 20
         },
         {
           "name": "长生堂",
