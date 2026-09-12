@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import type { CharacterAttributes } from '../../types';
 import { AttributeCard } from '../ui/AttributeCard';
 import { ClassSelector } from './ClassSelector';
@@ -52,7 +52,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         label="最小攻击"
                         value={attributes.CharacterMinAttack}
                         onChange={(v) => handleChange('CharacterMinAttack', v)}
-                        max={750000}
+                        max={1000000}
                         icon={<Sword className="w-4 h-4" />}
                         color="cyan"
                     />
@@ -60,7 +60,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         label="最大攻击"
                         value={attributes.CharacterMaxAttack}
                         onChange={(v) => handleChange('CharacterMaxAttack', v)}
-                        max={750000}
+                        max={1000000}
                         icon={<Sword className="w-4 h-4" />}
                         color="purple"
                     />
@@ -68,7 +68,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         label="气血"
                         value={attributes.CharacterHealth}
                         onChange={(v) => handleChange('CharacterHealth', v)}
-                        max={4000000}
+                        max={10000000}
                         step={100}
                         icon={<Heart className="w-4 h-4" />}
                         color="red"
@@ -77,7 +77,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         label="真气"
                         value={attributes.CharacterMana}
                         onChange={(v) => handleChange('CharacterMana', v)}
-                        max={6000000}
+                        max={10000000}
                         step={100}
                         icon={<Zap className="w-4 h-4" />}
                         color="blue"
@@ -86,7 +86,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         label="防御"
                         value={attributes.CharacterDefense}
                         onChange={(v) => handleChange('CharacterDefense', v)}
-                        max={500000}
+                        max={1000000}
                         icon={<Shield className="w-4 h-4" />}
                         color="emerald"
                     />
@@ -94,7 +94,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         label="暴击伤害 (%)"
                         value={attributes.CharacterCriticalHitDamagePercent}
                         onChange={(v) => handleChange('CharacterCriticalHitDamagePercent', v)}
-                        max={3000}
+                        max={4000}
                         icon={<Crosshair className="w-4 h-4" />}
                         color="yellow"
                     />

@@ -1,4 +1,4 @@
-export interface CharacterClass {
+﻿export interface CharacterClass {
   ClassID: string;
   ClassName: string;
   Description: string;
@@ -518,11 +518,11 @@ export interface SimulationActorConfig {
 
 export interface AttributeCapsConfig {
   EnableCaps: boolean;               // 是否启用数据上限开关；未传入时默认启用，显式 false 才关闭
-  CapHealth?: number;                // 气血上限，默认 4000000
-  CapMana?: number;                  // 真气上限，默认 6000000
-  CapAttack?: number;                // 攻击上限（最小/最大），默认 750000
-  CapDefense?: number;               // 防御上限，默认 500000
-  CapCriticalDamage?: number;        // 爆伤百分比加成上限，默认 3000
+  CapHealth?: number;                // 气血上限，默认 10000000
+  CapMana?: number;                  // 真气上限，默认 10000000
+  CapAttack?: number;                // 攻击上限（最小/最大），默认 1000000
+  CapDefense?: number;               // 防御上限，默认 1000000
+  CapCriticalDamage?: number;        // 爆伤百分比加成上限，默认 4000
   CapGreenPoints?: number;           // 绿点（对怪爆伤）上限，默认 900
   CapMonsterHarmed?: number;         // 受到伤害增加上限，默认 120
 }

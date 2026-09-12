@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   CharacterAttributes,
   Skill,
   Monster,
@@ -30,11 +30,11 @@ interface ResolvedHitDamage {
 
 export const DEFAULT_ATTRIBUTE_CAPS: Required<AttributeCapsConfig> = {
   EnableCaps: true,
-  CapHealth: 4000000,
-  CapMana: 6000000,
-  CapAttack: 750000,
-  CapDefense: 500000,
-  CapCriticalDamage: 3000,
+  CapHealth: 10000000,
+  CapMana: 10000000,
+  CapAttack: 1000000,
+  CapDefense: 1000000,
+  CapCriticalDamage: 4000,
   CapGreenPoints: 900,
   CapMonsterHarmed: 120
 };

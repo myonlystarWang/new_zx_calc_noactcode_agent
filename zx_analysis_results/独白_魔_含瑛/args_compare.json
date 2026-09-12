@@ -1,0 +1,15 @@
+{
+  "player_name": "独白_魔_含瑛",
+  "analysis_type": "compare",
+  "comparisons": [
+    {
+      "label": "气血+2w 真气+4w 攻击-3000 爆伤-4",
+      "attrs": [
+        {"attr": "health", "delta": 20000},
+        {"attr": "mana", "delta": 40000},
+        {"attr": "attack", "delta": -3000},
+        {"attr": "critDamage", "delta": -4}
+      ]
+    }
+  ]
+}
