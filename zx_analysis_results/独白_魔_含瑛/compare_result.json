@@ -1,0 +1,130 @@
+{
+  "ok": true,
+  "playerName": "独白_魔_含瑛",
+  "className": "逐霜",
+  "factionName": "魔",
+  "dungeon": "T20",
+  "bossIndex": 1,
+  "deltas": [
+    {
+      "attr": "health",
+      "label": "气血 +2w",
+      "delta": 20000,
+      "base": 4000000,
+      "modified": 4020000
+    },
+    {
+      "attr": "mana",
+      "label": "真气 +4w",
+      "delta": 40000,
+      "base": 5223493,
+      "modified": 5263493
+    },
+    {
+      "attr": "minAttack",
+      "label": "最小攻击 -3000",
+      "delta": -3000,
+      "base": 335676,
+      "modified": 332676
+    },
+    {
+      "attr": "maxAttack",
+      "label": "最大攻击 -3000",
+      "delta": -3000,
+      "base": 394784,
+      "modified": 391784
+    },
+    {
+      "attr": "critDamage",
+      "label": "爆伤 -4",
+      "delta": -4,
+      "base": 2849.5,
+      "modified": 2845.5
+    }
+  ],
+  "baseAttributes": {
+    "minAttack": 335676,
+    "maxAttack": 394784,
+    "defense": 378364,
+    "critDamage": 2849.5,
+    "mana": 5223493,
+    "health": 4000000,
+    "monsterDamageIncrease": 53.7
+  },
+  "modifiedAttributes": {
+    "minAttack": 332676,
+    "maxAttack": 391784,
+    "defense": 378364,
+    "critDamage": 2845.5,
+    "mana": 5263493,
+    "health": 4020000,
+    "monsterDamageIncrease": 53.7
+  },
+  "summary": {
+    "baseWeightedTotal": 7139442670,
+    "modWeightedTotal": 7121329774,
+    "weightedDelta": -18112896,
+    "weightedDeltaWan": -1811.29,
+    "weightedDeltaPct": -0.2537,
+    "baseRawTotal": 41688883545,
+    "modRawTotal": 41612527253,
+    "rawDelta": -76356292,
+    "rawDeltaWan": -7635.629
+  },
+  "rows": [
+    {
+      "skillId": "ZS_MO_SKILL_CLXS",
+      "skillName": "苍龙啸·煞",
+      "baseAvg": 9160361489,
+      "modAvg": 9143573384,
+      "deltaAvg": -16788105,
+      "deltaAvgWan": -1678.811,
+      "sharePct": 17.94
+    },
+    {
+      "skillId": "ZS_MO_SKILL_YLXB",
+      "skillName": "银鳞玄冰",
+      "baseAvg": 10194506797,
+      "modAvg": 10201600750,
+      "deltaAvg": 7093953,
+      "deltaAvgWan": 709.395,
+      "sharePct": 5.6
+    },
+    {
+      "skillId": "ZS_MO_SKILL_SY3",
+      "skillName": "山雨欲来III",
+      "baseAvg": 6606602713,
+      "modAvg": 6582131843,
+      "deltaAvg": -24470870,
+      "deltaAvgWan": -2447.087,
+      "sharePct": 26.8
+    },
+    {
+      "skillId": "ZS_MO_SKILL_SY2",
+      "skillName": "山雨欲来II",
+      "baseAvg": 7791562959,
+      "modAvg": 7777231297,
+      "deltaAvg": -14331662,
+      "deltaAvgWan": -1433.166,
+      "sharePct": 17.18
+    },
+    {
+      "skillId": "ZS_MO_SKILL_CLX",
+      "skillName": "苍龙啸",
+      "baseAvg": 6232056949,
+      "modAvg": 6209826342,
+      "deltaAvg": -22230607,
+      "deltaAvgWan": -2223.061,
+      "sharePct": 29.14
+    },
+    {
+      "skillId": "ZS_MO_SKILL_LYLZ",
+      "skillName": "临渊敛爪",
+      "baseAvg": 1703792638,
+      "modAvg": 1698163637,
+      "deltaAvg": -5629001,
+      "deltaAvgWan": -562.9,
+      "sharePct": 0
+    }
+  ]
+}

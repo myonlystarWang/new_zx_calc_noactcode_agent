@@ -5,7 +5,7 @@
 ## 安装与运行
 
 ```bash
-cd /mnt/e/ww/personal\ work/new_zx_calc_noactcode_agent/agent_tool
+cd /mnt/d/工作/ww/personal_work/new_zx_calc_noactcode_agent/agent_tool
 npm install
 npm run calc -- --input examples/zhu_shuang_mo_t21_boss1.json
 ```

@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+﻿import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
@@ -161,7 +161,7 @@ const main = () => {
   assert.ok((result.damageAuditRecords?.length ?? 0) > 0, '启用伤害审计时应输出逐段审计记录。');
   const firstAuditRecord = result.damageAuditRecords![0]!;
   assert.equal(firstAuditRecord.ActorId, 'zhushuang_dps');
-  assert.ok(firstAuditRecord.EffectiveAttributes.CharacterMaxAttack <= 750000, '审计记录应包含 cap 后有效属性。');
+  assert.ok(firstAuditRecord.EffectiveAttributes.CharacterMaxAttack <= 1000000, '审计记录应包含 cap 后有效属性。');
   console.log(`审计记录: ${result.damageAuditRecords!.length} 条`);
 
   console.log('\n[技能占比详情]');

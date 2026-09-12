@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import type { CharacterAttributes } from '../../types';
 
@@ -22,27 +22,27 @@ export const AttributeRadarChart: React.FC<AttributeRadarChartProps> = ({ attrib
     const data = [
         {
             subject: '攻击',
-            value: (attributes.CharacterMaxAttack / 750000) * 100,
+            value: (attributes.CharacterMaxAttack / 1000000) * 100,
             fullMark: 100
         },
         {
             subject: '防御',
-            value: (attributes.CharacterDefense / 500000) * 100,
+            value: (attributes.CharacterDefense / 1000000) * 100,
             fullMark: 100
         },
         {
             subject: '气血',
-            value: (attributes.CharacterHealth / 4000000) * 100,
+            value: (attributes.CharacterHealth / 10000000) * 100,
             fullMark: 100
         },
         {
             subject: '真气',
-            value: (attributes.CharacterMana / 6000000) * 100,
+            value: (attributes.CharacterMana / 10000000) * 100,
             fullMark: 100
         },
         {
             subject: '暴伤',
-            value: (attributes.CharacterCriticalHitDamagePercent / 3000) * 100,
+            value: (attributes.CharacterCriticalHitDamagePercent / 4000) * 100,
             fullMark: 100
         },
         {

@@ -1,4 +1,4 @@
-import assert from 'node:assert/strict';
+﻿import assert from 'node:assert/strict';
 import { EffectManager } from './effects.js';
 import { runSimulation } from './combat_loop.js';
 import { calculateDamage } from './calculator.js';
@@ -871,18 +871,18 @@ const testAttributeCaps = () => {
   };
   const highAttributes: CharacterAttributes = {
     ...baseAttributes,
-    CharacterMinAttack: 1000000,
-    CharacterMaxAttack: 1000000,
-    CharacterDefense: 600000,
-    CharacterHealth: 5000000,
-    CharacterMana: 7000000,
-    CharacterCriticalHitDamagePercent: 5000
+    CharacterMinAttack: 2000000,
+    CharacterMaxAttack: 2000000,
+    CharacterDefense: 2000000,
+    CharacterHealth: 20000000,
+    CharacterMana: 20000000,
+    CharacterCriticalHitDamagePercent: 6000
   };
   const cappedDamage = calculateDamage(highAttributes, capStressSkill, baseBoss(100000), []);
-  assert.equal(cappedDamage.avgFinalDamage, 337500000);
+  assert.equal(cappedDamage.avgFinalDamage, 880000000);
 
   const uncappedDamage = calculateDamage(highAttributes, capStressSkill, baseBoss(100000), [], {}, { EnableCaps: false });
-  assert.equal(uncappedDamage.avgFinalDamage, 680000000);
+  assert.equal(uncappedDamage.avgFinalDamage, 2640000000);
 
   const overCapDebuffs = [
     {

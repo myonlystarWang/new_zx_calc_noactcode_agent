@@ -1,0 +1,8 @@
+{
+  "player_name": "独白_魔_含瑛",
+  "analysis_type": "marginal",
+  "skill_damage_scenarios": [
+    {"label": "当前配置"},
+    {"label": "气血+2w 真气+4w 攻击-3000 爆伤-4", "delta": {"health": 20000, "mana": 40000, "attack": -3000, "critDamage": -4}}
+  ]
+}
