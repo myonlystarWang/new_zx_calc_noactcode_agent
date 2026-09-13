@@ -96,5 +96,19 @@
     "Description": "传说中拥有七条尾巴的巨大蜈蚣，可获取百足金箱、百足音箱等奖励。",
     "difficulty": "极难",
     "DungeonImportanceWeight": 1
+  },
+  {
+    "DungeonID": "LIU_BO_JING_BIAN_CHUSHI",
+    "DungeonName": "流波惊变（初识）",
+    "Description": "流波山惊变，炼血堂余孽作乱，考验队伍的综合实力与配合，初识难度（抢先体验服2026年9月11日新版本副本）。",
+    "difficulty": "难",
+    "DungeonImportanceWeight": 1
+  },
+  {
+    "DungeonID": "LIU_BO_JING_BIAN_HARD",
+    "DungeonName": "流波惊变（困难）",
+    "Description": "流波山惊变，炼血堂余孽作乱，考验队伍的综合实力与配合，困难难度（抢先体验服2026年9月11日新版本副本）。",
+    "difficulty": "极难",
+    "DungeonImportanceWeight": 1
   }
 ]
