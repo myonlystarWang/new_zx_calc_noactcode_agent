@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.0.5] - 2026-09-13
+
+### Added
+- `web_app/public/game_data/dungeons.json`：新增新版本副本「流波惊变」两个难度（`LIU_BO_JING_BIAN_CHUSHI` 初识 / `LIU_BO_JING_BIAN_HARD` 困难）。
+- `web_app/public/game_data/dungeons_monsters.json`：录入流波惊变（困难 / 初识）全角色完整属性（来源：用户截图）。每难度 5 只 Boss（年老大／玉阳子／青龙／幽姬／苍松，含 `role: "boss"` 与 `displayAttributes` 18 项）置于主键；2 只小怪（炼血堂教众／炼血堂精英，含 `role: "add"`）置于独立 `_ADDS` 键，沿袭 T21 范式，避免破坏既有 Boss 断言与前端 Boss 下拉。
+- 血缘关系已核对：新条目 `MonsterHealth` = `displayAttributes.health × healthBars`，逐只一致；已通过引擎 `validateMonstersData` 校验（0 issues）。
+
+### Notes
+- 炼血堂教众／炼血堂精英在游戏内等级列显示「免单攻」标签（免疫单体攻击类小怪），`displayAttributes.level` 按同档位 175 记录。
+- 两难度炼血堂教众／精英的「防御」在游戏面板中均为空（未显示数值），经用户确认后统一按 0 记录（初识原 OCR 读出的 20000 系截图像素干扰，已修正为 0）。
+- 真气／附加伤害／减免伤害三行截图未显示数值，按 0 记录（与 T21 一致）。
+
 ## [1.0.4] - 2026-09-08
 
 ### Added
