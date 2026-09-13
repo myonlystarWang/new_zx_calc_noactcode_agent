@@ -170,11 +170,37 @@ export class DataService {
         return this.dungeonsMonsters;
     }
 
+    /**
+     * 将战斗用的 MonsterAttributeModifiers 转换为前端展示用的 displayAttributes。
+     * 减爆伤/减暴击直接使用原始数值（与游戏内面板显示一致，如 1920）；伤害压缩为百分比。
+     */
+    private buildDisplayAttributes(monster: Monster): Monster['displayAttributes'] {
+        const mods = monster.MonsterAttributeModifiers;
+        if (!mods) return undefined;
+        const attrs: Record<string, number> = {};
+        if (mods.MonsterHealth !== undefined) attrs.health = mods.MonsterHealth;
+        if (mods.MonsterDefense !== undefined) attrs.defense = mods.MonsterDefense;
+        if (mods.MonsterAttack !== undefined) attrs.attack = mods.MonsterAttack;
+        if (mods.MonsterCriticalDamagePercentReduction !== undefined) {
+            attrs.critDamageReduction = mods.MonsterCriticalDamagePercentReduction;
+        }
+        if (mods.MonsterCriticalHitRateReduction !== undefined) {
+            attrs.critRateReduction = mods.MonsterCriticalHitRateReduction;
+        }
+        if (mods.DamageCompressionPercent !== undefined) {
+            attrs.damageCompression = mods.DamageCompressionPercent;
+        }
+        return Object.keys(attrs).length > 0 ? (attrs as Monster['displayAttributes']) : undefined;
+    }
+
     public getDungeons(): Dungeon[] {
         if (!this.dungeonsMetadata || !this.dungeonsMonsters) return [];
 
         return this.dungeonsMetadata.map((meta: any) => {
-            const monsters = this.dungeonsMonsters![meta.DungeonID] || [];
+            const monsters = (this.dungeonsMonsters![meta.DungeonID] || []).map(m => ({
+                ...m,
+                displayAttributes: m.displayAttributes ?? this.buildDisplayAttributes(m)
+            }));
             return {
                 ...meta,
                 Monsters: monsters
