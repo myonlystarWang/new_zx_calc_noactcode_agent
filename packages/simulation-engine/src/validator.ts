@@ -19,6 +19,7 @@ export function validateSkillsData(allSkills: AllSkills): SchemaValidationIssue[
 
   // 1. Gather all skill IDs first for reference checks
   for (const [classId, classSkills] of Object.entries(allSkills)) {
+    if (classId === '_meta') continue;
     for (const [faction, skills] of Object.entries(classSkills)) {
       if (!Array.isArray(skills)) {
         issues.push({
@@ -45,6 +46,7 @@ export function validateSkillsData(allSkills: AllSkills): SchemaValidationIssue[
 
   // 2. Validate each skill in detail
   for (const [classId, classSkills] of Object.entries(allSkills)) {
+    if (classId === '_meta') continue;
     for (const [faction, skills] of Object.entries(classSkills)) {
       if (!Array.isArray(skills)) continue;
 
