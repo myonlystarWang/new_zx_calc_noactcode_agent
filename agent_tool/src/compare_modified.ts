@@ -40,7 +40,7 @@ async function main() {
   const baseBoss = (baseRes as any).bosses[0];
   const modBoss = (modRes as any).bosses[0];
 
-  const baseMap = new Map(baseBoss.skills.map((s: any) => [s.skillId, s]));
+  const baseMap: Map<string, any> = new Map(baseBoss.skills.map((s: any) => [s.skillId, s]));
 
   // weighted total using profile.skillUsage shares (long-axis combat scenario)
   const rows: any[] = [];
