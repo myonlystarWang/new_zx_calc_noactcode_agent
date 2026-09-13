@@ -92,7 +92,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
 
     const formatBossValue = (key: string, value: number | undefined) => {
         if (value === undefined || value === null) return '-';
-        const percentKeys = ['critRate', 'critDamage', 'critRateReduction', 'critDamageReduction', 'ignoreReduction'];
+        const percentKeys = ['critRate', 'critDamage', 'critRateReduction', 'critDamageReduction', 'ignoreReduction', 'damageCompression'];
         if (percentKeys.includes(key)) return `${Math.round(value)}%`;
         const bigNumberKeys = ['health', 'attack', 'defense', 'zhenQi', 'bonusDamage', 'damageReduction', 'normalHit', 'skillHit', 'resistance'];
         if (bigNumberKeys.includes(key)) return formatNumber(value);
@@ -117,7 +117,8 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
         critDamageReduction: '减爆伤',
         skillDodge: '技能躲闪',
         skillHit: '技能命中',
-        ignoreReduction: '无视减免'
+        ignoreReduction: '无视减免',
+        damageCompression: '伤害压缩'
     };
 
     const showContent = standalone || isExpanded;
