@@ -1029,17 +1029,15 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[]; showDebuff?:
 interface CombatBuffsHeroSectionProps {
     onSelectBuff?: (buffId: string) => void;
     showDebuff: boolean;
-    showBuff: boolean;
+    showBuff?: boolean;
     debuffFilter: string[];
-    buffFilter: string[];
+    buffFilter?: string[];
 }
 
 const CombatBuffsHeroSection: React.FC<CombatBuffsHeroSectionProps> = ({
     onSelectBuff,
     showDebuff,
-    showBuff,
     debuffFilter,
-    buffFilter,
 }) => {
     const buffs = DataService.getInstance().getBuffs();
     const harmedBuff = buffs.find((b) => b.BuffID === 'BUFF_MON_HARMED_EFFECT');
@@ -1050,132 +1048,83 @@ const CombatBuffsHeroSection: React.FC<CombatBuffsHeroSectionProps> = ({
 
     const isHarmedActive = showDebuff && debuffFilter.includes('易伤');
     const isGreenActive = showDebuff && debuffFilter.includes('绿点');
-    const isFocusActive = showBuff && buffFilter.includes('专注');
 
     return (
-        <div data-item="战斗增益参考" className="zx-card p-4 sm:p-5 flex flex-col gap-3.5 rounded-2xl border border-slate-800/80 bg-slate-900/70 shadow-lg">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
-                <div className="flex items-center gap-2.5">
-                    <span className="w-1.5 h-4 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
-                    <h3 className="text-sm sm:text-base font-bold text-slate-100 tracking-wide">
+        <div data-item="战斗增益参考" className="zx-card p-3 sm:p-4 flex flex-col gap-2.5">
+            {/* 标题 */}
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-3.5 bg-cyan-500 rounded-full"></span>
+                    <h3 className="text-sm font-bold text-slate-100">
                         团队战斗增益上限参考
                     </h3>
-                    <span className="text-xs text-slate-400 font-normal hidden sm:inline">
-                        （副本机制硬上限基准 · 点击卡片可快速联动下方职业筛选）
-                    </span>
                 </div>
-                <span className="text-[11px] text-slate-500 font-mono hidden md:inline">
-                    点击卡片快速筛选对应职业
+                <span className="text-xs text-slate-500 hidden sm:inline font-mono">
+                    点击卡片快速筛选下方职业
                 </span>
             </div>
 
-            {/* 仅保留游戏机制中真正存在硬上限的2项：易伤 120、绿点 900，数值样式完全对齐下方职业卡片 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {/* 易伤上限卡片 */}
+            {/* 两个卡片：样式对齐下方职业卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                 <div
                     data-item="易伤"
                     onClick={() => onSelectBuff?.('BUFF_MON_HARMED_EFFECT')}
                     className={clsx(
-                        'rounded-xl p-3.5 border transition-all flex items-center gap-3.5 group relative select-none cursor-pointer',
+                        'rounded-xl p-3 border transition-all flex items-center justify-between gap-3 cursor-pointer select-none',
                         isHarmedActive
-                            ? 'border-amber-400/60 bg-slate-850 shadow-[0_0_15px_rgba(251,191,36,0.2)] ring-1 ring-amber-400/50'
-                            : 'border-slate-800/80 bg-slate-950/50 hover:border-slate-700 hover:bg-slate-900/80'
+                            ? 'border-amber-400/60 bg-slate-850 ring-1 ring-amber-400/50 shadow-[0_0_12px_rgba(251,191,36,0.2)]'
+                            : 'border-slate-800/80 bg-slate-950/40 hover:border-slate-700 hover:bg-slate-900/60'
                     )}
                     title="点击筛选提供「易伤」的职业"
                 >
-                    <div className="flex flex-col items-center rounded-xl py-2 px-3 min-w-[4.25rem] bg-slate-900/80 border border-slate-800 flex-shrink-0 shadow-inner">
-                        <span className="mb-0.5 leading-none text-center text-[10px] text-slate-500 font-medium">
-                            易伤
+                    <div className="flex flex-col gap-0.5 min-w-0">
+                        <span className="text-sm font-bold text-slate-100">
+                            易伤上限
                         </span>
-                        <span className="text-xl sm:text-2xl font-mono font-bold text-amber-400 tabular-nums">
-                            {renderValue(harmedVal)}
-                        </span>
-                    </div>
-                    <div className="flex flex-col justify-center min-w-0 flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-amber-200 transition-colors">
-                                易伤上限
-                            </span>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded border border-amber-500/30 bg-amber-500/10 text-amber-300 font-medium">
-                                机制上限
-                            </span>
-                        </div>
-                        <p className="text-xs text-slate-400 leading-relaxed">
+                        <p className="text-xs text-slate-400">
                             多职业易伤叠加标准上限，副本团队伤害核心放大器
                         </p>
                     </div>
+                    <div className="flex flex-col items-center rounded-lg py-1.5 px-3 min-w-[3.5rem] bg-slate-900/60 border border-slate-800/60 flex-shrink-0">
+                        <span className="text-[10px] text-slate-500 leading-none mb-1">易伤</span>
+                        <span className="text-sm sm:text-base font-mono font-bold text-amber-400 leading-none">
+                            {renderValue(harmedVal)}
+                        </span>
+                    </div>
                 </div>
 
-                {/* 绿点上限卡片 */}
                 <div
                     data-item="绿点"
                     onClick={() => onSelectBuff?.('BUFF_MON_CRITDAMAGE_EFFECT')}
                     className={clsx(
-                        'rounded-xl p-3.5 border transition-all flex items-center gap-3.5 group relative select-none cursor-pointer',
+                        'rounded-xl p-3 border transition-all flex items-center justify-between gap-3 cursor-pointer select-none',
                         isGreenActive
-                            ? 'border-emerald-400/60 bg-slate-850 shadow-[0_0_15px_rgba(16,185,129,0.2)] ring-1 ring-emerald-400/50'
-                            : 'border-slate-800/80 bg-slate-950/50 hover:border-slate-700 hover:bg-slate-900/80'
+                            ? 'border-emerald-400/60 bg-slate-850 ring-1 ring-emerald-400/50 shadow-[0_0_12px_rgba(16,185,129,0.2)]'
+                            : 'border-slate-800/80 bg-slate-950/40 hover:border-slate-700 hover:bg-slate-900/60'
                     )}
                     title="点击筛选提供「绿点」的职业"
                 >
-                    <div className="flex flex-col items-center rounded-xl py-2 px-3 min-w-[4.25rem] bg-slate-900/80 border border-slate-800 flex-shrink-0 shadow-inner">
-                        <span className="mb-0.5 leading-none text-center text-[10px] text-slate-500 font-medium">
-                            绿点
+                    <div className="flex flex-col gap-0.5 min-w-0">
+                        <span className="text-sm font-bold text-slate-100">
+                            绿点上限
                         </span>
-                        <span className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 tabular-nums">
-                            {renderValue(greenVal)}
-                        </span>
-                    </div>
-                    <div className="flex flex-col justify-center min-w-0 flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-emerald-200 transition-colors">
-                                绿点上限
-                            </span>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 font-medium">
-                                机制上限
-                            </span>
-                        </div>
-                        <p className="text-xs text-slate-400 leading-relaxed">
+                        <p className="text-xs text-slate-400">
                             弱化怪物减暴伤上限（鬼王/英招等），暴击类输出核心收益
                         </p>
+                    </div>
+                    <div className="flex flex-col items-center rounded-lg py-1.5 px-3 min-w-[3.5rem] bg-slate-900/60 border border-slate-800/60 flex-shrink-0">
+                        <span className="text-[10px] text-slate-500 leading-none mb-1">绿点</span>
+                        <span className="text-sm sm:text-base font-mono font-bold text-emerald-400 leading-none">
+                            {renderValue(greenVal)}
+                        </span>
                     </div>
                 </div>
             </div>
 
-            {/* 常备补给标注：三碗不过岗（专注 20） */}
-            <div className="pt-2.5 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 text-xs text-slate-300 min-w-0">
-                    <span className="px-2 py-0.5 rounded text-[11px] font-bold border border-orange-500/30 bg-orange-500/10 text-orange-300 flex-shrink-0">
-                        常备补给标注
-                    </span>
-                    <span className="text-slate-300 leading-normal">
-                        副本常备料理「<strong className="text-orange-200 font-semibold">三碗不过岗</strong>」进本固定提供基础专注加成，其余专注由辅助职业持续叠加（专注无固定机制硬上限）。
-                    </span>
-                </div>
-                <div
-                    data-item="三碗专注参考"
-                    onClick={() => onSelectBuff?.('BUFF_FOCUS_EFFECT')}
-                    className={clsx(
-                        'flex items-center gap-2.5 px-3 py-1.5 rounded-xl border transition-all cursor-pointer flex-shrink-0 select-none group',
-                        isFocusActive
-                            ? 'border-orange-400/60 bg-slate-850 ring-1 ring-orange-400/50 shadow-[0_0_12px_rgba(251,146,60,0.25)]'
-                            : 'border-slate-800 bg-slate-950/60 hover:border-slate-700 hover:bg-slate-900/80'
-                    )}
-                    title="点击快速筛选提供「专注」的辅助职业"
-                >
-                    <div className="flex flex-col items-center rounded-lg py-1 px-2.5 min-w-[3.25rem] bg-slate-900/90 border border-slate-800">
-                        <span className="text-[10px] text-slate-500 leading-none mb-0.5">专注</span>
-                        <span className="text-sm font-mono font-bold text-orange-400 leading-none">20</span>
-                    </div>
-                    <div className="flex flex-col text-left">
-                        <span className="text-xs font-bold text-slate-200 group-hover:text-orange-200 transition-colors">
-                            三碗不过岗
-                        </span>
-                        <span className="text-[10px] text-slate-400">
-                            点击筛选专注职业
-                        </span>
-                    </div>
-                </div>
+            {/* 一行说明三碗是专注20 */}
+            <div data-item="三碗专注参考" className="text-xs text-slate-400 flex items-center gap-1.5 pt-0.5 px-0.5">
+                <span className="text-slate-500 font-medium">注：</span>
+                <span>常备料理「三碗不过岗」固定提供专注 20（不设机制上限，由各辅助职业持续叠加）。</span>
             </div>
         </div>
     );
