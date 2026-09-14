@@ -331,11 +331,11 @@ input[type="number"] {
   --mono: ui-monospace, 'SF Mono', Consolas, 'Courier New', monospace;
 }
 
-/* ============ Hero 区容器（收敛宽度，形成聚焦的门户视觉金字塔） ============ */
+/* ============ Hero 区容器（宽屏优化，完美容纳 5 大功能卡片） ============ */
 .hero {
-  max-width: 1140px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: clamp(48px, 8vh, 84px) 24px 48px;
+  padding: clamp(38px, 6.5vh, 68px) 20px 44px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -394,9 +394,8 @@ input[type="number"] {
   background: linear-gradient(92deg, rgba(34, 211, 238, 0.85) 0%, rgba(129, 140, 248, 0.75) 50%, rgba(192, 132, 252, 0.85) 100%);
   filter: blur(14px);
   opacity: 0;
-  z-index: -1;
   pointer-events: none;
-  transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.45s ease;
 }
 
 .search-glow.focus {
@@ -449,54 +448,61 @@ input[type="number"] {
 }
 .search-box input {
   flex: 1;
-  height: 100%;
-  background: none;
+  background: transparent;
   border: none;
   outline: none;
   color: var(--t1);
-  font-size: 16.5px;
-  padding: 0 12px;
+  font-size: 15.5px;
   font-family: inherit;
+  padding: 0 12px;
 }
 .search-box input::placeholder {
-  color: #475569;
-}
-.kbd-hint {
-  font-family: var(--mono);
-  font-size: 11px;
   color: var(--t4);
-  border: 1px solid var(--line);
-  padding: 2px 7px;
-  border-radius: 7px;
-  background: rgba(30, 41, 59, 0.6);
-  flex-shrink: 0;
-  user-select: none;
-}
-.clear-btn {
-  display: none;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  color: var(--t4);
-  flex-shrink: 0;
-}
-.clear-btn:hover {
-  color: var(--t1);
-  background: rgba(51, 65, 85, 0.6);
-}
-.clear-btn.show {
-  display: grid;
-}
-.clear-btn svg {
-  width: 15px;
-  height: 15px;
+  font-size: 14px;
 }
 
-/* 下拉面板 */
+.search-box .clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--t4);
+  cursor: pointer;
+  padding: 4px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s, background-color 0.2s;
+}
+.search-box .clear-btn.show {
+  display: flex;
+}
+.search-box .clear-btn:hover {
+  color: var(--t1);
+  background: rgba(255, 255, 255, 0.08);
+}
+.search-box .clear-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.kbd-hint {
+  font-size: 11px;
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--t4);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+  padding: 3px 7px;
+  border-radius: 6px;
+  margin-left: 8px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* 搜索下拉浮层面板 */
 .panel {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 8px);
   left: 2px;
   right: 2px;
   z-index: 50;
@@ -550,38 +556,50 @@ input[type="number"] {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 9px 12px;
-  border-radius: 11px;
-  text-align: left;
-  transition: background 0.12s;
-  background: none;
-  border: none;
-  color: inherit;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
   cursor: pointer;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--t2);
+  font-size: 13.5px;
+  transition: background 0.12s, border-color 0.12s;
 }
+.row:hover,
 .row.on {
-  background: rgba(6, 182, 212, 0.15);
-  box-shadow: inset 2px 0 0 #22d3ee;
+  background: rgba(6, 182, 212, 0.09);
+  border-color: rgba(6, 182, 212, 0.28);
+  color: #fff;
 }
 .row .dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
+  border-radius: 99px;
   background: var(--cyan);
-  opacity: 0.55;
   flex-shrink: 0;
+  opacity: 0.75;
 }
 .row .main {
-  min-width: 0;
   flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 .row .nm {
-  font-size: 14px;
-  color: var(--t1);
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.row .nm mark {
+  background: transparent;
+  color: var(--cyan-3);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .row .gp {
   font-size: 11px;
@@ -589,32 +607,46 @@ input[type="number"] {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: 1px;
-}
-.row mark {
-  background: rgba(6, 182, 212, 0.28);
-  color: #a5f3fc;
-  border-radius: 4px;
-  padding: 0 2px;
 }
 .row .py {
+  font-size: 11px;
   font-family: var(--mono);
-  font-size: 10.5px;
   color: var(--t4);
-  background: rgba(51, 65, 85, 0.45);
+  background: rgba(255, 255, 255, 0.04);
   padding: 2px 7px;
-  border-radius: 6px;
+  border-radius: 4px;
   flex-shrink: 0;
 }
+.row .ic-wrap {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line-soft);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--t3);
+}
+.row.on .ic-wrap,
+.row:hover .ic-wrap {
+  color: var(--cyan);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+.row .ic-wrap svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* 闲置空态 */
 .empty-block {
-  padding: 14px 16px 8px;
+  padding: 10px 8px 6px;
 }
 .empty-block h5 {
   font-size: 11.5px;
-  color: var(--t4);
-  letter-spacing: 1px;
   font-weight: 700;
-  margin-bottom: 9px;
+  color: var(--t3);
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -627,22 +659,23 @@ input[type="number"] {
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
+  margin-bottom: 12px;
 }
 .chip {
-  font-size: 12.5px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
   color: var(--t2);
-  padding: 5px 12px;
+  padding: 5px 11px;
   border-radius: 99px;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid var(--line-soft);
-  transition: 0.2s;
+  font-size: 12px;
   cursor: pointer;
+  transition: all 0.15s;
 }
 .chip:hover {
-  color: #a5f3fc;
+  background: rgba(6, 182, 212, 0.15);
   border-color: rgba(6, 182, 212, 0.4);
-  background: rgba(6, 182, 212, 0.1);
+  color: #fff;
   transform: translateY(-1px);
 }
 .recent-row {
@@ -669,18 +702,28 @@ input[type="number"] {
   font-size: 13px;
 }
 .panel-foot {
-  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 14px;
   border-top: 1px solid var(--line-soft);
+  background: rgba(2, 6, 23, 0.5);
   font-size: 11px;
   color: var(--t4);
-  display: flex;
-  gap: 16px;
-  background: rgba(15, 23, 42, 0.5);
-  align-items: center;
 }
 .panel-foot b {
   color: var(--t3);
   font-weight: 500;
+}
+.panel-foot .keycap {
+  font-family: var(--mono);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  margin-right: 3px;
+  color: var(--t3);
 }
 .keycap {
   display: inline-block;
@@ -694,21 +737,28 @@ input[type="number"] {
   margin: 0 2px;
 }
 
-/* ============ 首页4大功能卡片（统一视觉色调与流动光泽） ============ */
+/* ============ 首页5大核心功能卡片（紧凑精致，5列并排） ============ */
 .cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 48px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 36px;
   position: relative;
   z-index: 1;
 }
-@media (max-width: 1024px) {
+@media (max-width: 1240px) {
   .cards {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 800px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+@media (max-width: 520px) {
   .cards {
     grid-template-columns: 1fr;
   }
@@ -717,17 +767,20 @@ input[type="number"] {
   position: relative;
   text-align: left;
   overflow: hidden;
-  border-radius: var(--r-lg);
-  padding: 22px 20px;
+  border-radius: var(--r-md);
+  padding: 18px 16px;
   background: linear-gradient(160deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.75));
   border: 1px solid rgba(255, 255, 255, 0.06);
   transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.25, 1), border-color 0.35s, box-shadow 0.35s;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   border-color: rgba(6, 182, 212, 0.35);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 26px rgba(6, 182, 212, 0.12);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(6, 182, 212, 0.12);
 }
 .card:active {
   transform: translateY(-2px);
@@ -748,37 +801,38 @@ input[type="number"] {
   transition: left 0.95s ease;
 }
 .card-ic {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: grid;
   place-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   background: linear-gradient(135deg, rgba(6, 182, 212, 0.18), rgba(168, 85, 247, 0.18));
   border: 1px solid rgba(6, 182, 212, 0.28);
 }
 .card-ic svg {
-  width: 21px;
-  height: 21px;
+  width: 19px;
+  height: 19px;
   color: #67e8f9;
 }
 .card h3 {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--t1);
   margin-bottom: 6px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+  white-space: nowrap;
 }
 .card p {
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--t3);
-  line-height: 1.55;
-  min-height: 56px;
+  line-height: 1.5;
+  min-height: 54px;
 }
 .card .go {
-  margin-top: 12px;
+  margin-top: 10px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
