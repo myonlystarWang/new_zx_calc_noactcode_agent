@@ -28,6 +28,7 @@ import type {
     Monster,
     SimEventLog,
     SimulationResult,
+    EquippedFourthGen,
     Skill
 } from '../../types';
 import { DataService } from '../../services/DataService';
@@ -144,6 +145,46 @@ const defaultSupportAttributes: CharacterAttributes = META.defaultSupportAttribu
 
 type FourthGenQuality = 'YING_JU' | 'HAO_YUE' | 'XI_RI' | 'NONE';
 
+const FOURTH_GEN_SLOT_LABEL: Record<NonNullable<Skill['FourthGenSlot']>, string> = {
+    XUAN_ZHU: '玄烛',
+    CHI_WU: '赤乌'
+};
+
+const FOURTH_GEN_QUALITY_OPTIONS: Array<{ value: 'NONE' | EquippedFourthGen['quality']; label: string }> = [
+    { value: 'NONE', label: '未装备' },
+    { value: 'YING_JU', label: '萤炬' },
+    { value: 'HAO_YUE', label: '皓月' },
+    { value: 'XI_RI', label: '曦日' }
+];
+
+const MAX_XUAN_ZHU_FOURTH_GEN = 3;
+const MAX_CHI_WU_FOURTH_GEN = 1;
+const MAX_TOTAL_FOURTH_GEN = 4;
+
+// 某职业+阵营下可独立佩戴的四代实体（玄烛/赤乌）
+const collectFourthGenCandidates = (skills: Skill[]): Skill[] => (
+    skills.filter(skill => skill.FourthGenSlot === 'XUAN_ZHU' || skill.FourthGenSlot === 'CHI_WU')
+);
+
+// 切换某四代实体的佩戴品质（NONE=卸下）；玄烛<=3、赤乌<=1、总数<=4，超限保持原值
+const toggleEquippedFourthGen = (
+    equipped: EquippedFourthGen[],
+    skill: Skill,
+    nextQuality: 'NONE' | EquippedFourthGen['quality'],
+    candidates: Skill[]
+): EquippedFourthGen[] => {
+    const others = equipped.filter(item => item.skillId !== skill.SkillID);
+    if (nextQuality === 'NONE') return others;
+
+    const slotById = new Map(candidates.map(item => [item.SkillID, item.FourthGenSlot]));
+    const slot = skill.FourthGenSlot;
+    const sameSlotCount = others.filter(item => slotById.get(item.skillId) === slot).length;
+    if (slot === 'XUAN_ZHU' && sameSlotCount >= MAX_XUAN_ZHU_FOURTH_GEN) return equipped;
+    if (slot === 'CHI_WU' && sameSlotCount >= MAX_CHI_WU_FOURTH_GEN) return equipped;
+    if (others.length >= MAX_TOTAL_FOURTH_GEN) return equipped;
+    return [...others, { skillId: skill.SkillID, quality: nextQuality }];
+};
+
 interface SkillOverrideConfig {
     FourthGenQuality?: Exclude<FourthGenQuality, 'NONE'>;
     SkillLevel?: number;
@@ -160,6 +201,7 @@ interface SupportConfig {
     faction: 'XIAN' | 'FO' | 'MO';
     profileAttributes: CharacterAttributes;
     skillOverrides?: Record<string, SkillOverrideConfig>;
+    equippedFourthGen?: EquippedFourthGen[];
 }
 
 const initialSupports: SupportConfig[] = [
@@ -385,6 +427,7 @@ export const SimulationArena: React.FC = () => {
         waitMs: 0
     });
     const [supports, setSupports] = useState<SupportConfig[]>(initialSupports);
+    const [dpsEquippedFourthGen, setDpsEquippedFourthGen] = useState<EquippedFourthGen[]>([]);
     const [dpsCommonEffects, setDpsCommonEffects] = useState<DpsCommonEffectToggles>(defaultDpsCommonEffects);
     const [dungeonEffects, setDungeonEffects] = useState<DungeonEffectToggles>(defaultDungeonEffects);
     const [selectedDungeonId, setSelectedDungeonId] = useState<string>('ZHENHAI_DUANLANG_T20');
@@ -651,7 +694,8 @@ export const SimulationArena: React.FC = () => {
                         faction: dpsFaction,
                         profileAttributes: dpsAttributes,
                         skillOverrides,
-                        strategy: simulationStrategy
+                        strategy: simulationStrategy,
+                        equippedFourthGen: dpsEquippedFourthGen.length > 0 ? dpsEquippedFourthGen : undefined
                     },
                     supports: supports.map(s => ({
                         actorId: s.actorId,
@@ -659,6 +703,7 @@ export const SimulationArena: React.FC = () => {
                         faction: s.faction,
                         profileAttributes: s.profileAttributes,
                         skillOverrides: stripUiSkillOverrideFields(s.skillOverrides),
+                        equippedFourthGen: s.equippedFourthGen && s.equippedFourthGen.length > 0 ? s.equippedFourthGen : undefined,
                         skillIds: getEnabledSupportSkillIds(s)
                     })),
                     damageAudit: damageAuditEnabled
@@ -711,6 +756,7 @@ export const SimulationArena: React.FC = () => {
             waitMs: 0
         });
         setSupports(initialSupports);
+        setDpsEquippedFourthGen([]);
         setDpsCommonEffects(defaultDpsCommonEffects);
         setDungeonEffects(defaultDungeonEffects);
         setSelectedDungeonId('ZHENHAI_DUANLANG_T20');
@@ -730,6 +776,7 @@ export const SimulationArena: React.FC = () => {
         markResultStale();
         const nextSkillIds = getRecommendedSkillsForFaction(faction);
         setDpsFaction(faction);
+        setDpsEquippedFourthGen([]);
         setDpsSkillConfigs(createDefaultDpsSkillConfigs(nextSkillIds));
         setStrategy({
             type: 'SKILL_BAR',
@@ -752,6 +799,11 @@ export const SimulationArena: React.FC = () => {
                     onDpsAttributesChange={(next) => {
                         markResultStale();
                         setDpsAttributes(next);
+                    }}
+                    equippedFourthGen={dpsEquippedFourthGen}
+                    onEquippedFourthGenChange={(next) => {
+                        markResultStale();
+                        setDpsEquippedFourthGen(next);
                     }}
                     onDpsSkillConfigChange={updateDpsSkillConfig}
                     dpsSkills={dpsSkillsPool}
@@ -1850,6 +1902,8 @@ function DpsDrawerPanel({
     onDpsFactionChange,
     onDpsAttributesChange,
     onDpsSkillConfigChange,
+    equippedFourthGen,
+    onEquippedFourthGenChange,
     getSkillStatus,
     onOpenSkill
 }: {
@@ -1860,6 +1914,8 @@ function DpsDrawerPanel({
     onDpsFactionChange: (faction: 'XIAN' | 'FO' | 'MO') => void;
     onDpsAttributesChange: (attributes: CharacterAttributes) => void;
     onDpsSkillConfigChange: (skillId: string, patch: DpsSkillConfig) => void;
+    equippedFourthGen: EquippedFourthGen[];
+    onEquippedFourthGenChange: (next: EquippedFourthGen[]) => void;
     getSkillStatus: (skillId: string) => { label: string; tone: string; dot: string; explanation: string };
     onOpenSkill: (skill: Skill) => void;
 }) {
@@ -1905,8 +1961,14 @@ function DpsDrawerPanel({
                     </div>
                     <BookOpen className="w-4 h-4 text-slate-500" />
                 </div>
+                <FourthGenLoadoutSection
+                    candidates={collectFourthGenCandidates(dpsSkills)}
+                    equipped={equippedFourthGen}
+                    onChange={onEquippedFourthGenChange}
+                    onOpenSkill={onOpenSkill}
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {dpsSkills.map(skill => (
+                    {dpsSkills.filter(skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE').map(skill => (
                         <DpsSkillConfigCard
                             key={skill.SkillID}
                             skill={skill}
@@ -1919,6 +1981,83 @@ function DpsDrawerPanel({
                 </div>
             </section>
         </div>
+    );
+}
+
+function FourthGenLoadoutSection({
+    candidates,
+    equipped,
+    onChange,
+    onOpenSkill
+}: {
+    candidates: Skill[];
+    equipped: EquippedFourthGen[];
+    onChange: (next: EquippedFourthGen[]) => void;
+    onOpenSkill: (skill: Skill) => void;
+}) {
+    const qualityOf = (skillId: string) => equipped.find(item => item.skillId === skillId)?.quality || 'NONE';
+    const slotOf = (skillId: string) => candidates.find(item => item.SkillID === skillId)?.FourthGenSlot;
+    const xuanCount = equipped.filter(item => slotOf(item.skillId) === 'XUAN_ZHU').length;
+    const chiCount = equipped.filter(item => slotOf(item.skillId) === 'CHI_WU').length;
+
+    const isOptionDisabled = (skill: Skill, value: 'NONE' | EquippedFourthGen['quality']) => {
+        if (value === 'NONE') return false;
+        const current = qualityOf(skill.SkillID);
+        if (current !== 'NONE') return false; // 已佩戴的行允许自由切换/卸下
+        if (skill.FourthGenSlot === 'XUAN_ZHU' && xuanCount >= MAX_XUAN_ZHU_FOURTH_GEN) return true;
+        if (skill.FourthGenSlot === 'CHI_WU' && chiCount >= MAX_CHI_WU_FOURTH_GEN) return true;
+        if (equipped.length >= MAX_TOTAL_FOURTH_GEN) return true;
+        return false;
+    };
+
+    return (
+        <section className="rounded-2xl border border-slate-800 bg-slate-900/45 p-4">
+            <div className="mb-3">
+                <p className="text-[10px] text-cyan-400 font-black uppercase tracking-[0.22em]">四代技能（玄烛 / 赤乌）</p>
+                <p className="mt-1 text-xs text-slate-500">
+                    独立佩戴四代实体并选择品质；玄烛 {xuanCount}/{MAX_XUAN_ZHU_FOURTH_GEN}、赤乌 {chiCount}/{MAX_CHI_WU_FOURTH_GEN}、总数 {equipped.length}/{MAX_TOTAL_FOURTH_GEN}。四代被动不进入技能循环。
+                </p>
+            </div>
+            {candidates.length === 0 ? (
+                <p className="rounded-xl border border-dashed border-slate-800 bg-slate-950/40 px-3 py-4 text-center text-xs text-slate-500">
+                    该职业 / 阵营暂无可独立佩戴的四代技能
+                </p>
+            ) : (
+                <div className="space-y-2">
+                    {candidates.map(skill => {
+                        const value = qualityOf(skill.SkillID);
+                        return (
+                            <div key={skill.SkillID} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-800 bg-slate-950/55 px-3 py-2">
+                                <button type="button" onClick={() => onOpenSkill(skill)} className="min-w-0 text-left">
+                                    <div className="flex items-center gap-2">
+                                        <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2 py-0.5 text-[10px] font-black text-cyan-200">
+                                            {FOURTH_GEN_SLOT_LABEL[skill.FourthGenSlot as NonNullable<Skill['FourthGenSlot']>]}
+                                        </span>
+                                        <span className="truncate text-sm font-black text-slate-100">{skill.SkillName}</span>
+                                    </div>
+                                </button>
+                                <select
+                                    value={value}
+                                    onChange={(event) => onChange(toggleEquippedFourthGen(
+                                        equipped,
+                                        skill,
+                                        event.target.value as 'NONE' | EquippedFourthGen['quality'],
+                                        candidates
+                                    ))}
+                                    className="rounded-lg border border-slate-800 bg-slate-900 px-2 py-1 text-xs font-bold text-slate-200 outline-none"
+                                >
+                                    {FOURTH_GEN_QUALITY_OPTIONS.map(option => (
+                                        <option key={option.value} value={option.value} disabled={isOptionDisabled(skill, option.value)}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
+        </section>
     );
 }
 
@@ -2020,6 +2159,8 @@ function TeamDrawerPanel({
         .map(classId => ({ id: classId, label: CLASS_LABEL[classId] || classId }));
     const factionOptions = Object.keys(allSkills[activeSupport.classId] || {}) as Array<'XIAN' | 'FO' | 'MO'>;
     const supportSkills = allSkills[activeSupport.classId]?.[activeSupport.faction] || [];
+    const fourthGenCandidates = collectFourthGenCandidates(supportSkills);
+    const visibleSupportSkills = supportSkills.filter(skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE');
 
     const updateSupport = (index: number, next: Partial<SupportConfig>) => {
         onSupportsChange(supports.map((support, supportIndex) => (
@@ -2088,7 +2229,7 @@ function TeamDrawerPanel({
                                 updateSupport(activeIndex, {
                                     classId: nextClassId,
                                     faction: nextFaction || 'FO',
-                                    skillOverrides: undefined
+                                    skillOverrides: undefined, equippedFourthGen: undefined
                                 });
                             }}
                             className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm font-bold text-slate-100 outline-none"
@@ -2104,7 +2245,7 @@ function TeamDrawerPanel({
                             value={activeSupport.faction}
                             onChange={(event) => updateSupport(activeIndex, {
                                 faction: event.target.value as 'XIAN' | 'FO' | 'MO',
-                                skillOverrides: undefined
+                                skillOverrides: undefined, equippedFourthGen: undefined
                             })}
                             className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm font-bold text-slate-100 outline-none"
                         >
@@ -2130,7 +2271,15 @@ function TeamDrawerPanel({
                     <p className="mt-1 text-xs text-slate-500">未启用技能仅供查阅；法宝+1 会作为 `SkillLevel=1` 进入技能覆盖。</p>
                 </div>
                 <div className="space-y-2">
-                    {supportSkills.map(skill => {
+                    <FourthGenLoadoutSection
+                        candidates={fourthGenCandidates}
+                        equipped={activeSupport.equippedFourthGen || []}
+                        onChange={(next) => updateSupport(activeIndex, {
+                            equippedFourthGen: next.length > 0 ? next : undefined
+                        })}
+                        onOpenSkill={onOpenSkill}
+                    />
+                    {visibleSupportSkills.map(skill => {
                         const override = activeSupport.skillOverrides?.[skill.SkillID] || {};
                         const quality = override.FourthGenQuality || 'NONE';
                         const hasFourthGen = Boolean(skill.FourthGenPresets);
@@ -2443,7 +2592,8 @@ function PartyRail({
 
                 {supports.map((support, index) => {
                     const skills = getSupportSkills(support.classId, support.faction);
-                    const enabledCount = skills.filter(skill =>
+                    const visibleSkills = skills.filter(skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE');
+                    const enabledCount = visibleSkills.filter(skill =>
                         !DISABLED_SIMULATION_SKILL_ID_SET.has(skill.SkillID) &&
                         isConfiguredSkillEnabled(skill.SkillID, support.skillOverrides)
                     ).length;
@@ -2459,11 +2609,11 @@ function PartyRail({
                                 <span className="text-[10px] text-slate-500">S{index + 1}</span>
                             </div>
                             <div className="mt-1 flex items-center justify-between gap-2 text-[11px] text-slate-500">
-                                <span>{enabledCount}/{skills.length} 技能参与默认仿真</span>
+                                <span>{enabledCount}/{visibleSkills.length} 技能参与默认仿真</span>
                                 <span>{support.profileAttributes.CharacterMonsterDamageIncreasePercent}% 对怪增伤</span>
                             </div>
                             <div className="mt-2 flex flex-wrap gap-1.5">
-                                {skills.slice(0, 6).map(skill => {
+                                {visibleSkills.slice(0, 6).map(skill => {
                                     const status = getSkillStatus(skill.SkillID);
                                     const enabled = isConfiguredSkillEnabled(skill.SkillID, support.skillOverrides);
                                     return (
