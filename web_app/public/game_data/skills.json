@@ -1693,39 +1693,76 @@
             }
           }
         ],
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 150,
-            "AppliesEffects": {
-              "TY_BUFF_MKXJ_HEALTH": {
-                "DynamicScalingAttribute": "CharacterMaxAttack",
-                "DynamicScalingMultiplier": 4,
-                "DynamicTargetField": "BuffHealthFixedEffect"
-              }
-            }
-          },
-          "HAO_YUE": {
-            "Cooldown": 120,
-            "AppliesEffects": {
-              "TY_BUFF_MKXJ_HEALTH": {
-                "DynamicScalingAttribute": "CharacterMaxAttack",
-                "DynamicScalingMultiplier": 6,
-                "DynamicTargetField": "BuffHealthFixedEffect"
-              }
-            }
-          },
-          "XI_RI": {
-            "Cooldown": 90,
-            "AppliesEffects": {
-              "TY_BUFF_MKXJ_HEALTH": {
-                "DynamicScalingAttribute": "CharacterMaxAttack",
-                "DynamicScalingMultiplier": 8,
-                "DynamicTargetField": "BuffHealthFixedEffect"
-              }
-            }
-          }
-        },
         "Description": "令队友增加500,000气血固定值，持续时间25秒，冷却时间180秒（受四代品质和最大攻击力缩放影响）。"
+      },
+      {
+        "SkillID": "TY_FO_FG_MKXJ",
+        "SkillName": "玄烛·摩柯心经",
+        "RequiredClass": "TIAN_YIN",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "TY_FO_SKILL_MKXJ"
+              ],
+              "Override": {
+                "Cooldown": 150,
+                "AppliesEffects": {
+                  "TY_BUFF_MKXJ_HEALTH": {
+                    "DynamicScalingAttribute": "CharacterMaxAttack",
+                    "DynamicScalingMultiplier": 4,
+                    "DynamicTargetField": "BuffHealthFixedEffect"
+                  }
+                }
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "TY_FO_SKILL_MKXJ"
+              ],
+              "Override": {
+                "Cooldown": 120,
+                "AppliesEffects": {
+                  "TY_BUFF_MKXJ_HEALTH": {
+                    "DynamicScalingAttribute": "CharacterMaxAttack",
+                    "DynamicScalingMultiplier": 6,
+                    "DynamicTargetField": "BuffHealthFixedEffect"
+                  }
+                }
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "TY_FO_SKILL_MKXJ"
+              ],
+              "Override": {
+                "Cooldown": 90,
+                "AppliesEffects": {
+                  "TY_BUFF_MKXJ_HEALTH": {
+                    "DynamicScalingAttribute": "CharacterMaxAttack",
+                    "DynamicScalingMultiplier": 8,
+                    "DynamicTargetField": "BuffHealthFixedEffect"
+                  }
+                }
+              }
+            }
+          ]
+        }
       }
     ],
     "XIAN": [],
@@ -1902,18 +1939,7 @@
         "IsAOE": false,
         "ActionType": "UTILITY",
         "SkillBonusAttributes": {},
-        "BuffDurationExtensionSeconds": 0,
-        "FourthGenPresets": {
-          "YING_JU": {
-            "BuffDurationExtensionSeconds": 12
-          },
-          "HAO_YUE": {
-            "BuffDurationExtensionSeconds": 13
-          },
-          "XI_RI": {
-            "BuffDurationExtensionSeconds": 14
-          }
-        }
+        "BuffDurationExtensionSeconds": 0
       },
       {
         "SkillID": "ZM_FO_SKILL_RYHG",
@@ -1996,6 +2022,54 @@
           }
         ],
         "Description": "昭冥诅咒技能，对目标施加跗骨生灵状态，增加其受到全队的伤害，冷却时间0秒。"
+      },
+      {
+        "SkillID": "ZM_FO_FG_TYNF",
+        "SkillName": "玄烛·停云凝风",
+        "RequiredClass": "ZHAO_MING",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "ZM_FO_SKILL_TYNF"
+              ],
+              "Override": {
+                "BuffDurationExtensionSeconds": 12
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "ZM_FO_SKILL_TYNF"
+              ],
+              "Override": {
+                "BuffDurationExtensionSeconds": 13
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "ZM_FO_SKILL_TYNF"
+              ],
+              "Override": {
+                "BuffDurationExtensionSeconds": 14
+              }
+            }
+          ]
+        }
       }
     ],
     "XIAN": [],
@@ -2281,32 +2355,6 @@
             }
           }
         ],
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 60,
-            "AppliesEffects": {
-              "TH_BUFF_QSYY": {
-                "Duration": 28
-              }
-            }
-          },
-          "HAO_YUE": {
-            "Cooldown": 45,
-            "AppliesEffects": {
-              "TH_BUFF_QSYY": {
-                "Duration": 31
-              }
-            }
-          },
-          "XI_RI": {
-            "Cooldown": 30,
-            "AppliesEffects": {
-              "TH_BUFF_QSYY": {
-                "Duration": 34
-              }
-            }
-          }
-        },
         "Description": "令主输出增加19%专注（法宝+1则额外多增加3专注），天华每多5000最大攻击则额外增加1专注，最多可以额外增加20；令主输出增加防御，数值为天华最大攻击的1.5倍；令主输出增加爆伤，数值为天华每多100000真气额外增加1爆伤。1s释放，持续时间(25+x)s（法宝+1则持续时间额外多1s），cd (80-y)s。"
       },
       {
@@ -2461,6 +2509,69 @@
             "DynamicTargetField": "BuffDefenseFixedEffect"
           }
         ]
+      },
+      {
+        "SkillID": "TH_FO_FG_QSYY",
+        "SkillName": "玄烛·秋声雅韵",
+        "RequiredClass": "TIAN_HUA",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "TH_FO_SKILL_QSYY"
+              ],
+              "Override": {
+                "Cooldown": 60,
+                "AppliesEffects": {
+                  "TH_BUFF_QSYY": {
+                    "Duration": 28
+                  }
+                }
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "TH_FO_SKILL_QSYY"
+              ],
+              "Override": {
+                "Cooldown": 45,
+                "AppliesEffects": {
+                  "TH_BUFF_QSYY": {
+                    "Duration": 31
+                  }
+                }
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "TH_FO_SKILL_QSYY"
+              ],
+              "Override": {
+                "Cooldown": 30,
+                "AppliesEffects": {
+                  "TH_BUFF_QSYY": {
+                    "Duration": 34
+                  }
+                }
+              }
+            }
+          ]
+        }
       }
     ],
     "XIAN": [],
@@ -2749,8 +2860,7 @@
     "supportOverrides": {
       "zhaoming_sup": {
         "ZM_FO_SKILL_TYNF": {
-          "SkillLevel": 1,
-          "FourthGenQuality": "XI_RI"
+          "SkillLevel": 1
         },
         "ZM_FO_SKILL_RYHG": {
           "RyhgPhase2DelaySeconds": 15
@@ -2766,8 +2876,7 @@
           "SkillLevel": 1
         },
         "TH_FO_SKILL_QSYY": {
-          "SkillLevel": 1,
-          "FourthGenQuality": "XI_RI"
+          "SkillLevel": 1
         }
       },
       "yingzhao_sup": {
