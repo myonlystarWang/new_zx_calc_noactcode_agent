@@ -1,6 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DataService } from '../../services/DataService';
-import { BookOpen, Shield, Swords, Target, Users, CheckCircle, AlertCircle, X } from 'lucide-react';
+import {
+    BookOpen,
+    Shield,
+    Swords,
+    Target,
+    Users,
+    AlertCircle,
+    X,
+    Search,
+    LayoutGrid,
+    List,
+    Sparkles,
+    Zap,
+    Compass,
+    Layers,
+    Award
+} from 'lucide-react';
 import clsx from 'clsx';
 import type { AttributeCeilingRow, SupportRole, StatSourceSection } from '../../services/DataService';
 import type { SearchTarget } from '../GlobalSearch';
@@ -16,26 +32,85 @@ const SUB_TABS: { id: SubTab; label: string; icon: React.ReactNode }[] = [
     { id: 'support', label: '各职业状态', icon: <Users className="w-4 h-4" /> },
 ];
 
-const CATEGORY_COLORS = [
-    'border-l-cyan-500/60',
-    'border-l-emerald-500/60',
-    'border-l-amber-500/60',
-    'border-l-rose-500/60',
-    'border-l-purple-500/60',
-    'border-l-blue-500/60',
-    'border-l-orange-500/60',
-    'border-l-pink-500/60',
-];
+export type DomainKey = 'equip' | 'accessory' | 'soulDharma' | 'tomeStar' | 'arrayMind' | 'comprehensive';
 
-const CATEGORY_TEXT_COLORS = [
-    'text-cyan-400', 'text-emerald-400', 'text-amber-400', 'text-rose-400',
-    'text-purple-400', 'text-blue-400', 'text-orange-400', 'text-pink-400',
-];
+interface DomainMeta {
+    id: DomainKey;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    accentBorder: string;
+    accentText: string;
+    accentBg: string;
+    badgeStyle: string;
+}
 
-const CATEGORY_BG_COLORS = [
-    'bg-cyan-500', 'bg-emerald-500', 'bg-amber-500', 'bg-rose-500',
-    'bg-purple-500', 'bg-blue-500', 'bg-orange-500', 'bg-pink-500',
-];
+const DOMAINS: Record<DomainKey, DomainMeta> = {
+    equip: {
+        id: 'equip',
+        label: '装备与防具',
+        icon: Shield,
+        accentBorder: 'border-amber-500/35 hover:border-amber-500/60',
+        accentText: 'text-amber-400',
+        accentBg: 'bg-amber-500/10',
+        badgeStyle: 'bg-amber-500/15 border-amber-500/30 text-amber-300',
+    },
+    accessory: {
+        id: 'accessory',
+        label: '首饰与法宝',
+        icon: Sparkles,
+        accentBorder: 'border-sky-500/35 hover:border-sky-500/60',
+        accentText: 'text-sky-400',
+        accentBg: 'bg-sky-500/10',
+        badgeStyle: 'bg-sky-500/15 border-sky-500/30 text-sky-300',
+    },
+    soulDharma: {
+        id: 'soulDharma',
+        label: '法身与元婴',
+        icon: Zap,
+        accentBorder: 'border-purple-500/35 hover:border-purple-500/60',
+        accentText: 'text-purple-400',
+        accentBg: 'bg-purple-500/10',
+        badgeStyle: 'bg-purple-500/15 border-purple-500/30 text-purple-300',
+    },
+    tomeStar: {
+        id: 'tomeStar',
+        label: '天书与星宿',
+        icon: Compass,
+        accentBorder: 'border-teal-500/35 hover:border-teal-500/60',
+        accentText: 'text-teal-400',
+        accentBg: 'bg-teal-500/10',
+        badgeStyle: 'bg-teal-500/15 border-teal-500/30 text-teal-300',
+    },
+    arrayMind: {
+        id: 'arrayMind',
+        label: '阵灵与心法',
+        icon: Layers,
+        accentBorder: 'border-blue-500/35 hover:border-blue-500/60',
+        accentText: 'text-blue-400',
+        accentBg: 'bg-blue-500/10',
+        badgeStyle: 'bg-blue-500/15 border-blue-500/30 text-blue-300',
+    },
+    comprehensive: {
+        id: 'comprehensive',
+        label: '综合养成与外显',
+        icon: Award,
+        accentBorder: 'border-rose-500/35 hover:border-rose-500/60',
+        accentText: 'text-rose-400',
+        accentBg: 'bg-rose-500/10',
+        badgeStyle: 'bg-rose-500/15 border-rose-500/30 text-rose-300',
+    },
+};
+
+const DOMAIN_ORDER: DomainKey[] = ['equip', 'accessory', 'soulDharma', 'tomeStar', 'arrayMind', 'comprehensive'];
+
+const getDomainKey = (category: string = ''): DomainKey => {
+    if (['武器', '衣服', '头', '鞋子', '腰带', '神隐之力', '装备', '鞋子/腰带'].includes(category)) return 'equip';
+    if (['首饰', '护符', '佩章', '玺绶', '勋章', '罡气', '法宝', '法宝/印'].includes(category)) return 'accessory';
+    if (['法身', '元婴', '法身/元婴'].includes(category)) return 'soulDharma';
+    if (['轩辕策', '星宿', '星魂'].includes(category)) return 'tomeStar';
+    if (['阵灵', '心法', '四灵', '造化', '心法/周天'].includes(category)) return 'arrayMind';
+    return 'comprehensive';
+};
 
 const renderValue = (v: number | string | undefined) => {
     if (v === undefined || v === null) return '-';
@@ -43,282 +118,695 @@ const renderValue = (v: number | string | undefined) => {
     return v;
 };
 
-const SectionTitle: React.FC<{ title: string; total?: number; verified?: boolean }> = ({ title, total, verified }) => (
-    <div className="flex items-center justify-between mb-4 gap-2">
-        <h2 className="text-lg sm:text-xl font-bold text-slate-100 truncate">{title}</h2>
-        <div className="flex items-center gap-2 flex-shrink-0">
-            {total !== undefined && (
-                <span className="text-xs sm:text-sm font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-2 py-1 rounded-lg">
-                    合计 {Number.isInteger(total) ? total : total.toFixed(2)}
-                </span>
-            )}
-            {verified ? (
-                <span className="hidden sm:flex items-center gap-1 text-sm text-emerald-400">
-                    <CheckCircle className="w-4 h-4" /> 已核对
-                </span>
-            ) : (
-                <span className="hidden sm:flex items-center gap-1 text-sm text-amber-400">
-                    <AlertCircle className="w-4 h-4" /> 未核对
-                </span>
-            )}
-        </div>
-    </div>
-);
+interface CompendiumHeaderProps {
+    title: string;
+    total?: number;
+    totalLabel?: string;
+    totalItems: number;
+    domainCounts: Record<DomainKey, number>;
+    activeDomain: DomainKey | 'all';
+    onSelectDomain: (domain: DomainKey | 'all') => void;
+    searchQuery: string;
+    onSearchChange: (q: string) => void;
+    viewMode: 'grid' | 'table';
+    onViewModeChange: (mode: 'grid' | 'table') => void;
+}
 
-const catIndex = (category: string) => {
-    let hash = 0;
-    for (let i = 0; i < category.length; i++) hash = category.charCodeAt(i) + ((hash << 5) - hash);
-    return Math.abs(hash) % CATEGORY_COLORS.length;
-};
-const catColor = (category: string) => CATEGORY_COLORS[catIndex(category)];
-const catTextColor = (category: string) => CATEGORY_TEXT_COLORS[catIndex(category)];
-const catBarColor = (category: string) => CATEGORY_BG_COLORS[catIndex(category)];
-
-/* ---- 极致无视/减免/减暴击：移动端卡片行 ---- */
-const MobileAttrRow: React.FC<{ row: AttributeCeilingRow }> = ({ row }) => (
-    <div data-item={row.item} className="flex flex-col gap-1.5 py-2 border-b border-slate-700/30 last:border-0 last:pb-0">
-        <div className="text-base font-medium text-slate-100">{row.item}</div>
-        <div className="grid grid-cols-4 gap-1.5">
-            {[
-                { label: '理论最高', value: row.theoryMax, color: 'text-cyan-300' },
-                { label: '夯', value: row.floor, color: 'text-slate-300' },
-                { label: '顶级', value: row.top, color: 'text-slate-300' },
-                { label: '毕业', value: row.graduation, color: 'text-slate-300' },
-            ].map((c) => (
-                <div key={c.label} className="flex flex-col items-center bg-slate-900/50 rounded-lg py-1.5">
-                    <span className="text-[10px] text-slate-500 mb-0.5">{c.label}</span>
-                    <span className={clsx('text-sm font-mono', c.color)}>{renderValue(c.value)}</span>
+const CompendiumHeader: React.FC<CompendiumHeaderProps> = ({
+    title,
+    total,
+    totalLabel,
+    totalItems,
+    domainCounts,
+    activeDomain,
+    onSelectDomain,
+    searchQuery,
+    onSearchChange,
+    viewMode,
+    onViewModeChange,
+}) => {
+    return (
+        <div className="flex flex-col gap-3.5 mb-2">
+            {/* 顶栏控制栏：标题 + 验证徽章 + 搜索 + 视图切换 */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 sm:px-5 shadow-lg">
+                <div className="flex items-center gap-3 flex-wrap">
+                    <h2 className="text-lg sm:text-xl font-black text-slate-100 tracking-wide">{title}</h2>
+                    {total !== undefined && (
+                        <div className="flex items-baseline gap-1.5 ml-1">
+                            <span className="text-xs text-slate-400">理论总计</span>
+                            <span className="text-base sm:text-lg font-mono font-black text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-0.5 rounded-lg shadow-[0_0_10px_rgba(6,182,212,0.15)]">
+                                {Number.isInteger(total) ? total : total.toFixed(2)}
+                            </span>
+                            {totalLabel && totalLabel !== String(total) && (
+                                <span className="text-xs text-slate-400 font-mono">({totalLabel})</span>
+                            )}
+                        </div>
+                    )}
                 </div>
-            ))}
+
+                <div className="flex items-center gap-2.5 self-end lg:self-auto w-full lg:w-auto">
+                    {/* 实时过滤搜索 */}
+                    <div className="relative flex-1 lg:w-56">
+                        <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => onSearchChange(e.target.value)}
+                            placeholder="检索项目/分类/数值..."
+                            className="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl pl-8 pr-7 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40 transition-all"
+                        />
+                        {searchQuery && (
+                            <button
+                                onClick={() => onSearchChange('')}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                            >
+                                <X className="w-3.5 h-3.5" />
+                            </button>
+                        )}
+                    </div>
+
+                    {/* 视图模式切换 */}
+                    <div className="flex items-center bg-slate-950/60 p-0.5 rounded-xl border border-slate-800 flex-shrink-0">
+                        <button
+                            onClick={() => onViewModeChange('grid')}
+                            className={clsx(
+                                'flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-all',
+                                viewMode === 'grid'
+                                    ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
+                                    : 'text-slate-400 hover:text-slate-300'
+                            )}
+                            title="聚类卡片视图"
+                        >
+                            <LayoutGrid className="w-3.5 h-3.5" />
+                            <span>卡片</span>
+                        </button>
+                        <button
+                            onClick={() => onViewModeChange('table')}
+                            className={clsx(
+                                'flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-all',
+                                viewMode === 'table'
+                                    ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
+                                    : 'text-slate-400 hover:text-slate-300'
+                            )}
+                            title="全量表格视图"
+                        >
+                            <List className="w-3.5 h-3.5" />
+                            <span>表格</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* 领域筛选 Pills 导航 */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+                <button
+                    onClick={() => onSelectDomain('all')}
+                    className={clsx(
+                        'px-3 py-1.5 rounded-xl font-bold transition-all border whitespace-nowrap flex-shrink-0',
+                        activeDomain === 'all'
+                            ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
+                            : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:bg-slate-850 hover:text-slate-300'
+                    )}
+                >
+                    全部 ({totalItems})
+                </button>
+                {DOMAIN_ORDER.map((dk) => {
+                    const count = domainCounts[dk] || 0;
+                    if (count === 0) return null;
+                    const meta = DOMAINS[dk];
+                    const Icon = meta.icon;
+                    const isActive = activeDomain === dk;
+                    return (
+                        <button
+                            key={dk}
+                            onClick={() => onSelectDomain(dk)}
+                            className={clsx(
+                                'flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium transition-all border whitespace-nowrap flex-shrink-0',
+                                isActive
+                                    ? clsx(meta.badgeStyle, 'font-bold shadow-md')
+                                    : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:bg-slate-850 hover:text-slate-300'
+                            )}
+                        >
+                            <Icon className="w-3.5 h-3.5" />
+                            <span>{meta.label}</span>
+                            <span className="font-mono text-[11px] opacity-70">({count})</span>
+                        </button>
+                    );
+                })}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const AttributeTable: React.FC<{ sectionKey: string; sectionTitle: string }> = ({ sectionKey, sectionTitle }) => {
     const guide = DataService.getInstance().getAttributeCeilingGuide();
     const section = guide?.sections[sectionKey];
 
+    const [activeDomain, setActiveDomain] = useState<DomainKey | 'all'>('all');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
+
     if (!guide || !section) {
         return <div className="text-slate-400 text-base">数据加载中...</div>;
     }
 
-    const grouped = useMemo(() => {
-        const map = new Map<string, AttributeCeilingRow[]>();
+    const { domainGroups, totalCount, domainCounts, domainSubtotals } = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        const filtered = section.rows.filter((r) => {
+            if (!q) return true;
+            return (
+                r.item.toLowerCase().includes(q) ||
+                r.category.toLowerCase().includes(q) ||
+                String(r.theoryMax).includes(q) ||
+                String(r.floor).includes(q) ||
+                String(r.top).includes(q) ||
+                String(r.graduation).includes(q)
+            );
+        });
+
+        const groups: Record<DomainKey, AttributeCeilingRow[]> = {
+            equip: [],
+            accessory: [],
+            soulDharma: [],
+            tomeStar: [],
+            arrayMind: [],
+            comprehensive: [],
+        };
+
+        const counts: Record<DomainKey, number> = {
+            equip: 0,
+            accessory: 0,
+            soulDharma: 0,
+            tomeStar: 0,
+            arrayMind: 0,
+            comprehensive: 0,
+        };
+
+        const subtotals: Record<DomainKey, number> = {
+            equip: 0,
+            accessory: 0,
+            soulDharma: 0,
+            tomeStar: 0,
+            arrayMind: 0,
+            comprehensive: 0,
+        };
+
         for (const row of section.rows) {
-            const list = map.get(row.category) || [];
-            list.push(row);
-            map.set(row.category, list);
+            const dk = getDomainKey(row.category);
+            counts[dk] = (counts[dk] || 0) + 1;
+            const val = typeof row.theoryMax === 'number' ? row.theoryMax : 0;
+            subtotals[dk] = (subtotals[dk] || 0) + val;
         }
-        return Array.from(map.entries());
-    }, [section.rows]);
+
+        for (const row of filtered) {
+            const dk = getDomainKey(row.category);
+            groups[dk].push(row);
+        }
+
+        return {
+            domainGroups: groups,
+            totalCount: section.rows.length,
+            domainCounts: counts,
+            domainSubtotals: subtotals,
+        };
+    }, [section.rows, searchQuery]);
+
+    const visibleDomains = activeDomain === 'all' ? DOMAIN_ORDER : [activeDomain];
+    const hasAnyResults = visibleDomains.some((dk) => (domainGroups[dk]?.length || 0) > 0);
 
     return (
-        <div className="zx-card p-4 sm:p-5">
-            <SectionTitle title={sectionTitle} total={section.total} verified={section.verified} />
+        <div className="flex flex-col gap-3">
+            <CompendiumHeader
+                title={sectionTitle}
+                total={section.total}
+                totalItems={totalCount}
+                domainCounts={domainCounts}
+                activeDomain={activeDomain}
+                onSelectDomain={setActiveDomain}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+            />
 
-            {/* 桌面端：表格 */}
-            <div className="hidden sm:block overflow-x-auto">
-                <table className="w-full text-base">
-                    <thead>
-                        <tr className="border-b border-slate-700/70 text-slate-400">
-                            <th className="text-left py-2.5 px-3 font-medium w-28">类别</th>
-                            <th className="text-left py-2.5 px-3 font-medium">项目</th>
-                            <th className="text-right py-2.5 px-3 font-medium w-24">理论最高</th>
-                            <th className="text-right py-2.5 px-3 font-medium w-24">夯</th>
-                            <th className="text-right py-2.5 px-3 font-medium w-24">顶级</th>
-                            <th className="text-right py-2.5 px-3 font-medium w-28">大致毕业</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {grouped.map(([category, rows]) => (
-                            <React.Fragment key={category}>
-                                {grouped.length > 1 && (
-                                    <tr className={clsx('border-l-4 bg-slate-800/40', catColor(category))}>
-                                        <td colSpan={6} className="py-1.5 px-3 text-sm font-bold text-slate-300 tracking-wide">
-                                            {category}
-                                        </td>
-                                    </tr>
+            {!hasAnyResults ? (
+                <div className="zx-card p-12 text-center text-slate-500">
+                    没有找到符合检索条件的项目
+                </div>
+            ) : viewMode === 'grid' ? (
+                /* 卡片视图：响应式多列网格，吃满大屏空间，单卡紧凑排列 */
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
+                    {visibleDomains.map((domainKey) => {
+                        const meta = DOMAINS[domainKey];
+                        const Icon = meta.icon;
+                        const rows = domainGroups[domainKey] || [];
+                        if (rows.length === 0) return null;
+                        const subtotal = domainSubtotals[domainKey];
+                        const pct = section.total ? ((subtotal / section.total) * 100).toFixed(1) : null;
+
+                        return (
+                            <div
+                                key={domainKey}
+                                className={clsx(
+                                    'zx-card p-0 rounded-2xl border flex flex-col overflow-hidden transition-all duration-200 shadow-lg',
+                                    meta.accentBorder,
+                                    'bg-slate-900/70 hover:bg-slate-900/90'
                                 )}
-                                {rows.map((row, idx) => (
-                                    <tr
-                                        key={idx}
-                                        data-item={row.item}
-                                        className={clsx(
-                                            'border-l-4 hover:bg-slate-800/30 transition-colors',
-                                            grouped.length > 1 ? catColor(category) : 'border-l-transparent',
-                                            idx !== rows.length - 1 && 'border-b border-slate-700/20'
-                                        )}
-                                    >
-                                        <td className="py-2.5 px-3 text-slate-400 whitespace-nowrap align-top">
-                                            {grouped.length > 1 ? <span className="opacity-0">{category}</span> : category}
-                                        </td>
-                                        <td className="py-2.5 px-3 text-slate-200 align-top">{row.item}</td>
-                                        <td className="py-2.5 px-3 text-right font-mono text-cyan-300 align-top">{renderValue(row.theoryMax)}</td>
-                                        <td className="py-2.5 px-3 text-right font-mono text-slate-300 align-top">{renderValue(row.floor)}</td>
-                                        <td className="py-2.5 px-3 text-right font-mono text-slate-300 align-top">{renderValue(row.top)}</td>
-                                        <td className="py-2.5 px-3 text-right font-mono text-slate-300 align-top">{renderValue(row.graduation)}</td>
-                                    </tr>
-                                ))}
-                            </React.Fragment>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                            >
+                                {/* 卡片标题栏 */}
+                                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800/80 bg-slate-800/30">
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                        <div className={clsx('p-1.5 rounded-lg border flex-shrink-0', meta.badgeStyle)}>
+                                            <Icon className="w-4 h-4" />
+                                        </div>
+                                        <div className="flex items-center gap-2 min-w-0">
+                                            <h3 className="text-sm font-bold text-slate-100 tracking-wide truncate">
+                                                {meta.label}
+                                            </h3>
+                                            <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800/90 text-slate-400 border border-slate-700/60 flex-shrink-0">
+                                                {rows.length}项
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 flex-shrink-0 pl-2">
+                                        <div className="text-right">
+                                            <span className="text-[10px] text-slate-400 block leading-none mb-0.5">理论最高小计</span>
+                                            <span className={clsx('text-sm font-mono font-bold', meta.accentText)}>
+                                                {Number.isInteger(subtotal) ? subtotal : subtotal.toFixed(2)}
+                                            </span>
+                                            {pct && (
+                                                <span className="text-[10px] text-slate-400 font-mono ml-1.5">
+                                                    ({pct}%)
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
 
-            {/* 移动端：分组卡片 */}
-            <div className="sm:hidden flex flex-col gap-3">
-                {grouped.map(([category, rows]) => (
-                    <div
-                        key={category}
-                        className={clsx('zx-card p-3 border-l-4', grouped.length > 1 ? catColor(category) : 'border-l-transparent')}
-                    >
-                        {grouped.length > 1 && (
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className={clsx('w-1 h-4 rounded-full', catBarColor(category))}></span>
-                                <span className={clsx('text-sm font-bold tracking-wide', catTextColor(category))}>{category}</span>
+                                {/* 卡片内部紧凑表格：项目与4档数值紧密相连 */}
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-xs sm:text-sm">
+                                        <thead>
+                                            <tr className="border-b border-slate-800/80 text-[11px] text-slate-400 bg-slate-950/40">
+                                                <th className="text-left py-2 px-3 font-medium">项目 / 细分</th>
+                                                <th className="text-right py-2 px-2 font-medium w-16 text-cyan-400">理论最高</th>
+                                                <th className="text-right py-2 px-2 font-medium w-12 text-slate-400">夯</th>
+                                                <th className="text-right py-2 px-2 font-medium w-12 text-slate-400">顶级</th>
+                                                <th className="text-right py-2 px-2.5 font-medium w-14 text-slate-400">大致毕业</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-800/40 font-sans">
+                                            {rows.map((row, idx) => (
+                                                <tr
+                                                    key={idx}
+                                                    data-item={row.item}
+                                                    className="hover:bg-slate-800/40 transition-colors group"
+                                                >
+                                                    <td className="py-2.5 px-3 align-middle">
+                                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800/90 text-slate-400 border border-slate-700/60 flex-shrink-0">
+                                                                {row.category}
+                                                            </span>
+                                                            <span className="text-slate-200 group-hover:text-cyan-200 font-medium text-xs sm:text-sm">
+                                                                {row.item}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-2.5 px-2 text-right font-mono font-bold text-cyan-300 text-xs sm:text-sm align-middle tabular-nums">
+                                                        {renderValue(row.theoryMax)}
+                                                    </td>
+                                                    <td className="py-2.5 px-2 text-right font-mono text-slate-300 text-xs align-middle tabular-nums">
+                                                        {renderValue(row.floor)}
+                                                    </td>
+                                                    <td className="py-2.5 px-2 text-right font-mono text-slate-300 text-xs align-middle tabular-nums">
+                                                        {renderValue(row.top)}
+                                                    </td>
+                                                    <td className="py-2.5 px-2.5 text-right font-mono text-slate-300 text-xs align-middle tabular-nums">
+                                                        {renderValue(row.graduation)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        )}
-                        <div className="flex flex-col">
-                            {rows.map((row, idx) => (
-                                <MobileAttrRow key={idx} row={row} />
-                            ))}
-                        </div>
+                        );
+                    })}
+                </div>
+            ) : (
+                /* 表格视图：全量表格模式 */
+                <div className="zx-card p-0 rounded-2xl border border-slate-800/80 bg-slate-900/60 overflow-hidden shadow-lg">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-xs sm:text-sm">
+                            <thead>
+                                <tr className="border-b border-slate-700/80 text-xs text-slate-400 bg-slate-950/60">
+                                    <th className="text-left py-3 px-4 font-semibold">领域 / 分类 / 项目</th>
+                                    <th className="text-right py-3 px-3 font-semibold w-24 text-cyan-400">理论最高</th>
+                                    <th className="text-right py-3 px-3 font-semibold w-20 text-slate-400">夯</th>
+                                    <th className="text-right py-3 px-3 font-semibold w-20 text-slate-400">顶级</th>
+                                    <th className="text-right py-3 px-4 font-semibold w-24 text-slate-400">大致毕业</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-800/50 font-sans">
+                                {visibleDomains.map((dk) => {
+                                    const meta = DOMAINS[dk];
+                                    const Icon = meta.icon;
+                                    const rows = domainGroups[dk];
+                                    if (!rows || rows.length === 0) return null;
+                                    const subtotal = domainSubtotals[dk];
+                                    return (
+                                        <React.Fragment key={dk}>
+                                            <tr className="bg-slate-800/40 border-y border-slate-750">
+                                                <td colSpan={5} className="py-2.5 px-4">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="flex items-center gap-2">
+                                                            <Icon className={clsx('w-4 h-4', meta.accentText)} />
+                                                            <span className="font-bold text-slate-200 text-sm">{meta.label}</span>
+                                                            <span className="text-xs text-slate-400 font-mono">({rows.length}项)</span>
+                                                        </div>
+                                                        <div className="text-xs font-mono text-slate-400">
+                                                            小计: <span className={clsx('font-bold', meta.accentText)}>{Number.isInteger(subtotal) ? subtotal : subtotal.toFixed(2)}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {rows.map((row, idx) => (
+                                                <tr key={idx} data-item={row.item} className="hover:bg-slate-800/40 transition-colors">
+                                                    <td className="py-2.5 px-4 align-middle">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700/60 font-mono">
+                                                                {row.category}
+                                                            </span>
+                                                            <span className="text-slate-200 font-medium">{row.item}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-2.5 px-3 text-right font-mono font-bold text-cyan-300 tabular-nums">{renderValue(row.theoryMax)}</td>
+                                                    <td className="py-2.5 px-3 text-right font-mono text-slate-300 tabular-nums">{renderValue(row.floor)}</td>
+                                                    <td className="py-2.5 px-3 text-right font-mono text-slate-300 tabular-nums">{renderValue(row.top)}</td>
+                                                    <td className="py-2.5 px-4 text-right font-mono text-slate-300 tabular-nums">{renderValue(row.graduation)}</td>
+                                                </tr>
+                                            ))}
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
                     </div>
-                ))}
-            </div>
+                </div>
+            )}
 
-            <p className="text-sm text-slate-500 mt-4">数据截至 {guide.asOf}，玩家总结仅供参考</p>
+            <p className="text-xs text-slate-500 mt-2 px-1">数据截至 {guide.asOf}，玩家总结仅供参考</p>
         </div>
     );
 };
 
-/* ---- 极致怪增/躲闪：移动端卡片行 ---- */
-const MobileSourceRow: React.FC<{ row: StatSourceSection['sources'][number]; category: string; showCategory: boolean }> = ({ row, category, showCategory }) => (
-    <div data-item={row.item} className="flex items-center justify-between py-2 border-b border-slate-700/30 last:border-0 last:pb-0">
-        <div className="flex flex-col min-w-0 pr-2">
-            {showCategory && <span className="text-[10px] text-slate-500">{category}</span>}
-            <span className="text-base text-slate-200 break-words">{row.item}</span>
-        </div>
-        <span className="font-mono text-cyan-300 text-base flex-shrink-0">{renderValue(row.value)}</span>
-    </div>
-);
+interface SourceSectionViewProps {
+    section: StatSourceSection;
+    showConditional?: boolean;
+    valueColumnLabel?: string;
+}
 
-const SourceSectionView: React.FC<{ section: StatSourceSection; showConditional?: boolean; valueColumnLabel?: string }> = ({ section, showConditional = true, valueColumnLabel = '数值' }) => {
-    const grouped = useMemo(() => {
-        const map = new Map<string, typeof section.sources>();
+const SourceSectionView: React.FC<SourceSectionViewProps> = ({ section, showConditional = true }) => {
+    const [activeDomain, setActiveDomain] = useState<DomainKey | 'all'>('all');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
+
+    const { domainGroups, totalCount, domainCounts, domainSubtotals } = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        const filtered = section.sources.filter((r) => {
+            if (!q) return true;
+            return (
+                r.item.toLowerCase().includes(q) ||
+                (r.category && r.category.toLowerCase().includes(q)) ||
+                String(r.value).includes(q) ||
+                (r.note && r.note.toLowerCase().includes(q))
+            );
+        });
+
+        const groups: Record<DomainKey, typeof section.sources> = {
+            equip: [],
+            accessory: [],
+            soulDharma: [],
+            tomeStar: [],
+            arrayMind: [],
+            comprehensive: [],
+        };
+        const counts: Record<DomainKey, number> = {
+            equip: 0,
+            accessory: 0,
+            soulDharma: 0,
+            tomeStar: 0,
+            arrayMind: 0,
+            comprehensive: 0,
+        };
+        const subtotals: Record<DomainKey, number> = {
+            equip: 0,
+            accessory: 0,
+            soulDharma: 0,
+            tomeStar: 0,
+            arrayMind: 0,
+            comprehensive: 0,
+        };
+
         for (const row of section.sources) {
-            const cat = row.category || '其他';
-            const list = map.get(cat) || [];
-            list.push(row);
-            map.set(cat, list);
+            const dk = getDomainKey(row.category || '其他');
+            counts[dk] = (counts[dk] || 0) + 1;
+            subtotals[dk] = (subtotals[dk] || 0) + (typeof row.value === 'number' ? row.value : 0);
         }
-        return Array.from(map.entries());
-    }, [section.sources]);
+
+        for (const row of filtered) {
+            const dk = getDomainKey(row.category || '其他');
+            groups[dk].push(row);
+        }
+
+        return {
+            domainGroups: groups,
+            totalCount: section.sources.length,
+            domainCounts: counts,
+            domainSubtotals: subtotals,
+        };
+    }, [section.sources, searchQuery]);
+
+    const visibleDomains = activeDomain === 'all' ? DOMAIN_ORDER : [activeDomain];
+    const hasAnyResults = visibleDomains.some((dk) => (domainGroups[dk]?.length || 0) > 0);
+
+    const baseTotal = section.grandTotal ?? section.total ?? section.subtotal;
 
     return (
-        <div className="zx-card p-4 sm:p-5">
-            <SectionTitle
+        <div className="flex flex-col gap-3">
+            <CompendiumHeader
                 title={section.title}
-                total={section.grandTotal ?? section.total ?? section.subtotal}
-                verified={section.verified}
+                total={baseTotal}
+                totalLabel={section.totalLabel}
+                totalItems={totalCount}
+                domainCounts={domainCounts}
+                activeDomain={activeDomain}
+                onSelectDomain={setActiveDomain}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
             />
 
-            {/* 桌面端：表格 */}
-            <div className="hidden sm:block overflow-x-auto">
-                <table className="w-full text-base">
-                    <thead>
-                        <tr className="border-b border-slate-700/70 text-slate-400">
-                            <th className="text-left py-2.5 px-3 font-medium w-28">类别</th>
-                            <th className="text-left py-2.5 px-3 font-medium">项目</th>
-                            <th className="text-right py-2.5 px-3 font-medium w-28">{valueColumnLabel}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {grouped.map(([category, rows]) => (
-                            <React.Fragment key={category}>
-                                {grouped.length > 1 && (
-                                    <tr className={clsx('border-l-4 bg-slate-800/40', catColor(category))}>
-                                        <td colSpan={3} className="py-1.5 px-3 text-sm font-bold text-slate-300 tracking-wide">
-                                            {category}
-                                        </td>
-                                    </tr>
-                                )}
-                                {rows.map((row, idx) => (
-                                    <tr
-                                        key={idx}
-                                        data-item={row.item}
-                                        className={clsx(
-                                            'border-l-4 hover:bg-slate-800/30 transition-colors',
-                                            grouped.length > 1 ? catColor(category) : 'border-l-transparent',
-                                            idx !== rows.length - 1 && 'border-b border-slate-700/20'
-                                        )}
-                                    >
-                                        <td className="py-2.5 px-3 text-slate-400 whitespace-nowrap align-top">
-                                            {grouped.length > 1 ? <span className="opacity-0">{category}</span> : category}
-                                        </td>
-                                        <td className="py-2.5 px-3 text-slate-200 align-top">{row.item}</td>
-                                        <td className="py-2.5 px-3 text-right font-mono text-cyan-300 align-top">{renderValue(row.value)}</td>
-                                    </tr>
-                                ))}
-                            </React.Fragment>
-                        ))}
-                        {showConditional && section.conditionals && section.conditionals.length > 0 && (
-                            <>
-                                <tr className="bg-slate-800/40">
-                                    <td colSpan={3} className="py-2 px-3 text-sm text-slate-400 font-medium">条件项（额外加成，非基础合计）</td>
-                                </tr>
-                                {section.conditionals.map((row, idx) => (
-                                    <tr key={`c-${idx}`} className="hover:bg-slate-800/30 transition-colors border-l-4 border-l-transparent">
-                                        <td className="py-2.5 px-3 text-slate-400 whitespace-nowrap align-top">{row.category || '-'}</td>
-                                        <td className="py-2.5 px-3 text-slate-400 align-top">{row.item}</td>
-                                        <td className="py-2.5 px-3 text-right font-mono text-slate-300 align-top">{renderValue(row.value)}</td>
-                                    </tr>
-                                ))}
-                            </>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            {!hasAnyResults ? (
+                <div className="zx-card p-12 text-center text-slate-500">
+                    没有找到符合检索条件的项目
+                </div>
+            ) : viewMode === 'grid' ? (
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
+                    {visibleDomains.map((domainKey) => {
+                        const meta = DOMAINS[domainKey];
+                        const Icon = meta.icon;
+                        const rows = domainGroups[domainKey] || [];
+                        if (rows.length === 0) return null;
+                        const subtotal = domainSubtotals[domainKey];
+                        const pct = baseTotal ? ((subtotal / baseTotal) * 100).toFixed(1) : null;
 
-            {/* 移动端：分组卡片 */}
-            <div className="sm:hidden flex flex-col gap-3">
-                {grouped.map(([category, rows]) => (
-                    <div
-                        key={category}
-                        className={clsx('zx-card p-3 border-l-4', grouped.length > 1 ? catColor(category) : 'border-l-transparent')}
-                    >
-                        {grouped.length > 1 && (
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className={clsx('w-1 h-4 rounded-full', catBarColor(category))}></span>
-                                <span className={clsx('text-sm font-bold tracking-wide', catTextColor(category))}>{category}</span>
+                        return (
+                            <div
+                                key={domainKey}
+                                className={clsx(
+                                    'zx-card p-0 rounded-2xl border flex flex-col overflow-hidden transition-all duration-200 shadow-lg',
+                                    meta.accentBorder,
+                                    'bg-slate-900/70 hover:bg-slate-900/90'
+                                )}
+                            >
+                                {/* 卡片标题栏 */}
+                                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800/80 bg-slate-800/30">
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                        <div className={clsx('p-1.5 rounded-lg border flex-shrink-0', meta.badgeStyle)}>
+                                            <Icon className="w-4 h-4" />
+                                        </div>
+                                        <div className="flex items-center gap-2 min-w-0">
+                                            <h3 className="text-sm font-bold text-slate-100 tracking-wide truncate">
+                                                {meta.label}
+                                            </h3>
+                                            <span className="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800/90 text-slate-400 border border-slate-700/60 flex-shrink-0">
+                                                {rows.length}项
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 flex-shrink-0 pl-2">
+                                        <div className="text-right">
+                                            <span className="text-[10px] text-slate-400 block leading-none mb-0.5">小计</span>
+                                            <span className={clsx('text-sm font-mono font-bold', meta.accentText)}>
+                                                +{Number.isInteger(subtotal) ? subtotal : subtotal.toFixed(2)}
+                                            </span>
+                                            {pct && (
+                                                <span className="text-[10px] text-slate-400 font-mono ml-1.5">
+                                                    ({pct}%)
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* 紧凑列表行 */}
+                                <div className="divide-y divide-slate-800/40">
+                                    {rows.map((row, idx) => (
+                                        <div
+                                            key={idx}
+                                            data-item={row.item}
+                                            className="flex items-center justify-between py-2.5 px-3 hover:bg-slate-800/40 transition-colors group"
+                                        >
+                                            <div className="flex items-center gap-2 min-w-0 pr-3">
+                                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800/90 text-slate-400 border border-slate-700/60 flex-shrink-0 font-medium">
+                                                    {row.category || '其他'}
+                                                </span>
+                                                <span className="text-slate-200 group-hover:text-cyan-200 text-xs sm:text-sm font-medium truncate">
+                                                    {row.item}
+                                                </span>
+                                                {row.note && (
+                                                    <span className="text-[11px] text-slate-500 truncate hidden sm:inline" title={row.note}>
+                                                        ({row.note})
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                                                <span className="font-mono text-cyan-300 font-bold text-xs sm:text-sm bg-cyan-500/10 border border-cyan-500/25 px-2 py-0.5 rounded-lg tabular-nums">
+                                                    +{renderValue(row.value)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        )}
-                        <div className="flex flex-col">
-                            {rows.map((row, idx) => (
-                                <MobileSourceRow
-                                    key={idx}
-                                    row={row}
-                                    category={category}
-                                    showCategory={grouped.length > 1}
-                                />
-                            ))}
+                        );
+                    })}
+                </div>
+            ) : (
+                <div className="zx-card p-0 rounded-2xl border border-slate-800/80 bg-slate-900/60 overflow-hidden shadow-lg">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-xs sm:text-sm">
+                            <thead>
+                                <tr className="border-b border-slate-700/80 text-xs text-slate-400 bg-slate-950/60">
+                                    <th className="text-left py-3 px-4 font-semibold">领域 / 分类 / 项目</th>
+                                    <th className="text-right py-3 px-4 font-semibold w-28 text-cyan-400">加成数值</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-800/50 font-sans">
+                                {visibleDomains.map((dk) => {
+                                    const meta = DOMAINS[dk];
+                                    const Icon = meta.icon;
+                                    const rows = domainGroups[dk];
+                                    if (!rows || rows.length === 0) return null;
+                                    const subtotal = domainSubtotals[dk];
+                                    return (
+                                        <React.Fragment key={dk}>
+                                            <tr className="bg-slate-800/40 border-y border-slate-750">
+                                                <td colSpan={2} className="py-2.5 px-4">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="flex items-center gap-2">
+                                                            <Icon className={clsx('w-4 h-4', meta.accentText)} />
+                                                            <span className="font-bold text-slate-200 text-sm">{meta.label}</span>
+                                                            <span className="text-xs text-slate-400 font-mono">({rows.length}项)</span>
+                                                        </div>
+                                                        <div className="text-xs font-mono text-slate-400">
+                                                            小计: <span className={clsx('font-bold', meta.accentText)}>+{Number.isInteger(subtotal) ? subtotal : subtotal.toFixed(2)}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {rows.map((row, idx) => (
+                                                <tr key={idx} data-item={row.item} className="hover:bg-slate-800/40 transition-colors">
+                                                    <td className="py-2.5 px-4 align-middle">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700/60 font-mono">
+                                                                {row.category || '其他'}
+                                                            </span>
+                                                            <span className="text-slate-200 font-medium">{row.item}</span>
+                                                            {row.note && (
+                                                                <span className="text-[11px] text-slate-500 truncate hidden sm:inline" title={row.note}>
+                                                                    ({row.note})
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-2.5 px-4 text-right font-mono font-bold text-cyan-300 tabular-nums">
+                                                        +{renderValue(row.value)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+
+            {/* 条件项（额外加成，非基础合计） */}
+            {showConditional && section.conditionals && section.conditionals.length > 0 && (
+                <div className="zx-card p-0 rounded-2xl border border-amber-500/30 bg-amber-500/5 flex flex-col overflow-hidden shadow-lg mt-3">
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-amber-500/20 bg-amber-500/10">
+                        <div className="flex items-center gap-2.5">
+                            <div className="p-1.5 rounded-lg border bg-amber-500/20 border-amber-500/40 text-amber-300">
+                                <AlertCircle className="w-4 h-4" />
+                            </div>
+                            <div>
+                                <h3 className="text-sm font-bold text-amber-200 tracking-wide">特殊条件项加成</h3>
+                                <span className="text-[11px] text-amber-400/80">非基础合计项，特定职业/阵营/性别额外达成</span>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <span className="text-[10px] text-amber-400/70 block leading-none mb-0.5">额外加成总计</span>
+                            <span className="text-sm font-mono font-bold text-amber-300">
+                                +{section.conditionals.reduce((sum, c) => sum + (typeof c.value === 'number' ? c.value : 0), 0)}
+                            </span>
                         </div>
                     </div>
-                ))}
-                {showConditional && section.conditionals && section.conditionals.length > 0 && (
-                    <div className="zx-card p-3 border-l-4 border-l-transparent">
-                        <div className="text-sm font-bold text-slate-400 mb-1.5">条件项（额外加成，非基础合计）</div>
-                        <div className="flex flex-col">
-                            {section.conditionals.map((row, idx) => (
-                                <MobileSourceRow key={`c-${idx}`} row={row} category={row.category || '-'} showCategory />
-                            ))}
-                        </div>
+                    <div className="divide-y divide-amber-500/10">
+                        {section.conditionals.map((row, idx) => (
+                            <div
+                                key={`c-${idx}`}
+                                data-item={row.item}
+                                className="flex items-center justify-between py-2.5 px-4 hover:bg-amber-500/10 transition-colors"
+                            >
+                                <div className="flex items-center gap-2 min-w-0 pr-3">
+                                    <span className="text-slate-200 text-xs sm:text-sm font-medium">{row.item}</span>
+                                    {row.note && (
+                                        <span className="text-[11px] text-amber-400/80 truncate hidden sm:inline">
+                                            ({row.note})
+                                        </span>
+                                    )}
+                                </div>
+                                <span className="font-mono text-amber-300 font-bold text-xs sm:text-sm bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-lg tabular-nums">
+                                    +{renderValue(row.value)}
+                                </span>
+                            </div>
+                        ))}
                     </div>
-                )}
-            </div>
+                    {section.grandTotal && (
+                        <div className="px-4 py-2.5 bg-amber-950/30 border-t border-amber-500/20 text-xs text-amber-300/90 font-mono">
+                            基础合计 {section.subtotal} + 条件加成 19.00 = 完美极限总计 {section.grandTotal}
+                        </div>
+                    )}
+                </div>
+            )}
 
             {section.totalLabel && (
-                <p className="text-sm text-slate-500 mt-4">{section.totalLabel}</p>
+                <p className="text-xs text-slate-500 mt-2 px-1">{section.totalLabel}</p>
             )}
         </div>
     );
@@ -537,27 +1025,134 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[]; showDebuff?:
     );
 };
 
-/* ---- 专注值参考：只保留通用群体专注（三碗专注） ---- */
-const FocusReferenceSection: React.FC = () => {
-    const general = DataService.getInstance().getSkillMeta()?.focusReference?.general ?? [];
-    if (general.length === 0) return null;
+/* ---- 战斗增益上限参考看板：置于各职业状态最上方，提供5项满配极值指标与联动筛选 ---- */
+interface CombatBuffsHeroSectionProps {
+    onSelectBuff?: (buffId: string) => void;
+    showDebuff: boolean;
+    showBuff: boolean;
+    debuffFilter: string[];
+    buffFilter: string[];
+}
 
-    const FocusRow: React.FC<{ name: string; value: number | string | undefined }> = ({ name, value }) => (
-        <div data-item={name} className="bg-slate-900/50 rounded-xl px-3 py-2 border border-slate-700/40 flex items-center gap-2">
-            <span className="text-sm font-bold text-slate-200">{name}</span>
-            <span className="text-base font-black text-orange-400 font-mono ml-auto">{isZeroValue(value) ? '—' : renderValue(value)}</span>
-        </div>
-    );
+const CombatBuffsHeroSection: React.FC<CombatBuffsHeroSectionProps> = ({
+    onSelectBuff,
+    showDebuff,
+    showBuff,
+    debuffFilter,
+    buffFilter,
+}) => {
+    const buffs = DataService.getInstance().getBuffs();
+    if (!buffs || buffs.length === 0) return null;
+
+    const BUFF_META: Record<string, { label: string; unit: string; color: string; desc: string; filterAttr?: string; filterType?: 'debuff' | 'buff' }> = {
+        BUFF_MON_HARMED_EFFECT: {
+            label: '易伤上限',
+            unit: '%',
+            color: 'text-rose-400 border-rose-500/30 bg-rose-500/10',
+            desc: '多职业易伤叠加标准上限，副本团队伤害放大器',
+            filterAttr: '易伤',
+            filterType: 'debuff',
+        },
+        BUFF_MON_CRITDAMAGE_EFFECT: {
+            label: '绿点增益',
+            unit: '%',
+            color: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
+            desc: '弱化怪物减暴伤（鬼王/英招等），暴击类输出核心收益',
+            filterAttr: '绿点',
+            filterType: 'debuff',
+        },
+        BUFF_FOCUS_EFFECT: {
+            label: '全队专注',
+            unit: '%',
+            color: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
+            desc: '天华、昭冥、焚香等核心辅助群体专注环境满配预设',
+            filterAttr: '专注',
+            filterType: 'buff',
+        },
+        BUFF_HOLYWRATH_EFFECT: {
+            label: '巫咒增益',
+            unit: '%',
+            color: 'text-purple-400 border-purple-500/30 bg-purple-500/10',
+            desc: '巫咒伤害百分比增幅，副本团队增幅',
+        },
+        BUFF_ATT_PERCENT_EFFECT: {
+            label: '攻击比增益',
+            unit: '%',
+            color: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
+            desc: '全队基础攻击力百分比提升，团队基础面板放大',
+            filterAttr: '加攻击',
+            filterType: 'buff',
+        },
+    };
 
     return (
-        <div data-item="专注值参考" className="zx-card p-4 sm:p-5">
-            <h4 className="text-sm font-bold text-slate-400 mb-3 flex items-center gap-1.5">
-                <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>专注值参考
-            </h4>
-            <div className="flex flex-wrap gap-2">
-                {general.map((g: any, i: number) => (
-                    <FocusRow key={`g${i}`} name={g.name} value={g.total} />
-                ))}
+        <div data-item="战斗增益参考" className="zx-card p-4 sm:p-5 flex flex-col gap-3 rounded-2xl border border-slate-800/80 bg-slate-900/70 shadow-lg">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                <div className="flex items-center gap-2.5">
+                    <span className="w-1.5 h-4 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-100 tracking-wide">
+                        团队战斗增益上限参考
+                    </h3>
+                    <span className="text-xs text-slate-400 font-normal hidden sm:inline">
+                        （副本标准团队增益满额预设 · 各类增益上限基准）
+                    </span>
+                </div>
+                <span className="text-[11px] text-slate-500 font-mono hidden md:inline">
+                    点击卡片可快速筛选下方对应职业
+                </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                {buffs.map((b) => {
+                    const meta = BUFF_META[b.BuffID] || { label: b.BuffName, unit: '%', color: 'text-cyan-400 border-slate-700/40 bg-slate-900/50', desc: '' };
+                    const isFocus = b.BuffID === 'BUFF_FOCUS_EFFECT';
+
+                    let isActive = false;
+                    if (meta.filterType === 'debuff' && showDebuff && meta.filterAttr) {
+                        isActive = debuffFilter.includes(meta.filterAttr);
+                    } else if (meta.filterType === 'buff' && showBuff && meta.filterAttr) {
+                        isActive = buffFilter.includes(meta.filterAttr);
+                    }
+
+                    return (
+                        <div
+                            key={b.BuffID}
+                            data-item={isFocus ? '专注值参考' : b.BuffName}
+                            onClick={() => onSelectBuff?.(b.BuffID)}
+                            className={clsx(
+                                'rounded-xl p-3.5 border transition-all flex flex-col justify-between group relative select-none',
+                                meta.filterAttr ? 'cursor-pointer' : 'cursor-default',
+                                isActive
+                                    ? 'border-cyan-400/60 bg-slate-850 shadow-[0_0_15px_rgba(6,182,212,0.2)] ring-1 ring-cyan-400/50'
+                                    : 'border-slate-800/80 bg-slate-950/50 hover:border-slate-700 hover:bg-slate-900/80'
+                            )}
+                            title={meta.filterAttr ? `点击筛选提供「${meta.filterAttr}」的职业` : undefined}
+                        >
+                            <div>
+                                <div className="flex items-center justify-between gap-1 mb-2">
+                                    <span className="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-cyan-200 transition-colors">
+                                        {meta.label}
+                                    </span>
+                                    <span className={clsx('text-xs px-2 py-0.5 rounded-lg font-mono font-bold border tabular-nums', meta.color)}>
+                                        +{b.DefaultEffectValue}{meta.unit}
+                                    </span>
+                                </div>
+                                <p className="text-xs text-slate-400 leading-relaxed">
+                                    {meta.desc}
+                                </p>
+                            </div>
+
+                            {isFocus && (
+                                <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+                                    <span className="text-slate-400">三碗专注参考</span>
+                                    <span className="font-mono text-amber-300 font-bold bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/25">
+                                        +20
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
@@ -645,8 +1240,41 @@ const SupportView: React.FC = () => {
     const dpsRoles = filtered.filter((r) => r.roleType === 'dps');
     const hasAnySelection = categoryFilter.length > 0;
 
+    const handleSelectBuff = (buffId: string) => {
+        if (buffId === 'BUFF_MON_HARMED_EFFECT') {
+            if (!categoryFilter.includes('debuff')) {
+                setCategoryFilter((prev) => [...prev, 'debuff']);
+            }
+            toggleDebuff('易伤');
+        } else if (buffId === 'BUFF_MON_CRITDAMAGE_EFFECT') {
+            if (!categoryFilter.includes('debuff')) {
+                setCategoryFilter((prev) => [...prev, 'debuff']);
+            }
+            toggleDebuff('绿点');
+        } else if (buffId === 'BUFF_FOCUS_EFFECT') {
+            if (!categoryFilter.includes('buff')) {
+                setCategoryFilter((prev) => [...prev, 'buff']);
+            }
+            toggleBuff('专注');
+        } else if (buffId === 'BUFF_ATT_PERCENT_EFFECT') {
+            if (!categoryFilter.includes('buff')) {
+                setCategoryFilter((prev) => [...prev, 'buff']);
+            }
+            toggleBuff('加攻击');
+        }
+    };
+
     return (
         <div className="flex flex-col gap-4">
+            {/* 顶部：团队战斗增益上限参考看板 */}
+            <CombatBuffsHeroSection
+                onSelectBuff={handleSelectBuff}
+                showDebuff={showDebuff}
+                showBuff={showBuff}
+                debuffFilter={debuffFilter}
+                buffFilter={buffFilter}
+            />
+
             <div className="zx-card p-3 flex flex-col gap-3">
                 {/* 减益分类行：点击一级按钮才展开二级属性 */}
                 <div className="flex flex-wrap items-center gap-2">
@@ -783,7 +1411,6 @@ const SupportView: React.FC = () => {
                 </div>
             )}
 
-            {hasAnySelection && <FocusReferenceSection />}
             {hasAnySelection && roles.notes && roles.notes.length > 0 && (
                 <div className="zx-card p-4">
                     <h3 className="text-base font-bold text-slate-200 mb-2">说明</h3>
