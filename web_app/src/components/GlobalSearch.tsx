@@ -6,7 +6,7 @@ import type { SubTab } from './compendium/CompendiumView';
 
 export type SearchTarget =
     | { tab: 'home' }
-    | { tab: 'compendium'; sub: SubTab; item?: string }
+    | { tab: 'compendium'; sub: SubTab; item?: string; skillId?: string }
     | { tab: 'calculator'; dungeonId?: string; monsterId?: string; skillId?: string; skillName?: string; classId?: string; faction?: string }
     | { tab: 'skills'; classId?: string; faction?: string; skillName?: string; skillId?: string }
     | { tab: 'arena' };
@@ -35,15 +35,15 @@ function toPinyin(text: string): { full: string; initials: string } {
 }
 
 const SUB_PAGE_ENTRIES: IndexEntry[] = [
-    { label: '极致属性攻略', group: '资料图鉴 / 极致属性攻略', sub: 'ceiling', target: { tab: 'compendium', sub: 'ceiling' }, keywords: ['极致属性', '天花板', '攻略', '属性攻略'] },
-    { label: '极致无视攻略', group: '资料图鉴 / 极致属性攻略', sub: 'ignore', target: { tab: 'compendium', sub: 'ignore' }, keywords: ['无视', '易伤', '无视减免'] },
-    { label: '极致减免伤害攻略', group: '资料图鉴 / 极致属性攻略', sub: 'reduction', target: { tab: 'compendium', sub: 'reduction' }, keywords: ['减免', '减伤', '减伤伤害'] },
-    { label: '极致减暴击攻略', group: '资料图鉴 / 极致属性攻略', sub: 'critReduction', target: { tab: 'compendium', sub: 'critReduction' }, keywords: ['减暴', '暴击减免', '减暴击'] },
-    { label: '极致怪增攻略', group: '资料图鉴 / 极致属性攻略', sub: 'monsterDamageBonus', target: { tab: 'compendium', sub: 'monsterDamageBonus' }, keywords: ['怪增', '怪物增伤', '增伤', '怪物伤害'] },
-    { label: '极致躲闪攻略', group: '资料图鉴 / 极致属性攻略', sub: 'dodge', target: { tab: 'compendium', sub: 'dodge' }, keywords: ['躲闪', '闪避'] },
-    { label: '职业状态一览', group: '资料图鉴 / 职业状态一览', sub: 'support', target: { tab: 'compendium', sub: 'support' }, keywords: ['职业', '辅助', '易伤职业', '辅助职业', '状态', '专注值参考', '专注', '各职业状态'] },
-    { label: '职业技能速查', group: '资料图鉴 / 职业技能速查', sub: 'skills', target: { tab: 'compendium', sub: 'skills' }, keywords: ['技能', '技能速查', '技能库', '门派技能'] },
-    { label: '副本 BOSS 速查', group: '资料图鉴 / 副本 BOSS 速查', sub: 'boss', target: { tab: 'compendium', sub: 'boss' }, keywords: ['boss', '首领', '抗性', '副本boss', '减爆伤', 'boss速查'] },
+    { label: '极致属性攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'ceiling', target: { tab: 'compendium', sub: 'ceiling' }, keywords: ['极致属性', '天花板', '攻略', '属性攻略'] },
+    { label: '极致无视攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'ignore', target: { tab: 'compendium', sub: 'ignore' }, keywords: ['无视', '易伤', '无视减免'] },
+    { label: '极致减免伤害攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'reduction', target: { tab: 'compendium', sub: 'reduction' }, keywords: ['减免', '减伤', '减伤伤害'] },
+    { label: '极致减暴击攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'critReduction', target: { tab: 'compendium', sub: 'critReduction' }, keywords: ['减暴', '暴击减免', '减暴击'] },
+    { label: '极致怪增攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'monsterDamageBonus', target: { tab: 'compendium', sub: 'monsterDamageBonus' }, keywords: ['怪增', '怪物增伤', '增伤', '怪物伤害'] },
+    { label: '极致躲闪攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'dodge', target: { tab: 'compendium', sub: 'dodge' }, keywords: ['躲闪', '闪避'] },
+    { label: '职业状态一览', group: '全景战斗资料库 / 职业状态一览', sub: 'support', target: { tab: 'compendium', sub: 'support' }, keywords: ['职业', '辅助', '易伤职业', '辅助职业', '状态', '专注值参考', '专注', '各职业状态'] },
+    { label: '职业技能速查', group: '全景战斗资料库 / 职业技能速查', sub: 'skills', target: { tab: 'compendium', sub: 'skills' }, keywords: ['技能', '技能速查', '技能库', '门派技能'] },
+    { label: '副本 BOSS 速查', group: '全景战斗资料库 / 副本 BOSS 速查', sub: 'boss', target: { tab: 'compendium', sub: 'boss' }, keywords: ['boss', '首领', '抗性', '副本boss', '减爆伤', 'boss速查'] },
 ];
 
 function buildIndex(): IndexEntry[] {

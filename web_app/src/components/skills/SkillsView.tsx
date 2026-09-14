@@ -355,7 +355,7 @@ interface SkillsViewProps {
     onNavigateHome?: () => void;
 }
 
-export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsumed, onNavigateHome }) => {
+export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsumed }) => {
     const [selectedClass, setSelectedClass] = useState<string>('ZHU_SHUANG');
     const [selectedFaction, setSelectedFaction] = useState<string>('ALL');
     const [searchKeyword, setSearchKeyword] = useState<string>('');

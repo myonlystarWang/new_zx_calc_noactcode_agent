@@ -1486,7 +1486,7 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
                     <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-100 flex items-center gap-3">
                         <span className="w-1.5 h-7 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
-                        资料图鉴
+                        全景战斗资料库
                     </h1>
                     <div className="text-xs text-slate-400 font-mono">
                         汇集极致属性、门派技能、职业评级与副本BOSS抗性

@@ -367,35 +367,29 @@ const BossCard: React.FC<{
     const matrixItems: MatrixItem[] = [];
 
     // 1. 气血（核心指标）
-    if (displayAttrs.health) {
+    if (health) {
         if (hasHealthBars) {
             matrixItems.push({
                 label: '首领总气血',
-                value: formatNumber(displayAttrs.health * displayAttrs.healthBars),
+                value: formatNumber(health * healthBars),
                 highlight: true,
             });
             matrixItems.push({
                 label: '单条气血',
-                value: formatNumber(displayAttrs.health),
+                value: formatNumber(health),
                 highlight: true,
             });
             matrixItems.push({
                 label: '气血条数',
-                value: `${displayAttrs.healthBars} 条`,
+                value: `${healthBars} 条`,
             });
         } else {
             matrixItems.push({
                 label: '首领总气血',
-                value: formatNumber(displayAttrs.health),
+                value: formatNumber(health),
                 highlight: true,
             });
         }
-    } else if (mods.MonsterHealth) {
-        matrixItems.push({
-            label: '首领总气血',
-            value: formatNumber(mods.MonsterHealth),
-            highlight: true,
-        });
     }
 
     // 2. 辅助行属性（减暴击、无视、技能躲闪、防御、减伤、爆伤、攻击、压缩）
