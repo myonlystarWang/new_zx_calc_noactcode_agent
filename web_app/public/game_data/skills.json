@@ -1689,28 +1689,56 @@
         ]
       },
       {
-        "SkillID": "FX_FO_SKILL_SWZH",
-        "SkillName": "赤乌·三味真火",
+        "SkillID": "FX_FO_FG_SWZH",
+        "SkillName": "赤乌·三昧真火",
         "RequiredClass": "FEN_XIANG",
         "Faction": "FO",
-        "SkillImportanceWeight": 0.9,
-        "SkillFrequency": 0.9,
-        "Cooldown": 20,
-        "CastTime": 1,
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
         "IsAOE": false,
-        "ActionType": "DEBUFF",
-        "SkillBonusAttributes": {},
-        "AppliesEffects": [
-          {
-            "EffectId": "FX_DEBUFF_SWZH_HARMED",
-            "EffectName": "赤乌·三味真火令怪物易伤增加",
-            "Target": "ENEMY",
-            "Duration": 25,
-            "BuffEffects": {
-              "BuffMonsterHarmedPercentEffect": 50
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "CHI_WU",
+        "FourthGenInitialEffects": {
+          "YING_JU": [
+            {
+              "EffectId": "FX_FG_SWZH_HARMED",
+              "EffectName": "赤乌·三昧真火令怪物易伤增加",
+              "Target": "ENEMY",
+              "Duration": 3600,
+              "BuffEffects": {
+                "BuffMonsterHarmedPercentEffect": 40
+              }
             }
-          }
-        ]
+          ],
+          "HAO_YUE": [
+            {
+              "EffectId": "FX_FG_SWZH_HARMED",
+              "EffectName": "赤乌·三昧真火令怪物易伤增加",
+              "Target": "ENEMY",
+              "Duration": 3600,
+              "BuffEffects": {
+                "BuffMonsterHarmedPercentEffect": 40
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "EffectId": "FX_FG_SWZH_HARMED",
+              "EffectName": "赤乌·三昧真火令怪物易伤增加",
+              "Target": "ENEMY",
+              "Duration": 3600,
+              "BuffEffects": {
+                "BuffMonsterHarmedPercentEffect": 40
+              }
+            }
+          ]
+        },
+        "Description": "佩戴后令怪物目标受到伤害增加40%（新版满级30%+2%×5=40%，三品质同值）。"
       },
       {
         "SkillID": "FX_FO_SKILL_NWTH",

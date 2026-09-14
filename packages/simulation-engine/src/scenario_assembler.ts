@@ -16,7 +16,7 @@ import type {
   ManualTimelineAction,
   EquippedFourthGen
 } from './types.js';
-import { isFourthGenPassive } from './fourth_gen.js';
+import { isFourthGenPassive, getFourthGenInitialEffects } from './fourth_gen.js';
 
 const COMMON_FACTION = 'COMMON';
 const SUPPORT_ACTION_TYPES = new Set<SkillActionType>(['BUFF', 'DEBUFF', 'UTILITY']);
@@ -55,7 +55,7 @@ export function assembleScenario(
     gcdMs: input.gcdMs,
     attributeCaps: clone(input.attributeCaps),
     damageAudit: clone(input.damageAudit),
-    initialEffects: buildInitialEffects(input),
+    initialEffects: [...buildInitialEffects(input), ...buildFourthGenInitialEffects([dpsActor, ...supportActors], input.dpsActor.actorId)],
     randomSeed: input.randomSeed
   };
 }
@@ -103,6 +103,56 @@ const buildInitialEffects = (input: AssembleScenarioInput): InitialEffectConfig[
     ...initialEffects,
     ...clone(input.initialEffects ?? [])
   ];
+}
+
+/** 收集所有 actor 佩戴四代技能的初始效果（佩戴后场景开始时施加），翻译成 InitialEffectConfig */
+const buildFourthGenInitialEffects = (
+  actors: SimulationActorConfig[],
+  dpsActorId: string
+): InitialEffectConfig[] => {
+  const results: InitialEffectConfig[] = [];
+  const allActorIds = actors.map(a => a.actorId);
+  for (const actor of actors) {
+    if (!actor.equippedFourthGen || actor.equippedFourthGen.length === 0) continue;
+    for (const equipped of actor.equippedFourthGen) {
+      const fg = actor.baseSkills.find(s => s.SkillID === equipped.skillId);
+      if (!fg) continue;
+      const templates = getFourthGenInitialEffects(fg, equipped.quality);
+      for (const tpl of templates) {
+        const targetIds = resolveInitialTargetIds(tpl.Target, actor.actorId, dpsActorId, allActorIds);
+        for (const targetId of targetIds) {
+          results.push({
+            timeMs: 0,
+            targetId,
+            sourceActorId: actor.actorId,
+            sourceSkillId: fg.SkillID,
+            effect: clone(tpl)
+          });
+        }
+      }
+    }
+  }
+  return results;
+};
+
+const resolveInitialTargetIds = (
+  target: AppliedEffectConfig['Target'],
+  selfActorId: string,
+  dpsActorId: string,
+  allActorIds: string[]
+): string[] => {
+  switch (target) {
+    case 'ENEMY':
+      return ['boss'];
+    case 'SELF':
+      return [selfActorId];
+    case 'ALLY':
+      return [dpsActorId];
+    case 'TEAM':
+      return allActorIds;
+    default:
+      return ['boss'];
+  }
 };
 
 const assembleDpsActor = (
