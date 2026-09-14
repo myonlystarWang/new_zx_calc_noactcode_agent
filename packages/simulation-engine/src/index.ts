@@ -2,6 +2,7 @@ export * from './types.js';
 export * from './attributes.js';
 export * from './calculator.js';
 export * from './actor.js';
+export * from './fourth_gen.js';
 export * from './validator.js';
 export * from './timeline.js';
 export * from './effects.js';

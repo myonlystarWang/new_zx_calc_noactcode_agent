@@ -13,8 +13,10 @@ import type {
   Skill,
   SkillActionType,
   SupportStrategyConfig,
-  ManualTimelineAction
+  ManualTimelineAction,
+  EquippedFourthGen
 } from './types.js';
+import { isFourthGenPassive } from './fourth_gen.js';
 
 const COMMON_FACTION = 'COMMON';
 const SUPPORT_ACTION_TYPES = new Set<SkillActionType>(['BUFF', 'DEBUFF', 'UTILITY']);
@@ -119,6 +121,7 @@ const assembleDpsActor = (
     preferredSkillIds: actor.skillIds,
     requiredSkillIds,
     overrideSkillIds: Object.keys(actor.skillOverrides ?? {}),
+    equippedFourthGen: actor.equippedFourthGen,
     includeByDefault: skill => !skill.ActionType || skill.ActionType === 'DAMAGE'
   });
 
@@ -130,6 +133,7 @@ const assembleDpsActor = (
     baseSkills: selectedSkills,
     skillOverrides: clone(actor.skillOverrides),
     strategy: clone(actor.strategy),
+    equippedFourthGen: clone(actor.equippedFourthGen),
     gcdMs: actor.gcdMs
   };
 };
@@ -150,6 +154,7 @@ const assembleSupportActor = (
     preferredSkillIds: support.skillIds,
     requiredSkillIds: explicitStrategySkillIds,
     overrideSkillIds: Object.keys(support.skillOverrides ?? {}),
+    equippedFourthGen: support.equippedFourthGen,
     includeByDefault: skill =>
       skill.ActionType !== undefined &&
       SUPPORT_ACTION_TYPES.has(skill.ActionType) &&
@@ -170,6 +175,7 @@ const assembleSupportActor = (
     baseSkills: selectedSkills,
     skillOverrides: clone(support.skillOverrides),
     strategy,
+    equippedFourthGen: clone(support.equippedFourthGen),
     gcdMs: support.gcdMs
   };
 };
@@ -195,7 +201,7 @@ const createDefaultSupportStrategy = (
   }
   return {
     type: 'CAST_ON_READY',
-    skillIds: skills.map(skill => skill.SkillID),
+    skillIds: skills.filter(skill => !isFourthGenPassive(skill)).map(skill => skill.SkillID),
     targetActorId: dpsActorId
   };
 };
@@ -206,6 +212,7 @@ const selectSkills = (config: {
   preferredSkillIds?: string[];
   requiredSkillIds: string[];
   overrideSkillIds: string[];
+  equippedFourthGen?: EquippedFourthGen[];
   includeByDefault: (skill: Skill) => boolean;
 }): Skill[] => {
   const byId = new Map(config.skillPool.map(skill => [skill.SkillID, skill]));
@@ -224,7 +231,7 @@ const selectSkills = (config: {
     }
   }
 
-  for (const skillId of [...config.requiredSkillIds, ...config.overrideSkillIds]) {
+  for (const skillId of [...config.requiredSkillIds, ...config.overrideSkillIds, ...(config.equippedFourthGen ?? []).map(item => item.skillId)]) {
     requireKnownSkill(config.actorPath, byId, skillId);
     selectedIds.add(skillId);
   }
@@ -322,7 +329,7 @@ const getStrategySkillIds = (
 };
 
 const assertSupportSkills = (skills: Skill[], actorId: string) => {
-  const invalid = skills.find(skill => !skill.ActionType || !SUPPORT_ACTION_TYPES.has(skill.ActionType));
+  const invalid = skills.find(skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE' && (!skill.ActionType || !SUPPORT_ACTION_TYPES.has(skill.ActionType)));
   if (invalid) {
     throw new Error(`Support actor "${actorId}" cannot include non-support skill "${invalid.SkillID}".`);
   }

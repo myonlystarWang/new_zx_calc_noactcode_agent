@@ -3,10 +3,12 @@ import type {
   AppliedEffectConfig,
   PlayerSkillOverride,
   CharacterAttributes,
-  CooldownResetEffect
+  CooldownResetEffect,
+  EquippedFourthGen
 } from './types.js';
 import type { EffectInstance } from './effects.js';
 import { resolveEffectiveCharacterAttributesFromEffects } from './attributes.js';
+import { applyEquippedFourthGen, isFourthGenPassive } from './fourth_gen.js';
 
 export interface SkillRuntimeState {
   cooldownReadyAtMs: number;
@@ -63,7 +65,8 @@ export class Actor {
     baseSkills: Skill[],
     customizations: Record<string, PlayerSkillOverride> = {},
     baseAttributes?: CharacterAttributes,
-    gcdMs = 500
+    gcdMs = 500,
+    equippedFourthGen?: EquippedFourthGen[]
   ) {
     this.ActorId = actorId;
     this.ClassId = classId;
@@ -119,6 +122,9 @@ export class Actor {
         rechargeToken: 0
       };
     });
+
+    // 全部技能入表后，应用玩家佩戴的四代技能（作用本技能预设 + 作用其他技能 Grants）
+    applyEquippedFourthGen(this.Skills, equippedFourthGen);
   }
 
   public getSkill(skillId: string): Skill | undefined {
@@ -133,6 +139,7 @@ export class Actor {
     const skill = this.Skills[skillId];
     const state = this.SkillStates[skillId];
     if (!skill || !state) return false;
+    if (isFourthGenPassive(skill)) return false; // 四代佩戴型被动不进入技能循环
 
     if (state.maxCharges > 1) {
       return state.charges > 0;

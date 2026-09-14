@@ -92,6 +92,10 @@ export interface Skill {
   AppliesEffects?: AppliedEffectConfig[];
   MultiPhaseConfig?: MultiPhaseConfig;
   FourthGenPresets?: Partial<Record<'YING_JU' | 'HAO_YUE' | 'XI_RI', Partial<PlayerSkillOverride>>>;
+  /** 四代实体槽位（玄烛/赤乌）；仅四代实体条目需要 */
+  FourthGenSlot?: FourthGenSlot;
+  /** 四代"作用其他技能"：按品质列出对目标技能的增益；"作用本技能"仍走 FourthGenPresets */
+  FourthGenGrants?: Partial<Record<FourthGenQuality, FourthGenGrant[]>>;
   BuffDurationExtensionSeconds?: number;
   SkillLevel?: number;
   Variant?: string;
@@ -269,8 +273,13 @@ export interface ValidationIssue {
 
 // --- v1.1 Simulation Schemas (Section 3.1) ---
 
-export type SkillActionType = 'DAMAGE' | 'BUFF' | 'DEBUFF' | 'UTILITY';
+export type SkillActionType = 'DAMAGE' | 'BUFF' | 'DEBUFF' | 'UTILITY' | 'FOURTH_GEN_PASSIVE';
 export type FactionId = 'XIAN' | 'FO' | 'MO';
+
+/** 四代技能槽位：玄烛 / 赤乌（FG = Fourth Generation 第四代） */
+export type FourthGenSlot = 'XUAN_ZHU' | 'CHI_WU';
+/** 四代技能品质：萤炬 / 皓月 / 曦日 */
+export type FourthGenQuality = 'YING_JU' | 'HAO_YUE' | 'XI_RI';
 
 export interface MultiPhaseConfig {
   Phases: {
@@ -336,6 +345,18 @@ export interface PlayerSkillOverride {
   SkillLevel?: number;
   Variant?: string;
   RyhgPhase2DelaySeconds?: number;
+}
+
+/** 四代技能"作用其他技能"的定向增益：把 Override 叠加到 TargetSkillIds 指向的一个/多个技能 */
+export interface FourthGenGrant {
+  TargetSkillIds: string[];
+  Override: Partial<PlayerSkillOverride>;
+}
+
+/** 玩家已佩戴的四代技能实体及其品质（per-actor；佩戴上限：玄烛≤3、赤乌≤1、总数≤4） */
+export interface EquippedFourthGen {
+  skillId: string;
+  quality: FourthGenQuality;
 }
 
 // --- Phase C: Discrete Event Simulation Core ---
@@ -512,6 +533,8 @@ export interface SimulationActorConfig {
   baseAttributes?: CharacterAttributes;
   baseSkills: Skill[];
   skillOverrides?: Record<string, PlayerSkillOverride>;
+  /** 已佩戴的四代技能实体（玄烛/赤乌），按品质作用本技能/其他技能 */
+  equippedFourthGen?: EquippedFourthGen[];
   strategy?: ActorStrategyConfig;
   gcdMs?: number;
 }
@@ -533,6 +556,8 @@ export interface AssemblerDpsActorInput {
   faction: FactionId;
   profileAttributes: CharacterAttributes;
   skillOverrides?: Record<string, PlayerSkillOverride>;
+  /** 已佩戴的四代技能实体（玄烛/赤乌），按品质作用本技能/其他技能 */
+  equippedFourthGen?: EquippedFourthGen[];
   strategy: DpsStrategyConfig;
   skillIds?: string[];
   gcdMs?: number;
@@ -545,6 +570,8 @@ export interface AssemblerSupportActorInput {
   profileAttributes?: CharacterAttributes;
   strategy?: SupportStrategyConfig;
   skillOverrides?: Record<string, PlayerSkillOverride>;
+  /** 已佩戴的四代技能实体（玄烛/赤乌），按品质作用本技能/其他技能 */
+  equippedFourthGen?: EquippedFourthGen[];
   skillIds?: string[];
   gcdMs?: number;
 }
