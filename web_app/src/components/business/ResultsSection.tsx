@@ -192,6 +192,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
     const [selectedDungeonId, setSelectedDungeonId] = useState<string | null>(null);
     const [focusMonsterId, setFocusMonsterId] = useState<string | null>(null);
+    const [focusSkillName, setFocusSkillName] = useState<string | null>(null);
     const [autoShowAttr, setAutoShowAttr] = useState(false);
 
     const results = useMemo(() => {
@@ -233,13 +234,16 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         }
     }, [results.dungeonPowers, selectedDungeonId]);
 
-    // Search-driven jump: bring the target dungeon card to front and focus its Boss.
+    // Search-driven jump: bring the target dungeon card to front and focus its Boss or Skill.
     // Persist focus in local state (searchNav is cleared by onSearchConsumed immediately,
-    // so we must capture the monster id before it disappears).
+    // so we must capture the monster or skill before it disappears).
     useEffect(() => {
         if (searchNav && searchNav.tab === 'calculator') {
-            setSelectedDungeonId(searchNav.dungeonId);
+            if (searchNav.dungeonId) {
+                setSelectedDungeonId(searchNav.dungeonId);
+            }
             setFocusMonsterId(searchNav.monsterId ?? null);
+            setFocusSkillName(searchNav.skillName ?? null);
             setAutoShowAttr(true);
             onSearchConsumed?.();
         }
@@ -352,6 +356,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                                     if (isDragging) return;
                                     setSelectedDungeonId(d.DungeonID);
                                     setFocusMonsterId(null);
+                                    setFocusSkillName(null);
                                     setAutoShowAttr(false);
                                 }}
                                 className={clsx(
@@ -373,6 +378,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                                     rankConfig={rankConfig}
                                     power={powerRaw}
                                     focusMonsterId={focusMonsterId}
+                                    focusSkillName={focusSkillName}
                                     autoShowAttr={autoShowAttr}
                                 />
                             </div>

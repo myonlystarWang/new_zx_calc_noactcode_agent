@@ -16,6 +16,7 @@ interface DungeonDetailProps {
     rankConfig?: RankConfig;
     power?: number;
     focusMonsterId?: string | null;
+    focusSkillName?: string | null;
     autoShowAttr?: boolean;
 }
 
@@ -27,11 +28,13 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     rankConfig,
     power,
     focusMonsterId,
+    focusSkillName,
     autoShowAttr
 }) => {
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
     const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
     const [pinnedAttr, setPinnedAttr] = useState(false);
+    const [pinnedSkill, setPinnedSkill] = useState<Skill | null>(null);
     const tabsContainerRef = useRef<HTMLDivElement>(null);
     const [expandedSkillIds, setExpandedSkillIds] = useState<Set<string>>(new Set());
 
@@ -84,6 +87,20 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     const skills = skillsMap ? skillsMap[userCharacter.Faction] || [] : [];
     const outputSkills = skills.filter(skill => !skill.ActionType || skill.ActionType === 'DAMAGE');
     const activeBuffs = buffs.filter(b => activeBuffIds.includes(b.BuffID));
+
+    // Search-driven: pin specific skill and expand multi-hits when focusSkillName is provided
+    useEffect(() => {
+        if (focusSkillName) {
+            const matched = outputSkills.find(s => s.SkillName === focusSkillName) ||
+                            skills.find(s => s.SkillName === focusSkillName);
+            if (matched) {
+                setPinnedSkill(matched);
+                if (matched.SkillBonusAttributes?.MultiHitConfig) {
+                    setExpandedSkillIds(prev => new Set([...prev, matched.SkillID]));
+                }
+            }
+        }
+    }, [focusSkillName, skills, outputSkills]);
 
     const numberToChinese = (num: number): string => {
         const chineseNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
@@ -321,6 +338,38 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                         </div>
                                     </div>
                                 )}
+
+                                {/* Auto-shown Skill attribute card (pinned after search jump to calculator) */}
+                                {pinnedSkill && (
+                                    <div className="mb-4 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                                        <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                                            <span className="text-[var(--theme-primary)] font-bold">
+                                                技能属性详情（{pinnedSkill.SkillName}）
+                                            </span>
+                                            <button
+                                                onClick={() => setPinnedSkill(null)}
+                                                className="text-slate-500 hover:text-slate-200 transition-colors text-xs"
+                                                title="关闭"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+                                            <div className="text-slate-400">附加攻击比: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillAttackPercentBonus || 0}%</span></div>
+                                            <div className="text-slate-400">附加固定攻击: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillAttackFixedBonus || 0}</span></div>
+                                            <div className="text-slate-400">附加气血比: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillHealthPercentBonus || 0}%</span></div>
+                                            <div className="text-slate-400">附加真气比: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillManaPercentBonus || 0}%</span></div>
+                                            <div className="text-slate-400">附加爆伤: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus || 0}%</span></div>
+                                            {pinnedSkill.SkillBonusAttributes?.SkillDefensePercentBonus ? (
+                                                <div className="text-slate-400">附加防御比: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes.SkillDefensePercentBonus}%</span></div>
+                                            ) : null}
+                                            <div className="text-slate-400">伤害增加倍数: <span className="text-emerald-400 font-medium">{pinnedSkill.SkillBonusAttributes?.SkillDamageBonus || 1}</span></div>
+                                            <div className="text-slate-400">重要性: <span className={clsx("font-medium", pinnedSkill.SkillImportanceWeight >= 0.8 ? "text-yellow-400" : "text-slate-400")}>{getImportanceText(pinnedSkill.SkillImportanceWeight)}</span></div>
+                                            <div className="text-slate-400">使用频次: <span className="text-slate-200">{getFrequencyText(pinnedSkill.SkillFrequency)}</span></div>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Skills Damage Table */}
                                 <div className="overflow-x-auto overflow-y-auto max-h-[400px] md:max-h-[550px] scrollbar-thin scrollbar-thumb-slate-700/80 scrollbar-track-transparent">
                                     <table className="w-full text-sm">
@@ -338,19 +387,21 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                 const isMultiHit = !!skill.SkillBonusAttributes?.MultiHitConfig;
                                                 const isExpanded = expandedSkillIds.has(skill.SkillID);
                                                 const hitCount = skill.SkillBonusAttributes?.MultiHitConfig?.HitCount || 1;
+                                                const isFocusedSkill = focusSkillName === skill.SkillName || pinnedSkill?.SkillID === skill.SkillID;
 
                                                 return (
                                                     <React.Fragment key={skill.SkillID}>
                                                     <tr 
                                                         className={clsx(
-                                                            "hover:bg-slate-800/30 transition-colors group relative",
+                                                            "transition-colors group relative",
+                                                            isFocusedSkill ? "bg-cyan-500/15 border-l-2 border-cyan-400 shadow-[inset_0_0_12px_rgba(6,182,212,0.15)]" : "hover:bg-slate-800/30",
                                                             isMultiHit && "cursor-pointer"
                                                         )}
                                                         onClick={(e) => isMultiHit && toggleSkillExpand(skill.SkillID, e)}
                                                     >
                                                         <td className="py-3 px-2 text-slate-200 font-medium relative z-10 whitespace-nowrap">
                                                             <div className="flex items-center gap-2 relative">
-                                                                <span className="shrink line-clamp-1 max-w-[100px] sm:max-w-[120px]">{skill.SkillName}</span>
+                                                                <span className={clsx("shrink line-clamp-1 max-w-[100px] sm:max-w-[120px]", isFocusedSkill && "text-cyan-300 font-bold")}>{skill.SkillName}</span>
                                                                 <Info 
                                                                     className="w-4 h-4 text-slate-500 hover:text-[var(--theme-primary)] transition-colors shrink-0"
                                                                     onMouseEnter={(e) => {
