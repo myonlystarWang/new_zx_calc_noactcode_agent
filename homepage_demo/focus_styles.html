@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>搜索框聚焦样式 · 方案对比</title>
+<style>
+:root{
+  --bg:#020617;--panel:#0a1222;--line:rgba(51,65,85,.65);--line2:rgba(148,163,184,.14);
+  --t1:#f1f5f9;--t2:#cbd5e1;--t3:#94a3b8;--t4:#64748b;
+  --cyan:#06b6d4;--cyan3:#67e8f9;--purple:#a855f7;
+  --font:system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
+  --mono:ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:
+  radial-gradient(1100px 600px at 50% -10%,#0b1630,transparent 60%),var(--bg);
+  color:var(--t2);line-height:1.6;padding:40px 20px 80px;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:26px;font-weight:900;background:linear-gradient(92deg,#22d3ee,#c084fc);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--t3);font-size:14px;margin:10px 0 34px}
+.opt{background:linear-gradient(160deg,rgba(30,41,59,.5),rgba(15,23,42,.6));
+  border:1px solid var(--line2);border-radius:18px;padding:22px 24px;margin-bottom:22px}
+.opt header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.tag{font-family:var(--mono);font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px}
+.tag.a{background:rgba(6,182,212,.15);color:#67e8f9;border:1px solid rgba(6,182,212,.35)}
+.tag.b{background:rgba(148,163,184,.12);color:#cbd5e1;border:1px solid rgba(148,163,184,.3)}
+.tag.c{background:rgba(168,85,247,.15);color:#d8b4fe;border:1px solid rgba(168,85,247,.35)}
+.tag.d{background:rgba(52,211,153,.13);color:#6ee7b7;border:1px solid rgba(52,211,153,.3)}
+.opt h2{font-size:16px;color:var(--t1);font-weight:800}
+.opt .desc{font-size:13px;color:var(--t4);margin-bottom:16px}
+.opt .desc b{color:var(--t3);font-weight:600}
+
+/* 通用搜索框 */
+.sz{position:relative;max-width:640px}
+.sb{display:flex;align-items:center;gap:11px;height:54px;border-radius:16px;padding:0 16px;
+  background:rgba(2,6,23,.92);position:relative;z-index:2}
+.sb svg{width:19px;height:19px;color:var(--cyan);flex-shrink:0}
+.sb input{flex:1;background:none;border:none;outline:none;color:var(--t1);font-size:16px;font-family:inherit}
+.sb input::placeholder{color:#475569}
+.kbd{font-family:var(--mono);font-size:11px;color:var(--t4);border:1px solid var(--line);
+  padding:2px 7px;border-radius:7px;background:rgba(30,41,59,.6)}
+.dd{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:1;display:none;
+  background:#0a1222;border:1px solid var(--line);border-radius:14px;padding:6px;
+  box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.sz.open .dd{display:block}
+.dd .r{display:flex;gap:10px;align-items:center;padding:9px 11px;border-radius:9px;font-size:13.5px}
+.dd .r.on{background:rgba(6,182,212,.13)}
+.dd .r .g{margin-left:auto;font-size:11px;color:var(--t4);font-family:var(--mono)}
+.dd .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);opacity:.6}
+
+/* ===== A 当前款：静态渐变描边 + 光晕呼吸 ===== */
+.a-glow{border:1.5px solid var(--line);border-radius:18px;transition:border-color .3s}
+.a-glow:focus-within{border-color:transparent;
+  background:linear-gradient(rgba(2,6,23,.95),rgba(2,6,23,.95)) padding-box,
+    linear-gradient(120deg,rgba(34,211,238,.8),rgba(129,140,248,.4) 48%,rgba(192,132,252,.75)) border-box;
+  animation:breath 3s ease-in-out infinite alternate}
+@keyframes breath{
+  from{box-shadow:0 0 0 4px rgba(6,182,212,.06),0 0 22px rgba(6,182,212,.13),0 0 48px rgba(168,85,247,.06)}
+  to{box-shadow:0 0 0 6px rgba(6,182,212,.10),0 0 34px rgba(6,182,212,.22),0 0 66px rgba(168,85,247,.12)}}
+
+/* ===== B 极简款：浮起 + 边框微亮（Google / Linear 式，零循环动画） ===== */
+.b-glow{border:1.5px solid var(--line);border-radius:18px;background:rgba(15,23,42,.4);
+  transition:box-shadow .25s,border-color .25s,transform .25s}
+.b-glow:focus-within{border-color:rgba(148,163,184,.4);
+  box-shadow:0 2px 10px rgba(0,0,0,.4),0 4px 24px rgba(6,182,212,.10);transform:translateY(-1px)}
+
+/* ===== C 流光款：一道高光沿描边跑动（内缩层挖空，非色带风车） ===== */
+.c-glow{position:relative;border:1.5px solid var(--line);border-radius:18px;padding:2px;
+  overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.c-glow::before{content:'';position:absolute;inset:0;border-radius:inherit;z-index:0;pointer-events:none;
+  opacity:0;transition:opacity .3s;
+  background:conic-gradient(from 0deg,
+    transparent 0deg,transparent 235deg,
+    rgba(34,211,238,.12) 275deg,
+    rgba(34,211,238,.60) 315deg,
+    rgba(207,250,254,1) 345deg,
+    rgba(192,132,252,.85) 357deg,transparent 360deg);
+  animation:spinFlow 2.8s linear infinite}
+.c-glow .sb{position:relative;z-index:1;border-radius:14px;background:#070e1c}
+.c-glow:focus-within,.c-glow.show-flow{border-color:rgba(6,182,212,.35);box-shadow:0 0 22px rgba(6,182,212,.14)}
+.c-glow:focus-within::before,.c-glow.show-flow::before{opacity:1}
+@keyframes spinFlow{to{transform:rotate(360deg)}}
+
+/* ===== D 扩散款：聚焦瞬间光波一次性扩散 + 静态青色描边 ===== */
+.d-glow{position:relative;border:1.5px solid var(--line);border-radius:18px;transition:border-color .3s}
+.d-glow:focus-within{border-color:rgba(34,211,238,.6);box-shadow:0 0 0 4px rgba(6,182,212,.08),0 0 26px rgba(6,182,212,.16)}
+.d-glow::after{content:'';position:absolute;inset:-2px;border-radius:20px;pointer-events:none;opacity:0;
+  border:1.5px solid rgba(34,211,238,.7)}
+.d-glow.pulse::after{animation:ripple .6s ease-out}
+@keyframes ripple{0%{opacity:.9;transform:scale(.985)}100%{opacity:0;transform:scale(1.04)}}
+
+/* ===== A+C 最终融合推荐款：未点击彗星跑圈加速拖尾 + 点击多彩渐变呼吸 ===== */
+.ac-glow{position:relative;border-radius:18px;border:1.5px solid var(--line);background:rgba(15,23,42,.45);transition:border-color .3s}
+.ac-glow::before{
+  content:'';position:absolute;inset:-3px;border-radius:21px;
+  background:linear-gradient(92deg, rgba(34,211,238,.85) 0%, rgba(129,140,248,.75) 50%, rgba(192,132,252,.85) 100%);
+  filter:blur(14px);opacity:0;z-index:-1;pointer-events:none;transition:opacity .35s ease, filter .35s ease;
+}
+.ac-glow:focus-within{
+  border-color:transparent;
+  background:linear-gradient(rgba(2,6,23,.95),rgba(2,6,23,.95)) padding-box,
+    linear-gradient(92deg,#22d3ee,#818cf8 50%,#c084fc) border-box;
+}
+.ac-glow:focus-within::before{
+  opacity:1;animation:acBreath 1.7s ease-in-out infinite alternate;
+}
+@keyframes acBreath{
+  0%{opacity:.36;filter:blur(10px);transform:scale(.994)}
+  100%{opacity:.88;filter:blur(22px);transform:scale(1.018)}
+}
+.ac-canvas{position:absolute;pointer-events:none;z-index:2;transition:opacity .25s ease}
+
+/* 调研速览 */
+.research{margin-top:40px}
+.research h3{font-size:15px;color:var(--t1);margin-bottom:14px;font-weight:800}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line2);vertical-align:top}
+th{color:var(--cyan3);font-weight:700;font-size:12px;white-space:nowrap}
+td:first-child{color:var(--t1);font-weight:700;white-space:nowrap}
+td{color:var(--t3)}
+@media(max-width:600px){.opt{padding:18px 16px}table{font-size:12px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>搜索框聚焦样式 · 方案对比</h1>
+  <p class="sub">逐个点击搜索框聚焦查看真实动效（含下拉层级）。已为你实现 A+C 最终融合款（支持横向加速拖尾与真实多色渐变呼吸）。</p>
+
+  <!-- A+C 最终融合款 -->
+  <section class="opt" style="border-color:rgba(6,182,212,.45);background:linear-gradient(160deg,rgba(15,23,42,.85),rgba(30,41,59,.7))">
+    <header><span class="tag" style="background:linear-gradient(92deg,#22d3ee,#c084fc);color:#020617;font-weight:900">方案 A+C · 最终融合推荐款</span><h2>未点击彗星跑圈 + 点击多彩渐变呼吸</h2></header>
+    <p class="desc"><b>未点击时</b>：彗星沿边框四周连续跑圈，在上下长直线上加速冲刺并拉长拖尾，在左右弯道减速收拢；行进中颜色按青→蓝→紫实时过渡。<br><b>点击聚焦后</b>：彗星平滑隐去，切换为纯净渐变描边；外光晕按真实渐变（左青、中蓝、右紫）以 1.7s 舒适节律呼吸明暗。</p>
+    <div class="sz">
+      <div class="ac-glow" id="acGlow">
+        <canvas class="ac-canvas" id="acCanvas"></canvas>
+        <div class="sb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input placeholder="点击聚焦查看 1.7s 多彩渐变呼吸" /><span class="kbd">/</span>
+        </div>
+      </div>
+      <div class="dd">
+        <div class="r on"><span class="dot"></span>苍龙啸·玄 <span class="g">职业技能 · 逐霜·仙</span></div>
+        <div class="r"><span class="dot"></span>天华 <span class="g">职业评级 · thfs</span></div>
+        <div class="r"><span class="dot"></span>易伤 <span class="g">战斗增益 · +120%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A -->
+  <section class="opt">
+    <header><span class="tag a">方案 A · 基础款</span><h2>渐变描边 + 光晕呼吸</h2></header>
+    <p class="desc">青→紫静态渐变描边，外光晕每 3 秒明暗呼吸一次。<b>只变明暗、不旋转</b>。</p>
+    <div class="sz">
+      <div class="a-glow"><div class="sb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="如 赤梭 / th / clx" /><span class="kbd">/</span>
+      </div></div>
+      <div class="dd">
+        <div class="r on"><span class="dot"></span>天华 <span class="g">职业评级 · thfs</span></div>
+        <div class="r"><span class="dot"></span>太昊 <span class="g">职业评级 · thxs</span></div>
+        <div class="r"><span class="dot"></span>南巫天火 <span class="g">职业技能</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="opt">
+    <header><span class="tag b">方案 B · 极简</span><h2>浮起微亮（Google / Linear 式）</h2></header>
+    <p class="desc">聚焦时仅边框变亮、阴影浮起 1px，<b>没有任何循环动画</b>，最克制、最耐看，性能零成本。</p>
+    <div class="sz">
+      <div class="b-glow"><div class="sb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="如 赤梭 / th / clx" /><span class="kbd">/</span>
+      </div></div>
+      <div class="dd">
+        <div class="r on"><span class="dot"></span>天华 <span class="g">职业评级 · thfs</span></div>
+        <div class="r"><span class="dot"></span>太昊 <span class="g">职业评级 · thxs</span></div>
+        <div class="r"><span class="dot"></span>南巫天火 <span class="g">职业技能</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="opt">
+    <header><span class="tag c">方案 C · 流光</span><h2>单点高光沿描边跑动（Raycast 式）</h2></header>
+    <p class="desc">注意：这<b>不是风车</b>——风车是两大段彩色环带整体旋转；这里 90% 是透明轨道，只有一小段带拖尾的彗星光沿边框循环跑（下图已常驻运转，点击聚焦后效果相同）。</p>
+    <div class="sz">
+      <div class="c-glow show-flow">
+        <div class="sb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input placeholder="如 赤梭 / th / clx" /><span class="kbd">/</span>
+        </div>
+      </div>
+      <div class="dd">
+        <div class="r on"><span class="dot"></span>天华 <span class="g">职业评级 · thfs</span></div>
+        <div class="r"><span class="dot"></span>太昊 <span class="g">职业评级 · thxs</span></div>
+        <div class="r"><span class="dot"></span>南巫天火 <span class="g">职业技能</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- D -->
+  <section class="opt">
+    <header><span class="tag d">方案 D · 扩散</span><h2>聚焦瞬间光波扩散（一次性反馈）</h2></header>
+    <p class="desc">每次聚焦瞬间一圈细光波向外散开（0.6s 结束、不循环），之后是静态青色描边。<b>有反馈但不打扰</b>，重复点击可再看。</p>
+    <div class="sz">
+      <div class="d-glow"><div class="sb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input placeholder="如 赤梭 / th / clx" /><span class="kbd">/</span>
+      </div></div>
+      <div class="dd">
+        <div class="r on"><span class="dot"></span>天华 <span class="g">职业评级 · thfs</span></div>
+        <div class="r"><span class="dot"></span>太昊 <span class="g">职业评级 · thxs</span></div>
+        <div class="r"><span class="dot"></span>南巫天火 <span class="g">职业技能</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="research">
+    <h3>大厂做法速览（调研结论）</h3>
+    <table>
+      <tr><th>产品</th><th>主页 / 搜索做法</th><th>可借鉴点</th></tr>
+      <tr><td>Wowhead</td><td>游戏数据库，官网自述"像搜索引擎一样使用"：标题+居中搜索框，输入即时下拉、按 NPC/物品/技能/任务分组，右侧带类型标记</td><td>你的方向就是它验证过的成熟范式；分组下拉思路一致，可再加类型图标和"查看全部"底栏</td></tr>
+      <tr><td>Google / DuckDuckGo</td><td>极简居中，聚焦仅一层柔和阴影浮起，无任何持续动画</td><td>方案 B 的来源；工具站耐看首选</td></tr>
+      <tr><td>Linear / Raycast</td><td>⌘K 命令面板：暗色玻璃、键盘优先、右侧 meta 标记、底部固定快捷键提示栏、暗色下细渐变流动描边</td><td>你的下拉 footer、拼音标记、/ 快捷键已对齐；流动描边即方案 C</td></tr>
+      <tr><td>Bing</td><td>每日一图全屏背景 + 居中搜索 + 热搜词条</td><td>对应你的热门 chips；背景可换成诛仙主题水墨/场景图（低透明度）</td></tr>
+      <tr><td>米哈游 / AAA 游戏站</td><td>深靛蓝夜空底、中式边角纹样、bold 标题、电影感微交互、蓝紫霓虹</td><td>现有 cyan/purple 配色正合趋势；卡片可加中式角花细节强化国风</td></tr>
+    </table>
+  </div>
+</div>
+
+// A+C 彗星跑圈 Canvas 引擎
+(function(){
+  var container = document.getElementById('acGlow');
+  var canvas = document.getElementById('acCanvas');
+  if(!container || !canvas) return;
+  var ctx = canvas.getContext('2d');
+  var PAD = 14, w = 0, h = 0, r = 18, arc = 0, P = 0, dist = 0, lastTime = 0, isFocused = false;
+
+  function resize(){
+    var rect = container.getBoundingClientRect();
+    var dpr = window.devicePixelRatio || 1;
+    w = rect.width; h = rect.height; r = 18;
+    arc = Math.PI * r * 0.5;
+    P = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 4 * arc;
+    canvas.width = (w + 2 * PAD) * dpr;
+    canvas.height = (h + 2 * PAD) * dpr;
+    canvas.style.width = (w + 2 * PAD) + 'px';
+    canvas.style.height = (h + 2 * PAD) + 'px';
+    canvas.style.left = (-PAD) + 'px';
+    canvas.style.top = (-PAD) + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
+
+  function getPoint(dVal){
+    var d = ((dVal % P) + P) % P;
+    var lTop = w - 2 * r;
+    if(d < lTop) return { x: r + d, y: 0, isH: true };
+    d -= lTop;
+    if(d < arc){
+      var th = -Math.PI * 0.5 + d / r;
+      return { x: (w - r) + r * Math.cos(th), y: r + r * Math.sin(th), isH: false };
+    }
+    d -= arc;
+    var lR = h - 2 * r;
+    if(d < lR) return { x: w, y: r + d, isH: false };
+    d -= lR;
+    if(d < arc){
+      var th = 0 + d / r;
+      return { x: (w - r) + r * Math.cos(th), y: (h - r) + r * Math.sin(th), isH: false };
+    }
+    d -= arc;
+    var lBot = w - 2 * r;
+    if(d < lBot) return { x: (w - r) - d, y: h, isH: true };
+    d -= lBot;
+    if(d < arc){
+      var th = Math.PI * 0.5 + d / r;
+      return { x: r + r * Math.cos(th), y: (h - r) + r * Math.sin(th), isH: false };
+    }
+    d -= arc;
+    var lL = h - 2 * r;
+    if(d < lL) return { x: 0, y: (h - r) - d, isH: false };
+    d -= lL;
+    var th = Math.PI + d / r;
+    return { x: r + r * Math.cos(th), y: r + r * Math.sin(th), isH: false };
+  }
+
+  function getColor(x){
+    var t = Math.max(0, Math.min(1, x / w));
+    var rC, gC, bC;
+    if(t <= 0.5){
+      var k = t / 0.5;
+      rC = Math.round(34 + k * (129 - 34));
+      gC = Math.round(211 + k * (140 - 211));
+      bC = Math.round(238 + k * (248 - 238));
+    }else{
+      var k = (t - 0.5) / 0.5;
+      rC = Math.round(129 + k * (192 - 129));
+      gC = Math.round(140 + k * (132 - 140));
+      bC = Math.round(248 + k * (252 - 248));
+    }
+    return { r: rC, g: gC, b: bC };
+  }
+
+  function frame(timestamp){
+    if(!lastTime) lastTime = timestamp;
+    var dt = Math.min((timestamp - lastTime) / 1000, 0.05);
+    lastTime = timestamp;
+
+    if(!isFocused && w > 0 && P > 0){
+      var head = getPoint(dist);
+      var u = Math.max(0, Math.min(1, head.x / w));
+      var speedMult = head.isH ? (0.90 + 0.55 * Math.sin(Math.PI * u)) : 0.90;
+      var baseSpeed = 160;
+      dist += baseSpeed * speedMult * dt;
+
+      ctx.clearRect(0, 0, w + 2 * PAD, h + 2 * PAD);
+      var tailLen = 45 + 55 * ((speedMult - 0.90) / 0.55);
+      var steps = 30, stepDist = tailLen / steps;
+
+      ctx.save();
+      ctx.translate(PAD, PAD);
+      ctx.lineCap = 'round';
+
+      var prevPt = getPoint(dist);
+      for(var i = 1; i <= steps; i++){
+        var currPt = getPoint(dist - i * stepDist);
+        var p = i / steps;
+        var alpha = Math.pow(1 - p, 1.4) * 0.92;
+        var col = getColor((prevPt.x + currPt.x) * 0.5);
+
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = 'rgba(' + col.r + ',' + col.g + ',' + col.b + ', ' + (alpha * 0.8).toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(' + col.r + ',' + col.g + ',' + col.b + ',' + alpha.toFixed(3) + ')';
+        ctx.lineWidth = 1.4 + 2.4 * (1 - p);
+        ctx.moveTo(prevPt.x, prevPt.y);
+        ctx.lineTo(currPt.x, currPt.y);
+        ctx.stroke();
+
+        prevPt = currPt;
+      }
+
+      var headCol = getColor(head.x);
+      // 头部光晕 1：外部宽幅超柔和弥散光晕
+      ctx.shadowBlur = 30;
+      ctx.shadowColor = 'rgba(' + headCol.r + ',' + headCol.g + ',' + headCol.b + ', 0.8)';
+      ctx.fillStyle = 'rgba(' + headCol.r + ',' + headCol.g + ',' + headCol.b + ', 0.35)';
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, 8.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 头部光晕 2：中层绚丽彩色光核
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = 'rgba(' + headCol.r + ',' + headCol.g + ',' + headCol.b + ', 0.95)';
+      ctx.fillStyle = 'rgba(' + headCol.r + ',' + headCol.g + ',' + headCol.b + ', 0.75)';
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, 4.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 头部光晕 3：内部超高能纯白星核
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = '#ffffff';
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, 2.6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(frame);
+
+  var input = container.querySelector('input');
+  input.addEventListener('focus', function(){
+    isFocused = true;
+    canvas.style.opacity = '0';
+  });
+  input.addEventListener('blur', function(){
+    isFocused = false;
+    canvas.style.opacity = '1';
+    lastTime = 0;
+  });
+})();
+
+// 通用：聚焦展开假下拉、点击外部关闭；D 方案聚焦时重播扩散动画
+document.querySelectorAll('.sz').forEach(function(sz){
+  var input=sz.querySelector('input');
+  var glow=sz.querySelector('[class$="-glow"]');
+  input.addEventListener('focus',function(){
+    sz.classList.add('open');
+    if(glow && glow.classList.contains('d-glow')){
+      glow.classList.remove('pulse');void glow.offsetWidth;glow.classList.add('pulse');
+    }
+  });
+  input.addEventListener('blur',function(){setTimeout(function(){sz.classList.remove('open');},140);});
+  sz.querySelectorAll('.r').forEach(function(r){
+    r.addEventListener('mouseenter',function(){
+      sz.querySelectorAll('.r').forEach(function(x){x.classList.remove('on');});
+      r.classList.add('on');
+    });
+  });
+});
+document.addEventListener('mousedown',function(e){
+  document.querySelectorAll('.sz').forEach(function(sz){
+    if(!sz.contains(e.target)) sz.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>

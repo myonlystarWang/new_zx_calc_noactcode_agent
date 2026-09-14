@@ -3,8 +3,8 @@ import { Calculator } from 'lucide-react';
 import { GlobalSearch, type SearchTarget } from '../GlobalSearch';
 
 interface HeaderProps {
-    activeTab: 'calculator' | 'arena' | 'compendium';
-    onTabChange: (tab: 'calculator' | 'arena' | 'compendium') => void;
+    activeTab: 'home' | 'calculator' | 'arena' | 'compendium' | 'skills';
+    onTabChange: (tab: 'home' | 'calculator' | 'arena' | 'compendium' | 'skills') => void;
     onSearchNavigate: (target: SearchTarget) => void;
 }
 
@@ -23,12 +23,17 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onSearch
     return (
         <header className="w-full py-2 md:py-3 mb-4 md:mb-5 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-[100] shadow-lg shadow-slate-900/50">
             <div className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                    <div className="p-1.5 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-xl border border-cyan-500/30 shadow-lg shadow-cyan-500/20">
-                        <Calculator className="w-5 h-5 md:w-6 md:h-6 text-cyan-400" />
+                {/* 品牌与 Logo：点击直达首页门户 */}
+                <div
+                    onClick={() => onTabChange('home')}
+                    className="flex items-center gap-3 cursor-pointer group select-none transition-transform active:scale-95"
+                    title="点击返回首页"
+                >
+                    <div className="p-1.5 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-xl border border-cyan-500/30 shadow-lg shadow-cyan-500/20 group-hover:border-cyan-400/50 group-hover:shadow-cyan-500/40 transition-all">
+                        <Calculator className="w-5 h-5 md:w-6 md:h-6 text-cyan-400 group-hover:text-cyan-300 transition-colors" />
                     </div>
                     <div>
-                        <h1 className="text-xl md:text-2xl font-black text-gradient tracking-tight drop-shadow-sm">
+                        <h1 className="text-xl md:text-2xl font-black text-gradient tracking-tight drop-shadow-sm group-hover:brightness-110 transition-all">
                             诛仙3副本战斗实验室
                         </h1>
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
@@ -46,12 +51,13 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onSearch
                 </div>
 
                 <div className="flex items-center gap-2 sm:gap-3 self-end md:self-auto w-full md:w-auto">
-                    <GlobalSearch onNavigate={onSearchNavigate} />
+                    {activeTab !== 'home' && <GlobalSearch onNavigate={onSearchNavigate} />}
                     <div className="flex-1 md:flex-none flex items-center justify-end gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
                         {[
                             { id: 'calculator', short: '战力', full: '属性战力计算器' },
                             { id: 'arena', short: '模拟', full: '副本模拟训练场' },
                             { id: 'compendium', short: '图鉴', full: '资料图鉴' },
+                            { id: 'skills', short: '技能', full: '职业技能速查' },
                         ].map((tab) => (
                             <button
                                 key={tab.id}
