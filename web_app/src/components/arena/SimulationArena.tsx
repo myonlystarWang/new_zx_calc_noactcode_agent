@@ -161,6 +161,33 @@ const MAX_XUAN_ZHU_FOURTH_GEN = 3;
 const MAX_CHI_WU_FOURTH_GEN = 1;
 const MAX_TOTAL_FOURTH_GEN = 4;
 
+const COMMON_FACTION_KEY = 'COMMON';
+
+// 合并某职业某阵营技能 + COMMON 通用技能（如跨阵营通用四代实体），按 SkillID 去重
+const getFactionSkills = (
+    allSkills: Record<string, Record<string, Skill[]>> | null | undefined,
+    classId: string,
+    faction: string
+): Skill[] => {
+    const cls = allSkills?.[classId];
+    if (!cls) return [];
+    const merged: Skill[] = [];
+    const seen = new Set<string>();
+    for (const skill of [...(cls[faction] ?? []), ...(cls[COMMON_FACTION_KEY] ?? [])]) {
+        if (!seen.has(skill.SkillID)) {
+            seen.add(skill.SkillID);
+            merged.push(skill);
+        }
+    }
+    return merged;
+};
+
+// 某职业可选阵营（排除 COMMON 通用键）
+const getFactionOptions = (
+    allSkills: Record<string, Record<string, Skill[]>>,
+    classId: string
+): string[] => Object.keys(allSkills[classId] ?? {}).filter(f => f !== COMMON_FACTION_KEY);
+
 // 某职业+阵营下可独立佩戴的四代实体（玄烛/赤乌）
 const collectFourthGenCandidates = (skills: Skill[]): Skill[] => (
     skills.filter(skill => skill.FourthGenSlot === 'XUAN_ZHU' || skill.FourthGenSlot === 'CHI_WU')
@@ -446,7 +473,7 @@ export const SimulationArena: React.FC = () => {
     const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
 
     const dpsSkillsPool = useMemo(() => {
-        return allSkills?.ZHU_SHUANG?.[dpsFaction] || [];
+        return getFactionSkills(allSkills, 'ZHU_SHUANG', dpsFaction);
     }, [allSkills, dpsFaction]);
 
     const explorerItems = useMemo<ExplorerItem[]>(() => {
@@ -592,7 +619,7 @@ export const SimulationArena: React.FC = () => {
 
     const getEnabledSupportSkillIds = (support: SupportConfig) => {
         if (!allSkills) return [];
-        const factionSkills = allSkills[support.classId]?.[support.faction] || [];
+        const factionSkills = getFactionSkills(allSkills, support.classId, support.faction);
         return factionSkills
             .filter(skill =>
                 skill.ActionType !== undefined &&
@@ -604,7 +631,7 @@ export const SimulationArena: React.FC = () => {
     };
 
     const getSupportSkills = (classId: string, faction: 'XIAN' | 'FO' | 'MO') => {
-        return allSkills?.[classId]?.[faction] || [];
+        return getFactionSkills(allSkills, classId, faction);
     };
 
     if (!allSkills || !dungeonsMonsters || dungeons.length === 0) {
@@ -2157,8 +2184,8 @@ function TeamDrawerPanel({
     const classOptions = Object.keys(allSkills)
         .filter(classId => classId !== 'ZHU_SHUANG')
         .map(classId => ({ id: classId, label: CLASS_LABEL[classId] || classId }));
-    const factionOptions = Object.keys(allSkills[activeSupport.classId] || {}) as Array<'XIAN' | 'FO' | 'MO'>;
-    const supportSkills = allSkills[activeSupport.classId]?.[activeSupport.faction] || [];
+    const factionOptions = getFactionOptions(allSkills, activeSupport.classId) as Array<'XIAN' | 'FO' | 'MO'>;
+    const supportSkills = getFactionSkills(allSkills, activeSupport.classId, activeSupport.faction);
     const fourthGenCandidates = collectFourthGenCandidates(supportSkills);
     const visibleSupportSkills = supportSkills.filter(skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE');
 
@@ -2225,7 +2252,7 @@ function TeamDrawerPanel({
                             value={activeSupport.classId}
                             onChange={(event) => {
                                 const nextClassId = event.target.value;
-                                const nextFaction = Object.keys(allSkills[nextClassId] || {})[0] as 'XIAN' | 'FO' | 'MO' | undefined;
+                                const nextFaction = getFactionOptions(allSkills, nextClassId)[0] as 'XIAN' | 'FO' | 'MO' | undefined;
                                 updateSupport(activeIndex, {
                                     classId: nextClassId,
                                     faction: nextFaction || 'FO',
@@ -2545,7 +2572,7 @@ function PartyRail({
     onOpenSupport: (index: number) => void;
     onOpenSkill: (skill: Skill) => void;
 }) {
-    const dpsSkills = allSkills.ZHU_SHUANG?.[dpsFaction] || [];
+    const dpsSkills = getFactionSkills(allSkills, 'ZHU_SHUANG', dpsFaction);
 
     return (
         <aside className="rounded-2xl border border-slate-800 bg-slate-950/92 min-h-0 overflow-hidden flex flex-col">

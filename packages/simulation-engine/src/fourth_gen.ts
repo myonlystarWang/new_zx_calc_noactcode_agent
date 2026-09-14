@@ -158,9 +158,12 @@ export function applyEquippedFourthGen(
         for (const targetId of grant.TargetSkillIds) {
           const target = skillMap[targetId];
           if (!target) {
-            console.warn(
-              `[fourth_gen] grant target not found, ignored: ${item.skillId} -> ${targetId}`
-            );
+            // COMMON 通用四代的 Grants 一次性列出所有阵营目标，当前玩家只持有本阵营技能，命中不到其他阵营属预期，静默跳过
+            if (fg.Faction !== 'COMMON') {
+              console.warn(
+                `[fourth_gen] grant target not found, ignored: ${item.skillId} -> ${targetId}`
+              );
+            }
             continue;
           }
           applyOverrideAdditive(target, grant.Override);

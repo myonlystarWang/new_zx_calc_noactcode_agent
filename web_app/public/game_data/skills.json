@@ -101,17 +101,6 @@
             "ResetType": "REFRESH_CHARGES"
           }
         ],
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 84
-          },
-          "HAO_YUE": {
-            "Cooldown": 75
-          },
-          "XI_RI": {
-            "Cooldown": 60
-          }
-        },
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
@@ -131,11 +120,6 @@
         "ChargeReplenishTime": 18,
         "HitTiming": {
           "Mode": "EVENLY_DURING_CAST"
-        },
-        "FourthGenPresets": {
-          "XI_RI": {
-            "ChargeReplenishTime": 12
-          }
         },
         "Description": "释放一次苍龙啸有30%概率刷新苍龙啸自身充能；命中会消耗龙怒层数并提升当段技能攻击百分比。",
         "SkillBonusAttributes": {
@@ -209,17 +193,6 @@
             "ResetType": "REFRESH_CHARGES"
           }
         ],
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 84
-          },
-          "HAO_YUE": {
-            "Cooldown": 75
-          },
-          "XI_RI": {
-            "Cooldown": 60
-          }
-        },
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
@@ -312,38 +285,6 @@
         "CastTime": 1.4,
         "IsAOE": false,
         "ActionType": "BUFF",
-        "FourthGenPresets": {
-          "YING_JU": {
-            "AppliesEffects": {
-              "ZS_BUFF_QXHS_SPEED": {
-                "EffectPower": 28,
-                "BuffEffects": {
-                  "BuffSpeedPercentEffect": 28
-                }
-              }
-            }
-          },
-          "HAO_YUE": {
-            "AppliesEffects": {
-              "ZS_BUFF_QXHS_SPEED": {
-                "EffectPower": 36,
-                "BuffEffects": {
-                  "BuffSpeedPercentEffect": 36
-                }
-              }
-            }
-          },
-          "XI_RI": {
-            "AppliesEffects": {
-              "ZS_BUFF_QXHS_SPEED": {
-                "EffectPower": 44,
-                "BuffEffects": {
-                  "BuffSpeedPercentEffect": 44
-                }
-              }
-            }
-          }
-        },
         "AppliesEffects": [
           {
             "EffectId": "ZS_BUFF_QXHS_STATS",
@@ -398,7 +339,7 @@
             "EffectId": "ZS_BUFF_YZXW_CRIT_DMG",
             "EffectName": "云蒸霞蔚爆伤与持续时间增益",
             "Target": "SELF",
-            "Duration": 30,
+            "Duration": 20,
             "BuffEffects": {
               "BuffCriticalDamagePercentEffect": 50
             }
@@ -568,17 +509,6 @@
             "ResetType": "REFRESH_CHARGES"
           }
         ],
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 84
-          },
-          "HAO_YUE": {
-            "Cooldown": 75
-          },
-          "XI_RI": {
-            "Cooldown": 60
-          }
-        },
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
@@ -598,11 +528,6 @@
         "ChargeReplenishTime": 18,
         "HitTiming": {
           "Mode": "EVENLY_DURING_CAST"
-        },
-        "FourthGenPresets": {
-          "XI_RI": {
-            "ChargeReplenishTime": 12
-          }
         },
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 210,
@@ -663,17 +588,6 @@
             "ResetType": "REFRESH_CHARGES"
           }
         ],
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 84
-          },
-          "HAO_YUE": {
-            "Cooldown": 75
-          },
-          "XI_RI": {
-            "Cooldown": 60
-          }
-        },
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
@@ -766,38 +680,6 @@
         "CastTime": 1.4,
         "IsAOE": false,
         "ActionType": "BUFF",
-        "FourthGenPresets": {
-          "YING_JU": {
-            "AppliesEffects": {
-              "ZS_BUFF_QXHS_SPEED": {
-                "EffectPower": 28,
-                "BuffEffects": {
-                  "BuffSpeedPercentEffect": 28
-                }
-              }
-            }
-          },
-          "HAO_YUE": {
-            "AppliesEffects": {
-              "ZS_BUFF_QXHS_SPEED": {
-                "EffectPower": 36,
-                "BuffEffects": {
-                  "BuffSpeedPercentEffect": 36
-                }
-              }
-            }
-          },
-          "XI_RI": {
-            "AppliesEffects": {
-              "ZS_BUFF_QXHS_SPEED": {
-                "EffectPower": 44,
-                "BuffEffects": {
-                  "BuffSpeedPercentEffect": 44
-                }
-              }
-            }
-          }
-        },
         "AppliesEffects": [
           {
             "EffectId": "ZS_BUFF_QXHS_STATS",
@@ -852,6 +734,227 @@
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
+      }
+    ],
+    "COMMON": [
+      {
+        "SkillID": "ZS_COMMON_FG_ZYFS",
+        "SkillName": "玄烛·醉月飞觞",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "COMMON",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_YYZC",
+                "ZS_XIAN_SKILL_YYZC_XUAN",
+                "ZS_MO_SKILL_YYZC",
+                "ZS_MO_SKILL_YYZC_SHA"
+              ],
+              "Override": {
+                "Cooldown": 84
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_YYZC",
+                "ZS_XIAN_SKILL_YYZC_XUAN",
+                "ZS_MO_SKILL_YYZC",
+                "ZS_MO_SKILL_YYZC_SHA"
+              ],
+              "Override": {
+                "Cooldown": 75
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_YYZC",
+                "ZS_XIAN_SKILL_YYZC_XUAN",
+                "ZS_MO_SKILL_YYZC",
+                "ZS_MO_SKILL_YYZC_SHA"
+              ],
+              "Override": {
+                "Cooldown": 60
+              }
+            },
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_CLX",
+                "ZS_MO_SKILL_CLX"
+              ],
+              "Override": {
+                "ChargeReplenishTime": 12
+              }
+            }
+          ]
+        },
+        "Description": "四代被动（满级5级）：莹炬/皓月/曦日分别令鹰扬折冲系列冷却降至84/75/60秒；曦日额外令苍龙啸充能时间降至12秒。仙魔通用。"
+      },
+      {
+        "SkillID": "ZS_COMMON_FG_DLJ",
+        "SkillName": "玄烛·点龙睛",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "COMMON",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_QXHS",
+                "ZS_MO_SKILL_QXHS"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "ZS_BUFF_QXHS_SPEED": {
+                    "EffectPower": 28,
+                    "BuffEffects": {
+                      "BuffSpeedPercentEffect": 28
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_QXHS",
+                "ZS_MO_SKILL_QXHS"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "ZS_BUFF_QXHS_SPEED": {
+                    "EffectPower": 36,
+                    "BuffEffects": {
+                      "BuffSpeedPercentEffect": 36
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_QXHS",
+                "ZS_MO_SKILL_QXHS"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "ZS_BUFF_QXHS_SPEED": {
+                    "EffectPower": 44,
+                    "BuffEffects": {
+                      "BuffSpeedPercentEffect": 44
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Description": "四代被动（满级5级）：莹炬/皓月/曦日分别令清啸横朔施法速度提升至28%/36%/44%（白板20%）。仙魔通用。"
+      },
+      {
+        "SkillID": "ZS_COMMON_FG_YZXW",
+        "SkillName": "玄烛·云蒸霞蔚",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "COMMON",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_YZXW",
+                "ZS_MO_SKILL_YZXW"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "ZS_BUFF_YZXW_MANA": {
+                    "BuffEffects": {
+                      "BuffManaPercentEffect": 30
+                    }
+                  },
+                  "ZS_BUFF_YZXW_CRIT_DMG": {
+                    "Duration": 30
+                  }
+                }
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_YZXW",
+                "ZS_MO_SKILL_YZXW"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "ZS_BUFF_YZXW_MANA": {
+                    "BuffEffects": {
+                      "BuffManaPercentEffect": 60
+                    }
+                  },
+                  "ZS_BUFF_YZXW_CRIT_DMG": {
+                    "Duration": 35
+                  }
+                }
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_YZXW",
+                "ZS_MO_SKILL_YZXW"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "ZS_BUFF_YZXW_MANA": {
+                    "BuffEffects": {
+                      "BuffManaPercentEffect": 90
+                    }
+                  },
+                  "ZS_BUFF_YZXW_CRIT_DMG": {
+                    "Duration": 40
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Description": "四代被动（满级5级）：莹炬/皓月/曦日分别令云蒸霞蔚真气提升至30%/60%/90%；仙阵营爆伤效果持续30/35/40秒（魔无爆伤效果，该项自动忽略）。仙魔通用。"
       }
     ]
   },
