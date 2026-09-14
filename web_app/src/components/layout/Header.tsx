@@ -3,8 +3,8 @@ import { Calculator } from 'lucide-react';
 import { GlobalSearch, type SearchTarget } from '../GlobalSearch';
 
 interface HeaderProps {
-    activeTab: 'home' | 'calculator' | 'arena' | 'compendium' | 'skills';
-    onTabChange: (tab: 'home' | 'calculator' | 'arena' | 'compendium' | 'skills') => void;
+    activeTab: 'home' | 'calculator' | 'arena' | 'compendium';
+    onTabChange: (tab: 'home' | 'calculator' | 'arena' | 'compendium') => void;
     onSearchNavigate: (target: SearchTarget) => void;
 }
 
@@ -57,7 +57,6 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onSearch
                             { id: 'calculator', short: '战力', full: '属性战力计算器' },
                             { id: 'arena', short: '模拟', full: '副本模拟训练场' },
                             { id: 'compendium', short: '图鉴', full: '资料图鉴' },
-                            { id: 'skills', short: '技能', full: '职业技能速查' },
                         ].map((tab) => (
                             <button
                                 key={tab.id}

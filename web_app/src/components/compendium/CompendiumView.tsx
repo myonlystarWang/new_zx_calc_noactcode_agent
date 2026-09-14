@@ -15,21 +15,32 @@ import {
     Zap,
     Compass,
     Layers,
-    Award
+    Award,
+    Crosshair
 } from 'lucide-react';
+import { SkillsView } from '../skills/SkillsView';
+import { BossCompendiumView } from './BossCompendiumView';
 import clsx from 'clsx';
 import type { AttributeCeilingRow, SupportRole, StatSourceSection } from '../../services/DataService';
 import type { SearchTarget } from '../GlobalSearch';
 
-export type SubTab = 'ignore' | 'reduction' | 'critReduction' | 'monsterDamageBonus' | 'dodge' | 'support';
+export type CompendiumPrimaryTab = 'ceiling' | 'skills' | 'support' | 'boss';
+export type AttributeSubTab = 'ignore' | 'reduction' | 'critReduction' | 'monsterDamageBonus' | 'dodge';
+export type SubTab = CompendiumPrimaryTab | AttributeSubTab;
 
-const SUB_TABS: { id: SubTab; label: string; icon: React.ReactNode }[] = [
-    { id: 'ignore', label: '极致无视', icon: <Target className="w-4 h-4" /> },
-    { id: 'reduction', label: '极致减免', icon: <Shield className="w-4 h-4" /> },
-    { id: 'critReduction', label: '极致减暴击', icon: <Swords className="w-4 h-4" /> },
-    { id: 'monsterDamageBonus', label: '极致怪增', icon: <BookOpen className="w-4 h-4" /> },
-    { id: 'dodge', label: '极致躲闪', icon: <BookOpen className="w-4 h-4" /> },
-    { id: 'support', label: '各职业状态', icon: <Users className="w-4 h-4" /> },
+export const PRIMARY_TABS: { id: CompendiumPrimaryTab; label: string; icon: React.ReactNode }[] = [
+    { id: 'ceiling', label: '极致属性攻略', icon: <Target className="w-4 h-4" /> },
+    { id: 'skills', label: '职业技能速查', icon: <Swords className="w-4 h-4" /> },
+    { id: 'support', label: '职业状态一览', icon: <Users className="w-4 h-4" /> },
+    { id: 'boss', label: '副本 BOSS 速查', icon: <Crosshair className="w-4 h-4" /> },
+];
+
+export const ATTRIBUTE_SUB_TABS: { id: AttributeSubTab; label: string; icon: React.ReactNode }[] = [
+    { id: 'ignore', label: '极致无视', icon: <Target className="w-3.5 h-3.5" /> },
+    { id: 'reduction', label: '极致减免', icon: <Shield className="w-3.5 h-3.5" /> },
+    { id: 'critReduction', label: '极致减暴击', icon: <Swords className="w-3.5 h-3.5" /> },
+    { id: 'monsterDamageBonus', label: '极致怪增', icon: <BookOpen className="w-3.5 h-3.5" /> },
+    { id: 'dodge', label: '极致躲闪', icon: <Sparkles className="w-3.5 h-3.5" /> },
 ];
 
 export type DomainKey = 'equip' | 'accessory' | 'soulDharma' | 'tomeStar' | 'arrayMind' | 'comprehensive';
@@ -1397,34 +1408,59 @@ const SupportView: React.FC = () => {
     );
 };
 
-export const CompendiumView: React.FC<{ searchNav?: SearchTarget | null; onSearchConsumed?: () => void }> = ({ searchNav, onSearchConsumed }) => {
-    const [activeSubTab, setActiveSubTab] = useState<SubTab>('ignore');
+export interface CompendiumViewProps {
+    searchNav?: SearchTarget | null;
+    onSearchConsumed?: () => void;
+    onNavigateCalculator?: (dungeonId: string, monsterId: string) => void;
+}
+
+export const CompendiumView: React.FC<CompendiumViewProps> = ({
+    searchNav,
+    onSearchConsumed,
+    onNavigateCalculator,
+}) => {
+    const [activePrimaryTab, setActivePrimaryTab] = useState<CompendiumPrimaryTab>('ceiling');
+    const [activeAttributeTab, setActiveAttributeTab] = useState<AttributeSubTab>('ignore');
 
     // Jump to a sub-tab (and optional item) driven by global search
     useEffect(() => {
-        if (!searchNav || searchNav.tab !== 'compendium') return;
-        setActiveSubTab(searchNav.sub);
-        if (searchNav.item) {
-            const escape = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape : (s: string) => s.replace(/(["'\\#$%&()*+,\/:;<=>?@[\\]^`{|}~])/g, '\\$1');
-            const sel = `[data-item="${escape(searchNav.item)}"], [data-role="${escape(searchNav.item)}"]`;
-            // wait a tick for the sub-tab content to render
-            const t = setTimeout(() => {
-                const el = document.querySelector(sel) as HTMLElement | null;
-                if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    el.classList.add('ring-2', 'ring-cyan-400', 'bg-cyan-500/10', 'rounded-lg', 'transition-all');
-                    setTimeout(() => el.classList.remove('ring-2', 'ring-cyan-400', 'bg-cyan-500/10', 'rounded-lg'), 2000);
-                }
-                onSearchConsumed?.();
-            }, 120);
-            return () => clearTimeout(t);
-        } else {
-            onSearchConsumed?.();
-        }
-    }, [searchNav]);
+        if (!searchNav) return;
+        if (searchNav.tab === 'compendium') {
+            const s = searchNav.sub;
+            if (s === 'skills') {
+                setActivePrimaryTab('skills');
+            } else if (s === 'support') {
+                setActivePrimaryTab('support');
+            } else if (s === 'boss') {
+                setActivePrimaryTab('boss');
+            } else if (s === 'ceiling') {
+                setActivePrimaryTab('ceiling');
+            } else if (['ignore', 'reduction', 'critReduction', 'monsterDamageBonus', 'dodge'].includes(s)) {
+                setActivePrimaryTab('ceiling');
+                setActiveAttributeTab(s as AttributeSubTab);
+            }
 
-    const content = useMemo(() => {
-        switch (activeSubTab) {
+            if (searchNav.item) {
+                const escape = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape : (str: string) => str.replace(/(["'\\#$%&()*+,\/:;<=>?@[\]^`{|}~])/g, '\\$1');
+                const sel = `[data-item="${escape(searchNav.item)}"], [data-role="${escape(searchNav.item)}"]`;
+                const t = setTimeout(() => {
+                    const el = document.querySelector(sel) as HTMLElement | null;
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.add('ring-2', 'ring-cyan-400', 'bg-cyan-500/10', 'rounded-lg', 'transition-all');
+                        setTimeout(() => el.classList.remove('ring-2', 'ring-cyan-400', 'bg-cyan-500/10', 'rounded-lg'), 2000);
+                    }
+                    onSearchConsumed?.();
+                }, 150);
+                return () => clearTimeout(t);
+            } else {
+                onSearchConsumed?.();
+            }
+        }
+    }, [searchNav, onSearchConsumed]);
+
+    const attributeContent = useMemo(() => {
+        switch (activeAttributeTab) {
             case 'ignore': return <AttributeTable sectionKey="ignore" sectionTitle="极致无视攻略" />;
             case 'reduction': return <AttributeTable sectionKey="reduction" sectionTitle="极致减免伤害攻略" />;
             case 'critReduction': return <AttributeTable sectionKey="critReduction" sectionTitle="极致减暴击攻略" />;
@@ -1440,38 +1476,83 @@ export const CompendiumView: React.FC<{ searchNav?: SearchTarget | null; onSearc
                 if (!section) return <div className="text-slate-400 text-base">数据加载中...</div>;
                 return <SourceSectionView section={section} showConditional />;
             }
-            case 'support': return <SupportView />;
             default: return null;
         }
-    }, [activeSubTab]);
+    }, [activeAttributeTab]);
 
     return (
-        <div className="flex flex-col gap-4 sm:gap-6 pb-8">
+        <div className="flex flex-col gap-4 sm:gap-6 pb-12">
             <div className="flex flex-col gap-3">
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-100 flex items-center gap-3">
-                    <span className="w-1.5 h-7 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
-                    资料图鉴
-                </h1>
-                {/* 子页签：移动端横向滚动单行，桌面端换行 */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-100 flex items-center gap-3">
+                        <span className="w-1.5 h-7 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
+                        资料图鉴
+                    </h1>
+                    <div className="text-xs text-slate-400 font-mono">
+                        汇集极致属性、门派技能、职业评级与副本BOSS抗性
+                    </div>
+                </div>
+
+                {/* 4 大核心板块一级子页签 */}
                 <div className="flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible md:pb-0">
-                    {SUB_TABS.map((tab) => (
+                    {PRIMARY_TABS.map((tab) => (
                         <button
                             key={tab.id}
-                            onClick={() => setActiveSubTab(tab.id)}
+                            onClick={() => setActivePrimaryTab(tab.id)}
                             className={clsx(
-                                'flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-300 border backdrop-blur-md whitespace-nowrap flex-shrink-0',
-                                activeSubTab === tab.id
-                                    ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                                    : 'bg-slate-850 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
+                                'flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 border backdrop-blur-md whitespace-nowrap flex-shrink-0',
+                                activePrimaryTab === tab.id
+                                    ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+                                    : 'bg-slate-850 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                             )}
                         >
                             {tab.icon}
-                            {tab.label}
+                            <span>{tab.label}</span>
                         </button>
                     ))}
                 </div>
+
+                {/* 极致属性攻略下的 5 种属性二级切换 Pills */}
+                {activePrimaryTab === 'ceiling' && (
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 no-scrollbar animate-in fade-in duration-200">
+                        <span className="text-xs text-slate-400 font-bold mr-1 flex-shrink-0">属性分类:</span>
+                        {ATTRIBUTE_SUB_TABS.map((tab) => {
+                            const isActive = activeAttributeTab === tab.id;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveAttributeTab(tab.id)}
+                                    className={clsx(
+                                        'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border whitespace-nowrap flex-shrink-0',
+                                        isActive
+                                            ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
+                                            : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:bg-slate-850 hover:text-slate-200'
+                                    )}
+                                >
+                                    {tab.icon}
+                                    <span>{tab.label}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
-            {content}
+
+            {/* 板块主体渲染 */}
+            {activePrimaryTab === 'ceiling' && attributeContent}
+            {activePrimaryTab === 'skills' && (
+                <div className="w-full">
+                    <SkillsView searchNav={searchNav} onSearchConsumed={onSearchConsumed} />
+                </div>
+            )}
+            {activePrimaryTab === 'support' && <SupportView />}
+            {activePrimaryTab === 'boss' && (
+                <BossCompendiumView
+                    focusDungeonId={searchNav?.tab === 'calculator' ? searchNav.dungeonId : undefined}
+                    focusMonsterId={searchNav?.tab === 'calculator' ? searchNav.monsterId : undefined}
+                    onNavigateCalculator={onNavigateCalculator}
+                />
+            )}
         </div>
     );
 };
