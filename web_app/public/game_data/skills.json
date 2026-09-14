@@ -879,7 +879,7 @@
       },
       {
         "SkillID": "NY_XIAN_SKILL_DYFT_XR",
-        "SkillName": "赤乌·大业浮屠·曦日",
+        "SkillName": "赤乌·大业浮屠",
         "RequiredClass": "NIE_YU",
         "Faction": "XIAN",
         "SkillImportanceWeight": 3,
@@ -895,7 +895,46 @@
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
         },
-        "ActionType": "DAMAGE"
+        "ActionType": "DAMAGE",
+        "FourthGenSlot": "CHI_WU",
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          },
+          "HAO_YUE": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          },
+          "XI_RI": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          }
+        }
       },
       {
         "SkillID": "NY_XIAN_SKILL_JRQG",
@@ -921,7 +960,7 @@
     "FO": [
       {
         "SkillID": "NY_FO_SKILL_DYFT_XR",
-        "SkillName": "赤乌·大业浮屠·曦日",
+        "SkillName": "赤乌·大业浮屠",
         "RequiredClass": "NIE_YU",
         "Faction": "FO",
         "SkillImportanceWeight": 2,
@@ -937,7 +976,46 @@
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
         },
-        "ActionType": "DAMAGE"
+        "ActionType": "DAMAGE",
+        "FourthGenSlot": "CHI_WU",
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          },
+          "HAO_YUE": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          },
+          "XI_RI": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          }
+        }
       },
       {
         "SkillID": "NY_FO_SKILL_SYWM",
@@ -983,7 +1061,7 @@
     "MO": [
       {
         "SkillID": "NY_MO_SKILL_DYFT_XR",
-        "SkillName": "赤乌·大业浮屠·曦日",
+        "SkillName": "赤乌·大业浮屠",
         "RequiredClass": "NIE_YU",
         "Faction": "MO",
         "SkillImportanceWeight": 3,
@@ -999,7 +1077,46 @@
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1
         },
-        "ActionType": "DAMAGE"
+        "ActionType": "DAMAGE",
+        "FourthGenSlot": "CHI_WU",
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          },
+          "HAO_YUE": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          },
+          "XI_RI": {
+            "Cooldown": 60,
+            "CastTime": 60,
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 390,
+              "SkillAttackFixedBonus": 5000,
+              "SkillHealthPercentBonus": 90,
+              "SkillManaPercentBonus": 45,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillDamageBonus": 1
+            }
+          }
+        }
       },
       {
         "SkillID": "NY_MO_SKILL_SYWM",
@@ -2449,7 +2566,7 @@
         "HitTiming": {
           "Mode": "EVENLY_DURING_CAST"
         },
-        "Description": "（曦日属性）附加6500固定攻击，200%攻击比，100%爆伤，真气25%，气血25%。之后每一击递增附加10%本体攻击力与自身气血上限与真气上限1%的攻击力。【NOTE】该三因子每击递增引擎MultiHitConfig尚不支持，需引擎扩展或近似，见_todo。",
+        "Description": "附加6500固定攻击，200%攻击比，100%爆伤，真气25%，气血25%。之后每一击递增附加10%本体攻击力与自身气血上限与真气上限1%的攻击力。【NOTE】该三因子每击递增引擎MultiHitConfig尚不支持，需引擎扩展或近似，见_todo。",
         "SkillBonusAttributes": {
           "SkillAttackFixedBonus": 6500,
           "SkillAttackPercentBonus": 200,
@@ -2467,7 +2584,76 @@
         },
         "_todo": "三因子每击递增已通过引擎 MultiHitConfig.PerHitCharacterBonus 实现(扩展后): 第k击(k>1)额外+(k-1)*(10%本体攻击+1%气血上限+1%真气上限)攻击力, 由引擎按角色effMin/effMaxAttack分别作用于min/max基础伤害, avg终伤精确。",
         "_burstTrack": true,
-        "_burstWeightDerivation": "含三因子每击递增(10%本攻+1%气血+1%真气)手动累加; 暴击倍率含+100爆伤"
+        "_burstWeightDerivation": "含三因子每击递增(10%本攻+1%气血+1%真气)手动累加; 暴击倍率含+100爆伤",
+        "FourthGenSlot": "CHI_WU",
+        "FourthGenPresets": {
+          "YING_JU": {
+            "Cooldown": 18,
+            "CastTime": 3,
+            "HitTiming": {
+              "Mode": "EVENLY_DURING_CAST"
+            },
+            "SkillBonusAttributes": {
+              "SkillAttackFixedBonus": 6500,
+              "SkillAttackPercentBonus": 200,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillManaPercentBonus": 25,
+              "SkillHealthPercentBonus": 25,
+              "MultiHitConfig": {
+                "HitCount": 34,
+                "PerHitCharacterBonus": {
+                  "CharacterMaxAttackPercent": 10,
+                  "CharacterHealthPercent": 1,
+                  "CharacterManaPercent": 1
+                }
+              }
+            }
+          },
+          "HAO_YUE": {
+            "Cooldown": 18,
+            "CastTime": 3,
+            "HitTiming": {
+              "Mode": "EVENLY_DURING_CAST"
+            },
+            "SkillBonusAttributes": {
+              "SkillAttackFixedBonus": 6500,
+              "SkillAttackPercentBonus": 200,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillManaPercentBonus": 25,
+              "SkillHealthPercentBonus": 25,
+              "MultiHitConfig": {
+                "HitCount": 34,
+                "PerHitCharacterBonus": {
+                  "CharacterMaxAttackPercent": 10,
+                  "CharacterHealthPercent": 1,
+                  "CharacterManaPercent": 1
+                }
+              }
+            }
+          },
+          "XI_RI": {
+            "Cooldown": 18,
+            "CastTime": 3,
+            "HitTiming": {
+              "Mode": "EVENLY_DURING_CAST"
+            },
+            "SkillBonusAttributes": {
+              "SkillAttackFixedBonus": 6500,
+              "SkillAttackPercentBonus": 200,
+              "SkillCriticalDamagePercentBonus": 100,
+              "SkillManaPercentBonus": 25,
+              "SkillHealthPercentBonus": 25,
+              "MultiHitConfig": {
+                "HitCount": 34,
+                "PerHitCharacterBonus": {
+                  "CharacterMaxAttackPercent": 10,
+                  "CharacterHealthPercent": 1,
+                  "CharacterManaPercent": 1
+                }
+              }
+            }
+          }
+        }
       }
     ]
   },
