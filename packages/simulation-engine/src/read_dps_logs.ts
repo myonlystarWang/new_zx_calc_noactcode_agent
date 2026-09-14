@@ -34,9 +34,12 @@ const moRecommendedSkillIds = [
   'ZS_MO_SKILL_LYLZ'
 ] as const;
 
-const dpsSkillOverrides = Object.fromEntries(
-  moRecommendedSkillIds.map(skillId => [skillId, { FourthGenQuality: 'XI_RI' as const }])
-);
+// 魔逐霜佩戴3个 COMMON 通用四代（玄烛，曦日）：醉月飞觞/点龙睛/云蒸霞蔚
+const dpsEquippedFourthGen = [
+  { skillId: 'ZS_COMMON_FG_ZYFS', quality: 'XI_RI' as const },
+  { skillId: 'ZS_COMMON_FG_DLJ', quality: 'XI_RI' as const },
+  { skillId: 'ZS_COMMON_FG_YZXW', quality: 'XI_RI' as const }
+];
 
 const dpsAttributes = meta.defaultDpsAttributes;
 
@@ -58,7 +61,7 @@ const input: AssembleScenarioInput = {
     classId: 'ZHU_SHUANG',
     faction: 'MO',
     profileAttributes: dpsAttributes,
-    skillOverrides: dpsSkillOverrides,
+    equippedFourthGen: dpsEquippedFourthGen,
     strategy: {
       type: 'SKILL_BAR' as const,
       skillIds: [...moRecommendedSkillIds],

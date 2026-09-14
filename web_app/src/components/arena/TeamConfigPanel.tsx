@@ -32,6 +32,26 @@ interface TeamConfigPanelProps {
     getSkillMiniStatus: (skillId: string) => React.ReactNode;
 }
 
+const COMMON_FACTION_KEY = 'COMMON';
+// 合并阵营技能 + COMMON 通用技能（跨阵营通用四代实体），按 SkillID 去重
+const getFactionSkills = (
+    allSkills: Record<string, Record<string, Skill[]>>,
+    classId: string,
+    faction: string
+): Skill[] => {
+    const cls = allSkills[classId];
+    if (!cls) return [];
+    const merged: Skill[] = [];
+    const seen = new Set<string>();
+    for (const skill of [...(cls[faction] ?? []), ...(cls[COMMON_FACTION_KEY] ?? [])]) {
+        if (!seen.has(skill.SkillID)) {
+            seen.add(skill.SkillID);
+            merged.push(skill);
+        }
+    }
+    return merged;
+};
+
 // 1. DPS Configuration Panel Component (Action Bar Layout)
 export const DpsConfigPanel: React.FC<DpsConfigPanelProps> = ({
     dpsFaction,
@@ -52,7 +72,8 @@ export const DpsConfigPanel: React.FC<DpsConfigPanelProps> = ({
         });
     };
 
-    const factionSkills = allSkills['ZHU_SHUANG']?.[dpsFaction] || [];
+    const factionSkills = getFactionSkills(allSkills, 'ZHU_SHUANG', dpsFaction)
+        .filter(skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE');
 
     return (
         <div className="flex flex-col justify-between h-full">
@@ -294,7 +315,7 @@ export const TeamConfigPanel: React.FC<TeamConfigPanelProps> = ({
     };
 
     const renderSupportSkills = (classId: string, faction: string) => {
-        const factionSkills = allSkills[classId]?.[faction] || [];
+        const factionSkills = getFactionSkills(allSkills, classId, faction);
         const supportSkillList = factionSkills.filter(s => 
             ['TY_FO_SKILL_DCB', 'TY_FO_SKILL_MKXJ', 'ZM_FO_SKILL_FGSL', 'YZ_FO_SKILL_TGFM', 
              'YZ_FO_SKILL_WXBG', 'TH_FO_SKILL_MQYY', 'TH_FO_SKILL_JSKW', 'TH_FO_SKILL_QSYY', 

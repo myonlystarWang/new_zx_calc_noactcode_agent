@@ -2226,28 +2226,6 @@ const testZhuShuangSkills = () => {
     CastTime: 1.4,
     IsAOE: false,
     ActionType: 'BUFF',
-    FourthGenPresets: {
-      "YING_JU": {
-        "AppliesEffects": {
-          "ZS_BUFF_QXHS_SPEED": {
-            "EffectPower": 28,
-            "BuffEffects": {
-              "BuffSpeedPercentEffect": 28
-            }
-          }
-        }
-      },
-      "XI_RI": {
-        "AppliesEffects": {
-          "ZS_BUFF_QXHS_SPEED": {
-            "EffectPower": 44,
-            "BuffEffects": {
-              "BuffSpeedPercentEffect": 44
-            }
-          }
-        }
-      }
-    },
     AppliesEffects: [
       {
         EffectId: 'ZS_BUFF_QXHS_SPEED',
@@ -2387,6 +2365,48 @@ const testZhuShuangSkills = () => {
     SkillBonusAttributes: { SkillDamageBonus: 1 }
   };
 
+  // 玄烛·点龙睛（COMMON 通用四代，内联等价 skills.json 的 ZS_COMMON_FG_DLJ）
+  const dljFourthGen: Skill = {
+    SkillID: 'ZS_COMMON_FG_DLJ',
+    SkillName: '玄烛·点龙睛',
+    RequiredClass: 'ZHU_SHUANG',
+    Faction: 'COMMON',
+    SkillImportanceWeight: 0,
+    SkillFrequency: 0,
+    Cooldown: 0,
+    CastTime: 0,
+    IsAOE: false,
+    SkillBonusAttributes: { SkillDamageBonus: 1 },
+    ActionType: 'FOURTH_GEN_PASSIVE',
+    FourthGenSlot: 'XUAN_ZHU',
+    FourthGenGrants: {
+      YING_JU: [{ TargetSkillIds: ['ZS_XIAN_SKILL_QXHS'], Override: { AppliesEffects: { ZS_BUFF_QXHS_SPEED: { EffectPower: 28, BuffEffects: { BuffSpeedPercentEffect: 28 } } } } }],
+      HAO_YUE: [{ TargetSkillIds: ['ZS_XIAN_SKILL_QXHS'], Override: { AppliesEffects: { ZS_BUFF_QXHS_SPEED: { EffectPower: 36, BuffEffects: { BuffSpeedPercentEffect: 36 } } } } }],
+      XI_RI: [{ TargetSkillIds: ['ZS_XIAN_SKILL_QXHS'], Override: { AppliesEffects: { ZS_BUFF_QXHS_SPEED: { EffectPower: 44, BuffEffects: { BuffSpeedPercentEffect: 44 } } } } }]
+    }
+  };
+
+  // 玄烛·云蒸霞蔚（COMMON，仙魔目标同列；魔无 CRIT_DMG 效果，该项自动忽略）
+  const yzxwFourthGen: Skill = {
+    SkillID: 'ZS_COMMON_FG_YZXW',
+    SkillName: '玄烛·云蒸霞蔚',
+    RequiredClass: 'ZHU_SHUANG',
+    Faction: 'COMMON',
+    SkillImportanceWeight: 0,
+    SkillFrequency: 0,
+    Cooldown: 0,
+    CastTime: 0,
+    IsAOE: false,
+    SkillBonusAttributes: { SkillDamageBonus: 1 },
+    ActionType: 'FOURTH_GEN_PASSIVE',
+    FourthGenSlot: 'XUAN_ZHU',
+    FourthGenGrants: {
+      YING_JU: [{ TargetSkillIds: ['ZS_XIAN_SKILL_YZXW', 'ZS_MO_SKILL_YZXW'], Override: { AppliesEffects: { ZS_BUFF_YZXW_MANA: { BuffEffects: { BuffManaPercentEffect: 30 } }, ZS_BUFF_YZXW_CRIT_DMG: { Duration: 30 } } } }],
+      HAO_YUE: [{ TargetSkillIds: ['ZS_XIAN_SKILL_YZXW', 'ZS_MO_SKILL_YZXW'], Override: { AppliesEffects: { ZS_BUFF_YZXW_MANA: { BuffEffects: { BuffManaPercentEffect: 60 } }, ZS_BUFF_YZXW_CRIT_DMG: { Duration: 35 } } } }],
+      XI_RI: [{ TargetSkillIds: ['ZS_XIAN_SKILL_YZXW', 'ZS_MO_SKILL_YZXW'], Override: { AppliesEffects: { ZS_BUFF_YZXW_MANA: { BuffEffects: { BuffManaPercentEffect: 90 } }, ZS_BUFF_YZXW_CRIT_DMG: { Duration: 40 } } } }]
+    }
+  };
+
   const baseAttr: CharacterAttributes = {
     CharacterMinAttack: 10000,
     CharacterMaxAttack: 10000,
@@ -2521,10 +2541,8 @@ const testZhuShuangSkills = () => {
           classId: 'ZHU_SHUANG',
           role: 'DPS',
           baseAttributes: baseAttr,
-          baseSkills: [clxxSkill, lzyySkill, zgddSkill, qxhsSkill],
-          skillOverrides: {
-            ZS_XIAN_SKILL_QXHS: { FourthGenQuality: 'XI_RI' }
-          },
+          baseSkills: [clxxSkill, lzyySkill, zgddSkill, qxhsSkill, dljFourthGen],
+          equippedFourthGen: [{ skillId: 'ZS_COMMON_FG_DLJ', quality: 'XI_RI' }],
           strategy: {
             type: 'MANUAL_TIMELINE',
             actions: [
@@ -2561,10 +2579,8 @@ const testZhuShuangSkills = () => {
           classId: 'ZHU_SHUANG',
           role: 'DPS',
           baseAttributes: baseAttr,
-          baseSkills: [clxxSkill, lzyySkill, qxhsSkill],
-          skillOverrides: {
-            ZS_XIAN_SKILL_QXHS: { FourthGenQuality: 'XI_RI' }
-          },
+          baseSkills: [clxxSkill, lzyySkill, qxhsSkill, dljFourthGen],
+          equippedFourthGen: [{ skillId: 'ZS_COMMON_FG_DLJ', quality: 'XI_RI' }],
           strategy: {
             type: 'MANUAL_TIMELINE',
             actions: [
@@ -2712,10 +2728,8 @@ const testZhuShuangSkills = () => {
           classId: 'ZHU_SHUANG',
           role: 'DPS',
           baseAttributes: baseAttr,
-          baseSkills: [yzxwSkill],
-          skillOverrides: {
-            ZS_XIAN_SKILL_YZXW: { FourthGenQuality: 'XI_RI' }
-          },
+          baseSkills: [yzxwSkill, yzxwFourthGen],
+          equippedFourthGen: [{ skillId: 'ZS_COMMON_FG_YZXW', quality: 'XI_RI' }],
           strategy: {
             type: 'MANUAL_TIMELINE',
             actions: [{ timeMs: 0, skillId: 'ZS_XIAN_SKILL_YZXW' }]
@@ -2739,10 +2753,8 @@ const testZhuShuangSkills = () => {
           classId: 'ZHU_SHUANG',
           role: 'DPS',
           baseAttributes: baseAttr,
-          baseSkills: [moYzxwSkill],
-          skillOverrides: {
-            ZS_MO_SKILL_YZXW: { FourthGenQuality: 'HAO_YUE' }
-          },
+          baseSkills: [moYzxwSkill, yzxwFourthGen],
+          equippedFourthGen: [{ skillId: 'ZS_COMMON_FG_YZXW', quality: 'HAO_YUE' }],
           strategy: {
             type: 'MANUAL_TIMELINE',
             actions: [{ timeMs: 0, skillId: 'ZS_MO_SKILL_YZXW' }]

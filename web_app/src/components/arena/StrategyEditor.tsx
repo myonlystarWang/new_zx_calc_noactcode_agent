@@ -15,11 +15,13 @@ export const StrategyEditor: React.FC<StrategyEditorProps> = ({
     strategy,
     onStrategyChange
 }) => {
-    const [selectedSkillToAdd, setSelectedSkillToAdd] = useState<string>(dpsSkills[0]?.SkillID || '');
+    // 四代被动不进入技能循环/策略，仅在四代装备区佩戴
+    const cycleSkills = dpsSkills.filter(s => s.ActionType !== 'FOURTH_GEN_PASSIVE');
+    const [selectedSkillToAdd, setSelectedSkillToAdd] = useState<string>(cycleSkills[0]?.SkillID || '');
     
     // Manual timeline row inputs
     const [newTimeMs, setNewTimeMs] = useState<number>(0);
-    const [newSkillId, setNewSkillId] = useState<string>(dpsSkills[0]?.SkillID || '');
+    const [newSkillId, setNewSkillId] = useState<string>(cycleSkills[0]?.SkillID || '');
     const [newTarget, setNewTarget] = useState<string>('boss');
     const newOnUnavailable = 'SKIP';
 
@@ -36,14 +38,14 @@ export const StrategyEditor: React.FC<StrategyEditorProps> = ({
         } else if (type === 'FIXED_ROTATION') {
             onStrategyChange({
                 type: 'FIXED_ROTATION',
-                skillIds: dpsSkills.slice(0, 5).map(s => s.SkillID),
+                skillIds: cycleSkills.slice(0, 5).map(s => s.SkillID),
                 startTimeMs,
                 waitMs: 0
             });
         } else {
             onStrategyChange({
                 type: 'SKILL_BAR',
-                skillIds: dpsSkills.slice(0, 5).map(s => s.SkillID),
+                skillIds: cycleSkills.slice(0, 5).map(s => s.SkillID),
                 startTimeMs,
                 scanMode: 'FROM_FIRST_EACH_DECISION',
                 waitMs: 0
@@ -330,7 +332,7 @@ export const StrategyEditor: React.FC<StrategyEditorProps> = ({
                             onChange={(e) => setSelectedSkillToAdd(e.target.value)}
                             className="flex-1 bg-slate-950/80 border border-slate-800 text-slate-300 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none"
                         >
-                            {dpsSkills.map(s => (
+                            {cycleSkills.map(s => (
                                 <option key={s.SkillID} value={s.SkillID}>
                                     {s.SkillName} (CD: {s.Cooldown}s / 释: {s.CastTime}s)
                                 </option>
@@ -369,7 +371,7 @@ export const StrategyEditor: React.FC<StrategyEditorProps> = ({
                                 onChange={(e) => setNewSkillId(e.target.value)}
                                 className="w-full bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold focus:outline-none"
                             >
-                                {dpsSkills.map(s => (
+                                {cycleSkills.map(s => (
                                     <option key={s.SkillID} value={s.SkillID}>{s.SkillName}</option>
                                 ))}
                             </select>

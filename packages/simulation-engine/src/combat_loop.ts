@@ -889,49 +889,6 @@ export class SimulationEngine {
     const sourceRuntime = this.getRuntimeActor(sourceActorId);
     const skill = sourceSkillId ? sourceRuntime?.actor.getSkill(sourceSkillId) : undefined;
 
-    if (effect.EffectId === 'ZS_BUFF_YZXW_MANA') {
-      const quality = skill?.FourthGenQuality || 'OTHER';
-      let manaPct = 30;
-      if (quality === 'YING_JU') {
-        manaPct = 30;
-      } else if (quality === 'HAO_YUE') {
-        manaPct = 60;
-      } else if (quality === 'XI_RI') {
-        manaPct = 90;
-      }
-      return {
-        effect: {
-          ...effect,
-          BuffEffects: {
-            ...effect.BuffEffects,
-            BuffManaPercentEffect: manaPct
-          }
-        }
-      };
-    }
-
-    if (effect.EffectId === 'ZS_BUFF_YZXW_CRIT_DMG') {
-      const quality = skill?.FourthGenQuality || 'OTHER';
-      let duration = 20;
-      if (quality === 'YING_JU') {
-        duration = 20 + 10;
-      } else if (quality === 'HAO_YUE') {
-        duration = 20 + 15;
-      } else if (quality === 'XI_RI') {
-        duration = 20 + 20;
-      }
-      return {
-        effect: {
-          ...effect,
-          Duration: duration,
-          BuffEffects: {
-            ...effect.BuffEffects,
-            BuffCriticalDamagePercentEffect: 50
-          }
-        }
-      };
-    }
-
     if (effect.EffectId === 'ZM_BUFF_FGSL') {
       return {
         effect: {
