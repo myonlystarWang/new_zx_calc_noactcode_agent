@@ -1909,36 +1909,74 @@
               "BuffMonsterHarmedPercentEffect": 30
             }
           }
-        ],
-        "FourthGenPresets": {
-          "YING_JU": {
-            "AppliesEffects": {
-              "YZ_DEBUFF_BS_GREEN_HARMED": {
-                "BuffEffects": {
-                  "BuffMonsterHarmedPercentEffect": 40
+        ]
+      },
+      {
+        "SkillID": "YZ_FO_FG_BS",
+        "SkillName": "玄烛·背水",
+        "RequiredClass": "YING_ZHAO",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "YZ_FO_SKILL_BS"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "YZ_DEBUFF_BS_GREEN_HARMED": {
+                    "BuffEffects": {
+                      "BuffMonsterHarmedPercentEffect": 40
+                    }
+                  }
                 }
               }
             }
-          },
-          "HAO_YUE": {
-            "AppliesEffects": {
-              "YZ_DEBUFF_BS_GREEN_HARMED": {
-                "BuffEffects": {
-                  "BuffMonsterHarmedPercentEffect": 40
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "YZ_FO_SKILL_BS"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "YZ_DEBUFF_BS_GREEN_HARMED": {
+                    "BuffEffects": {
+                      "BuffMonsterHarmedPercentEffect": 40
+                    }
+                  }
                 }
               }
             }
-          },
-          "XI_RI": {
-            "AppliesEffects": {
-              "YZ_DEBUFF_BS_GREEN_HARMED": {
-                "BuffEffects": {
-                  "BuffMonsterHarmedPercentEffect": 40
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "YZ_FO_SKILL_BS"
+              ],
+              "Override": {
+                "AppliesEffects": {
+                  "YZ_DEBUFF_BS_GREEN_HARMED": {
+                    "BuffEffects": {
+                      "BuffMonsterHarmedPercentEffect": 40
+                    }
+                  }
                 }
               }
             }
-          }
-        }
+          ]
+        },
+        "Description": "佩戴后增强背水的令怪物易伤效果：基础30%→40%（三品质同值）。"
       },
       {
         "SkillID": "YZ_FO_SKILL_GJ",
