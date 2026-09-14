@@ -187,27 +187,28 @@ async function main() {
   );
   console.log("- AppliedEffect Duration 与 BuffEffects 覆写成功，且未污染白板技能 [SUCCESS]");
   
-  console.log("\n[测试 B-2c] 运行 4代技能品质 (FourthGenQuality) 自动预设融合检测...");
+  console.log("\n[测试 B-2c] 运行 4代技能品质 (FourthGenGrants 迁移) 数据校验...");
   const tianyinSkills = allSkills.TIAN_YIN?.FO || [];
   assert.ok(tianyinSkills.length > 0, "未读取到 TIAN_YIN.FO 技能，无法进行四代预设融合测试。");
-  
-  // 实例化具有 "XI_RI" 曦日品质摩柯心经的天音 Actor
-  const tyActor = new Actor("tianyin-player-1", "TIAN_YIN", tianyinSkills, {
-    "TY_FO_SKILL_MKXJ": {
-      "FourthGenQuality": "XI_RI"
-    }
-  });
-  
-  const mkxj = tyActor.Skills["TY_FO_SKILL_MKXJ"];
-  assert.ok(mkxj, "天音 Actor 中缺少 'TY_FO_SKILL_MKXJ' 技能实例");
-  assert.equal(mkxj.Cooldown, 90, "曦日品质 CD 自动缩短失败（应当为 90s）");
-  const mkxjEffect = mkxj.AppliesEffects?.[0];
-  assert.ok(mkxjEffect, "摩柯心经缺少 AppliedEffect。");
-  assert.equal(mkxjEffect.DynamicScalingMultiplier, 8.0, "曦日品质气血加成倍数自动应用失败（应当为 8.0）");
-  console.log(`- 校验技能名称: ${mkxj.SkillName}`);
-  console.log(`- Cooldown CD 自动应用曦日预设: 预期 90s -> 实际 ${mkxj.Cooldown}s [SUCCESS]`);
-  console.log(`- 气血加成系数自动应用曦日预设: 预期 8.0 -> 实际 ${mkxjEffect.DynamicScalingMultiplier} [SUCCESS]`);
-  console.log("- 4代技能品质 (FourthGenQuality) 自动预设融合成功 [SUCCESS]");
+
+  // 验证普通技能摩柯心经已恢复白板（无 FourthGenPresets）
+  const mkxjBase = tianyinSkills.find(s => s.SkillID === 'TY_FO_SKILL_MKXJ');
+  assert.ok(mkxjBase, "天音技能列表中缺少 TY_FO_SKILL_MKXJ");
+  assert.equal(mkxjBase.FourthGenPresets, undefined, "摩柯心经普通技能不应再带 FourthGenPresets");
+  assert.equal(mkxjBase.Cooldown, 180, "摩柯心经白板 CD 应为 180s");
+
+  // 验证四代实体玄烛·摩柯心经的 Grants 数据
+  const mkxjFG = tianyinSkills.find(s => s.SkillID === 'TY_FO_FG_MKXJ');
+  assert.ok(mkxjFG, "天音技能列表中缺少四代实体 TY_FO_FG_MKXJ");
+  assert.equal(mkxjFG.FourthGenSlot, 'XUAN_ZHU', "四代实体应为玄烛槽位");
+  const xiRiGrant = mkxjFG.FourthGenGrants?.XI_RI?.[0];
+  assert.ok(xiRiGrant, "四代实体缺少 XI_RI 品质 Grants");
+  assert.deepEqual(xiRiGrant.TargetSkillIds, ['TY_FO_SKILL_MKXJ'], "Grants 应指向摩柯心经");
+  assert.equal(xiRiGrant.Override.Cooldown, 90, "曦日品质 CD 应为 90s");
+  assert.equal(xiRiGrant.Override.AppliesEffects?.TY_BUFF_MKXJ_HEALTH?.DynamicScalingMultiplier, 8.0, "曦日品质气血倍数应为 8.0");
+  console.log(`- 校验四代实体: ${mkxjFG.SkillName}`);
+  console.log(`- 白板摩柯心经 CD=180s，四代曦日 Grants CD=90s、气血倍数=8.0 [SUCCESS]`);
+  console.log("- 4代技能品质 (FourthGenGrants 迁移) 数据校验成功 [SUCCESS]");
 
   console.log("\n[测试 B-4b] 运行 4代/动态字段 Schema 反例校验...");
   const invalidDynamicEffect: AppliedEffectConfig = {
