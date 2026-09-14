@@ -89,6 +89,11 @@ export function applyOverrideAdditive(skill: Skill, ovr: Partial<PlayerSkillOver
 /** 是否为不进入输出循环的四代被动条目 */
 export const isFourthGenPassive = (skill: Skill): boolean => skill.ActionType === 'FOURTH_GEN_PASSIVE';
 
+/** 取四代实体在指定品质下的初始效果模板（佩戴后场景开始时施加，空数组兜底） */
+export function getFourthGenInitialEffects(fg: Skill, quality: FourthGenQuality): AppliedEffectConfig[] {
+  return fg.FourthGenInitialEffects?.[quality] ?? [];
+}
+
 /**
  * 佩戴槽位硬校验：玄烛≤3、赤乌≤1、总数≤4；超限抛错。
  * 佩戴了技能表中不存在 / 缺少槽位标记的实体时仅告警并跳过（不中断计算）。

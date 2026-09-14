@@ -96,6 +96,8 @@ export interface Skill {
   FourthGenSlot?: FourthGenSlot;
   /** 四代"作用其他技能"：按品质列出对目标技能的增益；"作用本技能"仍走 FourthGenPresets */
   FourthGenGrants?: Partial<Record<FourthGenQuality, FourthGenGrant[]>>;
+  /** 四代"初始效果"：佩戴后在场景开始时施加到目标的 BUFF/DEBUFF（如给 Boss 常驻易伤），按品质列出 */
+  FourthGenInitialEffects?: Partial<Record<FourthGenQuality, AppliedEffectConfig[]>>;
   BuffDurationExtensionSeconds?: number;
   SkillLevel?: number;
   Variant?: string;
