@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Clock, Zap, RotateCcw, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Search, Clock, Zap, RotateCcw } from 'lucide-react';
 import clsx from 'clsx';
 import { pinyin } from 'pinyin-pro';
 import { DataService } from '../../services/DataService';
@@ -157,9 +157,12 @@ function getUnifiedSkillData(skill: SkillItem, idToNameMap: Record<string, strin
                 phaseDescs.push(`第${p.PhaseIndex}阶段(${p.Duration}s): ${pParts.join('、')}`);
             }
             return {
-                badgeText: '全队·两阶段',
+                badgeText: '团队增益',
                 badgeTheme: 'buff',
-                attributes: phaseDescs.map((desc, idx) => ({ label: `阶段${idx + 1}`, value: desc, isPrimary: idx === 1 })),
+                attributes: [
+                    { label: '持续时间', value: '两阶段', isPrimary: true },
+                    ...phaseDescs.map((desc, idx) => ({ label: `阶段${idx + 1}`, value: desc, isPrimary: idx === 1 }))
+                ],
                 mechanicNote: '多阶段自动流转增益技能，二段增益大幅强化神圣伤害与团队专注。'
             };
         }
@@ -182,15 +185,15 @@ function getUnifiedSkillData(skill: SkillItem, idToNameMap: Record<string, strin
                         if (v === 0) continue;
 
                         if (k === 'BuffCriticalHitRatePercentEffect') stats.push({ label: '暴击率', value: `+${v}%`, isPrimary: true });
-                        else if (k === 'BuffCriticalDamagePercentEffect') stats.push({ label: '暴伤', value: `+${v}%`, isPrimary: true });
+                        else if (k === 'BuffCriticalDamagePercentEffect') stats.push({ label: '附加暴击伤害', value: `+${v}%`, isPrimary: true });
                         else if (k === 'BuffFocusPercentEffect') stats.push({ label: '专注', value: `+${v}%` });
                         else if (k === 'BuffSpeedPercentEffect') stats.push({ label: '施法速度', value: `+${v}%` });
-                        else if (k === 'BuffAttackPercentEffect') stats.push({ label: '攻击力', value: `+${v}%`, isPrimary: true });
-                        else if (k === 'BuffAttackFixedEffect') stats.push({ label: '固定攻', value: `+${v.toLocaleString()}` });
-                        else if (k === 'BuffHealthPercentEffect') stats.push({ label: '气血上限', value: `+${v}%` });
-                        else if (k === 'BuffHealthFixedEffect') stats.push({ label: '固定气血', value: `+${v.toLocaleString()}` });
-                        else if (k === 'BuffManaPercentEffect') stats.push({ label: '真气上限', value: `+${v}%` });
-                        else if (k === 'BuffDefensePercentEffect') stats.push({ label: '防御力', value: `+${v}%` });
+                        else if (k === 'BuffAttackPercentEffect') stats.push({ label: '附加攻击百分比', value: `+${v}%`, isPrimary: true });
+                        else if (k === 'BuffAttackFixedEffect') stats.push({ label: '附加固定攻击', value: `+${v.toLocaleString()}` });
+                        else if (k === 'BuffHealthPercentEffect') stats.push({ label: '附加气血百分比', value: `+${v}%` });
+                        else if (k === 'BuffHealthFixedEffect') stats.push({ label: '附加固定气血', value: `+${v.toLocaleString()}` });
+                        else if (k === 'BuffManaPercentEffect') stats.push({ label: '附加真气百分比', value: `+${v}%` });
+                        else if (k === 'BuffDefensePercentEffect') stats.push({ label: '附加防御百分比', value: `+${v}%` });
                         else if (k === 'BuffDefenseFixedEffect') stats.push({ label: '破防', value: v < 0 ? String(v.toLocaleString()) : `+${v.toLocaleString()}`, isPrimary: true });
                         else if (k === 'BuffMonsterHarmedPercentEffect') stats.push({ label: '易伤', value: `+${v}%`, isPrimary: true });
                         else if (k === 'BuffMonsterCriticalDamagePercentEffect') stats.push({ label: '绿点', value: `+${v}%`, isPrimary: true });
@@ -200,28 +203,42 @@ function getUnifiedSkillData(skill: SkillItem, idToNameMap: Record<string, strin
             }
         }
 
-        // 描述文本加成提取补充（如逐霜 20%暴击率、100%暴击伤害）
+        // 描述文本加成提取补充
         if (skill.Description) {
             const critRateMatch = skill.Description.match(/(\d+)%\s*暴击率/);
             if (critRateMatch && !stats.some(x => x.label === '暴击率')) stats.push({ label: '暴击率', value: `+${critRateMatch[1]}%`, isPrimary: true });
             const critDmgMatch = skill.Description.match(/(\d+)%\s*(?:暴击伤害|暴伤)/);
-            if (critDmgMatch && !stats.some(x => x.label === '暴伤')) stats.push({ label: '暴伤', value: `+${critDmgMatch[1]}%`, isPrimary: true });
+            if (critDmgMatch && !stats.some(x => x.label === '附加暴击伤害')) stats.push({ label: '附加暴击伤害', value: `+${critDmgMatch[1]}%`, isPrimary: true });
             const focusMatch = skill.Description.match(/(\d+)%\s*专注/);
             if (focusMatch && !stats.some(x => x.label === '专注')) stats.push({ label: '专注', value: `+${focusMatch[1]}%` });
             const speedMatch = skill.Description.match(/(\d+)%\s*施法速度/);
             if (speedMatch && !stats.some(x => x.label === '施法速度')) stats.push({ label: '施法速度', value: `+${speedMatch[1]}%` });
             const atkMatch = skill.Description.match(/(\d+)%\s*攻击(?:力)?/);
-            if (atkMatch && !stats.some(x => x.label === '攻击力')) stats.push({ label: '攻击力', value: `+${atkMatch[1]}%`, isPrimary: true });
+            if (atkMatch && !stats.some(x => x.label === '附加攻击百分比')) stats.push({ label: '附加攻击百分比', value: `+${atkMatch[1]}%`, isPrimary: true });
             const hpMatch = skill.Description.match(/(\d+)%\s*气血/);
-            if (hpMatch && !stats.some(x => x.label === '气血上限')) stats.push({ label: '气血上限', value: `+${hpMatch[1]}%` });
+            if (hpMatch && !stats.some(x => x.label === '附加气血百分比')) stats.push({ label: '附加气血百分比', value: `+${hpMatch[1]}%` });
         }
 
         if (skill.SkillFrequency !== undefined) {
             stats.push({ label: '频率', value: String(skill.SkillFrequency) });
         }
 
-        const durText = maxDur >= 3600 || (maxDur >= 600 && skill.Cooldown === 0) ? '常驻' : maxDur > 0 ? `持续 ${maxDur}s` : '';
-        const badgeLabel = durText ? `${target} · ${durText}` : target;
+        // 持续时间作为一个单独的框出现！
+        if (maxDur === 0 && skill.Description) {
+            const durMatch = skill.Description.match(/持续时间\s*(\d+)\s*(?:秒|s)/);
+            if (durMatch) maxDur = parseInt(durMatch[1], 10);
+        }
+        if (maxDur > 0) {
+            const durText = maxDur >= 3600 || (maxDur >= 600 && skill.Cooldown === 0) ? '常驻' : `${maxDur} 秒`;
+            stats.unshift({ label: '持续时间', value: durText, isPrimary: true });
+        }
+
+        // 机制类型简练命名，绝不换行
+        let targetLabel = '自身增益';
+        if (skill.ActionType === 'DEBUFF' || target === '目标敌怪') targetLabel = '目标敌怪';
+        else if (target === '全队') targetLabel = '团队增益';
+        else if (target === '单体队友') targetLabel = '单体队友';
+        else targetLabel = '自身增益';
 
         // 保留完整的机制/技能说明文本
         let mechanicText: string | null = null;
@@ -230,7 +247,7 @@ function getUnifiedSkillData(skill: SkillItem, idToNameMap: Record<string, strin
         }
 
         return {
-            badgeText: badgeLabel,
+            badgeText: targetLabel,
             badgeTheme: skill.ActionType === 'DEBUFF' ? 'debuff' : 'buff',
             attributes: stats,
             mechanicNote: mechanicText
@@ -239,37 +256,42 @@ function getUnifiedSkillData(skill: SkillItem, idToNameMap: Record<string, strin
 
     // 3. 输出伤害技能（纯伤害/单体/群体）
     const stats: AttributeItem[] = [];
-    if (multiHit?.HitCount) {
-        stats.push({ label: '段数', value: `${multiHit.HitCount}段`, isPrimary: true });
+    let hitCount = multiHit?.HitCount;
+    if (!hitCount && skill.SkillName.includes('未名斩')) {
+        hitCount = 6;
+    }
+
+    if (hitCount) {
+        stats.push({ label: '段数', value: `${hitCount}段`, isPrimary: true });
     } else if (skill.ActionType === 'DAMAGE') {
         stats.push({ label: '段数', value: '单段' });
     }
 
     if (bonus.SkillAttackPercentBonus) {
-        stats.push({ label: '攻击比', value: `+${bonus.SkillAttackPercentBonus}%`, isPrimary: true });
+        stats.push({ label: '附加攻击百分比', value: `+${bonus.SkillAttackPercentBonus}%`, isPrimary: true });
     }
     if (bonus.SkillAttackFixedBonus) {
-        stats.push({ label: '固定攻', value: `+${bonus.SkillAttackFixedBonus}` });
+        stats.push({ label: '附加固定攻击', value: `+${bonus.SkillAttackFixedBonus}` });
     }
     if (bonus.SkillHealthPercentBonus) {
         const isScaling = multiHit?.ScalingAttribute === 'SkillHealthPercentBonus';
         stats.push({
-            label: '气血',
+            label: '附加气血百分比',
             value: isScaling ? `${multiHit.ScalingStartValue}%→${multiHit.ScalingEndValue}%` : `+${bonus.SkillHealthPercentBonus}%`
         });
     }
     if (bonus.SkillManaPercentBonus) {
         const isScaling = multiHit?.ScalingAttribute === 'SkillManaPercentBonus';
         stats.push({
-            label: '真气',
+            label: '附加真气百分比',
             value: isScaling ? `${multiHit.ScalingStartValue}%→${multiHit.ScalingEndValue}%` : `+${bonus.SkillManaPercentBonus}%`
         });
     }
     if (bonus.SkillDefensePercentBonus) {
-        stats.push({ label: '防御', value: `+${bonus.SkillDefensePercentBonus}%` });
+        stats.push({ label: '附加防御百分比', value: `+${bonus.SkillDefensePercentBonus}%` });
     }
     if (bonus.SkillCriticalDamagePercentBonus) {
-        stats.push({ label: '暴伤', value: `+${bonus.SkillCriticalDamagePercentBonus}%`, isPrimary: true });
+        stats.push({ label: '附加暴击伤害', value: `+${bonus.SkillCriticalDamagePercentBonus}%`, isPrimary: true });
     }
     if (bonus.SkillDamageBonus && bonus.SkillDamageBonus > 1) {
         const v = bonus.SkillDamageBonus > 10 ? bonus.SkillDamageBonus : bonus.SkillDamageBonus * 100;
@@ -470,29 +492,6 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
 
     return (
         <div className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pb-12 animate-in fade-in duration-300">
-            {/* 面包屑与顶部导航 */}
-            <div className="flex items-center justify-between gap-4 py-3 mb-4 border-b border-slate-800/80">
-                <div className="flex items-center gap-2 text-xs md:text-sm text-slate-400">
-                    {onNavigateHome ? (
-                        <button
-                            onClick={onNavigateHome}
-                            className="flex items-center gap-1.5 text-slate-400 hover:text-cyan-400 transition-colors"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            <span>返回首页</span>
-                        </button>
-                    ) : (
-                        <span>首页</span>
-                    )}
-                    <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-                    <span className="text-cyan-400 font-bold">职业技能速查</span>
-                </div>
-
-                <div className="text-xs text-slate-400 font-mono">
-                    当前门派共 <span className="text-cyan-400 font-bold">{filteredSkills.length}</span> 项技能
-                </div>
-            </div>
-
             {/* 门派切换 Ribbon (10大职业) */}
             <div className="flex flex-wrap gap-2 mb-4 pb-2 border-b border-slate-800/60">
                 {CLASS_ORDER.map((cls) => {
@@ -566,7 +565,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
                     <p className="text-xs text-slate-600 mt-1">请尝试更换阵营或清空搜索关键词</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4.5 lg:gap-5">
                     {filteredSkills.map((sk) => (
                         <SkillCard
                             key={sk.SkillID}
@@ -582,7 +581,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
     );
 };
 
-/** 单个技能卡片组件：以克制、高级、高度统合的视觉结构呈现技能各项要素 */
+/** 单个技能卡片组件：方案 B（结构化矩阵数据表） */
 const SkillCard: React.FC<{
     skill: SkillItem;
     isHighlighted?: boolean;
@@ -592,13 +591,13 @@ const SkillCard: React.FC<{
     // 阵营 Badge
     const factionBadge = useMemo(() => {
         if (skill.Faction === 'XIAN') {
-            return <span className="px-1.5 py-0.2 rounded text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">仙</span>;
+            return <span className="px-1.5 py-0.2 rounded text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shrink-0">仙</span>;
         }
         if (skill.Faction === 'FO') {
-            return <span className="px-1.5 py-0.2 rounded text-[11px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">佛</span>;
+            return <span className="px-1.5 py-0.2 rounded text-[11px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 shrink-0">佛</span>;
         }
         if (skill.Faction === 'MO') {
-            return <span className="px-1.5 py-0.2 rounded text-[11px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30">魔</span>;
+            return <span className="px-1.5 py-0.2 rounded text-[11px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30 shrink-0">魔</span>;
         }
         return null;
     }, [skill.Faction]);
@@ -621,38 +620,39 @@ const SkillCard: React.FC<{
         <div
             id={`skill-${skill.SkillID}`}
             className={clsx(
-                'group rounded-xl p-3.5 transition-all duration-200 border bg-slate-900/80 hover:border-cyan-500/40 hover:bg-slate-900/95 flex flex-col justify-start gap-2.5',
+                'group rounded-xl p-4 transition-all duration-200 border bg-slate-900/85 hover:border-cyan-500/40 hover:bg-slate-900/95 flex flex-col justify-start gap-3.5 shadow-md',
                 isHighlighted
-                    ? 'border-cyan-400 bg-cyan-950/20 ring-2 ring-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
+                    ? 'border-cyan-400 bg-cyan-950/25 ring-2 ring-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
                     : 'border-slate-800/80'
             )}
         >
             {/* 1. 卡片头部：技能名 + 阵营 + 冷却/施法/充能 */}
-            <div className="flex items-center justify-between gap-2 border-b border-slate-800/50 pb-2">
-                <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-                    <h3 className="text-[15px] font-bold text-slate-100 tracking-wide">
+            <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                <div className="flex items-center gap-2 flex-wrap min-w-0">
+                    <span className="w-1.5 h-4.5 bg-cyan-400 rounded-full shrink-0"></span>
+                    <h3 className="text-[15px] font-black text-slate-100 tracking-wide group-hover:text-cyan-300 transition-colors truncate">
                         {skill.SkillName}
                     </h3>
                     {factionBadge}
                     {skill.SkillImportanceWeight !== undefined && skill.SkillImportanceWeight > 0 && (
-                        <span className="text-[10px] font-mono text-slate-500">
+                        <span className="text-[10px] font-mono text-slate-500 shrink-0">
                             权重{skill.SkillImportanceWeight}
                         </span>
                     )}
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs font-mono shrink-0 flex-wrap justify-end">
-                    <span className="px-2 py-0.5 rounded font-medium bg-slate-800/60 text-slate-200 border border-slate-700/60 flex items-center gap-1">
+                    <span className="px-2 py-0.5 rounded-md font-medium bg-slate-800/70 text-slate-200 border border-slate-700/60 flex items-center gap-1">
                         <Clock className="w-3 h-3 text-cyan-400" />
                         {skill.Cooldown > 0 ? `${skill.Cooldown}s 冷却` : '0s 冷却'}
                     </span>
 
-                    <span className="px-2 py-0.5 rounded text-slate-200 bg-slate-800/60 border border-slate-700/60">
+                    <span className="px-2 py-0.5 rounded-md text-slate-300 bg-slate-800/70 border border-slate-700/60">
                         {skill.CastTime > 0 ? `${skill.CastTime}s 施法` : '瞬发'}
                     </span>
 
                     {skill.MaxCharges && skill.MaxCharges > 1 && (
-                        <span className="px-2 py-0.5 rounded font-bold bg-purple-950/50 text-purple-300 border border-purple-800/60 flex items-center gap-1">
+                        <span className="px-2 py-0.5 rounded-md font-bold bg-purple-950/60 text-purple-300 border border-purple-800/60 flex items-center gap-1">
                             <Zap className="w-3 h-3 text-purple-400" />
                             {skill.MaxCharges}层充能 ({skill.ChargeReplenishTime ? `${skill.ChargeReplenishTime}s恢复` : `${skill.Cooldown}s`})
                         </span>
@@ -660,59 +660,62 @@ const SkillCard: React.FC<{
                 </div>
             </div>
 
-            {/* 2. 核心规格属性条 (单块流式排版，平静克制，拒绝碎片化方框) */}
+            {/* 2. 技能规格属性矩阵 (方案 B: 结构化矩阵数据表) */}
             {unifiedData.attributes.length > 0 && (
-                <div className="bg-slate-950/70 rounded-lg px-2.5 py-2 border border-slate-800/70 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs">
-                    {/* 归类标签 */}
-                    <span
-                        className={clsx(
-                            'text-[11px] font-bold px-1.5 py-0.2 rounded border shrink-0',
-                            unifiedData.badgeTheme === 'damage' && 'bg-slate-800/60 text-slate-300 border-slate-700/60',
-                            unifiedData.badgeTheme === 'buff' && 'bg-cyan-950/40 text-cyan-300 border-cyan-800/50',
-                            unifiedData.badgeTheme === 'debuff' && 'bg-rose-950/40 text-rose-300 border-rose-800/50',
-                            unifiedData.badgeTheme === 'utility' && 'bg-sky-950/40 text-sky-300 border-sky-800/50'
-                        )}
-                    >
-                        {unifiedData.badgeText}
-                    </span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+                    {/* 第一项：技能类型/机制归类标签 */}
+                    {unifiedData.badgeText && (
+                        <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-950/70 border border-slate-800/70">
+                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">机制类型</span>
+                            <span
+                                className={clsx(
+                                    'text-[11px] font-bold px-1.5 py-0.2 rounded border shrink-0 whitespace-nowrap',
+                                    unifiedData.badgeTheme === 'damage' && 'bg-slate-800/60 text-slate-300 border-slate-700/60',
+                                    unifiedData.badgeTheme === 'buff' && 'bg-cyan-950/40 text-cyan-300 border-cyan-800/50',
+                                    unifiedData.badgeTheme === 'debuff' && 'bg-rose-950/40 text-rose-300 border-rose-800/50',
+                                    unifiedData.badgeTheme === 'utility' && 'bg-sky-950/40 text-sky-300 border-sky-800/50'
+                                )}
+                            >
+                                {unifiedData.badgeText}
+                            </span>
+                        </div>
+                    )}
 
-                    {/* 流式属性键值对 */}
+                    {/* 各属性规格键值对 */}
                     {unifiedData.attributes.map((attr, aIdx) => (
-                        <React.Fragment key={aIdx}>
-                            <div className="inline-flex items-center gap-1 font-mono">
-                                {attr.label && <span className="text-slate-400 text-[11px]">{attr.label}</span>}
-                                <span
-                                    className={clsx(
-                                        'font-bold text-[12px]',
-                                        attr.isPrimary
-                                            ? 'text-cyan-300'
-                                            : unifiedData.badgeTheme === 'debuff'
-                                            ? 'text-rose-300'
-                                            : 'text-slate-200'
-                                    )}
-                                >
-                                    {attr.value}
-                                </span>
-                            </div>
-                            {aIdx < unifiedData.attributes.length - 1 && (
-                                <span className="text-slate-700 select-none">·</span>
-                            )}
-                        </React.Fragment>
+                        <div
+                            key={aIdx}
+                            className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-950/60 border border-slate-800/60"
+                        >
+                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">{attr.label || '属性'}</span>
+                            <span
+                                className={clsx(
+                                    'font-mono font-bold text-xs shrink-0 whitespace-nowrap',
+                                    attr.isPrimary
+                                        ? 'text-cyan-300'
+                                        : unifiedData.badgeTheme === 'debuff'
+                                        ? 'text-rose-300'
+                                        : 'text-slate-200'
+                                )}
+                            >
+                                {attr.value}
+                            </span>
+                        </div>
                     ))}
                 </div>
             )}
 
-            {/* 3. 特殊战斗机制说明 (仅保留实质性机制，无占位符，排版温和) */}
+            {/* 3. 特殊战斗机制说明 (仅保留实质性机制，排版整洁) */}
             {unifiedData.mechanicNote && (
-                <div className="text-xs text-slate-300/90 leading-relaxed px-0.5">
+                <p className="text-xs text-slate-300/85 leading-relaxed px-1 pt-1 border-t border-slate-800/60">
                     {renderQuietDescription(unifiedData.mechanicNote)}
-                </div>
+                </p>
             )}
 
-            {/* 4. 战术重置胶囊 (针对非纯辅助但带刷新的技能，或底部平滑导航) */}
+            {/* 4. 战术重置胶囊 */}
             {skill.ActionType !== 'UTILITY' && resets.length > 0 && (
-                <div className="pt-1.5 border-t border-slate-800/40 flex items-center justify-between gap-2 text-xs">
-                    <div className="flex items-center gap-1 text-slate-400">
+                <div className="pt-2 border-t border-slate-800/40 flex items-center justify-between gap-2 text-xs">
+                    <div className="flex items-center gap-1 text-slate-400 text-[11px]">
                         <RotateCcw className="w-3 h-3 text-cyan-400 shrink-0" />
                         <span>充能刷新:</span>
                     </div>

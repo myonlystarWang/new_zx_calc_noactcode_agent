@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, X, Crosshair, Shield, Heart, Zap, Swords, Filter } from 'lucide-react';
+import { Search, X, Swords } from 'lucide-react';
 import clsx from 'clsx';
 import { pinyin } from 'pinyin-pro';
 import { DataService } from '../../services/DataService';
@@ -21,21 +21,64 @@ const DIFFICULTY_CONFIG: Record<string, { label: string; badge: string }> = {
     '极难': { label: '极难', badge: 'bg-rose-500/15 border-rose-500/30 text-rose-400' },
 };
 
-// 副本大类归类
-type DungeonCategory = 'all' | 'highTier' | 'events' | 'classicTeam' | 'trials';
+// 副本分类定义
+type DungeonCategory = 'all' | 'tben' | 'tuanben' | 'trials';
 
 const DUNGEON_CATEGORIES: { id: DungeonCategory; label: string }[] = [
     { id: 'all', label: '全部副本' },
-    { id: 'highTier', label: '高阶挑战 (T19~T21)' },
-    { id: 'events', label: '特殊活动 (宝库/流波)' },
-    { id: 'classicTeam', label: '经典团队 (T16~T18)' },
-    { id: 'trials', label: '历练与试炼' },
+    { id: 'tben', label: 'T本（T16-T21）' },
+    { id: 'tuanben', label: '团本（兽神、空桑、天帝、流波）' },
+    { id: 'trials', label: '历练与试炼（四象五行、悬夜林）' },
 ];
 
+// 二级筛选简写映射
+const DUNGEON_SHORT_LABELS: Record<string, string> = {
+    HUIMENG_LINGYUN_T16: 'T16',
+    HUIMENG_LINGYUN_T17: 'T17',
+    HUIMENG_LINGYUN_T18: 'T18',
+    ZHENHAI_DUANLANG_T19: 'T19',
+    ZHENHAI_DUANLANG_T20: 'T20',
+    ZHENHAI_DUANLANG_T21: 'T21',
+    SHOUSHEN_JIANGLIN_NORMAL: '兽神困难',
+    JIEQI_KONGSANG_NORMAL: '空桑初识',
+    JIEQI_KONGSANG_HARD: '空桑困难',
+    TIANDI_BAOKU_NORMAL: '天帝1',
+    TIANDI_BAOKU_MEDIUM: '天帝2',
+    TIANDI_BAOKU_HARD: '天帝3',
+    LIU_BO_JING_BIAN_CHUSHI: '流波初识',
+    LIU_BO_JING_BIAN_HARD: '流波困难',
+    SIXIANG_QI: '四象五行',
+    XUANYELIN_QIWEI_WUGONG: '悬夜林',
+};
+
+// 预设排序权重（与用户列出顺序完全一致）
+const DUNGEON_ORDER_MAP: Record<string, number> = {
+    HUIMENG_LINGYUN_T16: 10,
+    HUIMENG_LINGYUN_T17: 20,
+    HUIMENG_LINGYUN_T18: 30,
+    ZHENHAI_DUANLANG_T19: 40,
+    ZHENHAI_DUANLANG_T20: 50,
+    ZHENHAI_DUANLANG_T21: 60,
+    SHOUSHEN_JIANGLIN_NORMAL: 110,
+    JIEQI_KONGSANG_NORMAL: 120,
+    JIEQI_KONGSANG_HARD: 130,
+    TIANDI_BAOKU_NORMAL: 140,
+    TIANDI_BAOKU_MEDIUM: 150,
+    TIANDI_BAOKU_HARD: 160,
+    LIU_BO_JING_BIAN_CHUSHI: 170,
+    LIU_BO_JING_BIAN_HARD: 180,
+    SIXIANG_QI: 210,
+    XUANYELIN_QIWEI_WUGONG: 220,
+};
+
 const getDungeonCategory = (dungeonId: string): DungeonCategory => {
-    if (dungeonId.startsWith('ZHENHAI_DUANLANG')) return 'highTier';
-    if (dungeonId.startsWith('TIANDI_BAOKU') || dungeonId.startsWith('LIU_BO_JING_BIAN')) return 'events';
-    if (dungeonId.startsWith('HUIMENG_LINGYUN')) return 'classicTeam';
+    if (dungeonId.startsWith('HUIMENG_LINGYUN') || dungeonId.startsWith('ZHENHAI_DUANLANG')) return 'tben';
+    if (
+        dungeonId.startsWith('TIANDI_BAOKU') ||
+        dungeonId.startsWith('LIU_BO_JING_BIAN') ||
+        dungeonId.startsWith('JIEQI_KONGSANG') ||
+        dungeonId.startsWith('SHOUSHEN_JIANGLIN')
+    ) return 'tuanben';
     return 'trials';
 };
 
@@ -52,12 +95,24 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
     const [searchKeyword, setSearchKeyword] = useState<string>('');
     const [highlightMonsterId, setHighlightMonsterId] = useState<string | null>(null);
 
-    // 统计总数据
-    const totalBossCount = useMemo(() => {
-        return dungeons.reduce((acc, d) => acc + (d.Monsters?.length || 0), 0);
+    // 统计各分类下的首领数量
+    const categoryCounts = useMemo(() => {
+        const counts: Record<DungeonCategory, number> = {
+            all: 0,
+            tben: 0,
+            tuanben: 0,
+            trials: 0,
+        };
+        for (const d of dungeons) {
+            const cat = getDungeonCategory(d.DungeonID);
+            const mCount = d.Monsters?.length || 0;
+            counts.all += mCount;
+            counts[cat] += mCount;
+        }
+        return counts;
     }, [dungeons]);
 
-    // 响应搜索跳转定位
+    // 响应外部跳转定位
     useEffect(() => {
         if (focusDungeonId) {
             setSelectedDungeonId(focusDungeonId);
@@ -68,7 +123,6 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
         }
         if (focusMonsterId) {
             setHighlightMonsterId(focusMonsterId);
-            // 滚动到对应卡片
             const timer = setTimeout(() => {
                 const el = document.getElementById(`boss-card-${focusMonsterId}`);
                 if (el) {
@@ -81,40 +135,38 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
         }
     }, [focusDungeonId, focusMonsterId, dungeons]);
 
-    // 根据分类过滤副本
+    // 当前大类下的副本列表（按规范顺序排列）
     const categoryDungeons = useMemo(() => {
-        if (activeCategory === 'all') return dungeons;
-        return dungeons.filter((d) => getDungeonCategory(d.DungeonID) === activeCategory);
+        const list = activeCategory === 'all'
+            ? dungeons
+            : dungeons.filter((d) => getDungeonCategory(d.DungeonID) === activeCategory);
+        return [...list].sort((a, b) => (DUNGEON_ORDER_MAP[a.DungeonID] || 999) - (DUNGEON_ORDER_MAP[b.DungeonID] || 999));
     }, [dungeons, activeCategory]);
 
-    // 根据选择的副本或搜索关键字过滤展示的列表
+    // 过滤渲染副本与首领列表
     const filteredGroups = useMemo(() => {
         const kw = searchKeyword.trim().toLowerCase();
 
-        return dungeons
+        return categoryDungeons
             .map((dungeon) => {
-                // 如果指定了单副本且非搜索全部，按所选副本过滤
+                // 如果非搜索模式且选定了单一副本，只匹配该副本
                 if (!kw && selectedDungeonId !== 'all' && dungeon.DungeonID !== selectedDungeonId) {
                     return null;
                 }
 
-                // 如果按大分类过滤且在非关键字搜索状态下
-                if (!kw && selectedDungeonId === 'all' && activeCategory !== 'all') {
-                    if (getDungeonCategory(dungeon.DungeonID) !== activeCategory) {
-                        return null;
-                    }
-                }
-
                 let monsters = dungeon.Monsters || [];
 
-                // 关键字与拼音检索（同时支持副本名检索和怪物名检索）
+                // 搜索关键字检索（支持副本名、BOSS名、拼音缩写及全拼）
                 if (kw) {
-                    const dungeonNameMatch = dungeon.DungeonName.toLowerCase().includes(kw);
+                    const shortName = DUNGEON_SHORT_LABELS[dungeon.DungeonID] || '';
+                    const dungeonNameMatch =
+                        dungeon.DungeonName.toLowerCase().includes(kw) ||
+                        shortName.toLowerCase().includes(kw);
+
                     if (!dungeonNameMatch) {
                         monsters = monsters.filter((m) => {
                             const name = m.MonsterName.toLowerCase();
                             if (name.includes(kw)) return true;
-                            // 拼音首字母与全拼匹配
                             const pyArr = pinyin(m.MonsterName, { toneType: 'none', type: 'array' }) as string[];
                             const pyFull = pyArr.join('').toLowerCase();
                             const pyInitials = pyArr.map((s) => s[0]).join('').toLowerCase();
@@ -131,117 +183,100 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
                 };
             })
             .filter((g): g is { dungeon: Dungeon; monsters: Monster[] } => g !== null);
-    }, [dungeons, selectedDungeonId, activeCategory, searchKeyword]);
+    }, [categoryDungeons, selectedDungeonId, searchKeyword]);
 
     return (
-        <div className="w-full flex flex-col gap-5 animate-in fade-in duration-300">
-            {/* 顶栏概览与搜索操作面板 */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 sm:px-5 shadow-lg">
-                <div className="flex items-center gap-3 flex-wrap">
-                    <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
-                        <Crosshair className="w-5 h-5" />
-                    </div>
-                    <div>
-                        <h2 className="text-lg sm:text-xl font-black text-slate-100 tracking-wide flex items-center gap-2">
-                            副本 BOSS 抗性与属性速查
-                            <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-500/15 border border-cyan-500/30 px-2 py-0.5 rounded-full">
-                                {dungeons.length} 副本 · {totalBossCount} 首领
-                            </span>
-                        </h2>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                            全副本首领核心减爆伤、总血量、防御及抗性基准直览，支持一键带入战力计算器测算
-                        </p>
-                    </div>
-                </div>
-
-                {/* 搜索框 */}
-                <div className="relative w-full lg:w-72">
-                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    <input
-                        type="text"
-                        value={searchKeyword}
-                        onChange={(e) => setSearchKeyword(e.target.value)}
-                        placeholder="检索 BOSS 名字 / 副本 (拼音如 kl)"
-                        className="w-full bg-slate-950/70 border border-slate-700/70 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
-                    />
-                    {searchKeyword && (
+        <div className="w-full flex flex-col gap-4 animate-in fade-in duration-300">
+            {/* 1. 一级分类：与职业技能速查风格完全一致的横向胶囊切换 */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+                {DUNGEON_CATEGORIES.map((cat) => {
+                    const isSelected = activeCategory === cat.id;
+                    const count = categoryCounts[cat.id] || 0;
+                    return (
                         <button
-                            onClick={() => setSearchKeyword('')}
-                            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                            key={cat.id}
+                            onClick={() => {
+                                setActiveCategory(cat.id);
+                                setSelectedDungeonId('all');
+                            }}
+                            className={clsx(
+                                'flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs md:text-sm font-bold transition-all border backdrop-blur-md whitespace-nowrap shrink-0',
+                                isSelected
+                                    ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+                                    : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                            )}
                         >
-                            <X className="w-4 h-4" />
-                        </button>
-                    )}
-                </div>
-            </div>
-
-            {/* 分类切换 Pills */}
-            <div className="flex flex-col gap-2.5">
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
-                    <div className="flex items-center gap-1.5 text-slate-400 font-bold mr-1 flex-shrink-0">
-                        <Filter className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>难度类别:</span>
-                    </div>
-                    {DUNGEON_CATEGORIES.map((cat) => {
-                        const isActive = activeCategory === cat.id;
-                        return (
-                            <button
-                                key={cat.id}
-                                onClick={() => {
-                                    setActiveCategory(cat.id);
-                                    setSelectedDungeonId('all');
-                                }}
+                            <span>{cat.label}</span>
+                            <span
                                 className={clsx(
-                                    'px-3 py-1.5 rounded-xl font-bold transition-all border whitespace-nowrap flex-shrink-0',
-                                    isActive
-                                        ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
-                                        : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:bg-slate-850 hover:text-slate-200'
+                                    'text-[10px] font-mono px-1.5 py-0.2 rounded-full border',
+                                    isSelected
+                                        ? 'bg-cyan-500/30 text-cyan-200 border-cyan-500/40'
+                                        : 'bg-slate-800 text-slate-400 border-slate-700/60'
                                 )}
                             >
-                                {cat.label}
-                            </button>
-                        );
-                    })}
-                </div>
+                                {count}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
 
-                {/* 副本细分切换 Tabs（横向胶囊单行） */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 text-xs no-scrollbar">
+            {/* 2. 控制栏：二级筛选（简写标签） + 搜索框 (完全对齐 SkillsView 控制栏) */}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-2 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60">
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 max-w-full">
                     <button
                         onClick={() => setSelectedDungeonId('all')}
                         className={clsx(
-                            'px-2.5 py-1 rounded-lg font-bold transition-all border whitespace-nowrap flex-shrink-0',
+                            'px-3 py-1 rounded-lg text-xs font-bold transition-all border whitespace-nowrap shrink-0',
                             selectedDungeonId === 'all'
-                                ? 'bg-cyan-500/25 border-cyan-400/60 text-cyan-200'
-                                : 'bg-slate-900/40 border-slate-800/80 text-slate-400 hover:text-slate-200'
+                                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
+                                : 'bg-slate-850/60 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
                         )}
                     >
-                        全部包含 ({categoryDungeons.length})
+                        全部
                     </button>
                     {categoryDungeons.map((d) => {
                         const isSelected = selectedDungeonId === d.DungeonID;
-                        const diffMeta = DIFFICULTY_CONFIG[d.difficulty || '中等'] || DIFFICULTY_CONFIG['中等'];
+                        const shortLabel = DUNGEON_SHORT_LABELS[d.DungeonID] || d.DungeonName;
                         return (
                             <button
                                 key={d.DungeonID}
                                 onClick={() => setSelectedDungeonId(d.DungeonID)}
                                 className={clsx(
-                                    'flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs transition-all border whitespace-nowrap flex-shrink-0',
+                                    'px-3 py-1 rounded-lg text-xs font-bold transition-all border whitespace-nowrap shrink-0',
                                     isSelected
-                                        ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-200 font-bold'
-                                        : 'bg-slate-900/40 border-slate-800/70 text-slate-400 hover:bg-slate-850 hover:text-slate-200'
+                                        ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
+                                        : 'bg-slate-850/60 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
                                 )}
                             >
-                                <span>{d.DungeonName}</span>
-                                <span className={clsx('text-[10px] px-1 py-0.2 rounded border', diffMeta.badge)}>
-                                    {d.difficulty || '普通'}
-                                </span>
+                                {shortLabel}
                             </button>
                         );
                     })}
                 </div>
+
+                <div className="relative flex-1 sm:max-w-xs">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <input
+                        type="text"
+                        value={searchKeyword}
+                        onChange={(e) => setSearchKeyword(e.target.value)}
+                        placeholder="搜索 BOSS 名字 / 副本 (支持拼音)..."
+                        className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-7 py-1 text-xs md:text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/60 transition-colors"
+                    />
+                    {searchKeyword && (
+                        <button
+                            onClick={() => setSearchKeyword('')}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                        >
+                            <X className="w-3.5 h-3.5" />
+                        </button>
+                    )}
+                </div>
             </div>
 
-            {/* 列表渲染 */}
+            {/* 3. 副本与 Boss 卡片列表 */}
             {filteredGroups.length === 0 ? (
                 <div className="zx-card p-12 text-center text-slate-500 flex flex-col items-center gap-3">
                     <Search className="w-8 h-8 text-slate-600" />
@@ -263,179 +298,252 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
 
                     return (
                         <div key={dungeon.DungeonID} className="flex flex-col gap-3">
-                            {/* 副本横幅 */}
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 py-2.5 bg-slate-900/80 border border-slate-800 rounded-xl">
+                            {/* 副本标题栏 */}
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 py-2 bg-slate-900/60 border border-slate-800/70 rounded-xl">
                                 <div className="flex items-center gap-2.5 flex-wrap">
                                     <span className="w-1.5 h-4 bg-cyan-400 rounded-full"></span>
-                                    <h3 className="text-sm sm:text-base font-black text-slate-100 tracking-wide">
+                                    <h3 className="text-sm font-black text-slate-100 tracking-wide">
                                         {dungeon.DungeonName}
                                     </h3>
-                                    <span className={clsx('text-xs font-bold px-2 py-0.5 rounded-md border', diffMeta.badge)}>
+                                    <span className={clsx('text-[11px] font-bold px-2 py-0.2 rounded-md border', diffMeta.badge)}>
                                         {diffMeta.label}
                                     </span>
                                     <span className="text-xs text-slate-400 font-mono">
-                                        共 {monsters.length} 位怪物
+                                        {monsters.length} 位首领/目标
                                     </span>
                                 </div>
-                                <div className="text-xs text-slate-400 line-clamp-1 max-w-md hidden sm:block">
-                                    {dungeon.Description}
-                                </div>
+                                {dungeon.Description && (
+                                    <div className="text-xs text-slate-400 line-clamp-1 max-w-md hidden sm:block">
+                                        {dungeon.Description}
+                                    </div>
+                                )}
                             </div>
 
-                            {/* Boss 卡片网格 */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                                {monsters.map((monster) => {
-                                    const mods = monster.MonsterAttributeModifiers || {};
-                                    const displayAttrs = monster.displayAttributes || {};
-
-                                    // 核心减爆伤
-                                    const critDmgRed =
-                                        mods.MonsterCriticalDamagePercentReduction ??
-                                        displayAttrs.critDamageReduction ??
-                                        0;
-
-                                    // 气血
-                                    const health = displayAttrs.health ?? mods.MonsterHealth;
-                                    const healthBars = displayAttrs.healthBars ?? 1;
-                                    const totalHealth = health ? health * healthBars : undefined;
-
-                                    // 防御
-                                    const defense = displayAttrs.defense ?? mods.MonsterDefense;
-
-                                    // 减暴击率
-                                    const critRateRed =
-                                        displayAttrs.critRateReduction ??
-                                        mods.MonsterCriticalHitRateReduction;
-
-                                    // 伤害压缩比
-                                    const dmgComp =
-                                        displayAttrs.damageCompression ??
-                                        mods.DamageCompressionPercent;
-
-                                    const isBoss = (monster as any).role !== 'add';
-                                    const isHighlighted = highlightMonsterId === monster.MonsterID;
-
-                                    return (
-                                        <div
-                                            key={monster.MonsterID}
-                                            id={`boss-card-${monster.MonsterID}`}
-                                            className={clsx(
-                                                'zx-card p-4 flex flex-col justify-between gap-3 border transition-all duration-300 relative group hover:border-cyan-500/50 hover:shadow-[0_8px_24px_rgba(6,182,212,0.12)]',
-                                                isHighlighted
-                                                    ? 'border-cyan-400 bg-cyan-500/10 shadow-[0_0_20px_rgba(6,182,212,0.3)]'
-                                                    : 'border-slate-800/80 bg-slate-900/60'
-                                            )}
-                                        >
-                                            {/* 卡片头部 */}
-                                            <div className="flex items-start justify-between gap-2 border-b border-slate-800/70 pb-2.5">
-                                                <div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <h4 className="text-sm font-black text-slate-100 group-hover:text-cyan-300 transition-colors">
-                                                            {monster.MonsterName}
-                                                        </h4>
-                                                        <span
-                                                            className={clsx(
-                                                                'text-[10px] px-1.5 py-0.2 rounded font-bold border',
-                                                                isBoss
-                                                                    ? 'bg-amber-500/15 border-amber-500/30 text-amber-300'
-                                                                    : 'bg-slate-700/40 border-slate-600/40 text-slate-400'
-                                                            )}
-                                                        >
-                                                            {isBoss ? '首领' : '小怪'}
-                                                        </span>
-                                                    </div>
-                                                    <div className="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1.5">
-                                                        {monster.DungeonLevel ? (
-                                                            <span>第 {monster.DungeonLevel} 关</span>
-                                                        ) : (
-                                                            <span>关卡目标</span>
-                                                        )}
-                                                        {(monster as any).MonsterLevel && (
-                                                            <span>· 等级 {(monster as any).MonsterLevel}</span>
-                                                        )}
-                                                    </div>
-                                                </div>
-
-                                                {/* 带入计算器快捷按钮 */}
-                                                {onNavigateCalculator && (
-                                                    <button
-                                                        onClick={() =>
-                                                            onNavigateCalculator(dungeon.DungeonID, monster.MonsterID)
-                                                        }
-                                                        className="flex items-center gap-1 px-2 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20 text-xs font-bold transition-all whitespace-nowrap shadow-sm hover:scale-105"
-                                                        title="将此 BOSS 带入计算器测算技能伤害"
-                                                    >
-                                                        <Swords className="w-3.5 h-3.5 text-cyan-400" />
-                                                        <span>测算</span>
-                                                    </button>
-                                                )}
-                                            </div>
-
-                                            {/* 核心抗性大看板：减爆伤 */}
-                                            <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-950/40 via-slate-900/60 to-slate-950/70 border border-cyan-500/20 flex items-center justify-between shadow-inner">
-                                                <div className="flex flex-col">
-                                                    <span className="text-[11px] text-slate-400 flex items-center gap-1 font-medium">
-                                                        <Zap className="w-3 h-3 text-cyan-400" />
-                                                        核心减爆伤
-                                                    </span>
-                                                    <span className="text-[10px] text-slate-500">暴伤需高于此值生效</span>
-                                                </div>
-                                                <div className="text-right">
-                                                    <span className="text-xl sm:text-2xl font-mono font-black text-cyan-300 drop-shadow-[0_0_10px_rgba(6,182,212,0.4)]">
-                                                        {critDmgRed > 0 ? `${critDmgRed}%` : '基础'}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            {/* 辅助属性规格四宫格 */}
-                                            <div className="grid grid-cols-2 gap-2 text-xs">
-                                                {/* 总气血 */}
-                                                <div className="p-2 rounded-lg bg-slate-950/50 border border-slate-800/70 flex flex-col gap-0.5">
-                                                    <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                                                        <Heart className="w-3 h-3 text-rose-400" />
-                                                        气血总值
-                                                    </span>
-                                                    <span className="font-mono font-bold text-slate-200">
-                                                        {totalHealth !== undefined
-                                                            ? formatNumber(totalHealth)
-                                                            : '实测中'}
-                                                    </span>
-                                                </div>
-
-                                                {/* 防御 */}
-                                                <div className="p-2 rounded-lg bg-slate-950/50 border border-slate-800/70 flex flex-col gap-0.5">
-                                                    <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                                                        <Shield className="w-3 h-3 text-amber-400" />
-                                                        怪物防御
-                                                    </span>
-                                                    <span className="font-mono font-bold text-slate-200">
-                                                        {defense !== undefined ? formatNumber(defense) : '实测中'}
-                                                    </span>
-                                                </div>
-
-                                                {/* 减暴击率 */}
-                                                <div className="p-2 rounded-lg bg-slate-950/50 border border-slate-800/70 flex flex-col gap-0.5">
-                                                    <span className="text-[11px] text-slate-400">减暴击率</span>
-                                                    <span className="font-mono font-bold text-slate-200">
-                                                        {critRateRed !== undefined ? `${critRateRed}%` : '-'}
-                                                    </span>
-                                                </div>
-
-                                                {/* 伤害压缩比 */}
-                                                <div className="p-2 rounded-lg bg-slate-950/50 border border-slate-800/70 flex flex-col gap-0.5">
-                                                    <span className="text-[11px] text-slate-400">伤害压缩</span>
-                                                    <span className="font-mono font-bold text-slate-200">
-                                                        {dmgComp !== undefined ? `${dmgComp}%` : '-'}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                            {/* Boss 卡片网格：3列响应式流式卡片 */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                                {monsters.map((monster) => (
+                                    <BossCard
+                                        key={monster.MonsterID}
+                                        monster={monster}
+                                        dungeon={dungeon}
+                                        isHighlighted={highlightMonsterId === monster.MonsterID}
+                                        onNavigateCalculator={onNavigateCalculator}
+                                    />
+                                ))}
                             </div>
                         </div>
                     );
                 })
+            )}
+        </div>
+    );
+};
+
+/** 单个 Boss 卡片：方案 B（结构化矩阵数据表） */
+const BossCard: React.FC<{
+    monster: Monster;
+    dungeon: Dungeon;
+    isHighlighted: boolean;
+    onNavigateCalculator?: (dungeonId: string, monsterId: string) => void;
+}> = ({ monster, dungeon, isHighlighted, onNavigateCalculator }) => {
+    const mods = monster.MonsterAttributeModifiers || {};
+    const displayAttrs = monster.displayAttributes || {};
+
+    // 核心减爆伤
+    const critDmgRed = mods.MonsterCriticalDamagePercentReduction ?? displayAttrs.critDamageReduction ?? 0;
+
+    // 气血数据解析
+    const health = displayAttrs.health ?? mods.MonsterHealth;
+    const healthBars = displayAttrs.healthBars ?? 1;
+    const hasHealthBars = displayAttrs.health && displayAttrs.healthBars && displayAttrs.healthBars > 1;
+
+    // 构建结构化矩阵数据项清单
+    interface MatrixItem {
+        label: string;
+        value: string;
+        highlight?: boolean;
+    }
+
+    const matrixItems: MatrixItem[] = [];
+
+    // 1. 气血（核心指标）
+    if (displayAttrs.health) {
+        if (hasHealthBars) {
+            matrixItems.push({
+                label: '首领总气血',
+                value: formatNumber(displayAttrs.health * displayAttrs.healthBars),
+                highlight: true,
+            });
+            matrixItems.push({
+                label: '单条气血',
+                value: formatNumber(displayAttrs.health),
+                highlight: true,
+            });
+            matrixItems.push({
+                label: '气血条数',
+                value: `${displayAttrs.healthBars} 条`,
+            });
+        } else {
+            matrixItems.push({
+                label: '首领总气血',
+                value: formatNumber(displayAttrs.health),
+                highlight: true,
+            });
+        }
+    } else if (mods.MonsterHealth) {
+        matrixItems.push({
+            label: '首领总气血',
+            value: formatNumber(mods.MonsterHealth),
+            highlight: true,
+        });
+    }
+
+    // 2. 辅助行属性（减暴击、无视、技能躲闪、防御、减伤、爆伤、攻击、压缩）
+    const critRateRed = displayAttrs.critRateReduction ?? mods.MonsterCriticalHitRateReduction;
+    const ignoreReduction = displayAttrs.ignoreReduction;
+    const skillDodge = displayAttrs.skillDodge;
+    const defense = displayAttrs.defense ?? mods.MonsterDefense;
+    const damageReduction = displayAttrs.damageReduction;
+    const critDamage = displayAttrs.critDamage;
+    const attack = displayAttrs.attack;
+    const dmgComp = displayAttrs.damageCompression ?? mods.DamageCompressionPercent;
+
+    if (critRateRed !== undefined && critRateRed !== null) {
+        matrixItems.push({ label: '减暴击率', value: `${critRateRed}%` });
+    }
+    if (ignoreReduction !== undefined && ignoreReduction !== null) {
+        matrixItems.push({ label: '无视减免', value: `${ignoreReduction}%` });
+    }
+    if (skillDodge !== undefined && skillDodge !== null) {
+        matrixItems.push({ label: '技能躲闪', value: `${skillDodge}` });
+    }
+    if (defense !== undefined && defense !== null) {
+        matrixItems.push({ label: '首领防御', value: formatNumber(defense) });
+    }
+    if (damageReduction !== undefined && damageReduction !== null) {
+        matrixItems.push({ label: '伤害减免', value: `${damageReduction}%` });
+    }
+    if (critDamage !== undefined && critDamage !== null) {
+        matrixItems.push({ label: '暴伤倍率', value: `${critDamage}%` });
+    }
+    if (attack !== undefined && attack !== null) {
+        matrixItems.push({ label: '首领攻击', value: formatNumber(attack) });
+    }
+    if (dmgComp !== undefined && dmgComp !== null) {
+        matrixItems.push({ label: '伤害压缩', value: `${dmgComp}%` });
+    }
+
+    // 3. 补充行属性（普通命中、普通闪避、技能命中、抗性）
+    const skillHit = displayAttrs.skillHit;
+    const resistance = displayAttrs.resistance;
+    const normalHit = displayAttrs.normalHit;
+    const normalDodge = displayAttrs.normalDodge;
+
+    if (skillHit !== undefined && skillHit !== null) {
+        matrixItems.push({ label: '技能命中', value: skillHit >= 10000 ? formatNumber(skillHit) : `${skillHit}` });
+    }
+    if (resistance !== undefined && resistance !== null) {
+        matrixItems.push({ label: '首领全抗', value: `${resistance}` });
+    }
+    if (normalHit !== undefined && normalHit !== null) {
+        matrixItems.push({ label: '普通命中', value: `${normalHit}` });
+    }
+    if (normalDodge !== undefined && normalDodge !== null) {
+        matrixItems.push({ label: '普通闪避', value: `${normalDodge}` });
+    }
+
+    const isBoss = (monster as any).role !== 'add';
+
+    return (
+        <div
+            id={`boss-card-${monster.MonsterID}`}
+            className={clsx(
+                'group rounded-xl p-4 transition-all duration-200 border bg-slate-900/85 hover:border-cyan-500/40 hover:bg-slate-900/95 flex flex-col justify-start gap-3.5 shadow-md',
+                isHighlighted
+                    ? 'border-cyan-400 bg-cyan-950/25 ring-2 ring-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.25)]'
+                    : 'border-slate-800/80'
+            )}
+        >
+            {/* 1. 头部：首领名 + 关卡 + 等级 + 核心减爆伤徽章 + 测算按钮 */}
+            <div className="flex items-center justify-between border-b border-slate-800/80 pb-3 gap-2">
+                <div className="flex items-center gap-2 flex-wrap min-w-0">
+                    <span className="w-1.5 h-4.5 bg-cyan-400 rounded-full shrink-0"></span>
+                    <h4 className="text-[15px] font-black text-slate-100 tracking-wide group-hover:text-cyan-300 transition-colors truncate">
+                        {monster.MonsterName}
+                    </h4>
+                    <span
+                        className={clsx(
+                            'px-1.5 py-0.2 rounded text-[11px] font-bold border shrink-0',
+                            isBoss
+                                ? 'bg-amber-500/15 border-amber-500/30 text-amber-300'
+                                : 'bg-slate-700/40 border-slate-600/40 text-slate-400'
+                        )}
+                    >
+                        {isBoss ? '首领' : '小怪'}
+                    </span>
+                    {monster.DungeonLevel ? (
+                        <span className="text-[11px] font-mono text-slate-400 shrink-0">
+                            · 第 {monster.DungeonLevel} 关
+                        </span>
+                    ) : null}
+                    {(displayAttrs.level || (monster as any).MonsterLevel) ? (
+                        <span className="text-[11px] font-mono text-slate-500 shrink-0">
+                            Lv.{displayAttrs.level || (monster as any).MonsterLevel}
+                        </span>
+                    ) : null}
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                    {/* 减爆伤直接在右上角作为最显眼的核心抗性徽章 */}
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-950/70 border border-cyan-500/40 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.15)]">
+                        <span className="text-[10px] text-cyan-400/80 font-medium">减爆伤</span>
+                        <span className="font-mono font-black text-sm tracking-tight text-cyan-200">
+                            {critDmgRed > 0 ? `${critDmgRed}%` : '基础'}
+                        </span>
+                    </div>
+
+                    {onNavigateCalculator && (
+                        <button
+                            onClick={() => onNavigateCalculator(dungeon.DungeonID, monster.MonsterID)}
+                            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-300 text-xs font-bold transition-all shrink-0 hover:scale-105"
+                            title="将此 BOSS 带入计算器测算技能伤害"
+                        >
+                            <Swords className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>测算</span>
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* 2. 属性矩阵网格 (Scheme B: 键左、值右的整齐单元格) */}
+            {matrixItems.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+                    {matrixItems.map((item, idx) => (
+                        <div
+                            key={idx}
+                            className={clsx(
+                                'flex items-center justify-between px-2.5 py-1.5 rounded-lg border transition-colors',
+                                item.highlight
+                                    ? 'bg-rose-950/20 border-rose-500/30'
+                                    : 'bg-slate-950/60 border-slate-800/60'
+                            )}
+                        >
+                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">{item.label}</span>
+                            <span
+                                className={clsx(
+                                    'font-mono font-bold text-xs shrink-0 whitespace-nowrap',
+                                    item.highlight ? 'text-rose-300' : 'text-slate-200'
+                                )}
+                            >
+                                {item.value}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="px-3 py-2 rounded-lg bg-slate-950/40 border border-slate-800/40 text-center text-xs text-slate-500 font-mono">
+                    首领其他实战抗性数据录入中
+                </div>
             )}
         </div>
     );
