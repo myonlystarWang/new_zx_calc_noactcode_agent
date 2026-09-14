@@ -33,18 +33,20 @@ const CAT_NAME: Record<SearchEntry['c'], string> = {
   guide: '攻略与增益',
 };
 
-const HOT = ['天华', '赤梭', '苍龙啸', '易伤', '专注', '流波惊变'];
-const RECENT_KEY = 'zx_home_recent_searches';
-
-const HOT_QUICK_TAGS: Array<{ label: string; target: SearchTarget }> = [
-  { label: 'T21 玄铠', target: { tab: 'calculator', dungeonId: 'ZHENHAI_DUANLANG_CRUSH_T21', monsterId: 'T21_M2' } },
-  { label: '天帝3 宝库', target: { tab: 'calculator', dungeonId: 'TIANDI_BAOKU_3' } },
-  { label: '逐霜·苍龙啸', target: { tab: 'compendium', sub: 'skills', skillId: 'ZS_XIAN_SKILL_CLXX' } },
-  { label: '鬼王·未名斩', target: { tab: 'compendium', sub: 'skills', skillId: 'GW_XIAN_SKILL_WMZX' } },
-  { label: '天华·秋声雅韵', target: { tab: 'compendium', sub: 'skills', skillId: 'TH_FO_SKILL_QSYY' } },
-  { label: '极致无视', target: { tab: 'compendium', sub: 'ignore' } },
-  { label: '团队易伤上限', target: { tab: 'compendium', sub: 'support', item: '易伤' } },
+const HOT_SEARCH_TAGS = [
+  '苍龙啸',    // 技能汉字
+  '未名斩',    // 技能汉字
+  '秋声雅韵',  // 技能汉字
+  '流波惊变',  // 副本名字
+  '天帝宝库',  // 副本名字
+  '赤梭',      // Boss 名字
+  '玄铠',      // Boss 名字
+  '极致无视',  // 攻略名字
+  '专注值参考',// 攻略名字
+  '易伤',      // 攻略/增益名字
 ];
+const HOT = HOT_SEARCH_TAGS;
+const RECENT_KEY = 'zx_home_recent_searches';
 
 const PH = [
   '搜索 Boss / 技能 / 增益 / 攻略，如 苍龙啸',
@@ -133,7 +135,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
     const aliases = skillMeta?.searchAliases || {};
 
     for (const d of dungeons) {
-      add(d.DungeonName, '副本入口 · 属性战力计算器', 'dungeon', aliases[d.DungeonID] || [], {
+      const dAliases = aliases[d.DungeonID] || [];
+      const tMatch = d.DungeonName.match(/T\d+/i);
+      const tKw = tMatch ? [tMatch[0].toUpperCase(), tMatch[0].toLowerCase()] : [];
+
+      add(d.DungeonName, '副本入口 · 属性战力计算器', 'dungeon', [...dAliases, ...tKw], {
         tab: 'calculator',
         dungeonId: d.DungeonID,
       });
@@ -144,7 +150,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         const id = (m as any).MonsterID || (m as any).MonsterId;
         if (!name || !id) continue;
         const role = (m as any).role === 'add' ? '小怪' : 'Boss';
-        add(name, `${d.DungeonName} · ${role}`, 'monster', [d.DungeonName, ...(aliases[id] || [])], {
+        add(name, `${d.DungeonName} · ${role}`, 'monster', [d.DungeonName, ...tKw, ...(aliases[id] || [])], {
           tab: 'calculator',
           dungeonId: d.DungeonID,
           monsterId: id,
@@ -174,8 +180,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         if (!Array.isArray(skillArr)) continue;
         const fName = factionLabels[factionId] || factionId;
         for (const sk of skillArr) {
+          const combinedNames = [
+            `${className}·${sk.SkillName}`,
+            `${className}${sk.SkillName}`,
+            `${className} ${sk.SkillName}`,
+          ];
+
           // 条目 1：跳转技能速查
-          add(sk.SkillName, `${className}·${fName} · 技能速查`, 'skill', [className, fName, ...(aliases[sk.SkillID] || [])], {
+          add(sk.SkillName, `${className}·${fName} · 技能速查`, 'skill', [className, fName, ...combinedNames, ...(aliases[sk.SkillID] || [])], {
             tab: 'skills',
             classId,
             faction: factionId,
@@ -184,7 +196,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           } as any);
 
           // 条目 2：跳转属性战力计算器并展示技能属性详情
-          add(`${sk.SkillName} (战力测算)`, `属性战力计算器 · ${className}·${fName} · 属性与实战`, 'page', [className, fName, '计算器', '测算', '属性', '伤害', ...(aliases[sk.SkillID] || [])], {
+          add(`${sk.SkillName} (战力测算)`, `属性战力计算器 · ${className}·${fName} · 属性与实战`, 'page', [className, fName, '计算器', '测算', '属性', '伤害', ...combinedNames, ...(aliases[sk.SkillID] || [])], {
             tab: 'calculator',
             classId,
             faction: factionId,
@@ -314,23 +326,79 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
     return { searchIndex: list, stats: calculatedStats };
   }, []);
 
-  // 匹配与多分类聚合（与 index.html 的 match 算法完全一致）
+  // 匹配与多分类聚合（智能分词、标点容错与拼音匹配）
   const groupedResults = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return { groupedList: [], flatList: [] };
+    const qRaw = query.trim().toLowerCase();
+    if (!qRaw) return { groupedList: [], flatList: [] };
+
+    // 标点归一化（中英文圆点、空格、下划线、破折号、斜杠等）
+    const qClean = qRaw.replace(/[·\-_/\\|、\s]/g, '');
+
+    // 分词及多前缀拆解（如同时支持 "逐霜 苍龙啸"、"逐霜·苍龙啸"、"逐霜苍龙啸"、"T21玄铠"）
+    const rawWords = qRaw.split(/[\s·\-_/\\|、]+/).filter(Boolean);
+    const tokenSet = new Set<string>(rawWords);
+    const classPrefixes = ['逐霜', '涅羽', '太昊', '鬼王', '天音', '焚香', '昭冥', '英招', '天华', '释罗', '合欢', '青云', '百灵', '长生'];
+    const dungeonPrefixes = ['t16', 't17', 't18', 't19', 't20', 't21'];
+    const allPrefixes = [...classPrefixes, ...dungeonPrefixes];
+
+    for (const w of rawWords) {
+      for (const p of allPrefixes) {
+        if (w.toLowerCase().startsWith(p.toLowerCase()) && w.length > p.length) {
+          tokenSet.add(p.toLowerCase());
+          tokenSet.add(w.slice(p.length).toLowerCase());
+        }
+      }
+    }
+    const tokens = Array.from(tokenSet);
 
     const scored: Array<{ e: SearchEntry; s: number }> = [];
     for (const e of searchIndex) {
-      const hay = (e.l + ' ' + e.g + ' ' + e.k.join(' ')).toLowerCase();
-      const idx = hay.indexOf(q);
-      if (idx >= 0) {
-        scored.push({ e, s: 100 - idx });
+      const label = e.l.toLowerCase();
+      const group = e.g.toLowerCase();
+      const keywords = e.k.join(' ').toLowerCase();
+      const hay = `${label} ${group} ${keywords}`;
+      const hayClean = hay.replace(/[·\-_/\\|、\s]/g, '');
+
+      // 1. 名称完全匹配（最高权重）
+      if (label === qRaw || label.replace(/[·\-_/\\|、\s]/g, '') === qClean) {
+        scored.push({ e, s: 120 });
         continue;
       }
-      if (e.i && e.i.indexOf(q) >= 0) {
-        scored.push({ e, s: 60 - e.i.indexOf(q) });
-      } else if (e.f && e.f.indexOf(q) >= 0) {
-        scored.push({ e, s: 50 - e.f.indexOf(q) });
+
+      // 2. 名称包含原始查询词
+      const labelIdx = label.indexOf(qRaw);
+      if (labelIdx >= 0) {
+        scored.push({ e, s: 100 - labelIdx * 2 });
+        continue;
+      }
+
+      // 3. 全文字符串包含原始查询词
+      const hayIdx = hay.indexOf(qRaw);
+      if (hayIdx >= 0) {
+        scored.push({ e, s: 85 - hayIdx });
+        continue;
+      }
+
+      // 4. 清理标点后的归一化包含（如搜 "逐霜苍龙啸"、"t21玄铠"）
+      if (qClean && hayClean.includes(qClean)) {
+        scored.push({ e, s: 80 });
+        continue;
+      }
+
+      // 5. 多 Token 联合命中（如输入 "逐霜 苍龙啸" 或 "t21 玄铠"）
+      if (tokens.length > 1) {
+        const allMatch = tokens.every((tok) => hay.includes(tok));
+        if (allMatch) {
+          scored.push({ e, s: 75 });
+          continue;
+        }
+      }
+
+      // 6. 拼音首字母与全拼
+      if (e.i && e.i.includes(qClean)) {
+        scored.push({ e, s: 60 - e.i.indexOf(qClean) });
+      } else if (e.f && e.f.includes(qClean)) {
+        scored.push({ e, s: 50 - e.f.indexOf(qClean) });
       }
     }
 
@@ -648,18 +716,34 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
     onSearchNavigate(item.t);
   };
 
-  // 高亮搜索命中字符
+  // 高亮搜索命中字符（支持精确词及 Token 命中）
   function renderHighlightedText(text: string, q: string) {
     if (!q) return text;
-    const idx = text.toLowerCase().indexOf(q.toLowerCase());
-    if (idx < 0) return text;
-    return (
-      <>
-        {text.slice(0, idx)}
-        <mark>{text.slice(idx, idx + q.length)}</mark>
-        {text.slice(idx + q.length)}
-      </>
-    );
+    const qLower = q.trim().toLowerCase();
+    const idx = text.toLowerCase().indexOf(qLower);
+    if (idx >= 0) {
+      return (
+        <>
+          {text.slice(0, idx)}
+          <mark>{text.slice(idx, idx + qLower.length)}</mark>
+          {text.slice(idx + qLower.length)}
+        </>
+      );
+    }
+    const tokens = qLower.split(/[\s·\-_/\\|、]+/).filter(Boolean);
+    for (const t of tokens) {
+      const tIdx = text.toLowerCase().indexOf(t);
+      if (tIdx >= 0) {
+        return (
+          <>
+            {text.slice(0, tIdx)}
+            <mark>{text.slice(tIdx, tIdx + t.length)}</mark>
+            {text.slice(tIdx + t.length)}
+          </>
+        );
+      }
+    }
+    return text;
   }
 
   let flatCounter = -1;
@@ -885,13 +969,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             <span>热门速搜:</span>
           </span>
           <div className="quick-tags-list">
-            {HOT_QUICK_TAGS.map((tag, idx) => (
+            {HOT_SEARCH_TAGS.map((word) => (
               <button
-                key={idx}
+                key={word}
+                type="button"
                 className="quick-tag-pill"
-                onClick={() => onSearchNavigate(tag.target)}
+                onClick={() => {
+                  setQuery(word);
+                  setIsFocused(true);
+                  inputRef.current?.focus();
+                }}
+                title={`点击即搜“${word}”`}
               >
-                <span>{tag.label}</span>
+                <span>{word}</span>
               </button>
             ))}
           </div>
@@ -906,7 +996,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             <div className="card-ic">
               <Calculator className="w-5 h-5 text-cyan-300" />
             </div>
-            <span className="card-tag card-tag-cyan">核心测算</span>
           </div>
           <div className="card-mid">
             <h3>属性战力计算器</h3>
@@ -934,7 +1023,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             <div className="card-ic">
               <Swords className="w-5 h-5 text-amber-300" />
             </div>
-            <span className="card-tag card-tag-amber">沙盘推演</span>
           </div>
           <div className="card-mid">
             <h3>副本模拟训练场</h3>
@@ -962,7 +1050,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             <div className="card-ic">
               <Zap className="w-5 h-5 text-emerald-300" />
             </div>
-            <span className="card-tag card-tag-emerald">门派典籍</span>
           </div>
           <div className="card-mid">
             <h3>职业技能速查</h3>
@@ -990,7 +1077,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             <div className="card-ic">
               <Crosshair className="w-5 h-5 text-purple-300" />
             </div>
-            <span className="card-tag card-tag-purple">首领抗性</span>
           </div>
           <div className="card-mid">
             <h3>副本 BOSS 速查</h3>
@@ -1018,7 +1104,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             <div className="card-ic">
               <Award className="w-5 h-5 text-rose-300" />
             </div>
-            <span className="card-tag card-tag-rose">天花板上限</span>
           </div>
           <div className="card-mid">
             <h3>极致属性攻略</h3>
