@@ -865,7 +865,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         </div>
       </div>
 
-      {/* 4 大核心功能卡片（视觉完全统一，光泽流动悬停） */}
+      {/* 5 大核心功能卡片（视觉完全统一，光泽流动悬停） */}
       <section className="cards">
         <button className="card rise d4" onClick={() => onNavigateTab('calculator')}>
           <div className="card-ic">
@@ -888,7 +888,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             </svg>
           </div>
           <h3>属性战力计算器</h3>
-          <p>三栏实时联动：录入面板属性、勾选战斗增益，即时结算对各副本 Boss 的伤害与命中。</p>
+          <p>录入面板属性、勾选战斗增益，实时测算对各副本 Boss 的技能伤害与命中阈值。</p>
           <span className="go">
             进入计算器{' '}
             <svg
@@ -926,9 +926,78 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             </svg>
           </div>
           <h3>副本模拟训练场</h3>
-          <p>配置队伍与技能策略，逐秒模拟整场战斗，输出伤害曲线、技能时序与实战报表。</p>
+          <p>配置队伍与技能策略，逐秒模拟整场实战，输出伤害曲线、技能时序与详尽报表。</p>
           <span className="go">
             进入训练场{' '}
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </span>
+        </button>
+
+        <button className="card rise d5" onClick={() => onNavigateTab('skills')}>
+          <div className="card-ic">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+              <polyline points="14 2 14 8 20 8" />
+              <path d="m10 13-2 2 2 2" />
+              <path d="m14 17 2-2-2-2" />
+            </svg>
+          </div>
+          <h3>职业技能速查</h3>
+          <p>全门派技能充能、冷却、命中段数、伤害加成与机制说明一站式分类直达。</p>
+          <span className="go">
+            进入技能库{' '}
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </span>
+        </button>
+
+        <button className="card rise d6" onClick={() => onNavigateTab('calculator')}>
+          <div className="card-ic">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="22" x2="18" y1="12" y2="12" />
+              <line x1="6" x2="2" y1="12" y2="12" />
+              <line x1="12" x2="12" y1="6" y2="2" />
+              <line x1="12" x2="12" y1="22" y2="18" />
+            </svg>
+          </div>
+          <h3>副本 BOSS 速查</h3>
+          <p>16 大副本 102 位关卡首领抗性速查，包含减爆伤、防御、血量与伤害压缩比。</p>
+          <span className="go">
+            进入BOSS库{' '}
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -958,43 +1027,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             </svg>
           </div>
           <h3>资料图鉴攻略</h3>
-          <p>极致无视 / 减免 / 减暴击 / 怪增 / 躲闪攻略、各职业状态评级、专注值与战斗增益参考。</p>
+          <p>极致无视/减免/怪增天花板拆解、各职业状态评级与战斗增益上限基准。</p>
           <span className="go">
             进入图鉴{' '}
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </span>
-        </button>
-
-        <button className="card rise d6" onClick={() => onNavigateTab('skills')}>
-          <div className="card-ic">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-              <polyline points="14 2 14 8 20 8" />
-              <path d="m10 13-2 2 2 2" />
-              <path d="m14 17 2-2-2-2" />
-            </svg>
-          </div>
-          <h3>职业技能速查</h3>
-          <p>收录 10 大门派 75 项核心技能冷却、充能、命中段数、伤害加成与机制一站式直达。</p>
-          <span className="go">
-            进入技能库{' '}
             <svg
               viewBox="0 0 24 24"
               fill="none"
