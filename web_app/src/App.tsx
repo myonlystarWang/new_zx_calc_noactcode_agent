@@ -3,7 +3,6 @@ import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { HomePage } from './components/home/HomePage';
-import { SkillsView } from './components/skills/SkillsView';
 import { AttributePanel } from './components/business/AttributePanel';
 import { BuffPanel } from './components/business/BuffPanel';
 import { ResultSection } from './components/business/ResultsSection';
@@ -11,13 +10,13 @@ import { SimulationArena } from './components/arena/SimulationArena';
 import { CompendiumView } from './components/compendium/CompendiumView';
 import type { SearchTarget } from './components/GlobalSearch';
 
-type AppTab = 'home' | 'calculator' | 'arena' | 'compendium' | 'skills';
+type AppTab = 'home' | 'calculator' | 'arena' | 'compendium';
 
 const MainContent: React.FC = () => {
   const { isLoading, userCharacter, updateCharacterAttributes, updateCharacterClass } = useApp();
   const [activeTab, setActiveTabState] = useState<AppTab>(() => {
     const saved = localStorage.getItem('zx_active_tab') as AppTab;
-    if (saved && ['home', 'calculator', 'arena', 'compendium', 'skills'].includes(saved)) {
+    if (saved && ['home', 'calculator', 'arena', 'compendium'].includes(saved)) {
       return saved;
     }
     return 'home';
@@ -33,7 +32,12 @@ const MainContent: React.FC = () => {
     if (t.tab === 'calculator' && t.classId && t.faction) {
       updateCharacterClass(t.classId, t.faction as any);
     }
-    setActiveTab(t.tab);
+    if ((t as any).tab === 'skills') {
+      setActiveTab('compendium');
+      setSearchNav({ tab: 'compendium', sub: 'skills', ...(t as any) });
+      return;
+    }
+    setActiveTab(t.tab as AppTab);
     setSearchNav(t);
   };
 
@@ -87,17 +91,15 @@ const MainContent: React.FC = () => {
         <main className="w-full max-w-none mx-auto px-3 xl:px-4 animate-in fade-in duration-300">
           <SimulationArena />
         </main>
-      ) : activeTab === 'skills' ? (
-        <main className="w-full animate-in fade-in duration-300">
-          <SkillsView
-            searchNav={searchNav}
-            onSearchConsumed={() => setSearchNav(null)}
-            onNavigateHome={() => setActiveTab('home')}
-          />
-        </main>
       ) : (
         <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 animate-in fade-in duration-300">
-          <CompendiumView searchNav={searchNav} onSearchConsumed={() => setSearchNav(null)} />
+          <CompendiumView
+            searchNav={searchNav}
+            onSearchConsumed={() => setSearchNav(null)}
+            onNavigateCalculator={(dungeonId, monsterId) =>
+              handleSearchNav({ tab: 'calculator', dungeonId, monsterId })
+            }
+          />
         </main>
       )}
 

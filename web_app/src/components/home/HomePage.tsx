@@ -43,7 +43,7 @@ const PH = [
 ];
 
 interface HomePageProps {
-  onNavigateTab: (tab: 'calculator' | 'arena' | 'compendium' | 'skills') => void;
+  onNavigateTab: (tab: 'calculator' | 'arena' | 'compendium') => void;
   onSearchNavigate: (target: SearchTarget) => void;
 }
 
@@ -106,11 +106,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
       });
     }
 
-    // 1. 四大功能入口
+    // 1. 核心功能入口
     add('属性战力计算器', '功能入口', 'page', ['战力', '计算器', '属性计算'], { tab: 'calculator' });
     add('副本模拟训练场', '功能入口', 'page', ['模拟', '训练场', '战斗模拟', 'arena'], { tab: 'arena' });
-    add('资料图鉴', '功能入口', 'page', ['图鉴', '攻略', '资料', '专注值', '增益'], { tab: 'compendium', sub: 'ignore' });
-    add('职业技能速查', '功能入口', 'page', ['技能', '速查', '技能库', '门派技能'], { tab: 'skills' });
+    add('资料图鉴', '功能入口', 'page', ['图鉴', '攻略', '资料', '专注值', '增益'], { tab: 'compendium', sub: 'ceiling' });
+    add('极致属性攻略', '功能入口', 'page', ['极致属性', '天花板', '无视', '减免', '怪增', '躲闪'], { tab: 'compendium', sub: 'ceiling' });
+    add('职业技能速查', '功能入口', 'page', ['技能', '速查', '技能库', '门派技能'], { tab: 'compendium', sub: 'skills' });
+    add('职业状态一览', '功能入口', 'page', ['职业状态', '辅助', '增益', '状态评级'], { tab: 'compendium', sub: 'support' });
+    add('副本 BOSS 速查', '功能入口', 'page', ['boss', '首领', '抗性', '副本boss', '减爆伤'], { tab: 'compendium', sub: 'boss' });
 
     // 2. 副本与Boss
     const dungeons = service.getDungeons();
@@ -943,7 +946,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </span>
         </button>
 
-        <button className="card rise d5" onClick={() => onNavigateTab('skills')}>
+        <button className="card rise d5" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'skills' })}>
           <div className="card-ic">
             <svg
               viewBox="0 0 24 24"
@@ -977,7 +980,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </span>
         </button>
 
-        <button className="card rise d6" onClick={() => onNavigateTab('calculator')}>
+        <button className="card rise d6" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'boss' })}>
           <div className="card-ic">
             <svg
               viewBox="0 0 24 24"
@@ -1012,7 +1015,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </span>
         </button>
 
-        <button className="card rise d6" onClick={() => onNavigateTab('compendium')}>
+        <button className="card rise d6" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'ceiling' })}>
           <div className="card-ic">
             <svg
               viewBox="0 0 24 24"
@@ -1026,8 +1029,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
               <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
             </svg>
           </div>
-          <h3>资料图鉴攻略</h3>
-          <p>极致无视/减免/怪增天花板拆解、各职业状态评级与战斗增益上限基准。</p>
+          <h3>极致属性攻略</h3>
+          <p>极致无视/减免/减暴/怪增/躲闪拆解，职业状态评级与战斗增益上限基准。</p>
           <span className="go">
             进入图鉴{' '}
             <svg
