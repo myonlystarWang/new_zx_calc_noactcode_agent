@@ -5,8 +5,11 @@ import { DataService } from '../services/DataService';
 import type { SubTab } from './compendium/CompendiumView';
 
 export type SearchTarget =
+    | { tab: 'home' }
     | { tab: 'compendium'; sub: SubTab; item?: string }
-    | { tab: 'calculator'; dungeonId: string; monsterId: string };
+    | { tab: 'calculator'; dungeonId?: string; monsterId?: string; skillId?: string; skillName?: string; classId?: string; faction?: string }
+    | { tab: 'skills'; classId?: string; faction?: string; skillName?: string; skillId?: string }
+    | { tab: 'arena' };
 
 interface IndexEntry {
     label: string;
@@ -160,6 +163,88 @@ function buildIndex(): IndexEntry[] {
         }
     }
 
+    // 职业技能速查入口
+    entries.push({
+        label: '职业技能速查',
+        group: '核心功能入口',
+        target: { tab: 'skills' },
+        keywords: ['技能', '技能速查', '技能库', '门派技能'],
+    });
+
+    // 职业技能（75 项核心技能）
+    const allSkills = service.getAllSkills() || {};
+    const skillMeta = service.getSkillMeta();
+    const classLabels: Record<string, string> = skillMeta?.classLabels || {
+        ZHU_SHUANG: '逐霜',
+        NIE_YU: '涅羽',
+        TAI_HAO: '太昊',
+        GUI_WANG: '鬼王',
+        TIAN_YIN: '天音',
+        FEN_XIANG: '焚香',
+        ZHAO_MING: '昭冥',
+        YING_ZHAO: '英招',
+        TIAN_HUA: '天华',
+        SHI_LUO: '释罗',
+    };
+    const factionLabels: Record<string, string> = { XIAN: '仙', FO: '佛', MO: '魔' };
+
+    for (const [classId, factions] of Object.entries(allSkills)) {
+        const className = classLabels[classId] || classId;
+        for (const [factionId, skillArr] of Object.entries(factions as Record<string, any[]>)) {
+            if (!Array.isArray(skillArr)) continue;
+            const fName = factionLabels[factionId] || factionId;
+            for (const sk of skillArr) {
+                // 条目 1：跳转技能速查
+                entries.push({
+                    label: sk.SkillName,
+                    group: `职业技能速查 / ${className}·${fName}`,
+                    target: {
+                        tab: 'skills',
+                        classId,
+                        faction: factionId,
+                        skillName: sk.SkillName,
+                        skillId: sk.SkillID,
+                    },
+                    keywords: [sk.SkillName, className, fName, classId],
+                });
+
+                // 条目 2：跳转计算器并展示技能属性详情
+                entries.push({
+                    label: `${sk.SkillName} (战力测算)`,
+                    group: `属性战力计算器 / ${className}·${fName} · 测算与属性`,
+                    target: {
+                        tab: 'calculator',
+                        classId,
+                        faction: factionId,
+                        skillName: sk.SkillName,
+                        skillId: sk.SkillID,
+                    },
+                    keywords: [sk.SkillName, className, fName, classId, '计算器', '测算', '属性', '伤害'],
+                });
+            }
+        }
+    }
+
+    // 战斗增益 Buff（定位到各职业状态 · 专注值与战斗增益参考）
+    const buffs = service.getBuffs();
+    const buffAliases: Record<string, string[]> = {
+        BUFF_FOCUS_EFFECT: ['专注', '专注增益', 'zz'],
+        BUFF_HOLYWRATH_EFFECT: ['巫咒', '巫咒增益', 'wz'],
+        BUFF_MON_CRITDAMAGE_EFFECT: ['绿点', '绿点增益', 'ld', '暴伤'],
+        BUFF_MON_HARMED_EFFECT: ['易伤', '易伤增益', 'ys'],
+        BUFF_ATT_PERCENT_EFFECT: ['攻击比', '攻击比增益', 'gjb'],
+    };
+    for (const b of buffs) {
+        entries.push({
+            label: b.BuffName,
+            group: '资料图鉴 / 各职业状态 / 战斗增益参考',
+            sub: 'support',
+            item: b.BuffName,
+            target: { tab: 'compendium', sub: 'support', item: b.BuffName },
+            keywords: [b.BuffName, ...(buffAliases[b.BuffID] || [])],
+        });
+    }
+
     // 为每条目补算拼音（全拼 + 首字母），支持首字母模糊搜索（如 天华→th、赤索→cs）
     return entries.map(e => {
         const { full, initials } = toPinyin(e.label + ' ' + (e.keywords?.join(' ') || ''));
@@ -213,12 +298,28 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
     const [active, setActive] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const listRef = useRef<HTMLDivElement>(null);
 
     const index = useMemo(() => buildIndex(), []);
     const results = useMemo(() => matchEntries(index, query), [index, query]);
     const showDropdown = focused || (query.length > 0 && results.length > 0);
 
-    useEffect(() => { setActive(0); }, [query]);
+    useEffect(() => {
+        setActive(0);
+        if (listRef.current) listRef.current.scrollTop = 0;
+    }, [query]);
+
+    useEffect(() => {
+        if (!listRef.current) return;
+        if (active === 0) {
+            listRef.current.scrollTop = 0;
+            return;
+        }
+        const activeEl = listRef.current.children[active] as HTMLElement;
+        if (activeEl) {
+            activeEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        }
+    }, [active]);
 
     // 点击外部关闭下拉（失焦延迟已在 onBlur 处理）
     useEffect(() => {
@@ -278,7 +379,7 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
                 )}
 
                 {showDropdown && results.length > 0 && (
-                    <div className="absolute z-50 mt-1 w-[260px] sm:w-[320px] max-h-[420px] overflow-y-auto bg-slate-900/95 border border-slate-700 rounded-xl shadow-2xl backdrop-blur-xl py-1">
+                    <div ref={listRef} className="absolute z-50 mt-1 w-[260px] sm:w-[320px] max-h-[420px] overflow-y-auto bg-slate-900/95 border border-slate-700 rounded-xl shadow-2xl backdrop-blur-xl py-1">
                         {results.map((e, i) => (
                             <button
                                 key={i}
