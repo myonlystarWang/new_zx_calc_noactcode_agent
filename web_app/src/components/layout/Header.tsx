@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onSearch
     }, []);
 
     return (
-        <header className="w-full py-2 md:py-3 mb-4 md:mb-5 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-[100] shadow-lg shadow-slate-900/50">
+        <header className="w-full py-2 md:py-2.5 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-[100] shadow-lg shadow-slate-900/50">
             <div className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 flex flex-col md:flex-row md:items-center justify-between gap-3">
                 {/* 品牌与 Logo：点击直达首页门户 */}
                 <div
@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onSearch
                     </div>
                     <div>
                         <h1 className="text-xl md:text-2xl font-black text-gradient tracking-tight drop-shadow-sm group-hover:brightness-110 transition-all">
-                            诛仙3副本战斗实验室
+                            诛仙3 战斗实验室
                         </h1>
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
                             <p className="text-sm text-slate-400 font-mono tracking-wider flex items-center gap-2">
@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange, onSearch
                         {[
                             { id: 'calculator', short: '战力', full: '属性战力计算器' },
                             { id: 'arena', short: '模拟', full: '副本模拟训练场' },
-                            { id: 'compendium', short: '图鉴', full: '资料图鉴' },
+                            { id: 'compendium', short: '资料库', full: '全景战斗资料库' },
                         ].map((tab) => (
                             <button
                                 key={tab.id}

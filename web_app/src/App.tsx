@@ -62,11 +62,11 @@ const MainContent: React.FC = () => {
       <Header activeTab={activeTab} onTabChange={setActiveTab} onSearchNavigate={handleSearchNav} />
 
       {activeTab === 'home' ? (
-        <main className="w-full flex-1">
+        <main className="w-full flex-1 flex flex-col justify-center">
           <HomePage onNavigateTab={setActiveTab} onSearchNavigate={handleSearchNav} />
         </main>
       ) : activeTab === 'calculator' ? (
-        <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 grid grid-cols-1 xl:grid-cols-12 gap-6 animate-in fade-in duration-300">
+        <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-4 pb-6 grid grid-cols-1 xl:grid-cols-12 gap-6 animate-in fade-in duration-300">
           {/* Left Column: Attribute Inputs */}
           <div className="xl:col-span-4">
             <AttributePanel
@@ -82,17 +82,17 @@ const MainContent: React.FC = () => {
 
           {/* Right Column: Results */}
           <div className="xl:col-span-4">
-            <div className="xl:sticky xl:top-24">
+            <div className="xl:sticky xl:top-20">
               <ResultSection searchNav={searchNav} onSearchConsumed={() => setSearchNav(null)} />
             </div>
           </div>
         </main>
       ) : activeTab === 'arena' ? (
-        <main className="w-full max-w-none mx-auto px-3 xl:px-4 animate-in fade-in duration-300">
+        <main className="w-full flex-1 min-h-0 max-w-none mx-auto px-3 xl:px-4 animate-in fade-in duration-300 flex flex-col overflow-hidden">
           <SimulationArena />
         </main>
       ) : (
-        <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 animate-in fade-in duration-300">
+        <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-4 pb-8 animate-in fade-in duration-300">
           <CompendiumView
             searchNav={searchNav}
             onSearchConsumed={() => setSearchNav(null)}

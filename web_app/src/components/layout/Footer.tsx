@@ -43,10 +43,10 @@ export const Footer: React.FC<FooterProps> = ({ activeTab = 'calculator' }) => {
     };
 
     return (
-        <footer className="w-full py-4 mt-auto border-t border-slate-800/40 bg-slate-900/20 backdrop-blur-sm">
+        <footer className="w-full py-2.5 md:py-3 mt-auto border-t border-slate-800/40 bg-slate-900/20 backdrop-blur-sm">
             <div
-                className={`w-full mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-400 transition-all duration-300 ${
-                    activeTab === 'home' ? 'max-w-[1140px]' : 'max-w-[1760px]'
+                className={`w-full mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-slate-400 transition-all duration-300 ${
+                    activeTab === 'home' ? 'max-w-[1240px]' : 'max-w-[1760px]'
                 }`}
             >
                 <div className="text-xs font-mono tracking-wider text-center md:text-left">

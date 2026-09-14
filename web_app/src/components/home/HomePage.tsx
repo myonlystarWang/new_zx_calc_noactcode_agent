@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { DataService } from '../../services/DataService';
 import type { SearchTarget } from '../GlobalSearch';
 import { pinyin } from 'pinyin-pro';
+import { Sparkles, Calculator, Swords, Zap, Crosshair, Award } from 'lucide-react';
 
 interface SearchEntry {
   l: string;          // label
@@ -34,6 +35,16 @@ const CAT_NAME: Record<SearchEntry['c'], string> = {
 
 const HOT = ['天华', '赤梭', '苍龙啸', '易伤', '专注', '流波惊变'];
 const RECENT_KEY = 'zx_home_recent_searches';
+
+const HOT_QUICK_TAGS: Array<{ label: string; target: SearchTarget }> = [
+  { label: 'T21 玄铠', target: { tab: 'calculator', dungeonId: 'ZHENHAI_DUANLANG_CRUSH_T21', monsterId: 'T21_M2' } },
+  { label: '天帝3 宝库', target: { tab: 'calculator', dungeonId: 'TIANDI_BAOKU_3' } },
+  { label: '逐霜·苍龙啸', target: { tab: 'compendium', sub: 'skills', skillId: 'ZS_XIAN_SKILL_CLXX' } },
+  { label: '鬼王·未名斩', target: { tab: 'compendium', sub: 'skills', skillId: 'GW_XIAN_SKILL_WMZX' } },
+  { label: '天华·秋声雅韵', target: { tab: 'compendium', sub: 'skills', skillId: 'TH_FO_SKILL_QSYY' } },
+  { label: '极致无视', target: { tab: 'compendium', sub: 'ignore' } },
+  { label: '团队易伤上限', target: { tab: 'compendium', sub: 'support', item: '易伤' } },
+];
 
 const PH = [
   '搜索 Boss / 技能 / 增益 / 攻略，如 苍龙啸',
@@ -109,7 +120,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
     // 1. 核心功能入口
     add('属性战力计算器', '功能入口', 'page', ['战力', '计算器', '属性计算'], { tab: 'calculator' });
     add('副本模拟训练场', '功能入口', 'page', ['模拟', '训练场', '战斗模拟', 'arena'], { tab: 'arena' });
-    add('资料图鉴', '功能入口', 'page', ['图鉴', '攻略', '资料', '专注值', '增益'], { tab: 'compendium', sub: 'ceiling' });
+    add('全景战斗资料库', '功能入口', 'page', ['资料库', '图鉴', '资料图鉴', '攻略', '资料', '专注值', '增益'], { tab: 'compendium', sub: 'ceiling' });
     add('极致属性攻略', '功能入口', 'page', ['极致属性', '天花板', '无视', '减免', '怪增', '躲闪'], { tab: 'compendium', sub: 'ceiling' });
     add('职业技能速查', '功能入口', 'page', ['技能', '速查', '技能库', '门派技能'], { tab: 'compendium', sub: 'skills' });
     add('职业状态一览', '功能入口', 'page', ['职业状态', '辅助', '增益', '状态评级'], { tab: 'compendium', sub: 'support' });
@@ -211,7 +222,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
       { label: '各职业状态', sub: 'support', kw: ['职业', '辅助', '专注值', '专注'] },
     ];
     for (const sp of subPages) {
-      add(sp.label, '资料图鉴 · 攻略', 'guide', sp.kw, { tab: 'compendium', sub: sp.sub });
+      add(sp.label, '全景战斗资料库 · 攻略', 'guide', sp.kw, { tab: 'compendium', sub: sp.sub });
     }
 
     // 6. 各职业状态评级
@@ -655,10 +666,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
 
   return (
     <div className="hero">
-      {/* 标头区（严格对齐 index.html 文案与样式） */}
+      {/* 标头区 */}
       <div className="hero-t">
-        <h2 className="rise d1">诛仙3副本战斗实验室</h2>
-        <p className="rise d2">属性计算 · 战斗模拟 · 资料速查 —— 输入名称或拼音首字母，一站直达</p>
+        <h2 className="rise d1">诛仙3 副本战斗实验室</h2>
+        <p className="rise d2">属性计算 · 战斗模拟 · 全景资料速查 —— 输入拼音首字母或关键词，一站直达</p>
       </div>
 
       {/* 搜索框区（方案 A+C：搜索框 + 呼吸渐变 + 彗星跑圈 + 下拉浮层） */}
@@ -866,34 +877,43 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
             </div>
           </div>
         </div>
+
+        {/* 热门搜索快捷标签 (Quick Search Pills) */}
+        <div className="quick-tags rise d3">
+          <span className="quick-tags-label">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <span>热门速搜:</span>
+          </span>
+          <div className="quick-tags-list">
+            {HOT_QUICK_TAGS.map((tag, idx) => (
+              <button
+                key={idx}
+                className="quick-tag-pill"
+                onClick={() => onSearchNavigate(tag.target)}
+              >
+                <span>{tag.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* 5 大核心功能卡片（视觉完全统一，光泽流动悬停） */}
+      {/* 5 大核心功能卡片（视觉专属色彩微光体系，层次清晰） */}
       <section className="cards">
-        <button className="card rise d4" onClick={() => onNavigateTab('calculator')}>
-          <div className="card-ic">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect width="16" height="20" x="4" y="2" rx="2" />
-              <line x1="8" x2="16" y1="6" y2="6" />
-              <line x1="16" x2="16" y1="14" y2="18" />
-              <path d="M16 10h.01" />
-              <path d="M12 10h.01" />
-              <path d="M8 10h.01" />
-              <path d="M12 14h.01" />
-              <path d="M8 14h.01" />
-            </svg>
+        {/* 卡片 1: 属性战力计算器 (激光青蓝) */}
+        <button className="card card-cyan rise d4 group" onClick={() => onNavigateTab('calculator')}>
+          <div className="card-top">
+            <div className="card-ic">
+              <Calculator className="w-5 h-5 text-cyan-300" />
+            </div>
+            <span className="card-tag card-tag-cyan">核心测算</span>
           </div>
-          <h3>属性战力计算器</h3>
-          <p>录入面板属性、勾选战斗增益，实时测算对各副本 Boss 的技能伤害与命中阈值。</p>
+          <div className="card-mid">
+            <h3>属性战力计算器</h3>
+            <p>录入面板属性、勾选战斗增益，实时测算对各副本 Boss 的技能伤害与命中阈值。</p>
+          </div>
           <span className="go">
-            进入计算器{' '}
+            <span>进入计算器</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -908,30 +928,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </span>
         </button>
 
-        <button className="card rise d5" onClick={() => onNavigateTab('arena')}>
-          <div className="card-ic">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5" />
-              <line x1="13" x2="19" y1="19" y2="13" />
-              <line x1="16" x2="20" y1="16" y2="20" />
-              <line x1="19" x2="21" y1="21" y2="19" />
-              <polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5" />
-              <line x1="5" x2="9" y1="14" y2="18" />
-              <line x1="7" x2="4" y1="17" y2="20" />
-              <line x1="3" x2="5" y1="19" y2="21" />
-            </svg>
+        {/* 卡片 2: 副本模拟训练场 (熔火流金 / 燃橙) */}
+        <button className="card card-amber rise d5 group" onClick={() => onNavigateTab('arena')}>
+          <div className="card-top">
+            <div className="card-ic">
+              <Swords className="w-5 h-5 text-amber-300" />
+            </div>
+            <span className="card-tag card-tag-amber">沙盘推演</span>
           </div>
-          <h3>副本模拟训练场</h3>
-          <p>配置队伍与技能策略，逐秒模拟整场实战，输出伤害曲线、技能时序与详尽报表。</p>
+          <div className="card-mid">
+            <h3>副本模拟训练场</h3>
+            <p>配置队伍与技能策略，逐秒模拟整场实战，输出伤害曲线、技能时序与详尽报表。</p>
+          </div>
           <span className="go">
-            进入训练场{' '}
+            <span>进入训练场</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -946,26 +956,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </span>
         </button>
 
-        <button className="card rise d5" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'skills' })}>
-          <div className="card-ic">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-              <polyline points="14 2 14 8 20 8" />
-              <path d="m10 13-2 2 2 2" />
-              <path d="m14 17 2-2-2-2" />
-            </svg>
+        {/* 卡片 3: 职业技能速查 (极光翠青) */}
+        <button className="card card-emerald rise d5 group" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'skills' })}>
+          <div className="card-top">
+            <div className="card-ic">
+              <Zap className="w-5 h-5 text-emerald-300" />
+            </div>
+            <span className="card-tag card-tag-emerald">门派典籍</span>
           </div>
-          <h3>职业技能速查</h3>
-          <p>全门派技能充能、冷却、命中段数、伤害加成与机制说明一站式分类直达。</p>
+          <div className="card-mid">
+            <h3>职业技能速查</h3>
+            <p>全门派技能充能、冷却、命中段数、伤害加成与机制说明一站式分类直达。</p>
+          </div>
           <span className="go">
-            进入技能库{' '}
+            <span>进入技能库</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -980,27 +984,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </span>
         </button>
 
-        <button className="card rise d6" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'boss' })}>
-          <div className="card-ic">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="22" x2="18" y1="12" y2="12" />
-              <line x1="6" x2="2" y1="12" y2="12" />
-              <line x1="12" x2="12" y1="6" y2="2" />
-              <line x1="12" x2="12" y1="22" y2="18" />
-            </svg>
+        {/* 卡片 4: 副本 BOSS 速查 (暗金 / 渊紫) */}
+        <button className="card card-purple rise d6 group" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'boss' })}>
+          <div className="card-top">
+            <div className="card-ic">
+              <Crosshair className="w-5 h-5 text-purple-300" />
+            </div>
+            <span className="card-tag card-tag-purple">首领抗性</span>
           </div>
-          <h3>副本 BOSS 速查</h3>
-          <p>16 大副本 102 位关卡首领抗性速查，包含减爆伤、防御、血量与伤害压缩比。</p>
+          <div className="card-mid">
+            <h3>副本 BOSS 速查</h3>
+            <p>16 大副本 102 位关卡首领抗性速查，包含减爆伤、防御、血量与伤害压缩比。</p>
+          </div>
           <span className="go">
-            进入BOSS库{' '}
+            <span>进入BOSS库</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -1015,24 +1012,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </span>
         </button>
 
-        <button className="card rise d6" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'ceiling' })}>
-          <div className="card-ic">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-            </svg>
+        {/* 卡片 5: 极致属性攻略 (星曜金红) */}
+        <button className="card card-rose rise d6 group" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'ceiling' })}>
+          <div className="card-top">
+            <div className="card-ic">
+              <Award className="w-5 h-5 text-rose-300" />
+            </div>
+            <span className="card-tag card-tag-rose">天花板上限</span>
           </div>
-          <h3>极致属性攻略</h3>
-          <p>极致无视/减免/减暴/怪增/躲闪拆解，职业状态评级与战斗增益上限基准。</p>
+          <div className="card-mid">
+            <h3>极致属性攻略</h3>
+            <p>极致无视/减免/减暴/怪增/躲闪拆解，职业状态评级与战斗增益上限基准。</p>
+          </div>
           <span className="go">
-            进入图鉴{' '}
+            <span>查看极致攻略</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -1048,26 +1041,67 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         </button>
       </section>
 
-      {/* 底部全站数据统计（严格按照要求展示对应数字与单位） */}
-      <div className="stats rise d6" id="stats">
-        <span className="si">
-          本站收录 <b>{stats.dungeons}</b> 副本
-        </span>
-        <span className="si">
-          <b>{stats.monsters}</b> Boss / 怪物
-        </span>
-        <span className="si">
-          <b>{stats.skills}</b> 职业技能
-        </span>
-        <span className="si">
-          <b>{stats.buffs}</b> 战斗增益
-        </span>
-        <span className="si">
-          <b>{stats.roles}</b> 职业评级
-        </span>
-        <span className="si">
-          <b>{stats.guides}</b> 攻略条目
-        </span>
+      {/* 底部全站数据统计看板（可交互 Metric Pills，支持点击直达） */}
+      <div className="metric-pills-container rise d6" id="stats">
+        <div className="metric-pill-header">
+          <span className="w-1.5 h-3.5 bg-cyan-400 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.6)]"></span>
+          <span>全景数据沉淀 · 点击快捷直达</span>
+        </div>
+        <div className="metric-pills-grid">
+          <button
+            className="metric-pill group"
+            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'boss' })}
+            title="点击前往 副本 BOSS 速查"
+          >
+            <span className="pill-num text-cyan-300">{stats.dungeons}</span>
+            <span className="pill-label">副本收录</span>
+          </button>
+
+          <button
+            className="metric-pill group"
+            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'boss' })}
+            title="点击前往 副本 BOSS 速查"
+          >
+            <span className="pill-num text-purple-300">{stats.monsters}</span>
+            <span className="pill-label">Boss / 怪物</span>
+          </button>
+
+          <button
+            className="metric-pill group"
+            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'skills' })}
+            title="点击前往 职业技能速查"
+          >
+            <span className="pill-num text-emerald-300">{stats.skills}</span>
+            <span className="pill-label">职业技能</span>
+          </button>
+
+          <button
+            className="metric-pill group"
+            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'support' })}
+            title="点击前往 职业状态一览"
+          >
+            <span className="pill-num text-amber-300">{stats.buffs}</span>
+            <span className="pill-label">战斗增益</span>
+          </button>
+
+          <button
+            className="metric-pill group"
+            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'support' })}
+            title="点击前往 职业状态评级"
+          >
+            <span className="pill-num text-sky-300">{stats.roles}</span>
+            <span className="pill-label">职业评级</span>
+          </button>
+
+          <button
+            className="metric-pill group"
+            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'ceiling' })}
+            title="点击前往 极致属性攻略"
+          >
+            <span className="pill-num text-rose-300">{stats.guides}</span>
+            <span className="pill-label">攻略条目</span>
+          </button>
+        </div>
       </div>
     </div>
   );
