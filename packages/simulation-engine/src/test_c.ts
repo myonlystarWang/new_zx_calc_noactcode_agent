@@ -2744,6 +2744,33 @@ const testZhuShuangSkills = () => {
     assert.equal((applyMana.data as any).effect.BuffEffects.BuffManaPercentEffect, 90);
     assert.equal((applyCrit.data as any).effect.Duration, 40);
 
+    // 不佩戴玄烛·云蒸霞蔚（NONE）：白板真气30%，仙造化云蒸霞蔚II的爆伤仍存在——持续20秒、+50%爆伤
+    const resultXianNone = runSimulation({
+      maxTimeMs: 2000,
+      boss: baseBoss(10000000),
+      actors: [
+        {
+          actorId: 'dps',
+          classId: 'ZHU_SHUANG',
+          role: 'DPS',
+          baseAttributes: baseAttr,
+          baseSkills: [yzxwSkill, yzxwFourthGen],
+          equippedFourthGen: [],
+          strategy: {
+            type: 'MANUAL_TIMELINE',
+            actions: [{ timeMs: 0, skillId: 'ZS_XIAN_SKILL_YZXW' }]
+          }
+        }
+      ]
+    });
+    const applyManaNone = resultXianNone.events.find(e => e.type === 'BUFF_APPLY' && (e.data as any)?.effect?.EffectId === 'ZS_BUFF_YZXW_MANA');
+    const applyCritNone = resultXianNone.events.find(e => e.type === 'BUFF_APPLY' && (e.data as any)?.effect?.EffectId === 'ZS_BUFF_YZXW_CRIT_DMG');
+    assert.ok(applyManaNone && applyCritNone, 'NONE 白板仍应施加真气与仙爆伤效果');
+    assert.equal((applyManaNone.data as any).effect.BuffEffects.BuffManaPercentEffect, 30);
+    assert.equal((applyCritNone.data as any).effect.Duration, 20);
+    assert.equal((applyCritNone.data as any).effect.BuffEffects.BuffCriticalDamagePercentEffect, 50);
+
+
     const resultMoHaoYue = runSimulation({
       maxTimeMs: 2000,
       boss: baseBoss(10000000),
