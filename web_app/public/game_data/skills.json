@@ -1129,7 +1129,10 @@
           "SkillManaPercentBonus": 15,
           "SkillDefensePercentBonus": 400,
           "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
         },
         "ActionType": "DAMAGE"
       },
@@ -1230,7 +1233,10 @@
           "SkillManaPercentBonus": 15,
           "SkillDefensePercentBonus": 400,
           "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
         },
         "ActionType": "DAMAGE"
       },
@@ -1331,7 +1337,10 @@
           "SkillManaPercentBonus": 15,
           "SkillDefensePercentBonus": 400,
           "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
         },
         "ActionType": "DAMAGE"
       },
