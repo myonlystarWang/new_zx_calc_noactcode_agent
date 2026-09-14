@@ -5,6 +5,7 @@ export interface EffectInstance {
   EffectId: string;
   EffectName: string;
   SourceActorId: string;
+  SourceClassId?: string;
   SourceSkillId: string;
   TargetId: string;
   Target: AppliedEffectConfig['Target'];
@@ -42,10 +43,23 @@ export class EffectManager {
     effect: AppliedEffectConfig,
     currentTimeMs: number,
     sourceActorId: string,
-    sourceSkillId: string
+    sourceSkillId: string,
+    sourceClassId?: string
   ): ApplyEffectResult {
+    // 同职业同一效果不叠加：只保留一份，再次施放刷新持续时间（数值不翻倍）。优先于叠层/互斥规则；不同职业仍走原逻辑。
+    if (sourceClassId) {
+      const sameClassEffectIndex = this.activeEffects.findIndex(
+        active => active.SourceClassId === sourceClassId && active.EffectId === effect.EffectId
+      );
+      if (sameClassEffectIndex !== -1) {
+        const replaced = this.activeEffects.splice(sameClassEffectIndex, 1);
+        const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1, sourceClassId);
+        return { applied, replaced, ignored: false };
+      }
+    }
+
     if (effect.Stackable) {
-      return this.applyStackableEffect(effect, currentTimeMs, sourceActorId, sourceSkillId);
+      return this.applyStackableEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, sourceClassId);
     }
 
     const sameSkillEffectIndex = this.activeEffects.findIndex(active =>
@@ -64,18 +78,18 @@ export class EffectManager {
       }
 
       const replaced = this.activeEffects.splice(sameSkillEffectIndex, 1);
-      const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1);
+      const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1, sourceClassId);
       return { applied, replaced, ignored: false };
     }
 
     if (!effect.ExclusiveGroup) {
-      const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1);
+      const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1, sourceClassId);
       return { applied, replaced: [], ignored: false };
     }
 
     const existingIndex = this.activeEffects.findIndex(active => active.ExclusiveGroup === effect.ExclusiveGroup);
     if (existingIndex === -1) {
-      const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1);
+      const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1, sourceClassId);
       return { applied, replaced: [], ignored: false };
     }
 
@@ -89,7 +103,7 @@ export class EffectManager {
     }
 
     const replaced = this.activeEffects.splice(existingIndex, 1);
-    const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1);
+    const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1, sourceClassId);
     return { applied, replaced, ignored: false };
   }
 
@@ -134,7 +148,8 @@ export class EffectManager {
     effect: AppliedEffectConfig,
     currentTimeMs: number,
     sourceActorId: string,
-    sourceSkillId: string
+    sourceSkillId: string,
+    sourceClassId?: string
   ): ApplyEffectResult {
     const sameEffectIndexes = this.activeEffects
       .map((active, index) => ({ active, index }))
@@ -146,11 +161,11 @@ export class EffectManager {
         curr.active.AppliedAtMs < prev.active.AppliedAtMs ? curr : prev
       );
       const replaced = this.activeEffects.splice(oldest.index, 1);
-      const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1);
+      const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1, sourceClassId);
       return { applied, replaced, ignored: false };
     }
 
-    const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1);
+    const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1, sourceClassId);
     return { applied, replaced: [], ignored: false };
   }
 
@@ -191,13 +206,15 @@ export class EffectManager {
     currentTimeMs: number,
     sourceActorId: string,
     sourceSkillId: string,
-    stackCount: number
+    stackCount: number,
+    sourceClassId?: string
   ): EffectInstance {
     const activeEffect: EffectInstance = {
       InstanceId: createInstanceId(),
       EffectId: effect.EffectId,
       EffectName: effect.EffectName,
       SourceActorId: sourceActorId,
+      SourceClassId: sourceClassId,
       SourceSkillId: sourceSkillId,
       TargetId: this.targetId,
       Target: effect.Target,

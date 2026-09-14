@@ -492,6 +492,7 @@ export class SimulationEngine {
     const effect = event.data?.effect as AppliedEffectConfig | undefined;
     const sourceActorId = asString(event.data?.sourceActorId, event.actorId ?? '');
     const sourceSkillId = asString(event.data?.sourceSkillId, event.skillId ?? '');
+    const sourceClassId = this.actors.get(sourceActorId)?.config.classId;
     const targetId = event.targetId ?? BOSS_TARGET_ID;
     const manager = this.effects.get(targetId);
 
@@ -507,7 +508,7 @@ export class SimulationEngine {
     }
 
     const effectToApply = this.filterBuffEffects(dynamicResolution.effect);
-    const result = manager.applyEffect(effectToApply, event.timeMs, sourceActorId, sourceSkillId);
+    const result = manager.applyEffect(effectToApply, event.timeMs, sourceActorId, sourceSkillId, sourceClassId);
     if (result.applied) {
       this.timeline.schedule({
         timeMs: result.applied.EndTimeMs,
