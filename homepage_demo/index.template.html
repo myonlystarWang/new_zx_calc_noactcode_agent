@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>诛仙3副本战斗实验室 · 首页门户与资料速查</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
+<style>
+/* ============ 设计变量（统一 slate-950 + cyan/indigo 体系） ============ */
+:root{
+  --bg:#020617; --panel:rgba(15,23,42,.82); --panel-2:rgba(30,41,59,.65);
+  --line:rgba(51,65,85,.65); --line-soft:rgba(148,163,184,.14);
+  --t1:#f1f5f9; --t2:#cbd5e1; --t3:#94a3b8; --t4:#64748b;
+  --cyan:#06b6d4; --cyan-3:#67e8f9; --indigo:#818cf8; --purple:#a855f7;
+  --grad:linear-gradient(92deg,#22d3ee 0%,#818cf8 50%,#c084fc 100%);
+  --r-lg:18px; --r-md:14px; --r-sm:10px;
+  --shadow-cyan:0 0 24px rgba(6,182,212,.22);
+  --font:'Noto Sans SC','Inter',system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
+  --mono:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font); color:var(--t2); background:var(--bg);
+  -webkit-font-smoothing:antialiased; line-height:1.55; overflow-x:hidden;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:rgba(6,182,212,.28);color:#ecfeff}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#334155;border-radius:99px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ============ 动态背景：aurora 光斑 + 细网格 ============ */
+.bg-fx{position:fixed;inset:0;z-index:-2;overflow:hidden;background:
+  radial-gradient(1200px 700px at 50% -10%,rgba(30,41,59,.9),transparent 60%),var(--bg);}
+.bg-fx .grid{position:absolute;inset:0;opacity:.45;
+  background-image:linear-gradient(rgba(148,163,184,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(148,163,184,.05) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 30%,#000 30%,transparent 75%);}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.22;will-change:transform}
+.blob.b1{width:520px;height:520px;left:-120px;top:-140px;
+  background:radial-gradient(circle,#0e7490,transparent 65%);animation:drift1 24s ease-in-out infinite alternate}
+.blob.b2{width:560px;height:560px;right:-140px;top:6%;
+  background:radial-gradient(circle,#7e22ce,transparent 65%);animation:drift2 28s ease-in-out infinite alternate}
+.blob.b3{width:460px;height:460px;left:38%;bottom:-260px;
+  background:radial-gradient(circle,#155e75,transparent 65%);animation:drift3 32s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(140px,90px) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-120px,130px) scale(1.1)}}
+@keyframes drift3{to{transform:translate(60px,-110px) scale(1.2)}}
+
+/* ============ 顶部导航 ============ */
+.hd{position:sticky;top:0;z-index:100;
+  background:rgba(2,6,23,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(51,65,85,.6)}
+.hd-in{max-width:1380px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none}
+.brand-ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(135deg,rgba(6,182,212,.22),rgba(168,85,247,.22));
+  border:1px solid rgba(6,182,212,.35);box-shadow:0 0 18px rgba(6,182,212,.18)}
+.brand-ic svg{width:20px;height:20px;color:#22d3ee}
+.brand h1{font-size:17px;font-weight:900;letter-spacing:.2px;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand .ver{font-size:11px;color:var(--t4);font-family:var(--mono);margin-top:1px}
+.nav{display:flex;gap:7px}
+.nav button{padding:7px 13px;border-radius:11px;font-size:13px;font-weight:700;color:var(--t3);
+  border:1px solid transparent;background:rgba(30,41,59,.4);transition:.25s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.nav button:hover{color:var(--t1);background:rgba(51,65,85,.55)}
+.nav button.on{color:#67e8f9;border-color:rgba(6,182,212,.45);background:rgba(6,182,212,.14);
+  box-shadow:0 0 14px rgba(6,182,212,.18)}
+.nav button .short{display:none}
+
+/* ============ 视图容器 ============ */
+.view{display:none}
+.view.active{display:block}
+
+/* ============ Hero 区 ============ */
+.hero{max-width:1160px;margin:0 auto;padding:clamp(40px,7.5vh,80px) 20px 32px}
+.rise{opacity:0;transform:translateY(20px);animation:rise .75s cubic-bezier(.22,.8,.25,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.25s}
+.d4{animation-delay:.35s}.d5{animation-delay:.45s}.d6{animation-delay:.55s}
+
+.hero-t{text-align:center;margin-top:6px}
+.hero-t h2{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:1px;line-height:1.2;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 26px rgba(6,182,212,.18))}
+.hero-t p{margin-top:13px;color:var(--t3);font-size:clamp(13.5px,1.6vw,16px);letter-spacing:.5px}
+
+/* ============ 大搜索框（方案 A + C 优雅降速 + 超宽光晕版） ============ */
+.search-wrap{position:relative;z-index:40}
+.search-zone{position:relative;max-width:720px;margin:32px auto 0}
+
+/* 外框轨道层 */
+.search-glow{
+  position:relative;
+  border-radius:20px;
+  border:1.5px solid rgba(51,65,85,.7);
+  background:rgba(15,23,42,.45);
+  transition:border-color .3s, box-shadow .35s;
+}
+
+/* 渐变呼吸光晕（聚焦时激活：左青、中蓝、右紫三色真实渐变漫射） */
+.search-glow::before{
+  content:'';
+  position:absolute;
+  inset:-3px;
+  border-radius:23px;
+  background:linear-gradient(92deg, rgba(34,211,238,.85) 0%, rgba(129,140,248,.75) 50%, rgba(192,132,252,.85) 100%);
+  filter:blur(14px);
+  opacity:0;
+  z-index:-1;
+  pointer-events:none;
+  transition:opacity .35s ease, filter .35s ease, transform .35s ease;
+}
+
+.search-glow.focus{
+  border-color:transparent;
+  background:
+    linear-gradient(rgba(7,14,28,.96), rgba(7,14,28,.96)) padding-box,
+    linear-gradient(92deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%) border-box;
+}
+.search-glow.focus::before{
+  opacity:1;
+  animation:focusAuraBreath 1.7s ease-in-out infinite alternate;
+}
+
+@keyframes focusAuraBreath{
+  0%{
+    opacity:.36;
+    filter:blur(10px);
+    transform:scale(.993);
+  }
+  100%{
+    opacity:.88;
+    filter:blur(22px);
+    transform:scale(1.018);
+  }
+}
+
+/* 彗星 Canvas 跑圈层（优雅航速 160px/s + 多层星辉弥散光晕，z-index 设为 10 位于顶层，避免下半部光晕被裁切） */
+.comet-canvas{
+  position:absolute;
+  pointer-events:none;
+  z-index:10;
+  transition:opacity .25s ease;
+}
+
+.search-box{
+  position:relative;
+  display:flex;
+  align-items:center;
+  border-radius:18px;
+  background:rgba(2,6,23,.92);
+  padding:0 16px;
+  height:58px;
+  z-index:4;
+}
+.search-box>svg.ic{width:21px;height:21px;color:var(--cyan);flex-shrink:0}
+.search-box input{flex:1;height:100%;background:none;border:none;outline:none;color:var(--t1);
+  font-size:16.5px;padding:0 12px;font-family:inherit}
+.search-box input::placeholder{color:#475569}
+.kbd-hint{font-family:var(--mono);font-size:11px;color:var(--t4);border:1px solid var(--line);
+  padding:2px 7px;border-radius:7px;background:rgba(30,41,59,.6);flex-shrink:0;user-select:none}
+.clear-btn{display:none;place-items:center;width:26px;height:26px;border-radius:8px;color:var(--t4);flex-shrink:0}
+.clear-btn:hover{color:var(--t1);background:rgba(51,65,85,.6)}
+.clear-btn.show{display:grid}
+.clear-btn svg{width:15px;height:15px}
+
+/* 下拉面板 */
+.panel{position:absolute;top:calc(100% + 12px);left:2px;right:2px;z-index:50;
+  background:#0a1222;border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:0 24px 60px rgba(0,0,0,.65),0 0 0 1px rgba(6,182,212,.08);overflow:hidden;
+  opacity:0;transform:translateY(-6px) scale(.99);pointer-events:none;transition:.18s transform,.18s opacity}
+.panel.open{opacity:1;transform:none;pointer-events:auto}
+.panel-body{max-height:min(480px,54vh);overflow-y:auto;padding:6px}
+.grp-h{display:flex;align-items:center;gap:8px;padding:9px 12px 5px;font-size:11px;font-weight:700;
+  letter-spacing:1px;color:var(--t4);text-transform:uppercase}
+.grp-h::after{content:'';flex:1;height:1px;background:var(--line-soft)}
+.grp-h .tag{font-weight:500;color:var(--cyan);background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);
+  padding:1px 7px;border-radius:99px;letter-spacing:0}
+.row{width:100%;display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:11px;
+  text-align:left;transition:background .12s}
+.row.on{background:rgba(6,182,212,.15);box-shadow:inset 2px 0 0 #22d3ee}
+.row .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);opacity:.55;flex-shrink:0}
+.row .main{min-width:0;flex:1}
+.row .nm{font-size:14px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .gp{font-size:11px;color:var(--t4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.row mark{background:rgba(6,182,212,.28);color:#a5f3fc;border-radius:4px;padding:0 2px}
+.row .py{font-family:var(--mono);font-size:10.5px;color:var(--t4);background:rgba(51,65,85,.45);
+  padding:2px 7px;border-radius:6px;flex-shrink:0}
+.empty-block{padding:14px 16px 8px}
+.empty-block h5{font-size:11.5px;color:var(--t4);letter-spacing:1px;font-weight:700;margin-bottom:9px;
+  display:flex;align-items:center;gap:6px}
+.empty-block h5 svg{width:13px;height:13px;color:var(--cyan)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:12.5px;color:var(--t2);padding:5px 12px;border-radius:99px;
+  background:rgba(30,41,59,.6);border:1px solid var(--line-soft);transition:.2s}
+.chip:hover{color:#a5f3fc;border-color:rgba(6,182,212,.4);background:rgba(6,182,212,.1);transform:translateY(-1px)}
+.recent-row{display:flex;align-items:center;justify-content:space-between}
+.recent-row .link{font-size:11.5px;color:var(--t4);padding:2px 6px;border-radius:6px}
+.recent-row .link:hover{color:#fca5a5}
+.no-result{padding:30px 16px;text-align:center;color:var(--t4);font-size:13px}
+.panel-foot{padding:8px 14px;border-top:1px solid var(--line-soft);font-size:11px;color:var(--t4);
+  display:flex;gap:16px;background:rgba(15,23,42,.5)}
+.panel-foot b{color:var(--t3);font-weight:500}
+.keycap{display:inline-block;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;
+  padding:0 5px;font-family:var(--mono);font-size:10px;color:var(--t3);margin:0 2px}
+
+/* ============ 首页4大功能卡片（统一视觉色调） ============ */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px;position:relative;z-index:1}
+.card{position:relative;text-align:left;overflow:hidden;border-radius:var(--r-lg);padding:22px 20px;
+  background:linear-gradient(160deg,rgba(30,41,59,.6),rgba(15,23,42,.75));
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .35s cubic-bezier(.22,.8,.25,1),border-color .35s,box-shadow .35s}
+.card:hover{transform:translateY(-5px);border-color:rgba(6,182,212,.35);
+  box-shadow:0 16px 40px rgba(0,0,0,.45),0 0 26px rgba(6,182,212,.12)}
+.card:active{transform:translateY(-2px)}
+.card::after{content:'';position:absolute;top:0;left:-70%;width:45%;height:100%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(103,232,249,.08),transparent);transform:skewX(-18deg)}
+.card:hover::after{left:135%;transition:left .95s ease}
+.card-ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px;
+  background:linear-gradient(135deg,rgba(6,182,212,.18),rgba(168,85,247,.18));
+  border:1px solid rgba(6,182,212,.28)}
+.card-ic svg{width:21px;height:21px;color:#67e8f9}
+.card h3{font-size:16px;font-weight:800;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.card p{font-size:12.5px;color:var(--t3);line-height:1.55;min-height:56px}
+.card .go{margin-top:12px;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#67e8f9}
+.card .go svg{width:14px;height:14px;transition:transform .25s}
+.card:hover .go svg{transform:translateX(4px)}
+
+.stats{margin-top:36px;display:flex;flex-wrap:wrap;justify-content:center;column-gap:22px;row-gap:10px;
+  font-size:13px;color:var(--t4);letter-spacing:.5px}
+.stats .si{white-space:nowrap}
+.stats b{color:#a5f3fc;font-weight:700;font-family:var(--mono);font-size:15px;margin:0 3px}
+
+/* ============ 职业技能速查页面（重构：高可读性、清爽无杂乱） ============ */
+.skills-view{max-width:1380px;margin:0 auto;padding:26px 20px 60px}
+.sk-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+.sk-bread{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t4)}
+.sk-bread a,.sk-bread button{color:var(--t3);transition:.2s}
+.sk-bread a:hover,.sk-bread button:hover{color:#67e8f9}
+.sk-bread .cur{color:#22d3ee;font-weight:700}
+.btn-back-home{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;
+  background:rgba(30,41,59,.55);border:1px solid var(--line);font-size:12.5px;color:var(--t2);font-weight:600;transition:.2s}
+.btn-back-home:hover{color:#fff;background:rgba(51,65,85,.7);border-color:rgba(6,182,212,.4)}
+
+.sk-header{background:linear-gradient(160deg,rgba(15,23,42,.85),rgba(30,41,59,.6));
+  border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:20px 24px;margin-bottom:22px}
+.sk-header h2{font-size:21px;font-weight:900;color:var(--t1);display:flex;align-items:center;gap:10px}
+.sk-header h2 svg{width:22px;height:22px;color:#22d3ee}
+.sk-header p{font-size:13px;color:var(--t3);margin-top:5px}
+
+/* 门派切换 Ribbon */
+.classes-ribbon{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line-soft)}
+.cls-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:11px;
+  background:rgba(15,23,42,.7);border:1px solid var(--line);font-size:13px;font-weight:700;color:var(--t3);transition:.22s}
+.cls-btn:hover{color:var(--t1);border-color:rgba(6,182,212,.4);background:rgba(30,41,59,.6)}
+.cls-btn.on{color:#67e8f9;border-color:rgba(6,182,212,.6);background:rgba(6,182,212,.16);box-shadow:0 0 16px rgba(6,182,212,.16)}
+.cls-btn .cnt{font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:99px;
+  background:rgba(51,65,85,.5);color:var(--t3)}
+.cls-btn.on .cnt{background:rgba(6,182,212,.25);color:#a5f3fc}
+
+/* 筛选与搜索控制栏 */
+.sk-ctrl{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:20px}
+.sk-search-box{position:relative;flex:1;min-width:280px;max-width:440px}
+.sk-search-box svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--t4)}
+.sk-search-box input{width:100%;height:38px;background:rgba(2,6,23,.8);border:1px solid var(--line);
+  border-radius:10px;padding:0 12px 0 36px;color:var(--t1);font-size:13px;font-family:inherit;outline:none;transition:.25s}
+.sk-search-box input:focus{border-color:rgba(6,182,212,.6);box-shadow:0 0 16px rgba(6,182,212,.15)}
+.sk-faction-pills{display:flex;gap:6px}
+.sk-f-pill{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:600;color:var(--t3);
+  background:rgba(30,41,59,.45);border:1px solid transparent;transition:.2s}
+.sk-f-pill:hover{color:var(--t1);background:rgba(51,65,85,.55)}
+.sk-f-pill.on{color:#67e8f9;border-color:rgba(6,182,212,.5);background:rgba(6,182,212,.15)}
+
+/* 全新设计的技能卡片（专业游戏Tooltip风格：清晰层次、直观读数） */
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.skill-card{position:relative;background:linear-gradient(160deg,rgba(30,41,59,.45),rgba(15,23,42,.8));
+  border:1px solid var(--line-soft);border-radius:14px;padding:18px 20px;
+  transition:border-color .28s,box-shadow .28s,transform .25s}
+.skill-card:hover{border-color:rgba(6,182,212,.35);box-shadow:0 12px 28px rgba(0,0,0,.45);transform:translateY(-2px)}
+.skill-card-highlight{animation:cardHighlight 2.4s cubic-bezier(.22,.8,.25,1)}
+@keyframes cardHighlight{
+  0%{box-shadow:0 0 0 3px rgba(34,211,238,.9),0 0 40px rgba(34,211,238,.6);border-color:#22d3ee;transform:scale(1.015)}
+  50%{box-shadow:0 0 0 4px rgba(129,140,248,.9),0 0 50px rgba(129,140,248,.5);border-color:#818cf8;transform:scale(1.015)}
+  100%{box-shadow:none;border-color:rgba(6,182,212,.35);transform:none}
+}
+
+/* 顶部栏：技能名 + 阵营类型 + 右侧冷却施法徽章 */
+.sk-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.sk-title-wrap{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.sk-name{font-size:16px;font-weight:800;color:#fff;letter-spacing:.2px}
+.sk-pill{font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;font-family:var(--mono)}
+.sk-pill.xian{background:rgba(6,182,212,.15);color:#67e8f9;border:1px solid rgba(6,182,212,.3)}
+.sk-pill.fo{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
+.sk-pill.mo{background:rgba(168,85,247,.15);color:#d8b4fe;border:1px solid rgba(168,85,247,.3)}
+.sk-pill.type{background:rgba(51,65,85,.5);color:var(--t3)}
+.sk-pill.weight{background:rgba(15,23,42,.8);color:var(--t4);border:1px solid rgba(51,65,85,.5)}
+
+.sk-cadence{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px}
+.cd-badge{color:#67e8f9;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);padding:2px 8px;border-radius:6px;font-weight:700}
+.cast-badge{color:var(--t3);background:rgba(51,65,85,.4);padding:2px 7px;border-radius:6px}
+
+/* 规整横向属性面板：告别零散小药丸，整齐对齐 */
+.sk-stats-bar{display:flex;align-items:center;background:rgba(2,6,23,.6);border:1px solid var(--line-soft);
+  border-radius:9px;padding:9px 12px;margin-bottom:12px;gap:12px;flex-wrap:wrap}
+.sk-stat{display:flex;align-items:baseline;gap:6px}
+.sk-stat .lbl{font-size:11px;color:var(--t4)}
+.sk-stat .val{font-size:13.5px;font-weight:800;font-family:var(--mono);color:var(--t1)}
+.sk-stat .val.cyan{color:#67e8f9}
+.sk-stat .val.gold{color:#fcd34d}
+.sk-stat .val.purp{color:#d8b4fe}
+.sk-stat .sub{font-size:11px;font-family:var(--mono);color:var(--t3);margin-left:1px}
+.sk-stat-div{width:1px;height:14px;background:var(--line-soft)}
+
+/* 技能机制说明 */
+.sk-desc{font-size:12.5px;color:var(--t2);line-height:1.65;padding:0 2px}
+.sk-desc mark{background:none;color:#67e8f9;font-weight:700}
+
+/* ============ 资料图鉴页面（含各职业状态、专注值参考与战斗增益） ============ */
+.comp-view{max-width:1380px;margin:0 auto;padding:26px 20px 60px}
+.comp-card{background:linear-gradient(160deg,rgba(30,41,59,.5),rgba(15,23,42,.8));
+  border:1px solid var(--line-soft);border-radius:var(--r-md);padding:20px 22px;margin-bottom:18px}
+.comp-card h3{font-size:15px;font-weight:800;color:var(--t1);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.comp-card h3 .line{width:3px;height:14px;border-radius:99px;background:#06b6d4}
+
+/* 专注值行 (对齐截图 3) */
+.focus-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(2,6,23,.7);border:1px solid var(--line);
+  padding:7px 16px;border-radius:10px;font-size:13.5px}
+.focus-pill .fn{font-weight:700;color:var(--t2)}
+.focus-pill .fv{font-family:var(--mono);font-size:16px;font-weight:900;color:#f97316}
+
+/* 战斗增益网格（显示在专注值参考正下方） */
+.buffs-ref-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:4px}
+.buff-box{background:rgba(2,6,23,.6);border:1px solid var(--line-soft);border-radius:10px;padding:12px;transition:.2s}
+.buff-box:hover{border-color:rgba(6,182,212,.35)}
+.buff-box .bn{font-size:12.5px;color:var(--t3);font-weight:600;margin-bottom:4px}
+.buff-box .bv{font-size:20px;font-weight:900;font-family:var(--mono);color:#6ee7b7}
+.buff-box .bd{font-size:11px;color:var(--t4);line-height:1.4;margin-top:4px}
+
+/* 攻略说明列表（截图 3） */
+.notes-card{background:rgba(15,23,42,.6);border:1px solid var(--line-soft);border-radius:var(--r-md);padding:18px 22px}
+.notes-card h4{font-size:13.5px;font-weight:800;color:var(--t1);margin-bottom:10px}
+.notes-card ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--t3);line-height:1.65}
+.notes-card li{position:relative;padding-left:14px}
+.notes-card li::before{content:'•';position:absolute;left:0;color:var(--cyan);font-weight:bold}
+
+/* 通用页脚与 Toast */
+.ft{margin-top:56px;border-top:1px solid rgba(51,65,85,.45);background:rgba(2,6,23,.5)}
+.ft-in{max-width:1380px;margin:0 auto;padding:18px 20px;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:6px;font-size:12px;color:var(--t4);font-family:var(--mono)}
+.toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,16px);z-index:200;
+  background:rgba(15,23,42,.97);border:1px solid rgba(6,182,212,.45);border-radius:13px;
+  padding:11px 18px;font-size:13px;color:var(--t1);box-shadow:0 14px 44px rgba(0,0,0,.6),var(--shadow-cyan);
+  opacity:0;pointer-events:none;transition:.28s;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast b{color:#a5f3fc}
+
+@media (max-width:1100px){
+  .cards{grid-template-columns:repeat(2,1fr);gap:14px}
+  .skills-grid{grid-template-columns:1fr}
+  .buffs-ref-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:640px){
+  .hd-in{padding:9px 13px;gap:10px}
+  .brand{gap:8px;min-width:0}
+  .brand-ic{width:32px;height:32px;border-radius:10px}
+  .brand h1{font-size:13.5px;white-space:nowrap}
+  .brand .ver{display:none}
+  .nav{gap:4px}
+  .nav button{padding:7px 8px;font-size:12px;border-radius:8px}
+  .nav button .full{display:none}.nav button .short{display:inline}
+  .cards{grid-template-columns:1fr;margin-top:32px}
+  .card p{min-height:0}
+  .search-box{height:52px}
+  .search-box input{font-size:16px}
+  .kbd-hint,.panel-foot{display:none}
+  .hero{padding-top:30px}
+  .sk-head{flex-direction:column;align-items:flex-start}
+  .buffs-ref-grid{grid-template-columns:1fr}
+  .stats{column-gap:14px;font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  .blob,.search-glow.focus::before{animation:none!important}
+  .rise{opacity:1!important;transform:none!important;animation:none!important}
+  *{scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<!-- 动态背景 -->
+<div class="bg-fx" aria-hidden="true">
+  <div class="grid"></div><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+</div>
+
+<!-- ============ 顶部导航 ============ -->
+<header class="hd">
+  <div class="hd-in">
+    <div class="brand" id="brandLogo" title="返回首页门户">
+      <div class="brand-ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/></svg>
+      </div>
+      <div>
+        <h1>诛仙3副本战斗实验室</h1>
+        <div class="ver">V 2.1.1 · by 星耀-萝卜</div>
+      </div>
+    </div>
+    <nav class="nav" id="mainNav">
+      <button class="on" data-tab="skills"><span class="short">技能</span><span class="full">职业技能速查</span></button>
+      <button data-tab="compendium"><span class="short">图鉴</span><span class="full">资料图鉴攻略</span></button>
+      <button data-tab="calc"><span class="short">战力</span><span class="full">属性战力计算器</span></button>
+      <button data-tab="arena"><span class="short">模拟</span><span class="full">副本模拟训练场</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ 视图 1：首页门户 ============ -->
+<main class="view active" id="viewHome">
+  <div class="hero">
+    <div class="hero-t">
+      <h2 class="rise d1">诛仙3副本战斗实验室</h2>
+      <p class="rise d2">属性计算 · 战斗模拟 · 资料速查 —— 输入名称或拼音首字母，一站直达</p>
+    </div>
+
+    <!-- 大搜索（方案 A+C：优雅慢速跑圈 + 超宽光晕 + 键盘上下回车秒级联动） -->
+    <div class="rise d3 search-wrap">
+      <div class="search-zone" id="searchZone">
+        <div class="search-glow" id="searchGlow">
+          <!-- 彗星渲染画布 -->
+          <canvas class="comet-canvas" id="cometCanvas"></canvas>
+          <div class="search-box">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="q" type="text" autocomplete="off" spellcheck="false"
+                   placeholder="搜索 Boss / 技能 / 增益 / 攻略，如 苍龙啸、赤梭、易伤" />
+            <button class="clear-btn" id="clearBtn" title="清空搜索">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+            <span class="kbd-hint" title="支持快捷键 Ctrl+K 聚焦">Ctrl K</span>
+          </div>
+        </div>
+        <div class="panel" id="panel">
+          <div class="panel-body" id="panelBody"></div>
+          <div class="panel-foot">
+            <span><span class="keycap">↑</span><span class="keycap">↓</span> 选择</span>
+            <span><span class="keycap">Enter</span> 直达</span>
+            <span><span class="keycap">Esc</span> 关闭</span>
+            <span style="margin-left:auto">支持拼音首字母，如 <b>clx → 苍龙啸</b></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 大核心功能卡片（视觉完全统一，协调美观） -->
+    <section class="cards">
+      <button class="card rise d4" data-card="calc">
+        <div class="card-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/></svg>
+        </div>
+        <h3>属性战力计算器</h3>
+        <p>三栏实时联动：录入面板属性、勾选战斗增益，即时结算对各副本 Boss 的伤害与命中。</p>
+        <span class="go">进入计算器 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </button>
+
+      <button class="card rise d5" data-card="arena">
+        <div class="card-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></svg>
+        </div>
+        <h3>副本模拟训练场</h3>
+        <p>配置队伍与技能策略，逐秒模拟整场战斗，输出伤害曲线、技能时序与实战报表。</p>
+        <span class="go">进入训练场 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </button>
+
+      <button class="card rise d6" data-card="compendium">
+        <div class="card-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3>资料图鉴攻略</h3>
+        <p>极致无视 / 减免 / 减暴击 / 怪增 / 躲闪攻略、各职业状态评级、专注值与战斗增益参考。</p>
+        <span class="go">进入图鉴 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </button>
+
+      <button class="card rise d6" data-card="skills">
+        <div class="card-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg>
+        </div>
+        <h3>职业技能速查</h3>
+        <p>收录 10 大门派 75 项核心技能冷却、充能、命中段数、伤害加成与机制一站式直达。</p>
+        <span class="go">进入技能库 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </button>
+    </section>
+
+    <div class="stats rise d6" id="stats"></div>
+  </div>
+</main>
+
+<!-- ============ 视图 2：职业技能速查库 ============ -->
+<main class="view" id="viewSkills">
+  <div class="skills-view">
+    <div class="sk-bar">
+      <div class="sk-bread">
+        <button id="breadHome">首页</button>
+        <span>/</span>
+        <span>资料速查</span>
+        <span>/</span>
+        <span class="cur">全职业核心技能速查</span>
+      </div>
+      <button class="btn-back-home" id="btnBackHome">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="m15 18-6-6 6-6"/></svg>
+        返回首页大搜索
+      </button>
+    </div>
+
+    <div class="sk-header">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"/></svg>
+        全职业核心技能速查库
+      </h2>
+      <p>收录 10 大门派 75 项核心技能属性加成、冷却时序、充能段数与机制说明，支持全站中拼模糊直达。</p>
+    </div>
+
+    <!-- 门派切换 Ribbon（纯净门派，不再混杂战斗增益） -->
+    <div class="classes-ribbon" id="classesRibbon"></div>
+
+    <!-- 筛选与搜索栏 -->
+    <div class="sk-ctrl">
+      <div class="sk-search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="skillFilterInput" placeholder="在当前门派中搜索技能名或拼音 (如 clx、充能)..." />
+      </div>
+      <div class="sk-faction-pills" id="factionPills">
+        <button class="sk-f-pill on" data-faction="all">全部阵营</button>
+        <button class="sk-f-pill" data-faction="XIAN">仙</button>
+        <button class="sk-f-pill" data-faction="FO">佛</button>
+        <button class="sk-f-pill" data-faction="MO">魔</button>
+      </div>
+    </div>
+
+    <!-- 技能展示网格（全新清晰版） -->
+    <div class="skills-grid" id="skillsContainer"></div>
+  </div>
+</main>
+
+<!-- ============ 视图 3：资料图鉴攻略（含专注值参考与战斗增益数据） ============ -->
+<main class="view" id="viewCompendium">
+  <div class="comp-view">
+    <div class="sk-bar">
+      <div class="sk-bread">
+        <button id="breadHomeFromComp">首页</button>
+        <span>/</span>
+        <span>资料图鉴</span>
+        <span>/</span>
+        <span class="cur">各职业状态与增益参考</span>
+      </div>
+      <button class="btn-back-home" id="btnBackHomeFromComp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="m15 18-6-6 6-6"/></svg>
+        返回首页大搜索
+      </button>
+    </div>
+
+    <!-- 专注值参考卡片（完全对齐截图 3 结构） -->
+    <div class="comp-card" id="focusCard">
+      <h3><span class="line"></span>专注值参考</h3>
+      <div class="focus-pill">
+        <span class="fn">三碗专注</span>
+        <span class="fv">20</span>
+      </div>
+    </div>
+
+    <!-- 核心战斗增益基准卡片（显示到专注值参考正下方！） -->
+    <div class="comp-card" id="combatBuffsCard">
+      <h3><span class="line"></span>核心战斗增益基准参考 (Combat Buffs)</h3>
+      <div class="buffs-ref-grid" id="buffsRefGrid"></div>
+    </div>
+
+    <!-- 玩法说明卡片（完全对齐截图 3 文本） -->
+    <div class="notes-card">
+      <h4>说明</h4>
+      <ul>
+        <li>回归玩家或新人区新服想玩辅助且不想多花费的推荐：天音、昭冥、画影、英招、鬼王、鬼道、释罗、烈山、百灵。</li>
+        <li>青云、辰皇、归云、逐霜、惊岚、涅羽属于输出职业，输出职业基本跟细节挂钩。</li>
+        <li>现版本针对 PVE 玩法基本做成辅助和主C两个极端：① 主C 需要一定消费能力（副本 1C 带 5 辅可通刷所有副本，C 竞争压力大）；② 对辅助非常友好，每个辅助都有自己的特点。</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<footer class="ft">
+  <div class="ft-in">
+    <span>© 2024 诛仙3副本战斗实验室 · Designed &amp; Developed by 星耀-萝卜</span>
+    <span>首页效果 Demo · 搜索数据为本地真实快照</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/*__DATA__*/
+(function(){
+  'use strict';
+  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- 分类元信息 ---------- */
+  var CAT_ORDER = ['page','dungeon','monster','skill','role','guide'];
+  var CAT_NAME = {page:'功能入口',dungeon:'副本',monster:'Boss / 怪物',skill:'职业技能',
+                  role:'职业评级',guide:'攻略与增益'};
+  var HOT = ['天华','赤梭','苍龙啸','易伤','专注','流波惊变'];
+  var RECENT_KEY = 'zx_home_demo_recent';
+
+  /* ---------- 匹配（中文直匹配 > 首字母 > 全拼） ---------- */
+  function match(q){
+    q = q.trim().toLowerCase();
+    if(!q) return [];
+    var scored = [];
+    for(var n=0;n<SEARCH_DATA.length;n++){
+      var e = SEARCH_DATA[n];
+      var hay = (e.l+' '+e.g+' '+(e.k||[]).join(' ')).toLowerCase();
+      var idx = hay.indexOf(q);
+      if(idx>=0){ scored.push({e:e,s:100-idx}); continue; }
+      if(e.i && e.i.indexOf(q)>=0) scored.push({e:e,s:60-e.i.indexOf(q)});
+      else if(e.f && e.f.indexOf(q)>=0) scored.push({e:e,s:50-e.f.indexOf(q)});
+    }
+    scored.sort(function(a,b){return b.s-a.s;});
+    return scored.slice(0,25);
+  }
+
+  /* ---------- DOM 引用 ---------- */
+  var $ = function(id){return document.getElementById(id);};
+  var input=$('q'), panel=$('panel'), body=$('panelBody'), glow=$('searchGlow'),
+      zone=$('searchZone'), clearBtn=$('clearBtn'), toastEl=$('toast'),
+      cometCanvasEl=$('cometCanvas');
+  var viewHome=$('viewHome'), viewSkills=$('viewSkills'), viewCompendium=$('viewCompendium');
+  var displayedResults=[], activeIndex=0, focused=false, toastTimer=null;
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function hl(text,q){
+    text=esc(text); if(!q) return text;
+    var i=text.toLowerCase().indexOf(q.toLowerCase());
+    if(i<0) return text;
+    return text.slice(0,i)+'<mark>'+text.slice(i,i+q.length)+'</mark>'+text.slice(i+q.length);
+  }
+
+  /* ================================================================
+     彗星跑圈 Canvas 引擎（优雅巡航速 160px/s + 超宽双层弥散光晕）
+     ================================================================ */
+  function initComet(containerEl, canvasEl){
+    if(REDUCED || !canvasEl) return { setFocus:function(){} };
+    var ctx = canvasEl.getContext('2d');
+    var PAD = 40; // 宽幅 Padding 保证 32px 扩散大光晕不被裁剪
+    var w = 0, h = 0, r = 20, arc = 0, P = 0;
+    var dist = 0, lastTime = 0, isFocused = false;
+
+    function resize(){
+      var rect = containerEl.getBoundingClientRect();
+      var dpr = window.devicePixelRatio || 1;
+      w = rect.width;
+      h = rect.height;
+      r = 20;
+      arc = Math.PI * r * 0.5;
+      P = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 4 * arc;
+
+      canvasEl.width = (w + 2 * PAD) * dpr;
+      canvasEl.height = (h + 2 * PAD) * dpr;
+      canvasEl.style.width = (w + 2 * PAD) + 'px';
+      canvasEl.style.height = (h + 2 * PAD) + 'px';
+      canvasEl.style.left = (-PAD) + 'px';
+      canvasEl.style.top = (-PAD) + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    }
+
+    function getPoint(dVal){
+      var d = ((dVal % P) + P) % P;
+      var lTop = w - 2 * r;
+      if(d < lTop) return { x: r + d, y: 0, isH: true };
+      d -= lTop;
+      if(d < arc){
+        var th = -Math.PI * 0.5 + d / r;
+        return { x: (w - r) + r * Math.cos(th), y: r + r * Math.sin(th), isH: false };
+      }
+      d -= arc;
+      var lR = h - 2 * r;
+      if(d < lR) return { x: w, y: r + d, isH: false };
+      d -= lR;
+      if(d < arc){
+        var th = 0 + d / r;
+        return { x: (w - r) + r * Math.cos(th), y: (h - r) + r * Math.sin(th), isH: false };
+      }
+      d -= arc;
+      var lBot = w - 2 * r;
+      if(d < lBot) return { x: (w - r) - d, y: h, isH: true };
+      d -= lBot;
+      if(d < arc){
+        var th = Math.PI * 0.5 + d / r;
+        return { x: r + r * Math.cos(th), y: (h - r) + r * Math.sin(th), isH: false };
+      }
+      d -= arc;
+      var lL = h - 2 * r;
+      if(d < lL) return { x: 0, y: (h - r) - d, isH: false };
+      d -= lL;
+      var th = Math.PI + d / r;
+      return { x: r + r * Math.cos(th), y: r + r * Math.sin(th), isH: false };
+    }
+
+    function getColor(x){
+      var t = Math.max(0, Math.min(1, x / w));
+      var rC, gC, bC;
+      if(t <= 0.5){
+        var k = t / 0.5;
+        rC = Math.round(34 + k * (129 - 34));
+        gC = Math.round(211 + k * (140 - 211));
+        bC = Math.round(238 + k * (248 - 238));
+      }else{
+        var k = (t - 0.5) / 0.5;
+        rC = Math.round(129 + k * (192 - 129));
+        gC = Math.round(140 + k * (132 - 140));
+        bC = Math.round(248 + k * (252 - 248));
+      }
+      return { r: rC, g: gC, b: bC };
+    }
+
+    function frame(timestamp){
+      if(!lastTime) lastTime = timestamp;
+      var dt = Math.min((timestamp - lastTime) / 1000, 0.05);
+      lastTime = timestamp;
+
+      if(!isFocused && w > 0 && P > 0 && !document.hidden){
+        var head = getPoint(dist);
+        // 航速调校：基准 160 px/s，直线上温和加速至 1.45x，跑一圈约 7.5 秒，从容优雅
+        var u = Math.max(0, Math.min(1, head.x / w));
+        var speedMult = head.isH ? (0.90 + 0.55 * Math.sin(Math.PI * u)) : 0.90;
+        var baseSpeed = 160;
+        dist += baseSpeed * speedMult * dt;
+
+        ctx.clearRect(0, 0, w + 2 * PAD, h + 2 * PAD);
+
+        var tailLen = 45 + 55 * ((speedMult - 0.90) / 0.55);
+        var steps = 30;
+        var stepDist = tailLen / steps;
+
+        ctx.save();
+        ctx.translate(PAD, PAD);
+        ctx.lineCap = 'round';
+
+        // 绘制发光拖尾（带发光阴影）
+        var prevPt = getPoint(dist);
+        for(var i = 1; i <= steps; i++){
+          var currPt = getPoint(dist - i * stepDist);
+          var p = i / steps;
+          var alpha = Math.pow(1 - p, 1.4) * 0.92;
+          var col = getColor((prevPt.x + currPt.x) * 0.5);
+
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = 'rgba(' + col.r + ',' + col.g + ',' + col.b + ', ' + (alpha * 0.8).toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(' + col.r + ',' + col.g + ',' + col.b + ',' + alpha.toFixed(3) + ')';
+          ctx.lineWidth = 1.4 + 2.4 * (1 - p);
+          ctx.moveTo(prevPt.x, prevPt.y);
+          ctx.lineTo(currPt.x, currPt.y);
+          ctx.stroke();
+
+          prevPt = currPt;
+        }
+
+        // 头部光晕：多阶径向弥散光晕（彻底废除生硬实心圆，32px 软边缘扩散无裁切）
+        var headCol = getColor(head.x);
+        var bloomR = 32;
+        var radGrad = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, bloomR);
+        radGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        radGrad.addColorStop(0.12, 'rgba(' + headCol.r + ',' + headCol.g + ',' + headCol.b + ', 0.92)');
+        radGrad.addColorStop(0.35, 'rgba(' + headCol.r + ',' + headCol.g + ',' + headCol.b + ', 0.55)');
+        radGrad.addColorStop(0.68, 'rgba(' + headCol.r + ',' + headCol.g + ',' + headCol.b + ', 0.20)');
+        radGrad.addColorStop(1, 'rgba(' + headCol.r + ',' + headCol.g + ',' + headCol.b + ', 0)');
+
+        ctx.fillStyle = radGrad;
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, bloomR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 内部纯白高能星核
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#ffffff';
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, 2.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(frame);
+
+    return {
+      setFocus: function(f){
+        isFocused = f;
+        canvasEl.style.opacity = f ? '0' : '1';
+        if(!f) lastTime = 0;
+      }
+    };
+  }
+
+  var cometController = initComet(glow, cometCanvasEl);
+
+  /* ================================================================
+     下拉搜索与键盘上下箭头 + 回车直达核心修复
+     ================================================================ */
+  function rowHtml(e, idx, q){
+    var isEn = q && /^[a-z0-9]+$/i.test(q.trim());
+    var py = isEn && e.i ? '<span class="py">'+esc(e.i.slice(0,8))+'</span>' : '';
+    return '<button class="row'+(idx===activeIndex?' on':'')+'" data-idx="'+idx+'">'
+      +'<span class="dot"></span>'
+      +'<span class="main"><div class="nm">'+hl(e.l,q)+'</div>'
+      +'<div class="gp">'+esc(e.g)+'</div></span>'+py+'</button>';
+  }
+
+  function updateActiveRow(){
+    var rows = body.querySelectorAll('.row');
+    for(var i=0; i<rows.length; i++){
+      rows[i].classList.toggle('on', i === activeIndex);
+    }
+    var activeEl = body.querySelector('.row.on');
+    if(activeEl) activeEl.scrollIntoView({ block: 'nearest' });
+  }
+
+  function render(){
+    var q=input.value;
+    if(!focused){ panel.classList.remove('open'); return; }
+    panel.classList.add('open');
+    if(!q.trim()){ renderIdle(); return; }
+
+    var rawResults = match(q);
+    if(!rawResults.length){
+      displayedResults = [];
+      activeIndex = 0;
+      body.innerHTML='<div class="no-result">没有找到「'+esc(q)+'」，试试中文名或拼音首字母（如 clx、cs、th、ys）</div>';
+      return;
+    }
+
+    // 按分类聚合并排序
+    var groups={};
+    rawResults.forEach(function(x){ (groups[x.e.c]=groups[x.e.c]||[]).push(x); });
+    var order=CAT_ORDER.filter(function(c){return groups[c];});
+    order.sort(function(a,b){
+      var ma=Math.max.apply(null,groups[a].map(function(x){return x.s;}));
+      var mb=Math.max.apply(null,groups[b].map(function(x){return x.s;}));
+      return mb-ma;
+    });
+
+    displayedResults = [];
+    var html = '', flatIdx = 0;
+    for(var c=0; c<order.length; c++){
+      var cat = order[c], group = groups[cat];
+      html += '<div class="grp-h">' + CAT_NAME[cat] + '<span class="tag">' + group.length + '</span></div>';
+      for(var i=0; i<group.length; i++){
+        displayedResults.push(group[i].e);
+        html += rowHtml(group[i].e, flatIdx++, q.trim());
+      }
+    }
+    activeIndex = 0; // 重置选中项到第一条
+    body.innerHTML = html;
+  }
+
+  function renderIdle(){
+    displayedResults = [];
+    activeIndex = 0;
+    var recent = loadRecent();
+    var html='<div class="empty-block"><h5>'
+      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>'
+      +'热门搜索</h5><div class="chips">'
+      +HOT.map(function(w){return '<button class="chip" data-hot="'+esc(w)+'">'+esc(w)+'</button>';}).join('')
+      +'</div></div>';
+    if(recent.length){
+      html+='<div class="empty-block"><div class="recent-row"><h5 style="margin:0">'
+        +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>'
+        +'最近访问</h5><button class="link" id="clearRecent">清空</button></div>'
+        +'<div class="chips" style="margin-top:9px">'
+        +recent.map(function(e){return '<button class="chip" data-recent="'+esc(e.l)+'">'+esc(e.l)+'</button>';}).join('')
+        +'</div></div>';
+    }
+    body.innerHTML=html;
+  }
+
+  function loadRecent(){
+    try{return JSON.parse(localStorage.getItem(RECENT_KEY)||'[]');}catch(e){return [];}
+  }
+  function saveRecent(e){
+    var r=loadRecent().filter(function(x){return x.l!==e.l;});
+    r.unshift(e); localStorage.setItem(RECENT_KEY,JSON.stringify(r.slice(0,6)));
+  }
+
+  /* ---------- 视图切换 ---------- */
+  function switchView(tabId){
+    viewHome.classList.toggle('active', tabId === 'home');
+    viewSkills.classList.toggle('active', tabId === 'skills');
+    viewCompendium.classList.toggle('active', tabId === 'compendium');
+
+    Array.prototype.forEach.call(document.querySelectorAll('#mainNav button'), function(btn){
+      btn.classList.toggle('on', btn.dataset.tab === tabId);
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ---------- 选中条目直达 ---------- */
+  function choose(e){
+    saveRecent(e);
+    input.value=''; updateClear();
+    panel.classList.remove('open'); focused=false; glow.classList.remove('focus'); input.blur();
+    cometController.setFocus(false);
+
+    if(e.t && e.t.type === 'skill'){
+      switchView('skills');
+      openSkill(e.t.classId, e.t.faction, e.t.skillId);
+      showToast('直达 <b>'+esc(CLASS_LABELS[e.t.classId]||e.t.classId)+'·'+esc(FACTIONS[e.t.faction]||e.t.faction)+'</b> → '+esc(e.l));
+    } else if(e.t && e.t.type === 'compendium'){
+      switchView('compendium');
+      showToast('直达 <b>资料图鉴</b> → ' + esc(e.l));
+      if(e.t.item === '易伤' || e.t.buffId || e.t.sub === 'support'){
+        highlightCompCard('combatBuffsCard');
+      }
+    } else if(e.t && e.t.type === 'skills'){
+      switchView('skills');
+      showToast('已进入 <b>职业技能速查库</b>');
+    } else {
+      showToast('直达 <b>'+esc(e.g)+'</b> → '+esc(e.l));
+    }
+  }
+
+  function highlightCompCard(cardId){
+    var card = $(cardId);
+    if(card){
+      setTimeout(function(){
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.remove('skill-card-highlight');
+        void card.offsetWidth;
+        card.classList.add('skill-card-highlight');
+      }, 140);
+    }
+  }
+
+  /* ---------- 键盘上下箭头与回车事件监听 ---------- */
+  input.addEventListener('input', function(){ updateClear(); render(); });
+  input.addEventListener('focus', function(){
+    focused=true; glow.classList.add('focus');
+    cometController.setFocus(true);
+    render();
+  });
+  input.addEventListener('blur', function(){
+    setTimeout(function(){
+      if(!zone.contains(document.activeElement)){
+        focused=false; panel.classList.remove('open'); glow.classList.remove('focus');
+        cometController.setFocus(false);
+      }
+    },130);
+  });
+
+  input.addEventListener('keydown', function(ev){
+    if(ev.key === 'ArrowDown'){
+      ev.preventDefault();
+      if(displayedResults.length > 0){
+        activeIndex = (activeIndex + 1) % displayedResults.length;
+        updateActiveRow();
+      }
+    } else if(ev.key === 'ArrowUp'){
+      ev.preventDefault();
+      if(displayedResults.length > 0){
+        activeIndex = (activeIndex - 1 + displayedResults.length) % displayedResults.length;
+        updateActiveRow();
+      }
+    } else if(ev.key === 'Enter'){
+      ev.preventDefault();
+      if(displayedResults.length > 0 && displayedResults[activeIndex]){
+        choose(displayedResults[activeIndex]);
+      }
+    } else if(ev.key === 'Escape'){
+      focused=false; panel.classList.remove('open'); glow.classList.remove('focus');
+      cometController.setFocus(false); input.blur();
+    }
+  });
+
+  body.addEventListener('mousedown', function(ev){
+    var row = ev.target.closest('.row');
+    if(row){
+      ev.preventDefault();
+      var idx = +row.dataset.idx;
+      if(displayedResults[idx]) choose(displayedResults[idx]);
+      return;
+    }
+    var hot = ev.target.closest('[data-hot]');
+    if(hot){
+      input.value = hot.dataset.hot;
+      updateClear(); input.focus(); render();
+      return;
+    }
+    var rc = ev.target.closest('[data-recent]');
+    if(rc){
+      var item = loadRecent().find(function(x){ return x.l === rc.dataset.recent; });
+      if(item) choose(item);
+      return;
+    }
+    if(ev.target.id === 'clearRecent'){
+      localStorage.removeItem(RECENT_KEY);
+      render();
+    }
+  });
+
+  body.addEventListener('mouseover', function(ev){
+    var row = ev.target.closest('.row');
+    if(!row) return;
+    activeIndex = +row.dataset.idx;
+    var rows = body.querySelectorAll('.row');
+    for(var i=0; i<rows.length; i++){
+      rows[i].classList.toggle('on', i === activeIndex);
+    }
+  });
+
+  document.addEventListener('mousedown', function(ev){
+    if(!zone.contains(ev.target)){ panel.classList.remove('open'); }
+  });
+
+  function updateClear(){ clearBtn.classList.toggle('show', !!input.value); }
+  clearBtn.addEventListener('click', function(){
+    input.value = ''; updateClear(); input.focus(); render();
+  });
+
+  // 全局快捷键：Ctrl+K 或 Cmd+K 或 / 快速聚焦
+  document.addEventListener('keydown', function(ev){
+    if((ev.ctrlKey || ev.metaKey) && (ev.key === 'k' || ev.key === 'K')){
+      ev.preventDefault(); input.focus();
+    }
+    if(ev.code === 'Slash' && document.activeElement !== input && document.activeElement !== $('skillFilterInput')){
+      ev.preventDefault(); input.focus();
+    }
+  });
+
+  /* ---------- 占位符打字机 ---------- */
+  var PH=['搜索 Boss / 技能 / 增益 / 攻略，如 苍龙啸',
+          '输入拼音首字母，如 th → 天华、clx → 苍龙啸',
+          '搜索怪物首领，如 赤梭',
+          '输入战斗增益，如 易伤、专注值参考'];
+  if(REDUCED){ input.placeholder=PH[0]; }
+  else{(function typeLoop(){
+    var wi=0;
+    (function word(){
+      var w=PH[wi], c=0, deleting=false;
+      (function step(){
+        if(document.activeElement===input){ setTimeout(step,220); return; }
+        if(!deleting){
+          c++; input.placeholder=w.slice(0,c);
+          if(c===w.length){ deleting=true; setTimeout(step,1600); return; }
+          setTimeout(step,110);
+        }else{
+          c--; input.placeholder=w.slice(0,c);
+          if(c===0){ wi=(wi+1)%PH.length; setTimeout(word,280); return; }
+          setTimeout(step,40);
+        }
+      })();
+    })();
+  })();}
+
+  /* ================================================================
+     全新高可读性技能卡片渲染系统（纯职业门派）
+     ================================================================ */
+  var currentClass = 'ZHU_SHUANG';
+  var currentFaction = 'all';
+  var skillFilter = '';
+
+  var classesRibbon = $('classesRibbon');
+  var factionPills = $('factionPills');
+  var skillsContainer = $('skillsContainer');
+  var skillFilterInput = $('skillFilterInput');
+
+  function renderClassRibbon(){
+    var classKeys = Object.keys(SKILLS_DATA);
+    var html = '';
+    for(var i=0; i<classKeys.length; i++){
+      var cid = classKeys[i];
+      var name = CLASS_LABELS[cid] || cid;
+      var count = 0;
+      var factionsMap = SKILLS_DATA[cid] || {};
+      for(var f in factionsMap){ count += (factionsMap[f]||[]).length; }
+      html += '<button class="cls-btn'+(cid===currentClass?' on':'')+'" data-class="'+cid+'">'
+            + '<span>'+esc(name)+'</span><span class="cnt">'+count+'</span></button>';
+    }
+    classesRibbon.innerHTML = html;
+  }
+
+  function renderSkillsList(){
+    var byFaction = SKILLS_DATA[currentClass] || {};
+    var q = skillFilter.trim().toLowerCase();
+    var list = [];
+
+    for(var fid in byFaction){
+      if(currentFaction !== 'all' && currentFaction !== fid) continue;
+      var factionSkills = byFaction[fid] || [];
+      for(var s=0; s<factionSkills.length; s++){
+        var sk = factionSkills[s];
+        if(q){
+          var text = (sk.SkillName + ' ' + (sk.Description||'')).toLowerCase();
+          var p = toPyLocal(sk.SkillName);
+          if(text.indexOf(q) === -1 && p.i.indexOf(q) === -1 && p.f.indexOf(q) === -1) continue;
+        }
+        list.push({ skill: sk, faction: fid });
+      }
+    }
+
+    if(!list.length){
+      skillsContainer.innerHTML = '<div style="grid-column:1/-1;padding:48px 20px;text-align:center;color:var(--t4)">'
+        + '当前筛选条件下暂无技能数据，试试清除关键字</div>';
+      return;
+    }
+
+    var html = '';
+    for(var k=0; k<list.length; k++){
+      var item = list[k];
+      var sk = item.skill;
+      var fid = item.faction;
+      var fClass = fid === 'XIAN' ? 'xian' : fid === 'FO' ? 'fo' : 'mo';
+      var fName = FACTIONS[fid] || fid;
+
+      var bAttrs = sk.SkillBonusAttributes || {};
+      var multiHit = bAttrs.MultiHitConfig;
+      var cdText = sk.MaxCharges ? ('充能 '+sk.MaxCharges+'层 ('+(sk.ChargeReplenishTime||sk.Cooldown)+'s/层)') : (sk.Cooldown + 's 冷却');
+      var castText = (sk.CastTime || 0) + 's 施法';
+      var hitText = (multiHit && multiHit.HitCount) ? (multiHit.HitCount + '段') : (sk.ActionType === 'UTILITY' ? '辅助状态' : (sk.IsAOE ? '群体伤害' : '单段'));
+
+      // 规整的横向属性条：彻底拆分攻击比与固定攻击，完整显示所有加成属性
+      var statsBar = '<div class="sk-stats-bar">';
+      if(sk.ActionType !== 'UTILITY'){
+        statsBar += '<div class="sk-stat"><span class="lbl">段数</span><span class="val">' + hitText + '</span></div><div class="sk-stat-div"></div>';
+      }
+
+      if(bAttrs.SkillAttackPercentBonus){
+        statsBar += '<div class="sk-stat"><span class="lbl">攻击比加成</span><span class="val cyan">+' + bAttrs.SkillAttackPercentBonus + '%</span></div><div class="sk-stat-div"></div>';
+      }
+      if(bAttrs.SkillAttackFixedBonus){
+        statsBar += '<div class="sk-stat"><span class="lbl">固定攻击加成</span><span class="val cyan">+' + bAttrs.SkillAttackFixedBonus + '</span></div><div class="sk-stat-div"></div>';
+      }
+
+      if(bAttrs.SkillHealthPercentBonus){
+        var hpText = (multiHit && multiHit.ScalingAttribute === 'SkillHealthPercentBonus' && multiHit.ScalingStartValue)
+          ? (multiHit.ScalingStartValue + '% → ' + multiHit.ScalingEndValue + '% (递增)')
+          : ('+' + bAttrs.SkillHealthPercentBonus + '%');
+        statsBar += '<div class="sk-stat"><span class="lbl">气血加成</span><span class="val gold" style="color:#34d399">' + hpText + '</span></div><div class="sk-stat-div"></div>';
+      }
+
+      if(bAttrs.SkillManaPercentBonus || (multiHit && multiHit.ScalingAttribute === 'SkillManaPercentBonus')){
+        var manaText = (multiHit && multiHit.ScalingAttribute === 'SkillManaPercentBonus' && multiHit.ScalingStartValue)
+          ? (multiHit.ScalingStartValue + '% → ' + multiHit.ScalingEndValue + '% (递增)')
+          : ('+' + (bAttrs.SkillManaPercentBonus || 0) + '%');
+        statsBar += '<div class="sk-stat"><span class="lbl">真气加成</span><span class="val gold" style="color:#38bdf8">' + manaText + '</span></div><div class="sk-stat-div"></div>';
+      }
+
+      if(bAttrs.SkillDefensePercentBonus){
+        statsBar += '<div class="sk-stat"><span class="lbl">防御加成</span><span class="val gold" style="color:#fbbf24">+' + bAttrs.SkillDefensePercentBonus + '%</span></div><div class="sk-stat-div"></div>';
+      }
+
+      if(bAttrs.SkillCriticalDamagePercentBonus){
+        statsBar += '<div class="sk-stat"><span class="lbl">暴伤加成</span><span class="val purp">+' + bAttrs.SkillCriticalDamagePercentBonus + '%</span></div><div class="sk-stat-div"></div>';
+      }
+
+      if(bAttrs.SkillDamageBonus){
+        statsBar += '<div class="sk-stat"><span class="lbl">技能增伤</span><span class="val gold">+' + (bAttrs.SkillDamageBonus > 1 ? bAttrs.SkillDamageBonus : bAttrs.SkillDamageBonus * 100) + '%</span></div><div class="sk-stat-div"></div>';
+      }
+
+      if(multiHit && multiHit.DamageMultiplierPerHit){
+        statsBar += '<div class="sk-stat"><span class="lbl">段数递增</span><span class="val purp" style="color:#f43f5e">' + multiHit.DamageMultiplierPerHit + 'x /击</span></div><div class="sk-stat-div"></div>';
+      }
+
+      if(sk.SkillFrequency !== undefined){
+        statsBar += '<div class="sk-stat"><span class="lbl">释放频率</span><span class="val">' + sk.SkillFrequency + '</span></div>';
+      }
+      statsBar += '</div>';
+
+      // 机制描述（优化字号字重与关键字高亮，杜绝发暗发虚）
+      var desc = esc(sk.Description || '暂无详细机制说明');
+      desc = desc.replace(/(龙怒层数|龙怒|鹰扬折冲·玄|鹰扬折冲|充能恢复计时|充能|暴伤|冷却|神剑御雷|\+?\d+(?:\.\d+)?%?(?:攻击力|暴伤|暴击率|专注|神圣伤害|攻击)?|\d+秒|\d+s)/g, '<mark>$1</mark>');
+
+      html += '<div class="skill-card" id="skill-' + sk.SkillID + '">'
+            + '<div class="sk-head">'
+            + '<div class="sk-title-wrap">'
+            + '<h4 class="sk-name">' + esc(sk.SkillName) + '</h4>'
+            + '<span class="sk-pill ' + fClass + '">' + esc(fName) + '</span>'
+            + '<span class="sk-pill type">' + (sk.ActionType === 'UTILITY' ? '辅助状态' : (sk.IsAOE ? '群体伤害' : '单体伤害')) + '</span>'
+            + (sk.SkillImportanceWeight ? '<span class="sk-pill weight">权重 ' + sk.SkillImportanceWeight + '</span>' : '')
+            + '</div>'
+            + '<div class="sk-cadence">'
+            + '<span class="cd-badge">⏱ ' + cdText + '</span>'
+            + '<span class="cast-badge">' + castText + '</span>'
+            + '</div>'
+            + '</div>'
+            + statsBar
+            + '<p class="sk-desc" style="color:#e2e8f0;font-size:13px;line-height:1.65;font-weight:400">' + desc + '</p>'
+            + '</div>';
+    }
+    skillsContainer.innerHTML = html;
+  }
+
+  /* ================================================================
+     资料图鉴：专注值参考下方渲染战斗增益（对齐截图 3 需求）
+     ================================================================ */
+  function renderCompendiumBuffs(){
+    var grid = $('buffsRefGrid');
+    if(!grid) return;
+    var html = '';
+    for(var i=0; i<BUFFS_DATA.length; i++){
+      var b = BUFFS_DATA[i];
+      var effStr = '';
+      if(b.BuffEffects){
+        for(var k in b.BuffEffects){
+          effStr += (b.BuffEffects[k] > 0 ? '+' : '') + b.BuffEffects[k] + '%';
+        }
+      }
+      var descMap = {
+        BUFF_FOCUS_EFFECT: '提升全队专注倍率基准',
+        BUFF_HOLYWRATH_EFFECT: '巫咒百分比伤害比例增强',
+        BUFF_MON_CRITDAMAGE_EFFECT: '怪物暴击伤害大幅加成',
+        BUFF_MON_HARMED_EFFECT: '怪物受到所有伤害倍率提升',
+        BUFF_ATT_PERCENT_EFFECT: '角色面板基础攻击比加成'
+      };
+      html += '<div class="buff-box" id="buff-' + b.BuffID + '">'
+            + '<div class="bn">' + esc(b.BuffName) + '</div>'
+            + '<div class="bv">' + (effStr || ('+'+b.DefaultEffectValue+'%')) + '</div>'
+            + '<div class="bd">' + (descMap[b.BuffID] || '核心战斗增益') + '</div>'
+            + '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  function toPyLocal(text){
+    for(var i=0; i<SEARCH_DATA.length; i++){
+      if(SEARCH_DATA[i].l === text) return { i: SEARCH_DATA[i].i || '', f: SEARCH_DATA[i].f || '' };
+    }
+    return { i: '', f: '' };
+  }
+
+  function openSkill(classId, factionId, skillId){
+    currentClass = classId;
+    currentFaction = 'all';
+    skillFilter = '';
+    if(skillFilterInput) skillFilterInput.value = '';
+
+    renderClassRibbon();
+    Array.prototype.forEach.call(factionPills.querySelectorAll('button'), function(b){
+      b.classList.toggle('on', b.dataset.faction === 'all');
+    });
+
+    renderSkillsList();
+
+    setTimeout(function(){
+      var card = $('skill-' + skillId);
+      if(card){
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.remove('skill-card-highlight');
+        void card.offsetWidth;
+        card.classList.add('skill-card-highlight');
+      }
+    }, 140);
+  }
+
+  classesRibbon.addEventListener('click', function(ev){
+    var btn = ev.target.closest('.cls-btn');
+    if(!btn) return;
+    currentClass = btn.dataset.class;
+    renderClassRibbon();
+    renderSkillsList();
+  });
+
+  factionPills.addEventListener('click', function(ev){
+    var pill = ev.target.closest('.sk-f-pill');
+    if(!pill) return;
+    currentFaction = pill.dataset.faction;
+    Array.prototype.forEach.call(factionPills.querySelectorAll('.sk-f-pill'), function(p){
+      p.classList.toggle('on', p === pill);
+    });
+    renderSkillsList();
+  });
+
+  skillFilterInput.addEventListener('input', function(){
+    skillFilter = skillFilterInput.value;
+    renderSkillsList();
+  });
+
+  // 初始化
+  renderClassRibbon();
+  renderSkillsList();
+  renderCompendiumBuffs();
+
+  /* ---------- 导航交互 ---------- */
+  $('brandLogo').addEventListener('click', function(){ switchView('home'); });
+  $('breadHome').addEventListener('click', function(){ switchView('home'); });
+  $('btnBackHome').addEventListener('click', function(){ switchView('home'); });
+  $('breadHomeFromComp').addEventListener('click', function(){ switchView('home'); });
+  $('btnBackHomeFromComp').addEventListener('click', function(){ switchView('home'); });
+
+  $('mainNav').addEventListener('click', function(ev){
+    var btn = ev.target.closest('button');
+    if(!btn) return;
+    var tab = btn.dataset.tab;
+    if(tab === 'home' || tab === 'skills' || tab === 'compendium'){
+      switchView(tab);
+    } else {
+      showToast('演示版：正式版将切换到 <b>' + esc(btn.querySelector('.full') ? btn.querySelector('.full').textContent : tab) + '</b>');
+    }
+  });
+
+  document.querySelectorAll('[data-card]').forEach(function(card){
+    card.addEventListener('click', function(){
+      var c = card.dataset.card;
+      if(c === 'skills'){
+        switchView('skills');
+        showToast('已进入 <b>职业技能速查库</b>');
+      } else if(c === 'compendium'){
+        switchView('compendium');
+        showToast('已进入 <b>资料图鉴 · 各职业状态与增益</b>');
+      } else {
+        showToast('演示版：正式版将切换到 <b>' + esc(card.querySelector('h3').textContent) + '</b>');
+      }
+    });
+  });
+
+  /* ---------- Toast 提示 ---------- */
+  function showToast(html){
+    toastEl.innerHTML=html; toastEl.classList.add('show');
+    clearTimeout(toastTimer); toastTimer=setTimeout(function(){toastEl.classList.remove('show');},2400);
+  }
+
+  /* ---------- 收录统计 + 数字滚动 ---------- */
+  function renderStats(){
+    var items=[['副本',STATS.dungeons],['Boss / 怪物',STATS.monsters],['职业技能',STATS.skills],
+               ['战斗增益',STATS.buffs],['职业评级',STATS.roles],['攻略条目',STATS.guides]];
+    $('stats').innerHTML='本站收录 '+items.map(function(it){
+      return '<span class="si"><b data-to="'+it[1]+'">0</b>'+it[0]+'</span>';}).join('');
+    if(REDUCED){Array.prototype.forEach.call(document.querySelectorAll('#stats b'),function(b){b.textContent=b.dataset.to;});return;}
+    requestAnimationFrame(function(){
+      var t0=performance.now(), DUR=850;
+      (function tick(t){
+        var k=Math.min(1,(t-t0)/DUR), e=1-Math.pow(1-k,3);
+        Array.prototype.forEach.call(document.querySelectorAll('#stats b'),function(b){
+          b.textContent=Math.round(e*+b.dataset.to);});
+        if(k<1) requestAnimationFrame(tick);
+      })(t0);
+    });
+  }
+  renderStats();
+})();
+</script>
+</body>
+</html>
