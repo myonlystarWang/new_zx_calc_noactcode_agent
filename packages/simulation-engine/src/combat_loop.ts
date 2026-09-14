@@ -90,7 +90,8 @@ export class SimulationEngine {
         actorConfig.baseSkills,
         actorConfig.skillOverrides ?? {},
         actorConfig.baseAttributes,
-        actorConfig.gcdMs ?? scenario.gcdMs ?? 500
+        actorConfig.gcdMs ?? scenario.gcdMs ?? 500,
+        actorConfig.equippedFourthGen
       );
       this.actors.set(actorConfig.actorId, { config: actorConfig, actor });
       this.effects.set(actorConfig.actorId, new EffectManager(actorConfig.actorId));

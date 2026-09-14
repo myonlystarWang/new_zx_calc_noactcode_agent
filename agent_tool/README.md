@@ -73,3 +73,27 @@ Hermes 负责把用户原话解析为结构化 JSON，例如：
 ```
 
 角色防御必须写在 `attributes.defense`。如果缺失，工具会按网页默认值 `5000` 计算。
+
+## 战斗模拟（sim）与四代技能佩戴
+
+战斗模拟入口（不走单次 calc 路径）：
+
+```bash
+npm run agent:sim -- --input agent_tool/examples/simulation_minimal.json
+```
+
+`SimulationScenario` 的每个 actor 支持可选字段 `equippedFourthGen`，表示该角色佩戴的四代技能（玄烛·xxx / 赤乌·xxx）及其品质：
+
+```json
+"equippedFourthGen": [
+  { "skillId": "GW_XIAN_FG_YLP", "quality": "XI_RI" }
+]
+```
+
+- `quality` 取值：`YING_JU`（萤炬）/ `HAO_YUE`（皓月）/ `XI_RI`（曦日）。
+- 佩戴上限：玄烛（`XUAN_ZHU`）最多 3 个、赤乌（`CHI_WU`）最多 1 个、总数最多 4 个，超限直接抛错。
+- 四代被动条目的 `ActionType` 为 `FOURTH_GEN_PASSIVE`，不会进入技能循环、不会被释放，只通过 `FourthGenPresets`（作用本技能）/ `FourthGenGrants`（作用其他技能）改写技能数值。
+- 直接内联 `baseSkills` 的裸 scenario，需要把四代被动条目一并写进 `baseSkills`；走 assembler 的上层场景会自动把已佩戴的四代实体选入，无需手填。
+- 不传 `equippedFourthGen` 时结果与旧逻辑完全一致（零回归）。
+
+鬼王「玄烛·狱龙破」佩戴前后对比示例见 `examples/simulation_guiwang_fourth_gen.json`（不佩戴 vs 佩戴曦日，增强目标技能「未名斩·玄」）。

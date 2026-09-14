@@ -1156,6 +1156,61 @@
           }
         },
         "ActionType": "DAMAGE"
+      },
+      {
+        "SkillID": "GW_XIAN_FG_YLP",
+        "SkillName": "玄烛·狱龙破",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "GW_XIAN_SKILL_WMZX"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "GW_XIAN_SKILL_WMZX"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "GW_XIAN_SKILL_WMZX"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ]
+        },
+        "Description": "四代被动（满级5级，2%*5=10%）：未名斩额外附加自身真气上限10%的攻击力。"
       }
     ],
     "FO": [
@@ -1202,6 +1257,61 @@
           }
         },
         "ActionType": "DAMAGE"
+      },
+      {
+        "SkillID": "GW_FO_FG_YLP",
+        "SkillName": "玄烛·狱龙破",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "GW_FO_SKILL_WMZC"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "GW_FO_SKILL_WMZC"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "GW_FO_SKILL_WMZC"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ]
+        },
+        "Description": "四代被动（满级5级，2%*5=10%）：未名斩额外附加自身真气上限10%的攻击力。"
       }
     ],
     "MO": [
@@ -1248,6 +1358,61 @@
           }
         },
         "ActionType": "DAMAGE"
+      },
+      {
+        "SkillID": "GW_MO_FG_YLP",
+        "SkillName": "玄烛·狱龙破",
+        "RequiredClass": "GUI_WANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillDamageBonus": 1
+        },
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "GW_MO_SKILL_WMZS"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "GW_MO_SKILL_WMZS"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "GW_MO_SKILL_WMZS"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillManaPercentBonus": 10
+                }
+              }
+            }
+          ]
+        },
+        "Description": "四代被动（满级5级，2%*5=10%）：未名斩额外附加自身真气上限10%的攻击力。"
       }
     ]
   },

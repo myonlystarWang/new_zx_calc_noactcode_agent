@@ -248,6 +248,7 @@ const serializeActor = (actor: SimulationActorConfig) => ({
   hasBaseAttributes: actor.baseAttributes !== undefined,
   strategy: actor.strategy,
   skillOverrides: actor.skillOverrides,
+  equippedFourthGen: actor.equippedFourthGen,
   skills: actor.baseSkills.map(serializeSkill)
 });
 

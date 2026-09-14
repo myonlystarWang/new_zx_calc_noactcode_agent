@@ -1,0 +1,294 @@
+{
+  "scenarios": [
+    {
+      "label": "NO_FOURTH_GEN",
+      "scenario": {
+        "scenarioId": "gw-xian-no-fg",
+        "maxTimeMs": 20000,
+        "dpsActorId": "dps",
+        "boss": {
+          "MonsterID": "GW_FG_TRAINING_DUMMY",
+          "MonsterName": "鬼王四代演示木桩",
+          "DungeonLevel": 1,
+          "MonsterAttributeModifiers": {
+            "MonsterCriticalDamagePercentReduction": 0,
+            "MonsterHealth": 99999999999
+          }
+        },
+        "actors": [
+          {
+            "actorId": "dps",
+            "classId": "GUI_WANG",
+            "role": "DPS",
+            "gcdMs": 500,
+            "baseAttributes": {
+              "CharacterMinAttack": 12000,
+              "CharacterMaxAttack": 15000,
+              "CharacterDefense": 5000,
+              "CharacterHealth": 400000,
+              "CharacterMana": 300000,
+              "CharacterCriticalHitDamagePercent": 600,
+              "CharacterMonsterDamageIncreasePercent": 30
+            },
+            "baseSkills": [
+              {
+                "SkillID": "GW_XIAN_SKILL_WMZX",
+                "SkillName": "未名斩·玄",
+                "RequiredClass": "GUI_WANG",
+                "Faction": "XIAN",
+                "SkillImportanceWeight": 1.5,
+                "SkillFrequency": 0.8,
+                "Cooldown": 12,
+                "CastTime": 2,
+                "IsAOE": false,
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 168,
+                  "SkillAttackFixedBonus": 2720,
+                  "SkillManaPercentBonus": 15,
+                  "SkillDefensePercentBonus": 400,
+                  "SkillCriticalDamagePercentBonus": 0,
+                  "SkillDamageBonus": 1
+                },
+                "ActionType": "DAMAGE"
+              },
+              {
+                "SkillID": "GW_XIAN_SKILL_JB",
+                "SkillName": "九变",
+                "RequiredClass": "GUI_WANG",
+                "Faction": "XIAN",
+                "SkillImportanceWeight": 1,
+                "SkillFrequency": 0.2,
+                "Cooldown": 60,
+                "CastTime": 1,
+                "IsAOE": false,
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 130,
+                  "SkillAttackFixedBonus": 2720,
+                  "SkillHealthPercentBonus": 20,
+                  "SkillManaPercentBonus": 20,
+                  "SkillDamageBonus": 1,
+                  "MultiHitConfig": {
+                    "HitCount": 9,
+                    "DamageMultiplierPerHit": 1.3,
+                    "DamageCap": 2140000000
+                  }
+                },
+                "ActionType": "DAMAGE"
+              },
+              {
+                "SkillID": "GW_XIAN_FG_YLP",
+                "SkillName": "玄烛·狱龙破",
+                "RequiredClass": "GUI_WANG",
+                "Faction": "XIAN",
+                "SkillImportanceWeight": 0,
+                "SkillFrequency": 0,
+                "Cooldown": 0,
+                "CastTime": 0,
+                "IsAOE": false,
+                "SkillBonusAttributes": {
+                  "SkillDamageBonus": 1
+                },
+                "ActionType": "FOURTH_GEN_PASSIVE",
+                "FourthGenSlot": "XUAN_ZHU",
+                "FourthGenGrants": {
+                  "YING_JU": [
+                    {
+                      "TargetSkillIds": [
+                        "GW_XIAN_SKILL_WMZX"
+                      ],
+                      "Override": {
+                        "SkillBonusAttributes": {
+                          "SkillManaPercentBonus": 10
+                        }
+                      }
+                    }
+                  ],
+                  "HAO_YUE": [
+                    {
+                      "TargetSkillIds": [
+                        "GW_XIAN_SKILL_WMZX"
+                      ],
+                      "Override": {
+                        "SkillBonusAttributes": {
+                          "SkillManaPercentBonus": 10
+                        }
+                      }
+                    }
+                  ],
+                  "XI_RI": [
+                    {
+                      "TargetSkillIds": [
+                        "GW_XIAN_SKILL_WMZX"
+                      ],
+                      "Override": {
+                        "SkillBonusAttributes": {
+                          "SkillManaPercentBonus": 10
+                        }
+                      }
+                    }
+                  ]
+                },
+                "Description": "四代被动（满级5级，2%*5=10%）：未名斩额外附加自身真气上限10%的攻击力。"
+              }
+            ],
+            "strategy": {
+              "type": "FIXED_ROTATION",
+              "skillIds": [
+                "GW_XIAN_SKILL_WMZX",
+                "GW_XIAN_SKILL_JB"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "label": "XUANZHU_YLP_XI_RI",
+      "scenario": {
+        "scenarioId": "gw-xian-ylp-xiri",
+        "maxTimeMs": 20000,
+        "dpsActorId": "dps",
+        "boss": {
+          "MonsterID": "GW_FG_TRAINING_DUMMY",
+          "MonsterName": "鬼王四代演示木桩",
+          "DungeonLevel": 1,
+          "MonsterAttributeModifiers": {
+            "MonsterCriticalDamagePercentReduction": 0,
+            "MonsterHealth": 99999999999
+          }
+        },
+        "actors": [
+          {
+            "actorId": "dps",
+            "classId": "GUI_WANG",
+            "role": "DPS",
+            "gcdMs": 500,
+            "baseAttributes": {
+              "CharacterMinAttack": 12000,
+              "CharacterMaxAttack": 15000,
+              "CharacterDefense": 5000,
+              "CharacterHealth": 400000,
+              "CharacterMana": 300000,
+              "CharacterCriticalHitDamagePercent": 600,
+              "CharacterMonsterDamageIncreasePercent": 30
+            },
+            "baseSkills": [
+              {
+                "SkillID": "GW_XIAN_SKILL_WMZX",
+                "SkillName": "未名斩·玄",
+                "RequiredClass": "GUI_WANG",
+                "Faction": "XIAN",
+                "SkillImportanceWeight": 1.5,
+                "SkillFrequency": 0.8,
+                "Cooldown": 12,
+                "CastTime": 2,
+                "IsAOE": false,
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 168,
+                  "SkillAttackFixedBonus": 2720,
+                  "SkillManaPercentBonus": 15,
+                  "SkillDefensePercentBonus": 400,
+                  "SkillCriticalDamagePercentBonus": 0,
+                  "SkillDamageBonus": 1
+                },
+                "ActionType": "DAMAGE"
+              },
+              {
+                "SkillID": "GW_XIAN_SKILL_JB",
+                "SkillName": "九变",
+                "RequiredClass": "GUI_WANG",
+                "Faction": "XIAN",
+                "SkillImportanceWeight": 1,
+                "SkillFrequency": 0.2,
+                "Cooldown": 60,
+                "CastTime": 1,
+                "IsAOE": false,
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 130,
+                  "SkillAttackFixedBonus": 2720,
+                  "SkillHealthPercentBonus": 20,
+                  "SkillManaPercentBonus": 20,
+                  "SkillDamageBonus": 1,
+                  "MultiHitConfig": {
+                    "HitCount": 9,
+                    "DamageMultiplierPerHit": 1.3,
+                    "DamageCap": 2140000000
+                  }
+                },
+                "ActionType": "DAMAGE"
+              },
+              {
+                "SkillID": "GW_XIAN_FG_YLP",
+                "SkillName": "玄烛·狱龙破",
+                "RequiredClass": "GUI_WANG",
+                "Faction": "XIAN",
+                "SkillImportanceWeight": 0,
+                "SkillFrequency": 0,
+                "Cooldown": 0,
+                "CastTime": 0,
+                "IsAOE": false,
+                "SkillBonusAttributes": {
+                  "SkillDamageBonus": 1
+                },
+                "ActionType": "FOURTH_GEN_PASSIVE",
+                "FourthGenSlot": "XUAN_ZHU",
+                "FourthGenGrants": {
+                  "YING_JU": [
+                    {
+                      "TargetSkillIds": [
+                        "GW_XIAN_SKILL_WMZX"
+                      ],
+                      "Override": {
+                        "SkillBonusAttributes": {
+                          "SkillManaPercentBonus": 10
+                        }
+                      }
+                    }
+                  ],
+                  "HAO_YUE": [
+                    {
+                      "TargetSkillIds": [
+                        "GW_XIAN_SKILL_WMZX"
+                      ],
+                      "Override": {
+                        "SkillBonusAttributes": {
+                          "SkillManaPercentBonus": 10
+                        }
+                      }
+                    }
+                  ],
+                  "XI_RI": [
+                    {
+                      "TargetSkillIds": [
+                        "GW_XIAN_SKILL_WMZX"
+                      ],
+                      "Override": {
+                        "SkillBonusAttributes": {
+                          "SkillManaPercentBonus": 10
+                        }
+                      }
+                    }
+                  ]
+                },
+                "Description": "四代被动（满级5级，2%*5=10%）：未名斩额外附加自身真气上限10%的攻击力。"
+              }
+            ],
+            "equippedFourthGen": [
+              {
+                "skillId": "GW_XIAN_FG_YLP",
+                "quality": "XI_RI"
+              }
+            ],
+            "strategy": {
+              "type": "FIXED_ROTATION",
+              "skillIds": [
+                "GW_XIAN_SKILL_WMZX",
+                "GW_XIAN_SKILL_JB"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
