@@ -1915,7 +1915,7 @@
             "AppliesEffects": {
               "YZ_DEBUFF_BS_GREEN_HARMED": {
                 "BuffEffects": {
-                  "BuffMonsterHarmedPercentEffect": 50
+                  "BuffMonsterHarmedPercentEffect": 40
                 }
               }
             }
@@ -1924,7 +1924,7 @@
             "AppliesEffects": {
               "YZ_DEBUFF_BS_GREEN_HARMED": {
                 "BuffEffects": {
-                  "BuffMonsterHarmedPercentEffect": 50
+                  "BuffMonsterHarmedPercentEffect": 40
                 }
               }
             }
@@ -1933,7 +1933,7 @@
             "AppliesEffects": {
               "YZ_DEBUFF_BS_GREEN_HARMED": {
                 "BuffEffects": {
-                  "BuffMonsterHarmedPercentEffect": 50
+                  "BuffMonsterHarmedPercentEffect": 40
                 }
               }
             }
