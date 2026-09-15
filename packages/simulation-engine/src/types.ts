@@ -308,6 +308,9 @@ export interface AppliedEffectConfig {
   Stackable?: boolean;           // 是否允许叠加
   MaxStacks?: number;            // 最大叠加层数
   RefreshOnReapply?: boolean;    // 重复施放时是否刷新持续时间
+  StackMode?: 'MULTI_INSTANCE' | 'SINGLE_INSTANCE_STACKS'; // 叠层模式：默认多实例；SINGLE_INSTANCE_STACKS=同名单实例按层数堆叠（如逐霜龙怒）
+  InitialStacks?: number;        // SINGLE_INSTANCE_STACKS：施加时直接设置为该层数（补满，如逐霜鹰扬折冲一次给27层龙怒）
+  StackGain?: number;            // SINGLE_INSTANCE_STACKS：在现有层数上累加并封顶 MaxStacks（如逐霜临渊敛爪补1层）
   ExclusiveGroup?: string;       // 互斥组，例如阵法、同类易伤；只有同组才互斥，不按属性字段自动互斥
   ExclusivePolicy?: 'MANUAL_PRIORITY' | 'HIGHEST_EFFECT_VALUE' | 'NO_OVERWRITE';
   Priority?: number;             // MANUAL_PRIORITY 模式下的手工覆盖优先级

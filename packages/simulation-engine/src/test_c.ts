@@ -2111,6 +2111,25 @@ const testZhuShuangSkills = () => {
     SkillName: '苍龙啸'
   };
 
+  // 流波惊变·龙怒：鹰扬折冲施放即补满27层；临渊敛爪补1层（单实例多层，封顶27）
+  const longNuInitEffect: AppliedEffectConfig = {
+    EffectId: 'ZS_BUFF_LONG_NU',
+    EffectName: '龙怒',
+    Target: 'SELF',
+    Duration: 15,
+    Stackable: true,
+    MaxStacks: 27,
+    RefreshOnReapply: true,
+    StackMode: 'SINGLE_INSTANCE_STACKS',
+    InitialStacks: 27,
+    BuffEffects: {}
+  };
+  const longNuGainEffect: AppliedEffectConfig = {
+    ...longNuInitEffect,
+    InitialStacks: undefined,
+    StackGain: 1
+  };
+
   const yyzxXuanSkill: Skill = {
     SkillID: 'ZS_XIAN_SKILL_YYZC_XUAN',
     SkillName: '鹰扬折冲·玄',
@@ -2122,12 +2141,28 @@ const testZhuShuangSkills = () => {
     CastTime: 0.5,
     IsAOE: false,
     ActionType: 'UTILITY',
+    AppliesEffects: [longNuInitEffect],
     CooldownResets: [
       {
         TargetSkillId: 'ZS_XIAN_SKILL_CLXX',
         ResetType: 'REFRESH_CHARGES'
       }
     ],
+    SkillBonusAttributes: { SkillDamageBonus: 1 }
+  };
+
+  const moYyzcShaSkill: Skill = {
+    SkillID: 'ZS_MO_SKILL_YYZC_SHA',
+    SkillName: '鹰扬折冲·煞',
+    RequiredClass: 'ZHU_SHUANG',
+    Faction: 'MO',
+    SkillImportanceWeight: 0.8,
+    SkillFrequency: 0.5,
+    Cooldown: 90,
+    CastTime: 0.5,
+    IsAOE: false,
+    ActionType: 'UTILITY',
+    AppliesEffects: [longNuInitEffect],
     SkillBonusAttributes: { SkillDamageBonus: 1 }
   };
 
@@ -2143,18 +2178,7 @@ const testZhuShuangSkills = () => {
     IsAOE: false,
     ActionType: 'DAMAGE',
     HitTiming: { Mode: 'EVENLY_DURING_CAST' },
-    AppliesEffects: [
-      {
-        EffectId: 'ZS_BUFF_LONG_NU',
-        EffectName: '龙怒',
-        Target: 'SELF',
-        Duration: 15,
-        Stackable: true,
-        MaxStacks: 9,
-        RefreshOnReapply: true,
-        BuffEffects: {}
-      }
-    ],
+    AppliesEffects: [longNuGainEffect],
     SkillBonusAttributes: {
       SkillAttackPercentBonus: 158,
       SkillAttackFixedBonus: 600,
@@ -2290,6 +2314,7 @@ const testZhuShuangSkills = () => {
     IsAOE: false,
     ActionType: 'DAMAGE',
     HitTiming: { Mode: 'EVENLY_DURING_CAST' },
+    AppliesEffects: [longNuGainEffect],
     SkillBonusAttributes: {
       SkillAttackPercentBonus: 158,
       SkillAttackFixedBonus: 600,
@@ -2599,48 +2624,115 @@ const testZhuShuangSkills = () => {
     assert.equal(castEnd.timeMs - castStart.timeMs, 1075);
   }
 
-  // Test 3: LYLZ + Long Nu (Xian)
+  // 流波惊变·龙怒每段附加攻击比差值：baseAttr 攻击10000、爆伤300(倍率3.0)、对怪增伤10%(1.1)。
+  // 仙(苍龙啸·玄)每段=20%*9+100=280% -> 每段附加 10000*2.8*3.0*1.1 = 92400；
+  // 魔(苍龙啸·煞)每段=20%*9=180% -> 每段附加 10000*1.8*3.0*1.1 = 59400。
+  const LONGNU_XIAN_PER_HIT = 92400;
+  const LONGNU_MO_PER_HIT = 59400;
+  const diffs = (base: { hitRecords: { SkillId: string; AvgDamage: number }[] }, ln: { hitRecords: { SkillId: string; AvgDamage: number }[] }, id: string) => {
+    const b = base.hitRecords.filter(r => r.SkillId === id).map(r => r.AvgDamage);
+    const a = ln.hitRecords.filter(r => r.SkillId === id).map(r => r.AvgDamage);
+    assert.equal(b.length, a.length);
+    return a.map((v, i) => Math.round(v - b[i]));
+  };
+
+  // Test 3a (Xian): 鹰扬·玄一次补满27层龙怒，苍龙啸·玄 9 段每段都附加（27>9，不会中途耗尽）
   {
     const originalRandom = Math.random;
     try {
-      // Mock Math.random to return 0.1, making 30% check succeed
-      Math.random = () => 0.1;
-
-      const result = runSimulation({
+      Math.random = () => 1; // 关闭30%概率刷新，避免干扰
+      const mkRun = (withYyzc: boolean) => runSimulation({
         maxTimeMs: 10000,
         boss: baseBoss(10000000),
-        actors: [
-          {
-            actorId: 'dps',
-            classId: 'ZHU_SHUANG',
-            role: 'DPS',
-            baseAttributes: baseAttr,
-            baseSkills: [clxxSkill, lylzSkill],
-            strategy: {
-              type: 'MANUAL_TIMELINE',
-              actions: [
-                { timeMs: 0, skillId: 'ZS_XIAN_SKILL_LYLZ' }, // adds Long Nu
-                { timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' } // consumes Long Nu on hit, damage +300% attack pct
-              ]
-            }
+        actors: [{
+          actorId: 'dps', classId: 'ZHU_SHUANG', role: 'DPS', baseAttributes: baseAttr,
+          baseSkills: withYyzc ? [clxxSkill, yyzxXuanSkill] : [clxxSkill],
+          strategy: {
+            type: 'MANUAL_TIMELINE',
+            actions: withYyzc
+              ? [{ timeMs: 0, skillId: 'ZS_XIAN_SKILL_YYZC_XUAN' }, { timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' }]
+              : [{ timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' }]
           }
-        ]
+        }]
       });
-
-      const castClxx = result.events.find(e => e.type === 'CAST_START' && e.skillId === 'ZS_XIAN_SKILL_CLXX' && e.timeMs === 1500);
-      assert.ok(castClxx);
-      const finalState = result.events.find(e => e.type === 'CAST_COMPLETE' && e.skillId === 'ZS_XIAN_SKILL_CLXX');
-      assert.ok(finalState);
-
-      const hitRecords = result.hitRecords.filter(r => r.SkillId === 'ZS_XIAN_SKILL_CLXX');
-      assert.equal(hitRecords.length, 9);
-      // Hit 1 should have high damage (>= 204000) because of the +300% attack percent bonus
-      assert.ok(hitRecords[0].AvgDamage >= 204000);
-      // Hit 2 should have much lower damage (< 150000) since there was only 1 stack of Long Nu and it got consumed by hit 1
-      assert.ok(hitRecords[1].AvgDamage < 150000);
+      const d = diffs(mkRun(false), mkRun(true), 'ZS_XIAN_SKILL_CLXX');
+      assert.equal(d.length, 9);
+      d.forEach((delta, i) => assert.equal(delta, LONGNU_XIAN_PER_HIT, '仙苍龙啸·玄第' + (i + 1) + '段龙怒附加不符，实得' + delta));
     } finally {
       Math.random = originalRandom;
     }
+  }
+
+  // Test 3b (Xian): 临渊敛爪只补1层 -> 苍龙啸·玄仅第1段附加，第2段起层耗尽无附加
+  {
+    const originalRandom = Math.random;
+    try {
+      Math.random = () => 1;
+      const mkRun = (withLylz: boolean) => runSimulation({
+        maxTimeMs: 10000,
+        boss: baseBoss(10000000),
+        actors: [{
+          actorId: 'dps', classId: 'ZHU_SHUANG', role: 'DPS', baseAttributes: baseAttr,
+          baseSkills: withLylz ? [clxxSkill, lylzSkill] : [clxxSkill],
+          strategy: {
+            type: 'MANUAL_TIMELINE',
+            actions: withLylz
+              ? [{ timeMs: 0, skillId: 'ZS_XIAN_SKILL_LYLZ' }, { timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' }]
+              : [{ timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' }]
+          }
+        }]
+      });
+      const d = diffs(mkRun(false), mkRun(true), 'ZS_XIAN_SKILL_CLXX');
+      assert.equal(d[0], LONGNU_XIAN_PER_HIT); // 第1段有1层
+      for (let i = 1; i < 9; i += 1) assert.equal(d[i], 0, '仅1层时第' + (i + 1) + '段不应再有龙怒附加');
+    } finally {
+      Math.random = originalRandom;
+    }
+  }
+
+  // Test 3c (Mo): 鹰扬·煞补满27层，苍龙啸·煞每段附加180%（无怒龙吞海II的100）
+  {
+    const originalRandom = Math.random;
+    try {
+      Math.random = () => 1;
+      const mkRun = (withYyzc: boolean) => runSimulation({
+        maxTimeMs: 10000,
+        boss: baseBoss(10000000),
+        actors: [{
+          actorId: 'dps', classId: 'ZHU_SHUANG', role: 'DPS', baseAttributes: baseAttr,
+          baseSkills: withYyzc ? [moClxsSkill, moYyzcShaSkill] : [moClxsSkill],
+          strategy: {
+            type: 'MANUAL_TIMELINE',
+            actions: withYyzc
+              ? [{ timeMs: 0, skillId: 'ZS_MO_SKILL_YYZC_SHA' }, { timeMs: 1500, skillId: 'ZS_MO_SKILL_CLXS' }]
+              : [{ timeMs: 1500, skillId: 'ZS_MO_SKILL_CLXS' }]
+          }
+        }]
+      });
+      const d = diffs(mkRun(false), mkRun(true), 'ZS_MO_SKILL_CLXS');
+      d.forEach((delta, i) => assert.equal(delta, LONGNU_MO_PER_HIT, '魔苍龙啸·煞第' + (i + 1) + '段不符，实得' + delta));
+    } finally {
+      Math.random = originalRandom;
+    }
+  }
+
+  // Test 3d: 单实例多层 EffectManager —— 鹰扬补满27、重放仍单实例、临渊+1封顶27
+  {
+    const em = new EffectManager('dps');
+    em.applyEffect(longNuInitEffect, 0, 'dps', 'ZS_XIAN_SKILL_YYZC', 'ZHU_SHUANG');
+    let list = em.getActiveEffects();
+    assert.equal(list.length, 1);
+    assert.equal(list[0].StackCount, 27); // 鹰扬一次27层
+    em.applyEffect(longNuInitEffect, 1000, 'dps', 'ZS_XIAN_SKILL_YYZC_XUAN', 'ZHU_SHUANG');
+    list = em.getActiveEffects();
+    assert.equal(list.length, 1); // 重放仍是同一实例
+    assert.equal(list[0].StackCount, 27); // 补满
+    list[0].StackCount = 5; // 模拟被苍龙啸消耗到5层
+    em.applyEffect(longNuGainEffect, 2000, 'dps', 'ZS_XIAN_SKILL_LYLZ', 'ZHU_SHUANG');
+    assert.equal(em.getActiveEffects()[0].StackCount, 6); // 临渊补1层
+    em.getActiveEffects()[0].StackCount = 27;
+    em.applyEffect(longNuGainEffect, 3000, 'dps', 'ZS_XIAN_SKILL_LYLZ', 'ZHU_SHUANG');
+    assert.equal(em.getActiveEffects()[0].StackCount, 27); // 封顶不超过27
   }
 
   // Test 4: Mo LYLZ + SY2 add one charge to ordinary Cang Long Xiao only (Mo)

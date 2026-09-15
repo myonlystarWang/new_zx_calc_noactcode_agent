@@ -381,11 +381,16 @@ export class SimulationEngine {
 
     let skillToUse = skill;
     if (hasLongNuStack) {
+      // 流波惊变技改：龙怒每段附加改为本体攻击比并数据化——苍龙啸及玄/煞/禅每耗1层龙怒附加 20%*鹰扬折冲等级；
+      // 仙(苍龙啸/苍龙啸·玄)额外 +100（怒龙吞海II 满级固定，旧值300已移除）。
+      const yyzcLevel = getZhuShuangYyzcLevel(runtime.actor.Skills);
+      const longNuAttackBonus = getZhuShuangLongNuBonus(event.skillId ?? '', yyzcLevel);
       skillToUse = {
         ...skill,
         SkillBonusAttributes: {
           ...skill.SkillBonusAttributes,
-          SkillAttackPercentBonus: (skill.SkillBonusAttributes.SkillAttackPercentBonus ?? 0) + 300
+          SkillAttackPercentBonus:
+            (skill.SkillBonusAttributes.SkillAttackPercentBonus ?? 0) + longNuAttackBonus
         }
       };
     }
@@ -1245,6 +1250,21 @@ const getDamageCompressionMultiplier = (monster: Monster): number => {
 const isXianCangLongXiaoSkill = (skillId: string): boolean => (
   skillId === 'ZS_XIAN_SKILL_CLX'
 );
+
+// 流波惊变·逐霜龙怒：普通鹰扬折冲满级 9，法宝+1 可到 10（经 PlayerSkillOverride.SkillLevel 传入）；缺省按 9 级。
+const ZS_LONGNU_DEFAULT_YYZC_LEVEL = 9;
+const getZhuShuangYyzcLevel = (skills: Record<string, Skill>): number => {
+  const yyzc = skills['ZS_XIAN_SKILL_YYZC'] ?? skills['ZS_MO_SKILL_YYZC'];
+  const level = yyzc?.SkillLevel;
+  return typeof level === 'number' && level > 0 ? level : ZS_LONGNU_DEFAULT_YYZC_LEVEL;
+};
+
+// 龙怒每段附加攻击比：仙(苍龙啸/苍龙啸·玄)=20%*等级+100(怒龙吞海II)；魔(苍龙啸/煞)、佛(禅)=20%*等级。
+const getZhuShuangLongNuBonus = (skillId: string, yyzcLevel: number): number => {
+  const perLevelBonus = 20 * yyzcLevel;
+  const isXianCangLong = skillId === 'ZS_XIAN_SKILL_CLX' || skillId === 'ZS_XIAN_SKILL_CLXX';
+  return isXianCangLong ? perLevelBonus + 100 : perLevelBonus;
+};
 
 const filterBossDamageBuffs = (buffs: Buff[]): Buff[] => {
   return buffs
