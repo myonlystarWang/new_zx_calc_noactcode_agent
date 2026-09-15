@@ -88,6 +88,79 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     const outputSkills = skills.filter(skill => !skill.ActionType || skill.ActionType === 'DAMAGE');
     const activeBuffs = buffs.filter(b => activeBuffIds.includes(b.BuffID));
 
+    // 提取技能的基础名称（去除阵营后缀如 ·玄/·煞/·禅 等）
+    const getBaseSkillName = (name: string): string => {
+        return name.replace(/[·•\s]?[<(\[]?(玄|煞|禅|仙|魔|佛)[>)\]]?$/, '').trim();
+    };
+
+    // 跨阵营切换时，智能寻找对应的同系技能
+    const findCorrespondingSkill = (
+        currentSkill: Skill,
+        targetSkills: Skill[],
+        targetFaction: string
+    ): Skill | null => {
+        // 1. 完全同名技能优先（如通用技能）
+        const exactMatch = targetSkills.find(s => s.SkillName === currentSkill.SkillName);
+        if (exactMatch) return exactMatch;
+
+        // 2. 阵营专属对应后缀匹配
+        const factionSuffixMap: Record<string, string> = {
+            XIAN: '玄',
+            MO: '煞',
+            FO: '禅'
+        };
+        const targetSuffix = factionSuffixMap[targetFaction];
+        const baseName = getBaseSkillName(currentSkill.SkillName);
+
+        // 优先匹配相同词根且带目标阵营特征字的技能（如 苍龙啸 -> 苍龙啸·煞）
+        if (targetSuffix) {
+            const factionMatch = targetSkills.find(s => 
+                getBaseSkillName(s.SkillName) === baseName && s.SkillName.includes(targetSuffix)
+            );
+            if (factionMatch) return factionMatch;
+        }
+
+        // 备选匹配：相同基础词根的技能
+        const baseMatch = targetSkills.find(s => getBaseSkillName(s.SkillName) === baseName);
+        if (baseMatch) return baseMatch;
+
+        // 宽泛匹配：前缀包含
+        return targetSkills.find(s => 
+            s.SkillName.startsWith(baseName) || baseName.startsWith(getBaseSkillName(s.SkillName))
+        ) || null;
+    };
+
+    // 职业与阵营跟踪，用于切换时自适应迁移 pinnedSkill 或重置
+    const prevClassRef = useRef(userCharacter.ClassID);
+    const prevFactionRef = useRef(userCharacter.Faction);
+
+    useEffect(() => {
+        const classChanged = prevClassRef.current !== userCharacter.ClassID;
+        const factionChanged = prevFactionRef.current !== userCharacter.Faction;
+        prevClassRef.current = userCharacter.ClassID;
+        prevFactionRef.current = userCharacter.Faction;
+
+        if (classChanged) {
+            // 切换职业时，旧技能不再适用，直接关闭固定卡片
+            setPinnedSkill(null);
+            return;
+        }
+
+        if (factionChanged && pinnedSkill) {
+            // 切换阵营时，智能迁移至目标阵营对应的技能（如 苍龙啸·玄 -> 苍龙啸·煞 / 苍龙啸·禅）
+            const targetPool = outputSkills.length > 0 ? outputSkills : skills;
+            const nextSkill = findCorrespondingSkill(pinnedSkill, targetPool, userCharacter.Faction);
+            if (nextSkill) {
+                setPinnedSkill(nextSkill);
+                if (nextSkill.SkillBonusAttributes?.MultiHitConfig) {
+                    setExpandedSkillIds(prev => new Set([...prev, nextSkill.SkillID]));
+                }
+            } else {
+                setPinnedSkill(null);
+            }
+        }
+    }, [userCharacter.ClassID, userCharacter.Faction, skills, outputSkills, pinnedSkill]);
+
     // Search-driven: pin specific skill and expand multi-hits when focusSkillName is provided
     useEffect(() => {
         if (focusSkillName) {
@@ -332,7 +405,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                         </div>
                                         <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
                                             <div className="text-slate-400">总血量: <span className="text-yellow-300 font-medium">{formatBossValue('health', (selectedMonster.displayAttributes.health || 0) * (selectedMonster.displayAttributes.healthBars || 1))}</span></div>
-                                            {Object.entries(selectedMonster.displayAttributes).map(([key, value]) => (
+                                            {Object.entries(selectedMonster.displayAttributes).filter(([key]) => key !== 'zhenQi').map(([key, value]) => (
                                                 <div key={key} className="text-slate-400">{ATTR_LABELS[key] || key}: <span className="text-slate-200">{formatBossValue(key, value as number)}</span></div>
                                             ))}
                                         </div>
@@ -387,7 +460,9 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                 const isMultiHit = !!skill.SkillBonusAttributes?.MultiHitConfig;
                                                 const isExpanded = expandedSkillIds.has(skill.SkillID);
                                                 const hitCount = skill.SkillBonusAttributes?.MultiHitConfig?.HitCount || 1;
-                                                const isFocusedSkill = focusSkillName === skill.SkillName || pinnedSkill?.SkillID === skill.SkillID;
+                                                const isFocusedSkill = pinnedSkill 
+                                                    ? (pinnedSkill.SkillID === skill.SkillID || pinnedSkill.SkillName === skill.SkillName)
+                                                    : (focusSkillName === skill.SkillName);
 
                                                 return (
                                                     <React.Fragment key={skill.SkillID}>
@@ -534,7 +609,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                             <>
                                 <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
                                     <div className="text-slate-400">总血量: <span className="text-yellow-300 font-medium">{formatBossValue('health', (monsterTooltipState.monster.displayAttributes.health || 0) * (monsterTooltipState.monster.displayAttributes.healthBars || 1))}</span></div>
-                                    {Object.entries(monsterTooltipState.monster.displayAttributes).map(([key, value]) => (
+                                    {Object.entries(monsterTooltipState.monster.displayAttributes).filter(([key]) => key !== 'zhenQi').map(([key, value]) => (
                                         <div key={key} className="text-slate-400">{ATTR_LABELS[key] || key}: <span className="text-slate-200">{formatBossValue(key, value as number)}</span></div>
                                     ))}
                                 </div>
