@@ -28,7 +28,7 @@ const DUNGEON_CATEGORIES: { id: DungeonCategory; label: string }[] = [
     { id: 'all', label: '全部副本' },
     { id: 'tben', label: 'T本（T16-T21）' },
     { id: 'tuanben', label: '团本（兽神、空桑、天帝、流波）' },
-    { id: 'trials', label: '历练与试炼（四象五行、悬夜林）' },
+    { id: 'trials', label: '历练与试炼（四象七、悬夜林）' },
 ];
 
 // 二级筛选简写映射
@@ -39,7 +39,7 @@ const DUNGEON_SHORT_LABELS: Record<string, string> = {
     ZHENHAI_DUANLANG_T19: 'T19',
     ZHENHAI_DUANLANG_T20: 'T20',
     ZHENHAI_DUANLANG_T21: 'T21',
-    SHOUSHEN_JIANGLIN_NORMAL: '兽神困难',
+    SHOUSHEN_JIANGLIN_HARD: '兽神困难',
     JIEQI_KONGSANG_NORMAL: '空桑初识',
     JIEQI_KONGSANG_HARD: '空桑困难',
     TIANDI_BAOKU_NORMAL: '天帝1',
@@ -47,7 +47,7 @@ const DUNGEON_SHORT_LABELS: Record<string, string> = {
     TIANDI_BAOKU_HARD: '天帝3',
     LIU_BO_JING_BIAN_CHUSHI: '流波初识',
     LIU_BO_JING_BIAN_HARD: '流波困难',
-    SIXIANG_QI: '四象五行',
+    SIXIANG_QI: '四象七',
     XUANYELIN_QIWEI_WUGONG: '悬夜林',
 };
 
@@ -59,7 +59,7 @@ const DUNGEON_ORDER_MAP: Record<string, number> = {
     ZHENHAI_DUANLANG_T19: 40,
     ZHENHAI_DUANLANG_T20: 50,
     ZHENHAI_DUANLANG_T21: 60,
-    SHOUSHEN_JIANGLIN_NORMAL: 110,
+    SHOUSHEN_JIANGLIN_HARD: 110,
     JIEQI_KONGSANG_NORMAL: 120,
     JIEQI_KONGSANG_HARD: 130,
     TIANDI_BAOKU_NORMAL: 140,
@@ -366,44 +366,48 @@ const BossCard: React.FC<{
 
     const matrixItems: MatrixItem[] = [];
 
+    // 属性顺序（用户指定）：总气血、单条气血、气血条数、减暴击、减爆伤、防御、攻击、
+    // 暴击率、暴击伤害、无视减免、伤害减免、技能躲闪、伤害压缩。有值才显示。
+    const critRateRed = displayAttrs.critRateReduction ?? mods.MonsterCriticalHitRateReduction;
+    const critDmgRedRaw = mods.MonsterCriticalDamagePercentReduction ?? displayAttrs.critDamageReduction;
+    const defense = displayAttrs.defense ?? mods.MonsterDefense;
+    const attack = displayAttrs.attack;
+    const critRate = displayAttrs.critRate;
+    const critDamage = displayAttrs.critDamage;
+    const ignoreReduction = displayAttrs.ignoreReduction;
+    const damageReduction = displayAttrs.damageReduction;
+    const skillDodge = displayAttrs.skillDodge;
+    const dmgComp = displayAttrs.damageCompression ?? mods.DamageCompressionPercent;
+
     // 1. 气血（核心指标）
     if (health) {
         if (hasHealthBars) {
-            matrixItems.push({
-                label: '首领总气血',
-                value: formatNumber(health * healthBars),
-                highlight: true,
-            });
-            matrixItems.push({
-                label: '单条气血',
-                value: formatNumber(health),
-                highlight: true,
-            });
-            matrixItems.push({
-                label: '气血条数',
-                value: `${healthBars} 条`,
-            });
+            matrixItems.push({ label: '总气血', value: formatNumber(health * healthBars), highlight: true });
+            matrixItems.push({ label: '单条气血', value: formatNumber(health), highlight: true });
+            matrixItems.push({ label: '气血条数', value: `${healthBars} 条` });
         } else {
-            matrixItems.push({
-                label: '首领总气血',
-                value: formatNumber(health),
-                highlight: true,
-            });
+            matrixItems.push({ label: '总气血', value: formatNumber(health), highlight: true });
         }
     }
 
-    // 2. 辅助行属性（减暴击、无视、技能躲闪、防御、减伤、爆伤、攻击、压缩）
-    const critRateRed = displayAttrs.critRateReduction ?? mods.MonsterCriticalHitRateReduction;
-    const ignoreReduction = displayAttrs.ignoreReduction;
-    const skillDodge = displayAttrs.skillDodge;
-    const defense = displayAttrs.defense ?? mods.MonsterDefense;
-    const damageReduction = displayAttrs.damageReduction;
-    const critDamage = displayAttrs.critDamage;
-    const attack = displayAttrs.attack;
-    const dmgComp = displayAttrs.damageCompression ?? mods.DamageCompressionPercent;
-
+    // 2. 按指定顺序依次追加（有值才显示）
     if (critRateRed !== undefined && critRateRed !== null) {
-        matrixItems.push({ label: '减暴击率', value: `${critRateRed}%` });
+        matrixItems.push({ label: '减暴击', value: `${critRateRed}%` });
+    }
+    if (critDmgRedRaw !== undefined && critDmgRedRaw !== null) {
+        matrixItems.push({ label: '减爆伤', value: `${critDmgRedRaw}%` });
+    }
+    if (defense !== undefined && defense !== null) {
+        matrixItems.push({ label: '防御', value: formatNumber(defense) });
+    }
+    if (critRate !== undefined && critRate !== null) {
+        matrixItems.push({ label: '暴击率', value: `${critRate}%` });
+    }
+    if (critDamage !== undefined && critDamage !== null) {
+        matrixItems.push({ label: '暴击伤害', value: `${critDamage}%` });
+    }
+    if (attack !== undefined && attack !== null) {
+        matrixItems.push({ label: '攻击', value: formatNumber(attack) });
     }
     if (ignoreReduction !== undefined && ignoreReduction !== null) {
         matrixItems.push({ label: '无视减免', value: `${ignoreReduction}%` });
@@ -411,39 +415,11 @@ const BossCard: React.FC<{
     if (skillDodge !== undefined && skillDodge !== null) {
         matrixItems.push({ label: '技能躲闪', value: `${skillDodge}` });
     }
-    if (defense !== undefined && defense !== null) {
-        matrixItems.push({ label: '首领防御', value: formatNumber(defense) });
-    }
     if (damageReduction !== undefined && damageReduction !== null) {
-        matrixItems.push({ label: '伤害减免', value: `${damageReduction}%` });
-    }
-    if (critDamage !== undefined && critDamage !== null) {
-        matrixItems.push({ label: '暴伤倍率', value: `${critDamage}%` });
-    }
-    if (attack !== undefined && attack !== null) {
-        matrixItems.push({ label: '首领攻击', value: formatNumber(attack) });
+        matrixItems.push({ label: '减免伤害', value: `${damageReduction}` });
     }
     if (dmgComp !== undefined && dmgComp !== null) {
         matrixItems.push({ label: '伤害压缩', value: `${dmgComp}%` });
-    }
-
-    // 3. 补充行属性（普通命中、普通闪避、技能命中、抗性）
-    const skillHit = displayAttrs.skillHit;
-    const resistance = displayAttrs.resistance;
-    const normalHit = displayAttrs.normalHit;
-    const normalDodge = displayAttrs.normalDodge;
-
-    if (skillHit !== undefined && skillHit !== null) {
-        matrixItems.push({ label: '技能命中', value: skillHit >= 10000 ? formatNumber(skillHit) : `${skillHit}` });
-    }
-    if (resistance !== undefined && resistance !== null) {
-        matrixItems.push({ label: '首领全抗', value: `${resistance}` });
-    }
-    if (normalHit !== undefined && normalHit !== null) {
-        matrixItems.push({ label: '普通命中', value: `${normalHit}` });
-    }
-    if (normalDodge !== undefined && normalDodge !== null) {
-        matrixItems.push({ label: '普通闪避', value: `${normalDodge}` });
     }
 
     const isBoss = (monster as any).role !== 'add';
