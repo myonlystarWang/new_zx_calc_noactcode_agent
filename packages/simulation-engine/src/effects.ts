@@ -46,6 +46,11 @@ export class EffectManager {
     sourceSkillId: string,
     sourceClassId?: string
   ): ApplyEffectResult {
+    // 单实例多层（如逐霜龙怒）：同名只保留一个实例，按 InitialStacks 设层 / StackGain 累加封顶，并刷新持续时间
+    if (effect.StackMode === 'SINGLE_INSTANCE_STACKS') {
+      return this.applySingleInstanceStacks(effect, currentTimeMs, sourceActorId, sourceSkillId, sourceClassId);
+    }
+
     // 同职业同一效果不叠加：只保留一份，再次施放刷新持续时间（数值不翻倍）。优先于叠层/互斥规则；不同职业仍走原逻辑。
     if (sourceClassId) {
       const sameClassEffectIndex = this.activeEffects.findIndex(
@@ -166,6 +171,44 @@ export class EffectManager {
     }
 
     const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, 1, sourceClassId);
+    return { applied, replaced: [], ignored: false };
+  }
+
+  /**
+   * 单实例多层叠层（StackMode='SINGLE_INSTANCE_STACKS'）：
+   * 同名效果只保留一个实例，StackCount 表示当前层数。
+   * - InitialStacks：施加时直接设置层数（补满，如逐霜鹰扬折冲给 27 层龙怒）；
+   * - StackGain：在现有层数上累加并封顶 MaxStacks（如逐霜临渊敛爪补 1 层）；
+   * 两种方式都刷新持续时间。
+   */
+  private applySingleInstanceStacks(
+    effect: AppliedEffectConfig,
+    currentTimeMs: number,
+    sourceActorId: string,
+    sourceSkillId: string,
+    sourceClassId?: string
+  ): ApplyEffectResult {
+    const same = this.activeEffects.find(
+      active => active.EffectId === effect.EffectId &&
+        (!sourceClassId || active.SourceClassId === sourceClassId)
+    );
+    const cap = effect.MaxStacks ?? Number.POSITIVE_INFINITY;
+
+    if (same) {
+      if (typeof effect.InitialStacks === 'number') {
+        same.StackCount = Math.min(cap, effect.InitialStacks);
+      } else if (typeof effect.StackGain === 'number') {
+        same.StackCount = Math.min(cap, same.StackCount + effect.StackGain);
+      } else {
+        same.StackCount = Math.min(cap, same.StackCount + 1);
+      }
+      same.EndTimeMs = currentTimeMs + Math.round(effect.Duration * 1000);
+      same.SourceSkillId = sourceSkillId;
+      return { applied: same, replaced: [], ignored: false };
+    }
+
+    const start = Math.min(cap, effect.InitialStacks ?? effect.StackGain ?? 1);
+    const applied = this.addRawEffect(effect, currentTimeMs, sourceActorId, sourceSkillId, start, sourceClassId);
     return { applied, replaced: [], ignored: false };
   }
 
