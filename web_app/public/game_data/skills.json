@@ -73,7 +73,7 @@
           "Mode": "EVENLY_DURING_CAST"
         },
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 395,
+          "SkillAttackPercentBonus": 445,
           "SkillAttackFixedBonus": 1800,
           "SkillHealthPercentBonus": 26,
           "SkillManaPercentBonus": 0,
@@ -103,7 +103,21 @@
         ],
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
-        }
+        },
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_LONG_NU",
+            "EffectName": "龙怒",
+            "Target": "SELF",
+            "Duration": 15,
+            "Stackable": true,
+            "MaxStacks": 27,
+            "RefreshOnReapply": true,
+            "StackMode": "SINGLE_INSTANCE_STACKS",
+            "InitialStacks": 27,
+            "BuffEffects": {}
+          }
+        ]
       },
       {
         "SkillID": "ZS_XIAN_SKILL_CLX",
@@ -158,8 +172,10 @@
             "Target": "SELF",
             "Duration": 15,
             "Stackable": true,
-            "MaxStacks": 9,
+            "MaxStacks": 27,
             "RefreshOnReapply": true,
+            "StackMode": "SINGLE_INSTANCE_STACKS",
+            "StackGain": 1,
             "BuffEffects": {}
           }
         ],
@@ -195,7 +211,21 @@
         ],
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
-        }
+        },
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_LONG_NU",
+            "EffectName": "龙怒",
+            "Target": "SELF",
+            "Duration": 15,
+            "Stackable": true,
+            "MaxStacks": 27,
+            "RefreshOnReapply": true,
+            "StackMode": "SINGLE_INSTANCE_STACKS",
+            "InitialStacks": 27,
+            "BuffEffects": {}
+          }
+        ]
       },
       {
         "SkillID": "ZS_XIAN_SKILL_LZYY",
@@ -455,7 +485,7 @@
           "Mode": "EVENLY_DURING_CAST"
         },
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 395,
+          "SkillAttackPercentBonus": 445,
           "SkillAttackFixedBonus": 1800,
           "SkillHealthPercentBonus": 31,
           "SkillManaPercentBonus": 5,
@@ -511,7 +541,21 @@
         ],
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
-        }
+        },
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_LONG_NU",
+            "EffectName": "龙怒",
+            "Target": "SELF",
+            "Duration": 15,
+            "Stackable": true,
+            "MaxStacks": 27,
+            "RefreshOnReapply": true,
+            "StackMode": "SINGLE_INSTANCE_STACKS",
+            "InitialStacks": 27,
+            "BuffEffects": {}
+          }
+        ]
       },
       {
         "SkillID": "ZS_MO_SKILL_CLX",
@@ -569,7 +613,21 @@
           "MultiHitConfig": {
             "HitCount": 3
           }
-        }
+        },
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_LONG_NU",
+            "EffectName": "龙怒",
+            "Target": "SELF",
+            "Duration": 15,
+            "Stackable": true,
+            "MaxStacks": 27,
+            "RefreshOnReapply": true,
+            "StackMode": "SINGLE_INSTANCE_STACKS",
+            "StackGain": 1,
+            "BuffEffects": {}
+          }
+        ]
       },
       {
         "SkillID": "ZS_MO_SKILL_YYZC",
@@ -590,7 +648,21 @@
         ],
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
-        }
+        },
+        "AppliesEffects": [
+          {
+            "EffectId": "ZS_BUFF_LONG_NU",
+            "EffectName": "龙怒",
+            "Target": "SELF",
+            "Duration": 15,
+            "Stackable": true,
+            "MaxStacks": 27,
+            "RefreshOnReapply": true,
+            "StackMode": "SINGLE_INSTANCE_STACKS",
+            "InitialStacks": 27,
+            "BuffEffects": {}
+          }
+        ]
       },
       {
         "SkillID": "ZS_MO_SKILL_LZYY",
@@ -764,6 +836,20 @@
               "Override": {
                 "Cooldown": 84
               }
+            },
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_CLX",
+                "ZS_XIAN_SKILL_CLXX",
+                "ZS_MO_SKILL_CLX",
+                "ZS_MO_SKILL_CLXS",
+                "ZS_FO_SKILL_CLXC"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 50
+                }
+              }
             }
           ],
           "HAO_YUE": [
@@ -776,6 +862,20 @@
               ],
               "Override": {
                 "Cooldown": 75
+              }
+            },
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_CLX",
+                "ZS_XIAN_SKILL_CLXX",
+                "ZS_MO_SKILL_CLX",
+                "ZS_MO_SKILL_CLXS",
+                "ZS_FO_SKILL_CLXC"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 50
+                }
               }
             }
           ],
@@ -799,10 +899,24 @@
               "Override": {
                 "ChargeReplenishTime": 12
               }
+            },
+            {
+              "TargetSkillIds": [
+                "ZS_XIAN_SKILL_CLX",
+                "ZS_XIAN_SKILL_CLXX",
+                "ZS_MO_SKILL_CLX",
+                "ZS_MO_SKILL_CLXS",
+                "ZS_FO_SKILL_CLXC"
+              ],
+              "Override": {
+                "SkillBonusAttributes": {
+                  "SkillAttackPercentBonus": 50
+                }
+              }
             }
           ]
         },
-        "Description": "四代被动（满级5级）：莹炬/皓月/曦日分别令鹰扬折冲系列冷却降至84/75/60秒；曦日额外令苍龙啸充能时间降至12秒。仙魔通用。"
+        "Description": "四代被动（满级5级）：莹炬/皓月/曦日分别令鹰扬折冲系列冷却降至84/75/60秒；三品质均令苍龙啸及玄/煞/禅每段附加攻击比+50（10%*5）；曦日额外令苍龙啸充能时间降至12秒。仙魔佛通用。"
       },
       {
         "SkillID": "ZS_COMMON_FG_DLJ",
