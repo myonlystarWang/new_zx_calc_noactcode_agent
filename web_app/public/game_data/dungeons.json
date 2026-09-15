@@ -84,10 +84,10 @@
     "DungeonImportanceWeight": 1
   },
   {
-    "DungeonID": "SHOUSHEN_JIANGLIN_NORMAL",
-    "DungeonName": "兽神降临",
-    "Description": "强大的兽神降临人间，需要仙友合力挑战，普通难度，可获取九纹琅、高级星辰、昭武装备、风云印、铁玉等奖励。",
-    "difficulty": "中等",
+    "DungeonID": "SHOUSHEN_JIANGLIN_HARD",
+    "DungeonName": "兽神降临（困难）",
+    "Description": "强大的兽神降临人间，需要仙友合力挑战，困难难度，可获取九纹琅、高级星辰、昭武装备、风云印、铁玉等奖励。",
+    "difficulty": "较难",
     "DungeonImportanceWeight": 1
   },
   {
