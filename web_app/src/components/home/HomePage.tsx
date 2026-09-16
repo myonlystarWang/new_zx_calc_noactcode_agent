@@ -1,37 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { DataService } from '../../services/DataService';
 import type { SearchTarget } from '../GlobalSearch';
-import { pinyin } from 'pinyin-pro';
 import { Sparkles, Calculator, Swords, Zap, Crosshair, Award } from 'lucide-react';
-
-interface SearchEntry {
-  l: string;          // label
-  g: string;          // group
-  c: 'page' | 'dungeon' | 'monster' | 'skill' | 'role' | 'guide'; // category
-  i: string;          // pinyin initials
-  f: string;          // pinyin full
-  k: string[];        // keywords
-  t: SearchTarget;    // target
-}
-
-function toPinyin(text: string): { i: string; f: string } {
-  const arr = pinyin(text, { toneType: 'none', type: 'array' }) as string[];
-  const syllables = arr.filter((t) => /^[a-z0-9]+$/i.test(t));
-  return {
-    i: syllables.map((s) => s[0]).join('').toLowerCase(),
-    f: syllables.join('').toLowerCase(),
-  };
-}
-
-const CAT_ORDER: Array<SearchEntry['c']> = ['page', 'dungeon', 'monster', 'skill', 'role', 'guide'];
-const CAT_NAME: Record<SearchEntry['c'], string> = {
-  page: '功能入口',
-  dungeon: '副本',
-  monster: 'Boss / 怪物',
-  skill: '职业技能',
-  role: '职业评级',
-  guide: '攻略与增益',
-};
+import { buildSearchIndex, buildSearchStats, matchGrouped } from '../search/searchIndex';
+import type { CompiledSearchItem } from '../search/searchIndex';
 
 const HOT_SEARCH_TAGS = [
   '苍龙啸',    // 技能汉字
@@ -65,7 +36,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
   const [isFocused, setIsFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [placeholder, setPlaceholder] = useState(PH[0]);
-  const [recentList, setRecentList] = useState<SearchEntry[]>([]);
+  const [recentList, setRecentList] = useState<CompiledSearchItem[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -76,9 +47,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
   isFocusedRef.current = isFocused;
 
   // 读取本地存储中的最近访问
-  const loadRecent = (): SearchEntry[] => {
+  const loadRecent = (): CompiledSearchItem[] => {
     try {
-      return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+      const raw = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+      return (Array.isArray(raw) ? raw : []).map((x: any) =>
+        x.label
+          ? x
+          : { label: x.l, group: x.g, category: x.c, keywords: x.k || [], target: x.t, pyInitials: x.i || '', pyFull: x.f || '' },
+      );
     } catch {
       return [];
     }
@@ -88,8 +64,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
     setRecentList(loadRecent());
   }, []);
 
-  const saveRecent = (entry: SearchEntry) => {
-    const list = loadRecent().filter((x) => x.l !== entry.l);
+  const saveRecent = (entry: CompiledSearchItem) => {
+    const list = loadRecent().filter((x) => x.label !== entry.label);
     list.unshift(entry);
     const updated = list.slice(0, 6);
     localStorage.setItem(RECENT_KEY, JSON.stringify(updated));
@@ -101,338 +77,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
     setRecentList([]);
   };
 
-  // 构建完整且精准的搜索索引（与 build_demo.cjs 完全对齐）
-  const { searchIndex, stats } = useMemo(() => {
-    const service = DataService.getInstance();
-    const list: SearchEntry[] = [];
+  // 搜索索引与统计：统一来自共享搜索层（与右上角 GlobalSearch 同源，改一处即两处生效）
+  const searchIndex = useMemo(() => buildSearchIndex(), []);
+  const stats = useMemo(() => buildSearchStats(searchIndex), [searchIndex]);
 
-    function add(label: string, group: string, cat: SearchEntry['c'], kw: string[], target: SearchTarget) {
-      const py = toPinyin(label + ' ' + kw.join(' '));
-      list.push({
-        l: label,
-        g: group,
-        c: cat,
-        i: py.i,
-        f: py.f,
-        k: kw,
-        t: target,
-      });
-    }
-
-    // 1. 核心功能入口
-    add('属性战力计算器', '功能入口', 'page', ['战力', '计算器', '属性计算'], { tab: 'calculator' });
-    add('副本模拟训练场', '功能入口', 'page', ['模拟', '训练场', '战斗模拟', 'arena'], { tab: 'arena' });
-    add('全景战斗资料库', '功能入口', 'page', ['资料库', '图鉴', '资料图鉴', '攻略', '资料', '专注值', '增益'], { tab: 'compendium', sub: 'ceiling' });
-    add('极致属性攻略', '功能入口', 'page', ['极致属性', '天花板', '无视', '减免', '怪增', '躲闪'], { tab: 'compendium', sub: 'ceiling' });
-    add('职业技能速查', '功能入口', 'page', ['技能', '速查', '技能库', '门派技能'], { tab: 'compendium', sub: 'skills' });
-    add('职业状态一览', '功能入口', 'page', ['职业状态', '辅助', '增益', '状态评级'], { tab: 'compendium', sub: 'support' });
-    add('副本 BOSS 速查', '功能入口', 'page', ['boss', '首领', '抗性', '副本boss', '减爆伤'], { tab: 'compendium', sub: 'boss' });
-
-    // 2. 副本与Boss
-    const dungeons = service.getDungeons();
-    const monstersByDungeon = service.getDungeonsMonsters() || {};
-    const skillMeta = service.getSkillMeta();
-    const aliases = skillMeta?.searchAliases || {};
-
-    for (const d of dungeons) {
-      const dAliases = aliases[d.DungeonID] || [];
-      const tMatch = d.DungeonName.match(/T\d+/i);
-      const tKw = tMatch ? [tMatch[0].toUpperCase(), tMatch[0].toLowerCase()] : [];
-
-      add(d.DungeonName, '副本入口 · 属性战力计算器', 'dungeon', [...dAliases, ...tKw], {
-        tab: 'calculator',
-        dungeonId: d.DungeonID,
-      });
-
-      const mList = monstersByDungeon[d.DungeonID] || [];
-      for (const m of mList) {
-        const name = (m as any).MonsterName || (m as any).name;
-        const id = (m as any).MonsterID || (m as any).MonsterId;
-        if (!name || !id) continue;
-        const role = (m as any).role === 'add' ? '小怪' : 'Boss';
-        add(name, `${d.DungeonName} · ${role}`, 'monster', [d.DungeonName, ...tKw, ...(aliases[id] || [])], {
-          tab: 'calculator',
-          dungeonId: d.DungeonID,
-          monsterId: id,
-        });
-      }
-    }
-
-    // 3. 75个核心技能
-    const allSkills = service.getAllSkills() || {};
-    const classLabels: Record<string, string> = skillMeta?.classLabels || {
-      ZHU_SHUANG: '逐霜',
-      NIE_YU: '涅羽',
-      TAI_HAO: '太昊',
-      GUI_WANG: '鬼王',
-      TIAN_YIN: '天音',
-      FEN_XIANG: '焚香',
-      ZHAO_MING: '昭冥',
-      YING_ZHAO: '英招',
-      TIAN_HUA: '天华',
-      SHI_LUO: '释罗',
-    };
-    const factionLabels: Record<string, string> = { XIAN: '仙', FO: '佛', MO: '魔' };
-
-    for (const [classId, factions] of Object.entries(allSkills)) {
-      const className = classLabels[classId] || classId;
-      for (const [factionId, skillArr] of Object.entries(factions as Record<string, any[]>)) {
-        if (!Array.isArray(skillArr)) continue;
-        const fName = factionLabels[factionId] || factionId;
-        for (const sk of skillArr) {
-          const combinedNames = [
-            `${className}·${sk.SkillName}`,
-            `${className}${sk.SkillName}`,
-            `${className} ${sk.SkillName}`,
-          ];
-
-          // 条目 1：跳转技能速查
-          add(sk.SkillName, `${className}·${fName} · 技能速查`, 'skill', [className, fName, ...combinedNames, ...(aliases[sk.SkillID] || [])], {
-            tab: 'skills',
-            classId,
-            faction: factionId,
-            skillName: sk.SkillName,
-            skillId: sk.SkillID,
-          } as any);
-
-          // 条目 2：跳转属性战力计算器并展示技能属性详情
-          add(`${sk.SkillName} (战力测算)`, `属性战力计算器 · ${className}·${fName} · 属性与实战`, 'page', [className, fName, '计算器', '测算', '属性', '伤害', ...combinedNames, ...(aliases[sk.SkillID] || [])], {
-            tab: 'calculator',
-            classId,
-            faction: factionId,
-            skillName: sk.SkillName,
-            skillId: sk.SkillID,
-          } as any);
-        }
-      }
-    }
-
-    // 4. 战斗增益 Buff
-    const buffs = service.getBuffs();
-    const buffAliases: Record<string, string[]> = {
-      BUFF_FOCUS_EFFECT: ['专注', 'zhuanzhu', 'zz', '增益', '专注增益'],
-      BUFF_HOLYWRATH_EFFECT: ['巫咒', 'wuzhou', 'wz', '增益', '巫咒增益'],
-      BUFF_MON_CRITDAMAGE_EFFECT: ['绿点', 'lvdian', 'ld', '暴伤', '增益', '绿点增益'],
-      BUFF_MON_HARMED_EFFECT: ['易伤', 'yishang', 'ys', '增益', '易伤增益'],
-      BUFF_ATT_PERCENT_EFFECT: ['攻击比', 'gongjibi', 'gjb', '增益', '攻击比增益'],
-    };
-    for (const b of buffs) {
-      add(b.BuffName, '各职业状态 · 专注值与战斗增益参考', 'guide', buffAliases[b.BuffID] || [], {
-        tab: 'compendium',
-        sub: 'support',
-        item: b.BuffName,
-      });
-    }
-
-    // 5. 攻略子页
-    const subPages: Array<{ label: string; sub: any; kw: string[] }> = [
-      { label: '极致无视攻略', sub: 'ignore', kw: ['无视', '易伤', '无视减免'] },
-      { label: '极致减免伤害攻略', sub: 'reduction', kw: ['减免', '减伤'] },
-      { label: '极致减暴击攻略', sub: 'critReduction', kw: ['减暴', '暴击减免', '减暴击'] },
-      { label: '极致怪增攻略', sub: 'monsterDamageBonus', kw: ['怪增', '怪物增伤', '增伤'] },
-      { label: '极致躲闪攻略', sub: 'dodge', kw: ['躲闪', '闪避'] },
-      { label: '各职业状态', sub: 'support', kw: ['职业', '辅助', '专注值', '专注'] },
-    ];
-    for (const sp of subPages) {
-      add(sp.label, '全景战斗资料库 · 攻略', 'guide', sp.kw, { tab: 'compendium', sub: sp.sub });
-    }
-
-    // 6. 各职业状态评级
-    const roles = service.getSupportRoles();
-    if (roles) {
-      const seen = new Set<string>();
-      for (const r of roles.roles) {
-        const key = `${r.name}-${r.faction}`;
-        if (seen.has(key)) continue;
-        seen.add(key);
-        const isDps = r.rating === '输出';
-        add(r.name, `各职业状态 · ${r.faction} · ${isDps ? '输出' : '辅助'}`, 'role', [r.name, r.faction], {
-          tab: 'compendium',
-          sub: 'support',
-          item: r.name,
-        });
-      }
-    }
-
-    // 7. 专注值通用参考
-    const focusRef = skillMeta?.focusReference;
-    if (focusRef) {
-      for (const g of focusRef.general || []) {
-        add(g.name, '各职业状态 · 专注值参考', 'guide', ['专注', '通用'], {
-          tab: 'compendium',
-          sub: 'support',
-          item: '专注值参考',
-        });
-      }
-    }
-
-    // 8. 极致属性明细行
-    const guide = service.getAttributeCeilingGuide();
-    if (guide) {
-      const gMap: Record<string, { name: string; sub: any }> = {
-        ignore: { name: '极致无视攻略', sub: 'ignore' },
-        reduction: { name: '极致减免攻略', sub: 'reduction' },
-        critReduction: { name: '极致减暴击攻略', sub: 'critReduction' },
-      };
-      for (const [k, sec] of Object.entries(guide.sections)) {
-        const info = gMap[k];
-        if (!info) continue;
-        for (const row of sec.rows) {
-          add(row.item, `${info.name} · 明细`, 'guide', [], {
-            tab: 'compendium',
-            sub: info.sub,
-            item: row.item,
-          });
-        }
-      }
-    }
-
-    // 9. 属性来源明细行
-    const lists = service.getStatSourceLists();
-    if (lists) {
-      const lMap: Record<string, { name: string; sub: any }> = {
-        monsterDamageBonus: { name: '极致怪增攻略', sub: 'monsterDamageBonus' },
-        dodge: { name: '极致躲闪攻略', sub: 'dodge' },
-      };
-      for (const [k, sec] of Object.entries(lists.sections)) {
-        const info = lMap[k];
-        if (!info) continue;
-        for (const row of sec.sources || []) {
-          add(row.item, `${info.name} · 属性来源`, 'guide', [], {
-            tab: 'compendium',
-            sub: info.sub,
-            item: row.item,
-          });
-        }
-        for (const row of sec.conditionals || []) {
-          add(row.item, `${info.name} · 条件来源`, 'guide', [], {
-            tab: 'compendium',
-            sub: info.sub,
-            item: row.item,
-          });
-        }
-      }
-    }
-
-    const calculatedStats = {
-      dungeons: dungeons.length,
-      monsters: list.filter((x) => x.c === 'monster').length,
-      skills: list.filter((x) => x.c === 'skill').length,
-      buffs: buffs.length,
-      roles: roles ? roles.roles.length : 0,
-      guides: list.filter((x) => x.c === 'guide').length,
-    };
-
-    return { searchIndex: list, stats: calculatedStats };
-  }, []);
-
-  // 匹配与多分类聚合（智能分词、标点容错与拼音匹配）
-  const groupedResults = useMemo(() => {
-    const qRaw = query.trim().toLowerCase();
-    if (!qRaw) return { groupedList: [], flatList: [] };
-
-    // 标点归一化（中英文圆点、空格、下划线、破折号、斜杠等）
-    const qClean = qRaw.replace(/[·\-_/\\|、\s]/g, '');
-
-    // 分词及多前缀拆解（如同时支持 "逐霜 苍龙啸"、"逐霜·苍龙啸"、"逐霜苍龙啸"、"T21玄铠"）
-    const rawWords = qRaw.split(/[\s·\-_/\\|、]+/).filter(Boolean);
-    const tokenSet = new Set<string>(rawWords);
-    const classPrefixes = ['逐霜', '涅羽', '太昊', '鬼王', '天音', '焚香', '昭冥', '英招', '天华', '释罗', '合欢', '青云', '百灵', '长生'];
-    const dungeonPrefixes = ['t16', 't17', 't18', 't19', 't20', 't21'];
-    const allPrefixes = [...classPrefixes, ...dungeonPrefixes];
-
-    for (const w of rawWords) {
-      for (const p of allPrefixes) {
-        if (w.toLowerCase().startsWith(p.toLowerCase()) && w.length > p.length) {
-          tokenSet.add(p.toLowerCase());
-          tokenSet.add(w.slice(p.length).toLowerCase());
-        }
-      }
-    }
-    const tokens = Array.from(tokenSet);
-
-    const scored: Array<{ e: SearchEntry; s: number }> = [];
-    for (const e of searchIndex) {
-      const label = e.l.toLowerCase();
-      const group = e.g.toLowerCase();
-      const keywords = e.k.join(' ').toLowerCase();
-      const hay = `${label} ${group} ${keywords}`;
-      const hayClean = hay.replace(/[·\-_/\\|、\s]/g, '');
-
-      // 1. 名称完全匹配（最高权重）
-      if (label === qRaw || label.replace(/[·\-_/\\|、\s]/g, '') === qClean) {
-        scored.push({ e, s: 120 });
-        continue;
-      }
-
-      // 2. 名称包含原始查询词
-      const labelIdx = label.indexOf(qRaw);
-      if (labelIdx >= 0) {
-        scored.push({ e, s: 100 - labelIdx * 2 });
-        continue;
-      }
-
-      // 3. 全文字符串包含原始查询词
-      const hayIdx = hay.indexOf(qRaw);
-      if (hayIdx >= 0) {
-        scored.push({ e, s: 85 - hayIdx });
-        continue;
-      }
-
-      // 4. 清理标点后的归一化包含（如搜 "逐霜苍龙啸"、"t21玄铠"）
-      if (qClean && hayClean.includes(qClean)) {
-        scored.push({ e, s: 80 });
-        continue;
-      }
-
-      // 5. 多 Token 联合命中（如输入 "逐霜 苍龙啸" 或 "t21 玄铠"）
-      if (tokens.length > 1) {
-        const allMatch = tokens.every((tok) => hay.includes(tok));
-        if (allMatch) {
-          scored.push({ e, s: 75 });
-          continue;
-        }
-      }
-
-      // 6. 拼音首字母与全拼
-      if (e.i && e.i.includes(qClean)) {
-        scored.push({ e, s: 60 - e.i.indexOf(qClean) });
-      } else if (e.f && e.f.includes(qClean)) {
-        scored.push({ e, s: 50 - e.f.indexOf(qClean) });
-      }
-    }
-
-    scored.sort((a, b) => b.s - a.s);
-    const topResults = scored.slice(0, 25);
-
-    // 按分类聚合
-    const groups: Record<string, Array<{ e: SearchEntry; s: number }>> = {};
-    for (const item of topResults) {
-      (groups[item.e.c] = groups[item.e.c] || []).push(item);
-    }
-
-    const order = CAT_ORDER.filter((c) => groups[c]);
-    order.sort((a, b) => {
-      const ma = Math.max(...groups[a].map((x) => x.s));
-      const mb = Math.max(...groups[b].map((x) => x.s));
-      return mb - ma;
-    });
-
-    const flatList: SearchEntry[] = [];
-    const groupedList: Array<{ cat: SearchEntry['c']; catName: string; items: SearchEntry[] }> = [];
-
-    for (const c of order) {
-      const items = groups[c].map((x) => x.e);
-      groupedList.push({
-        cat: c,
-        catName: CAT_NAME[c] || c,
-        items,
-      });
-      flatList.push(...items);
-    }
-
-    return { groupedList, flatList };
-  }, [query, searchIndex]);
+  // 匹配与多分类聚合：统一来自共享搜索层
+  const groupedResults = useMemo(() => matchGrouped(searchIndex, query), [searchIndex, query]);
 
   // 动态出字打字机动画
   useEffect(() => {
@@ -708,12 +358,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
     }
   }, [query]);
 
-  const handleChoose = (item: SearchEntry) => {
+  const handleChoose = (item: CompiledSearchItem) => {
     saveRecent(item);
     setQuery('');
     setIsFocused(false);
     inputRef.current?.blur();
-    onSearchNavigate(item.t);
+    onSearchNavigate(item.target);
   };
 
   // 高亮搜索命中字符（支持精确词及 Token 命中）
@@ -885,14 +535,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
                       <div className="chips" style={{ marginTop: '9px' }}>
                         {recentList.map((e) => (
                           <button
-                            key={e.l}
+                            key={e.label}
                             className="chip"
                             onMouseDown={(ev) => {
                               ev.preventDefault();
                               handleChoose(e);
                             }}
                           >
-                            {e.l}
+                            {e.label}
                           </button>
                         ))}
                       </div>
@@ -916,12 +566,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
                       flatCounter++;
                       const currentIdx = flatCounter;
                       const isEn = /^[a-z0-9]+$/i.test(query.trim());
-                      const py = isEn && e.i ? e.i.slice(0, 8) : '';
+                      const py = isEn && e.pyInitials ? e.pyInitials.slice(0, 8) : '';
                       const isRowActive = currentIdx === activeIndex;
 
                       return (
                         <div
-                          key={`${e.l}-${e.g}-${currentIdx}`}
+                          key={`${e.label}-${e.group}-${currentIdx}`}
                           className={`row ${isRowActive ? 'on' : ''} cursor-pointer`}
                           onMouseDown={(ev) => {
                             ev.preventDefault();
@@ -931,8 +581,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
                         >
                           <span className="dot"></span>
                           <span className="main">
-                            <div className="nm">{renderHighlightedText(e.l, query)}</div>
-                            <div className="gp">{e.g}</div>
+                            <div className="nm">{renderHighlightedText(e.label, query)}</div>
+                            <div className="gp">{e.group}</div>
                           </span>
                           {py && <span className="py">{py}</span>}
                         </div>

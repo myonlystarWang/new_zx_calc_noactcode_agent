@@ -1,312 +1,10 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
-import { pinyin } from 'pinyin-pro';
-import { DataService } from '../services/DataService';
-import { buildSingleCalcSkills } from '../utils/calculator';
-import type { SubTab } from './compendium/CompendiumView';
+import { buildSearchIndex, matchFlat } from './search/searchIndex';
+import type { CompiledSearchItem, SearchTarget } from './search/searchIndex';
 
-export type SearchTarget =
-    | { tab: 'home' }
-    | { tab: 'compendium'; sub: SubTab; item?: string; skillId?: string }
-    | { tab: 'calculator'; dungeonId?: string; monsterId?: string; skillId?: string; skillName?: string; classId?: string; faction?: string }
-    | { tab: 'skills'; classId?: string; faction?: string; skillName?: string; skillId?: string }
-    | { tab: 'arena' };
-
-interface IndexEntry {
-    label: string;
-    group: string;          // 显示用分类
-    sub?: SubTab;           // 资料图鉴子页
-    item?: string;          // 具体项（用于定位）
-    dungeonId?: string;     // Boss 跳转用
-    monsterId?: string;
-    target: SearchTarget;
-    keywords?: string[];    // 别名，用于匹配
-    pyFull?: string;        // 全拼（无声调）
-    pyInitials?: string;    // 拼音首字母
-}
-
-/** 计算中文文本的全拼与首字母（忽略非字母字符） */
-function toPinyin(text: string): { full: string; initials: string } {
-    const arr = pinyin(text, { toneType: 'none', type: 'array' }) as string[];
-    const syllables = arr.filter(t => /^[a-z]+$/i.test(t));
-    return {
-        full: syllables.join('').toLowerCase(),
-        initials: syllables.map(s => s[0]).join('').toLowerCase(),
-    };
-}
-
-const SUB_PAGE_ENTRIES: IndexEntry[] = [
-    { label: '极致属性攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'ceiling', target: { tab: 'compendium', sub: 'ceiling' }, keywords: ['极致属性', '天花板', '攻略', '属性攻略'] },
-    { label: '极致无视攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'ignore', target: { tab: 'compendium', sub: 'ignore' }, keywords: ['无视', '易伤', '无视减免'] },
-    { label: '极致减免伤害攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'reduction', target: { tab: 'compendium', sub: 'reduction' }, keywords: ['减免', '减伤', '减伤伤害'] },
-    { label: '极致减暴击攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'critReduction', target: { tab: 'compendium', sub: 'critReduction' }, keywords: ['减暴', '暴击减免', '减暴击'] },
-    { label: '极致怪增攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'monsterDamageBonus', target: { tab: 'compendium', sub: 'monsterDamageBonus' }, keywords: ['怪增', '怪物增伤', '增伤', '怪物伤害'] },
-    { label: '极致躲闪攻略', group: '全景战斗资料库 / 极致属性攻略', sub: 'dodge', target: { tab: 'compendium', sub: 'dodge' }, keywords: ['躲闪', '闪避'] },
-    { label: '职业状态一览', group: '全景战斗资料库 / 职业状态一览', sub: 'support', target: { tab: 'compendium', sub: 'support' }, keywords: ['职业', '辅助', '易伤职业', '辅助职业', '状态', '专注值参考', '专注', '各职业状态'] },
-    { label: '职业技能速查', group: '全景战斗资料库 / 职业技能速查', sub: 'skills', target: { tab: 'compendium', sub: 'skills' }, keywords: ['技能', '技能速查', '技能库', '门派技能'] },
-    { label: '副本 BOSS 速查', group: '全景战斗资料库 / 副本 BOSS 速查', sub: 'boss', target: { tab: 'compendium', sub: 'boss' }, keywords: ['boss', '首领', '抗性', '副本boss', '减爆伤', 'boss速查'] },
-];
-
-function buildIndex(): IndexEntry[] {
-    const service = DataService.getInstance();
-    const entries: IndexEntry[] = [...SUB_PAGE_ENTRIES];
-
-    // 各职业状态（同名多阵营卡片如 逐霜 仙 / 逐霜 魔佛，按 name+faction 去重）
-    const roles = service.getSupportRoles();
-    if (roles) {
-        const seen = new Set<string>();
-        for (const r of roles.roles) {
-            const dedupeKey = `${r.name}-${r.faction}`;
-            if (seen.has(dedupeKey)) continue;
-            seen.add(dedupeKey);
-            const isDps = r.rating === '输出';
-            entries.push({
-                label: r.name,
-                group: '资料图鉴 / 各职业状态',
-                sub: 'support',
-                item: r.name,
-                target: { tab: 'compendium', sub: 'support', item: r.name },
-                keywords: [r.name, r.faction, isDps ? '输出' : '辅助'],
-            });
-        }
-    }
-
-    // 专注值参考（通用项）
-    const focusRef = service.getSkillMeta()?.focusReference;
-    if (focusRef) {
-        for (const g of focusRef.general ?? []) {
-            entries.push({
-                label: g.name,
-                group: '资料图鉴 / 各职业状态',
-                sub: 'support',
-                item: '专注值参考',
-                target: { tab: 'compendium', sub: 'support', item: '专注值参考' },
-                keywords: [g.name, '专注', '通用'],
-            });
-        }
-    }
-
-    // 极致属性攻略（无视/减免/减暴击）
-    const guide = service.getAttributeCeilingGuide();
-    if (guide) {
-        const map: Record<string, { sub: SubTab; group: string }> = {
-            ignore: { sub: 'ignore', group: '极致无视' },
-            reduction: { sub: 'reduction', group: '极致减免' },
-            critReduction: { sub: 'critReduction', group: '极致减暴击' },
-        };
-        for (const [key, section] of Object.entries(guide.sections)) {
-            const m = map[key];
-            if (!m) continue;
-            for (const row of section.rows) {
-                entries.push({
-                    label: row.item,
-                    group: m.group,
-                    sub: m.sub,
-                    item: row.item,
-                    target: { tab: 'compendium', sub: m.sub, item: row.item },
-                });
-            }
-        }
-    }
-
-    // 属性来源（怪增/躲闪）
-    const lists = service.getStatSourceLists();
-    if (lists) {
-        const map: Record<string, { sub: SubTab; group: string }> = {
-            monsterDamageBonus: { sub: 'monsterDamageBonus', group: '资料图鉴 / 极致怪增攻略' },
-            dodge: { sub: 'dodge', group: '资料图鉴 / 极致躲闪攻略' },
-        };
-        for (const [key, section] of Object.entries(lists.sections)) {
-            const m = map[key];
-            if (!m) continue;
-            for (const row of section.sources) {
-                entries.push({
-                    label: row.item,
-                    group: m.group,
-                    sub: m.sub,
-                    item: row.item,
-                    target: { tab: 'compendium', sub: m.sub, item: row.item },
-                });
-            }
-            if (section.conditionals) {
-                for (const row of section.conditionals) {
-                    entries.push({
-                        label: row.item,
-                        group: m.group,
-                        sub: m.sub,
-                        item: row.item,
-                        target: { tab: 'compendium', sub: m.sub, item: row.item },
-                    });
-                }
-            }
-        }
-    }
-
-    // Boss / 小怪 —— 仅纳入「有对应副本卡片」且怪物真实存在于该副本的条目，保证搜索跳转可命中
-    const monsters = service.getDungeonsMonsters();
-    const dungeonMap = new Map(service.getDungeons().map(d => [d.DungeonID, d]));
-    if (monsters) {
-        for (const [dungeonId, list] of Object.entries(monsters)) {
-            const d = dungeonMap.get(dungeonId);
-            if (!d) continue; // 跳过无卡片副本（如 T21_ADDS、SHOUSHEN_HARD）
-            for (const m of list) {
-                const name = (m as any).MonsterName || (m as any).name;
-                const id = (m as any).MonsterID || (m as any).MonsterId;
-                if (!name || !id) continue;
-                if (!d.Monsters.some(mm => mm.MonsterID === id)) continue;
-                const dungeonName = d.DungeonName || dungeonId;
-                entries.push({
-                    label: name,
-                    group: `属性战力计算器 / ${dungeonName}`,
-                    dungeonId,
-                    monsterId: id,
-                    target: { tab: 'calculator', dungeonId, monsterId: id },
-                    keywords: [name, dungeonName, dungeonId],
-                });
-            }
-        }
-    }
-
-    // 职业技能速查入口
-    entries.push({
-        label: '职业技能速查',
-        group: '核心功能入口',
-        target: { tab: 'skills' },
-        keywords: ['技能', '技能速查', '技能库', '门派技能'],
-    });
-
-    // 职业技能（75 项核心技能）
-    const allSkills = service.getAllSkills() || {};
-    const skillMeta = service.getSkillMeta();
-    const classLabels: Record<string, string> = skillMeta?.classLabels || {
-        ZHU_SHUANG: '逐霜',
-        NIE_YU: '涅羽',
-        TAI_HAO: '太昊',
-        GUI_WANG: '鬼王',
-        TIAN_YIN: '天音',
-        FEN_XIANG: '焚香',
-        ZHAO_MING: '昭冥',
-        YING_ZHAO: '英招',
-        TIAN_HUA: '天华',
-        SHI_LUO: '释罗',
-    };
-    const factionLabels: Record<string, string> = { XIAN: '仙', FO: '佛', MO: '魔' };
-
-    for (const [classId, factions] of Object.entries(allSkills)) {
-        const className = classLabels[classId] || classId;
-        for (const [factionId, skillArr] of Object.entries(factions as Record<string, any[]>)) {
-            if (!Array.isArray(skillArr)) continue;
-            const fName = factionLabels[factionId] || factionId;
-            for (const sk of skillArr) {
-                // 条目 1：跳转技能速查
-                entries.push({
-                    label: sk.SkillName,
-                    group: `职业技能速查 / ${className}·${fName}`,
-                    target: {
-                        tab: 'skills',
-                        classId,
-                        faction: factionId,
-                        skillName: sk.SkillName,
-                        skillId: sk.SkillID,
-                    },
-                    keywords: [sk.SkillName, className, fName, classId],
-                });
-
-                // 条目 2：跳转计算器并展示技能属性详情
-                entries.push({
-                    label: `${sk.SkillName} (战力测算)`,
-                    group: `属性战力计算器 / ${className}·${fName} · 测算与属性`,
-                    target: {
-                        tab: 'calculator',
-                        classId,
-                        faction: factionId,
-                        skillName: sk.SkillName,
-                        skillId: sk.SkillID,
-                    },
-                    keywords: [sk.SkillName, className, fName, classId, '计算器', '测算', '属性', '伤害'],
-                });
-            }
-        }
-
-        // 单次满配/战斗满状态峰值变体（如苍龙啸·龙怒）：仅加入「战力测算」条目；
-        // 技能速查不展示变体卡，故不加跳速查条目。通用：未来职业在 PEAK_VARIANT_RULES 登记即自动纳入。
-        for (const factionId of ['XIAN', 'MO', 'FO'] as const) {
-            let peakSkills: any[] = [];
-            try {
-                peakSkills = buildSingleCalcSkills(factions as any, factionId);
-            } catch {
-                peakSkills = [];
-            }
-            const pfName = factionLabels[factionId] || factionId;
-            for (const pk of peakSkills) {
-                if (!pk.Variant) continue;
-                entries.push({
-                    label: pk.SkillName,
-                    group: '属性战力计算器 / ' + className + '·' + pfName + ' · 满状态峰值',
-                    target: {
-                        tab: 'calculator',
-                        classId,
-                        faction: factionId,
-                        skillName: pk.SkillName,
-                        skillId: pk.SkillID,
-                    },
-                    keywords: [pk.SkillName, className, pfName, classId, '龙怒', '峰值', '满配', '满状态'],
-                });
-            }
-        }
-    }
-
-    // 战斗增益 Buff（定位到各职业状态 · 专注值与战斗增益参考）
-    const buffs = service.getBuffs();
-    const buffAliases: Record<string, string[]> = {
-        BUFF_FOCUS_EFFECT: ['专注', '专注增益', 'zz'],
-        BUFF_HOLYWRATH_EFFECT: ['巫咒', '巫咒增益', 'wz'],
-        BUFF_MON_CRITDAMAGE_EFFECT: ['绿点', '绿点增益', 'ld', '暴伤'],
-        BUFF_MON_HARMED_EFFECT: ['易伤', '易伤增益', 'ys'],
-        BUFF_ATT_PERCENT_EFFECT: ['攻击比', '攻击比增益', 'gjb'],
-    };
-    for (const b of buffs) {
-        entries.push({
-            label: b.BuffName,
-            group: '资料图鉴 / 各职业状态 / 战斗增益参考',
-            sub: 'support',
-            item: b.BuffName,
-            target: { tab: 'compendium', sub: 'support', item: b.BuffName },
-            keywords: [b.BuffName, ...(buffAliases[b.BuffID] || [])],
-        });
-    }
-
-    // 为每条目补算拼音（全拼 + 首字母），支持首字母模糊搜索（如 天华→th、赤索→cs）
-    return entries.map(e => {
-        const { full, initials } = toPinyin(e.label + ' ' + (e.keywords?.join(' ') || ''));
-        return { ...e, pyFull: full, pyInitials: initials };
-    });
-}
-
-function matchEntries(index: IndexEntry[], query: string): IndexEntry[] {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    const scored: { e: IndexEntry; score: number }[] = [];
-    for (const e of index) {
-        const hay = (e.label + ' ' + (e.keywords?.join(' ') || '')).toLowerCase();
-        const idx = hay.indexOf(q);
-        if (idx >= 0) {
-            // 中文/原文直接命中：越靠前越优先
-            scored.push({ e, score: 100 - idx });
-            continue;
-        }
-        // 拼音首字母（如 th / cs）优先于全拼（如 tianhua）
-        if (e.pyInitials && e.pyInitials.includes(q)) {
-            scored.push({ e, score: 60 - e.pyInitials.indexOf(q) });
-            continue;
-        }
-        if (e.pyFull && e.pyFull.includes(q)) {
-            scored.push({ e, score: 50 - e.pyFull.indexOf(q) });
-        }
-    }
-    scored.sort((a, b) => b.score - a.score);
-    return scored.slice(0, 25).map(s => s.e);
-}
+// 统一从共享搜索层导出 SearchTarget，兼容 App/Header/ResultsSection/CompendiumView/SkillsView 的既有引用
+export type { SearchTarget } from './search/searchIndex';
 
 function Highlighted({ text, query }: { text: string; query: string }) {
     const q = query.trim();
@@ -331,8 +29,9 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
     const inputRef = useRef<HTMLInputElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
 
-    const index = useMemo(() => buildIndex(), []);
-    const results = useMemo(() => matchEntries(index, query), [index, query]);
+    // 与首页 Ctrl+K 命令面板共用同一份索引与匹配规则
+    const index = useMemo(() => buildSearchIndex(), []);
+    const results = useMemo(() => matchFlat(index, query), [index, query]);
     const showDropdown = focused || (query.length > 0 && results.length > 0);
 
     useEffect(() => {
@@ -346,7 +45,7 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
             listRef.current.scrollTop = 0;
             return;
         }
-        const activeEl = listRef.current.children[active] as HTMLElement;
+        const activeEl = listRef.current.children[active] as HTMLElement | undefined;
         if (activeEl) {
             activeEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
         }
@@ -363,7 +62,7 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
         return () => document.removeEventListener('mousedown', onDoc);
     }, []);
 
-    const choose = (e: IndexEntry) => {
+    const choose = (e: CompiledSearchItem) => {
         onNavigate(e.target);
         setQuery('');
         setFocused(false);
@@ -397,7 +96,7 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
                         }, 120);
                     }}
                     placeholder="搜索…"
-                    title="搜索攻略、职业、Boss"
+                    title="搜索攻略、职业、Boss、技能"
                     className="bg-slate-900/70 border border-slate-700/60 rounded-lg pl-8 pr-7 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyan-500/70 focus:bg-slate-900 w-[110px] sm:w-[160px] md:w-[220px] transition-colors"
                 />
                 {query && (
@@ -413,7 +112,7 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
                     <div ref={listRef} className="absolute z-50 mt-1 w-[260px] sm:w-[320px] max-h-[420px] overflow-y-auto bg-slate-900/95 border border-slate-700 rounded-xl shadow-2xl backdrop-blur-xl py-1">
                         {results.map((e, i) => (
                             <button
-                                key={i}
+                                key={`${e.category}-${e.label}-${i}`}
                                 onMouseEnter={() => setActive(i)}
                                 onMouseDown={(e_) => { e_.preventDefault(); choose(e); }}
                                 className={clsxActive(i === active)}
