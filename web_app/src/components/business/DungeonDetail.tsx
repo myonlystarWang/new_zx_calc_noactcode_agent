@@ -527,12 +527,12 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                         const hitBarWidth = maxAvgDamage > 0 ? (hit.avgFinalDamage / maxAvgDamage) * 100 : 0;
                                                         return (
                                                             <tr key={`${skill.SkillID}-hit-${hit.hitIndex}`} className="bg-slate-900/30 hover:bg-slate-800/50 transition-colors border-t border-slate-700/20">
-                                                                <td className="py-2.5 px-2 pl-8 md:pl-10 text-slate-400 font-medium relative z-10 whitespace-nowrap">
-                                                                    <div className="flex items-center gap-2 mb-1">
+                                                                <td className="py-1 px-2 pl-8 md:pl-10 text-slate-400 font-medium relative z-10 whitespace-nowrap">
+                                                                    <div className="flex items-center gap-2 mb-0.5">
                                                                         <div className="w-1 h-1 rounded-full bg-slate-650"></div>
-                                                                        <span className="text-xs">第 {hit.hitIndex} 段</span>
+                                                                        <span className="text-xs leading-tight">第 {hit.hitIndex} 段</span>
                                                                     </div>
-                                                                    <div className="text-[11px] md:text-xs text-slate-500 font-mono flex items-center gap-1.5 pl-3">
+                                                                    <div className="text-[11px] md:text-xs leading-tight text-slate-500 font-mono flex items-center gap-1.5 pl-3">
                                                                         <span className="text-[var(--theme-primary)]/70">{formatNumber(hit.minFinalDamage, false)}</span>
                                                                         <span className="text-slate-600">~</span>
                                                                         <span className="text-[var(--theme-accent)]/70">{formatNumber(hit.maxFinalDamage)}</span>
@@ -540,7 +540,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                 </td>
                                                                 <td className="hidden py-2 px-2"></td>
                                                                 <td className="hidden py-2 px-2"></td>
-                                                                <td className="py-2 px-2 text-right relative">
+                                                                <td className="py-1 px-2 text-right relative">
                                                                     <div
                                                                         className="absolute inset-y-1.5 right-1 bg-yellow-500/10 rounded-sm transition-all duration-500"
                                                                         style={{ width: `${hitBarWidth * 0.95}%` }}
