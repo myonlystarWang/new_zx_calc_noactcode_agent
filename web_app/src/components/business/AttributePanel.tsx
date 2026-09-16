@@ -102,7 +102,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         label="对怪增伤 (%)"
                         value={attributes.CharacterMonsterDamageIncreasePercent}
                         onChange={(v) => handleChange('CharacterMonsterDamageIncreasePercent', v)}
-                        max={60}
+                        max={100}
                         icon={<Skull className="w-4 h-4" />}
                         color="orange"
                     />
