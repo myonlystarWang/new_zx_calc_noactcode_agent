@@ -1,3 +1,5 @@
+import { buildSingleCalcSkills } from './calculator.js';
+
 import type {
   AgentCalcInput,
   AttributeCapsConfig,
@@ -322,7 +324,9 @@ export const normalizeRequest = (input: AgentCalcInput, data: GameData): Normali
   }
   const selectedMonsters = resolveSelectedMonsters(input, monsters, issues);
   const { activeBuffs, buffValues } = normalizeBuffs(input, data.buffs, issues);
-  const skills = classInfo && faction ? data.skills[classInfo.ClassID]?.[faction] || [] : [];
+  const rawFactionSkills = classInfo ? data.skills[classInfo.ClassID] : undefined;
+  // 单次路径：合并本阵营+COMMON，应用四代曦日满配，并为登记技能生成满状态峰值变体（如苍龙啸·龙怒）
+  const skills = classInfo && faction ? buildSingleCalcSkills(rawFactionSkills, faction) : [];
   if (classInfo && faction && skills.length === 0) {
     issues.push({ field: 'classId/faction', message: `${classInfo.ClassName}/${factionNames[faction]} 没有技能配置` });
   }

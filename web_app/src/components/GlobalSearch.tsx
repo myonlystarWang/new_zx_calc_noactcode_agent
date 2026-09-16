@@ -2,6 +2,7 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
 import { pinyin } from 'pinyin-pro';
 import { DataService } from '../services/DataService';
+import { buildSingleCalcSkills } from '../utils/calculator';
 import type { SubTab } from './compendium/CompendiumView';
 
 export type SearchTarget =
@@ -223,6 +224,33 @@ function buildIndex(): IndexEntry[] {
                         skillId: sk.SkillID,
                     },
                     keywords: [sk.SkillName, className, fName, classId, '计算器', '测算', '属性', '伤害'],
+                });
+            }
+        }
+
+        // 单次满配/战斗满状态峰值变体（如苍龙啸·龙怒）：仅加入「战力测算」条目；
+        // 技能速查不展示变体卡，故不加跳速查条目。通用：未来职业在 PEAK_VARIANT_RULES 登记即自动纳入。
+        for (const factionId of ['XIAN', 'MO', 'FO'] as const) {
+            let peakSkills: any[] = [];
+            try {
+                peakSkills = buildSingleCalcSkills(factions as any, factionId);
+            } catch {
+                peakSkills = [];
+            }
+            const pfName = factionLabels[factionId] || factionId;
+            for (const pk of peakSkills) {
+                if (!pk.Variant) continue;
+                entries.push({
+                    label: pk.SkillName,
+                    group: '属性战力计算器 / ' + className + '·' + pfName + ' · 满状态峰值',
+                    target: {
+                        tab: 'calculator',
+                        classId,
+                        faction: factionId,
+                        skillName: pk.SkillName,
+                        skillId: pk.SkillID,
+                    },
+                    keywords: [pk.SkillName, className, pfName, classId, '龙怒', '峰值', '满配', '满状态'],
                 });
             }
         }

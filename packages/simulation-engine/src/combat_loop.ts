@@ -5,6 +5,7 @@ import { sumBuffEffectsFromBuffs } from './attributes.js';
 import { isBuffEffectKey, isCharacterAttributeKey } from './field_keys.js';
 import { StrategyController } from './strategies.js';
 import { Timeline } from './timeline.js';
+import { isXianCangLongXiaoSkill, getZhuShuangYyzcLevel, getZhuShuangLongNuBonus } from './zhu_shuang.js';
 import type {
   ActorStrategyConfig,
   AppliedEffectConfig,
@@ -1245,25 +1246,6 @@ const getHitOffsetsMs = (skill: Skill, hitCount: number, actualCastTimeMs?: numb
 const getDamageCompressionMultiplier = (monster: Monster): number => {
   const compressionPercent = monster.MonsterAttributeModifiers.DamageCompressionPercent ?? 0;
   return Math.max(0, 1 - compressionPercent / 100);
-};
-
-const isXianCangLongXiaoSkill = (skillId: string): boolean => (
-  skillId === 'ZS_XIAN_SKILL_CLX'
-);
-
-// 流波惊变·逐霜龙怒：普通鹰扬折冲满级 9，法宝+1 可到 10（经 PlayerSkillOverride.SkillLevel 传入）；缺省按 9 级。
-const ZS_LONGNU_DEFAULT_YYZC_LEVEL = 9;
-const getZhuShuangYyzcLevel = (skills: Record<string, Skill>): number => {
-  const yyzc = skills['ZS_XIAN_SKILL_YYZC'] ?? skills['ZS_MO_SKILL_YYZC'];
-  const level = yyzc?.SkillLevel;
-  return typeof level === 'number' && level > 0 ? level : ZS_LONGNU_DEFAULT_YYZC_LEVEL;
-};
-
-// 龙怒每段附加攻击比：仙(苍龙啸/苍龙啸·玄)=20%*等级+100(怒龙吞海II)；魔(苍龙啸/煞)、佛(禅)=20%*等级。
-const getZhuShuangLongNuBonus = (skillId: string, yyzcLevel: number): number => {
-  const perLevelBonus = 20 * yyzcLevel;
-  const isXianCangLong = skillId === 'ZS_XIAN_SKILL_CLX' || skillId === 'ZS_XIAN_SKILL_CLXX';
-  return isXianCangLong ? perLevelBonus + 100 : perLevelBonus;
 };
 
 const filterBossDamageBuffs = (buffs: Buff[]): Buff[] => {

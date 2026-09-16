@@ -34,7 +34,7 @@ const MainContent: React.FC = () => {
     }
     if ((t as any).tab === 'skills') {
       setActiveTab('compendium');
-      setSearchNav({ tab: 'compendium', sub: 'skills', ...(t as any) });
+      setSearchNav({ ...(t as any), tab: 'compendium', sub: 'skills' });
       return;
     }
     setActiveTab(t.tab as AppTab);

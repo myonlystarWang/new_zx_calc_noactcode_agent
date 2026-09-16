@@ -2,6 +2,7 @@
 import { EffectManager } from './effects.js';
 import { runSimulation } from './combat_loop.js';
 import { calculateDamage } from './calculator.js';
+import { buildSingleCalcSkills } from './single_calc.js';
 import { Timeline } from './timeline.js';
 import type {
   AppliedEffectConfig,
@@ -2151,6 +2152,21 @@ const testZhuShuangSkills = () => {
     SkillBonusAttributes: { SkillDamageBonus: 1 }
   };
 
+  const yyzcCommonSkill: Skill = {
+    SkillID: 'ZS_XIAN_SKILL_YYZC',
+    SkillName: '鹰扬折冲',
+    RequiredClass: 'ZHU_SHUANG',
+    Faction: 'XIAN',
+    SkillImportanceWeight: 0.8,
+    SkillFrequency: 0.5,
+    Cooldown: 90,
+    CastTime: 0.5,
+    IsAOE: false,
+    ActionType: 'UTILITY',
+    AppliesEffects: [longNuInitEffect],
+    SkillBonusAttributes: { SkillDamageBonus: 1 }
+  };
+
   const moYyzcShaSkill: Skill = {
     SkillID: 'ZS_MO_SKILL_YYZC_SHA',
     SkillName: '鹰扬折冲·煞',
@@ -2733,6 +2749,110 @@ const testZhuShuangSkills = () => {
     em.getActiveEffects()[0].StackCount = 27;
     em.applyEffect(longNuGainEffect, 3000, 'dps', 'ZS_XIAN_SKILL_LYLZ', 'ZHU_SHUANG');
     assert.equal(em.getActiveEffects()[0].StackCount, 27); // 封顶不超过27
+  }
+
+  // Test 3e: 法宝+1 —— 普通鹰扬 SkillLevel=10 时，仙苍龙每段附加 20%*10+100=300%（对比默认9级280%）
+  // baseAttr 攻击10000、爆伤倍率3.0、对怪1.1 -> 每段附加 10000*3.0*3.0*1.1 = 99000
+  {
+    const originalRandom = Math.random;
+    try {
+      Math.random = () => 1;
+      const runNoLongNu = runSimulation({
+        maxTimeMs: 10000,
+        boss: baseBoss(10000000),
+        actors: [{
+          actorId: 'dps', classId: 'ZHU_SHUANG', role: 'DPS', baseAttributes: baseAttr,
+          baseSkills: [clxxSkill],
+          strategy: { type: 'MANUAL_TIMELINE', actions: [{ timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' }] }
+        }]
+      });
+      const runLv10 = runSimulation({
+        maxTimeMs: 10000,
+        boss: baseBoss(10000000),
+        actors: [{
+          actorId: 'dps', classId: 'ZHU_SHUANG', role: 'DPS', baseAttributes: baseAttr,
+          baseSkills: [clxxSkill, yyzcCommonSkill],
+          skillOverrides: { ZS_XIAN_SKILL_YYZC: { SkillLevel: 10 } },
+          strategy: {
+            type: 'MANUAL_TIMELINE',
+            actions: [{ timeMs: 0, skillId: 'ZS_XIAN_SKILL_YYZC' }, { timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' }]
+          }
+        }]
+      });
+      const d = diffs(runNoLongNu, runLv10, 'ZS_XIAN_SKILL_CLXX');
+      d.forEach((delta, i) => assert.equal(delta, 99000, '法宝+1(10级)仙苍龙第' + (i + 1) + '段应99000，实得' + delta));
+    } finally {
+      Math.random = originalRandom;
+    }
+  }
+
+  // Test 3f: 单次满配 buildSingleCalcSkills —— 四代曦日 Grants 相加 + 龙怒峰值变体（仙+300/魔佛+200）
+  {
+    const mkCangLong = (id: string, name: string, atkPct: number, faction: string): Skill => ({
+      SkillID: id,
+      SkillName: name,
+      RequiredClass: 'ZHU_SHUANG',
+      Faction: faction as Skill['Faction'],
+      SkillImportanceWeight: 1,
+      SkillFrequency: 1,
+      Cooldown: 0,
+      CastTime: 0,
+      IsAOE: false,
+      ActionType: 'DAMAGE',
+      SkillBonusAttributes: {
+        SkillAttackPercentBonus: atkPct,
+        SkillCriticalDamagePercentBonus: 80,
+        MultiHitConfig: { HitCount: 9 }
+      }
+    });
+    const mkZuiYue = (targetIds: string[]): Skill => ({
+      SkillID: 'ZS_COMMON_FG_ZYFS',
+      SkillName: '玄烛·醉月飞觞',
+      RequiredClass: 'ZHU_SHUANG',
+      Faction: 'COMMON',
+      Cooldown: 0,
+      CastTime: 0,
+      ActionType: 'FOURTH_GEN_PASSIVE',
+      FourthGenSlot: 'XUAN_ZHU',
+      SkillBonusAttributes: { SkillDamageBonus: 1 },
+      FourthGenGrants: {
+        XI_RI: [{ TargetSkillIds: targetIds, Override: { SkillBonusAttributes: { SkillAttackPercentBonus: 50 } } }]
+      }
+    } as Skill);
+
+    // 仙：苍龙啸 210 -> 醉月+50=260 -> 龙怒(10级仙+300)=560
+    const xianList = buildSingleCalcSkills(
+      { XIAN: [mkCangLong('ZS_XIAN_SKILL_CLX', '苍龙啸', 210, 'XIAN')], COMMON: [mkZuiYue(['ZS_XIAN_SKILL_CLX'])] },
+      'XIAN'
+    );
+    assert.equal(xianList.length, 2, '仙苍龙应得本体+龙怒变体共2条');
+    assert.equal(xianList[0].SkillName, '苍龙啸');
+    assert.equal(xianList[0].SkillBonusAttributes.SkillAttackPercentBonus, 260, '本体应含醉月+50=260');
+    assert.equal(xianList[1].SkillName, '苍龙啸·龙怒');
+    assert.equal(xianList[1].Variant, 'LONGNU');
+    assert.equal(xianList[1].SkillBonusAttributes.SkillAttackPercentBonus, 560, '仙龙怒10级应+300=560');
+
+    // 魔：苍龙啸 210 -> 260 -> 龙怒(魔10级+200)=460
+    const moList = buildSingleCalcSkills(
+      { MO: [mkCangLong('ZS_MO_SKILL_CLX', '苍龙啸', 210, 'MO')], COMMON: [mkZuiYue(['ZS_MO_SKILL_CLX'])] },
+      'MO'
+    );
+    assert.equal(moList[0].SkillBonusAttributes.SkillAttackPercentBonus, 260);
+    assert.equal(moList[1].SkillBonusAttributes.SkillAttackPercentBonus, 460, '魔龙怒10级应+200=460');
+
+    // 非逐霜输出技能：吃四代 Grants，但不生成龙怒变体
+    const otherList = buildSingleCalcSkills(
+      { XIAN: [mkCangLong('OTHER_SKILL', '别的技能', 100, 'XIAN')], COMMON: [mkZuiYue(['OTHER_SKILL'])] },
+      'XIAN'
+    );
+    assert.equal(otherList.length, 1, '非龙怒技能不应有变体');
+    assert.equal(otherList[0].SkillBonusAttributes.SkillAttackPercentBonus, 150, '非逐霜仍应吃四代+50');
+
+    // UTILITY/被动不进单次输出列表
+    const util = mkCangLong('ZS_XIAN_SKILL_YYZC', '鹰扬折冲', 0, 'XIAN');
+    util.ActionType = 'UTILITY';
+    const utilList = buildSingleCalcSkills({ XIAN: [util], COMMON: [] }, 'XIAN');
+    assert.equal(utilList.length, 0, 'UTILITY 不进单次输出');
   }
 
   // Test 4: Mo LYLZ + SY2 add one charge to ordinary Cang Long Xiao only (Mo)
