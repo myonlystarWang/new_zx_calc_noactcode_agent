@@ -1429,6 +1429,9 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
             const s = searchNav.sub;
             if (s === 'skills') {
                 setActivePrimaryTab('skills');
+                // 技能定位（职业/阵营/高亮/滚动）与 consume 交给 SkillsView 的 useEffect；
+                // 此处若提前 onSearchConsumed，SkillsView 首次挂载时 searchNav 已被清空。
+                return;
             } else if (s === 'support') {
                 setActivePrimaryTab('support');
             } else if (s === 'boss') {

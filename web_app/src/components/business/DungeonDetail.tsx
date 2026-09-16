@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { Sword, Info } from 'lucide-react';
 import type { Dungeon, Skill, RankConfig, Monster } from '../../types';
-import { calculateDamage } from '../../utils/calculator';
+import { calculateDamage, buildSingleCalcSkills } from '../../utils/calculator';
 import { clsx } from 'clsx';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
@@ -85,7 +85,11 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     const service = DataService.getInstance();
     const skillsMap = service.getSkills(userCharacter.ClassID);
     const skills = skillsMap ? skillsMap[userCharacter.Faction] || [] : [];
-    const outputSkills = skills.filter(skill => !skill.ActionType || skill.ActionType === 'DAMAGE');
+    // 单次战力计算器：本阵营输出技能按四代曦日满配装配，并生成满状态峰值变体（如苍龙啸·龙怒）
+    const outputSkills = useMemo(
+        () => buildSingleCalcSkills(skillsMap as Record<string, Skill[]>, userCharacter.Faction),
+        [skillsMap, userCharacter.Faction, userCharacter.ClassID]
+    );
     const activeBuffs = buffs.filter(b => activeBuffIds.includes(b.BuffID));
 
     // 提取技能的基础名称（去除阵营后缀如 ·玄/·煞/·禅 等）

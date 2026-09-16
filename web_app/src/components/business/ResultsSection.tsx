@@ -242,9 +242,12 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
             if (searchNav.dungeonId) {
                 setSelectedDungeonId(searchNav.dungeonId);
             }
-            setFocusMonsterId(searchNav.monsterId ?? null);
-            setFocusSkillName(searchNav.skillName ?? null);
-            setAutoShowAttr(true);
+            // 临时开关（2026-09-16）：搜索直达是否自动展开「BOSS 属性卡」与「技能附加属性卡」。
+            // 暂时关闭：仅切到对应副本/职业，不自动选中 Boss、不 pin 技能附加卡；恢复时改为 true。
+            const ENABLE_SEARCH_AUTO_FOCUS = false;
+            setFocusMonsterId(ENABLE_SEARCH_AUTO_FOCUS ? (searchNav.monsterId ?? null) : null);
+            setFocusSkillName(ENABLE_SEARCH_AUTO_FOCUS ? (searchNav.skillName ?? null) : null);
+            setAutoShowAttr(ENABLE_SEARCH_AUTO_FOCUS);
             onSearchConsumed?.();
         }
     }, [searchNav, onSearchConsumed]);

@@ -71,6 +71,11 @@ interface SkillItem {
         Phases: MultiPhaseItem[];
     };
     BuffDurationExtensionSeconds?: number;
+    FourthGenSlot?: 'XUAN_ZHU' | 'CHI_WU';
+    FourthGenPresets?: Record<string, any>;
+    FourthGenGrants?: Record<string, Array<{ TargetSkillIds: string[]; Override: any }>>;
+    FourthGenInitialEffects?: Record<string, any>;
+    Variant?: string;
 }
 
 const CLASS_ORDER = [
@@ -97,6 +102,7 @@ interface AttributeItem {
     label: string;
     value: string;
     isPrimary?: boolean;
+    wrap?: boolean;   // 长文本行（四代三品质说明）：跨整行、纵向排列并允许换行，避免溢出卡片
 }
 
 interface UnifiedSkillData {
@@ -110,8 +116,96 @@ interface UnifiedSkillData {
  * 统合处理技能的属性、加成与机制：
  * 彻底消除花哨杂乱的层层套盒，无论是输出技能还是增益/减益技能，均归一化为高对比度、清晰宁静的属性条
  */
+const FG_QUALITIES: Array<{ key: string; label: string }> = [
+    { key: 'YING_JU', label: '莹炬' },
+    { key: 'HAO_YUE', label: '皓月' },
+    { key: 'XI_RI', label: '曦日' }
+];
+
+/** 把四代 Override 翻译为简洁中文增量描述 */
+function describeFourthGenOverride(override: any): string[] {
+    if (!override || typeof override !== 'object') return [];
+    const out: string[] = [];
+    const sb = override.SkillBonusAttributes;
+    if (sb) {
+        if (typeof sb.SkillAttackPercentBonus === 'number') out.push('附加攻击比+' + sb.SkillAttackPercentBonus + '%');
+        if (typeof sb.SkillAttackFixedBonus === 'number') out.push('附加固定攻击+' + sb.SkillAttackFixedBonus);
+        if (typeof sb.SkillHealthPercentBonus === 'number') out.push('附加气血比+' + sb.SkillHealthPercentBonus + '%');
+        if (typeof sb.SkillManaPercentBonus === 'number') out.push('附加真气比+' + sb.SkillManaPercentBonus + '%');
+        if (typeof sb.SkillCriticalDamagePercentBonus === 'number') out.push('附加爆伤+' + sb.SkillCriticalDamagePercentBonus + '%');
+        if (typeof sb.SkillDefensePercentBonus === 'number') out.push('附加防御比+' + sb.SkillDefensePercentBonus + '%');
+    }
+    if (typeof override.Cooldown === 'number') out.push('冷却' + override.Cooldown + 's');
+    if (typeof override.ChargeReplenishTime === 'number') out.push('充能恢复' + override.ChargeReplenishTime + 's');
+    if (typeof override.CastTime === 'number') out.push('施法' + override.CastTime + 's');
+    const ae = override.AppliesEffects;
+    if (ae && typeof ae === 'object') {
+        for (const eff of Object.values(ae) as any[]) {
+            if (!eff) continue;
+            const be = eff.BuffEffects;
+            if (be) {
+                if (typeof be.BuffSpeedPercentEffect === 'number') out.push('施法速度+' + be.BuffSpeedPercentEffect + '%');
+                if (typeof be.BuffManaPercentEffect === 'number') out.push('真气上限+' + be.BuffManaPercentEffect + '%');
+                if (typeof be.BuffAttackPercentEffect === 'number') out.push('攻击+' + be.BuffAttackPercentEffect + '%');
+                if (typeof be.BuffMonsterCriticalDamagePercentEffect === 'number') out.push('绿点+' + be.BuffMonsterCriticalDamagePercentEffect + '%');
+            }
+            if (typeof eff.Duration === 'number') out.push('持续' + eff.Duration + 's');
+        }
+    }
+    return out;
+}
+
+/** 四代被动：按目标技能名聚合三品质增量；同名技能合并、同品质多 grant 累加去重，三品质同值合并、异值分列 */
+function buildFourthGenAttributes(skill: SkillItem, idToNameMap: Record<string, string>): AttributeItem[] {
+    const grants = skill.FourthGenGrants;
+    if (!grants) return [];
+    const nameOrder: string[] = [];
+    const byName: Record<string, Record<string, string[]>> = {};
+    const addDesc = (name: string, qKey: string, desc: string[]) => {
+        if (!byName[name]) { byName[name] = {}; nameOrder.push(name); }
+        if (!byName[name][qKey]) byName[name][qKey] = [];
+        for (const d of desc) {
+            if (byName[name][qKey].indexOf(d) === -1) byName[name][qKey].push(d);
+        }
+    };
+    for (const q of FG_QUALITIES) {
+        const list = grants[q.key] || [];
+        for (const g of list) {
+            const desc = describeFourthGenOverride(g.Override);
+            for (const tid of g.TargetSkillIds) {
+                addDesc(idToNameMap[tid] || tid, q.key, desc);
+            }
+        }
+    }
+    const rows: AttributeItem[] = [];
+    for (const name of nameOrder) {
+        const perQ = byName[name];
+        const y = (perQ.YING_JU || []).join('、');
+        const h = (perQ.HAO_YUE || []).join('、');
+        const x = (perQ.XI_RI || []).join('、');
+        let value: string;
+        if (y === h && h === x) value = x || '—';
+        else value = '莹炬:' + (y || '—') + '｜皓月:' + (h || '—') + '｜曦日:' + (x || '—');
+        rows.push({ label: name, value, isPrimary: true, wrap: true });
+    }
+    return rows;
+}
+
 function getUnifiedSkillData(skill: SkillItem, idToNameMap: Record<string, string>): UnifiedSkillData {
     const bonus = skill.SkillBonusAttributes || {};
+
+    // 0. 四代被动（玄烛/赤乌）：槽位 + 按品质列出对其他技能的影响，说明走 Description
+    if (skill.ActionType === 'FOURTH_GEN_PASSIVE') {
+        const slotLabel = skill.FourthGenSlot === 'CHI_WU' ? '赤乌' : '玄烛';
+        const fgAttrs: AttributeItem[] = [
+            { label: '槽位', value: slotLabel, isPrimary: true },
+            ...buildFourthGenAttributes(skill, idToNameMap)
+        ];
+        let fgNote: string | null = null;
+        if (skill.Description && skill.Description.trim() !== '暂无详细机制说明') fgNote = skill.Description.trim();
+        return { badgeText: slotLabel + '·四代被动', badgeTheme: 'utility', attributes: fgAttrs, mechanicNote: fgNote };
+    }
+
     const multiHit = bonus.MultiHitConfig;
     const isUtility = skill.ActionType === 'UTILITY';
     const isBuffType = skill.ActionType === 'BUFF' || skill.ActionType === 'DEBUFF';
@@ -393,6 +487,32 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
         return { skillIdToNameMap: idToName, skillMetaMap: meta };
     }, [allSkillsData]);
 
+    // 四代 Grants 反向索引：普通技能ID -> 来源四代（取曦日最高品质），用于普通技能卡反向说明
+    const fourthGenReverseMap = useMemo(() => {
+        const map: Record<string, Array<{ sourceId: string; sourceName: string; slot: string; text: string }>> = {};
+        if (!allSkillsData) return map;
+        for (const classKey of Object.keys(allSkillsData)) {
+            const classObj = allSkillsData[classKey];
+            if (!classObj) continue;
+            for (const factionKey of Object.keys(classObj)) {
+                const list = classObj[factionKey];
+                if (!Array.isArray(list)) continue;
+                for (const sk of list as unknown as SkillItem[]) {
+                    if (sk.ActionType !== 'FOURTH_GEN_PASSIVE' || !sk.FourthGenGrants) continue;
+                    const grantsXi = sk.FourthGenGrants['XI_RI'] || [];
+                    for (const g of grantsXi) {
+                        const text = describeFourthGenOverride(g.Override).join('、');
+                        for (const tid of g.TargetSkillIds) {
+                            if (!map[tid]) map[tid] = [];
+                            map[tid].push({ sourceId: sk.SkillID, sourceName: sk.SkillName, slot: sk.FourthGenSlot || 'XUAN_ZHU', text });
+                        }
+                    }
+                }
+            }
+        }
+        return map;
+    }, [allSkillsData]);
+
     // 统计各门派技能数量
     const classSkillCounts = useMemo(() => {
         const counts: Record<string, number> = {};
@@ -400,7 +520,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
         for (const cls of CLASS_ORDER) {
             const classObj = allSkillsData[cls.id] || {};
             let count = 0;
-            for (const f of ['XIAN', 'FO', 'MO']) {
+            for (const f of ['XIAN', 'FO', 'MO', 'COMMON']) {
                 const list = classObj[f];
                 if (Array.isArray(list)) count += list.length;
             }
@@ -435,7 +555,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
 
     // 搜索跳转与高亮处理
     useEffect(() => {
-        if (!searchNav || searchNav.tab !== 'skills') return;
+        if (!searchNav || searchNav.tab !== 'compendium' || (searchNav as any).sub !== 'skills') return;
         const target = searchNav as any;
         if (target.classId) {
             setSelectedClass(target.classId);
@@ -468,7 +588,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
         const classObj = allSkillsData[selectedClass] || {};
         let list: SkillItem[] = [];
 
-        const factionsToInclude = selectedFaction === 'ALL' ? ['XIAN', 'FO', 'MO'] : [selectedFaction];
+        const factionsToInclude = selectedFaction === 'ALL' ? ['XIAN', 'FO', 'MO', 'COMMON'] : [selectedFaction, 'COMMON'];
         for (const f of factionsToInclude) {
             const arr = classObj[f];
             if (Array.isArray(arr)) {
@@ -573,6 +693,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
                             isHighlighted={highlightedSkillId === sk.SkillID}
                             skillIdToNameMap={skillIdToNameMap}
                             onNavigateToSkill={handleNavigateToSkill}
+                            fourthGenReverse={fourthGenReverseMap[sk.SkillID] || []}
                         />
                     ))}
                 </div>
@@ -582,14 +703,20 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
 };
 
 /** 单个技能卡片组件：方案 B（结构化矩阵数据表） */
+interface FourthGenReverseItem { sourceId: string; sourceName: string; slot: string; text: string; }
+
 const SkillCard: React.FC<{
     skill: SkillItem;
     isHighlighted?: boolean;
     skillIdToNameMap: Record<string, string>;
     onNavigateToSkill: (skillId: string) => void;
-}> = ({ skill, isHighlighted, skillIdToNameMap, onNavigateToSkill }) => {
+    fourthGenReverse?: FourthGenReverseItem[];
+}> = ({ skill, isHighlighted, skillIdToNameMap, onNavigateToSkill, fourthGenReverse = [] }) => {
     // 阵营 Badge
     const factionBadge = useMemo(() => {
+        if (skill.Faction === 'COMMON') {
+            return <span className="px-1.5 py-0.2 rounded text-[11px] font-bold bg-slate-500/15 text-slate-300 border border-slate-500/30 shrink-0">通用</span>;
+        }
         if (skill.Faction === 'XIAN') {
             return <span className="px-1.5 py-0.2 rounded text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shrink-0">仙</span>;
         }
@@ -615,6 +742,8 @@ const SkillCard: React.FC<{
             name: skillIdToNameMap[r.TargetSkillId] || r.TargetSkillName || r.TargetSkillId
         }));
     }, [skill.CooldownResets, skillIdToNameMap]);
+
+    const slotLabel = (slot?: string) => slot === 'CHI_WU' ? '赤乌增益' : '玄烛增益';
 
     return (
         <div
@@ -685,17 +814,27 @@ const SkillCard: React.FC<{
                     {unifiedData.attributes.map((attr, aIdx) => (
                         <div
                             key={aIdx}
-                            className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-950/60 border border-slate-800/60"
+                            className={clsx(
+                                'px-2.5 py-1.5 rounded-lg bg-slate-950/60 border border-slate-800/60',
+                                attr.wrap
+                                    ? 'col-span-2 sm:col-span-3 flex flex-col items-start gap-1'
+                                    : 'flex items-center justify-between'
+                            )}
                         >
-                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">{attr.label || '属性'}</span>
+                            <span className={clsx('text-slate-400 text-[11px] mr-1.5', attr.wrap ? 'whitespace-normal break-words w-full text-cyan-400/80 font-bold' : 'whitespace-nowrap shrink-0')}>{attr.label || '属性'}</span>
                             <span
                                 className={clsx(
-                                    'font-mono font-bold text-xs shrink-0 whitespace-nowrap',
-                                    attr.isPrimary
-                                        ? 'text-cyan-300'
-                                        : unifiedData.badgeTheme === 'debuff'
-                                        ? 'text-rose-300'
-                                        : 'text-slate-200'
+                                    'font-bold text-xs',
+                                    attr.wrap
+                                        ? 'text-cyan-300 whitespace-normal break-words leading-relaxed w-full font-sans'
+                                        : clsx(
+                                            'font-mono shrink-0 whitespace-nowrap',
+                                            attr.isPrimary
+                                                ? 'text-cyan-300'
+                                                : unifiedData.badgeTheme === 'debuff'
+                                                ? 'text-rose-300'
+                                                : 'text-slate-200'
+                                        )
                                 )}
                             >
                                 {attr.value}
@@ -710,6 +849,25 @@ const SkillCard: React.FC<{
                 <p className="text-xs text-slate-300/85 leading-relaxed px-1 pt-1 border-t border-slate-800/60">
                     {renderQuietDescription(unifiedData.mechanicNote)}
                 </p>
+            )}
+
+            {/* 四代玄烛/赤乌反向增益：普通技能卡提示受哪个四代影响、加了多少，可点击跳转 */}
+            {skill.ActionType !== "FOURTH_GEN_PASSIVE" && fourthGenReverse.length > 0 && (
+                <div className="pt-2 border-t border-slate-800/40 flex flex-col gap-1.5 text-xs">
+                    {fourthGenReverse.map((fg, fgIdx) => (
+                        <div key={fgIdx} className="flex items-start justify-between gap-2">
+                            <span className="text-slate-400 text-[11px] shrink-0 pt-0.5">{slotLabel(fg.slot)}</span>
+                            <button
+                                type="button"
+                                onClick={() => onNavigateToSkill(fg.sourceId)}
+                                className="text-cyan-300 hover:text-cyan-200 font-bold text-left leading-snug min-w-0 flex-1 break-words"
+                                title={"点击查看 " + fg.sourceName}
+                            >
+                                受《{fg.sourceName}》{fg.text}
+                            </button>
+                        </div>
+                    ))}
+                </div>
             )}
 
             {/* 4. 战术重置胶囊 */}
