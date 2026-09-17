@@ -33,8 +33,8 @@ import {
  * - 表格布局 **A 值 ｜ 项目名 ｜ B 值**：两侧数值紧贴中间的项目名，**中间列真正居中**
  * - 不放「载入」按钮：切换当前方案在计算器页的「属性方案」下拉里做，弹窗保持纯只读（避免误覆盖当前配置）
  * - 「交换 A/B」保留并**居中**：与下方表格的中间列对齐，一行呈 [基准A] … [⇄] … [对比B] 的三列结构
- * - **差值不做单独的右列**：直接挂在「较高的那一侧」数值后面（绿色 = 差值数值 + 差值百分比），
- *   低的一侧只留数值；相等时两侧都不标
+ * - **差值不做单独的列，但一定放在数值的外侧**：贴近中间项目名的永远是真实数值，Δ + 占比甩到最外；
+ *   绿色只给 Δ 胶囊，数值本身用灰白深浅分主次；相等时两侧都不标
  * - 技能伤害只取**单段**值，步进/多段技能（如苍龙啸）取**最后一段**
  *
  * 只读对比：本弹窗不改动计算器当前配置；只有点「载入」才把该方案写回计算器。
@@ -54,7 +54,18 @@ interface CompareDialogProps {
     onClose: () => void;
 }
 
-/** 数值 + 占比 + 「高于另一侧」的差值（绿色：差值数值 + 差值百分比） */
+/**
+ * 数值单元格：**真实数值贴中间列，差值（涨幅）甩到最外侧**（2026-09-17 用户返工）。
+ *
+ * 顺序左右镜像（「外侧」= 远离中间的项目名那一侧）：
+ *   左列（右对齐）＝ [Δ 胶囊] [占比] [数值 单位]
+ *   右列（左对齐）＝ [数值 单位] [占比] [Δ 胶囊]
+ * 之前把 Δ 内联在数值**后面**，右对齐一渲染，Δ 反而贴到了中列、数值被顶到外侧，
+ * 左右两侧的真实数据离项目名一远一近，根本没法对读。
+ *
+ * 配色：数值只用灰阶分主次（高侧亮白加粗 / 相等中性 / 低侧压暗），
+ * **绿色是全行唯一的彩色，且只给 Δ 胶囊**——数值和涨幅同色会糊成一片，看不出哪块是数据、哪块是涨幅。
+ */
 const ValueCell: React.FC<{
     v: number | null;
     other: number | null;
@@ -70,19 +81,46 @@ const ValueCell: React.FC<{
     const higher = diff !== null && diff > 0;
     const pct = higher && other ? (diff / Math.abs(other)) * 100 : null;
 
+    // 主次只靠灰阶：高侧亮白加粗，相等 / 无从比较中性，低侧压暗
+    const toneCls = higher ? 'text-slate-100 font-bold' : diff === null || diff === 0 ? 'text-slate-300' : 'text-slate-400';
+
+    const valueGroup = (
+        <>
+            <span className={toneCls}>{formatNumber(v)}</span>
+            {unit && <span className="text-[10px] text-slate-400">{unit}</span>}
+        </>
+    );
+    const shareGroup = share !== null && share !== undefined && (
+        <span className="text-[10px] text-slate-400">{share.toFixed(0)}%</span>
+    );
+    const deltaGroup = higher && (
+        // 与数值之间额外留 8px（叠在 gap-1 之上）：用户反馈「涨幅离原始数据太近」会误读成一个数
+        <span
+            className={clsx(
+                'whitespace-nowrap rounded border border-emerald-500/30 bg-emerald-500/10 px-1 font-bold text-[10px] text-emerald-300 md:text-xs',
+                align === 'right' ? 'mr-2' : 'ml-2',
+            )}
+        >
+            +{formatNumber(diff)}
+            {unit}
+            {pct !== null && <span className="ml-1">{pct.toFixed(1)}%</span>}
+        </span>
+    );
+
     return (
         <span className={clsx('flex items-baseline gap-1 font-mono tabular-nums', side)}>
-            <span className={clsx(higher ? 'text-emerald-400 font-bold' : 'text-slate-200')}>{formatNumber(v)}</span>
-            {unit && <span className="text-[10px] text-slate-400">{unit}</span>}
-            {share !== null && share !== undefined && (
-                <span className="text-[10px] text-slate-400">{share.toFixed(0)}%</span>
-            )}
-            {higher && (
-                <span className="text-emerald-400 font-bold text-[10px] md:text-xs whitespace-nowrap">
-                    +{formatNumber(diff)}
-                    {unit}
-                    {pct !== null && <span className="ml-1">{pct.toFixed(1)}%</span>}
-                </span>
+            {align === 'right' ? (
+                <>
+                    {deltaGroup}
+                    {shareGroup}
+                    {valueGroup}
+                </>
+            ) : (
+                <>
+                    {valueGroup}
+                    {shareGroup}
+                    {deltaGroup}
+                </>
             )}
         </span>
     );
@@ -348,7 +386,7 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                 <SectionTitle
                                     icon={<Target className="w-3.5 h-3.5 text-cyan-400" />}
                                     title="角色属性"
-                                    hint="较高的一侧标绿并给出差值"
+                                    hint="数值贴着中间项目名，较高一侧的差值标绿放在最外侧"
                                 />
                                 <div className={clsx(PANEL, 'p-2.5 md:p-3 flex flex-col gap-1')}>
                                     {renderTableHead('属性')}
@@ -442,7 +480,8 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                     {openSkillLegend && (
                                         <ul className="list-disc pl-5 flex flex-col gap-0.5">
                                             <li>技能行按「两侧技能 ID 的并集」展开，按较大的那侧伤害降序；某侧没有该技能时显示「—」。</li>
-                                            <li>每行只有较高的一侧标绿加粗，并在数值后直接给出「差值 + 幅度」；较低的一侧不重复标。</li>
+                                            <li>每行只有较高的一侧带绿色差值胶囊（「+差值 + 幅度」，幅度以较低一侧为基数）；数值本身只用灰白深浅分主次：高侧亮白加粗、低侧压暗。</li>
+                                            <li>单元格左右镜像：<span className="text-slate-300">真实数值贴着中间的项目名</span>，差值与占比放在最外侧，两侧数值才能贴着同一个项目名对读。</li>
                                             <li>门派 / 阵营不同时，技能名后会带占该 BOSS 总伤的百分比，用来判断「谁在哪打得多」。</li>
                                         </ul>
                                     )}
