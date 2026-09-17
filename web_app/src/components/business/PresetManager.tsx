@@ -119,6 +119,7 @@ export const PresetManager: React.FC = () => {
                         <button
                             type="button"
                             onClick={() => setDropdownOpen(o => !o)}
+                            title={activePreset?.name ?? '未保存'}
                             className="w-full flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-950/50 text-slate-200 hover:border-slate-500 transition-colors text-sm"
                         >
                             <span className="flex items-center gap-2 min-w-0">
@@ -135,7 +136,10 @@ export const PresetManager: React.FC = () => {
                         </button>
 
                         {dropdownOpen && (
-                            <div className="absolute left-0 right-0 z-50 mt-1.5 max-h-52 overflow-y-auto custom-scrollbar rounded-xl border border-slate-700 bg-slate-900 shadow-2xl shadow-black/80 py-1 ring-1 ring-white/10 animate-in fade-in duration-100">
+                            <div
+                                data-preset-menu
+                                className="absolute left-0 z-50 mt-1.5 w-max min-w-full max-w-[min(320px,calc(100vw-2rem))] max-h-52 overflow-y-auto custom-scrollbar rounded-xl border border-slate-700 bg-slate-900 shadow-2xl shadow-black/80 py-1 ring-1 ring-white/10 animate-in fade-in duration-100"
+                            >
                                 {presets.length === 0 && (
                                     <div className="px-3 py-2.5 text-xs text-slate-500">暂无保存的方案</div>
                                 )}
@@ -143,6 +147,7 @@ export const PresetManager: React.FC = () => {
                                     <button
                                         key={p.id}
                                         type="button"
+                                        title={p.name}
                                         onClick={() => {
                                             loadPreset(p.id);
                                             setDropdownOpen(false);
