@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://raddishlab.tech/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://zxarena.raddishlab.tech/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
   <!-- Hash 路由：爬虫不会把 #/ 之后的部分当作独立 URL 抓取，此处仅作可发现性补充 -->
-  <url><loc>https://raddishlab.tech/#/calculator</loc><priority>0.9</priority></url>
-  <url><loc>https://raddishlab.tech/#/arena</loc><priority>0.9</priority></url>
-  <url><loc>https://raddishlab.tech/#/compendium/ceiling</loc><priority>0.8</priority></url>
-  <url><loc>https://raddishlab.tech/#/compendium/skills</loc><priority>0.8</priority></url>
-  <url><loc>https://raddishlab.tech/#/compendium/support</loc><priority>0.8</priority></url>
-  <url><loc>https://raddishlab.tech/#/compendium/boss</loc><priority>0.8</priority></url>
-  <url><loc>https://raddishlab.tech/#/changelog</loc><priority>0.5</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://zxarena.raddishlab.tech/#/calculator</loc><priority>0.9</priority></url>
+  <url><loc>https://zxarena.raddishlab.tech/#/arena</loc><priority>0.9</priority></url>
+  <url><loc>https://zxarena.raddishlab.tech/#/compendium/ceiling</loc><priority>0.8</priority></url>
+  <url><loc>https://zxarena.raddishlab.tech/#/compendium/skills</loc><priority>0.8</priority></url>
+  <url><loc>https://zxarena.raddishlab.tech/#/compendium/support</loc><priority>0.8</priority></url>
+  <url><loc>https://zxarena.raddishlab.tech/#/compendium/boss</loc><priority>0.8</priority></url>
+  <url><loc>https://zxarena.raddishlab.tech/#/changelog</loc><priority>0.5</priority><changefreq>weekly</changefreq></url>
 </urlset>
