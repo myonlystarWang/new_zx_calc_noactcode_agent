@@ -32,6 +32,8 @@ export interface DecodedShare {
     attributes: CharacterAttributes | null;
     activeBuffIds: string[] | null;
     buffValues: Record<string, number> | null;
+    /** buff 块存在但未能还原（校验哈希不符 / 索引越界）：属性照常恢复，由上层给出提示 */
+    buffsSkipped?: boolean;
 }
 
 /** 属性字段 ⇄ 短键（顺序即编码顺序） */
@@ -193,6 +195,7 @@ export async function decodeSharePayload(raw: string | null | undefined): Promis
     // buff：索引 → ID，必须通过 `bx` 校验，否则整块丢弃（宁可不恢复 buff，也不错配）
     let activeBuffIds: string[] | null = null;
     let buffValues: Record<string, number> | null = null;
+    let buffsSkipped = false;
     const needsBuffs = payload.b !== undefined || payload.bv !== undefined;
     if (needsBuffs) {
         const buffs = currentBuffs();
@@ -223,11 +226,13 @@ export async function decodeSharePayload(raw: string | null | undefined): Promis
                 }
                 if (ok) buffValues = values;
             }
+        } else {
+            buffsSkipped = true;
         }
     }
 
     if (!attributes && !activeBuffIds && !buffValues) return null;
-    return { attributes, activeBuffIds, buffValues };
+    return { attributes, activeBuffIds, buffValues, buffsSkipped };
 }
 
 /**
