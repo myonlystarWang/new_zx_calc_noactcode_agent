@@ -40,7 +40,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [placeholder, setPlaceholder] = useState(PH[0]);
   const [recentList, setRecentList] = useState<CompiledSearchItem[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -89,7 +88,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
   // 匹配与多分类聚合：统一来自共享搜索层
   const groupedResults = useMemo(() => matchGrouped(searchIndex, query), [searchIndex, query]);
 
-  // 动态出字打字机动画
+  // 动态出字打字机动画：直接操作 DOM placeholder，杜绝引发整页 900 行组件高频 Re-render（极度节省 CPU）
   useEffect(() => {
     let wordIdx = 0;
     let charIdx = 0;
@@ -105,7 +104,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
       const w = PH[wordIdx];
       if (!deleting) {
         charIdx++;
-        setPlaceholder(w.slice(0, charIdx));
+        if (inputRef.current) inputRef.current.placeholder = w.slice(0, charIdx);
         if (charIdx === w.length) {
           deleting = true;
           timeoutId = window.setTimeout(step, 1800);
@@ -114,7 +113,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
         timeoutId = window.setTimeout(step, 110);
       } else {
         charIdx--;
-        setPlaceholder(w.slice(0, charIdx));
+        if (inputRef.current) inputRef.current.placeholder = w.slice(0, charIdx);
         if (charIdx === 0) {
           wordIdx = (wordIdx + 1) % PH.length;
           deleting = false;
@@ -139,6 +138,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
     if (!ctx) return;
 
     let animId = 0;
+    let isRunning = false;
     const PAD = 40;
     let w = 0;
     let h = 0;
@@ -147,6 +147,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
     let P = 0;
     let dist = 0;
     let lastTime = 0;
+    let lastRender = 0;
 
     function resize() {
       if (!glowEl || !canvas) return;
@@ -218,11 +219,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
     }
 
     function frame(timestamp: number) {
+      if (!isRunning) return;
+
+      // 帧率节流：上限约 40fps（~25ms），在保持极其顺滑视觉的同时大幅削减 GPU/CPU 合成压力
+      if (timestamp - lastRender < 24) {
+        animId = requestAnimationFrame(frame);
+        return;
+      }
+      lastRender = timestamp;
+
       if (!lastTime) lastTime = timestamp;
       const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
       lastTime = timestamp;
 
-      // 聚焦时彗星隐藏由 CSS opacity 负责，未聚焦时从容跑圈
+      // 聚焦时彗星隐藏由 CSS opacity 负责，且跳过计算渲染节省资源
       if (w > 0 && P > 0 && !document.hidden && !isFocusedRef.current) {
         const head = getPoint(dist);
         const u = Math.max(0, Math.min(1, head.x / w));
@@ -233,7 +243,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
         ctx?.clearRect(0, 0, w + 2 * PAD, h + 2 * PAD);
 
         const tailLen = 45 + 55 * ((speedMult - 0.9) / 0.55);
-        const steps = 30;
+        const steps = 10;
         const stepDist = tailLen / steps;
 
         ctx?.save();
@@ -247,14 +257,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
           const alpha = Math.pow(1 - p, 1.4) * 0.92;
           const col = getColor((prevPt.x + currPt.x) * 0.5);
 
-          ctx!.shadowBlur = 12;
-          ctx!.shadowColor = `rgba(${col.r}, ${col.g}, ${col.b}, ${(alpha * 0.8).toFixed(3)})`;
+          // 核心优化：使用双通道轻量绘制（外晕 + 内芯）替代每帧 30 次昂贵 shadowBlur 高斯模糊
+          // 通道1：外围柔和辉光
+          ctx!.beginPath();
+          ctx!.strokeStyle = `rgba(${col.r}, ${col.g}, ${col.b}, ${(alpha * 0.28).toFixed(3)})`;
+          ctx!.lineWidth = 4.5 + 4.5 * (1 - p);
+          ctx!.moveTo(prevPt.x, prevPt.y);
+          ctx!.lineTo(currPt.x, currPt.y);
+          ctx!.stroke();
+
+          // 通道2：核心高亮光束
           ctx!.beginPath();
           ctx!.strokeStyle = `rgba(${col.r}, ${col.g}, ${col.b}, ${alpha.toFixed(3)})`;
           ctx!.lineWidth = 1.4 + 2.4 * (1 - p);
           ctx!.moveTo(prevPt.x, prevPt.y);
           ctx!.lineTo(currPt.x, currPt.y);
           ctx!.stroke();
+
           prevPt = currPt;
         }
 
@@ -272,12 +291,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
         ctx!.arc(head.x, head.y, bloomR, 0, Math.PI * 2);
         ctx!.fill();
 
+        // 仅在单点头部绘制微小白核，并立即重置 shadowBlur
         ctx!.shadowBlur = 8;
         ctx!.shadowColor = '#ffffff';
         ctx!.fillStyle = '#ffffff';
         ctx!.beginPath();
         ctx!.arc(head.x, head.y, 2.4, 0, Math.PI * 2);
         ctx!.fill();
+        ctx!.shadowBlur = 0;
 
         ctx?.restore();
       }
@@ -285,13 +306,64 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
       animId = requestAnimationFrame(frame);
     }
 
+    function startAnim() {
+      if (!isRunning && !document.hidden) {
+        isRunning = true;
+        lastTime = 0;
+        lastRender = 0;
+        animId = requestAnimationFrame(frame);
+      }
+    }
+
+    function stopAnim() {
+      if (isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animId);
+      }
+    }
+
+    let idleTimer: number | null = null;
+    const IDLE_TIMEOUT_MS = 8000;
+
+    function resetIdleTimer() {
+      startAnim();
+      if (idleTimer !== null) window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => {
+        stopAnim();
+      }, IDLE_TIMEOUT_MS);
+    }
+
+    const onUserActivity = () => {
+      resetIdleTimer();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (idleTimer !== null) window.clearTimeout(idleTimer);
+        stopAnim();
+      } else {
+        resetIdleTimer();
+      }
+    };
+
     resize();
     window.addEventListener('resize', resize);
-    animId = requestAnimationFrame(frame);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('mousemove', onUserActivity, { passive: true });
+    window.addEventListener('keydown', onUserActivity, { passive: true });
+    window.addEventListener('scroll', onUserActivity, { passive: true });
+    window.addEventListener('touchstart', onUserActivity, { passive: true });
+    resetIdleTimer();
 
     return () => {
       window.removeEventListener('resize', resize);
-      cancelAnimationFrame(animId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('mousemove', onUserActivity);
+      window.removeEventListener('keydown', onUserActivity);
+      window.removeEventListener('scroll', onUserActivity);
+      window.removeEventListener('touchstart', onUserActivity);
+      if (idleTimer !== null) window.clearTimeout(idleTimer);
+      stopAnim();
     };
   }, []);
 
@@ -460,7 +532,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
                 type="text"
                 autoComplete="off"
                 spellCheck="false"
-                placeholder={placeholder}
+                placeholder={PH[0]}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setIsFocused(true)}
