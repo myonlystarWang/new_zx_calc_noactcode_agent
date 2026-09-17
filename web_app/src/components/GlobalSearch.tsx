@@ -39,6 +39,25 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
         if (listRef.current) listRef.current.scrollTop = 0;
     }, [query]);
 
+    // 结果超出下拉高度时，底部固定「共 N 条 · 滚动查看」（滚到底自动隐去）
+    const [listOverflow, setListOverflow] = useState(false);
+    const [listAtBottom, setListAtBottom] = useState(false);
+    useEffect(() => {
+        const el = listRef.current;
+        if (!el) {
+            setListOverflow(false);
+            return;
+        }
+        const over = el.scrollHeight - el.clientHeight > 8;
+        setListOverflow(over);
+        setListAtBottom(over && el.scrollTop + el.clientHeight >= el.scrollHeight - 8);
+    }, [query, results.length]);
+    const onListScroll = () => {
+        const el = listRef.current;
+        if (!el) return;
+        setListAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 8);
+    };
+
     useEffect(() => {
         if (!listRef.current) return;
         if (active === 0) {
@@ -101,15 +120,18 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
                 />
                 {query && (
                     <button
+                        type="button"
                         onClick={() => { setQuery(''); inputRef.current?.focus(); }}
                         className="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                        title="清空搜索"
+                        aria-label="清空搜索"
                     >
                         <X className="w-4 h-4" />
                     </button>
                 )}
 
                 {showDropdown && results.length > 0 && (
-                    <div ref={listRef} className="absolute z-50 mt-1 w-[260px] sm:w-[320px] max-h-[420px] overflow-y-auto bg-slate-900/95 border border-slate-700 rounded-xl shadow-2xl backdrop-blur-xl py-1">
+                    <div ref={listRef} onScroll={onListScroll} className="absolute z-50 mt-1 w-[260px] sm:w-[320px] max-h-[420px] overflow-y-auto bg-slate-900/95 border border-slate-700 rounded-xl shadow-2xl backdrop-blur-xl py-1">
                         {results.map((e, i) => (
                             <button
                                 key={`${e.category}-${e.label}-${i}`}
@@ -123,16 +145,21 @@ export const GlobalSearch: React.FC<{ onNavigate: (t: SearchTarget) => void }> =
                                     </span>
                                     <span className="text-[10px] text-cyan-400/60 truncate w-full">{e.group}</span>
                                 </span>
-                                {query.trim() && /^[a-z]+$/i.test(query.trim()) && e.pyInitials && (
+                                {query.trim() && /^[a-z0-9]+$/i.test(query.trim()) && e.pyInitials && (
                                     <span
                                         className="text-[10px] text-slate-500 font-mono ml-2 flex-shrink-0"
                                         title={`拼音：${e.pyInitials}`}
                                     >
-                                        {e.pyInitials.slice(0, 4)}
+                                        {e.pyInitials.slice(0, 8)}
                                     </span>
                                 )}
                             </button>
                         ))}
+                        {listOverflow && !listAtBottom && (
+                            <div className="sticky bottom-0 -mb-1 h-7 flex items-end justify-center pb-1 text-[10px] text-cyan-400/70 bg-gradient-to-b from-transparent via-slate-900/90 to-slate-900 pointer-events-none">
+                                共 {results.length} 条 · 滚动查看
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

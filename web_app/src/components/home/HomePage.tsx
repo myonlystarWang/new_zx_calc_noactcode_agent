@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { SearchTarget } from '../GlobalSearch';
 import { Sparkles, Calculator, Swords, Zap, Crosshair, Award } from 'lucide-react';
 import { buildSearchIndex, buildSearchStats, matchGrouped } from '../search/searchIndex';
 import type { CompiledSearchItem } from '../search/searchIndex';
+import { ROUTE, buildPathFromTarget } from '../../routes';
 
 const HOT_SEARCH_TAGS = [
   '苍龙啸',    // 技能汉字
@@ -27,11 +29,14 @@ const PH = [
 ];
 
 interface HomePageProps {
-  onNavigateTab: (tab: 'calculator' | 'arena' | 'compendium') => void;
   onSearchNavigate: (target: SearchTarget) => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavigate }) => {
+export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
+  const navigate = useNavigate();
+  /** 卡片 / 统计胶囊统一走路由（资料库入口折算为 #/compendium/<sub>） */
+  const goCompendium = (sub: 'ceiling' | 'skills' | 'support' | 'boss') =>
+    navigate(buildPathFromTarget({ tab: 'compendium', sub }));
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -358,6 +363,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
     }
   }, [query]);
 
+  // 结果超出容器高度时，底部固定一条「共 N 条 · 滚动查看」提示（滚动到底自动隐去）
+  const [panelOverflow, setPanelOverflow] = useState(false);
+  const [panelAtBottom, setPanelAtBottom] = useState(false);
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) {
+      setPanelOverflow(false);
+      return;
+    }
+    const measure = () => {
+      const over = el.scrollHeight - el.clientHeight > 8;
+      setPanelOverflow(over);
+      setPanelAtBottom(over && el.scrollTop + el.clientHeight >= el.scrollHeight - 8);
+    };
+    measure();
+    const timer = window.setTimeout(measure, 80);
+    return () => window.clearTimeout(timer);
+  }, [query, groupedResults.flatList.length]);
+  const onPanelScroll = () => {
+    const el = bodyRef.current;
+    if (!el) return;
+    setPanelAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 8);
+  };
+
   const handleChoose = (item: CompiledSearchItem) => {
     saveRecent(item);
     setQuery('');
@@ -446,9 +475,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
               />
               {query && (
                 <button
+                  type="button"
                   className="clear-btn show"
                   id="clearBtn"
                   title="清空搜索"
+                  aria-label="清空搜索"
                   onClick={() => {
                     setQuery('');
                     inputRef.current?.focus();
@@ -475,7 +506,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
 
           {/* 搜索下拉面板（完全对齐 index.html 视觉与交互） */}
           <div className={`panel ${isFocused ? 'open' : ''}`} id="panel">
-            <div className="panel-body" id="panelBody" ref={bodyRef}>
+            <div className="panel-body" id="panelBody" ref={bodyRef} onScroll={onPanelScroll}>
               {!query.trim() ? (
                 /* 闲置态：热门搜索 + 最近访问 */
                 <>
@@ -591,6 +622,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
                   </div>
                 ))
               )}
+              {panelOverflow && !panelAtBottom && groupedResults.flatList.length > 0 && (
+                <div className="panel-more-hint">共 {groupedResults.flatList.length} 条 · 滚动查看</div>
+              )}
             </div>
 
             {/* 底部按键指引 */}
@@ -641,7 +675,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
       {/* 5 大核心功能卡片（视觉专属色彩微光体系，层次清晰） */}
       <section className="cards">
         {/* 卡片 1: 属性战力计算器 (激光青蓝) */}
-        <button className="card card-cyan rise d4 group" onClick={() => onNavigateTab('calculator')}>
+        <button className="card card-cyan rise d4 group" onClick={() => navigate(ROUTE.calculator)}>
           <div className="card-top">
             <div className="card-ic">
               <Calculator className="w-5 h-5 text-cyan-300" />
@@ -649,7 +683,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </div>
           <div className="card-mid">
             <h3>属性战力计算器</h3>
-            <p>录入面板属性、勾选战斗增益，实时测算对各副本 Boss 的技能伤害与命中阈值。</p>
+            <p>录入面板属性、勾选战斗增益，实时测算对各副本 Boss 的技能伤害，保存多套方案，一键分享。</p>
           </div>
           <span className="go">
             <span>进入计算器</span>
@@ -668,7 +702,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         </button>
 
         {/* 卡片 2: 副本模拟训练场 (熔火流金 / 燃橙) */}
-        <button className="card card-amber rise d5 group" onClick={() => onNavigateTab('arena')}>
+        <button className="card card-amber rise d5 group" onClick={() => navigate(ROUTE.arena)}>
           <div className="card-top">
             <div className="card-ic">
               <Swords className="w-5 h-5 text-amber-300" />
@@ -695,7 +729,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         </button>
 
         {/* 卡片 3: 职业技能速查 (极光翠青) */}
-        <button className="card card-emerald rise d5 group" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'skills' })}>
+        <button className="card card-emerald rise d5 group" onClick={() => goCompendium('skills')}>
           <div className="card-top">
             <div className="card-ic">
               <Zap className="w-5 h-5 text-emerald-300" />
@@ -722,7 +756,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         </button>
 
         {/* 卡片 4: 副本 BOSS 速查 (暗金 / 渊紫) */}
-        <button className="card card-purple rise d6 group" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'boss' })}>
+        <button className="card card-purple rise d6 group" onClick={() => goCompendium('boss')}>
           <div className="card-top">
             <div className="card-ic">
               <Crosshair className="w-5 h-5 text-purple-300" />
@@ -730,7 +764,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </div>
           <div className="card-mid">
             <h3>副本 BOSS 速查</h3>
-            <p>16 大副本 102 位关卡首领抗性速查，包含减爆伤、防御、血量与伤害压缩比。</p>
+            <p>16 大副本 102 位关卡BOSS属性速查，包含减爆伤、防御、血量与暴击爆伤等。</p>
           </div>
           <span className="go">
             <span>进入BOSS库</span>
@@ -749,7 +783,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         </button>
 
         {/* 卡片 5: 极致属性攻略 (星曜金红) */}
-        <button className="card card-rose rise d6 group" onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'ceiling' })}>
+        <button className="card card-rose rise d6 group" onClick={() => goCompendium('ceiling')}>
           <div className="card-top">
             <div className="card-ic">
               <Award className="w-5 h-5 text-rose-300" />
@@ -757,7 +791,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
           </div>
           <div className="card-mid">
             <h3>极致属性攻略</h3>
-            <p>极致无视/减免/减暴/怪增/躲闪拆解，职业状态评级与战斗增益上限基准。</p>
+            <p>极致无视/减免/减暴/怪增/躲闪拆解，职业状态一览与战斗增益上限基准。</p>
           </div>
           <span className="go">
             <span>查看极致攻略</span>
@@ -785,7 +819,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
         <div className="metric-pills-grid">
           <button
             className="metric-pill group"
-            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'boss' })}
+            onClick={() => goCompendium('boss')}
             title="点击前往 副本 BOSS 速查"
           >
             <span className="pill-num text-cyan-300">{stats.dungeons}</span>
@@ -794,7 +828,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
 
           <button
             className="metric-pill group"
-            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'boss' })}
+            onClick={() => goCompendium('boss')}
             title="点击前往 副本 BOSS 速查"
           >
             <span className="pill-num text-purple-300">{stats.monsters}</span>
@@ -803,7 +837,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
 
           <button
             className="metric-pill group"
-            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'skills' })}
+            onClick={() => goCompendium('skills')}
             title="点击前往 职业技能速查"
           >
             <span className="pill-num text-emerald-300">{stats.skills}</span>
@@ -812,7 +846,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
 
           <button
             className="metric-pill group"
-            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'support' })}
+            onClick={() => goCompendium('support')}
             title="点击前往 职业状态一览"
           >
             <span className="pill-num text-amber-300">{stats.buffs}</span>
@@ -821,7 +855,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
 
           <button
             className="metric-pill group"
-            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'support' })}
+            onClick={() => goCompendium('support')}
             title="点击前往 职业状态评级"
           >
             <span className="pill-num text-sky-300">{stats.roles}</span>
@@ -830,7 +864,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigateTab, onSearchNavig
 
           <button
             className="metric-pill group"
-            onClick={() => onSearchNavigate({ tab: 'compendium', sub: 'ceiling' })}
+            onClick={() => goCompendium('ceiling')}
             title="点击前往 极致属性攻略"
           >
             <span className="pill-num text-rose-300">{stats.guides}</span>
