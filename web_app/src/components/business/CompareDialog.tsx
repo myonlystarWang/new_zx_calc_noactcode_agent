@@ -36,6 +36,9 @@ import {
  * - **差值不做单独的列，但一定放在数值的外侧**：贴近中间项目名的永远是真实数值，Δ + 占比甩到最外；
  *   绿色只给 Δ 胶囊，数值本身用灰白深浅分主次；相等时两侧都不标
  * - 技能伤害只取**单段**值，步进/多段技能（如苍龙啸）取**最后一段**
+ * - **列身份条**（固定头部，选择器行下方）：A/B 两侧的职业·阵营常驻可见，替代原各区块表头
+ * - **技能表不同的对比**（数据实证：重叠只有「完全一致 / 完全无交集」两种形态）：
+ *   共有技能对齐对比；单侧技能名字进各自侧、按伤害排名配对接续，不再用「—」占位留空洞
  *
  * 只读对比：本弹窗不改动计算器当前配置；只有点「载入」才把该方案写回计算器。
  * 方案列表由 PresetManager 传入（同一份 usePresets 状态），避免两处各自持有一份导致方案名不同步。
@@ -219,15 +222,22 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                 : 'border-slate-700 text-slate-200 focus:border-slate-500',
         );
 
-    /** 表头：A 方案名（右）｜项目类别（中）｜B 方案名（左） */
-    const renderTableHead = (first: string) => (
-        <div className={clsx(ROW_GRID, 'pb-2 border-b border-slate-800/80 text-[11px] text-slate-400 font-bold')}>
-            <span className="text-right truncate" title={`方案 A：${classLabel(presetA)}`}>
+    /**
+     * 列身份条：A/B 两侧的职业·阵营，放在**固定头部**（选择器行正下方），滚动到任何深度都可见。
+     * 原先各区块内的表头（A 名｜属性｜B 名）已删除——由本条统一承担「谁在哪一列」的标识，避免重复。
+     * 水平加 mx 与数据行对齐：数据行在面板内（面板 p-2.5/md:p-3），头部水平内边距与主体一致（px-3/md:px-4）。
+     */
+    const colHeadBar = (
+        <div
+            data-compare-colhead
+            className={clsx(ROW_GRID, 'mx-2.5 md:mx-3 pb-1.5 border-b border-slate-800/60 text-[11px] font-bold')}
+        >
+            <span className="text-right truncate text-cyan-300" title={`方案 A：${classLabel(presetA)}`}>
                 <span className="md:hidden">A</span>
                 <span className="hidden md:inline">A {classLabel(presetA)}</span>
             </span>
-            <span className="text-center">{first}</span>
-            <span className="text-left truncate" title={`方案 B：${classLabel(presetB)}`}>
+            <span className="text-center text-slate-400">项目</span>
+            <span className="text-left truncate text-slate-200" title={`方案 B：${classLabel(presetB)}`}>
                 <span className="md:hidden">B</span>
                 <span className="hidden md:inline">B {classLabel(presetB)}</span>
             </span>
@@ -236,6 +246,12 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
 
     const renderBossRow = (m: MonsterCompareRow) => {
         const isOpen = openBosses.has(m.monsterId);
+        // 技能表重叠只有两种形态（game_data 实证）：同 build 完全一致 / 跨阵营·跨职业完全无交集。
+        // 共有技能对齐对比；单侧技能按伤害排名左右配对接续（名字进各自侧），不再用「—」占位留空洞。
+        const shared = m.skills.filter((s) => s.a !== null && s.b !== null);
+        const onlyA = m.skills.filter((s) => s.a !== null && s.b === null);
+        const onlyB = m.skills.filter((s) => s.b !== null && s.a === null);
+        const soloRowCount = Math.max(onlyA.length, onlyB.length);
         return (
             <React.Fragment key={m.monsterId}>
                 <button
@@ -249,30 +265,79 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                     <span className="flex items-center justify-center gap-1.5 min-w-0 pl-5">
                         <ChevronRight className={clsx('w-3 h-3 shrink-0 text-slate-500 transition-transform', isOpen && 'rotate-90')} />
                         <span className="text-slate-300 truncate" title={m.name}>{m.name}</span>
-                        <span className="hidden md:inline text-[10px] text-slate-400 shrink-0">({m.skills.length})</span>
+                        <span className="hidden md:inline text-[10px] text-slate-400 shrink-0">
+                            {onlyA.length > 0 && onlyB.length > 0 ? `(${onlyA.length}+${onlyB.length})` : `(${m.skills.length})`}
+                        </span>
                     </span>
                     <ValueCell v={m.b} other={m.a} align="left" />
                 </button>
 
-                {/* 第三层：逐技能（按需渲染，不展开就不算不占位） */}
-                {isOpen && m.skills.map((sk) => (
-                    <div
-                        key={sk.skillId}
-                        data-skill-row={sk.skillId}
-                        className={clsx(ROW_GRID, 'py-1 text-[11px] rounded-lg px-1 -mx-1 transition-colors hover:bg-slate-800/30')}
-                    >
-                        <ValueCell v={sk.a} other={sk.b} share={showSkillShare ? sk.shareA : null} missingLabel="—" />
-                        <span className="flex items-center justify-center gap-1.5 min-w-0 pl-9">
-                            <span className="text-slate-400 truncate" title={sk.name}>{sk.name}</span>
-                            {sk.delta === null && (
-                                <span className="shrink-0 text-[9px] px-1 py-px rounded border border-slate-700 text-slate-400">
-                                    {sk.a === null ? '仅 B' : '仅 A'}
+                {/* 第三层：逐技能（按需渲染，不展开就不算不占位）
+                    共有技能（按归一化名匹配，含跨阵营同源变体）排在前面对齐对比；
+                    单侧技能接续在后：名字跟数值在同一侧（数值复用 ValueCell，样式与全表一致），
+                    中列放「仅A/仅B」归属标记——既填住中列又不冒充可对比的技能名。 */}
+                {isOpen && (
+                    <>
+                        {shared.map((sk) => (
+                            <div
+                                key={sk.skillId}
+                                data-skill-row={sk.skillId}
+                                className={clsx(ROW_GRID, 'py-1 text-[11px] rounded-lg px-1 -mx-1 transition-colors hover:bg-slate-800/30')}
+                            >
+                                <ValueCell v={sk.a} other={sk.b} share={showSkillShare ? sk.shareA : null} />
+                                <span className="flex items-center justify-center gap-1.5 min-w-0 pl-9">
+                                    <span
+                                        className="text-slate-400 truncate"
+                                        title={sk.nameA && sk.nameB ? `A：${sk.nameA} ／ B：${sk.nameB}` : sk.name}
+                                    >
+                                        {sk.name}
+                                    </span>
                                 </span>
-                            )}
-                        </span>
-                        <ValueCell v={sk.b} other={sk.a} share={showSkillShare ? sk.shareB : null} missingLabel="—" align="left" />
-                    </div>
-                ))}
+                                <ValueCell v={sk.b} other={sk.a} share={showSkillShare ? sk.shareB : null} align="left" />
+                            </div>
+                        ))}
+                        {shared.length > 0 && soloRowCount > 0 && (
+                            <div className={clsx(ROW_GRID, 'py-0.5 text-[10px] text-slate-400')}>
+                                <span />
+                                <span className="text-center">↓ 以下技能仅单侧拥有，不参与差值对比</span>
+                                <span />
+                            </div>
+                        )}
+                        {Array.from({ length: soloRowCount }, (_, i) => {
+                            const a = onlyA[i];
+                            const b = onlyB[i];
+                            const rowKey = a?.skillId ?? b?.skillId ?? `solo-${i}`;
+                            return (
+                                <div
+                                    key={rowKey}
+                                    data-skill-row={rowKey}
+                                    className={clsx(ROW_GRID, 'py-1 text-[11px] rounded-lg px-1 -mx-1 transition-colors hover:bg-slate-800/30')}
+                                >
+                                    <span className="flex items-baseline justify-end gap-1.5 min-w-0">
+                                        {a && <span className="text-slate-400 truncate" title={a.name}>{a.name}</span>}
+                                        {a && <ValueCell v={a.a} other={null} share={showSkillShare ? a.shareA : null} />}
+                                    </span>
+                                    <span className="flex items-center justify-between min-w-0 px-1.5">
+                                        {a && (
+                                            <span className="shrink-0 text-[9px] leading-none px-1 py-0.5 rounded border border-cyan-500/25 bg-cyan-500/10 text-cyan-300/80 font-bold">
+                                                仅A
+                                            </span>
+                                        )}
+                                        {b && (
+                                            <span className="shrink-0 text-[9px] leading-none px-1 py-0.5 rounded border border-slate-700 bg-slate-800/60 text-slate-400 font-bold">
+                                                仅B
+                                            </span>
+                                        )}
+                                    </span>
+                                    <span className="flex items-baseline justify-start gap-1.5 min-w-0">
+                                        {b && <ValueCell v={b.b} other={null} share={showSkillShare ? b.shareB : null} align="left" />}
+                                        {b && <span className="text-slate-400 truncate" title={b.name}>{b.name}</span>}
+                                    </span>
+                                </div>
+                            );
+                        })}
+                    </>
+                )}
             </React.Fragment>
         );
     };
@@ -366,11 +431,15 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                         </div>
                     </div>
 
+                    {/* 列身份条：滚到任何深度都能看到左右两列各是哪套职业·阵营 */}
+                    {colHeadBar}
+
                     {result && !result.identicalBuild && (
                         <p className="flex items-start gap-2 text-[11px] text-slate-400">
                             <Info className="w-3.5 h-3.5 mt-px shrink-0 text-cyan-400" />
-                            两套方案的门派或阵营不同（技能表不完全相同）：重叠技能可直接比较，单侧独有的技能只在对应列有值，
-                            可结合技能后的「占比」横向参考。
+                            两套方案的职业或阵营不同时，技能按名字匹配（同源变体如「苍龙啸·煞 / 苍龙啸·禅」视为同一技能）：
+                            同名的排在前面对齐对比；仅单侧拥有的技能按伤害降序接续排在后面，不参与差值对比。
+                            BOSS 行与副本行的差值始终是两侧总伤之差。
                         </p>
                     )}
                 </div>
@@ -389,7 +458,6 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                     hint="数值贴着中间项目名，较高一侧的差值标绿放在最外侧"
                                 />
                                 <div className={clsx(PANEL, 'p-2.5 md:p-3 flex flex-col gap-1')}>
-                                    {renderTableHead('属性')}
                                     {result.attributes.map((row) => (
                                         <div key={row.key} data-attr-row={row.key} className={clsx(ROW_GRID, 'py-1.5 text-[11px] md:text-sm')}>
                                             <ValueCell v={row.a} other={row.b} />
@@ -408,7 +476,6 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                     hint="数值为主体设定值 · 未启用侧不参与计算"
                                 />
                                 <div className={clsx(PANEL, 'p-2.5 md:p-3 flex flex-col gap-1')}>
-                                    {renderTableHead('增益')}
                                     {result.buffs.map((row) => (
                                         <div key={row.buffId} data-buff-row={row.buffId} className={clsx(ROW_GRID, 'py-1.5 text-[11px] md:text-sm')}>
                                             <ValueCell v={row.a} other={row.b} unit={row.a === null ? '' : row.unit} />
@@ -427,7 +494,6 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                     hint="点开 BOSS → 再点开每个技能"
                                 />
                                 <div className={clsx(PANEL, 'p-2.5 md:p-3 flex flex-col gap-1')}>
-                                    {renderTableHead('副本 / BOSS / 技能')}
                                     {DUNGEON_CATEGORY_ORDER.map((cat: DungeonCategory) => {
                                         const rows = result.dungeons.filter((d) => d.category === cat);
                                         if (rows.length === 0) return null;
@@ -479,10 +545,10 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                     </button>
                                     {openSkillLegend && (
                                         <ul className="list-disc pl-5 flex flex-col gap-0.5">
-                                            <li>技能行按「两侧技能 ID 的并集」展开，按较大的那侧伤害降序；某侧没有该技能时显示「—」。</li>
-                                            <li>每行只有较高的一侧带绿色差值胶囊（「+差值 + 幅度」，幅度以较低一侧为基数）；数值本身只用灰白深浅分主次：高侧亮白加粗、低侧压暗。</li>
-                                            <li>单元格左右镜像：<span className="text-slate-300">真实数值贴着中间的项目名</span>，差值与占比放在最外侧，两侧数值才能贴着同一个项目名对读。</li>
-                                            <li>门派 / 阵营不同时，技能名后会带占该 BOSS 总伤的百分比，用来判断「谁在哪打得多」。</li>
+                                            <li>技能按名字匹配（去掉「·煞 / ·禅 / ·玄」阵营变体段）：同名的排在前面对齐对比，较高的一侧带绿色差值胶囊，数值用灰白深浅分主次。</li>
+                                            <li>单侧独有的技能接续排在后面：名字跟数值在同一侧（数值样式与全表一致），左右按伤害排名配对，中列的「仅A / 仅B」标记归属；不参与差值对比。</li>
+                                            <li>共有技能的单元格左右镜像：<span className="text-slate-300">真实数值贴着中间的项目名</span>，差值与占比放在最外侧。</li>
+                                            <li>门派 / 阵营不同时，技能行会带占该 BOSS 总伤的百分比，用来判断「谁在哪打得多」；BOSS 行的差值 = 两侧总伤之差，始终可比。</li>
                                         </ul>
                                     )}
                                 </div>
