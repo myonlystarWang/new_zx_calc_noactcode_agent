@@ -18,6 +18,8 @@ interface DungeonDetailProps {
     focusMonsterId?: string | null;
     focusSkillName?: string | null;
     autoShowAttr?: boolean;
+    /** 分享长图需要「当前 BOSS」：把选中的 BOSS 上提给 ResultSection（Step 10） */
+    onMonsterChange?: (monsterId: string) => void;
 }
 
 export const DungeonDetail = React.memo<DungeonDetailProps>(({
@@ -29,7 +31,8 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     power,
     focusMonsterId,
     focusSkillName,
-    autoShowAttr
+    autoShowAttr,
+    onMonsterChange
 }) => {
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
     const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
@@ -81,6 +84,11 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
             if (autoShowAttr) setPinnedAttr(true);
         }
     }, [focusMonsterId, autoShowAttr, dungeon.DungeonID]);
+
+    // 选中 BOSS 上提（Step 10）：分享长图取「当前 BOSS」
+    useEffect(() => {
+        if (selectedMonsterId) onMonsterChange?.(selectedMonsterId);
+    }, [selectedMonsterId, onMonsterChange]);
 
     const service = DataService.getInstance();
     const skillsMap = service.getSkills(userCharacter.ClassID);

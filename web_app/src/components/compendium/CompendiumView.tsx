@@ -21,6 +21,7 @@ import {
 import { SkillsView } from '../skills/SkillsView';
 import { BossCompendiumView } from './BossCompendiumView';
 import clsx from 'clsx';
+import { chipCls, chipCountCls, CHIP_ROW_BASE } from '../ui/chipStyles';
 import type { AttributeCeilingRow, SupportRole, StatSourceSection } from '../../services/DataService';
 import type { SearchTarget } from '../GlobalSearch';
 
@@ -58,7 +59,7 @@ interface DomainMeta {
 const DOMAINS: Record<DomainKey, DomainMeta> = {
     equip: {
         id: 'equip',
-        label: '装备与防具',
+        label: '装备相关',
         icon: Shield,
         accentBorder: 'border-amber-500/35 hover:border-amber-500/60',
         accentText: 'text-amber-400',
@@ -67,7 +68,7 @@ const DOMAINS: Record<DomainKey, DomainMeta> = {
     },
     accessory: {
         id: 'accessory',
-        label: '首饰与法宝',
+        label: '首饰配饰',
         icon: Sparkles,
         accentBorder: 'border-sky-500/35 hover:border-sky-500/60',
         accentText: 'text-sky-400',
@@ -76,7 +77,7 @@ const DOMAINS: Record<DomainKey, DomainMeta> = {
     },
     soulDharma: {
         id: 'soulDharma',
-        label: '法身与元婴',
+        label: '法身元婴',
         icon: Zap,
         accentBorder: 'border-purple-500/35 hover:border-purple-500/60',
         accentText: 'text-purple-400',
@@ -85,7 +86,7 @@ const DOMAINS: Record<DomainKey, DomainMeta> = {
     },
     tomeStar: {
         id: 'tomeStar',
-        label: '天书与星宿',
+        label: '星宿轩辕策',
         icon: Compass,
         accentBorder: 'border-teal-500/35 hover:border-teal-500/60',
         accentText: 'text-teal-400',
@@ -94,7 +95,7 @@ const DOMAINS: Record<DomainKey, DomainMeta> = {
     },
     arrayMind: {
         id: 'arrayMind',
-        label: '阵灵与心法',
+        label: '阵灵心法',
         icon: Layers,
         accentBorder: 'border-blue-500/35 hover:border-blue-500/60',
         accentText: 'text-blue-400',
@@ -103,7 +104,7 @@ const DOMAINS: Record<DomainKey, DomainMeta> = {
     },
     comprehensive: {
         id: 'comprehensive',
-        label: '综合养成与外显',
+        label: '宠物时装称号',
         icon: Award,
         accentBorder: 'border-rose-500/35 hover:border-rose-500/60',
         accentText: 'text-rose-400',
@@ -229,17 +230,10 @@ const CompendiumHeader: React.FC<CompendiumHeaderProps> = ({
             </div>
 
             {/* 领域筛选 Pills 导航 */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-                <button
-                    onClick={() => onSelectDomain('all')}
-                    className={clsx(
-                        'px-3 py-1.5 rounded-xl font-bold transition-all border whitespace-nowrap flex-shrink-0',
-                        activeDomain === 'all'
-                            ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
-                            : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:bg-slate-850 hover:text-slate-300'
-                    )}
-                >
-                    全部 ({totalItems})
+            <div className={`${CHIP_ROW_BASE} overflow-x-auto pb-1`}>
+                <button onClick={() => onSelectDomain('all')} className={chipCls(activeDomain === 'all')}>
+                    <span>全部</span>
+                    <span className={chipCountCls(activeDomain === 'all')}>{totalItems}</span>
                 </button>
                 {DOMAIN_ORDER.map((dk) => {
                     const count = domainCounts[dk] || 0;
@@ -251,16 +245,11 @@ const CompendiumHeader: React.FC<CompendiumHeaderProps> = ({
                         <button
                             key={dk}
                             onClick={() => onSelectDomain(dk)}
-                            className={clsx(
-                                'flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium transition-all border whitespace-nowrap flex-shrink-0',
-                                isActive
-                                    ? clsx(meta.badgeStyle, 'font-bold shadow-md')
-                                    : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:bg-slate-850 hover:text-slate-300'
-                            )}
+                            className={chipCls(isActive)}
                         >
-                            <Icon className="w-3.5 h-3.5" />
+                            <Icon />
                             <span>{meta.label}</span>
-                            <span className="font-mono text-[11px] opacity-70">({count})</span>
+                            <span className={chipCountCls(isActive)}>{count}</span>
                         </button>
                     );
                 })}
@@ -959,7 +948,7 @@ const SupportCard: React.FC<{ role: SupportRole; metrics: string[]; showDebuff?:
     };
 
     return (
-        <div data-role={role.name} className="zx-card p-3 flex flex-col gap-2">
+        <div data-role={role.name} data-role-key={`${role.name}-${role.faction}`} className="zx-card p-3 flex flex-col gap-2">
             <div className="flex items-center justify-between gap-1">
                 <div className="flex items-center gap-1.5 min-w-0">
                     <span className="text-base font-bold text-slate-100 truncate">{role.name}</span>
@@ -1061,81 +1050,81 @@ const CombatBuffsHeroSection: React.FC<CombatBuffsHeroSectionProps> = ({
     const isGreenActive = showDebuff && debuffFilter.includes('绿点');
 
     return (
-        <div data-item="战斗增益参考" className="zx-card p-3 sm:p-4 flex flex-col gap-2.5">
+        <div data-item="战斗增益参考" className="zx-card p-3 sm:p-3.5 flex flex-col gap-2">
             {/* 标题 */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-3.5 bg-cyan-500 rounded-full"></span>
-                    <h3 className="text-sm font-bold text-slate-100">
-                        团队战斗增益上限参考
-                    </h3>
-                </div>
-                <span className="text-xs text-slate-500 hidden sm:inline font-mono">
-                    点击卡片快速筛选下方职业
-                </span>
+            <div className="flex items-center gap-2">
+                <span className="w-1.5 h-4 bg-cyan-400 rounded-full"></span>
+                <h3 className="text-sm font-black text-slate-100 tracking-wide">
+                    团队战斗增益上限参考
+                </h3>
             </div>
 
-            {/* 两个卡片：样式对齐下方职业卡片 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+            {/* 简洁三行说明 */}
+            <div className="flex flex-col gap-1 text-xs sm:text-sm text-slate-300">
                 <div
                     data-item="易伤"
                     onClick={() => onSelectBuff?.('BUFF_MON_HARMED_EFFECT')}
                     className={clsx(
-                        'rounded-xl p-3 border transition-all flex items-center justify-between gap-3 cursor-pointer select-none',
+                        'flex items-center gap-2 px-2 py-1 rounded-md transition-colors cursor-pointer select-none group',
                         isHarmedActive
-                            ? 'border-amber-400/60 bg-slate-850 ring-1 ring-amber-400/50 shadow-[0_0_12px_rgba(251,191,36,0.2)]'
-                            : 'border-slate-800/80 bg-slate-950/40 hover:border-slate-700 hover:bg-slate-900/60'
+                            ? 'bg-amber-500/15 text-amber-200 border border-amber-500/30'
+                            : 'hover:bg-slate-800/60 border border-transparent'
                     )}
                     title="点击筛选提供「易伤」的职业"
                 >
-                    <div className="flex flex-col gap-0.5 min-w-0">
-                        <span className="text-sm font-bold text-slate-100">
-                            易伤上限
-                        </span>
-                        <p className="text-xs text-slate-400">
-                            多职业易伤叠加标准上限，副本团队伤害核心放大器
-                        </p>
-                    </div>
-                    <div className="flex flex-col items-center rounded-lg py-1.5 px-3 min-w-[3.5rem] bg-slate-900/60 border border-slate-800/60 flex-shrink-0">
-                        <span className="text-[10px] text-slate-500 leading-none mb-1">易伤</span>
-                        <span className="text-sm sm:text-base font-mono font-bold text-amber-400 leading-none">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+                    <span className="leading-relaxed">
+                        <span className="font-semibold text-slate-200">易伤上限：</span>
+                        多职业易伤叠加标准上限为{' '}
+                        <span className="font-mono font-bold text-amber-400 text-sm sm:text-base">
                             {renderValue(harmedVal)}
                         </span>
-                    </div>
+                        ，副本团队伤害核心放大器。
+                    </span>
+                    <span className="ml-auto text-[11px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline flex-shrink-0">
+                        {isHarmedActive ? '已筛选' : '点击筛选'}
+                    </span>
                 </div>
 
                 <div
                     data-item="绿点"
                     onClick={() => onSelectBuff?.('BUFF_MON_CRITDAMAGE_EFFECT')}
                     className={clsx(
-                        'rounded-xl p-3 border transition-all flex items-center justify-between gap-3 cursor-pointer select-none',
+                        'flex items-center gap-2 px-2 py-1 rounded-md transition-colors cursor-pointer select-none group',
                         isGreenActive
-                            ? 'border-emerald-400/60 bg-slate-850 ring-1 ring-emerald-400/50 shadow-[0_0_12px_rgba(16,185,129,0.2)]'
-                            : 'border-slate-800/80 bg-slate-950/40 hover:border-slate-700 hover:bg-slate-900/60'
+                            ? 'bg-emerald-500/15 text-emerald-200 border border-emerald-500/30'
+                            : 'hover:bg-slate-800/60 border border-transparent'
                     )}
                     title="点击筛选提供「绿点」的职业"
                 >
-                    <div className="flex flex-col gap-0.5 min-w-0">
-                        <span className="text-sm font-bold text-slate-100">
-                            绿点上限
-                        </span>
-                        <p className="text-xs text-slate-400">
-                            弱化怪物减暴伤上限（鬼王/英招等），暴击类输出核心收益
-                        </p>
-                    </div>
-                    <div className="flex flex-col items-center rounded-lg py-1.5 px-3 min-w-[3.5rem] bg-slate-900/60 border border-slate-800/60 flex-shrink-0">
-                        <span className="text-[10px] text-slate-500 leading-none mb-1">绿点</span>
-                        <span className="text-sm sm:text-base font-mono font-bold text-emerald-400 leading-none">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0"></span>
+                    <span className="leading-relaxed">
+                        <span className="font-semibold text-slate-200">绿点上限：</span>
+                        弱化怪物减暴伤上限为{' '}
+                        <span className="font-mono font-bold text-emerald-400 text-sm sm:text-base">
                             {renderValue(greenVal)}
                         </span>
-                    </div>
+                        （鬼王/英招等），暴击类输出核心收益。
+                    </span>
+                    <span className="ml-auto text-[11px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline flex-shrink-0">
+                        {isGreenActive ? '已筛选' : '点击筛选'}
+                    </span>
                 </div>
-            </div>
 
-            {/* 一行说明三碗是专注20 */}
-            <div data-item="三碗专注参考" className="text-xs text-slate-400 flex items-center gap-1.5 pt-0.5 px-0.5">
-                <span className="text-slate-500 font-medium">注：</span>
-                <span>常备料理「三碗不过岗」固定提供专注 20（不设机制上限，由各辅助职业持续叠加）。</span>
+                <div
+                    data-item="三碗专注参考"
+                    className="flex items-center gap-2 px-2 py-1 text-slate-300 border border-transparent"
+                >
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0"></span>
+                    <span className="leading-relaxed">
+                        <span className="font-semibold text-slate-200">专注参考：</span>
+                        「三碗不过岗」、「天子不上船」固定提供专注{' '}
+                        <span className="font-mono font-bold text-orange-400 text-sm sm:text-base">
+                            20
+                        </span>
+                        。
+                    </span>
+                </div>
             </div>
         </div>
     );
@@ -1355,10 +1344,15 @@ const SupportView: React.FC = () => {
             {/* 辅助职业卡片网格 */}
             {hasAnySelection && supportRoles.length > 0 && (
                 <div className="flex flex-col gap-3">
-                    <h3 className="text-sm font-bold text-slate-400 flex items-center gap-1.5">
-                        <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>辅助职业
-                        <span className="text-xs font-medium text-slate-600">· {supportRoles.length}</span>
-                    </h3>
+                    <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-4 bg-cyan-400 rounded-full"></span>
+                        <h3 className="text-sm font-black text-slate-100 tracking-wide">
+                            辅助职业
+                        </h3>
+                        <span className="text-xs text-slate-400 font-mono">
+                            · {supportRoles.length}
+                        </span>
+                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                         {supportRoles.map((role, idx) => (
                             <SupportCard
@@ -1376,10 +1370,15 @@ const SupportView: React.FC = () => {
             {/* 输出职业卡片网格 */}
             {hasAnySelection && dpsRoles.length > 0 && (
                 <div className="flex flex-col gap-3">
-                    <h3 className="text-sm font-bold text-slate-400 flex items-center gap-1.5">
-                        <span className="w-1 h-3.5 bg-slate-500 rounded-full"></span>输出职业
-                        <span className="text-xs font-medium text-slate-600">· {dpsRoles.length}</span>
-                    </h3>
+                    <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-4 bg-cyan-400 rounded-full"></span>
+                        <h3 className="text-sm font-black text-slate-100 tracking-wide">
+                            输出职业
+                        </h3>
+                        <span className="text-xs text-slate-400 font-mono">
+                            · {dpsRoles.length}
+                        </span>
+                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                         {dpsRoles.map((role, idx) => (
                             <SupportCard
@@ -1396,7 +1395,12 @@ const SupportView: React.FC = () => {
 
             {hasAnySelection && roles.notes && roles.notes.length > 0 && (
                 <div className="zx-card p-4">
-                    <h3 className="text-base font-bold text-slate-200 mb-2">说明</h3>
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="w-1.5 h-4 bg-cyan-400 rounded-full"></span>
+                        <h3 className="text-sm font-black text-slate-100 tracking-wide">
+                            说明
+                        </h3>
+                    </div>
                     <ul className="list-disc list-inside text-sm text-slate-400 space-y-1">
                         {roles.notes.map((note, i) => (
                             <li key={i}>{note}</li>
@@ -1409,18 +1413,44 @@ const SupportView: React.FC = () => {
 };
 
 export interface CompendiumViewProps {
+    /** 当前子页（来自 URL：/compendium/:seg 与 ?attr=） */
+    sub?: SubTab;
+    /** 子页切换 → 交回路由写 URL */
+    onSubChange?: (sub: SubTab) => void;
     searchNav?: SearchTarget | null;
     onSearchConsumed?: () => void;
     onNavigateCalculator?: (dungeonId: string, monsterId: string) => void;
+    /** 副本选择 → 回写 URL 的 ?d=（Step 8 深链验收项） */
+    onBossDungeonChange?: (dungeonId: string) => void;
+    /** 技能速查内切换门派/阵营 → 回写 URL 的 ?class=/?faction= */
+    onSkillsFilterChange?: (classId: string, faction: string) => void;
 }
 
 export const CompendiumView: React.FC<CompendiumViewProps> = ({
+    sub,
+    onSubChange,
     searchNav,
     onSearchConsumed,
     onNavigateCalculator,
+    onBossDungeonChange,
+    onSkillsFilterChange,
 }) => {
     const [activePrimaryTab, setActivePrimaryTab] = useState<CompendiumPrimaryTab>('ceiling');
     const [activeAttributeTab, setActiveAttributeTab] = useState<AttributeSubTab>('ignore');
+
+    // 子页状态由 URL 驱动：刷新 / 直达链接 / 前进后退 均可复现
+    useEffect(() => {
+        if (!sub) return;
+        if (sub === 'skills' || sub === 'support' || sub === 'boss') {
+            setActivePrimaryTab(sub);
+        } else if (sub === 'ceiling') {
+            setActivePrimaryTab('ceiling');
+            setActiveAttributeTab('ignore');
+        } else {
+            setActivePrimaryTab('ceiling');
+            setActiveAttributeTab(sub as AttributeSubTab);
+        }
+    }, [sub]);
 
     // Jump to a sub-tab (and optional item) driven by global search
     useEffect(() => {
@@ -1436,6 +1466,9 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
                 setActivePrimaryTab('support');
             } else if (s === 'boss') {
                 setActivePrimaryTab('boss');
+                // 同 skills：副本选中（?d=）与 Boss 高亮（?m=）的定位、以及 consume 都交给 BossCompendiumView。
+                // 本组件要到「切到 boss」的那次渲染才挂载它，此处提前 consume 会让深链失效。
+                return;
             } else if (s === 'ceiling') {
                 setActivePrimaryTab('ceiling');
             } else if (['ignore', 'reduction', 'critReduction', 'monsterDamageBonus', 'dodge'].includes(s)) {
@@ -1445,7 +1478,7 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
 
             if (searchNav.item) {
                 const escape = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape : (str: string) => str.replace(/(["'\\#$%&()*+,\/:;<=>?@[\]^`{|}~])/g, '\\$1');
-                const sel = `[data-item="${escape(searchNav.item)}"], [data-role="${escape(searchNav.item)}"]`;
+                const sel = `[data-role-key="${escape(searchNav.item)}"], [data-item="${escape(searchNav.item)}"], [data-role="${escape(searchNav.item)}"]`;
                 const t = setTimeout(() => {
                     const el = document.querySelector(sel) as HTMLElement | null;
                     if (el) {
@@ -1497,17 +1530,12 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
                 </div>
 
                 {/* 4 大核心板块一级子页签 */}
-                <div className="flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible md:pb-0">
+                <div className={`${CHIP_ROW_BASE} overflow-x-auto pb-1 md:flex-wrap md:overflow-visible md:pb-0`}>
                     {PRIMARY_TABS.map((tab) => (
                         <button
                             key={tab.id}
-                            onClick={() => setActivePrimaryTab(tab.id)}
-                            className={clsx(
-                                'flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 border backdrop-blur-md whitespace-nowrap flex-shrink-0',
-                                activePrimaryTab === tab.id
-                                    ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                                    : 'bg-slate-850 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                            )}
+                            onClick={() => (onSubChange ? onSubChange(tab.id) : setActivePrimaryTab(tab.id))}
+                            className={chipCls(activePrimaryTab === tab.id)}
                         >
                             {tab.icon}
                             <span>{tab.label}</span>
@@ -1517,20 +1545,14 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
 
                 {/* 极致属性攻略下的 5 种属性二级切换 Pills */}
                 {activePrimaryTab === 'ceiling' && (
-                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 no-scrollbar animate-in fade-in duration-200">
-                        <span className="text-xs text-slate-400 font-bold mr-1 flex-shrink-0">属性分类:</span>
+                    <div className={`${CHIP_ROW_BASE} overflow-x-auto pb-1 pt-1 no-scrollbar animate-in fade-in duration-200`}>
                         {ATTRIBUTE_SUB_TABS.map((tab) => {
                             const isActive = activeAttributeTab === tab.id;
                             return (
                                 <button
                                     key={tab.id}
-                                    onClick={() => setActiveAttributeTab(tab.id)}
-                                    className={clsx(
-                                        'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border whitespace-nowrap flex-shrink-0',
-                                        isActive
-                                            ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.2)]'
-                                            : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:bg-slate-850 hover:text-slate-200'
-                                    )}
+                                    onClick={() => (onSubChange ? onSubChange(tab.id) : setActiveAttributeTab(tab.id))}
+                                    className={chipCls(isActive)}
                                 >
                                     {tab.icon}
                                     <span>{tab.label}</span>
@@ -1545,15 +1567,29 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
             {activePrimaryTab === 'ceiling' && attributeContent}
             {activePrimaryTab === 'skills' && (
                 <div className="w-full">
-                    <SkillsView searchNav={searchNav} onSearchConsumed={onSearchConsumed} />
+                    <SkillsView
+                        searchNav={searchNav}
+                        onSearchConsumed={onSearchConsumed}
+                        onFilterChange={onSkillsFilterChange}
+                    />
                 </div>
             )}
             {activePrimaryTab === 'support' && <SupportView />}
             {activePrimaryTab === 'boss' && (
                 <BossCompendiumView
-                    focusDungeonId={searchNav?.tab === 'calculator' ? searchNav.dungeonId : undefined}
-                    focusMonsterId={searchNav?.tab === 'calculator' ? searchNav.monsterId : undefined}
+                    focusDungeonId={
+                        searchNav && (searchNav.tab === 'compendium' || searchNav.tab === 'calculator')
+                            ? searchNav.dungeonId
+                            : undefined
+                    }
+                    focusMonsterId={
+                        searchNav && (searchNav.tab === 'compendium' || searchNav.tab === 'calculator')
+                            ? searchNav.monsterId
+                            : undefined
+                    }
                     onNavigateCalculator={onNavigateCalculator}
+                    onDungeonChange={onBossDungeonChange}
+                    onSearchConsumed={onSearchConsumed}
                 />
             )}
         </div>

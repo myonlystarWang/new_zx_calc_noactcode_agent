@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, X, Swords } from 'lucide-react';
 import clsx from 'clsx';
+import { chipCls, chipCountCls } from '../ui/chipStyles';
 import { pinyin } from 'pinyin-pro';
 import { DataService } from '../../services/DataService';
 import type { Dungeon, Monster } from '../../types';
@@ -10,6 +11,14 @@ interface BossCompendiumViewProps {
     focusDungeonId?: string | null;
     focusMonsterId?: string | null;
     onNavigateCalculator?: (dungeonId: string, monsterId: string) => void;
+    /** 用户手动切换副本（含「全部」）时回调，用于把选择回写入 URL 的 ?d= */
+    onDungeonChange?: (dungeonId: string) => void;
+    /**
+     * 外部定位意图（?d= / ?m=）处理完毕后的回调，由上层清空定位意图。
+     * ⚠️ 必须由本组件触发：CompendiumView 要到 activePrimaryTab 切到 boss 的那次渲染才挂载本组件，
+     *    若它提前 consume，本组件挂载时 focusDungeonId 已是 undefined → 深链失效。
+     */
+    onSearchConsumed?: () => void;
 }
 
 // 副本难度配色映射
@@ -86,6 +95,8 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
     focusDungeonId,
     focusMonsterId,
     onNavigateCalculator,
+    onDungeonChange,
+    onSearchConsumed,
 }) => {
     const service = useMemo(() => DataService.getInstance(), []);
     const dungeons: Dungeon[] = useMemo(() => service.getDungeons(), [service]);
@@ -112,27 +123,45 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
         return counts;
     }, [dungeons]);
 
-    // 响应外部跳转定位
+    // onSearchConsumed 在 App 里是内联箭头函数（每次渲染新引用），放进 effect 依赖会导致
+    // 每次渲染重跑定位（重复滚动）。用 ref 持有，effect 只依赖真正的定位参数。
+    const onSearchConsumedRef = useRef(onSearchConsumed);
+    onSearchConsumedRef.current = onSearchConsumed;
+
+    // 响应外部跳转定位（?d= 副本选中 / ?m= Boss 高亮滚动）
+    // consume 放在本组件内、且在所有 setState 之后，保证定位真正落地后才清空意图。
     useEffect(() => {
+        if (!focusDungeonId && !focusMonsterId) {
+            onSearchConsumedRef.current?.();
+            return;
+        }
+
         if (focusDungeonId) {
-            setSelectedDungeonId(focusDungeonId);
             const targetDungeon = dungeons.find((d) => d.DungeonID === focusDungeonId);
             if (targetDungeon) {
+                setSelectedDungeonId(targetDungeon.DungeonID);
                 setActiveCategory(getDungeonCategory(targetDungeon.DungeonID));
+            } else {
+                // 非法/已失效的 DungeonID（手改 URL、数据改名）→ 回落「全部」，避免筛成空列表
+                setSelectedDungeonId('all');
             }
         }
         if (focusMonsterId) {
             setHighlightMonsterId(focusMonsterId);
-            const timer = setTimeout(() => {
+        }
+
+        const timer = setTimeout(() => {
+            if (focusMonsterId) {
                 const el = document.getElementById(`boss-card-${focusMonsterId}`);
                 if (el) {
                     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     el.classList.add('ring-2', 'ring-cyan-400');
                     setTimeout(() => el.classList.remove('ring-2', 'ring-cyan-400'), 2500);
                 }
-            }, 150);
-            return () => clearTimeout(timer);
-        }
+            }
+            onSearchConsumedRef.current?.();
+        }, 150);
+        return () => clearTimeout(timer);
     }, [focusDungeonId, focusMonsterId, dungeons]);
 
     // 当前大类下的副本列表（按规范顺序排列）
@@ -187,92 +216,78 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
 
     return (
         <div className="w-full flex flex-col gap-4 animate-in fade-in duration-300">
-            {/* 1. 一级分类：与职业技能速查风格完全一致的横向胶囊切换 */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
-                {DUNGEON_CATEGORIES.map((cat) => {
-                    const isSelected = activeCategory === cat.id;
-                    const count = categoryCounts[cat.id] || 0;
-                    return (
-                        <button
-                            key={cat.id}
-                            onClick={() => {
-                                setActiveCategory(cat.id);
-                                setSelectedDungeonId('all');
-                            }}
-                            className={clsx(
-                                'flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs md:text-sm font-bold transition-all border backdrop-blur-md whitespace-nowrap shrink-0',
-                                isSelected
-                                    ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                                    : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                            )}
-                        >
-                            <span>{cat.label}</span>
-                            <span
-                                className={clsx(
-                                    'text-[10px] font-mono px-1.5 py-0.2 rounded-full border',
-                                    isSelected
-                                        ? 'bg-cyan-500/30 text-cyan-200 border-cyan-500/40'
-                                        : 'bg-slate-800 text-slate-400 border-slate-700/60'
-                                )}
-                            >
-                                {count}
-                            </span>
-                        </button>
-                    );
-                })}
-            </div>
-
-            {/* 2. 控制栏：二级筛选（简写标签） + 搜索框 (完全对齐 SkillsView 控制栏) */}
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-2 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60">
-                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 max-w-full">
-                    <button
-                        onClick={() => setSelectedDungeonId('all')}
-                        className={clsx(
-                            'px-3 py-1 rounded-lg text-xs font-bold transition-all border whitespace-nowrap shrink-0',
-                            selectedDungeonId === 'all'
-                                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
-                                : 'bg-slate-850/60 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                        )}
-                    >
-                        全部
-                    </button>
-                    {categoryDungeons.map((d) => {
-                        const isSelected = selectedDungeonId === d.DungeonID;
-                        const shortLabel = DUNGEON_SHORT_LABELS[d.DungeonID] || d.DungeonName;
+            {/* 筛选面板：一级分类 + 二级难度 + 搜索。
+                两行之间 gap-3(12px)，与「职业状态一览」的减益/增益组保持同一密度 */}
+            <div className="flex flex-col gap-3 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60">
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                    {DUNGEON_CATEGORIES.map((cat) => {
+                        const isSelected = activeCategory === cat.id;
+                        const count = categoryCounts[cat.id] || 0;
                         return (
                             <button
-                                key={d.DungeonID}
-                                onClick={() => setSelectedDungeonId(d.DungeonID)}
-                                className={clsx(
-                                    'px-3 py-1 rounded-lg text-xs font-bold transition-all border whitespace-nowrap shrink-0',
-                                    isSelected
-                                        ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
-                                        : 'bg-slate-850/60 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                                )}
+                                key={cat.id}
+                                onClick={() => {
+                                    setActiveCategory(cat.id);
+                                    setSelectedDungeonId('all');
+                                }}
+                                className={chipCls(isSelected)}
                             >
-                                {shortLabel}
+                                <span>{cat.label}</span>
+                                <span className={chipCountCls(isSelected)}>
+                                    {count}
+                                </span>
                             </button>
                         );
                     })}
                 </div>
 
-                <div className="relative flex-1 sm:max-w-xs">
-                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input
-                        type="text"
-                        value={searchKeyword}
-                        onChange={(e) => setSearchKeyword(e.target.value)}
-                        placeholder="搜索 BOSS 名字 / 副本 (支持拼音)..."
-                        className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-7 py-1 text-xs md:text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/60 transition-colors"
-                    />
-                    {searchKeyword && (
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar max-w-full">
                         <button
-                            onClick={() => setSearchKeyword('')}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                            onClick={() => {
+                                setSelectedDungeonId('all');
+                                onDungeonChange?.('all');
+                            }}
+                            className={chipCls(selectedDungeonId === 'all')}
                         >
-                            <X className="w-3.5 h-3.5" />
+                            全部
                         </button>
-                    )}
+                        {categoryDungeons.map((d) => {
+                            const isSelected = selectedDungeonId === d.DungeonID;
+                            const shortLabel = DUNGEON_SHORT_LABELS[d.DungeonID] || d.DungeonName;
+                            return (
+                                <button
+                                    key={d.DungeonID}
+                                    onClick={() => {
+                                        setSelectedDungeonId(d.DungeonID);
+                                        onDungeonChange?.(d.DungeonID);
+                                    }}
+                                    className={chipCls(isSelected)}
+                                >
+                                    {shortLabel}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    <div className="relative flex-1 sm:max-w-xs">
+                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                        <input
+                            type="text"
+                            value={searchKeyword}
+                            onChange={(e) => setSearchKeyword(e.target.value)}
+                            placeholder="搜索 BOSS 名字 / 副本 (支持拼音)..."
+                            className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-7 py-1 text-xs md:text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/60 transition-colors"
+                        />
+                        {searchKeyword && (
+                            <button
+                                onClick={() => setSearchKeyword('')}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                            >
+                                <X className="w-3.5 h-3.5" />
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
 

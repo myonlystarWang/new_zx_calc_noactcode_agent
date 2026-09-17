@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Clock, Zap, RotateCcw } from 'lucide-react';
 import clsx from 'clsx';
+import { chipCls, chipCountCls } from '../ui/chipStyles';
 import { pinyin } from 'pinyin-pro';
 import { DataService } from '../../services/DataService';
 import type { SearchTarget } from '../GlobalSearch';
@@ -447,9 +448,11 @@ interface SkillsViewProps {
     searchNav?: SearchTarget | null;
     onSearchConsumed?: () => void;
     onNavigateHome?: () => void;
+    /** 用户切换门派/阵营时回调（回写 URL 的 ?class=/?faction=）；只在用户点击时触发，不由 searchNav 回灌 */
+    onFilterChange?: (classId: string, faction: string) => void;
 }
 
-export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsumed }) => {
+export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsumed, onFilterChange }) => {
     const [selectedClass, setSelectedClass] = useState<string>('ZHU_SHUANG');
     const [selectedFaction, setSelectedFaction] = useState<string>('ALL');
     const [searchKeyword, setSearchKeyword] = useState<string>('');
@@ -612,69 +615,58 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
 
     return (
         <div className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pb-12 animate-in fade-in duration-300">
-            {/* 门派切换 Ribbon (10大职业) */}
-            <div className="flex flex-wrap gap-2 mb-4 pb-2 border-b border-slate-800/60">
-                {CLASS_ORDER.map((cls) => {
-                    const isSelected = selectedClass === cls.id;
-                    const count = classSkillCounts[cls.id] || 0;
-                    return (
-                        <button
-                            key={cls.id}
-                            onClick={() => {
-                                setSelectedClass(cls.id);
-                                setHighlightedSkillId(null);
-                            }}
-                            className={clsx(
-                                'flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs md:text-sm font-bold transition-all border backdrop-blur-md',
-                                isSelected
-                                    ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
-                                    : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                            )}
-                        >
-                            <span>{cls.name}</span>
-                            <span
-                                className={clsx(
-                                    'text-[10px] font-mono px-1.5 py-0.2 rounded-full border',
-                                    isSelected
-                                        ? 'bg-cyan-500/30 text-cyan-200 border-cyan-500/40'
-                                        : 'bg-slate-800 text-slate-400 border-slate-700/60'
-                                )}
+            {/* 筛选面板：职业 Ribbon + 阵营筛选 + 技能搜索。
+                两行之间 gap-3(12px)，与「职业状态一览」的减益/增益组保持同一密度 */}
+            <div className="flex flex-col gap-3 mb-5 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60">
+                <div className="flex flex-wrap gap-1.5">
+                    {CLASS_ORDER.map((cls) => {
+                        const isSelected = selectedClass === cls.id;
+                        const count = classSkillCounts[cls.id] || 0;
+                        return (
+                            <button
+                                key={cls.id}
+                                onClick={() => {
+                                    setSelectedClass(cls.id);
+                                    setHighlightedSkillId(null);
+                                    onFilterChange?.(cls.id, selectedFaction);
+                                }}
+                                className={chipCls(isSelected)}
                             >
-                                {count}
-                            </span>
-                        </button>
-                    );
-                })}
-            </div>
-
-            {/* 控制栏：阵营筛选 + 技能搜索 */}
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-5 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60">
-                <div className="flex items-center gap-1.5">
-                    {FACTIONS.map((f) => (
-                        <button
-                            key={f.id}
-                            onClick={() => setSelectedFaction(f.id)}
-                            className={clsx(
-                                'px-3 py-1 rounded-lg text-xs font-bold transition-all border',
-                                selectedFaction === f.id
-                                    ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300'
-                                    : 'bg-slate-850/60 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-300'
-                            )}
-                        >
-                            {f.name}
-                        </button>
-                    ))}
+                                <span>{cls.name}</span>
+                                <span className={chipCountCls(isSelected)}>
+                                    {count}
+                                </span>
+                            </button>
+                        );
+                    })}
                 </div>
 
-                <div className="relative flex-1 sm:max-w-xs">
-                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input
-                        type="text"
-                        value={searchKeyword}
-                        onChange={(e) => setSearchKeyword(e.target.value)}
-                        placeholder="在当前职业搜索技能名或机制..."
-                        className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-3 py-1 text-xs md:text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/60 transition-colors"
-                    />
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-1.5">
+                        {FACTIONS.map((f) => (
+                            <button
+                                key={f.id}
+                                onClick={() => {
+                                    setSelectedFaction(f.id);
+                                    onFilterChange?.(selectedClass, f.id);
+                                }}
+                                className={chipCls(selectedFaction === f.id)}
+                            >
+                                {f.name}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="relative flex-1 sm:max-w-xs">
+                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                        <input
+                            type="text"
+                            value={searchKeyword}
+                            onChange={(e) => setSearchKeyword(e.target.value)}
+                            placeholder="在当前职业搜索技能名或机制..."
+                            className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-3 py-1 text-xs md:text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/60 transition-colors"
+                        />
+                    </div>
                 </div>
             </div>
 
