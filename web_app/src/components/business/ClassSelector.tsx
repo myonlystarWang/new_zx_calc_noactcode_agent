@@ -23,7 +23,7 @@ export const ClassSelector: React.FC = () => {
 
     return (
         <div>
-            <h2 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
                 <span className="w-1 h-5 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full"></span>
                 职业选择
             </h2>
@@ -31,16 +31,16 @@ export const ClassSelector: React.FC = () => {
             {/* Selected Class Display (Trigger) */}
             <div
                 onClick={() => setIsModalOpen(true)}
-                className="glass-panel p-4 md:py-4 md:px-6 h-[124px] cursor-pointer transition-all duration-300 hover:border-blue-500/50 group relative overflow-hidden border-blue-500/30 bg-blue-500/5 flex items-center"
+                className="glass-panel p-3 md:py-3 md:px-5 h-[124px] cursor-pointer transition-all duration-300 hover:border-blue-500/50 group relative overflow-hidden border-blue-500/30 bg-blue-500/5 flex items-center"
             >
                 <div className="flex items-center justify-between relative z-10 w-full">
                     <div className="flex items-center gap-3 md:gap-4">
-                        <div className="p-2.5 md:p-3 rounded-xl bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)]">
+                        <div className="p-2 md:p-2.5 rounded-xl bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)]">
                             <User className="w-5 h-5 md:w-6 md:h-6" />
                         </div>
                         <div>
                             <div className="text-xs text-blue-400 font-bold mb-0.5 tracking-wide">当前职业</div>
-                            <div className="text-xl md:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 drop-shadow-lg tracking-wider flex items-center gap-2 md:gap-3">
+                            <div className="text-lg md:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 drop-shadow-lg tracking-wider flex items-center gap-2 md:gap-3">
                                 {currentClass?.ClassName || '未选择'}
                                 <span className="text-[10px] md:text-xs font-bold text-blue-300 px-2 md:px-2.5 py-0.5 md:py-1 rounded-full bg-blue-500/20 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.2)] tracking-normal whitespace-nowrap">
                                     {currentClass?.Race || '未知'}

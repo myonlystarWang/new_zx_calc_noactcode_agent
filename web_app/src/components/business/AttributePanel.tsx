@@ -3,6 +3,7 @@ import type { CharacterAttributes } from '../../types';
 import { AttributeCard } from '../ui/AttributeCard';
 import { ClassSelector } from './ClassSelector';
 import { FactionSelector } from './FactionSelector';
+import { PresetManager } from './PresetManager';
 import { Shield, Sword, Heart, Zap, Crosshair, Skull } from 'lucide-react';
 
 interface AttributePanelProps {
@@ -34,7 +35,10 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
     };
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
+            {/* Preset Manager */}
+            <PresetManager />
+
             {/* Class Selector */}
             <ClassSelector />
 
@@ -43,7 +47,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
 
             {/* Character Attributes Grid */}
             <div>
-                <h2 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
                     <span className="w-1 h-5 bg-gradient-to-b from-cyan-500 to-purple-500 rounded-full"></span>
                     角色属性
                 </h2>
@@ -91,7 +95,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         color="emerald"
                     />
                     <AttributeCard
-                        label="暴击伤害 (%)"
+                        label="暴击伤害"
                         value={attributes.CharacterCriticalHitDamagePercent}
                         onChange={(v) => handleChange('CharacterCriticalHitDamagePercent', v)}
                         max={4000}
@@ -99,7 +103,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         color="yellow"
                     />
                     <AttributeCard
-                        label="对怪增伤 (%)"
+                        label="对怪增伤"
                         value={attributes.CharacterMonsterDamageIncreasePercent}
                         onChange={(v) => handleChange('CharacterMonsterDamageIncreasePercent', v)}
                         max={100}
