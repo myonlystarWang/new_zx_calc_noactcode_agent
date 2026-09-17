@@ -29,6 +29,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.1.3',
+        date: '2026-09-17',
+        title: '方案列表不再挤成一截',
+        changes: [
+            { type: 'fix', text: '计算器「属性方案」下拉会按方案名自动变宽，常见的方案名能一眼看全；特别长的名字鼠标放上去会显示完整名称' },
+        ],
+    },
+    {
         version: '1.1.2',
         date: '2026-09-17',
         title: '方案对比更好读了：数字靠中间、涨幅分色',

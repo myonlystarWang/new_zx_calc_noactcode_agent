@@ -27,8 +27,8 @@ const serializeDamage = (skill: Skill, damage: DamageResult) => ({
   }))
 });
 
-export const calculateFromInput = async (input: AgentCalcInput) => {
-  const data = await loadGameData();
+export const calculateFromInput = async (input: AgentCalcInput, dataDir?: string) => {
+  const data = await loadGameData(dataDir);
   const normalized = normalizeRequest(input, data);
   if ('issues' in normalized) {
     return {
