@@ -242,7 +242,7 @@ const MainContent: React.FC = () => {
         <Route
           path={ROUTE.calculator}
           element={
-            <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-4 pb-6 grid grid-cols-1 xl:grid-cols-12 gap-6 animate-in fade-in duration-300">
+            <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-2 pb-2 grid grid-cols-1 xl:grid-cols-12 gap-4 xl:gap-5 animate-in fade-in duration-300">
               {/* 左栏：属性录入 */}
               <div className="xl:col-span-4 flex flex-col">
                 <AttributePanel
