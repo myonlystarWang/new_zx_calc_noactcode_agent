@@ -29,6 +29,14 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.1.1',
+        date: '2026-09-17',
+        title: '分享链接不再丢增益数值',
+        changes: [
+            { type: 'fix', text: '修复：只改了增益数值、没有勾掉任何一条时，「复制分享链接」发出去的数值会变回默认（比如专注 241 变成 261）—— 现在改多少就分享多少' },
+        ],
+    },
+    {
         version: '1.1.0',
         date: '2026-09-17',
         title: '方案对比：两套配装当面比',

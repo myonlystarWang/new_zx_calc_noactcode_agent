@@ -80,7 +80,7 @@ const CompendiumRoute: React.FC<CompendiumRouteProps> = ({
 };
 
 const MainContent: React.FC = () => {
-  const { isLoading, loadError, userCharacter, updateCharacterAttributes, updateCharacterClass, restoreBuffState } = useApp();
+  const { isLoading, loadError, userCharacter, activeBuffIds, updateCharacterAttributes, updateCharacterClass, restoreBuffState } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -96,6 +96,9 @@ const MainContent: React.FC = () => {
   updateCharacterAttributesRef.current = updateCharacterAttributes;
   const restoreBuffStateRef = useRef(restoreBuffState);
   restoreBuffStateRef.current = restoreBuffState;
+  // effect 依赖里没有 activeBuffIds，用 ref 拿最新值（只带 bv 的链接需要保留当前勾选集）
+  const activeBuffIdsRef = useRef(activeBuffIds);
+  activeBuffIdsRef.current = activeBuffIds;
 
   // 分享链接（?p=）只应用一次：同一 payload 重复进入不覆盖用户后续手动改动
   const appliedShareRef = useRef<string | null>(null);
@@ -136,8 +139,13 @@ const MainContent: React.FC = () => {
         const decoded = await decodeSharePayload(sharePayload);
         if (!decoded) return;
         if (decoded.attributes) updateCharacterAttributesRef.current(decoded.attributes);
-        if (decoded.activeBuffIds) {
-          restoreBuffStateRef.current(decoded.activeBuffIds, decoded.buffValues || {});
+        // 链接只带 bv（改了增益数值但没动勾选集）时 activeBuffIds 为 null：
+        // 沿用当前勾选集，否则 buffValues 会被整块丢弃（Step 10 遗漏分支）
+        if (decoded.activeBuffIds || decoded.buffValues) {
+          restoreBuffStateRef.current(
+            decoded.activeBuffIds || activeBuffIdsRef.current,
+            decoded.buffValues || {}
+          );
         }
       })();
     }
