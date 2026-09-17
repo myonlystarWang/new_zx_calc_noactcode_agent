@@ -51,7 +51,7 @@ export const AttributeCard: React.FC<AttributeCardProps> = ({
 
     return (
         <div className={clsx(
-            "glass-panel p-4 flex flex-col gap-3 transition-all duration-300 animate-fade-in group",
+            "glass-panel p-2.5 flex flex-col gap-2 transition-all duration-300 animate-fade-in group",
             styles.border
         )}>
             {/* Header: Icon & Label Centered Row */}
@@ -75,7 +75,7 @@ export const AttributeCard: React.FC<AttributeCardProps> = ({
                 max={max}
                 step={step}
                 className={clsx(
-                    "bg-transparent text-xl font-black text-white w-full text-center focus:outline-none transition-colors py-1",
+                    "bg-transparent text-lg font-black text-white w-full text-center focus:outline-none transition-colors py-1",
                     styles.focus
                 )}
                 style={{ fontVariantNumeric: 'tabular-nums' }}

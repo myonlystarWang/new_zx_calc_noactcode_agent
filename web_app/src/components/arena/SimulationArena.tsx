@@ -1045,10 +1045,12 @@ export const SimulationArena: React.FC = () => {
                                     <button
                                         type="button"
                                         onClick={handleResetAll}
-                                        className="w-10 h-10 rounded-xl border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white hover:border-slate-500 flex items-center justify-center transition-colors"
+                                        className="h-10 px-3 rounded-xl border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white hover:border-slate-500 flex items-center gap-1.5 transition-colors"
                                         title="重置训练场"
+                                        aria-label="重置训练场"
                                     >
                                         <RotateCcw className="w-4 h-4" />
+                                        <span className="text-xs font-bold">重置</span>
                                     </button>
                                     <button
                                         type="button"
@@ -1081,10 +1083,13 @@ export const SimulationArena: React.FC = () => {
                                     <button
                                         type="button"
                                         onClick={() => openDrawer('boss', { type: 'boss', boss: currentBoss, dungeon: currentDungeon })}
-                                        className="relative w-48 h-48 lg:w-56 lg:h-56 rounded-full border border-red-400/20 bg-slate-950/25 backdrop-blur-[2px] shadow-[0_0_70px_rgba(127,29,29,0.28)] grid place-items-center group"
+                                        className="relative w-48 h-48 lg:w-56 lg:h-56 rounded-full border border-red-400/20 bg-slate-950/25 backdrop-blur-[2px] shadow-[0_0_70px_rgba(127,29,29,0.28)] flex flex-col items-center justify-center group"
                                     >
                                         <div className="absolute inset-7 rounded-full border border-red-300/10" />
-                                        <Swords className="w-20 h-20 lg:w-24 lg:h-24 text-red-200/75 group-hover:text-red-100 transition-colors" />
+                                        <Swords className="w-14 h-14 lg:w-20 lg:h-20 text-red-200/75 group-hover:text-red-100 transition-colors" />
+                                        <span className="mt-2 text-[10px] font-black text-red-200/60 group-hover:text-red-100 select-none">
+                                            点击查看 Boss 详情
+                                        </span>
                                         {isBossDead && (
                                             <span className="absolute bottom-7 px-3 py-1 rounded-full bg-red-500/20 border border-red-300/30 text-red-100 text-xs font-black">
                                                 已击杀
@@ -2866,14 +2871,16 @@ function TimelineDock({
                     <button
                         type="button"
                         onClick={onPlayToggle}
-                        className="w-9 h-9 rounded-xl bg-cyan-500 text-slate-950 grid place-items-center hover:bg-cyan-300 transition-colors"
+                        className="h-9 px-3 rounded-xl bg-cyan-500 text-slate-950 flex items-center gap-1.5 hover:bg-cyan-300 transition-colors"
                         title={isPlaying ? '暂停' : '播放'}
+                        aria-label={isPlaying ? '暂停' : '播放'}
                     >
                         {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+                        <span className="text-xs font-black">{isPlaying ? '暂停' : '播放'}</span>
                     </button>
                 </div>
                 <div className="mt-3 flex items-center gap-2">
-                    <button type="button" onClick={() => onTimeChange(Math.max(0, currentTimeMs - 1000))} className="w-8 h-8 rounded-lg border border-slate-800 text-slate-300 grid place-items-center hover:border-slate-600">
+                    <button type="button" onClick={() => onTimeChange(Math.max(0, currentTimeMs - 1000))} className="w-8 h-8 rounded-lg border border-slate-800 text-slate-300 grid place-items-center hover:border-slate-600" aria-label="后退1秒">
                         <SkipBack className="w-4 h-4" />
                     </button>
                     <input
@@ -2885,7 +2892,7 @@ function TimelineDock({
                         onChange={(event) => onTimeChange(Number(event.target.value))}
                         className="flex-1 accent-cyan-400"
                     />
-                    <button type="button" onClick={() => onTimeChange(Math.min(durationMs, currentTimeMs + 1000))} className="w-8 h-8 rounded-lg border border-slate-800 text-slate-300 grid place-items-center hover:border-slate-600">
+                    <button type="button" onClick={() => onTimeChange(Math.min(durationMs, currentTimeMs + 1000))} className="w-8 h-8 rounded-lg border border-slate-800 text-slate-300 grid place-items-center hover:border-slate-600" aria-label="前进1秒">
                         <SkipForward className="w-4 h-4" />
                     </button>
                 </div>

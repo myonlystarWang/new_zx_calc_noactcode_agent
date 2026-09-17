@@ -667,10 +667,12 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
                                             setIsPlaying(false);
                                             setCurrentTimeMs(0);
                                         }}
-                                        className="p-2 bg-slate-950/60 hover:bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 rounded-xl transition-all active:scale-95"
+                                        className="px-2.5 py-2 bg-slate-950/60 hover:bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 rounded-xl transition-all active:scale-95 flex items-center gap-1"
                                         title="回到起点"
+                                        aria-label="回到起点"
                                     >
                                         <RotateCcw className="w-4 h-4" />
+                                        <span className="text-[10px] font-bold">重置</span>
                                     </button>
                                     
                                     <button
@@ -683,10 +685,12 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
                                                 setIsPlaying(!isPlaying);
                                             }
                                         }}
-                                        className="p-2 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 text-cyan-400 rounded-xl transition-all active:scale-95"
+                                        className="px-2.5 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 text-cyan-400 rounded-xl transition-all active:scale-95 flex items-center gap-1"
                                         title={isPlaying ? '暂停' : '播放'}
+                                        aria-label={isPlaying ? '暂停' : '播放'}
                                     >
                                         {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+                                        <span className="text-[10px] font-bold">{isPlaying ? '暂停' : '播放'}</span>
                                     </button>
 
                                     <button

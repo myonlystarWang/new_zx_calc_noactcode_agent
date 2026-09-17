@@ -6,6 +6,16 @@ export default {
     ],
     theme: {
         extend: {
+            colors: {
+                slate: {
+                    350: '#b0bccd',
+                    450: '#7c8ca2',
+                    850: '#172033',
+                },
+                red: {
+                    350: '#fa8b8b',
+                },
+            },
             animation: {
                 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                 'glow': 'glow 3s ease-in-out infinite alternate',

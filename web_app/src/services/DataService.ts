@@ -96,24 +96,34 @@ export class DataService {
         return DataService.instance;
     }
 
-    public async loadAllData(): Promise<void> {
-        await Promise.all([
-            this.loadClasses(),
-            this.loadSkills(),
-            this.loadDungeons(),
-            this.loadBuffs(),
-            this.loadRankConfigs(),
-            this.loadCompendiumData()
-        ]);
+    public async loadAllData(): Promise<string[]> {
+        const tasks = [
+            { name: 'classes', fn: () => this.loadClasses() },
+            { name: 'skills', fn: () => this.loadSkills() },
+            { name: 'dungeons', fn: () => this.loadDungeons() },
+            { name: 'buffs', fn: () => this.loadBuffs() },
+            { name: 'rankConfigs', fn: () => this.loadRankConfigs() },
+            { name: 'compendium', fn: () => this.loadCompendiumData() },
+        ];
+        const results = await Promise.allSettled(tasks.map(t => t.fn()));
+        const errors: string[] = [];
+        results.forEach((r, i) => {
+            if (r.status === 'rejected') {
+                errors.push(`${tasks[i].name}: ${r.reason instanceof Error ? r.reason.message : String(r.reason)}`);
+            }
+        });
+        return errors; // 返回失败列表，调用方决定如何提示
     }
 
     private async loadClasses(): Promise<void> {
         const response = await fetch(`${DATA_BASE_URL}/classes.json`);
+        if (!response.ok) throw new Error(`加载 classes.json 失败: ${response.status}`);
         this.classes = await response.json();
     }
 
     private async loadSkills(): Promise<void> {
         const response = await fetch(`${DATA_BASE_URL}/skills.json`);
+        if (!response.ok) throw new Error(`加载 skills.json 失败: ${response.status}`);
         const raw = await response.json();
         this.skillMeta = (raw as any)?._meta ?? null;
         // Strip the top-level _meta key so allSkills/getSkills expose a clean class-keyed map.
@@ -131,17 +141,21 @@ export class DataService {
             fetch(`${DATA_BASE_URL}/dungeons.json`),
             fetch(`${DATA_BASE_URL}/dungeons_monsters.json`)
         ]);
+        if (!metaResponse.ok) throw new Error(`加载 dungeons.json 失败: ${metaResponse.status}`);
+        if (!monstersResponse.ok) throw new Error(`加载 dungeons_monsters.json 失败: ${monstersResponse.status}`);
         this.dungeonsMetadata = await metaResponse.json();
         this.dungeonsMonsters = await monstersResponse.json();
     }
 
     private async loadBuffs(): Promise<void> {
         const response = await fetch(`${DATA_BASE_URL}/combat_buffs.json`);
+        if (!response.ok) throw new Error(`加载 combat_buffs.json 失败: ${response.status}`);
         this.buffs = await response.json();
     }
 
     private async loadRankConfigs(): Promise<void> {
         const response = await fetch(`${DATA_BASE_URL}/rank_config.json`);
+        if (!response.ok) throw new Error(`加载 rank_config.json 失败: ${response.status}`);
         this.rankConfigs = await response.json();
     }
 
@@ -150,6 +164,8 @@ export class DataService {
             fetch(`${DATA_BASE_URL}/attribute_ceiling_guide.json`),
             fetch(`${DATA_BASE_URL}/stat_source_lists.json`)
         ]);
+        if (!guideResponse.ok) throw new Error(`加载 attribute_ceiling_guide.json 失败: ${guideResponse.status}`);
+        if (!sourcesResponse.ok) throw new Error(`加载 stat_source_lists.json 失败: ${sourcesResponse.status}`);
         this.attributeCeilingGuide = await guideResponse.json();
         this.statSourceLists = await sourcesResponse.json();
     }

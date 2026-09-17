@@ -5,7 +5,7 @@ import { BuffSelector } from './BuffSelector';
 
 export const BuffPanel: React.FC<{ onNavigateToFocus?: () => void }> = ({ onNavigateToFocus }) => {
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 flex-1">
             {/* Buff Selector - Moved back to top of middle column */}
             <BuffSelector onNavigateToFocus={onNavigateToFocus} />
 
@@ -13,7 +13,7 @@ export const BuffPanel: React.FC<{ onNavigateToFocus?: () => void }> = ({ onNavi
             <TotalPowerCard />
 
             {/* Dungeon Data Explanation */}
-            <Card title="使用说明">
+            <Card title="使用说明" className="flex-1">
                 <div className="text-sm text-slate-400 space-y-3">
                     <div>
                         <strong className="text-[var(--theme-accent)]">副本战力计算：</strong>
