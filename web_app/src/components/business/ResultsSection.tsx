@@ -500,7 +500,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                         onClick={handleToggleShareMenu}
                         aria-label="分享"
                         aria-expanded={shareOpen}
-                        className="zx-btn flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 hover:border-cyan-500/50 transition-all cursor-pointer"
                     >
                         {exportState === 'working' ? (
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
