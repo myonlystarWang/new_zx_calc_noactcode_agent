@@ -1,14 +1,50 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
-import { calculateDungeonPower, calculateTotalPower } from '../../utils/calculator';
+import { buildSingleCalcSkills, calculateDamage, calculateDungeonPower, calculateTotalPower } from '../../utils/calculator';
 import { formatNumber } from '../../utils/format';
-import { Trophy, Copy, Check } from 'lucide-react';
+import { Trophy, Copy, Check, Share2, Download, Link2, FileText, Loader2, X } from 'lucide-react';
+import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import { DungeonDetail } from './DungeonDetail';
 import type { SearchTarget } from '../GlobalSearch';
+import type { Skill } from '../../types';
+import { buildConfigText, buildShareUrl, FACTION_LABELS, type ShareSnapshot } from '../../utils/shareSnapshot';
+import type { ShareCardData, ShareSkillRow } from '../share/ShareCard';
 
-const RANK_STYLES: Record<string, any> = {
+/** 剪贴板：优先 Clipboard API，非安全上下文回退 execCommand（与 TotalPowerCard 同一策略） */
+async function copyToClipboard(text: string): Promise<boolean> {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+        }
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.style.position = 'fixed';
+        area.style.left = '-9999px';
+        area.style.top = '0';
+        area.setAttribute('readonly', '');
+        document.body.appendChild(area);
+        area.focus();
+        area.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(area);
+        return ok;
+    } catch {
+        return false;
+    }
+}
+
+interface RankStyleConfig {
+    Color: string;
+    Shadow: string;
+    Border: string;
+    TextColor: string;
+    Glow: string;
+}
+
+const RANK_STYLES: Record<string, RankStyleConfig> = {
     'SSS': {
         Color: 'bg-yellow-500/10',
         Shadow: 'shadow-[0_0_20px_rgba(234,179,8,0.4)]',
@@ -99,27 +135,9 @@ export const TotalPowerCard: React.FC = () => {
 
     const copyData = async () => {
         const text = `静态战力: ${formatNumber(totalPower)} (${currentRankConfig.Rank}级)`;
-        try {
-            if (navigator.clipboard && window.isSecureContext) {
-                await navigator.clipboard.writeText(text);
-            } else {
-                const textSpace = document.createElement("textarea");
-                textSpace.value = text;
-                textSpace.style.position = "fixed";
-                textSpace.style.left = "-9999px";
-                textSpace.style.top = "0";
-                textSpace.setAttribute("readonly", "");
-                document.body.appendChild(textSpace);
-                textSpace.focus();
-                textSpace.select();
-                const successful = document.execCommand('copy');
-                document.body.removeChild(textSpace);
-                if (!successful) throw new Error('Copy failed');
-            }
+        if (await copyToClipboard(text)) {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
-        } catch (err) {
-            console.error('Copy failed:', err);
         }
     };
 
@@ -303,12 +321,196 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         setDragOffset(0);
     };
 
+    // ---- Step 10：分享数据与动作 ----
+    const activeDungeon = useMemo(
+        () => results.dungeonPowers.find((d) => d.DungeonID === selectedDungeonId) || results.dungeonPowers[0],
+        [results.dungeonPowers, selectedDungeonId],
+    );
+    const [activeMonsterId, setActiveMonsterId] = useState<string | null>(null);
+    const activeBoss = useMemo(() => {
+        if (!activeDungeon) return undefined;
+        return activeDungeon.Monsters.find((m) => m.MonsterID === activeMonsterId) || activeDungeon.Monsters[0];
+    }, [activeDungeon, activeMonsterId]);
+
+    const shareSnapshot: ShareSnapshot = useMemo(() => ({
+        classId: userCharacter.ClassID,
+        faction: userCharacter.Faction,
+        attributes: userCharacter.BaseAttributes,
+        activeBuffIds,
+        buffValues,
+    }), [userCharacter.ClassID, userCharacter.Faction, userCharacter.BaseAttributes, activeBuffIds, buffValues]);
+
+    const shareCardData: ShareCardData | null = useMemo(() => {
+        if (!activeDungeon || !activeBoss) return null;
+        const service = DataService.getInstance();
+        const skillsMap = service.getSkills(userCharacter.ClassID);
+        const outputSkills = skillsMap
+            ? buildSingleCalcSkills(skillsMap as Record<string, Skill[]>, userCharacter.Faction)
+            : [];
+        const activeShareBuffs = buffs.filter((b) => activeBuffIds.includes(b.BuffID));
+
+        const rows: ShareSkillRow[] = outputSkills
+            .map((skill) => {
+                const dmg = calculateDamage(userCharacter.BaseAttributes, skill, activeBoss, activeShareBuffs, buffValues);
+                const multiHit = skill.SkillBonusAttributes?.MultiHitConfig;
+                const hits = dmg.hits || [];
+                return {
+                    row: {
+                        name: skill.SkillName,
+                        avg: dmg.avgFinalDamage,
+                        min: dmg.minFinalDamage,
+                        max: dmg.maxFinalDamage,
+                        hitCount: multiHit?.HitCount || 1,
+                        isMultiHit: !!multiHit && hits.length > 1,
+                        hits: hits.map((h) => ({
+                            hitIndex: h.hitIndex,
+                            min: h.minFinalDamage,
+                            max: h.maxFinalDamage,
+                            avg: h.avgFinalDamage,
+                        })),
+                    } satisfies ShareSkillRow,
+                    weight: skill.SkillImportanceWeight,
+                };
+            })
+            .sort((a, b) => b.weight - a.weight)
+            .map((item) => item.row);
+
+        const today = new Date();
+        const dateText = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        const classLabel = service.getClasses()?.find((c) => c.ClassID === userCharacter.ClassID)?.ClassName || userCharacter.ClassID;
+
+        return {
+            siteName: '诛仙3战力模拟器',
+            dateText,
+            className: classLabel,
+            factionLabel: FACTION_LABELS[userCharacter.Faction] || userCharacter.Faction,
+            attributes: userCharacter.BaseAttributes,
+            buffs: activeShareBuffs.map((b) => ({
+                name: b.BuffName,
+                value: buffValues[b.BuffID] ?? b.DefaultEffectValue ?? 0,
+            })),
+            dungeonName: activeDungeon.DungeonName,
+            bossName: activeBoss.MonsterName,
+            skills: rows,
+        };
+    }, [activeDungeon, activeBoss, userCharacter, buffs, activeBuffIds, buffValues]);
+
+    const [shareOpen, setShareOpen] = useState(false);
+    const [menuPos, setMenuPos] = useState<{ top: number; right: number } | null>(null);
+    const [feedback, setFeedback] = useState<'link' | 'text' | null>(null);
+    const [exportState, setExportState] = useState<'idle' | 'working' | 'error'>('idle');
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const shareAnchorRef = useRef<HTMLButtonElement>(null);
+
+    const handleMonsterChange = useCallback((monsterId: string) => {
+        setActiveMonsterId(monsterId);
+    }, []);
+
+    const handleToggleShareMenu = useCallback(() => {
+        setShareOpen((prev) => {
+            if (!prev && shareAnchorRef.current) {
+                const rect = shareAnchorRef.current.getBoundingClientRect();
+                setMenuPos({
+                    top: rect.bottom + 6,
+                    right: window.innerWidth - rect.right,
+                });
+            }
+            return !prev;
+        });
+    }, []);
+
+    const handleCopyLink = useCallback(async () => {
+        setShareOpen(false);
+        const url = await buildShareUrl(shareSnapshot, selectedDungeonId);
+        if (await copyToClipboard(url)) {
+            setFeedback('link');
+            window.setTimeout(() => setFeedback(null), 2000);
+        }
+    }, [shareSnapshot, selectedDungeonId]);
+
+    const handleCopyText = useCallback(async () => {
+        setShareOpen(false);
+        if (await copyToClipboard(buildConfigText(shareSnapshot, buffs))) {
+            setFeedback('text');
+            window.setTimeout(() => setFeedback(null), 2000);
+        }
+    }, [shareSnapshot, buffs]);
+
+    const handleExportImage = useCallback(async () => {
+        setShareOpen(false);
+        setExportState('working');
+        try {
+            const [share, exporter] = await Promise.all([
+                import('../share/ShareCard'),
+                import('../../utils/exportImage'),
+            ]);
+            if (!shareCardData) throw new Error('缺少当前副本/BOSS 数据');
+
+            // 二维码失败不阻塞出图
+            let qrDataUrl: string | null = null;
+            try {
+                const url = await buildShareUrl(shareSnapshot, selectedDungeonId);
+                const QRCode = (await import('qrcode')).default;
+                qrDataUrl = await QRCode.toDataURL(url, {
+                    margin: 1,
+                    width: 336,
+                    errorCorrectionLevel: 'M',
+                    color: { dark: '#0a0d0c', light: '#ffffff' },
+                });
+                await share.preloadQrImage(qrDataUrl);
+            } catch (err) {
+                console.warn('二维码生成失败，改为无码出图:', err);
+                qrDataUrl = null;
+            }
+
+            const { canvas } = share.renderShareCard({ ...shareCardData, qrDataUrl }, share.readShareTheme());
+            const result = await exporter.exportCanvas(
+                canvas,
+                share.suggestShareFilename(shareCardData.dungeonName, shareCardData.bossName, shareCardData.dateText),
+            );
+            if (result.mode === 'preview' && result.dataUrl) setPreviewUrl(result.dataUrl);
+            setExportState('idle');
+        } catch (err) {
+            console.error('导出分享长图失败:', err);
+            setExportState('error');
+            window.setTimeout(() => setExportState('idle'), 3000);
+        }
+    }, [shareCardData, shareSnapshot, selectedDungeonId]);
+
     return (
         <div className="relative w-full flex flex-col items-center gap-4">
-            <h2 className="text-lg font-semibold text-slate-100 flex items-center gap-2 self-start">
-                <span className="w-1 h-5 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
-                副本战力分析
-            </h2>
+            <div className="w-full flex items-center justify-between gap-3">
+                <h2 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
+                    <span className="w-1 h-5 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
+                    副本战力分析
+                </h2>
+
+                <div className="relative flex items-center gap-2">
+                    {feedback && (
+                        <span className="text-[10px] text-green-400 font-bold whitespace-nowrap">
+                            {feedback === 'link' ? '✓ 链接已复制' : '✓ 文本已复制'}
+                        </span>
+                    )}
+                    {exportState === 'error' && (
+                        <span className="text-[10px] text-red-400 font-bold whitespace-nowrap">导出失败，请重试</span>
+                    )}
+                    <button
+                        type="button"
+                        ref={shareAnchorRef}
+                        onClick={handleToggleShareMenu}
+                        aria-label="分享"
+                        aria-expanded={shareOpen}
+                        className="zx-btn flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs"
+                    >
+                        {exportState === 'working' ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                            <Share2 className="w-3.5 h-3.5" />
+                        )}
+                        <span>{exportState === 'working' ? '导出中' : '分享'}</span>
+                    </button>
+                </div>
+            </div>
 
             <div
                 ref={containerRef}
@@ -383,12 +585,57 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                                     focusMonsterId={focusMonsterId}
                                     focusSkillName={focusSkillName}
                                     autoShowAttr={autoShowAttr}
+                                    onMonsterChange={isActive ? handleMonsterChange : undefined}
                                 />
                             </div>
                         );
                     })}
                 </div>
             </div>
+            {shareOpen && menuPos && createPortal(
+                <>
+                    <div className="fixed inset-0 z-[9998]" onClick={() => setShareOpen(false)} aria-hidden />
+                    <div
+                        role="menu"
+                        aria-label="分享"
+                        className="fixed z-[9999] w-44 rounded-xl border border-slate-700 bg-slate-900 p-1.5 shadow-2xl shadow-black/70 flex flex-col gap-1"
+                        style={{ top: menuPos.top, right: menuPos.right }}
+                    >
+                        <button type="button" onClick={handleExportImage} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700/60 transition-colors text-left">
+                            <Download className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
+                            导出分享长图
+                        </button>
+                        <button type="button" onClick={handleCopyLink} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700/60 transition-colors text-left">
+                            <Link2 className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
+                            复制分享链接
+                        </button>
+                        <button type="button" onClick={handleCopyText} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700/60 transition-colors text-left">
+                            <FileText className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
+                            复制配置文本
+                        </button>
+                    </div>
+                </>,
+                document.body,
+            )}
+
+            {previewUrl && (
+                <div className="fixed inset-0 z-[9999] bg-black/85 flex flex-col items-center justify-center gap-4 p-4">
+                    <img
+                        src={previewUrl}
+                        alt="分享长图（长按保存）"
+                        className="max-h-[78vh] max-w-full rounded-xl shadow-2xl"
+                    />
+                    <p className="text-slate-300 text-xs">长按图片保存到相册，或直接分享给好友</p>
+                    <button
+                        type="button"
+                        onClick={() => setPreviewUrl(null)}
+                        className="zx-btn flex items-center gap-1.5 px-4 py-2 rounded-full text-xs"
+                    >
+                        <X className="w-3.5 h-3.5" />
+                        关闭
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
