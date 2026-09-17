@@ -29,6 +29,16 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.1.4',
+        date: '2026-09-17',
+        title: '跨门派对比大升级：技能按名字对上，不再有大片空白',
+        changes: [
+            { type: 'fix', text: '跨阵营 / 跨职业对比时，同源技能（如「苍龙啸·煞 / 苍龙啸·禅」）会自动认出来对齐到一起比差值，并排在最前面' },
+            { type: 'fix', text: '只有一边有的技能紧跟着往下排，不再出现整片「—」空白；每一行都会标出「仅A / 仅B」归属' },
+            { type: 'fix', text: '对比窗口顶部始终显示左右两列各是哪套职业·阵营，滚到任何位置都知道在比谁' },
+        ],
+    },
+    {
         version: '1.1.3',
         date: '2026-09-17',
         title: '方案列表不再挤成一截',

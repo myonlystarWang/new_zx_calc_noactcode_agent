@@ -8,8 +8,9 @@
  * - 副本值 = 该副本内全部 BOSS 的均值
  *   ⚠️ 与计算器页的「综合战力」（技能加权和）**不是同一口径**，页面上已注明。
  *
- * 技能行取「两侧技能 ID 的并集」：同门派同阵营时为一一对应；跨门派/阵营时
- * 只有重叠技能两侧都有值，其余单侧显示，用「占比」辅助横向阅读。
+ * 技能行按**归一化技能名**匹配：同职业跨阵营的技能是同源变体（SkillID 不同，名字只差阵营段
+ * 「·煞/·禅/·玄」，如 苍龙啸·煞 ↔ 苍龙啸·禅），去掉变体段后同名即为同一技能——
+ * 同名的排在前面对齐对比；单侧独有的技能各自成列接续排在后面，不参与差值。
  *
  * 对比只读 preset 数据、不 loadPreset，因此不会污染计算器当前配置。
  */
@@ -18,6 +19,15 @@ import { buildSingleCalcSkills, calculateDamage } from './calculator';
 import { defaultAttributes } from '../context/AppContext';
 import type { Buff, CharacterAttributes, Skill } from '../types';
 import type { Preset } from '../hooks/usePresets';
+
+/** 阵营变体段：技能名里「·煞 / ·禅 / ·玄」这类独立段，归一化时去掉（段精确匹配，不会误伤「银鳞玄冰」「玄烛·狱龙破」） */
+const FACTION_VARIANT_SEGMENTS = ['煞', '禅', '玄'];
+
+/** 归一化技能名：按「·」分段，去掉阵营变体段后重组（全段都被去掉时回落原名） */
+export const normalizeSkillName = (name: string): string => {
+    const segs = String(name).split('·').filter((seg) => !FACTION_VARIANT_SEGMENTS.includes(seg.trim()));
+    return segs.join('·') || String(name);
+};
 
 /** 属性对比行（顺序与计算器页 AttributePanel 一致） */
 export const ATTRIBUTE_ROWS: { key: keyof CharacterAttributes; label: string }[] = [
@@ -98,7 +108,11 @@ export interface BuffCompareRow {
 
 export interface SkillCompareRow {
     skillId: string;
+    /** 共有行 = 归一化名（中间列展示）；单侧行 = 该侧实际技能名 */
     name: string;
+    /** 两侧的实际技能名（共有行两侧名字可能差阵营段，用于 title 提示） */
+    nameA: string | null;
+    nameB: string | null;
     a: number | null;
     b: number | null;
     /** 占该侧 BOSS 总伤的百分比 */
@@ -242,34 +256,72 @@ export function comparePresets(presetA: Preset, presetB: Preset, buffs: Buff[]):
                 const sideB = profileB.byMonster.get(monster.MonsterID);
                 const totalA = sideA?.total ?? 0;
                 const totalB = sideB?.total ?? 0;
+                const listA = sideA?.skills || [];
+                const listB = sideB?.skills || [];
 
-                // 技能 ID 并集（保持 A 的顺序，B 独有的追加在后），再按「较大的那侧伤害」降序
-                const mapA = new Map((sideA?.skills || []).map((s) => [s.skill.SkillID, s]));
-                const mapB = new Map((sideB?.skills || []).map((s) => [s.skill.SkillID, s]));
-                const ids: string[] = [
-                    ...(sideA?.skills || []).map((s) => s.skill.SkillID),
-                    ...(sideB?.skills || []).map((s) => s.skill.SkillID).filter((id) => !mapA.has(id)),
+                // 技能按**归一化名字**匹配（跨阵营同源变体 SkillID 不同但名字只差阵营段）：
+                // 同名 → 共有行（对齐对比）；仅单侧 → 单侧行（各自接续排列，不参与差值）
+                const groups = new Map<string, { a: typeof listA; b: typeof listB }>();
+                for (const item of listA) {
+                    const key = normalizeSkillName(item.skill.SkillName);
+                    let g = groups.get(key);
+                    if (!g) { g = { a: [], b: [] }; groups.set(key, g); }
+                    g.a.push(item);
+                }
+                for (const item of listB) {
+                    const key = normalizeSkillName(item.skill.SkillName);
+                    let g = groups.get(key);
+                    if (!g) { g = { a: [], b: [] }; groups.set(key, g); }
+                    g.b.push(item);
+                }
+
+                const shared: SkillCompareRow[] = [];
+                const soloA: typeof listA = [];
+                const soloB: typeof listB = [];
+                for (const [norm, g] of groups) {
+                    const pairs = Math.min(g.a.length, g.b.length);
+                    for (let k = 0; k < pairs; k++) {
+                        const ea = g.a[k];
+                        const eb = g.b[k];
+                        const both = ea.avg !== null && eb.avg !== null;
+                        shared.push({
+                            skillId: ea.skill.SkillID,
+                            name: norm,
+                            nameA: ea.skill.SkillName,
+                            nameB: eb.skill.SkillName,
+                            a: ea.avg,
+                            b: eb.avg,
+                            shareA: totalA > 0 ? (ea.avg / totalA) * 100 : null,
+                            shareB: totalB > 0 ? (eb.avg / totalB) * 100 : null,
+                            delta: both ? eb.avg - ea.avg : null,
+                            deltaPercent: both ? percentChange(ea.avg, eb.avg) : null,
+                        });
+                    }
+                    for (let k = pairs; k < g.a.length; k++) soloA.push(g.a[k]);
+                    for (let k = pairs; k < g.b.length; k++) soloB.push(g.b[k]);
+                }
+                const toSoloRow = (e: { skill: Skill; avg: number }, side: 'a' | 'b'): SkillCompareRow => ({
+                    skillId: e.skill.SkillID,
+                    name: e.skill.SkillName,
+                    nameA: side === 'a' ? e.skill.SkillName : null,
+                    nameB: side === 'b' ? e.skill.SkillName : null,
+                    a: side === 'a' ? e.avg : null,
+                    b: side === 'b' ? e.avg : null,
+                    shareA: side === 'a' && totalA > 0 ? (e.avg / totalA) * 100 : null,
+                    shareB: side === 'b' && totalB > 0 ? (e.avg / totalB) * 100 : null,
+                    delta: null,
+                    deltaPercent: null,
+                });
+                for (const e of soloA) shared.push(toSoloRow(e, 'a'));
+                for (const e of soloB) shared.push(toSoloRow(e, 'b'));
+
+                // 共有块在前（用户拍板：同名的优先放顶部），块内按较大侧伤害降序；单侧块接续，按自身伤害降序
+                const skills: SkillCompareRow[] = [
+                    ...shared.filter((s) => s.a !== null && s.b !== null)
+                        .sort((left, right) => Math.max(right.a ?? 0, right.b ?? 0) - Math.max(left.a ?? 0, left.b ?? 0)),
+                    ...shared.filter((s) => s.a === null || s.b === null)
+                        .sort((left, right) => Math.max(right.a ?? 0, right.b ?? 0) - Math.max(left.a ?? 0, left.b ?? 0)),
                 ];
-
-                const skills: SkillCompareRow[] = ids
-                    .map((id) => {
-                        const sa = mapA.get(id);
-                        const sb = mapB.get(id);
-                        const va = sa ? sa.avg : null;
-                        const vb = sb ? sb.avg : null;
-                        const both = va !== null && vb !== null;
-                        return {
-                            skillId: id,
-                            name: sa?.skill.SkillName || sb?.skill.SkillName || id,
-                            a: va,
-                            b: vb,
-                            shareA: va !== null && totalA > 0 ? (va / totalA) * 100 : null,
-                            shareB: vb !== null && totalB > 0 ? (vb / totalB) * 100 : null,
-                            delta: both ? (vb as number) - (va as number) : null,
-                            deltaPercent: both ? percentChange(va as number, vb as number) : null,
-                        };
-                    })
-                    .sort((left, right) => Math.max(right.a ?? 0, right.b ?? 0) - Math.max(left.a ?? 0, left.b ?? 0));
 
                 return {
                     monsterId: monster.MonsterID,
