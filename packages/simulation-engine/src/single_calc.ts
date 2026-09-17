@@ -1,5 +1,5 @@
-import type { Skill, SkillBonusAttributes } from './types.js';
-import { applyOverrideAdditive, applyOverrideCover } from './fourth_gen.js';
+import type { Skill, SkillBonusAttributes, FourthGenGrant } from './types.js';
+import { applyOverrideAdditive, applyOverrideCover, applyGrantToTargets } from './fourth_gen.js';
 import {
   getZhuShuangLongNuBonus,
   ZS_LONGNU_PEAK_YYZC_LEVEL,
@@ -49,8 +49,9 @@ const PEAK_VARIANT_RULES: PeakVariantRule[] = [
   }
 ];
 
-/** 判断是否为直接输出技能（与单次/模拟一致：无 ActionType 或 DAMAGE） */
-const isDamageSkill = (skill: Skill): boolean => !skill.ActionType || skill.ActionType === 'DAMAGE';
+/** 判断是否为直接输出技能（与单次/模拟一致：无 ActionType 或 DAMAGE；四代/造化被动不计入） */
+const isDamageSkill = (skill: Skill): boolean =>
+  !skill.ActionType || skill.ActionType === 'DAMAGE';
 
 /**
  * 把技能池内全部四代被动按曦日"理论满配"应用到技能映射：
@@ -77,6 +78,21 @@ const applyPeakFourthGen = (skillMap: Record<string, Skill>, pool: Skill[]): voi
         }
       }
     }
+  }
+
+  // 造化技能被动（带 II 的造化技能）：常驻生效，无品质分级，直接按 FourthGenGrant 加法叠加到目标技能。
+  // 两趟：绝对覆盖类（如玄烛把九刃齐歌 CD 覆盖为 32）先于冷却减少类（CooldownReduction）执行，保证叠加顺序无关。
+  const zaoGrants: FourthGenGrant[] = [];
+  for (const skill of pool) {
+    if (skill.ZaoHuaGrants && skill.ZaoHuaGrants.length > 0) zaoGrants.push(...skill.ZaoHuaGrants);
+  }
+  for (const grant of zaoGrants) {
+    if (grant.Override && grant.Override.CooldownReduction != null) continue;
+    applyGrantToTargets(skillMap, grant);
+  }
+  for (const grant of zaoGrants) {
+    if (!grant.Override || grant.Override.CooldownReduction == null) continue;
+    applyGrantToTargets(skillMap, grant);
   }
 };
 

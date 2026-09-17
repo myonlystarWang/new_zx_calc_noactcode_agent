@@ -98,7 +98,7 @@ export function validateSkillsData(allSkills: AllSkills): SchemaValidationIssue[
 
         // Validate ActionType
         if (skill.ActionType) {
-          const validTypes = ['DAMAGE', 'BUFF', 'DEBUFF', 'UTILITY', 'FOURTH_GEN_PASSIVE'];
+          const validTypes = ['DAMAGE', 'BUFF', 'DEBUFF', 'UTILITY', 'FOURTH_GEN_PASSIVE', 'ZAO_HUA_PASSIVE'];
           if (!validTypes.includes(skill.ActionType)) {
             issues.push({
               field: `${skillPath}.ActionType`,

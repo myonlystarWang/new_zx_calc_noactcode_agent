@@ -4,7 +4,8 @@ import type {
   EquippedFourthGen,
   FourthGenQuality,
   SkillBonusAttributes,
-  AppliedEffectConfig
+  AppliedEffectConfig,
+  FourthGenGrant
 } from './types.js';
 
 /**
@@ -66,8 +67,13 @@ export function applyOverrideCover(skill: Skill, ovr: Partial<PlayerSkillOverrid
  * 用于"作用其他技能"的 FourthGenGrants（如未名斩真气攻击力 +10）。
  */
 export function applyOverrideAdditive(skill: Skill, ovr: Partial<PlayerSkillOverride>): void {
-  const { AppliesEffects, SkillBonusAttributes: bonusAttrs, ...topLevel } = ovr;
+  const { AppliesEffects, SkillBonusAttributes: bonusAttrs, CooldownReduction, ...topLevel } = ovr;
   Object.assign(skill, topLevel);
+  // 冷却减少量：相对当前 Cooldown 相减（与顶层 Cooldown 绝对覆盖区分，便于多源叠加）
+  if (typeof CooldownReduction === 'number') {
+    const base = typeof skill.Cooldown === 'number' ? skill.Cooldown : 0;
+    skill.Cooldown = base - CooldownReduction;
+  }
   if (bonusAttrs) {
     const merged: SkillBonusAttributes = { ...skill.SkillBonusAttributes };
     for (const key of ADDITIVE_BONUS_FIELDS) {
@@ -88,6 +94,44 @@ export function applyOverrideAdditive(skill: Skill, ovr: Partial<PlayerSkillOver
 
 /** 是否为不进入输出循环的四代被动条目 */
 export const isFourthGenPassive = (skill: Skill): boolean => skill.ActionType === 'FOURTH_GEN_PASSIVE';
+
+/** 是否为不进入输出循环的造化技能被动条目（带 II 的造化技能，常驻生效） */
+export const isClassPassive = (skill: Skill): boolean => skill.ActionType === 'ZAO_HUA_PASSIVE';
+
+/** 把一条 Grant 的 Override 应用到它的全部目标技能（静默跳过不存在的目标） */
+export function applyGrantToTargets(skillMap: Record<string, Skill>, grant: FourthGenGrant): void {
+  for (const targetId of grant.TargetSkillIds) {
+    const target = skillMap[targetId];
+    if (!target) continue;
+    applyOverrideAdditive(target, grant.Override);
+  }
+}
+
+/**
+ * 在已深拷贝的技能集合上应用门派"造化被动"（常驻、不占四代槽位、无需佩戴）。
+ * 遍历集合内所有带 ZaoHuaGrants 的技能，按 FourthGenGrant 结构以"加法叠加"应用到每个目标技能。
+ * 与 applyEquippedFourthGen 的 Grants 分支语义一致，只是来源是学习者本身而非佩戴的四代实体。
+ *
+ * 两趟排序：先应用"绝对覆盖类" grant（如玄烛把九刃齐歌 CD 覆盖为 32），再应用"冷却减少类"
+ * grant（CooldownReduction），保证多源冷却叠加与遍历顺序无关。
+ */
+export function applyClassPassives(skillMap: Record<string, Skill>): Record<string, Skill> {
+  const grants: FourthGenGrant[] = [];
+  for (const skill of Object.values(skillMap)) {
+    if (skill.ZaoHuaGrants && skill.ZaoHuaGrants.length > 0) grants.push(...skill.ZaoHuaGrants);
+  }
+  // 第一趟：无 CooldownReduction 的 grant（绝对覆盖 + 加成）
+  for (const grant of grants) {
+    if (grant.Override && grant.Override.CooldownReduction != null) continue;
+    applyGrantToTargets(skillMap, grant);
+  }
+  // 第二趟：带 CooldownReduction 的 grant（最后相减，叠加在绝对覆盖之上）
+  for (const grant of grants) {
+    if (!grant.Override || grant.Override.CooldownReduction == null) continue;
+    applyGrantToTargets(skillMap, grant);
+  }
+  return skillMap;
+}
 
 /** 取四代实体在指定品质下的初始效果模板（佩戴后场景开始时施加，空数组兜底） */
 export function getFourthGenInitialEffects(fg: Skill, quality: FourthGenQuality): AppliedEffectConfig[] {

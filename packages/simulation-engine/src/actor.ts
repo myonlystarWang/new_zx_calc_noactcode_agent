@@ -8,7 +8,7 @@ import type {
 } from './types.js';
 import type { EffectInstance } from './effects.js';
 import { resolveEffectiveCharacterAttributesFromEffects } from './attributes.js';
-import { applyEquippedFourthGen, isFourthGenPassive } from './fourth_gen.js';
+import { applyEquippedFourthGen, isFourthGenPassive, applyClassPassives, isClassPassive } from './fourth_gen.js';
 
 export interface SkillRuntimeState {
   cooldownReadyAtMs: number;
@@ -139,7 +139,7 @@ export class Actor {
     const skill = this.Skills[skillId];
     const state = this.SkillStates[skillId];
     if (!skill || !state) return false;
-    if (isFourthGenPassive(skill)) return false; // 四代佩戴型被动不进入技能循环
+    if (isFourthGenPassive(skill) || isClassPassive(skill)) return false; // 四代/造化被动不进入技能循环
 
     if (state.maxCharges > 1) {
       return state.charges > 0;

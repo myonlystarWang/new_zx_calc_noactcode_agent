@@ -9,7 +9,7 @@
     "critDamage": 1980,
     "mana": 2800000,
     "health": 3200000,
-    "monsterDamageIncrease": 15
+    "monsterDamageIncrease": 16
   },
   "buffs": {
     "focus": 241,

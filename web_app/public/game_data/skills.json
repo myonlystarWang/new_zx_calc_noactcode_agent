@@ -1075,6 +1075,29 @@
   "NIE_YU": {
     "XIAN": [
       {
+        "SkillID": "NY_XIAN_SKILL_DYFT_XR",
+        "SkillName": "赤乌·大业浮屠",
+        "RequiredClass": "NIE_YU",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 3,
+        "SkillFrequency": 0.2,
+        "Cooldown": 40,
+        "CastTime": 3,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 340,
+          "SkillAttackFixedBonus": 5000,
+          "SkillHealthPercentBonus": 80,
+          "SkillManaPercentBonus": 40,
+          "SkillCriticalDamagePercentBonus": 50,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 8
+          }
+        },
+        "ActionType": "DAMAGE"
+      },
+      {
         "SkillID": "NY_XIAN_SKILL_SYWM",
         "SkillName": "刹羽无名",
         "RequiredClass": "NIE_YU",
@@ -1082,76 +1105,20 @@
         "SkillImportanceWeight": 1,
         "SkillFrequency": 0.9,
         "Cooldown": 0,
-        "CastTime": 0,
+        "CastTime": 4.5,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 215,
+          "SkillAttackPercentBonus": 165,
           "SkillAttackFixedBonus": 820,
-          "SkillHealthPercentBonus": 30,
-          "SkillManaPercentBonus": 10,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 5,
           "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 10
+          }
         },
         "ActionType": "DAMAGE"
-      },
-      {
-        "SkillID": "NY_XIAN_SKILL_DYFT_XR",
-        "SkillName": "赤乌·大业浮屠",
-        "RequiredClass": "NIE_YU",
-        "Faction": "XIAN",
-        "SkillImportanceWeight": 3,
-        "SkillFrequency": 0.2,
-        "Cooldown": 60,
-        "CastTime": 60,
-        "IsAOE": false,
-        "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 390,
-          "SkillAttackFixedBonus": 5000,
-          "SkillHealthPercentBonus": 90,
-          "SkillManaPercentBonus": 45,
-          "SkillCriticalDamagePercentBonus": 100,
-          "SkillDamageBonus": 1
-        },
-        "ActionType": "DAMAGE",
-        "FourthGenSlot": "CHI_WU",
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
-          },
-          "HAO_YUE": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
-          },
-          "XI_RI": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
-          }
-        }
       },
       {
         "SkillID": "NY_XIAN_SKILL_JRQG",
@@ -1160,18 +1127,82 @@
         "Faction": "XIAN",
         "SkillImportanceWeight": 0,
         "SkillFrequency": 0.2,
-        "Cooldown": 60,
-        "CastTime": 60,
+        "Cooldown": 52,
+        "CastTime": 2,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 122,
-          "SkillAttackFixedBonus": 800,
-          "SkillHealthPercentBonus": 14,
-          "SkillManaPercentBonus": 9,
-          "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 3
+          "SkillAttackPercentBonus": 72,
+          "SkillAttackFixedBonus": 700,
+          "SkillHealthPercentBonus": 4,
+          "SkillManaPercentBonus": 4,
+          "SkillCriticalDamagePercentBonus": 40,
+          "SkillDamageBonus": 3,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
         },
         "ActionType": "DAMAGE"
+      },
+      {
+        "SkillID": "NY_XIAN_SKILL_XSX",
+        "SkillName": "献弑·玄",
+        "RequiredClass": "NIE_YU",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 2,
+        "SkillFrequency": 0.15,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 280,
+          "SkillAttackFixedBonus": 4000,
+          "SkillHealthPercentBonus": 30,
+          "SkillManaPercentBonus": 34,
+          "SkillCriticalDamagePercentBonus": 40,
+          "SkillDamageBonus": 2,
+          "MultiHitConfig": {
+            "HitCount": 4
+          }
+        },
+        "ActionType": "DAMAGE"
+      },
+      {
+        "SkillID": "NY_XIAN_SKILL_FW2",
+        "SkillName": "凤吻II",
+        "RequiredClass": "NIE_YU",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {},
+        "ActionType": "ZAO_HUA_PASSIVE",
+        "ZaoHuaGrants": [
+          {
+            "TargetSkillIds": [
+              "NY_XIAN_SKILL_DYFT_XR",
+              "NY_XIAN_SKILL_SYWM",
+              "NY_XIAN_SKILL_JRQG",
+              "NY_XIAN_SKILL_XSX"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillAttackPercentBonus": 50,
+                "SkillHealthPercentBonus": 10,
+                "SkillManaPercentBonus": 5
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "NY_XIAN_SKILL_XSX"
+            ],
+            "Override": {
+              "CooldownReduction": 30
+            }
+          }
+        ]
       }
     ],
     "FO": [
@@ -1182,57 +1213,21 @@
         "Faction": "FO",
         "SkillImportanceWeight": 2,
         "SkillFrequency": 0.2,
-        "Cooldown": 60,
-        "CastTime": 60,
+        "Cooldown": 40,
+        "CastTime": 3,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 390,
+          "SkillAttackPercentBonus": 340,
           "SkillAttackFixedBonus": 5000,
-          "SkillHealthPercentBonus": 90,
-          "SkillManaPercentBonus": 45,
-          "SkillCriticalDamagePercentBonus": 100,
-          "SkillDamageBonus": 1
-        },
-        "ActionType": "DAMAGE",
-        "FourthGenSlot": "CHI_WU",
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
-          },
-          "HAO_YUE": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
-          },
-          "XI_RI": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
+          "SkillHealthPercentBonus": 80,
+          "SkillManaPercentBonus": 40,
+          "SkillCriticalDamagePercentBonus": 50,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 8
           }
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "NY_FO_SKILL_SYWM",
@@ -1242,15 +1237,18 @@
         "SkillImportanceWeight": 1,
         "SkillFrequency": 0.9,
         "Cooldown": 0,
-        "CastTime": 0,
+        "CastTime": 4.5,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 215,
+          "SkillAttackPercentBonus": 165,
           "SkillAttackFixedBonus": 820,
-          "SkillHealthPercentBonus": 30,
-          "SkillManaPercentBonus": 10,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 5,
           "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 10
+          }
         },
         "ActionType": "DAMAGE"
       },
@@ -1261,18 +1259,119 @@
         "Faction": "FO",
         "SkillImportanceWeight": 0,
         "SkillFrequency": 0.2,
-        "Cooldown": 60,
-        "CastTime": 60,
+        "Cooldown": 52,
+        "CastTime": 2,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 122,
-          "SkillAttackFixedBonus": 800,
-          "SkillHealthPercentBonus": 14,
-          "SkillManaPercentBonus": 9,
-          "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 3
+          "SkillAttackPercentBonus": 72,
+          "SkillAttackFixedBonus": 700,
+          "SkillHealthPercentBonus": 4,
+          "SkillManaPercentBonus": 4,
+          "SkillCriticalDamagePercentBonus": 40,
+          "SkillDamageBonus": 3,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
         },
         "ActionType": "DAMAGE"
+      },
+      {
+        "SkillID": "NY_FO_SKILL_XSC",
+        "SkillName": "献弑·禅",
+        "RequiredClass": "NIE_YU",
+        "Faction": "FO",
+        "SkillImportanceWeight": 2,
+        "SkillFrequency": 0.15,
+        "Cooldown": 60,
+        "CastTime": 1,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 280,
+          "SkillAttackFixedBonus": 4000,
+          "SkillHealthPercentBonus": 30,
+          "SkillManaPercentBonus": 34,
+          "SkillCriticalDamagePercentBonus": 40,
+          "SkillDamageBonus": 2,
+          "MultiHitConfig": {
+            "HitCount": 4
+          }
+        },
+        "ActionType": "DAMAGE"
+      },
+      {
+        "SkillID": "NY_FO_SKILL_SYWM2",
+        "SkillName": "刹羽无名II",
+        "RequiredClass": "NIE_YU",
+        "Faction": "FO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 0.4,
+        "Cooldown": 30,
+        "CastTime": 5,
+        "IsAOE": false,
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 390,
+          "SkillAttackFixedBonus": 2000,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 50,
+          "SkillCriticalDamagePercentBonus": 0,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 10
+          }
+        },
+        "ActionType": "DAMAGE"
+      },
+      {
+        "SkillID": "NY_FO_SKILL_JRQG2",
+        "SkillName": "九刃齐歌II",
+        "RequiredClass": "NIE_YU",
+        "Faction": "FO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {},
+        "ActionType": "ZAO_HUA_PASSIVE",
+        "ZaoHuaGrants": [
+          {
+            "TargetSkillIds": [
+              "NY_FO_SKILL_JRQG"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillAttackPercentBonus": 60,
+                "SkillManaPercentBonus": 7,
+                "SkillHealthPercentBonus": 10
+              },
+              "CooldownReduction": 10
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "NY_FO_SKILL_SYWM"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillAttackPercentBonus": 180,
+                "SkillHealthPercentBonus": 10,
+                "SkillManaPercentBonus": 10
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "NY_FO_SKILL_SYWM2"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillAttackPercentBonus": 120,
+                "SkillHealthPercentBonus": 10,
+                "SkillManaPercentBonus": 5
+              }
+            }
+          }
+        ]
       }
     ],
     "MO": [
@@ -1283,57 +1382,21 @@
         "Faction": "MO",
         "SkillImportanceWeight": 3,
         "SkillFrequency": 0.2,
-        "Cooldown": 60,
-        "CastTime": 60,
+        "Cooldown": 40,
+        "CastTime": 3,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 390,
+          "SkillAttackPercentBonus": 340,
           "SkillAttackFixedBonus": 5000,
-          "SkillHealthPercentBonus": 90,
-          "SkillManaPercentBonus": 45,
-          "SkillCriticalDamagePercentBonus": 100,
-          "SkillDamageBonus": 1
-        },
-        "ActionType": "DAMAGE",
-        "FourthGenSlot": "CHI_WU",
-        "FourthGenPresets": {
-          "YING_JU": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
-          },
-          "HAO_YUE": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
-          },
-          "XI_RI": {
-            "Cooldown": 60,
-            "CastTime": 60,
-            "SkillBonusAttributes": {
-              "SkillAttackPercentBonus": 390,
-              "SkillAttackFixedBonus": 5000,
-              "SkillHealthPercentBonus": 90,
-              "SkillManaPercentBonus": 45,
-              "SkillCriticalDamagePercentBonus": 100,
-              "SkillDamageBonus": 1
-            }
+          "SkillHealthPercentBonus": 80,
+          "SkillManaPercentBonus": 40,
+          "SkillCriticalDamagePercentBonus": 50,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 8
           }
-        }
+        },
+        "ActionType": "DAMAGE"
       },
       {
         "SkillID": "NY_MO_SKILL_SYWM",
@@ -1343,15 +1406,18 @@
         "SkillImportanceWeight": 1,
         "SkillFrequency": 0.9,
         "Cooldown": 0,
-        "CastTime": 0,
+        "CastTime": 4.5,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 215,
+          "SkillAttackPercentBonus": 165,
           "SkillAttackFixedBonus": 820,
-          "SkillHealthPercentBonus": 30,
-          "SkillManaPercentBonus": 10,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 5,
           "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 1
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 10
+          }
         },
         "ActionType": "DAMAGE"
       },
@@ -1362,18 +1428,75 @@
         "Faction": "MO",
         "SkillImportanceWeight": 0,
         "SkillFrequency": 0.2,
-        "Cooldown": 60,
-        "CastTime": 60,
+        "Cooldown": 52,
+        "CastTime": 2,
         "IsAOE": false,
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": 122,
-          "SkillAttackFixedBonus": 800,
-          "SkillHealthPercentBonus": 14,
-          "SkillManaPercentBonus": 9,
-          "SkillCriticalDamagePercentBonus": 0,
-          "SkillDamageBonus": 3
+          "SkillAttackPercentBonus": 72,
+          "SkillAttackFixedBonus": 700,
+          "SkillHealthPercentBonus": 4,
+          "SkillManaPercentBonus": 4,
+          "SkillCriticalDamagePercentBonus": 40,
+          "SkillDamageBonus": 3,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
         },
         "ActionType": "DAMAGE"
+      }
+    ],
+    "COMMON": [
+      {
+        "SkillID": "NY_COMMON_SKILL_XZQS",
+        "SkillName": "玄烛·祛魂生",
+        "RequiredClass": "NIE_YU",
+        "Faction": "COMMON",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {},
+        "ActionType": "FOURTH_GEN_PASSIVE",
+        "FourthGenSlot": "XUAN_ZHU",
+        "FourthGenGrants": {
+          "YING_JU": [
+            {
+              "TargetSkillIds": [
+                "NY_XIAN_SKILL_JRQG",
+                "NY_FO_SKILL_JRQG",
+                "NY_MO_SKILL_JRQG"
+              ],
+              "Override": {
+                "Cooldown": 42
+              }
+            }
+          ],
+          "HAO_YUE": [
+            {
+              "TargetSkillIds": [
+                "NY_XIAN_SKILL_JRQG",
+                "NY_FO_SKILL_JRQG",
+                "NY_MO_SKILL_JRQG"
+              ],
+              "Override": {
+                "Cooldown": 37
+              }
+            }
+          ],
+          "XI_RI": [
+            {
+              "TargetSkillIds": [
+                "NY_XIAN_SKILL_JRQG",
+                "NY_FO_SKILL_JRQG",
+                "NY_MO_SKILL_JRQG"
+              ],
+              "Override": {
+                "Cooldown": 32
+              }
+            }
+          ]
+        }
       }
     ]
   },
