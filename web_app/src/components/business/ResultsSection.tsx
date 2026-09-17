@@ -144,7 +144,7 @@ export const TotalPowerCard: React.FC = () => {
     return (
         <div className="zx-card p-4 relative overflow-hidden">
             {/* Background Decoration */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-24 bg-[var(--theme-primary)] opacity-15 blur-[40px] rounded-full pointer-events-none animate-glow"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-24 bg-[var(--theme-primary)] opacity-20 blur-[40px] rounded-full pointer-events-none"></div>
 
             <div className="relative flex flex-col items-center text-center z-10">
                 {/* Header - Compact */}
@@ -171,7 +171,7 @@ export const TotalPowerCard: React.FC = () => {
                 {/* Rank Badge - Dynamic Styles */}
                 <div className="mb-3">
                     <div className={clsx(
-                        'px-4 py-0.5 rounded-full backdrop-blur-md transition-all duration-500 animate-pulse-slow',
+                        'px-4 py-0.5 rounded-full backdrop-blur-md transition-all duration-300',
                         currentRankConfig.Color,
                         currentRankConfig.Shadow,
                         currentRankConfig.Border,

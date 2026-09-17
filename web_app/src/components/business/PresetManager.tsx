@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bookmark, ChevronDown, Save, Copy, Trash2, X } from 'lucide-react';
+import { Bookmark, ChevronDown, Save, Copy, Trash2, X, ArrowLeftRight } from 'lucide-react';
 import clsx from 'clsx';
+import { CompareDialog } from './CompareDialog';
 import { usePresets } from '../../hooks/usePresets';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
@@ -30,6 +31,7 @@ export const PresetManager: React.FC = () => {
     } = usePresets();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [compareOpen, setCompareOpen] = useState(false);
     const [namingDialog, setNamingDialog] = useState<NamingDialogState | null>(null);
     const [nameInput, setNameInput] = useState('');
     const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
@@ -47,6 +49,12 @@ export const PresetManager: React.FC = () => {
         document.addEventListener('mousedown', handleOutsideClick);
         return () => document.removeEventListener('mousedown', handleOutsideClick);
     }, [dropdownOpen]);
+
+    // Step 12.1：打开方案对比弹窗（默认以当前激活方案为基准 A，列表里另一套为 B）
+    const handleCompareClick = () => {
+        if (presets.length < 2) return;
+        setCompareOpen(true);
+    };
 
     const buildBaseName = (): string => {
         const parts: string[] = [];
@@ -155,8 +163,23 @@ export const PresetManager: React.FC = () => {
                         )}
                     </div>
 
-                    {/* 操作按钮 */}
-                    <div className="flex gap-2 shrink-0">
+                    {/* 操作按钮（Step 12 起为 4 个，允许换行避免窄屏溢出） */}
+                    <div className="flex flex-wrap gap-2 shrink-0">
+                        <button
+                            type="button"
+                            onClick={handleCompareClick}
+                            disabled={presets.length < 2}
+                            title={presets.length < 2 ? '保存 2 套以上方案后可用' : '并排对比两套方案'}
+                            className={clsx(
+                                'px-3 py-1.5 rounded-xl border flex items-center gap-1.5 text-sm transition-colors',
+                                presets.length >= 2
+                                    ? 'border-cyan-500/30 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20'
+                                    : 'border-slate-800 text-slate-600 cursor-not-allowed'
+                            )}
+                        >
+                            <ArrowLeftRight className="w-3.5 h-3.5" />
+                            对比
+                        </button>
                         <button
                             type="button"
                             onClick={handleSaveClick}
@@ -250,6 +273,15 @@ export const PresetManager: React.FC = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* 方案对比弹窗（Step 12.1）：方案列表与 loadPreset 由本组件传入，避免两处各持一份 usePresets 状态导致方案名不同步 */}
+            {compareOpen && (
+                <CompareDialog
+                    presets={presets}
+                    activePresetId={activePresetId}
+                    onClose={() => setCompareOpen(false)}
+                />
             )}
 
             {/* 删除确认弹窗 */}

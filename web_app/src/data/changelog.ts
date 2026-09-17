@@ -28,6 +28,18 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.1.0',
+        date: '2026-09-17',
+        title: '方案对比页 + Header 资料库下拉',
+        changes: [
+            { type: 'feat', text: '新增「方案对比」弹窗：并排比较两套方案的七项面板属性、全部增益数值与各副本 BOSS 伤害，每行较高的一侧标绿、右侧给出变化幅度' },
+            { type: 'feat', text: '伤害对比支持「副本 → BOSS → 技能」三层钻取：逐技能并排比较（门派/阵营不同时按技能并集 + 各自占比阅读），按需展开不铺满屏幕' },
+            { type: 'feat', text: '对比弹窗内可把任一套方案一键载入计算器继续测算（只读打开，不点「载入」不会改动当前配置）' },
+            { type: 'feat', text: 'Header「全景战斗资料库」新增下拉子入口（极致属性 / 职业技能 / 职业状态 / 副本 BOSS），任意页面可直达，与首页入口对齐' },
+            { type: 'feat', text: '计算器「属性方案」区新增「对比」按钮（保存 2 套以上方案后可用）' },
+        ],
+    },
+    {
         version: '1.0.9',
         date: '2026-09-17',
         title: '网站优化专项：路由化、多方案、分享与更新日志',
