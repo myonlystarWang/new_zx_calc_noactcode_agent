@@ -16,7 +16,7 @@ import type {
   ManualTimelineAction,
   EquippedFourthGen
 } from './types.js';
-import { isFourthGenPassive, getFourthGenInitialEffects } from './fourth_gen.js';
+import { isFourthGenPassive, getFourthGenInitialEffects, isClassPassive } from './fourth_gen.js';
 
 const COMMON_FACTION = 'COMMON';
 const SUPPORT_ACTION_TYPES = new Set<SkillActionType>(['BUFF', 'DEBUFF', 'UTILITY']);
@@ -290,6 +290,13 @@ const selectSkills = (config: {
     throw new Error(`${config.actorPath} did not resolve any usable skills.`);
   }
 
+  // 门派造化被动（带 II 的造化技能）常驻生效，无论是否显式选入都需进技能表，供 applyClassPassives 加成目标技能
+  for (const skill of config.skillPool) {
+    if (skill.ActionType === 'ZAO_HUA_PASSIVE') {
+      selectedIds.add(skill.SkillID);
+    }
+  }
+
   return config.skillPool
     .filter(skill => selectedIds.has(skill.SkillID))
     .map(skill => clone(skill));
@@ -379,7 +386,9 @@ const getStrategySkillIds = (
 };
 
 const assertSupportSkills = (skills: Skill[], actorId: string) => {
-  const invalid = skills.find(skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE' && (!skill.ActionType || !SUPPORT_ACTION_TYPES.has(skill.ActionType)));
+  const invalid = skills.find(
+    skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE' && skill.ActionType !== 'ZAO_HUA_PASSIVE' && (!skill.ActionType || !SUPPORT_ACTION_TYPES.has(skill.ActionType))
+  );
   if (invalid) {
     throw new Error(`Support actor "${actorId}" cannot include non-support skill "${invalid.SkillID}".`);
   }

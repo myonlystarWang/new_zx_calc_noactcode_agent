@@ -96,6 +96,10 @@ export interface Skill {
   FourthGenSlot?: FourthGenSlot;
   /** 四代"作用其他技能"：按品质列出对目标技能的增益；"作用本技能"仍走 FourthGenPresets */
   FourthGenGrants?: Partial<Record<FourthGenQuality, FourthGenGrant[]>>;
+  /** 造化技能被动（带 II 的造化技能，如凤吻II/九刃齐歌II）：常驻生效、不占四代槽位、无需佩戴，
+   *  给目标技能每段附加加成（SkillBonusAttributes 数值相加；顶层字段覆盖，如玄烛减冷却覆盖 Cooldown）。
+   *  与 FourthGenGrants 结构一致，但无品质分级——学习者即满生效。 */
+  ZaoHuaGrants?: FourthGenGrant[];
   /** 四代"初始效果"：佩戴后在场景开始时施加到目标的 BUFF/DEBUFF（如给 Boss 常驻易伤），按品质列出 */
   FourthGenInitialEffects?: Partial<Record<FourthGenQuality, AppliedEffectConfig[]>>;
   BuffDurationExtensionSeconds?: number;
@@ -275,7 +279,7 @@ export interface ValidationIssue {
 
 // --- v1.1 Simulation Schemas (Section 3.1) ---
 
-export type SkillActionType = 'DAMAGE' | 'BUFF' | 'DEBUFF' | 'UTILITY' | 'FOURTH_GEN_PASSIVE';
+export type SkillActionType = 'DAMAGE' | 'BUFF' | 'DEBUFF' | 'UTILITY' | 'FOURTH_GEN_PASSIVE' | 'ZAO_HUA_PASSIVE';
 export type FactionId = 'XIAN' | 'FO' | 'MO';
 
 /** 四代技能槽位：玄烛 / 赤乌（FG = Fourth Generation 第四代） */
@@ -337,7 +341,9 @@ export interface RankConfig {
 }
 
 export interface PlayerSkillOverride {
-  Cooldown?: number;                 // 玩家特定缩减后的 CD (秒)
+  Cooldown?: number;                 // 玩家特定缩减后的 CD (秒)；作为 grant Override 顶层字段时为"覆盖"语义
+  /** grant 专用：冷却时间减少量（秒），相对当前值相减，与绝对 Cooldown 覆盖分开、保证多源叠加顺序无关 */
+  CooldownReduction?: number;
   CastTime?: number;                 // 玩家特定缩减后的施法动作时间 (秒)
   MaxCharges?: number;
   ChargeReplenishTime?: number;

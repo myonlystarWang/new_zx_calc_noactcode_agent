@@ -29,6 +29,16 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.1.5',
+        date: '2026-09-17',
+        title: '涅羽技能数据校正：仙 / 佛各有各的数，造化加成自动算进去',
+        changes: [
+            { type: 'data', text: '涅羽三个阵营的技能数据重新校正：赤乌·大业浮屠、刹羽无名、九刃齐歌补齐了段数与伤害系数，献弑·玄 / 献弑·禅、刹羽无名II 按阵营分别录入' },
+            { type: 'feat', text: '造化技能（凤吻II、九刃齐歌II）现在会自动把攻击 / 气血 / 真气加成和冷却缩减叠到对应技能上，不用自己手算' },
+            { type: 'fix', text: '切换涅羽仙 / 佛时伤害不再完全一样；九刃齐歌的冷却会跟着玄烛品质（莹炬 / 皓月 / 曦日）自动变短' },
+        ],
+    },
+    {
         version: '1.1.4',
         date: '2026-09-17',
         title: '跨门派对比大升级：技能按名字对上，不再有大片空白',
