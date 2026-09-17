@@ -29,6 +29,15 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.1.2',
+        date: '2026-09-17',
+        title: '方案对比更好读了：数字靠中间、涨幅分色',
+        changes: [
+            { type: 'fix', text: '对比窗口里，两边的具体数值现在紧挨着中间的项目名，一眼左右对读；涨了多少、涨了百分之几挪到最外侧，不再挤在数字旁边让人看混' },
+            { type: 'fix', text: '「高了多少」单独用绿色小标签标出，和数值明显分开；数值本身改为亮白 / 灰分高低，不用颜色也能看出哪边更强' },
+        ],
+    },
+    {
         version: '1.1.1',
         date: '2026-09-17',
         title: '分享链接不再丢增益数值',
