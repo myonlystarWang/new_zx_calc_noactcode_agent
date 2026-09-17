@@ -103,6 +103,10 @@ const MainContent: React.FC = () => {
   // 分享链接（?p=）只应用一次：同一 payload 重复进入不覆盖用户后续手动改动
   const appliedShareRef = useRef<string | null>(null);
 
+  // 分享链接恢复结果的提示。此前解析失败是静默的：只有职业/阵营/副本落地，
+  // 属性与增益原封不动，用户会以为「分享链接没带配置」，实际是配置串损坏了。
+  const [shareNotice, setShareNotice] = useState<string | null>(null);
+
   useEffect(() => {
     // 数据未就绪时不做解析：resolveSkill / isValidDungeonId 依赖 DataService 已加载，
     // 否则会把合法的 ?skill=/?d= 误判为非法。
@@ -133,11 +137,18 @@ const MainContent: React.FC = () => {
     // 分享链接恢复（Step 10）：属性与增益复用同一条 URL→state 通道，不新增 restore 组件。
     // 幂等：同一 ?p= 只应用一次，避免 effect 重跑覆盖用户后续手动改动。
     const sharePayload = params.get('p');
+    if (!sharePayload) setShareNotice(null);
     if (sharePayload && target.tab === 'calculator' && appliedShareRef.current !== sharePayload) {
       appliedShareRef.current = sharePayload;
       void (async () => {
         const decoded = await decodeSharePayload(sharePayload);
-        if (!decoded) return;
+        if (!decoded) {
+          setShareNotice(
+            '这条分享链接的配置串已损坏（复制时被截断、或被聊天工具二次转义），' +
+            '角色属性与战斗增益未能恢复——当前显示的仍是你本地的配置。请让对方重新复制一次完整链接。'
+          );
+          return;
+        }
         if (decoded.attributes) updateCharacterAttributesRef.current(decoded.attributes);
         // 链接只带 bv（改了增益数值但没动勾选集）时 activeBuffIds 为 null：
         // 沿用当前勾选集，否则 buffValues 会被整块丢弃（Step 10 遗漏分支）
@@ -147,6 +158,11 @@ const MainContent: React.FC = () => {
             decoded.buffValues || {}
           );
         }
+        setShareNotice(
+          decoded.buffsSkipped
+            ? '角色属性已按分享链接恢复；但战斗增益未能还原（增益映射校验未通过），已沿用你本地的增益设置。'
+            : null
+        );
       })();
     }
 
@@ -232,6 +248,19 @@ const MainContent: React.FC = () => {
             className="px-3 py-1 rounded-md bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-100 text-xs"
           >
             重试
+          </button>
+        </div>
+      )}
+      {shareNotice && (
+        <div className="w-full bg-amber-950/60 border-b border-amber-500/40 px-4 py-2 text-sm text-amber-100 flex items-center gap-2">
+          <span aria-hidden>⚠️</span>
+          <span className="flex-1">{shareNotice}</span>
+          <button
+            type="button"
+            onClick={() => setShareNotice(null)}
+            className="px-2 py-0.5 rounded-md bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-100 text-xs"
+          >
+            知道了
           </button>
         </div>
       )}
