@@ -128,6 +128,7 @@ const CLASS_PINYIN_MAP: Record<string, { initials: string; full: string }> = {
     释罗: { initials: 'sl', full: 'shiluo' },
     合欢: { initials: 'hh', full: 'hehuan' },
     青云: { initials: 'qy', full: 'qingyun' },
+    归云: { initials: 'gy', full: 'guiyun' },
 };
 
 export const FACTION_LABELS: Record<string, string> = { XIAN: '仙', FO: '佛', MO: '魔', COMMON: '通用' };

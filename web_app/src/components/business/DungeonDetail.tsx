@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 import { Sword, Info } from 'lucide-react';
 import type { Dungeon, Skill, RankConfig, Monster } from '../../types';
 import { calculateDamage, buildSingleCalcSkills } from '../../utils/calculator';
+import { formatBonusValue, isPerHitArray } from '../../utils/skillBonusFormat';
+import { BonusValue } from '../ui/BonusValue';
 import { clsx } from 'clsx';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
@@ -440,15 +442,15 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                             </button>
                                         </div>
                                         <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
-                                            <div className="text-slate-400">附加攻击比: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillAttackPercentBonus || 0}%</span></div>
-                                            <div className="text-slate-400">附加固定攻击: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillAttackFixedBonus || 0}</span></div>
-                                            <div className="text-slate-400">附加气血比: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillHealthPercentBonus || 0}%</span></div>
-                                            <div className="text-slate-400">附加真气比: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillManaPercentBonus || 0}%</span></div>
-                                            <div className="text-slate-400">附加爆伤: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus || 0}%</span></div>
+                                            <div className={clsx('text-slate-400', isPerHitArray(pinnedSkill.SkillBonusAttributes?.SkillAttackPercentBonus) && 'col-span-2')}>附加攻击比: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(pinnedSkill.SkillBonusAttributes?.SkillAttackPercentBonus, '%') ?? '+0%'} /></span></div>
+                                            <div className={clsx('text-slate-400', isPerHitArray(pinnedSkill.SkillBonusAttributes?.SkillAttackFixedBonus) && 'col-span-2')}>附加固定攻击: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(pinnedSkill.SkillBonusAttributes?.SkillAttackFixedBonus, '') ?? '+0'} /></span></div>
+                                            <div className={clsx('text-slate-400', isPerHitArray(pinnedSkill.SkillBonusAttributes?.SkillHealthPercentBonus) && 'col-span-2')}>附加气血比: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(pinnedSkill.SkillBonusAttributes?.SkillHealthPercentBonus, '%') ?? '+0%'} /></span></div>
+                                            <div className={clsx('text-slate-400', isPerHitArray(pinnedSkill.SkillBonusAttributes?.SkillManaPercentBonus) && 'col-span-2')}>附加真气比: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(pinnedSkill.SkillBonusAttributes?.SkillManaPercentBonus, '%') ?? '+0%'} /></span></div>
+                                            <div className={clsx('text-slate-400', isPerHitArray(pinnedSkill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus) && 'col-span-2')}>附加爆伤: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(pinnedSkill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus, '%') ?? '+0%'} /></span></div>
                                             {pinnedSkill.SkillBonusAttributes?.SkillDefensePercentBonus ? (
-                                                <div className="text-slate-400">附加防御比: <span className="text-slate-200">+{pinnedSkill.SkillBonusAttributes.SkillDefensePercentBonus}%</span></div>
+                                                <div className="text-slate-400">附加防御比: <span className="text-slate-200">{formatBonusValue(pinnedSkill.SkillBonusAttributes.SkillDefensePercentBonus, '%')}</span></div>
                                             ) : null}
-                                            <div className="text-slate-400">伤害增加倍数: <span className="text-emerald-400 font-medium">{pinnedSkill.SkillBonusAttributes?.SkillDamageBonus || 1}</span></div>
+                                            <div className="text-slate-400">伤害增加倍数: <span className="text-emerald-400 font-medium">{formatBonusValue(pinnedSkill.SkillBonusAttributes?.SkillDamageBonus, '', false) ?? '1'}</span></div>
                                             <div className="text-slate-400">重要性: <span className={clsx("font-medium", pinnedSkill.SkillImportanceWeight >= 0.8 ? "text-yellow-400" : "text-slate-400")}>{getImportanceText(pinnedSkill.SkillImportanceWeight)}</span></div>
                                             <div className="text-slate-400">使用频次: <span className="text-slate-200">{getFrequencyText(pinnedSkill.SkillFrequency)}</span></div>
                                         </div>
@@ -587,15 +589,15 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                             <span className="text-xs text-slate-500 truncate max-w-[120px]">{tooltipState.skill.SkillName}</span>
                         </div>
                         <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
-                            <div className="text-slate-400">附加攻击比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillAttackPercentBonus || 0}%</span></div>
-                            <div className="text-slate-400">附加固定攻击: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillAttackFixedBonus || 0}</span></div>
-                            <div className="text-slate-400">附加气血比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillHealthPercentBonus || 0}%</span></div>
-                            <div className="text-slate-400">附加真气比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillManaPercentBonus || 0}%</span></div>
-                            <div className="text-slate-400">附加爆伤: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus || 0}%</span></div>
+                            <div className={clsx('text-slate-400', isPerHitArray(tooltipState.skill.SkillBonusAttributes?.SkillAttackPercentBonus) && 'col-span-2')}>附加攻击比: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(tooltipState.skill.SkillBonusAttributes?.SkillAttackPercentBonus, '%') ?? '+0%'} /></span></div>
+                            <div className={clsx('text-slate-400', isPerHitArray(tooltipState.skill.SkillBonusAttributes?.SkillAttackFixedBonus) && 'col-span-2')}>附加固定攻击: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(tooltipState.skill.SkillBonusAttributes?.SkillAttackFixedBonus, '') ?? '+0'} /></span></div>
+                            <div className={clsx('text-slate-400', isPerHitArray(tooltipState.skill.SkillBonusAttributes?.SkillHealthPercentBonus) && 'col-span-2')}>附加气血比: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(tooltipState.skill.SkillBonusAttributes?.SkillHealthPercentBonus, '%') ?? '+0%'} /></span></div>
+                            <div className={clsx('text-slate-400', isPerHitArray(tooltipState.skill.SkillBonusAttributes?.SkillManaPercentBonus) && 'col-span-2')}>附加真气比: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(tooltipState.skill.SkillBonusAttributes?.SkillManaPercentBonus, '%') ?? '+0%'} /></span></div>
+                            <div className={clsx('text-slate-400', isPerHitArray(tooltipState.skill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus) && 'col-span-2')}>附加爆伤: <span className="text-slate-200 break-words"><BonusValue value={formatBonusValue(tooltipState.skill.SkillBonusAttributes?.SkillCriticalDamagePercentBonus, '%') ?? '+0%'} /></span></div>
                             {tooltipState.skill.SkillBonusAttributes?.SkillDefensePercentBonus ? (
-                                <div className="text-slate-400">附加防御比: <span className="text-slate-200">{tooltipState.skill.SkillBonusAttributes.SkillDefensePercentBonus}%</span></div>
+                                <div className="text-slate-400">附加防御比: <span className="text-slate-200">{formatBonusValue(tooltipState.skill.SkillBonusAttributes.SkillDefensePercentBonus, '%')}</span></div>
                             ) : null}
-                            <div className="text-slate-400">伤害增加倍数: <span className="text-emerald-400 font-medium">{tooltipState.skill.SkillBonusAttributes?.SkillDamageBonus || 1}</span></div>
+                            <div className="text-slate-400">伤害增加倍数: <span className="text-emerald-400 font-medium">{formatBonusValue(tooltipState.skill.SkillBonusAttributes?.SkillDamageBonus, '', false) ?? '1'}</span></div>
                             <div className="text-slate-400">重要性: <span className={clsx("font-medium", tooltipState.skill.SkillImportanceWeight >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillImportanceWeight >= 0.5 ? "text-[var(--theme-accent)]" : "text-slate-400")}>{getImportanceText(tooltipState.skill.SkillImportanceWeight)}</span></div>
                             <div className="text-slate-400">使用频次: <span className={clsx("font-medium", tooltipState.skill.SkillFrequency >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillFrequency >= 0.4 ? "text-[var(--theme-accent)]" : "text-slate-400")}>{getFrequencyText(tooltipState.skill.SkillFrequency)}</span></div>
                         </div>
