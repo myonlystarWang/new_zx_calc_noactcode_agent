@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Clock, Zap, RotateCcw } from 'lucide-react';
+import { Search, Clock, Zap, RotateCcw, Infinity as InfinityIcon } from 'lucide-react';
 import clsx from 'clsx';
 import { chipCls, chipCountCls } from '../ui/chipStyles';
 import { pinyin } from 'pinyin-pro';
@@ -75,6 +75,7 @@ interface SkillItem {
     FourthGenSlot?: 'XUAN_ZHU' | 'CHI_WU';
     FourthGenPresets?: Record<string, any>;
     FourthGenGrants?: Record<string, Array<{ TargetSkillIds: string[]; Override: any }>>;
+    ZaoHuaGrants?: Array<{ TargetSkillIds: string[]; Override: any }>;
     FourthGenInitialEffects?: Record<string, any>;
     Variant?: string;
 }
@@ -136,6 +137,7 @@ function describeFourthGenOverride(override: any): string[] {
         if (typeof sb.SkillCriticalDamagePercentBonus === 'number') out.push('附加爆伤+' + sb.SkillCriticalDamagePercentBonus + '%');
         if (typeof sb.SkillDefensePercentBonus === 'number') out.push('附加防御比+' + sb.SkillDefensePercentBonus + '%');
     }
+    if (typeof override.CooldownReduction === 'number') out.push('冷却减' + override.CooldownReduction + 's');
     if (typeof override.Cooldown === 'number') out.push('冷却' + override.Cooldown + 's');
     if (typeof override.ChargeReplenishTime === 'number') out.push('充能恢复' + override.ChargeReplenishTime + 's');
     if (typeof override.CastTime === 'number') out.push('施法' + override.CastTime + 's');
@@ -192,8 +194,55 @@ function buildFourthGenAttributes(skill: SkillItem, idToNameMap: Record<string, 
     return rows;
 }
 
+/** 是否为「常驻 grant 被动」条目：造化被动（造化技能 II）与心法被动共用 ZaoHuaGrants 机制 */
+function isGrantPassiveEntry(skill: SkillItem): boolean {
+    return skill.ActionType === 'ZAO_HUA_PASSIVE' || skill.ActionType === 'XIN_FA_PASSIVE';
+}
+
+/** 常驻 grant 被动：按目标技能名聚合 ZaoHuaGrants 增量（同名技能多条 grant 合并去重） */
+function buildZaoHuaAttributes(skill: SkillItem, idToNameMap: Record<string, string>): AttributeItem[] {
+    const grants = skill.ZaoHuaGrants;
+    if (!grants || grants.length === 0) return [];
+    const nameOrder: string[] = [];
+    const byName: Record<string, string[]> = {};
+    for (const g of grants) {
+        const desc = describeFourthGenOverride(g.Override);
+        for (const tid of g.TargetSkillIds) {
+            const name = idToNameMap[tid] || tid;
+            if (!byName[name]) { byName[name] = []; nameOrder.push(name); }
+            for (const d of desc) {
+                if (byName[name].indexOf(d) === -1) byName[name].push(d);
+            }
+        }
+    }
+    return nameOrder.map(name => ({
+        label: name,
+        value: byName[name].join('、') || '—',
+        isPrimary: true,
+        wrap: true
+    }));
+}
+
 function getUnifiedSkillData(skill: SkillItem, idToNameMap: Record<string, string>): UnifiedSkillData {
     const bonus = skill.SkillBonusAttributes || {};
+
+    // 0a. 常驻被动（造化技能被动 ZAO_HUA_PASSIVE / 心法被动 XIN_FA_PASSIVE）：
+    //     不占四代玄烛/赤乌槽位、无需佩戴，学习后常驻生效；逐条列出对各目标技能的增量。
+    if (isGrantPassiveEntry(skill)) {
+        const isXinFa = skill.ActionType === 'XIN_FA_PASSIVE';
+        const passiveAttrs: AttributeItem[] = [
+            { label: '生效方式', value: '常驻·无需佩戴', isPrimary: true },
+            ...buildZaoHuaAttributes(skill, idToNameMap)
+        ];
+        let passiveNote: string | null = null;
+        if (skill.Description && skill.Description.trim() !== '暂无详细机制说明') {
+            passiveNote = skill.Description.trim();
+        } else if (passiveAttrs.length > 1) {
+            passiveNote = (isXinFa ? '心法被动' : '门派造化被动')
+                + '，学习后常驻生效：不占四代玄烛/赤乌槽位、无需佩戴，自动强化上述技能的属性与冷却。';
+        }
+        return { badgeText: isXinFa ? '心法被动' : '造化被动', badgeTheme: 'utility', attributes: passiveAttrs, mechanicNote: passiveNote };
+    }
 
     // 0. 四代被动（玄烛/赤乌）：槽位 + 按品质列出对其他技能的影响，说明走 Description
     if (skill.ActionType === 'FOURTH_GEN_PASSIVE') {
@@ -501,6 +550,16 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
                 const list = classObj[factionKey];
                 if (!Array.isArray(list)) continue;
                 for (const sk of list as unknown as SkillItem[]) {
+                    if (isGrantPassiveEntry(sk) && sk.ZaoHuaGrants) {
+                        for (const g of sk.ZaoHuaGrants) {
+                            const text = describeFourthGenOverride(g.Override).join('、');
+                            for (const tid of g.TargetSkillIds) {
+                                if (!map[tid]) map[tid] = [];
+                                map[tid].push({ sourceId: sk.SkillID, sourceName: sk.SkillName, slot: 'ZAO_HUA', text });
+                            }
+                        }
+                        continue;
+                    }
                     if (sk.ActionType !== 'FOURTH_GEN_PASSIVE' || !sk.FourthGenGrants) continue;
                     const grantsXi = sk.FourthGenGrants['XI_RI'] || [];
                     for (const g of grantsXi) {
@@ -735,7 +794,9 @@ const SkillCard: React.FC<{
         }));
     }, [skill.CooldownResets, skillIdToNameMap]);
 
-    const slotLabel = (slot?: string) => slot === 'CHI_WU' ? '赤乌增益' : '玄烛增益';
+    const isPassiveEntry = skill.ActionType === 'FOURTH_GEN_PASSIVE' || isGrantPassiveEntry(skill);
+
+    const slotLabel = (slot?: string) => slot === 'ZAO_HUA' ? '造化增益' : slot === 'CHI_WU' ? '赤乌增益' : '玄烛增益';
 
     return (
         <div
@@ -763,14 +824,24 @@ const SkillCard: React.FC<{
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs font-mono shrink-0 flex-wrap justify-end">
+                    {isPassiveEntry && (
+                        <span className="px-2 py-0.5 rounded-md font-bold bg-cyan-950/50 text-cyan-300 border border-cyan-800/60 flex items-center gap-1">
+                            <InfinityIcon className="w-3 h-3 text-cyan-400" />
+                            常驻生效
+                        </span>
+                    )}
+                    {!isPassiveEntry && (
                     <span className="px-2 py-0.5 rounded-md font-medium bg-slate-800/70 text-slate-200 border border-slate-700/60 flex items-center gap-1">
                         <Clock className="w-3 h-3 text-cyan-400" />
                         {skill.Cooldown > 0 ? `${skill.Cooldown}s 冷却` : '0s 冷却'}
                     </span>
+                    )}
 
+                    {!isPassiveEntry && (
                     <span className="px-2 py-0.5 rounded-md text-slate-300 bg-slate-800/70 border border-slate-700/60">
                         {skill.CastTime > 0 ? `${skill.CastTime}s 施法` : '瞬发'}
                     </span>
+                    )}
 
                     {skill.MaxCharges && skill.MaxCharges > 1 && (
                         <span className="px-2 py-0.5 rounded-md font-bold bg-purple-950/60 text-purple-300 border border-purple-800/60 flex items-center gap-1">
