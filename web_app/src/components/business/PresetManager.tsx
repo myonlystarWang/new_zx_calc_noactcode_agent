@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bookmark, ChevronDown, Save, Copy, Trash2, X, ArrowLeftRight } from 'lucide-react';
+import { Bookmark, ChevronDown, Save, Copy, Trash2, X, ArrowLeftRight, FileInput } from 'lucide-react';
 import clsx from 'clsx';
 import { CompareDialog } from './CompareDialog';
+import { ImportPresetDialog, type ImportPayload } from './ImportPresetDialog';
 import { usePresets } from '../../hooks/usePresets';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
@@ -18,7 +19,11 @@ interface NamingDialogState {
 }
 
 export const PresetManager: React.FC = () => {
-    const { userCharacter, classes, selectedDungeonId } = useApp();
+    const {
+        userCharacter, classes, buffs, selectedDungeonId,
+        activeBuffIds, buffValues,
+        updateCharacterAttributes, updateCharacterClass, restoreBuffState
+    } = useApp();
     const {
         presets,
         activePresetId,
@@ -26,12 +31,14 @@ export const PresetManager: React.FC = () => {
         isDirty,
         savePreset,
         saveAsPreset,
+        importPreset,
         loadPreset,
         deletePreset
     } = usePresets();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [compareOpen, setCompareOpen] = useState(false);
+    const [importOpen, setImportOpen] = useState(false);
     const [namingDialog, setNamingDialog] = useState<NamingDialogState | null>(null);
     const [nameInput, setNameInput] = useState('');
     const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
@@ -96,6 +103,35 @@ export const PresetManager: React.FC = () => {
             // 未选中 -> 弹窗命名新建
             openNamingDialog('new');
         }
+    };
+
+    // Step 13：粘贴导入 —— 解析结果直接落成新方案并应用到当前页面
+    const suggestImportName = (): string => {
+        const cls = classes.find(c => c.ClassID === userCharacter.ClassID);
+        const d = new Date();
+        const md = (d.getMonth() + 1) + '-' + d.getDate();
+        return (cls?.ClassName ?? '方案') + ' 导入 ' + md;
+    };
+
+    const handleImportConfirm = (payload: ImportPayload) => {
+        const { name, parsed } = payload;
+        const classId = parsed.classId ?? userCharacter.ClassID;
+        const faction = parsed.faction ?? userCharacter.Faction;
+        // 增益合并而非替换：粘贴只写了部分增益时，其余沿用当前勾选与数值
+        const mergedActive = Array.from(new Set([...activeBuffIds, ...Object.keys(parsed.buffValues)]));
+        const mergedValues = { ...buffValues, ...parsed.buffValues };
+
+        updateCharacterClass(classId, faction);
+        updateCharacterAttributes(parsed.attributes);
+        restoreBuffState(mergedActive, mergedValues);
+        importPreset(name, {
+            classId,
+            faction,
+            attributes: parsed.attributes,
+            activeBuffIds: mergedActive,
+            buffValues: mergedValues
+        });
+        setImportOpen(false);
     };
 
     const handleDeleteClick = () => {
@@ -195,6 +231,15 @@ export const PresetManager: React.FC = () => {
                         </button>
                         <button
                             type="button"
+                            onClick={() => setImportOpen(true)}
+                            title="粘贴一段属性/增益数据，解析后存为方案"
+                            className="px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white hover:border-slate-500 flex items-center gap-1.5 text-sm transition-colors"
+                        >
+                            <FileInput className="w-3.5 h-3.5" />
+                            导入
+                        </button>
+                        <button
+                            type="button"
                             onClick={() => openNamingDialog('saveAs')}
                             className="px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white hover:border-slate-500 flex items-center gap-1.5 text-sm transition-colors"
                         >
@@ -278,6 +323,17 @@ export const PresetManager: React.FC = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* 粘贴导入弹窗（Step 13） */}
+            {importOpen && (
+                <ImportPresetDialog
+                    buffs={buffs}
+                    classes={classes}
+                    suggestName={suggestImportName()}
+                    onClose={() => setImportOpen(false)}
+                    onConfirm={handleImportConfirm}
+                />
             )}
 
             {/* 方案对比弹窗（Step 12.1）：方案列表与 loadPreset 由本组件传入，避免两处各持一份 usePresets 状态导致方案名不同步 */}
