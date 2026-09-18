@@ -152,6 +152,21 @@ export const usePresets = () => {
         setActivePresetId(id);
     }, [presets, updateCharacterClass, updateCharacterAttributes, restoreBuffState]);
 
+    // 导入（Step 13）：以给定快照直接新建方案并选中。
+    // 不走 saveAsPreset（那依赖 currentSnapshot），避免「先 apply 后 save」同 tick 内读到 stale 状态。
+    const importPreset = useCallback((name: string, snap: PresetSnapshot) => {
+        const now = Date.now();
+        const preset: Preset = {
+            id: generateId(),
+            name,
+            ...snap,
+            createdAt: now,
+            updatedAt: now
+        };
+        setPresets(prev => [...prev, preset]);
+        setActivePresetId(preset.id);
+    }, []);
+
     // 删除方案
     const deletePreset = useCallback((id: string) => {
         setPresets(prev => prev.filter(p => p.id !== id));
@@ -165,6 +180,7 @@ export const usePresets = () => {
         isDirty,
         savePreset,
         saveAsPreset,
+        importPreset,
         loadPreset,
         deletePreset
     };
