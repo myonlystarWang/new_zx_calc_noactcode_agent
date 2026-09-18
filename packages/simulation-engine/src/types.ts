@@ -59,14 +59,24 @@ export interface MultiHitConfig {
   PerHitCharacterBonus?: PerHitCharacterBonus; // 每击按角色属性递增的附加攻击力（多因子，引用角色本体属性）
 }
 
+/**
+ * 技能附加属性。
+ *
+ * 数值字段支持两种形态：
+ * - number：每段同值（绝大多数技能）
+ * - number[]：多段技能"每段不同值"，第 k 段取 arr[k-1]（非等差多段，如铁马冰河II 30/50/70/110）
+ *
+ * 数组由引擎在算术前解析成本段标量（见 per_hit.ts），Grant 叠加时对数组逐段相加、
+ * 标量广播到每一段。数组长度须等于 MultiHitConfig.HitCount（validator 校验）。
+ */
 export interface SkillBonusAttributes {
-  SkillAttackPercentBonus?: number;
-  SkillAttackFixedBonus?: number;
-  SkillDefensePercentBonus?: number;
-  SkillHealthPercentBonus?: number;
-  SkillManaPercentBonus?: number;
-  SkillCriticalDamagePercentBonus?: number;
-  SkillDamageBonus?: number; // 伤害增加倍数
+  SkillAttackPercentBonus?: number | number[];
+  SkillAttackFixedBonus?: number | number[];
+  SkillDefensePercentBonus?: number | number[];
+  SkillHealthPercentBonus?: number | number[];
+  SkillManaPercentBonus?: number | number[];
+  SkillCriticalDamagePercentBonus?: number | number[];
+  SkillDamageBonus?: number | number[]; // 伤害增加倍数
   MultiHitConfig?: MultiHitConfig; // 多段伤害配置
 }
 
@@ -107,6 +117,13 @@ export interface Skill {
   Variant?: string;
   FourthGenQuality?: 'YING_JU' | 'HAO_YUE' | 'XI_RI';
   RyhgPhase2DelaySeconds?: number;
+  /**
+   * 技能自身档次（三代技能 1/2/3 级）。键=等级(正整数)，值=相对本体的完整覆盖(用 PlayerSkillOverride)。
+   * 选定等级后由引擎在装配时覆盖到本体 SkillBonusAttributes/顶层字段。无此项=无档次(沿用顶层值)。
+   */
+  SkillTiers?: Partial<Record<number, Partial<PlayerSkillOverride>>>;
+  /** 三代技能所属"系"标签：英雄/碧海/天空/大地。仅展示与未来选择器筛选用，不改装配逻辑。 */
+  SkillSeries?: 'YING_XIONG' | 'BI_HAI' | 'TIAN_KONG' | 'DA_DI';
 }
 
 export interface ClassSkills {
@@ -279,7 +296,7 @@ export interface ValidationIssue {
 
 // --- v1.1 Simulation Schemas (Section 3.1) ---
 
-export type SkillActionType = 'DAMAGE' | 'BUFF' | 'DEBUFF' | 'UTILITY' | 'FOURTH_GEN_PASSIVE' | 'ZAO_HUA_PASSIVE';
+export type SkillActionType = 'DAMAGE' | 'BUFF' | 'DEBUFF' | 'UTILITY' | 'FOURTH_GEN_PASSIVE' | 'ZAO_HUA_PASSIVE' | 'XIN_FA_PASSIVE';
 export type FactionId = 'XIAN' | 'FO' | 'MO';
 
 /** 四代技能槽位：玄烛 / 赤乌（FG = Fourth Generation 第四代） */

@@ -1,5 +1,7 @@
 import type { Skill, SkillBonusAttributes, FourthGenGrant } from './types.js';
 import { applyOverrideAdditive, applyOverrideCover, applyGrantToTargets } from './fourth_gen.js';
+import { applySelectedSkillTier } from './skill_tiers.js';
+import { PER_HIT_FIELDS, addPerHitField } from './per_hit.js';
 import {
   getZhuShuangLongNuBonus,
   ZS_LONGNU_PEAK_YYZC_LEVEL,
@@ -103,13 +105,14 @@ const buildPeakVariant = (source: Skill, rule: PeakVariantRule): Skill => {
   variant.SkillName = `${source.SkillName}${rule.suffix}`;
   variant.Variant = rule.variantTag;
 
-  const increment = rule.buildIncrement(source);
-  const merged = { ...(variant.SkillBonusAttributes ?? {}) } as Record<string, number>;
-  for (const [key, value] of Object.entries(increment)) {
-    if (typeof value !== 'number') continue;
-    merged[key] = (typeof merged[key] === 'number' ? merged[key] : 0) + value;
+  const increment = rule.buildIncrement(source) as Record<string, number | number[] | undefined>;
+  const merged: SkillBonusAttributes = { ...(variant.SkillBonusAttributes ?? {}) };
+  for (const field of PER_HIT_FIELDS) {
+    const value = increment[field];
+    if (value === undefined) continue;
+    addPerHitField(merged, field, value, rule.variantTag);
   }
-  variant.SkillBonusAttributes = merged as SkillBonusAttributes;
+  variant.SkillBonusAttributes = merged;
   return variant;
 };
 
@@ -134,6 +137,13 @@ export const buildSingleCalcSkills = (
 
   const skillMap: Record<string, Skill> = {};
   for (const item of pool) skillMap[item.SkillID] = cloneSkill(item);
+
+  // 三代自身档位：先套到本体（覆盖语义），再叠四代/造化（加法叠加在已定档位之上）
+  // 单次计算为"理论峰值"路径 → forcePeak=true，恒取最高档
+  for (const item of pool) {
+    const inMap = skillMap[item.SkillID];
+    if (inMap) applySelectedSkillTier(inMap, undefined, true);
+  }
 
   applyPeakFourthGen(skillMap, pool);
 

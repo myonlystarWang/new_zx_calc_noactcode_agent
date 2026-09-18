@@ -290,9 +290,9 @@ const selectSkills = (config: {
     throw new Error(`${config.actorPath} did not resolve any usable skills.`);
   }
 
-  // 门派造化被动（带 II 的造化技能）常驻生效，无论是否显式选入都需进技能表，供 applyClassPassives 加成目标技能
+  // 门派造化被动（带 II 的造化技能）/ 心法被动 常驻生效，无论是否显式选入都需进技能表，供 applyClassPassives 加成目标技能
   for (const skill of config.skillPool) {
-    if (skill.ActionType === 'ZAO_HUA_PASSIVE') {
+    if (skill.ActionType === 'ZAO_HUA_PASSIVE' || skill.ActionType === 'XIN_FA_PASSIVE') {
       selectedIds.add(skill.SkillID);
     }
   }
@@ -387,7 +387,7 @@ const getStrategySkillIds = (
 
 const assertSupportSkills = (skills: Skill[], actorId: string) => {
   const invalid = skills.find(
-    skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE' && skill.ActionType !== 'ZAO_HUA_PASSIVE' && (!skill.ActionType || !SUPPORT_ACTION_TYPES.has(skill.ActionType))
+    skill => skill.ActionType !== 'FOURTH_GEN_PASSIVE' && skill.ActionType !== 'ZAO_HUA_PASSIVE' && skill.ActionType !== 'XIN_FA_PASSIVE' && (!skill.ActionType || !SUPPORT_ACTION_TYPES.has(skill.ActionType))
   );
   if (invalid) {
     throw new Error(`Support actor "${actorId}" cannot include non-support skill "${invalid.SkillID}".`);

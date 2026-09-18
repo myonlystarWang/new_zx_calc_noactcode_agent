@@ -9,6 +9,7 @@ import type {
 import type { EffectInstance } from './effects.js';
 import { resolveEffectiveCharacterAttributesFromEffects } from './attributes.js';
 import { applyEquippedFourthGen, isFourthGenPassive, applyClassPassives, isClassPassive } from './fourth_gen.js';
+import { applySelectedSkillTier } from './skill_tiers.js';
 
 export interface SkillRuntimeState {
   cooldownReadyAtMs: number;
@@ -100,7 +101,11 @@ export class Actor {
       // 2. 检索该玩家 Profile 下的个性化覆盖数据
       const override = customizations[skill.SkillID];
       
-      // A. 首先，如果玩家在 profile 中指定了四代品质，并且白板技能定义了该品质预设，先融合预设
+      // A. 先套三代自身档位（覆盖语义）：以玩家选定等级（profile.SkillLevel）为准，缺省取最高档=峰值。
+      //    必须最先执行，作为本体基线，其后四代预设/玩家覆盖再叠上去。
+      applySelectedSkillTier(runSkill, override?.SkillLevel);
+
+      // B. 其次，如果玩家在 profile 中指定了四代品质，并且白板技能定义了该品质预设，先融合预设
       if (override?.FourthGenQuality && runSkill.FourthGenPresets?.[override.FourthGenQuality]) {
         const preset = runSkill.FourthGenPresets[override.FourthGenQuality];
         if (preset) {
@@ -108,11 +113,11 @@ export class Actor {
         }
       }
 
-      // B. 其次，应用常规的自定义覆盖（这会覆盖预设值，从而实现最高自由度）
+      // C. 最后，应用常规的自定义覆盖（这会覆盖预设值与三代档位，从而实现最高自由度）
       if (override) {
         applySingleOverride(runSkill, override);
       }
-      
+
       this.Skills[skill.SkillID] = runSkill;
       this.SkillStates[skill.SkillID] = {
         cooldownReadyAtMs: 0,
@@ -139,7 +144,7 @@ export class Actor {
     const skill = this.Skills[skillId];
     const state = this.SkillStates[skillId];
     if (!skill || !state) return false;
-    if (isFourthGenPassive(skill) || isClassPassive(skill)) return false; // 四代/造化被动不进入技能循环
+    if (isFourthGenPassive(skill) || isClassPassive(skill) || skill.ActionType === 'XIN_FA_PASSIVE') return false; // 四代/造化/心法被动不进入技能循环
 
     if (state.maxCharges > 1) {
       return state.charges > 0;

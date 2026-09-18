@@ -7,6 +7,7 @@ import type {
   AppliedEffectConfig,
   FourthGenGrant
 } from './types.js';
+import { addPerHitField, type PerHitField } from './per_hit.js';
 
 /**
  * 四代技能（玄烛·xxx / 赤乌·xxx）佩戴效果应用。
@@ -19,7 +20,7 @@ import type {
 const VALID_QUALITIES: FourthGenQuality[] = ['YING_JU', 'HAO_YUE', 'XI_RI'];
 
 /** SkillBonusAttributes 中按"增量相加"处理的数值字段；其余（MultiHitConfig）按覆盖处理 */
-const ADDITIVE_BONUS_FIELDS: Array<keyof SkillBonusAttributes> = [
+const ADDITIVE_BONUS_FIELDS: PerHitField[] = [
   'SkillAttackPercentBonus',
   'SkillAttackFixedBonus',
   'SkillDefensePercentBonus',
@@ -78,11 +79,9 @@ export function applyOverrideAdditive(skill: Skill, ovr: Partial<PlayerSkillOver
     const merged: SkillBonusAttributes = { ...skill.SkillBonusAttributes };
     for (const key of ADDITIVE_BONUS_FIELDS) {
       const inc = bonusAttrs[key];
-      if (typeof inc === 'number') {
-        const current = merged[key];
-        const base = typeof current === 'number' ? current : 0;
-        (merged as unknown as Record<string, number>)[key] = base + inc;
-      }
+      if (inc === undefined) continue;
+      // 标量广播到每一段、数组逐段相加（每段显式数组见 per_hit.ts）
+      addPerHitField(merged, key, inc, `grant->${skill.SkillID}`);
     }
     if (bonusAttrs.MultiHitConfig !== undefined) {
       merged.MultiHitConfig = bonusAttrs.MultiHitConfig;
