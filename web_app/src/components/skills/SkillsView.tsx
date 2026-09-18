@@ -2,18 +2,37 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Clock, Zap, RotateCcw, Infinity as InfinityIcon } from 'lucide-react';
 import clsx from 'clsx';
 import { chipCls, chipCountCls } from '../ui/chipStyles';
+import { BonusValue } from '../ui/BonusValue';
+import {
+    ATTR_GRID,
+    ATTR_CELL,
+    ATTR_CELL_INLINE,
+    ATTR_CELL_STACK,
+    ATTR_CELL_BADGE,
+    ATTR_LABEL,
+    ATTR_LABEL_STACK,
+    ATTR_VALUE,
+    ATTR_VALUE_STACK,
+    NOTE_BLOCK,
+    NOTE_ROW,
+    NOTE_LABEL,
+    NOTE_TEXT,
+    NOTE_LINK,
+    NOTE_PARAGRAPH
+} from './skillCardStyles';
 import { pinyin } from 'pinyin-pro';
 import { DataService } from '../../services/DataService';
+import { formatBonusValue, isPerHitArray, hasBonusValue, bonusScalar } from '../../utils/skillBonusFormat';
 import type { SearchTarget } from '../GlobalSearch';
 
 interface SkillBonusAttributes {
-    SkillAttackPercentBonus?: number;
-    SkillAttackFixedBonus?: number;
-    SkillHealthPercentBonus?: number;
-    SkillManaPercentBonus?: number;
-    SkillDefensePercentBonus?: number;
-    SkillCriticalDamagePercentBonus?: number;
-    SkillDamageBonus?: number;
+    SkillAttackPercentBonus?: number | number[];
+    SkillAttackFixedBonus?: number | number[];
+    SkillHealthPercentBonus?: number | number[];
+    SkillManaPercentBonus?: number | number[];
+    SkillDefensePercentBonus?: number | number[];
+    SkillCriticalDamagePercentBonus?: number | number[];
+    SkillDamageBonus?: number | number[];
     MultiHitConfig?: {
         HitCount?: number;
         ScalingAttribute?: string;
@@ -91,6 +110,7 @@ const CLASS_ORDER = [
     { id: 'YING_ZHAO', name: '英招' },
     { id: 'TIAN_HUA', name: '天华' },
     { id: 'SHI_LUO', name: '释罗' },
+    { id: 'GUI_YUN', name: '归云' },
 ];
 
 const FACTIONS = [
@@ -105,6 +125,7 @@ interface AttributeItem {
     value: string;
     isPrimary?: boolean;
     wrap?: boolean;   // 长文本行（四代三品质说明）：跨整行、纵向排列并允许换行，避免溢出卡片
+    fullRow?: boolean; // 每段数组：跨整行显示，避免逐段序列被挤断（标量仍走三列紧凑布局）
 }
 
 interface UnifiedSkillData {
@@ -130,12 +151,17 @@ function describeFourthGenOverride(override: any): string[] {
     const out: string[] = [];
     const sb = override.SkillBonusAttributes;
     if (sb) {
-        if (typeof sb.SkillAttackPercentBonus === 'number') out.push('附加攻击比+' + sb.SkillAttackPercentBonus + '%');
-        if (typeof sb.SkillAttackFixedBonus === 'number') out.push('附加固定攻击+' + sb.SkillAttackFixedBonus);
-        if (typeof sb.SkillHealthPercentBonus === 'number') out.push('附加气血比+' + sb.SkillHealthPercentBonus + '%');
-        if (typeof sb.SkillManaPercentBonus === 'number') out.push('附加真气比+' + sb.SkillManaPercentBonus + '%');
-        if (typeof sb.SkillCriticalDamagePercentBonus === 'number') out.push('附加爆伤+' + sb.SkillCriticalDamagePercentBonus + '%');
-        if (typeof sb.SkillDefensePercentBonus === 'number') out.push('附加防御比+' + sb.SkillDefensePercentBonus + '%');
+        // 支持标量与「每段数组」：数组走统一格式化，避免整条增量文案消失
+        const pushBonus = (label: string, value: unknown, unit = '%') => {
+            const text = formatBonusValue(value as number | number[] | undefined, unit);
+            if (text) out.push(label + text);
+        };
+        pushBonus('附加攻击比', sb.SkillAttackPercentBonus);
+        pushBonus('附加固定攻击', sb.SkillAttackFixedBonus, '');
+        pushBonus('附加气血比', sb.SkillHealthPercentBonus);
+        pushBonus('附加真气比', sb.SkillManaPercentBonus);
+        pushBonus('附加爆伤', sb.SkillCriticalDamagePercentBonus);
+        pushBonus('附加防御比', sb.SkillDefensePercentBonus);
     }
     if (typeof override.CooldownReduction === 'number') out.push('冷却减' + override.CooldownReduction + 's');
     if (typeof override.Cooldown === 'number') out.push('冷却' + override.Cooldown + 's');
@@ -411,34 +437,45 @@ function getUnifiedSkillData(skill: SkillItem, idToNameMap: Record<string, strin
         stats.push({ label: '段数', value: '单段' });
     }
 
-    if (bonus.SkillAttackPercentBonus) {
-        stats.push({ label: '附加攻击百分比', value: `+${bonus.SkillAttackPercentBonus}%`, isPrimary: true });
+    const atkPercentText = formatBonusValue(bonus.SkillAttackPercentBonus, '%');
+    if (atkPercentText) {
+        stats.push({ label: '附加攻击百分比', value: atkPercentText, isPrimary: true, fullRow: isPerHitArray(bonus.SkillAttackPercentBonus) });
     }
-    if (bonus.SkillAttackFixedBonus) {
-        stats.push({ label: '附加固定攻击', value: `+${bonus.SkillAttackFixedBonus}` });
+    const atkFixedText = formatBonusValue(bonus.SkillAttackFixedBonus, '');
+    if (atkFixedText) {
+        stats.push({ label: '附加固定攻击', value: atkFixedText, fullRow: isPerHitArray(bonus.SkillAttackFixedBonus) });
     }
-    if (bonus.SkillHealthPercentBonus) {
+    if (hasBonusValue(bonus.SkillHealthPercentBonus)) {
         const isScaling = multiHit?.ScalingAttribute === 'SkillHealthPercentBonus';
         stats.push({
             label: '附加气血百分比',
-            value: isScaling ? `${multiHit.ScalingStartValue}%→${multiHit.ScalingEndValue}%` : `+${bonus.SkillHealthPercentBonus}%`
+            value: isScaling
+                ? `${multiHit.ScalingStartValue}%→${multiHit.ScalingEndValue}%`
+                : (formatBonusValue(bonus.SkillHealthPercentBonus, '%') as string),
+            fullRow: isPerHitArray(bonus.SkillHealthPercentBonus)
         });
     }
-    if (bonus.SkillManaPercentBonus) {
+    if (hasBonusValue(bonus.SkillManaPercentBonus)) {
         const isScaling = multiHit?.ScalingAttribute === 'SkillManaPercentBonus';
         stats.push({
             label: '附加真气百分比',
-            value: isScaling ? `${multiHit.ScalingStartValue}%→${multiHit.ScalingEndValue}%` : `+${bonus.SkillManaPercentBonus}%`
+            value: isScaling
+                ? `${multiHit.ScalingStartValue}%→${multiHit.ScalingEndValue}%`
+                : (formatBonusValue(bonus.SkillManaPercentBonus, '%') as string),
+            fullRow: isPerHitArray(bonus.SkillManaPercentBonus)
         });
     }
-    if (bonus.SkillDefensePercentBonus) {
-        stats.push({ label: '附加防御百分比', value: `+${bonus.SkillDefensePercentBonus}%` });
+    const defPercentText = formatBonusValue(bonus.SkillDefensePercentBonus, '%');
+    if (defPercentText) {
+        stats.push({ label: '附加防御百分比', value: defPercentText, fullRow: isPerHitArray(bonus.SkillDefensePercentBonus) });
     }
-    if (bonus.SkillCriticalDamagePercentBonus) {
-        stats.push({ label: '附加暴击伤害', value: `+${bonus.SkillCriticalDamagePercentBonus}%`, isPrimary: true });
+    const critPercentText = formatBonusValue(bonus.SkillCriticalDamagePercentBonus, '%');
+    if (critPercentText) {
+        stats.push({ label: '附加暴击伤害', value: critPercentText, isPrimary: true, fullRow: isPerHitArray(bonus.SkillCriticalDamagePercentBonus) });
     }
-    if (bonus.SkillDamageBonus && bonus.SkillDamageBonus > 1) {
-        const v = bonus.SkillDamageBonus > 10 ? bonus.SkillDamageBonus : bonus.SkillDamageBonus * 100;
+    const dmgBonusScalar = bonusScalar(bonus.SkillDamageBonus);
+    if (dmgBonusScalar !== undefined && dmgBonusScalar > 1) {
+        const v = dmgBonusScalar > 10 ? dmgBonusScalar : dmgBonusScalar * 100;
         stats.push({ label: '增伤', value: `+${v}%` });
     }
     if (multiHit?.DamageMultiplierPerHit) {
@@ -854,11 +891,11 @@ const SkillCard: React.FC<{
 
             {/* 2. 技能规格属性矩阵 (方案 B: 结构化矩阵数据表) */}
             {unifiedData.attributes.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+                <div className={ATTR_GRID}>
                     {/* 第一项：技能类型/机制归类标签 */}
                     {unifiedData.badgeText && (
-                        <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-950/70 border border-slate-800/70">
-                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">机制类型</span>
+                        <div className={ATTR_CELL_BADGE}>
+                            <span className={ATTR_LABEL}>机制类型</span>
                             <span
                                 className={clsx(
                                     'text-[11px] font-bold px-1.5 py-0.2 rounded border shrink-0 whitespace-nowrap',
@@ -878,29 +915,26 @@ const SkillCard: React.FC<{
                         <div
                             key={aIdx}
                             className={clsx(
-                                'px-2.5 py-1.5 rounded-lg bg-slate-950/60 border border-slate-800/60',
+                                ATTR_CELL,
                                 attr.wrap
-                                    ? 'col-span-2 sm:col-span-3 flex flex-col items-start gap-1'
-                                    : 'flex items-center justify-between'
+                                    ? ATTR_CELL_STACK
+                                    : clsx(ATTR_CELL_INLINE, attr.fullRow && 'col-span-2 sm:col-span-3')
                             )}
                         >
-                            <span className={clsx('text-slate-400 text-[11px] mr-1.5', attr.wrap ? 'whitespace-normal break-words w-full text-cyan-400/80 font-bold' : 'whitespace-nowrap shrink-0')}>{attr.label || '属性'}</span>
+                            <span className={attr.wrap ? ATTR_LABEL_STACK : ATTR_LABEL}>{attr.label || '属性'}</span>
                             <span
-                                className={clsx(
-                                    'font-bold text-xs',
-                                    attr.wrap
-                                        ? 'text-cyan-300 whitespace-normal break-words leading-relaxed w-full font-sans'
-                                        : clsx(
-                                            'font-mono shrink-0 whitespace-nowrap',
-                                            attr.isPrimary
-                                                ? 'text-cyan-300'
-                                                : unifiedData.badgeTheme === 'debuff'
-                                                ? 'text-rose-300'
-                                                : 'text-slate-200'
-                                        )
-                                )}
+                                className={attr.wrap
+                                    ? ATTR_VALUE_STACK
+                                    : clsx(
+                                        ATTR_VALUE,
+                                        attr.isPrimary
+                                            ? 'text-cyan-300'
+                                            : unifiedData.badgeTheme === 'debuff'
+                                            ? 'text-rose-300'
+                                            : 'text-slate-200'
+                                    )}
                             >
-                                {attr.value}
+                                <BonusValue value={attr.value} />
                             </span>
                         </div>
                     ))}
@@ -909,21 +943,21 @@ const SkillCard: React.FC<{
 
             {/* 3. 特殊战斗机制说明 (仅保留实质性机制，排版整洁) */}
             {unifiedData.mechanicNote && (
-                <p className="text-xs text-slate-300/85 leading-relaxed px-1 pt-1 border-t border-slate-800/60">
+                <p className={NOTE_PARAGRAPH}>
                     {renderQuietDescription(unifiedData.mechanicNote)}
                 </p>
             )}
 
             {/* 四代玄烛/赤乌反向增益：普通技能卡提示受哪个四代影响、加了多少，可点击跳转 */}
             {skill.ActionType !== "FOURTH_GEN_PASSIVE" && fourthGenReverse.length > 0 && (
-                <div className="pt-2 border-t border-slate-800/40 flex flex-col gap-1.5 text-xs">
+                <div className={NOTE_BLOCK}>
                     {fourthGenReverse.map((fg, fgIdx) => (
-                        <div key={fgIdx} className="flex items-start justify-between gap-2">
-                            <span className="text-slate-400 text-[11px] shrink-0 pt-0.5">{slotLabel(fg.slot)}</span>
+                        <div key={fgIdx} className={NOTE_ROW}>
+                            <span className={NOTE_LABEL}>{slotLabel(fg.slot)}</span>
                             <button
                                 type="button"
                                 onClick={() => onNavigateToSkill(fg.sourceId)}
-                                className="text-cyan-300 hover:text-cyan-200 font-bold text-left leading-snug min-w-0 flex-1 break-words"
+                                className={clsx(NOTE_LINK, NOTE_TEXT, 'flex-1')}
                                 title={"点击查看 " + fg.sourceName}
                             >
                                 受《{fg.sourceName}》{fg.text}
