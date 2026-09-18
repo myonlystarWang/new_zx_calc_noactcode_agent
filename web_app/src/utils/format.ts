@@ -2,7 +2,7 @@
  * 统一的数字显示格式：
  * - 上亿 → 保留「亿」（去小数尾零）
  * - 上万 → 保留「万」（去小数尾零）
- * - 小数字 → 纯整数，无千分位逗号
+ * - 小数字 → 最多保留 2 位小数（去尾零）：增益类数值有小数（如巫咒 22.5），不能取整
  * withUnit=false 时仅返回数值字符串（不带「万/亿」单位），用于表格紧凑列。
  */
 export function formatNumber(value: number, withUnit: boolean = true): string {
@@ -19,5 +19,5 @@ export function formatNumber(value: number, withUnit: boolean = true): string {
         const v = value / 1e4;
         return withUnit ? `${trim(v)} 万` : trim(v);
     }
-    return String(Math.round(value));
+    return trim(value);
 }
