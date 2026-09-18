@@ -98,13 +98,66 @@ export function validateSkillsData(allSkills: AllSkills): SchemaValidationIssue[
 
         // Validate ActionType
         if (skill.ActionType) {
-          const validTypes = ['DAMAGE', 'BUFF', 'DEBUFF', 'UTILITY', 'FOURTH_GEN_PASSIVE', 'ZAO_HUA_PASSIVE'];
+          const validTypes = ['DAMAGE', 'BUFF', 'DEBUFF', 'UTILITY', 'FOURTH_GEN_PASSIVE', 'ZAO_HUA_PASSIVE', 'XIN_FA_PASSIVE'];
           if (!validTypes.includes(skill.ActionType)) {
             issues.push({
               field: `${skillPath}.ActionType`,
-              message: `未知的 ActionType: "${skill.ActionType}"，应为: DAMAGE, BUFF, DEBUFF, UTILITY 之一`,
+              message: `未知的 ActionType: "${skill.ActionType}"，应为: DAMAGE, BUFF, DEBUFF, UTILITY, FOURTH_GEN_PASSIVE, ZAO_HUA_PASSIVE, XIN_FA_PASSIVE 之一`,
               severity: 'ERROR'
             });
+          }
+        }
+
+        // Validate SkillBonusAttributes：每段显式数组（number[]）须配 HitCount 且长度一致、元素为有限数
+        // （字段清单与 per_hit.ts 的 PER_HIT_FIELDS 保持一致）
+        const perHitFields = [
+          'SkillAttackPercentBonus',
+          'SkillAttackFixedBonus',
+          'SkillDefensePercentBonus',
+          'SkillHealthPercentBonus',
+          'SkillManaPercentBonus',
+          'SkillCriticalDamagePercentBonus',
+          'SkillDamageBonus'
+        ];
+        const bonusAttrs = skill.SkillBonusAttributes as unknown as Record<string, unknown> | undefined;
+        if (bonusAttrs && typeof bonusAttrs === 'object') {
+          const multiHit = bonusAttrs.MultiHitConfig as { HitCount?: number } | undefined;
+          const hitCount = multiHit ? multiHit.HitCount : undefined;
+          for (const field of perHitFields) {
+            const value = bonusAttrs[field];
+            if (value === undefined) continue;
+            if (Array.isArray(value)) {
+              if (typeof hitCount !== 'number' || !Number.isFinite(hitCount)) {
+                issues.push({
+                  field: `${skillPath}.SkillBonusAttributes.${field}`,
+                  message: `${field} 写成每段数组时，必须同时配置 MultiHitConfig.HitCount`,
+                  severity: 'ERROR'
+                });
+                continue;
+              }
+              if (value.length !== hitCount) {
+                issues.push({
+                  field: `${skillPath}.SkillBonusAttributes.${field}`,
+                  message: `${field} 数组长度 (${value.length}) 应等于 MultiHitConfig.HitCount (${hitCount})`,
+                  severity: 'ERROR'
+                });
+              }
+              value.forEach((v: unknown, i: number) => {
+                if (typeof v !== 'number' || !Number.isFinite(v)) {
+                  issues.push({
+                    field: `${skillPath}.SkillBonusAttributes.${field}[${i}]`,
+                    message: `${field} 第 ${i + 1} 段应为有限数值，实际为 ${JSON.stringify(v)}`,
+                    severity: 'ERROR'
+                  });
+                }
+              });
+            } else if (typeof value !== 'number' || !Number.isFinite(value)) {
+              issues.push({
+                field: `${skillPath}.SkillBonusAttributes.${field}`,
+                message: `${field} 应为数值或每段数值数组，实际为 ${JSON.stringify(value)}`,
+                severity: 'WARNING'
+              });
+            }
           }
         }
 

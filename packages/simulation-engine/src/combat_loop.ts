@@ -1,5 +1,6 @@
 import { Actor } from './actor.js';
 import { resolveHitDamageWithTrace } from './calculator.js';
+import { addPerHitField } from './per_hit.js';
 import { EffectManager, type EffectInstance } from './effects.js';
 import { sumBuffEffectsFromBuffs } from './attributes.js';
 import { isBuffEffectKey, isCharacterAttributeKey } from './field_keys.js';
@@ -386,24 +387,15 @@ export class SimulationEngine {
       // 仙(苍龙啸/苍龙啸·玄)额外 +100（怒龙吞海II 满级固定，旧值300已移除）。
       const yyzcLevel = getZhuShuangYyzcLevel(runtime.actor.Skills);
       const longNuAttackBonus = getZhuShuangLongNuBonus(event.skillId ?? '', yyzcLevel);
-      skillToUse = {
-        ...skill,
-        SkillBonusAttributes: {
-          ...skill.SkillBonusAttributes,
-          SkillAttackPercentBonus:
-            (skill.SkillBonusAttributes.SkillAttackPercentBonus ?? 0) + longNuAttackBonus
-        }
-      };
+      const longNuAttrs = { ...skill.SkillBonusAttributes };
+      addPerHitField(longNuAttrs, 'SkillAttackPercentBonus', longNuAttackBonus, 'ZS_LONG_NU');
+      skillToUse = { ...skill, SkillBonusAttributes: longNuAttrs };
     }
 
     if (event.skillId === 'ZS_MO_SKILL_LYLZ' && hitIndex === hitCount) {
-      skillToUse = {
-        ...skillToUse,
-        SkillBonusAttributes: {
-          ...skillToUse.SkillBonusAttributes,
-          SkillManaPercentBonus: (skillToUse.SkillBonusAttributes.SkillManaPercentBonus ?? 0) + 10
-        }
-      };
+      const lylzAttrs = { ...skillToUse.SkillBonusAttributes };
+      addPerHitField(lylzAttrs, 'SkillManaPercentBonus', 10, 'ZS_MO_SKILL_LYLZ');
+      skillToUse = { ...skillToUse, SkillBonusAttributes: lylzAttrs };
     }
 
     const resolvedDamage = resolveHitDamageWithTrace(

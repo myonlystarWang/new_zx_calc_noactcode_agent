@@ -11,6 +11,7 @@
   SkillBonusAttributes
 } from './types.js';
 import { resolveEffectiveCharacterAttributes, sumBuffEffectsFromBuffs } from './attributes.js';
+import { resolvePerHitFieldsInPlace } from './per_hit.js';
 
 interface DamageContext {
   uncappedAttributes: CharacterAttributes;
@@ -91,19 +92,24 @@ export const resolveHitDamageWithTrace = (
     (currentSkillBonus as Record<string, unknown>)[multiHit.ScalingAttribute] = start + step * (hitIndex - 1);
   }
 
+  // 每段显式数组（非等差多段）：先解析成本段标量，下游算术保持纯 number，公式零改动。
+  // 只改写 currentSkillBonus 副本，不影响原始技能数据里的数组。
+  resolvePerHitFieldsInPlace(currentSkillBonus, hitIndex);
+  const cur = currentSkillBonus as unknown as Record<string, number | undefined>;
+
   let minBaseDamage =
-    effMinAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) +
-    (currentSkillBonus.SkillAttackFixedBonus || 0) +
-    (effHealth * (currentSkillBonus.SkillHealthPercentBonus || 0)) / 100 +
-    (effMana * (currentSkillBonus.SkillManaPercentBonus || 0)) / 100 +
-    (effDefense * (currentSkillBonus.SkillDefensePercentBonus || 0)) / 100;
+    effMinAttack * (1 + (cur.SkillAttackPercentBonus || 0) / 100) +
+    (cur.SkillAttackFixedBonus || 0) +
+    (effHealth * (cur.SkillHealthPercentBonus || 0)) / 100 +
+    (effMana * (cur.SkillManaPercentBonus || 0)) / 100 +
+    (effDefense * (cur.SkillDefensePercentBonus || 0)) / 100;
 
   let maxBaseDamage =
-    effMaxAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) +
-    (currentSkillBonus.SkillAttackFixedBonus || 0) +
-    (effHealth * (currentSkillBonus.SkillHealthPercentBonus || 0)) / 100 +
-    (effMana * (currentSkillBonus.SkillManaPercentBonus || 0)) / 100 +
-    (effDefense * (currentSkillBonus.SkillDefensePercentBonus || 0)) / 100;
+    effMaxAttack * (1 + (cur.SkillAttackPercentBonus || 0) / 100) +
+    (cur.SkillAttackFixedBonus || 0) +
+    (effHealth * (cur.SkillHealthPercentBonus || 0)) / 100 +
+    (effMana * (cur.SkillManaPercentBonus || 0)) / 100 +
+    (effDefense * (cur.SkillDefensePercentBonus || 0)) / 100;
 
   // 每击按角色属性递增的附加攻击力（多因子：引用角色本体属性，第 k 击增量 = (k-1) * pct/100 * 角色属性）
   if (multiHit && multiHit.PerHitCharacterBonus && hitIndex > 1) {
@@ -119,7 +125,7 @@ export const resolveHitDamageWithTrace = (
       ((ph.CharacterManaPercent || 0) / 100) * effMana * steps;
   }
 
-  const baseCritDmgBeforeCap = effectiveAttributes.CharacterCriticalHitDamagePercent + (currentSkillBonus.SkillCriticalDamagePercentBonus || 0);
+  const baseCritDmgBeforeCap = effectiveAttributes.CharacterCriticalHitDamagePercent + (cur.SkillCriticalDamagePercentBonus || 0);
   let baseCritDmg = baseCritDmgBeforeCap;
   if (effectiveCaps) {
     baseCritDmg = Math.min(baseCritDmg, effectiveCaps.CapCriticalDamage);
@@ -133,7 +139,7 @@ export const resolveHitDamageWithTrace = (
 
   const critMultiplier = Math.max(1, critDmgTotal / 100);
   const damageBonusMultiplier =
-    currentSkillBonus.SkillDamageBonus !== undefined ? currentSkillBonus.SkillDamageBonus : 1;
+    cur.SkillDamageBonus !== undefined ? cur.SkillDamageBonus : 1;
   const charMonDmgInc = 1 + effectiveAttributes.CharacterMonsterDamageIncreasePercent / 100;
   const monHarmedMultiplier = 1 + buffMonHarmed / 100;
   const focusMultiplier = 1 + buffFocus / 100;
@@ -238,20 +244,23 @@ export const calculateDamage = (
       ) {
         (currentSkillBonus as Record<string, unknown>)[multiHit.ScalingAttribute] = multiHit.ScalingStartValue;
       }
+      // 每段显式数组：第 1 段同样解析，保证 minBaseDamage/maxBaseDamage 与 hits[0] 一致
+      resolvePerHitFieldsInPlace(currentSkillBonus, 1);
+      const curFirst = currentSkillBonus as unknown as Record<string, number | undefined>;
 
       firstHitMinBaseDamage =
-        context.effectiveAttributes.CharacterMinAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) +
-        (currentSkillBonus.SkillAttackFixedBonus || 0) +
-        (context.effectiveAttributes.CharacterHealth * (currentSkillBonus.SkillHealthPercentBonus || 0)) / 100 +
-        (context.effectiveAttributes.CharacterMana * (currentSkillBonus.SkillManaPercentBonus || 0)) / 100 +
-        (context.effectiveAttributes.CharacterDefense * (currentSkillBonus.SkillDefensePercentBonus || 0)) / 100;
+        context.effectiveAttributes.CharacterMinAttack * (1 + (curFirst.SkillAttackPercentBonus || 0) / 100) +
+        (curFirst.SkillAttackFixedBonus || 0) +
+        (context.effectiveAttributes.CharacterHealth * (curFirst.SkillHealthPercentBonus || 0)) / 100 +
+        (context.effectiveAttributes.CharacterMana * (curFirst.SkillManaPercentBonus || 0)) / 100 +
+        (context.effectiveAttributes.CharacterDefense * (curFirst.SkillDefensePercentBonus || 0)) / 100;
 
       firstHitMaxBaseDamage =
-        context.effectiveAttributes.CharacterMaxAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) +
-        (currentSkillBonus.SkillAttackFixedBonus || 0) +
-        (context.effectiveAttributes.CharacterHealth * (currentSkillBonus.SkillHealthPercentBonus || 0)) / 100 +
-        (context.effectiveAttributes.CharacterMana * (currentSkillBonus.SkillManaPercentBonus || 0)) / 100 +
-        (context.effectiveAttributes.CharacterDefense * (currentSkillBonus.SkillDefensePercentBonus || 0)) / 100;
+        context.effectiveAttributes.CharacterMaxAttack * (1 + (curFirst.SkillAttackPercentBonus || 0) / 100) +
+        (curFirst.SkillAttackFixedBonus || 0) +
+        (context.effectiveAttributes.CharacterHealth * (curFirst.SkillHealthPercentBonus || 0)) / 100 +
+        (context.effectiveAttributes.CharacterMana * (curFirst.SkillManaPercentBonus || 0)) / 100 +
+        (context.effectiveAttributes.CharacterDefense * (curFirst.SkillDefensePercentBonus || 0)) / 100;
     }
 
     totalMinFinalDamage += hitRes.minFinalDamage;

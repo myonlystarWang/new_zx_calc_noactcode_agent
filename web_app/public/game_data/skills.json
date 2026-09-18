@@ -494,6 +494,42 @@
           "MultiHitConfig": {
             "HitCount": 6
           }
+        },
+        "SkillSeries": "YING_XIONG",
+        "SkillTiers": {
+          "1": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 195,
+              "SkillAttackFixedBonus": 1800,
+              "SkillHealthPercentBonus": 31,
+              "SkillManaPercentBonus": 5,
+              "SkillCriticalDamagePercentBonus": 75,
+              "SkillDamageBonus": 1,
+              "MultiHitConfig": { "HitCount": 6 }
+            }
+          },
+          "2": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 270,
+              "SkillAttackFixedBonus": 1800,
+              "SkillHealthPercentBonus": 31,
+              "SkillManaPercentBonus": 5,
+              "SkillCriticalDamagePercentBonus": 90,
+              "SkillDamageBonus": 1,
+              "MultiHitConfig": { "HitCount": 6 }
+            }
+          },
+          "3": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 445,
+              "SkillAttackFixedBonus": 1800,
+              "SkillHealthPercentBonus": 31,
+              "SkillManaPercentBonus": 5,
+              "SkillCriticalDamagePercentBonus": 105,
+              "SkillDamageBonus": 1,
+              "MultiHitConfig": { "HitCount": 6 }
+            }
+          }
         }
       },
       {
@@ -2916,6 +2952,278 @@
     ],
     "XIAN": [],
     "MO": []
+  },
+  "GUI_YUN": {
+    "XIAN": [],
+    "FO": [],
+    "MO": [
+      {
+        "SkillID": "GY_MO_SKILL_HN3_DD",
+        "SkillName": "皓凝霜雪III·大地",
+        "RequiredClass": "GUI_YUN",
+        "Faction": "MO",
+        "SkillImportanceWeight": 2,
+        "SkillFrequency": 0.2,
+        "Cooldown": 24,
+        "CastTime": 2,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": [585, 465, 385, 325],
+          "SkillAttackFixedBonus": 6000,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 40,
+          "SkillCriticalDamagePercentBonus": 65,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 4
+          }
+        },
+        "SkillSeries": "DA_DI"
+      },
+      {
+        "SkillID": "GY_MO_SKILL_HN3_YX",
+        "SkillName": "皓凝霜雪III·英雄",
+        "RequiredClass": "GUI_YUN",
+        "Faction": "MO",
+        "SkillImportanceWeight": 2,
+        "SkillFrequency": 0.2,
+        "Cooldown": 24,
+        "CastTime": 2,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": [585, 465, 385, 325],
+          "SkillAttackFixedBonus": 6000,
+          "SkillHealthPercentBonus": 20,
+          "SkillManaPercentBonus": 50,
+          "SkillCriticalDamagePercentBonus": 65,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 4
+          }
+        },
+        "SkillSeries": "YING_XIONG"
+      },
+      {
+        "SkillID": "GY_MO_SKILL_CLDY",
+        "SkillName": "穿林打叶",
+        "RequiredClass": "GUI_YUN",
+        "Faction": "MO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 0.9,
+        "Cooldown": 0,
+        "CastTime": 2,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": [104, 114, 124, 124, 124, 124],
+          "SkillAttackFixedBonus": [400, 410, 420, 420, 420, 420],
+          "SkillHealthPercentBonus": 6,
+          "SkillManaPercentBonus": 5,
+          "SkillCriticalDamagePercentBonus": 15,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
+        }
+      },
+      {
+        "SkillID": "GY_MO_SKILL_CLDY_PS",
+        "SkillName": "穿林打叶·破煞",
+        "RequiredClass": "GUI_YUN",
+        "Faction": "MO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 0.9,
+        "Cooldown": 0,
+        "CastTime": 2,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": [104, 114, 124, 124, 124, 124],
+          "SkillAttackFixedBonus": [400, 410, 420, 420, 420, 420],
+          "SkillHealthPercentBonus": 0,
+          "SkillManaPercentBonus": 10,
+          "SkillCriticalDamagePercentBonus": 15,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 6
+          }
+        }
+      },
+      {
+        "SkillID": "GY_MO_SKILL_TMBH2",
+        "SkillName": "铁马冰河II",
+        "RequiredClass": "GUI_YUN",
+        "Faction": "MO",
+        "SkillImportanceWeight": 1,
+        "SkillFrequency": 0.3,
+        "Cooldown": 24,
+        "CastTime": 2,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": [30, 50, 70, 110],
+          "SkillAttackFixedBonus": [1005, 1305, 1605, 1905],
+          "SkillHealthPercentBonus": [15, 16, 18, 20],
+          "SkillManaPercentBonus": 0,
+          "SkillCriticalDamagePercentBonus": [20, 40, 60, 80],
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 4
+          }
+        }
+      },
+      {
+        "SkillID": "GY_MO_SKILL_JYBP",
+        "SkillName": "急雨冰瀑·心法",
+        "RequiredClass": "GUI_YUN",
+        "Faction": "MO",
+        "SkillImportanceWeight": 2,
+        "SkillFrequency": 0.15,
+        "Cooldown": 30,
+        "CastTime": 12,
+        "IsAOE": false,
+        "ActionType": "DAMAGE",
+        "HitTiming": {
+          "Mode": "EVENLY_DURING_CAST"
+        },
+        "SkillBonusAttributes": {
+          "SkillAttackPercentBonus": 40,
+          "SkillAttackFixedBonus": 6000,
+          "SkillHealthPercentBonus": 3,
+          "SkillManaPercentBonus": 13,
+          "SkillCriticalDamagePercentBonus": 0,
+          "SkillDamageBonus": 1,
+          "MultiHitConfig": {
+            "HitCount": 36
+          }
+        }
+      },
+      {
+        "SkillID": "GY_MO_SKILL_CLDY2",
+        "SkillName": "穿林打叶II",
+        "RequiredClass": "GUI_YUN",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {},
+        "ActionType": "ZAO_HUA_PASSIVE",
+        "ZaoHuaGrants": [
+          {
+            "TargetSkillIds": [
+              "GY_MO_SKILL_CLDY",
+              "GY_MO_SKILL_TMBH2",
+              "GY_MO_SKILL_CLDY_PS",
+              "GY_MO_SKILL_JYBP"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillCriticalDamagePercentBonus": 40
+              }
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "GY_MO_SKILL_SH2",
+        "SkillName": "岁寒II",
+        "RequiredClass": "GUI_YUN",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "SkillBonusAttributes": {},
+        "ActionType": "ZAO_HUA_PASSIVE",
+        "ZaoHuaGrants": [
+          {
+            "TargetSkillIds": [
+              "GY_MO_SKILL_CLDY_PS"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillHealthPercentBonus": 11,
+                "SkillManaPercentBonus": 5
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "GY_MO_SKILL_CLDY"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillHealthPercentBonus": 5,
+                "SkillManaPercentBonus": 5
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "GY_MO_SKILL_TMBH2"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillHealthPercentBonus": 10,
+                "SkillManaPercentBonus": 5
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "GY_MO_SKILL_JYBP"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillHealthPercentBonus": 10,
+                "SkillManaPercentBonus": 5
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "GY_MO_SKILL_CLDY",
+              "GY_MO_SKILL_TMBH2",
+              "GY_MO_SKILL_CLDY_PS",
+              "GY_MO_SKILL_JYBP"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillAttackPercentBonus": 60
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "GY_MO_SKILL_JYBP"
+            ],
+            "Override": {
+              "CooldownReduction": 4
+            }
+          }
+        ]
+      }
+    ]
   },
   "SHI_LUO": {
     "XIAN": [],
