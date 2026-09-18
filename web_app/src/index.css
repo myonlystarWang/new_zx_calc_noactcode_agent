@@ -64,6 +64,31 @@ body {
   min-height: 100vh;
 }
 
+/* 大屏等比缩放：2K/4K（Windows 100% 缩放）下观感对齐 1920x1080。
+   媒体查询按 CSS px 生效——系统 DPI 缩放（125%/150%）会先缩小有效视口，
+   因此这些档位只在"物理高分 + 低缩放比"时触发，互不冲突。
+   不支持 zoom 的旧浏览器自动回落为现状（安全降级）。 */
+@media (min-width: 2200px) {
+  html {
+    zoom: 1.33;
+    /* 2560 -> 有效视口 ~1925 */
+  }
+}
+
+@media (min-width: 2900px) {
+  html {
+    zoom: 1.5;
+    /* 2900~3599 -> 有效视口 ~1933~2400 */
+  }
+}
+
+@media (min-width: 3600px) {
+  html {
+    zoom: 2;
+    /* 3840 -> 有效视口恰好 1920 */
+  }
+}
+
 /* Scrollbar Customization */
 ::-webkit-scrollbar {
   width: 8px;
