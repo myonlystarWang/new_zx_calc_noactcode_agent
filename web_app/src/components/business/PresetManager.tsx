@@ -148,19 +148,19 @@ export const PresetManager: React.FC = () => {
                 属性方案
             </h2>
 
-            <div className="glass-panel p-3 md:p-3 relative">
-                <div className="flex flex-col sm:flex-row gap-2">
-                    {/* 方案下拉切换 */}
-                    <div ref={dropdownRef} className="relative flex-1 min-w-0">
+            <div className="glass-panel p-2.5 sm:p-3 relative">
+                <div className="flex flex-col gap-2">
+                    {/* 第一行：方案下拉切换（整行展开，名称完整展示） */}
+                    <div ref={dropdownRef} className="relative w-full">
                         <button
                             type="button"
                             onClick={() => setDropdownOpen(o => !o)}
                             title={activePreset?.name ?? '未保存'}
-                            className="w-full flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-950/50 text-slate-200 hover:border-slate-500 transition-colors text-sm"
+                            className="w-full flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-950/60 text-slate-200 hover:border-slate-500 transition-colors text-sm"
                         >
-                            <span className="flex items-center gap-2 min-w-0">
+                            <span className="flex items-center gap-2 min-w-0 flex-1">
                                 <Bookmark className="w-4 h-4 text-cyan-400 shrink-0" />
-                                <span className="truncate">{activePreset?.name ?? '未保存'}</span>
+                                <span className="truncate font-medium">{activePreset?.name ?? '未保存'}</span>
                                 {isDirty && (
                                     <span
                                         className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"
@@ -168,13 +168,13 @@ export const PresetManager: React.FC = () => {
                                     />
                                 )}
                             </span>
-                            <ChevronDown className={clsx('w-4 h-4 text-slate-500 shrink-0 transition-transform', dropdownOpen && 'rotate-180')} />
+                            <ChevronDown className={clsx('w-4 h-4 text-slate-400 shrink-0 transition-transform', dropdownOpen && 'rotate-180')} />
                         </button>
 
                         {dropdownOpen && (
                             <div
                                 data-preset-menu
-                                className="absolute left-0 z-50 mt-1.5 w-max min-w-full max-w-[min(320px,calc(100vw-2rem))] max-h-52 overflow-y-auto custom-scrollbar rounded-xl border border-slate-700 bg-slate-900 shadow-2xl shadow-black/80 py-1 ring-1 ring-white/10 animate-in fade-in duration-100"
+                                className="absolute left-0 right-0 z-50 mt-1.5 w-full max-h-56 overflow-y-auto custom-scrollbar rounded-xl border border-slate-700 bg-slate-900 shadow-2xl shadow-black/80 py-1 ring-1 ring-white/10 animate-in fade-in duration-100"
                             >
                                 {presets.length === 0 && (
                                     <div className="px-3 py-2.5 text-xs text-slate-500">暂无保存的方案</div>
@@ -190,7 +190,7 @@ export const PresetManager: React.FC = () => {
                                         }}
                                         className={clsx(
                                             'w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-sm hover:bg-slate-800/80 transition-colors',
-                                            p.id === activePresetId ? 'text-cyan-300' : 'text-slate-300'
+                                            p.id === activePresetId ? 'text-cyan-300 font-medium' : 'text-slate-300'
                                         )}
                                     >
                                         <span className="flex items-center gap-2 min-w-0">
@@ -204,61 +204,61 @@ export const PresetManager: React.FC = () => {
                         )}
                     </div>
 
-                    {/* 操作按钮（Step 12 起为 4 个，允许换行避免窄屏溢出） */}
-                    <div className="flex flex-wrap gap-2 shrink-0">
+                    {/* 第二行：操作按钮平铺 */}
+                    <div className="grid grid-cols-5 gap-1.5 pt-1.5 border-t border-slate-800/60">
                         <button
                             type="button"
                             onClick={handleCompareClick}
                             disabled={presets.length < 2}
                             title={presets.length < 2 ? '保存 2 套以上方案后可用' : '并排对比两套方案'}
                             className={clsx(
-                                'px-3 py-1.5 rounded-xl border flex items-center gap-1.5 text-sm transition-colors',
+                                'w-full py-1.5 px-1 rounded-lg border flex items-center justify-center gap-1 text-xs font-medium transition-colors',
                                 presets.length >= 2
                                     ? 'border-cyan-500/30 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20'
                                     : 'border-slate-800 text-slate-600 cursor-not-allowed'
                             )}
                         >
-                            <ArrowLeftRight className="w-3.5 h-3.5" />
-                            对比
+                            <ArrowLeftRight className="w-3.5 h-3.5 shrink-0" />
+                            <span>对比</span>
                         </button>
                         <button
                             type="button"
                             onClick={handleSaveClick}
-                            className="px-3 py-1.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 flex items-center gap-1.5 text-sm transition-colors"
+                            className="w-full py-1.5 px-1 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 flex items-center justify-center gap-1 text-xs font-medium transition-colors"
                         >
-                            <Save className="w-3.5 h-3.5" />
-                            保存
+                            <Save className="w-3.5 h-3.5 shrink-0" />
+                            <span>保存</span>
                         </button>
                         <button
                             type="button"
                             onClick={() => setImportOpen(true)}
                             title="粘贴一段属性/增益数据，解析后存为方案"
-                            className="px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white hover:border-slate-500 flex items-center gap-1.5 text-sm transition-colors"
+                            className="w-full py-1.5 px-1 rounded-lg border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white hover:border-slate-500 flex items-center justify-center gap-1 text-xs font-medium transition-colors"
                         >
-                            <FileInput className="w-3.5 h-3.5" />
-                            导入
+                            <FileInput className="w-3.5 h-3.5 shrink-0" />
+                            <span>导入</span>
                         </button>
                         <button
                             type="button"
                             onClick={() => openNamingDialog('saveAs')}
-                            className="px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white hover:border-slate-500 flex items-center gap-1.5 text-sm transition-colors"
+                            className="w-full py-1.5 px-1 rounded-lg border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white hover:border-slate-500 flex items-center justify-center gap-1 text-xs font-medium transition-colors"
                         >
-                            <Copy className="w-3.5 h-3.5" />
-                            另存为
+                            <Copy className="w-3.5 h-3.5 shrink-0" />
+                            <span>另存为</span>
                         </button>
                         <button
                             type="button"
                             onClick={handleDeleteClick}
                             disabled={!activePreset}
                             className={clsx(
-                                'px-3 py-1.5 rounded-xl border flex items-center gap-1.5 text-sm transition-colors',
+                                'w-full py-1.5 px-1 rounded-lg border flex items-center justify-center gap-1 text-xs font-medium transition-colors',
                                 activePreset
                                     ? 'border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20'
                                     : 'border-slate-800 text-slate-600 cursor-not-allowed'
                             )}
                         >
-                            <Trash2 className="w-3.5 h-3.5" />
-                            删除
+                            <Trash2 className="w-3.5 h-3.5 shrink-0" />
+                            <span>删除</span>
                         </button>
                     </div>
                 </div>

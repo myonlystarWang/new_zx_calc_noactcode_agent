@@ -14,7 +14,7 @@ export const FactionSelector: React.FC = () => {
 
     return (
         <div>
-            <h2 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
                 <span className="w-1 h-5 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></span>
                 阵营选择
             </h2>
@@ -54,22 +54,22 @@ export const FactionSelector: React.FC = () => {
                             key={faction.id}
                             onClick={() => updateCharacterClass(userCharacter.ClassID, faction.id as any)}
                             className={clsx(
-                                'glass-panel p-3 md:p-3 h-[124px] flex items-center justify-center cursor-pointer transition-all duration-300 group relative overflow-hidden',
+                                'glass-panel p-2.5 h-[108px] flex items-center justify-center cursor-pointer transition-all duration-300 group relative overflow-hidden',
                                 isActive ? colors.active : `border-slate-700 hover:bg-slate-800/50 ${colors.hover}`
                             )}
                         >
-                            <div className="flex flex-col items-center justify-center gap-1 md:gap-2 text-center relative z-10">
+                            <div className="flex flex-col items-center justify-center gap-1.5 text-center relative z-10">
                                 <div className={clsx(
-                                    'p-2 md:p-2.5 rounded-xl transition-all duration-300',
+                                    'p-2 rounded-xl transition-all duration-300',
                                     isActive
-                                        ? `${colors.icon} scale-110`
+                                        ? `${colors.icon} scale-105`
                                         : 'bg-slate-800/50 text-slate-400 group-hover:bg-slate-700/50'
                                 )}>
                                     <Swords className="w-4 h-4 md:w-5 md:h-5" />
                                 </div>
 
                                 <span className={clsx(
-                                    'font-bold text-sm md:text-lg',
+                                    'font-bold text-sm md:text-base',
                                     isActive ? colors.text : 'text-slate-300'
                                 )}>
                                     {faction.name}

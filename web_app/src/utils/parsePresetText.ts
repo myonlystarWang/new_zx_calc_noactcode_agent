@@ -32,9 +32,9 @@ export interface ParsedImport {
 const ATTR_ALIASES: Array<[keyof CharacterAttributes, string[]]> = [
     ['CharacterMinAttack', ['characterminattack', 'minattack', 'min_attack', 'minatk', '最小攻击', '最小攻', '最小', 'min']],
     ['CharacterMaxAttack', ['charactermaxattack', 'maxattack', 'max_attack', 'maxatk', '最大攻击', '最大攻', '最大', 'max']],
-    ['CharacterDefense', ['characterdefense', 'defense', 'def', '防御']],
-    ['CharacterHealth', ['characterhealth', 'health', 'hp', '气血', '血量', '生命']],
-    ['CharacterMana', ['charactermana', 'mana', 'mp', '真气', '蓝']],
+    ['CharacterDefense', ['characterdefense', 'defense', 'def', '防御', '防']],
+    ['CharacterHealth', ['characterhealth', 'health', 'hp', '气血', '血量', '生命', '血']],
+    ['CharacterMana', ['charactermana', 'mana', 'mp', '真气', '蓝量', '蓝']],
     ['CharacterCriticalHitDamagePercent', ['charactercriticalhitdamagepercent', 'critdamage', 'criticaldamage', '爆伤', '暴击伤害', '会心伤害', '爆伤百分比']],
     ['CharacterCriticalHitRatePercent', ['charactercriticalhitratepercent', 'critrate', 'criticalrate', '暴击率', '暴击', '会心率']],
     ['CharacterMonsterDamageIncreasePercent', ['charactermonsterdamageincreasepercent', 'monsterdamageincrease', 'monsterdamage', '对怪增伤', '对怪', '增伤']],
@@ -77,8 +77,11 @@ const CLASS_KEY_RE = /(?:职业|门派|class(?:id)?)\s*[:：=]?\s*([^\s:：,，�
 const FACTION_KEY_RE = /(?:阵营|faction)\s*[:：=]?\s*(仙|佛|魔|XIAN|FO|MO)/i;
 const BARE_FACTION_RE = /^(仙|佛|魔)$/;
 
-/** 键值对：中英文键 + 数字（容忍千分位逗号/下划线） */
-const PAIR_RE = /([A-Za-z_\u4e00-\u9fa5]{1,14})\s*[:：=]?\s*(-?\d[\d,，_]*(?:\.\d+)?)/g;
+/** 攻击区间（如「攻 120000-150000」、「攻击 120000~150000」） */
+const ATK_RANGE_RE = /(?:攻击|攻|atk)\s*[:：=]?\s*(\d[\d,，_]*)\s*[-~～至到/]\s*(\d[\d,，_]*)/i;
+
+/** 键值对：中英文键 + 数字（支持 + / - 号、千分位、百分号） */
+const PAIR_RE = /([A-Za-z_\u4e00-\u9fa5]{1,14})\s*[:：=]?\s*([+-]?\d[\d,，_]*(?:\.\d+)?)\s*%?/g;
 
 const toNum = (s: string): number => Number(s.replace(/[,，_]/g, ''));
 
@@ -177,33 +180,69 @@ export function parsePresetText(
         }
     } else {
         for (const rawLine of text.split(/\r?\n/)) {
-            const line = rawLine.replace(/#.*$/, '').trim();
+            let line = rawLine.replace(/#.*$/, '').trim();
             if (!line || /https?:|#\//i.test(line)) continue;
+
+            // 1. 匹配类似 "涅羽 · 仙" 或 "职业 涅羽" 的职业/阵营行
+            let classFoundInLine = false;
+            for (const c of classes) {
+                if (line.includes(c.ClassName)) {
+                    classId = c.ClassID;
+                    classFoundInLine = true;
+                    // 同行找阵营
+                    const fm = line.match(/(?:仙|佛|魔|XIAN|FO|MO)/i);
+                    if (fm) {
+                        faction = FACTION_LOOKUP[fm[0].toLowerCase()] ?? FACTION_LOOKUP[fm[0]] ?? null;
+                    }
+                    // 剔除职业名，避免后续字符干扰
+                    line = line.replace(c.ClassName, ' ');
+                    break;
+                }
+            }
 
             const cm = line.match(CLASS_KEY_RE);
             if (cm) {
                 const found = lookupClass(cm[1], classes);
-                if (found) classId = found;
-                else warnings.push(`职业「${cm[1]}」未识别`);
+                if (found) {
+                    classId = found;
+                    classFoundInLine = true;
+                    line = line.replace(cm[0], ' ');
+                } else {
+                    warnings.push(`职业「${cm[1]}」未识别`);
+                }
             }
+
             const fm = line.match(FACTION_KEY_RE);
             if (fm) {
                 faction = FACTION_LOOKUP[fm[1].toLowerCase()] ?? FACTION_LOOKUP[fm[1]] ?? null;
+                line = line.replace(fm[0], ' ');
+            } else if (BARE_FACTION_RE.test(line)) {
+                faction = FACTION_LOOKUP[line];
+                continue;
             }
 
+            // 2. 匹配攻击区间（如「攻 120000-150000」），剥离后不影响其它属性匹配
+            const rangeMatch = line.match(ATK_RANGE_RE);
+            if (rangeMatch) {
+                putAttr('CharacterMinAttack', toNum(rangeMatch[1]), '最小攻击');
+                putAttr('CharacterMaxAttack', toNum(rangeMatch[2]), '最大攻击');
+                line = line.replace(rangeMatch[0], ' ');
+            }
+
+            // 3. 去掉行首「增益：」或「状态：」等标签
+            line = line.replace(/^(?:增益|状态|buffs?)\s*[:：]/i, ' ');
+
+            // 4. 解析行内各个键值对（支持中点 · 、顿号 、、逗号等）
             let matched = false;
             for (const m of line.matchAll(PAIR_RE)) {
                 matched = true;
                 handlePair(m[1], m[2]);
             }
-            if (BARE_FACTION_RE.test(line)) {
-                faction = FACTION_LOOKUP[line];
-                matched = true;
-            }
-            // 整行只有中文键没有数字（如「专注增益」）→ 提示缺数值。
-            // 职业/阵营命中的行没有数字属正常，不提示
-            if (!matched && !cm && !fm && /[\u4e00-\u9fa5]/.test(line) && !/^\d/.test(line)) {
-                warnings.push(`${line}（没有读到数值）`);
+
+            // 过滤无数字但有纯标点的行（如被剥离后只剩 "·" 或标点）
+            const cleaned = line.replace(/[\s·\-_,，、:：/\\|]/g, '');
+            if (!matched && !classFoundInLine && cleaned.length > 0 && /[\u4e00-\u9fa5]/.test(cleaned) && !/^\d/.test(cleaned)) {
+                warnings.push(`${rawLine.trim()}（没有读到数值）`);
             }
         }
     }
