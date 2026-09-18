@@ -31,7 +31,7 @@ export const ClassSelector: React.FC = () => {
             {/* Selected Class Display (Trigger) */}
             <div
                 onClick={() => setIsModalOpen(true)}
-                className="glass-panel p-3 md:py-3 md:px-5 h-[124px] cursor-pointer transition-all duration-300 hover:border-blue-500/50 group relative overflow-hidden border-blue-500/30 bg-blue-500/5 flex items-center"
+                className="glass-panel p-3 md:py-3 md:px-5 h-[108px] cursor-pointer transition-all duration-300 hover:border-blue-500/50 group relative overflow-hidden border-blue-500/30 bg-blue-500/5 flex items-center"
             >
                 <div className="flex items-center justify-between relative z-10 w-full">
                     <div className="flex items-center gap-3 md:gap-4">

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import type { CharacterAttributes } from '../../types';
 import { AttributeCard } from '../ui/AttributeCard';
 import { ClassSelector } from './ClassSelector';
@@ -35,7 +35,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col justify-between h-full gap-3">
             {/* Preset Manager */}
             <PresetManager />
 
