@@ -392,11 +392,8 @@ export class SimulationEngine {
       skillToUse = { ...skill, SkillBonusAttributes: longNuAttrs };
     }
 
-    if (event.skillId === 'ZS_MO_SKILL_LYLZ' && hitIndex === hitCount) {
-      const lylzAttrs = { ...skillToUse.SkillBonusAttributes };
-      addPerHitField(lylzAttrs, 'SkillManaPercentBonus', 10, 'ZS_MO_SKILL_LYLZ');
-      skillToUse = { ...skillToUse, SkillBonusAttributes: lylzAttrs };
-    }
+    // 刺血II（魔造化被动）临渊敛爪末段真气 +10 已数据化为 grant（ZS_MO_SKILL_CX2，SkillManaPercentBonus [0,0,10]），
+    // 由 applyClassPassives 常驻叠加，此处旧硬编码移除以免双重叠加（2026-09-20）。
 
     const resolvedDamage = resolveHitDamageWithTrace(
       runtime.actor.BaseAttributes,
