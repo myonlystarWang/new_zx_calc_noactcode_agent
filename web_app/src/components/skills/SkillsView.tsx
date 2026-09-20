@@ -99,20 +99,6 @@ interface SkillItem {
     Variant?: string;
 }
 
-const CLASS_ORDER = [
-    { id: 'ZHU_SHUANG', name: '逐霜' },
-    { id: 'NIE_YU', name: '涅羽' },
-    { id: 'TAI_HAO', name: '太昊' },
-    { id: 'GUI_WANG', name: '鬼王' },
-    { id: 'TIAN_YIN', name: '天音' },
-    { id: 'FEN_XIANG', name: '焚香' },
-    { id: 'ZHAO_MING', name: '昭冥' },
-    { id: 'YING_ZHAO', name: '英招' },
-    { id: 'TIAN_HUA', name: '天华' },
-    { id: 'SHI_LUO', name: '释罗' },
-    { id: 'GUI_YUN', name: '归云' },
-];
-
 const FACTIONS = [
     { id: 'ALL', name: '全部阵营' },
     { id: 'XIAN', name: '仙' },
@@ -549,6 +535,30 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
     }, []);
 
     // 构建全局 SkillID -> 中文技能名映射表及元数据
+    /** skills.json._meta：职业名映射 + 图鉴职业栏顺序（新增职业只改数据、不改代码） */
+    const skillMeta = DataService.getInstance().getSkillMeta() as {
+        classLabels?: Record<string, string>;
+        compendiumOrder?: string[];
+    } | null;
+
+    /** 职业栏：只列「有技能数据」的职业，顺序取 _meta.compendiumOrder；
+     *  有技能但忘了登记顺序的职业兜底追加到末尾 —— 避免新增职业从图鉴消失。 */
+    const visibleClasses = useMemo(() => {
+        const order = skillMeta?.compendiumOrder ?? [];
+        const labels = skillMeta?.classLabels ?? {};
+        const hasSkills = (id: string) => {
+            const obj = (allSkillsData as Record<string, Record<string, unknown>> | null)?.[id];
+            if (!obj) return false;
+            return ['XIAN', 'FO', 'MO', 'COMMON'].some((f) => Array.isArray(obj[f]) && (obj[f] as unknown[]).length > 0);
+        };
+        const out: { id: string; name: string }[] = [];
+        for (const id of order) if (hasSkills(id)) out.push({ id, name: labels[id] || id });
+        for (const id of Object.keys(allSkillsData || {})) {
+            if (!order.includes(id) && hasSkills(id)) out.push({ id, name: labels[id] || id });
+        }
+        return out;
+    }, [allSkillsData, skillMeta]);
+
     const { skillIdToNameMap, skillMetaMap } = useMemo(() => {
         const idToName: Record<string, string> = {};
         const meta: Record<string, { name: string; classId: string; faction: string }> = {};
@@ -616,7 +626,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
     const classSkillCounts = useMemo(() => {
         const counts: Record<string, number> = {};
         if (!allSkillsData) return counts;
-        for (const cls of CLASS_ORDER) {
+        for (const cls of visibleClasses) {
             const classObj = allSkillsData[cls.id] || {};
             let count = 0;
             for (const f of ['XIAN', 'FO', 'MO', 'COMMON']) {
@@ -626,7 +636,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
             counts[cls.id] = count;
         }
         return counts;
-    }, [allSkillsData]);
+    }, [allSkillsData, visibleClasses]);
 
     // 技能点击跳转联动
     const handleNavigateToSkill = (targetSkillId: string) => {
@@ -715,7 +725,7 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
                 两行之间 gap-3(12px)，与「职业状态一览」的减益/增益组保持同一密度 */}
             <div className="flex flex-col gap-3 mb-5 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/60">
                 <div className="flex flex-wrap gap-1.5">
-                    {CLASS_ORDER.map((cls) => {
+                    {visibleClasses.map((cls) => {
                         const isSelected = selectedClass === cls.id;
                         const count = classSkillCounts[cls.id] || 0;
                         return (
