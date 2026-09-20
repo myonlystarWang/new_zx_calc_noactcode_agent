@@ -9,11 +9,12 @@ import type { Skill } from './types.js';
 export const isXianCangLongXiaoSkill = (skillId: string): boolean =>
   skillId === 'ZS_XIAN_SKILL_CLX';
 
-/** 普通鹰扬折冲满级 9，法宝+1 可到 10（经 PlayerSkillOverride.SkillLevel 传入）；战斗模拟缺省按 9 级。 */
-export const ZS_LONGNU_DEFAULT_YYZC_LEVEL = 9;
+/** 鹰扬折冲满级 10（白板）= 龙怒 200%；法宝+1 = 等效 11 级 = 220%（经 PlayerSkillOverride.SkillLevel 传入）。
+ *  未记录等级时按最高档（法宝+1，11 级）——与技能分档缺省约定一致。 */
+export const ZS_LONGNU_DEFAULT_YYZC_LEVEL = 11;
 
-/** 单次"满配/峰值"路径固定按法宝+1 的 10 级鹰扬取龙怒峰值。 */
-export const ZS_LONGNU_PEAK_YYZC_LEVEL = 10;
+/** 单次"满配/峰值"路径固定按法宝+1 的 11 级鹰扬取龙怒峰值（仙 +320 / 魔·佛 +220）。 */
+export const ZS_LONGNU_PEAK_YYZC_LEVEL = 11;
 
 /** 读取普通鹰扬折冲等级（玄/煞不决定等级），缺失或非法时回落到默认 9 级。 */
 export const getZhuShuangYyzcLevel = (skills: Record<string, Skill>): number => {

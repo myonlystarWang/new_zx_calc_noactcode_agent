@@ -65,6 +65,74 @@ var resolvePercentBonus = (baseValue, percent, onePercentValue) => {
   return baseValue * (pct / 100);
 };
 
+// packages/simulation-engine/dist/per_hit.js
+var PER_HIT_FIELDS = [
+  "SkillAttackPercentBonus",
+  "SkillAttackFixedBonus",
+  "SkillDefensePercentBonus",
+  "SkillHealthPercentBonus",
+  "SkillManaPercentBonus",
+  "SkillCriticalDamagePercentBonus",
+  "SkillDamageBonus"
+];
+var isFiniteNumber = (v) => typeof v === "number" && Number.isFinite(v);
+function pickPerHit(value, hitIndex) {
+  if (Array.isArray(value)) {
+    if (value.length === 0)
+      return void 0;
+    const raw = Number.isFinite(hitIndex) ? Math.floor(hitIndex) : 1;
+    const idx = Math.min(Math.max(raw - 1, 0), value.length - 1);
+    const picked = value[idx];
+    return isFiniteNumber(picked) ? picked : void 0;
+  }
+  return isFiniteNumber(value) ? value : void 0;
+}
+function resolvePerHitFieldsInPlace(attrs, hitIndex) {
+  if (!attrs)
+    return;
+  const rec = attrs;
+  for (const field of PER_HIT_FIELDS) {
+    const value = rec[field];
+    if (!Array.isArray(value))
+      continue;
+    const picked = pickPerHit(value, hitIndex);
+    rec[field] = picked === void 0 ? 0 : picked;
+  }
+}
+function addPerHitField(attrs, field, inc, context) {
+  const rec = attrs;
+  const current = rec[field];
+  const curArr = Array.isArray(current) ? current : void 0;
+  const incArr = Array.isArray(inc) ? inc : void 0;
+  if (!curArr && !incArr) {
+    const base = isFiniteNumber(current) ? current : 0;
+    const add = isFiniteNumber(inc) ? inc : 0;
+    rec[field] = base + add;
+    return;
+  }
+  if (curArr && !incArr) {
+    const add = isFiniteNumber(inc) ? inc : 0;
+    rec[field] = curArr.map((v) => (isFiniteNumber(v) ? v : 0) + add);
+    return;
+  }
+  if (!curArr && incArr) {
+    const base = isFiniteNumber(current) ? current : 0;
+    rec[field] = incArr.map((v) => base + (isFiniteNumber(v) ? v : 0));
+    return;
+  }
+  const a = curArr;
+  const b = incArr;
+  if (a.length !== b.length) {
+    console.warn(`[per_hit] ${field} \u6570\u7EC4\u957F\u5EA6\u4E0D\u4E00\u81F4\uFF08\u76EE\u6807 ${a.length} vs \u589E\u91CF ${b.length}\uFF09\uFF0C\u6309 0 \u8865\u9F50${context ? ` @ ${context}` : ""}`);
+  }
+  const len = Math.max(a.length, b.length);
+  rec[field] = Array.from({ length: len }, (_, i) => {
+    const x = isFiniteNumber(a[i]) ? a[i] : 0;
+    const y = isFiniteNumber(b[i]) ? b[i] : 0;
+    return x + y;
+  });
+}
+
 // packages/simulation-engine/dist/calculator.js
 var DEFAULT_ATTRIBUTE_CAPS = {
   EnableCaps: true,
@@ -102,15 +170,17 @@ var resolveHitDamageWithTrace = (character, skill, monster, activeBuffs, hitInde
     const step = hitCount > 1 ? (end - start) / (hitCount - 1) : 0;
     currentSkillBonus[multiHit.ScalingAttribute] = start + step * (hitIndex - 1);
   }
-  let minBaseDamage = effMinAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) + (currentSkillBonus.SkillAttackFixedBonus || 0) + effHealth * (currentSkillBonus.SkillHealthPercentBonus || 0) / 100 + effMana * (currentSkillBonus.SkillManaPercentBonus || 0) / 100 + effDefense * (currentSkillBonus.SkillDefensePercentBonus || 0) / 100;
-  let maxBaseDamage = effMaxAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) + (currentSkillBonus.SkillAttackFixedBonus || 0) + effHealth * (currentSkillBonus.SkillHealthPercentBonus || 0) / 100 + effMana * (currentSkillBonus.SkillManaPercentBonus || 0) / 100 + effDefense * (currentSkillBonus.SkillDefensePercentBonus || 0) / 100;
+  resolvePerHitFieldsInPlace(currentSkillBonus, hitIndex);
+  const cur = currentSkillBonus;
+  let minBaseDamage = effMinAttack * (1 + (cur.SkillAttackPercentBonus || 0) / 100) + (cur.SkillAttackFixedBonus || 0) + effHealth * (cur.SkillHealthPercentBonus || 0) / 100 + effMana * (cur.SkillManaPercentBonus || 0) / 100 + effDefense * (cur.SkillDefensePercentBonus || 0) / 100;
+  let maxBaseDamage = effMaxAttack * (1 + (cur.SkillAttackPercentBonus || 0) / 100) + (cur.SkillAttackFixedBonus || 0) + effHealth * (cur.SkillHealthPercentBonus || 0) / 100 + effMana * (cur.SkillManaPercentBonus || 0) / 100 + effDefense * (cur.SkillDefensePercentBonus || 0) / 100;
   if (multiHit && multiHit.PerHitCharacterBonus && hitIndex > 1) {
     const ph = multiHit.PerHitCharacterBonus;
     const steps = hitIndex - 1;
     minBaseDamage += (ph.CharacterMaxAttackPercent || 0) / 100 * effMinAttack * steps + (ph.CharacterHealthPercent || 0) / 100 * effHealth * steps + (ph.CharacterManaPercent || 0) / 100 * effMana * steps;
     maxBaseDamage += (ph.CharacterMaxAttackPercent || 0) / 100 * effMaxAttack * steps + (ph.CharacterHealthPercent || 0) / 100 * effHealth * steps + (ph.CharacterManaPercent || 0) / 100 * effMana * steps;
   }
-  const baseCritDmgBeforeCap = effectiveAttributes.CharacterCriticalHitDamagePercent + (currentSkillBonus.SkillCriticalDamagePercentBonus || 0);
+  const baseCritDmgBeforeCap = effectiveAttributes.CharacterCriticalHitDamagePercent + (cur.SkillCriticalDamagePercentBonus || 0);
   let baseCritDmg = baseCritDmgBeforeCap;
   if (effectiveCaps) {
     baseCritDmg = Math.min(baseCritDmg, effectiveCaps.CapCriticalDamage);
@@ -118,7 +188,7 @@ var resolveHitDamageWithTrace = (character, skill, monster, activeBuffs, hitInde
   const monsterCriticalDamageReduction = monster.MonsterAttributeModifiers.MonsterCriticalDamagePercentReduction;
   const critDmgTotal = baseCritDmg + buffMonCritDmg - monsterCriticalDamageReduction;
   const critMultiplier = Math.max(1, critDmgTotal / 100);
-  const damageBonusMultiplier = currentSkillBonus.SkillDamageBonus !== void 0 ? currentSkillBonus.SkillDamageBonus : 1;
+  const damageBonusMultiplier = cur.SkillDamageBonus !== void 0 ? cur.SkillDamageBonus : 1;
   const charMonDmgInc = 1 + effectiveAttributes.CharacterMonsterDamageIncreasePercent / 100;
   const monHarmedMultiplier = 1 + buffMonHarmed / 100;
   const focusMultiplier = 1 + buffFocus / 100;
@@ -194,8 +264,10 @@ var calculateDamage = (character, skill, monster, activeBuffs, buffValues = {}, 
       if (multiHit && multiHit.ScalingAttribute && multiHit.ScalingStartValue !== void 0 && multiHit.ScalingEndValue !== void 0) {
         currentSkillBonus[multiHit.ScalingAttribute] = multiHit.ScalingStartValue;
       }
-      firstHitMinBaseDamage = context.effectiveAttributes.CharacterMinAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) + (currentSkillBonus.SkillAttackFixedBonus || 0) + context.effectiveAttributes.CharacterHealth * (currentSkillBonus.SkillHealthPercentBonus || 0) / 100 + context.effectiveAttributes.CharacterMana * (currentSkillBonus.SkillManaPercentBonus || 0) / 100 + context.effectiveAttributes.CharacterDefense * (currentSkillBonus.SkillDefensePercentBonus || 0) / 100;
-      firstHitMaxBaseDamage = context.effectiveAttributes.CharacterMaxAttack * (1 + (currentSkillBonus.SkillAttackPercentBonus || 0) / 100) + (currentSkillBonus.SkillAttackFixedBonus || 0) + context.effectiveAttributes.CharacterHealth * (currentSkillBonus.SkillHealthPercentBonus || 0) / 100 + context.effectiveAttributes.CharacterMana * (currentSkillBonus.SkillManaPercentBonus || 0) / 100 + context.effectiveAttributes.CharacterDefense * (currentSkillBonus.SkillDefensePercentBonus || 0) / 100;
+      resolvePerHitFieldsInPlace(currentSkillBonus, 1);
+      const curFirst = currentSkillBonus;
+      firstHitMinBaseDamage = context.effectiveAttributes.CharacterMinAttack * (1 + (curFirst.SkillAttackPercentBonus || 0) / 100) + (curFirst.SkillAttackFixedBonus || 0) + context.effectiveAttributes.CharacterHealth * (curFirst.SkillHealthPercentBonus || 0) / 100 + context.effectiveAttributes.CharacterMana * (curFirst.SkillManaPercentBonus || 0) / 100 + context.effectiveAttributes.CharacterDefense * (curFirst.SkillDefensePercentBonus || 0) / 100;
+      firstHitMaxBaseDamage = context.effectiveAttributes.CharacterMaxAttack * (1 + (curFirst.SkillAttackPercentBonus || 0) / 100) + (curFirst.SkillAttackFixedBonus || 0) + context.effectiveAttributes.CharacterHealth * (curFirst.SkillHealthPercentBonus || 0) / 100 + context.effectiveAttributes.CharacterMana * (curFirst.SkillManaPercentBonus || 0) / 100 + context.effectiveAttributes.CharacterDefense * (curFirst.SkillDefensePercentBonus || 0) / 100;
     }
     totalMinFinalDamage += hitRes.minFinalDamage;
     totalMaxFinalDamage += hitRes.maxFinalDamage;
@@ -291,17 +363,19 @@ function applyOverrideCover(skill, ovr) {
     mergeEffectOverridesLocal(skill, AppliesEffects);
 }
 function applyOverrideAdditive(skill, ovr) {
-  const { AppliesEffects, SkillBonusAttributes: bonusAttrs, ...topLevel } = ovr;
+  const { AppliesEffects, SkillBonusAttributes: bonusAttrs, CooldownReduction, ...topLevel } = ovr;
   Object.assign(skill, topLevel);
+  if (typeof CooldownReduction === "number") {
+    const base = typeof skill.Cooldown === "number" ? skill.Cooldown : 0;
+    skill.Cooldown = base - CooldownReduction;
+  }
   if (bonusAttrs) {
     const merged = { ...skill.SkillBonusAttributes };
     for (const key of ADDITIVE_BONUS_FIELDS) {
       const inc = bonusAttrs[key];
-      if (typeof inc === "number") {
-        const current = merged[key];
-        const base = typeof current === "number" ? current : 0;
-        merged[key] = base + inc;
-      }
+      if (inc === void 0)
+        continue;
+      addPerHitField(merged, key, inc, `grant->${skill.SkillID}`);
     }
     if (bonusAttrs.MultiHitConfig !== void 0) {
       merged.MultiHitConfig = bonusAttrs.MultiHitConfig;
@@ -311,9 +385,43 @@ function applyOverrideAdditive(skill, ovr) {
   if (AppliesEffects)
     mergeEffectOverridesLocal(skill, AppliesEffects);
 }
+function applyGrantToTargets(skillMap, grant) {
+  for (const targetId of grant.TargetSkillIds) {
+    const target = skillMap[targetId];
+    if (!target)
+      continue;
+    applyOverrideAdditive(target, grant.Override);
+  }
+}
+
+// packages/simulation-engine/dist/skill_tiers.js
+function resolveSkillTierLevel(skill, selected, forcePeak = false) {
+  const tiers = skill.SkillTiers;
+  if (!tiers || Object.keys(tiers).length === 0)
+    return void 0;
+  if (!forcePeak) {
+    if (typeof selected === "number" && tiers[selected])
+      return selected;
+    if (typeof skill.SkillLevel === "number" && tiers[skill.SkillLevel])
+      return skill.SkillLevel;
+  }
+  const keys = Object.keys(tiers).map(Number).filter((n) => Number.isFinite(n));
+  if (keys.length === 0)
+    return void 0;
+  return Math.max(...keys);
+}
+function applySelectedSkillTier(skill, selected, forcePeak = false) {
+  const level = resolveSkillTierLevel(skill, selected, forcePeak);
+  if (level === void 0)
+    return;
+  const tier = skill.SkillTiers?.[level];
+  if (!tier)
+    return;
+  applyOverrideCover(skill, tier);
+}
 
 // packages/simulation-engine/dist/zhu_shuang.js
-var ZS_LONGNU_PEAK_YYZC_LEVEL = 10;
+var ZS_LONGNU_PEAK_YYZC_LEVEL = 11;
 var getZhuShuangLongNuBonus = (skillId, yyzcLevel) => {
   const perLevelBonus = 20 * yyzcLevel;
   const isXianCangLong = skillId === "ZS_XIAN_SKILL_CLX" || skillId === "ZS_XIAN_SKILL_CLXX";
@@ -364,6 +472,21 @@ var applyPeakFourthGen = (skillMap, pool) => {
       }
     }
   }
+  const zaoGrants = [];
+  for (const skill of pool) {
+    if (skill.ZaoHuaGrants && skill.ZaoHuaGrants.length > 0)
+      zaoGrants.push(...skill.ZaoHuaGrants);
+  }
+  for (const grant of zaoGrants) {
+    if (grant.Override && grant.Override.CooldownReduction != null)
+      continue;
+    applyGrantToTargets(skillMap, grant);
+  }
+  for (const grant of zaoGrants) {
+    if (!grant.Override || grant.Override.CooldownReduction == null)
+      continue;
+    applyGrantToTargets(skillMap, grant);
+  }
 };
 var buildPeakVariant = (source, rule) => {
   const variant = cloneSkill(source);
@@ -372,10 +495,11 @@ var buildPeakVariant = (source, rule) => {
   variant.Variant = rule.variantTag;
   const increment = rule.buildIncrement(source);
   const merged = { ...variant.SkillBonusAttributes ?? {} };
-  for (const [key, value] of Object.entries(increment)) {
-    if (typeof value !== "number")
+  for (const field of PER_HIT_FIELDS) {
+    const value = increment[field];
+    if (value === void 0)
       continue;
-    merged[key] = (typeof merged[key] === "number" ? merged[key] : 0) + value;
+    addPerHitField(merged, field, value, rule.variantTag);
   }
   variant.SkillBonusAttributes = merged;
   return variant;
@@ -391,6 +515,11 @@ var buildSingleCalcSkills = (classFactionSkills, faction) => {
   const skillMap = {};
   for (const item of pool)
     skillMap[item.SkillID] = cloneSkill(item);
+  for (const item of pool) {
+    const inMap = skillMap[item.SkillID];
+    if (inMap)
+      applySelectedSkillTier(inMap, void 0, true);
+  }
   applyPeakFourthGen(skillMap, pool);
   const result = [];
   for (const raw of own) {
