@@ -218,6 +218,20 @@
           "MultiHitConfig": {
             "HitCount": 3
           }
+        },
+        "SkillTiers": {
+          "10": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 158,
+              "SkillAttackFixedBonus": 600
+            }
+          },
+          "11": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 162,
+              "SkillAttackFixedBonus": 650
+            }
+          }
         }
       },
       {
@@ -740,7 +754,21 @@
             "StackGain": 1,
             "BuffEffects": {}
           }
-        ]
+        ],
+        "SkillTiers": {
+          "10": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 158,
+              "SkillAttackFixedBonus": 600
+            }
+          },
+          "11": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 162,
+              "SkillAttackFixedBonus": 650
+            }
+          }
+        }
       },
       {
         "SkillID": "ZS_MO_SKILL_YYZC",
