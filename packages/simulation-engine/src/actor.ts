@@ -130,6 +130,11 @@ export class Actor {
 
     // 全部技能入表后，应用玩家佩戴的四代技能（作用本技能预设 + 作用其他技能 Grants）
     applyEquippedFourthGen(this.Skills, equippedFourthGen);
+
+    // 门派造化被动（带 II 的造化技能，常驻生效）：与单次计算路径（buildSingleCalcSkills）同构，
+    // 加法叠加到目标技能。2026-09-20 逐霜 A 方案拆分（本体+grant）后模拟路径必须应用，
+    // 否则山雨/临渊/煞等组合终值缺失（此前各职业造化加成靠数据写死，无需此调用）。
+    applyClassPassives(this.Skills);
   }
 
   public getSkill(skillId: string): Skill | undefined {

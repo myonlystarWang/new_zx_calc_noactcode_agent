@@ -2334,6 +2334,8 @@ const testZhuShuangSkills = () => {
     SkillBonusAttributes: {
       SkillAttackPercentBonus: 158,
       SkillAttackFixedBonus: 600,
+      // 刺血II 末段真气+10 已数据化为 grant；fixture 内联等效每段数组维持"末段伤害更高"的断言前提
+      SkillManaPercentBonus: [0, 0, 10],
       MultiHitConfig: { HitCount: 3 }
     }
   };

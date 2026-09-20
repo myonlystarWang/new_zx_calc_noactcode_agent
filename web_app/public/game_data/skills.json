@@ -21,14 +21,21 @@
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 240,
           "SkillAttackFixedBonus": 4000,
-          "SkillManaPercentBonus": 30,
+          "SkillManaPercentBonus": [
+            30,
+            32.25,
+            34.5,
+            36.75,
+            39,
+            41.25,
+            43.5,
+            45.75,
+            48
+          ],
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
-            "HitCount": 9,
-            "ScalingAttribute": "SkillManaPercentBonus",
-            "ScalingStartValue": 30,
-            "ScalingEndValue": 48
+            "HitCount": 9
           }
         }
       },
@@ -139,15 +146,36 @@
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 210,
           "SkillAttackFixedBonus": 3300,
-          "SkillHealthPercentBonus": 10,
+          "SkillHealthPercentBonus": [
+            10,
+            12.25,
+            14.5,
+            16.75,
+            19,
+            21.25,
+            23.5,
+            25.75,
+            28
+          ],
           "SkillManaPercentBonus": 4,
           "SkillCriticalDamagePercentBonus": 80,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
-            "HitCount": 9,
-            "ScalingAttribute": "SkillHealthPercentBonus",
-            "ScalingStartValue": 10,
-            "ScalingEndValue": 28
+            "HitCount": 9
+          }
+        },
+        "SkillTiers": {
+          "10": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 210,
+              "SkillAttackFixedBonus": 3300
+            }
+          },
+          "11": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 220,
+              "SkillAttackFixedBonus": 3600
+            }
           }
         }
       },
@@ -378,6 +406,21 @@
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
+      },
+      {
+        "SkillID": "ZS_XIAN_SKILL_NLDH2",
+        "SkillName": "怒龙吞海II",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "XIAN",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "Description": "仙造化被动：临渊敛爪最后一段为自身获得1层龙怒（15秒，上限27层）；苍龙啸、苍龙啸·玄在龙怒状态下每段伤害额外附加攻击比100%（引擎龙怒公式内置，单次满配峰值变体已计入）。",
+        "SkillBonusAttributes": {},
+        "ActionType": "ZAO_HUA_PASSIVE",
+        "ZaoHuaGrants": []
       }
     ],
     "FO": [
@@ -432,15 +475,22 @@
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 240,
           "SkillAttackFixedBonus": 4000,
-          "SkillHealthPercentBonus": 30,
-          "SkillManaPercentBonus": 5,
+          "SkillHealthPercentBonus": [
+            30,
+            32.25,
+            34.5,
+            36.75,
+            39,
+            41.25,
+            43.5,
+            45.75,
+            48
+          ],
+          "SkillManaPercentBonus": 0,
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
-            "HitCount": 9,
-            "ScalingAttribute": "SkillHealthPercentBonus",
-            "ScalingStartValue": 30,
-            "ScalingEndValue": 48
+            "HitCount": 9
           }
         }
       },
@@ -487,8 +537,8 @@
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 445,
           "SkillAttackFixedBonus": 1800,
-          "SkillHealthPercentBonus": 31,
-          "SkillManaPercentBonus": 5,
+          "SkillHealthPercentBonus": 26,
+          "SkillManaPercentBonus": 0,
           "SkillCriticalDamagePercentBonus": 105,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
@@ -501,33 +551,39 @@
             "SkillBonusAttributes": {
               "SkillAttackPercentBonus": 195,
               "SkillAttackFixedBonus": 1800,
-              "SkillHealthPercentBonus": 31,
-              "SkillManaPercentBonus": 5,
+              "SkillHealthPercentBonus": 26,
+              "SkillManaPercentBonus": 0,
               "SkillCriticalDamagePercentBonus": 75,
               "SkillDamageBonus": 1,
-              "MultiHitConfig": { "HitCount": 6 }
+              "MultiHitConfig": {
+                "HitCount": 6
+              }
             }
           },
           "2": {
             "SkillBonusAttributes": {
               "SkillAttackPercentBonus": 270,
               "SkillAttackFixedBonus": 1800,
-              "SkillHealthPercentBonus": 31,
-              "SkillManaPercentBonus": 5,
+              "SkillHealthPercentBonus": 26,
+              "SkillManaPercentBonus": 0,
               "SkillCriticalDamagePercentBonus": 90,
               "SkillDamageBonus": 1,
-              "MultiHitConfig": { "HitCount": 6 }
+              "MultiHitConfig": {
+                "HitCount": 6
+              }
             }
           },
           "3": {
             "SkillBonusAttributes": {
               "SkillAttackPercentBonus": 445,
               "SkillAttackFixedBonus": 1800,
-              "SkillHealthPercentBonus": 31,
-              "SkillManaPercentBonus": 5,
+              "SkillHealthPercentBonus": 26,
+              "SkillManaPercentBonus": 0,
               "SkillCriticalDamagePercentBonus": 105,
               "SkillDamageBonus": 1,
-              "MultiHitConfig": { "HitCount": 6 }
+              "MultiHitConfig": {
+                "HitCount": 6
+              }
             }
           }
         }
@@ -549,8 +605,8 @@
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 400,
           "SkillAttackFixedBonus": 1600,
-          "SkillHealthPercentBonus": 19,
-          "SkillManaPercentBonus": 27,
+          "SkillHealthPercentBonus": 16,
+          "SkillManaPercentBonus": 24,
           "SkillCriticalDamagePercentBonus": 50,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
@@ -612,15 +668,36 @@
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 210,
           "SkillAttackFixedBonus": 3300,
-          "SkillHealthPercentBonus": 10,
+          "SkillHealthPercentBonus": [
+            10,
+            12.25,
+            14.5,
+            16.75,
+            19,
+            21.25,
+            23.5,
+            25.75,
+            28
+          ],
           "SkillManaPercentBonus": 4,
           "SkillCriticalDamagePercentBonus": 80,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
-            "HitCount": 9,
-            "ScalingAttribute": "SkillHealthPercentBonus",
-            "ScalingStartValue": 10,
-            "ScalingEndValue": 28
+            "HitCount": 9
+          }
+        },
+        "SkillTiers": {
+          "10": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 210,
+              "SkillAttackFixedBonus": 3300
+            }
+          },
+          "11": {
+            "SkillBonusAttributes": {
+              "SkillAttackPercentBonus": 220,
+              "SkillAttackFixedBonus": 3600
+            }
           }
         }
       },
@@ -638,12 +715,12 @@
         "HitTiming": {
           "Mode": "EVENLY_DURING_CAST"
         },
-        "Description": "三段伤害；最后一击额外附加真气上限10%，第三击有15%概率刷新苍龙啸或苍龙啸·煞充能。",
+        "Description": "三段伤害；第三击有15%概率刷新苍龙啸或苍龙啸·煞充能。",
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 158,
           "SkillAttackFixedBonus": 600,
-          "SkillHealthPercentBonus": 11,
-          "SkillManaPercentBonus": 7,
+          "SkillHealthPercentBonus": 8,
+          "SkillManaPercentBonus": 4,
           "SkillCriticalDamagePercentBonus": 50,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
@@ -842,6 +919,85 @@
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         }
+      },
+      {
+        "SkillID": "ZS_MO_SKILL_CX2",
+        "SkillName": "刺血II",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "Description": "魔造化被动：令苍龙啸·煞额外附加真气比5%；令临渊敛爪最后一段额外附加真气比10%（常驻生效）。",
+        "SkillBonusAttributes": {},
+        "ActionType": "ZAO_HUA_PASSIVE",
+        "ZaoHuaGrants": [
+          {
+            "TargetSkillIds": [
+              "ZS_MO_SKILL_CLXS"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillManaPercentBonus": 5
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "ZS_MO_SKILL_LYLZ"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillManaPercentBonus": [
+                  0,
+                  0,
+                  10
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "SkillID": "ZS_MO_SKILL_QLXZ2",
+        "SkillName": "青龙献爪II",
+        "RequiredClass": "ZHU_SHUANG",
+        "Faction": "MO",
+        "SkillImportanceWeight": 0,
+        "SkillFrequency": 0,
+        "Cooldown": 0,
+        "CastTime": 0,
+        "IsAOE": false,
+        "Description": "魔造化被动：令临渊敛爪、山雨欲来II额外附加气血比3%与真气比3%；令山雨欲来III·英雄额外附加气血比5%与真气比5%（常驻生效）。",
+        "SkillBonusAttributes": {},
+        "ActionType": "ZAO_HUA_PASSIVE",
+        "ZaoHuaGrants": [
+          {
+            "TargetSkillIds": [
+              "ZS_MO_SKILL_LYLZ",
+              "ZS_MO_SKILL_SY2"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillHealthPercentBonus": 3,
+                "SkillManaPercentBonus": 3
+              }
+            }
+          },
+          {
+            "TargetSkillIds": [
+              "ZS_MO_SKILL_SY3"
+            ],
+            "Override": {
+              "SkillBonusAttributes": {
+                "SkillHealthPercentBonus": 5,
+                "SkillManaPercentBonus": 5
+              }
+            }
+          }
+        ]
       }
     ],
     "COMMON": [
@@ -2972,7 +3128,12 @@
           "Mode": "EVENLY_DURING_CAST"
         },
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": [585, 465, 385, 325],
+          "SkillAttackPercentBonus": [
+            585,
+            465,
+            385,
+            325
+          ],
           "SkillAttackFixedBonus": 6000,
           "SkillHealthPercentBonus": 20,
           "SkillManaPercentBonus": 40,
@@ -2999,7 +3160,12 @@
           "Mode": "EVENLY_DURING_CAST"
         },
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": [585, 465, 385, 325],
+          "SkillAttackPercentBonus": [
+            585,
+            465,
+            385,
+            325
+          ],
           "SkillAttackFixedBonus": 6000,
           "SkillHealthPercentBonus": 20,
           "SkillManaPercentBonus": 50,
@@ -3026,8 +3192,22 @@
           "Mode": "EVENLY_DURING_CAST"
         },
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": [104, 114, 124, 124, 124, 124],
-          "SkillAttackFixedBonus": [400, 410, 420, 420, 420, 420],
+          "SkillAttackPercentBonus": [
+            104,
+            114,
+            124,
+            124,
+            124,
+            124
+          ],
+          "SkillAttackFixedBonus": [
+            400,
+            410,
+            420,
+            420,
+            420,
+            420
+          ],
           "SkillHealthPercentBonus": 6,
           "SkillManaPercentBonus": 5,
           "SkillCriticalDamagePercentBonus": 15,
@@ -3052,8 +3232,22 @@
           "Mode": "EVENLY_DURING_CAST"
         },
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": [104, 114, 124, 124, 124, 124],
-          "SkillAttackFixedBonus": [400, 410, 420, 420, 420, 420],
+          "SkillAttackPercentBonus": [
+            104,
+            114,
+            124,
+            124,
+            124,
+            124
+          ],
+          "SkillAttackFixedBonus": [
+            400,
+            410,
+            420,
+            420,
+            420,
+            420
+          ],
           "SkillHealthPercentBonus": 0,
           "SkillManaPercentBonus": 10,
           "SkillCriticalDamagePercentBonus": 15,
@@ -3078,11 +3272,31 @@
           "Mode": "EVENLY_DURING_CAST"
         },
         "SkillBonusAttributes": {
-          "SkillAttackPercentBonus": [30, 50, 70, 110],
-          "SkillAttackFixedBonus": [1005, 1305, 1605, 1905],
-          "SkillHealthPercentBonus": [15, 16, 18, 20],
+          "SkillAttackPercentBonus": [
+            30,
+            50,
+            70,
+            110
+          ],
+          "SkillAttackFixedBonus": [
+            1005,
+            1305,
+            1605,
+            1905
+          ],
+          "SkillHealthPercentBonus": [
+            15,
+            16,
+            18,
+            20
+          ],
           "SkillManaPercentBonus": 0,
-          "SkillCriticalDamagePercentBonus": [20, 40, 60, 80],
+          "SkillCriticalDamagePercentBonus": [
+            20,
+            40,
+            60,
+            80
+          ],
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
             "HitCount": 4
