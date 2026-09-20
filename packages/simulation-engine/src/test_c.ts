@@ -2643,10 +2643,10 @@ const testZhuShuangSkills = () => {
   }
 
   // 流波惊变·龙怒每段附加攻击比差值：baseAttr 攻击10000、爆伤300(倍率3.0)、对怪增伤10%(1.1)。
-  // 仙(苍龙啸·玄)每段=20%*9+100=280% -> 每段附加 10000*2.8*3.0*1.1 = 92400；
-  // 魔(苍龙啸·煞)每段=20%*9=180% -> 每段附加 10000*1.8*3.0*1.1 = 59400。
-  const LONGNU_XIAN_PER_HIT = 92400;
-  const LONGNU_MO_PER_HIT = 59400;
+  // 仙(苍龙啸·玄)每段=20%*11+100=320% -> 每段附加 10000*3.2*3.0*1.1 = 105600；
+  // 魔(苍龙啸·煞)每段=20%*11=220% -> 每段附加 10000*2.2*3.0*1.1 = 72600。
+  const LONGNU_XIAN_PER_HIT = 105600;
+  const LONGNU_MO_PER_HIT = 72600;
   const diffs = (base: { hitRecords: { SkillId: string; AvgDamage: number }[] }, ln: { hitRecords: { SkillId: string; AvgDamage: number }[] }, id: string) => {
     const b = base.hitRecords.filter(r => r.SkillId === id).map(r => r.AvgDamage);
     const a = ln.hitRecords.filter(r => r.SkillId === id).map(r => r.AvgDamage);
@@ -2753,8 +2753,8 @@ const testZhuShuangSkills = () => {
     assert.equal(em.getActiveEffects()[0].StackCount, 27); // 封顶不超过27
   }
 
-  // Test 3e: 法宝+1 —— 普通鹰扬 SkillLevel=10 时，仙苍龙每段附加 20%*10+100=300%（对比默认9级280%）
-  // baseAttr 攻击10000、爆伤倍率3.0、对怪1.1 -> 每段附加 10000*3.0*3.0*1.1 = 99000
+  // Test 3e: 法宝+1 —— 普通鹰扬 SkillLevel=11 时，仙苍龙每段附加 20%*11+100=320%
+  // baseAttr 攻击10000、爆伤倍率3.0、对怪1.1 -> 每段附加 10000*3.2*3.0*1.1 = 105600
   {
     const originalRandom = Math.random;
     try {
@@ -2768,27 +2768,27 @@ const testZhuShuangSkills = () => {
           strategy: { type: 'MANUAL_TIMELINE', actions: [{ timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' }] }
         }]
       });
-      const runLv10 = runSimulation({
+      const runLv11 = runSimulation({
         maxTimeMs: 10000,
         boss: baseBoss(10000000),
         actors: [{
           actorId: 'dps', classId: 'ZHU_SHUANG', role: 'DPS', baseAttributes: baseAttr,
           baseSkills: [clxxSkill, yyzcCommonSkill],
-          skillOverrides: { ZS_XIAN_SKILL_YYZC: { SkillLevel: 10 } },
+          skillOverrides: { ZS_XIAN_SKILL_YYZC: { SkillLevel: 11 } },
           strategy: {
             type: 'MANUAL_TIMELINE',
             actions: [{ timeMs: 0, skillId: 'ZS_XIAN_SKILL_YYZC' }, { timeMs: 1500, skillId: 'ZS_XIAN_SKILL_CLXX' }]
           }
         }]
       });
-      const d = diffs(runNoLongNu, runLv10, 'ZS_XIAN_SKILL_CLXX');
-      d.forEach((delta, i) => assert.equal(delta, 99000, '法宝+1(10级)仙苍龙第' + (i + 1) + '段应99000，实得' + delta));
+      const d = diffs(runNoLongNu, runLv11, 'ZS_XIAN_SKILL_CLXX');
+      d.forEach((delta, i) => assert.equal(delta, 105600, '法宝+1(11级)仙苍龙第' + (i + 1) + '段应105600，实得' + delta));
     } finally {
       Math.random = originalRandom;
     }
   }
 
-  // Test 3f: 单次满配 buildSingleCalcSkills —— 四代曦日 Grants 相加 + 龙怒峰值变体（仙+300/魔佛+200）
+  // Test 3f: 单次满配 buildSingleCalcSkills —— 四代曦日 Grants 相加 + 龙怒峰值变体（仙+320/魔佛+220，法宝+1 的 11 级）
   {
     const mkCangLong = (id: string, name: string, atkPct: number, faction: string): Skill => ({
       SkillID: id,
@@ -2822,7 +2822,7 @@ const testZhuShuangSkills = () => {
       }
     } as Skill);
 
-    // 仙：苍龙啸 210 -> 醉月+50=260 -> 龙怒(10级仙+300)=560
+    // 仙：苍龙啸 210 -> 醉月+50=260 -> 龙怒(11级法宝+1 仙+320)=580
     const xianList = buildSingleCalcSkills(
       { XIAN: [mkCangLong('ZS_XIAN_SKILL_CLX', '苍龙啸', 210, 'XIAN')], COMMON: [mkZuiYue(['ZS_XIAN_SKILL_CLX'])] },
       'XIAN'
@@ -2832,15 +2832,15 @@ const testZhuShuangSkills = () => {
     assert.equal(xianList[0].SkillBonusAttributes.SkillAttackPercentBonus, 260, '本体应含醉月+50=260');
     assert.equal(xianList[1].SkillName, '苍龙啸·龙怒');
     assert.equal(xianList[1].Variant, 'LONGNU');
-    assert.equal(xianList[1].SkillBonusAttributes.SkillAttackPercentBonus, 560, '仙龙怒10级应+300=560');
+    assert.equal(xianList[1].SkillBonusAttributes.SkillAttackPercentBonus, 580, '仙龙怒11级应+320=580');
 
-    // 魔：苍龙啸 210 -> 260 -> 龙怒(魔10级+200)=460
+    // 魔：苍龙啸 210 -> 260 -> 龙怒(魔11级+220)=480
     const moList = buildSingleCalcSkills(
       { MO: [mkCangLong('ZS_MO_SKILL_CLX', '苍龙啸', 210, 'MO')], COMMON: [mkZuiYue(['ZS_MO_SKILL_CLX'])] },
       'MO'
     );
     assert.equal(moList[0].SkillBonusAttributes.SkillAttackPercentBonus, 260);
-    assert.equal(moList[1].SkillBonusAttributes.SkillAttackPercentBonus, 460, '魔龙怒10级应+200=460');
+    assert.equal(moList[1].SkillBonusAttributes.SkillAttackPercentBonus, 480, '魔龙怒11级应+220=480');
 
     // 非逐霜输出技能：吃四代 Grants，但不生成龙怒变体
     const otherList = buildSingleCalcSkills(
