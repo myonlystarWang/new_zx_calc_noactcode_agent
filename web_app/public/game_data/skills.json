@@ -34,7 +34,7 @@
       },
       {
         "SkillID": "ZS_XIAN_SKILL_YLXB",
-        "SkillName": "银鳞玄冰",
+        "SkillName": "心法·银鳞玄冰",
         "RequiredClass": "ZHU_SHUANG",
         "Faction": "XIAN",
         "SkillImportanceWeight": 1,
@@ -60,7 +60,7 @@
       },
       {
         "SkillID": "ZS_XIAN_SKILL_SY3",
-        "SkillName": "山雨欲来III",
+        "SkillName": "山雨欲来III·英雄",
         "RequiredClass": "ZHU_SHUANG",
         "Faction": "XIAN",
         "SkillImportanceWeight": 0.5,
@@ -446,7 +446,7 @@
       },
       {
         "SkillID": "ZS_MO_SKILL_YLXB",
-        "SkillName": "银鳞玄冰",
+        "SkillName": "心法·银鳞玄冰",
         "RequiredClass": "ZHU_SHUANG",
         "Faction": "MO",
         "SkillImportanceWeight": 1,
@@ -466,13 +466,13 @@
           "SkillCriticalDamagePercentBonus": 100,
           "SkillDamageBonus": 1,
           "MultiHitConfig": {
-            "HitCount": 6
+            "HitCount": 9
           }
         }
       },
       {
         "SkillID": "ZS_MO_SKILL_SY3",
-        "SkillName": "山雨欲来III",
+        "SkillName": "山雨欲来III·英雄",
         "RequiredClass": "ZHU_SHUANG",
         "Faction": "MO",
         "SkillImportanceWeight": 0.4,
@@ -3091,7 +3091,7 @@
       },
       {
         "SkillID": "GY_MO_SKILL_JYBP",
-        "SkillName": "急雨冰瀑·心法",
+        "SkillName": "心法·急雨冰瀑",
         "RequiredClass": "GUI_YUN",
         "Faction": "MO",
         "SkillImportanceWeight": 2,
@@ -3422,6 +3422,19 @@
       "FO": "佛",
       "MO": "魔"
     },
+    "compendiumOrder": [
+      "ZHU_SHUANG",
+      "NIE_YU",
+      "TAI_HAO",
+      "GUI_WANG",
+      "TIAN_YIN",
+      "FEN_XIANG",
+      "ZHAO_MING",
+      "YING_ZHAO",
+      "TIAN_HUA",
+      "SHI_LUO",
+      "GUI_YUN"
+    ],
     "classLabels": {
       "QING_YUN": "青云",
       "GUI_WANG": "鬼王",
