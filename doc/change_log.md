@@ -1,5 +1,34 @@
 # Change Log
 
+## [1.1.10] - 2026-09-20
+
+> 数据修正。`web_app/package.json` 版本号与用户向 `changelog.ts` 条目**待发版时一并同步**，本次未动。
+
+### 流波惊变副本：补录第 4 关 BOSS「夔牛」，并把两档关次修正为 1–5 连续
+
+#### Added
+- `web_app/public/game_data/dungeons_monsters.json`：`LIU_BO_JING_BIAN_CHUSHI` / `LIU_BO_JING_BIAN_HARD` 两档各新增第 4 关 BOSS「夔牛」（`MonsterID` = `KUINIU_CHUSHI` / `KUINIU_HARD`，`role: "boss"`，`displayAttributes` 18 项 + `MonsterAttributeModifiers` 4 项）：
+  - 初识：血 2039254799 × 300 条 = 611776439700｜攻 620000｜防 480000｜爆伤 1900｜减暴击 235｜减爆伤 1790｜技躲 258｜无视减免 140
+  - 困难：血 2061496741 × 820 条 = 1690427327620｜攻 800000｜防 680000｜爆伤 2100｜减暴击 310｜减爆伤 2550｜技躲 298｜无视减免 175
+- `scripts/enrich_liubo_kuiniu.mjs`：可复跑的补录脚本（无参=预演只打印，`--write` 落盘）。夔牛记录的定位规则 = 取**离本难度「青龙」记录 id 最近**的那条「夔牛」（初识 青龙 @127519 → 夔牛 @127522；困难 青龙 @126916 → 夔牛 @126919），elements.data 更新后一键重算。
+
+#### Changed / 关键决策
+- **关次修正**：`幽姬` 4 → **3**，`苍松` 6 → **5**。两档关次由原来的 `[1,2,3,4,6]`（关 5 只有小怪，是全库 19 组里唯一不连续的一组）恢复为 `[1,2,3,4,5]` 连续。
+- 修正依据是**客户端内部小怪命名**，不是推测：
+  - `Boss1-` 保护旗帜 / 旋转飞刀 2-4 / Boss树苗 2-3 ⇒ 关 1 年老大
+  - `Boss2-` 循环总控 / 踩圈怪 / 踩塔控制怪 / 外·内场透明怪 ⇒ 关 2 玉阳子
+  - `Boss3-` **青龙技能目标透明怪 ×4**、**幽姬分身用火球怪**、**幽姬位移位置 1-5** ⇒ 关 3 = 青龙 + 幽姬
+  - `Boss4-` 总控 / 屏障 ×8 / 鼎透明怪 ×8 / 收台子 / 起飞 / 简单-困龙绳黄圈 ⇒ 关 4 = 夔牛（夔牛记录就夹在这批辅助怪中间）
+  - `Boss5-` 总控 ⇒ 关 5 苍松
+  - 旁证：青龙与幽姬的血 / 攻 / 防 / 爆伤几乎同值（同档），其余各关 BOSS 数值明显分档；苍松之后紧跟「入魔的龙首峰弟子」「魔教之人」，与 `_ADDS` 里的炼血堂小怪同关。
+- 「炼血堂教众 / 精英」仍留在 `_ADDS` 键、`DungeonLevel` 保持 5（= 苍松那一关的小怪），沿袭 T21 范式，未动前端 Boss 下拉结构。
+
+#### 来源与验证
+- 取值口径与既有条目完全一致。原 1.0.5 数据是**用户截图手工录入**，本次改为从 `elements.data` 直接取：先用现有 10 条 BOSS（5 只 × 2 难度）× 10 字段逐位比对，**全部 ✓**（含 4 个 float ÷100 的减免类），确认映射链后才生成夔牛 ——
+  `health@360` `healthBars@364` `zhenQi@368` `attack@372` `defense@376` `bonusDamage@380` `damageReduction@384` `normalHit@388` `normalDodge@392` `critRate@396` `critDamage@400` `resistance@404` `critRateReduction@648÷100` `critDamageReduction@652÷100` `skillDodge@656÷100` `skillHit@660÷100` `ignoreReduction@688`；`MonsterHealth = health × healthBars`。
+- 引擎 `validateMonstersData` 校验 **0 issues**；全 10 条 BOSS 血缘（血 × 条 = MonsterHealth）逐条 ✓。
+- 只改 `public/` 源文件。`web_app/dist/` 是构建产物，需 `npm run web:build` 重新生成（注：该目录本就滞后 —— T17 / T18 / 守护神降临 / 玄叶林七尾蜈蚣 4 组与 public 不一致，非本次引入）。
+
 ## [1.0.8] - 2026-09-15
 
 ### 单次计算路径（属性战力计算器 / agent_tool）接入「四代曦日满配 + 战斗满状态峰值」；技能速查补四代卡

@@ -375,264 +375,6 @@
       }
     }
   ],
-  "SHOUSHEN_JIANGLIN_NORMAL": [
-    {
-      "MonsterID": "XIULUO_NIAO_NORMAL",
-      "MonsterName": "修罗鸟",
-      "DungeonLevel": 1,
-      "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 990,
-        "MonsterDefense": 120000,
-        "MonsterHealth": 1456981149,
-        "MonsterCriticalHitRateReduction": 130.5
-      },
-      "role": "boss",
-      "displayAttributes": {
-        "level": 175,
-        "health": 1456981149,
-        "healthBars": 10,
-        "zhenQi": 202775302,
-        "attack": 202500,
-        "defense": 120000,
-        "bonusDamage": 0,
-        "damageReduction": 0,
-        "normalHit": 5000,
-        "normalDodge": 2000,
-        "critRate": 230,
-        "critDamage": 1125,
-        "resistance": 9999,
-        "critRateReduction": 130.5,
-        "critDamageReduction": 990,
-        "skillDodge": 180,
-        "skillHit": 1500,
-        "ignoreReduction": 64
-      }
-    },
-    {
-      "MonsterID": "BAIGU_YAOSHE_NORMAL",
-      "MonsterName": "白骨妖蛇",
-      "DungeonLevel": 2,
-      "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1045,
-        "MonsterDefense": 135000,
-        "MonsterHealth": 1537924546,
-        "MonsterCriticalHitRateReduction": 137.75
-      },
-      "role": "boss",
-      "displayAttributes": {
-        "level": 175,
-        "health": 1537924546,
-        "healthBars": 10,
-        "zhenQi": 202775302,
-        "attack": 213750,
-        "defense": 135000,
-        "bonusDamage": 0,
-        "damageReduction": 0,
-        "normalHit": 5000,
-        "normalDodge": 2000,
-        "critRate": 230,
-        "critDamage": 1187,
-        "resistance": 9999,
-        "critRateReduction": 137.75,
-        "critDamageReduction": 1045,
-        "skillDodge": 200,
-        "skillHit": 1500,
-        "ignoreReduction": 72
-      }
-    },
-    {
-      "MonsterID": "LIUWANG_MOHAI_NORMAL",
-      "MonsterName": "六王魔骸",
-      "DungeonLevel": 3,
-      "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1111,
-        "MonsterDefense": 150000,
-        "MonsterHealth": 1295094355,
-        "MonsterCriticalHitRateReduction": 145
-      },
-      "role": "boss",
-      "displayAttributes": {
-        "level": 175,
-        "health": 1295094355,
-        "healthBars": 10,
-        "zhenQi": 202775302,
-        "attack": 225000,
-        "defense": 150000,
-        "bonusDamage": 0,
-        "damageReduction": 0,
-        "normalHit": 5000,
-        "normalDodge": 2000,
-        "critRate": 230,
-        "critDamage": 1250,
-        "resistance": 9999,
-        "critRateReduction": 145,
-        "critDamageReduction": 1111,
-        "skillDodge": 200,
-        "skillHit": 1500,
-        "ignoreReduction": 76
-      }
-    },
-    {
-      "MonsterID": "LIUWANG_MOHE_NORMAL",
-      "MonsterName": "六王魔核",
-      "DungeonLevel": 3,
-      "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1056,
-        "MonsterDefense": 150000,
-        "MonsterHealth": 323773588,
-        "MonsterCriticalHitRateReduction": 145
-      },
-      "role": "boss",
-      "displayAttributes": {
-        "level": 170,
-        "health": 323773588,
-        "healthBars": 10,
-        "zhenQi": 202775302,
-        "attack": 225000,
-        "defense": 150000,
-        "bonusDamage": 0,
-        "damageReduction": 0,
-        "normalHit": 5000,
-        "normalDodge": 2000,
-        "critRate": 230,
-        "critDamage": 1250,
-        "resistance": 9999,
-        "critRateReduction": 145,
-        "critDamageReduction": 1056,
-        "skillDodge": 200,
-        "skillHit": 1500,
-        "ignoreReduction": 76
-      }
-    },
-    {
-      "MonsterID": "SHOUSHEN_NORMAL",
-      "MonsterName": "兽神",
-      "DungeonLevel": 4,
-      "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1122,
-        "MonsterDefense": 150000,
-        "MonsterHealth": 1618867944,
-        "MonsterCriticalHitRateReduction": 159.5
-      },
-      "role": "boss",
-      "displayAttributes": {
-        "level": 175,
-        "health": 1618867944,
-        "healthBars": 10,
-        "zhenQi": 202775302,
-        "attack": 225000,
-        "defense": 150000,
-        "bonusDamage": 0,
-        "damageReduction": 0,
-        "normalHit": 5000,
-        "normalDodge": 2000,
-        "critRate": 241,
-        "critDamage": 1250,
-        "resistance": 9999,
-        "critRateReduction": 159.5,
-        "critDamageReduction": 1122,
-        "skillDodge": 200,
-        "skillHit": 1500,
-        "ignoreReduction": 80
-      }
-    },
-    {
-      "MonsterID": "HEI_WUCHANG_NORMAL",
-      "MonsterName": "黑无常",
-      "DungeonLevel": 5,
-      "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1133,
-        "MonsterDefense": 150000,
-        "MonsterHealth": 1699811341,
-        "MonsterCriticalHitRateReduction": 159.5
-      },
-      "role": "boss",
-      "displayAttributes": {
-        "level": 175,
-        "health": 1699811341,
-        "healthBars": 10,
-        "zhenQi": 202775302,
-        "attack": 236250,
-        "defense": 150000,
-        "bonusDamage": 0,
-        "damageReduction": 0,
-        "normalHit": 5000,
-        "normalDodge": 2000,
-        "critRate": 241,
-        "critDamage": 1312,
-        "resistance": 9999,
-        "critRateReduction": 159.5,
-        "critDamageReduction": 1133,
-        "skillDodge": 220,
-        "skillHit": 1500,
-        "ignoreReduction": 88
-      }
-    },
-    {
-      "MonsterID": "BAI_WUCHANG_NORMAL",
-      "MonsterName": "白无常",
-      "DungeonLevel": 5,
-      "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1133,
-        "MonsterDefense": 150000,
-        "MonsterHealth": 1699811341,
-        "MonsterCriticalHitRateReduction": 159.5
-      },
-      "role": "boss",
-      "displayAttributes": {
-        "level": 175,
-        "health": 1699811341,
-        "healthBars": 10,
-        "zhenQi": 202775302,
-        "attack": 236250,
-        "defense": 150000,
-        "bonusDamage": 0,
-        "damageReduction": 0,
-        "normalHit": 5000,
-        "normalDodge": 2000,
-        "critRate": 241,
-        "critDamage": 1312,
-        "resistance": 9999,
-        "critRateReduction": 159.5,
-        "critDamageReduction": 1133,
-        "skillDodge": 220,
-        "skillHit": 1500,
-        "ignoreReduction": 88
-      }
-    },
-    {
-      "MonsterID": "SHOUSHEN_COMPLETE_NORMAL",
-      "MonsterName": "兽神（完全形态）",
-      "DungeonLevel": 6,
-      "MonsterAttributeModifiers": {
-        "MonsterCriticalDamagePercentReduction": 1155,
-        "MonsterDefense": 157500,
-        "MonsterHealth": 1780754738,
-        "MonsterCriticalHitRateReduction": 159.5
-      },
-      "role": "boss",
-      "displayAttributes": {
-        "level": 175,
-        "health": 1780754738,
-        "healthBars": 10,
-        "zhenQi": 202775302,
-        "attack": 247500,
-        "defense": 157500,
-        "bonusDamage": 0,
-        "damageReduction": 0,
-        "normalHit": 5000,
-        "normalDodge": 2000,
-        "critRate": 253,
-        "critDamage": 1375,
-        "resistance": 9999,
-        "critRateReduction": 159.5,
-        "critDamageReduction": 1155,
-        "skillDodge": 230,
-        "skillHit": 1500,
-        "ignoreReduction": 88
-      }
-    }
-  ],
   "SHOUSHEN_JIANGLIN_HARD": [
     {
       "MonsterID": "XIULUO_NIAO_HARD",
@@ -641,7 +383,7 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 990,
         "MonsterDefense": 160000,
-        "MonsterHealth": 1456981149,
+        "MonsterHealth": 14569811490,
         "MonsterCriticalHitRateReduction": 144
       },
       "role": "boss",
@@ -673,7 +415,7 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1045,
         "MonsterDefense": 180000,
-        "MonsterHealth": 1537924546,
+        "MonsterHealth": 15379245460,
         "MonsterCriticalHitRateReduction": 144
       },
       "role": "boss",
@@ -705,7 +447,7 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1111,
         "MonsterDefense": 200000,
-        "MonsterHealth": 1295094355,
+        "MonsterHealth": 12950943550,
         "MonsterCriticalHitRateReduction": 160
       },
       "role": "boss",
@@ -737,7 +479,7 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1056,
         "MonsterDefense": 200000,
-        "MonsterHealth": 323773588,
+        "MonsterHealth": 3237735880,
         "MonsterCriticalHitRateReduction": 160
       },
       "role": "boss",
@@ -769,7 +511,7 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1122,
         "MonsterDefense": 200000,
-        "MonsterHealth": 1618867944,
+        "MonsterHealth": 16188679440,
         "MonsterCriticalHitRateReduction": 176
       },
       "role": "boss",
@@ -801,7 +543,7 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1133,
         "MonsterDefense": 200000,
-        "MonsterHealth": 1699811341,
+        "MonsterHealth": 16998113410,
         "MonsterCriticalHitRateReduction": 176
       },
       "role": "boss",
@@ -833,7 +575,7 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1133,
         "MonsterDefense": 200000,
-        "MonsterHealth": 1699811341,
+        "MonsterHealth": 16998113410,
         "MonsterCriticalHitRateReduction": 176
       },
       "role": "boss",
@@ -865,7 +607,7 @@
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1155,
         "MonsterDefense": 210000,
-        "MonsterHealth": 1780754738,
+        "MonsterHealth": 17807547380,
         "MonsterCriticalHitRateReduction": 176
       },
       "role": "boss",
@@ -3193,7 +2935,7 @@
     {
       "MonsterID": "YOUJI_CHUSHI",
       "MonsterName": "幽姬",
-      "DungeonLevel": 4,
+      "DungeonLevel": 3,
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1760,
         "MonsterDefense": 420000,
@@ -3223,9 +2965,41 @@
       }
     },
     {
+      "MonsterID": "KUINIU_CHUSHI",
+      "MonsterName": "夔牛",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1790,
+        "MonsterDefense": 480000,
+        "MonsterHealth": 611776439700,
+        "MonsterCriticalHitRateReduction": 235
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 2039254799,
+        "healthBars": 300,
+        "zhenQi": 0,
+        "attack": 620000,
+        "defense": 480000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 8000,
+        "normalDodge": 2000,
+        "critRate": 420,
+        "critDamage": 1900,
+        "resistance": 9999,
+        "critRateReduction": 235,
+        "critDamageReduction": 1790,
+        "skillDodge": 258,
+        "skillHit": 999900,
+        "ignoreReduction": 140
+      }
+    },
+    {
       "MonsterID": "CANGSONG_CHUSHI",
       "MonsterName": "苍松",
-      "DungeonLevel": 6,
+      "DungeonLevel": 5,
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1850,
         "MonsterDefense": 500000,
@@ -3421,7 +3195,7 @@
     {
       "MonsterID": "YOUJI_HARD",
       "MonsterName": "幽姬",
-      "DungeonLevel": 4,
+      "DungeonLevel": 3,
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 2400,
         "MonsterDefense": 660000,
@@ -3451,9 +3225,41 @@
       }
     },
     {
+      "MonsterID": "KUINIU_HARD",
+      "MonsterName": "夔牛",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 2550,
+        "MonsterDefense": 680000,
+        "MonsterHealth": 1690427327620,
+        "MonsterCriticalHitRateReduction": 310
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 2061496741,
+        "healthBars": 820,
+        "zhenQi": 0,
+        "attack": 800000,
+        "defense": 680000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 8000,
+        "normalDodge": 2000,
+        "critRate": 420,
+        "critDamage": 2100,
+        "resistance": 9999,
+        "critRateReduction": 310,
+        "critDamageReduction": 2550,
+        "skillDodge": 298,
+        "skillHit": 999900,
+        "ignoreReduction": 175
+      }
+    },
+    {
       "MonsterID": "CANGSONG_HARD",
       "MonsterName": "苍松",
-      "DungeonLevel": 6,
+      "DungeonLevel": 5,
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 2600,
         "MonsterDefense": 700000,
