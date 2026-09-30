@@ -1,8 +1,8 @@
 # Change Log
 
-## [1.1.10] - 2026-09-20
+## [1.1.10] - 2026-09-30
 
-> 数据修正。`web_app/package.json` 版本号与用户向 `changelog.ts` 条目**待发版时一并同步**，本次未动。
+> 已随 `web_app` v1.1.10 发布：`package.json` 版本号与 `changelog.ts` 条目已同步。
 
 ### 流波惊变副本：补录第 4 关 BOSS「夔牛」，并把两档关次修正为 1–5 连续
 
@@ -28,6 +28,16 @@
   `health@360` `healthBars@364` `zhenQi@368` `attack@372` `defense@376` `bonusDamage@380` `damageReduction@384` `normalHit@388` `normalDodge@392` `critRate@396` `critDamage@400` `resistance@404` `critRateReduction@648÷100` `critDamageReduction@652÷100` `skillDodge@656÷100` `skillHit@660÷100` `ignoreReduction@688`；`MonsterHealth = health × healthBars`。
 - 引擎 `validateMonstersData` 校验 **0 issues**；全 10 条 BOSS 血缘（血 × 条 = MonsterHealth）逐条 ✓。
 - 只改 `public/` 源文件。`web_app/dist/` 是构建产物，需 `npm run web:build` 重新生成（注：该目录本就滞后 —— T17 / T18 / 守护神降临 / 玄叶林七尾蜈蚣 4 组与 public 不一致，非本次引入）。
+
+#### Changed / 本次数据校准（2026-09-30）
+- 流波惊变·初识档 6 只 BOSS 的属性校准（同一副本同一批次，与夔牛补录一并发布）：
+  - `NIANLAODA_CHUSHI` 年老大：技能闪避 252 → 230。
+  - `YUYANGZI_CHUSHI` 玉阳子：减爆伤 1600 → 1450；技能闪避 254 → 232；怪物减致命一击率 1600 → 1450。
+  - `QINGLONG_CHUSHI` 青龙：减爆伤 1760 → 1700；技能闪避 256 → 234；怪物减致命一击率 1760 → 1700。
+  - `YOUJI_CHUSHI` 幽姬：减爆伤 1760 → 1700；技能闪避 256 → 234；怪物减致命一击率 1760 → 1700。
+  - `KUINIU_CHUSHI` 夔牛：血量 611776439700 → 570991343720（血条 300 → 280）；技能闪避 258 → 236。
+  - `CANGSONG_CHUSHI` 苍松：技能闪避 260 → 238。
+- 上述改动仅调整 `LIU_BO_JING_BIAN_CHUSHI` 数组内既有字段，其余副本 / BOSS / 字段一律未动。
 
 ## [1.0.8] - 2026-09-15
 
