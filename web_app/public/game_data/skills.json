@@ -108,6 +108,7 @@
             "ResetType": "REFRESH_CHARGES"
           }
         ],
+        "Description": "立即获得27层「龙怒」(15秒)；刷新苍龙啸·玄充能至满。龙怒态下苍龙啸命中每击消耗1层龙怒，该击额外+攻击比(仙300%/魔·佛200%)。",
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         },
@@ -251,6 +252,7 @@
             "ResetType": "REFRESH_CHARGES"
           }
         ],
+        "Description": "立即获得27层「龙怒」(15秒)；刷新苍龙啸充能至满。龙怒态下苍龙啸命中每击消耗1层龙怒，该击额外+攻击比(仙300%/魔·佛200%)。",
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         },
@@ -383,8 +385,7 @@
         ],
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
-        },
-        "Description": "逐霜自身爆发增益，增加20%暴击率、100%暴击伤害、25%专注与50%施法速度，持续时间24秒，冷却时间60秒。"
+        }
       },
       {
         "SkillID": "ZS_XIAN_SKILL_YZXW",
@@ -486,6 +487,7 @@
         "HitTiming": {
           "Mode": "EVENLY_DURING_CAST"
         },
+        "Description": "三层充能技能；第一次消耗后启动充能恢复计时，鹰扬折冲·煞可刷新为满层；命中会消耗龙怒层数并提升当段技能攻击百分比。",
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 240,
           "SkillAttackFixedBonus": 4000,
@@ -645,6 +647,7 @@
             "ResetType": "REFRESH_CHARGES"
           }
         ],
+        "Description": "立即获得27层「龙怒」(15秒)；刷新苍龙啸·煞充能至满。龙怒态下苍龙啸命中每击消耗1层龙怒，该击额外+攻击比(仙300%/魔·佛200%)。",
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         },
@@ -679,6 +682,7 @@
         "HitTiming": {
           "Mode": "EVENLY_DURING_CAST"
         },
+        "Description": "释放一次苍龙啸有30%概率刷新苍龙啸自身充能；命中会消耗龙怒层数并提升当段技能攻击百分比。",
         "SkillBonusAttributes": {
           "SkillAttackPercentBonus": 210,
           "SkillAttackFixedBonus": 3300,
@@ -741,20 +745,6 @@
             "HitCount": 3
           }
         },
-        "AppliesEffects": [
-          {
-            "EffectId": "ZS_BUFF_LONG_NU",
-            "EffectName": "龙怒",
-            "Target": "SELF",
-            "Duration": 15,
-            "Stackable": true,
-            "MaxStacks": 27,
-            "RefreshOnReapply": true,
-            "StackMode": "SINGLE_INSTANCE_STACKS",
-            "StackGain": 1,
-            "BuffEffects": {}
-          }
-        ],
         "SkillTiers": {
           "10": {
             "SkillBonusAttributes": {
@@ -787,6 +777,7 @@
             "ResetType": "REFRESH_CHARGES"
           }
         ],
+        "Description": "立即获得27层「龙怒」(15秒)；刷新苍龙啸充能至满。龙怒态下苍龙啸命中每击消耗1层龙怒，该击额外+攻击比(仙300%/魔·佛200%)。",
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
         },
@@ -919,8 +910,7 @@
         ],
         "SkillBonusAttributes": {
           "SkillDamageBonus": 1
-        },
-        "Description": "逐霜自身爆发增益，增加20%暴击率、100%暴击伤害、25%专注与50%施法速度，持续时间24秒，冷却时间60秒。"
+        }
       },
       {
         "SkillID": "ZS_MO_SKILL_YZXW",
