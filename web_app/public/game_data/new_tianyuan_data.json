@@ -1,0 +1,360 @@
+{
+  "attributeGroups": [
+    {
+      "name": "上玄佑万辰须弥刃",
+      "extraCoeffs": [
+        1,
+        2,
+        4,
+        4,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "attributes": [
+        {
+          "name": "攻击",
+          "probability": "5%",
+          "initMin": 500,
+          "initMax": 1000,
+          "perLevelGain": 100
+        },
+        {
+          "name": "攻击（%）",
+          "probability": "5%",
+          "initMin": 1,
+          "initMax": 2,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "对怪物增伤",
+          "probability": "0.5%",
+          "initMin": 0.1,
+          "initMax": 0.3,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "致命一击率",
+          "probability": "16%",
+          "initMin": 1,
+          "initMax": 2,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "致命一击率",
+          "probability": "5%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "克仙",
+          "probability": "16%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "克佛",
+          "probability": "16%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "克魔",
+          "probability": "16%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "无视伤害减免",
+          "probability": "2%",
+          "initMin": 1.2,
+          "initMax": 2.2,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "无视伤害减免",
+          "probability": "0.5%",
+          "initMin": 2.2,
+          "initMax": 3.5,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "对人物增伤",
+          "probability": "17.6%",
+          "initMin": 0.5,
+          "initMax": 1.2,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "冲灵",
+          "probability": "0.3%",
+          "initMin": 0.2,
+          "initMax": 1,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "冲灵",
+          "probability": "0.2%",
+          "initMin": 1,
+          "initMax": 3,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "name": "上玄佑万辰须弥甲",
+      "extraCoeffs": [
+        1,
+        2,
+        4,
+        4,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "attributes": [
+        {
+          "name": "减免伤害",
+          "probability": "4%",
+          "initMin": 0.1,
+          "initMax": 0.3,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "减免伤害",
+          "probability": "1%",
+          "initMin": 0.5,
+          "initMax": 1.2,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "减免致命一击",
+          "probability": "13%",
+          "initMin": 1.5,
+          "initMax": 3,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "减免致命一击",
+          "probability": "3%",
+          "initMin": 3,
+          "initMax": 5,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "技能躲闪",
+          "probability": "13%",
+          "initMin": 4,
+          "initMax": 8,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "技能躲闪",
+          "probability": "3%",
+          "initMin": 8,
+          "initMax": 12,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "御仙",
+          "probability": "13%",
+          "initMin": 1,
+          "initMax": 2,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "御仙",
+          "probability": "3%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "御佛",
+          "probability": "13%",
+          "initMin": 1,
+          "initMax": 2,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "御佛",
+          "probability": "3%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "御魔",
+          "probability": "13%",
+          "initMin": 1,
+          "initMax": 2,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "御魔",
+          "probability": "3%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "化灵",
+          "probability": "12.2%",
+          "initMin": 0.2,
+          "initMax": 0.6,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "化灵",
+          "probability": "2.8%",
+          "initMin": 1,
+          "initMax": 2,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "name": "上玄佑万辰须弥盔",
+      "extraCoeffs": [
+        1,
+        2,
+        4,
+        4,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "attributes": [
+        {
+          "name": "攻击",
+          "probability": "15%",
+          "initMin": 500,
+          "initMax": 2000,
+          "perLevelGain": 50
+        },
+        {
+          "name": "攻击（%）",
+          "probability": "2%",
+          "initMin": 0.5,
+          "initMax": 2.5,
+          "perLevelGain": 0.4,
+          "unit": "%"
+        },
+        {
+          "name": "气血",
+          "probability": "21%",
+          "initMin": 1500,
+          "initMax": 3000,
+          "perLevelGain": 100
+        },
+        {
+          "name": "气血（%）",
+          "probability": "1%",
+          "initMin": 1.5,
+          "initMax": 2.5,
+          "perLevelGain": 0.2,
+          "unit": "%"
+        },
+        {
+          "name": "真气",
+          "probability": "21%",
+          "initMin": 1500,
+          "initMax": 3000,
+          "perLevelGain": 100
+        },
+        {
+          "name": "真气（%）",
+          "probability": "1%",
+          "initMin": 1.5,
+          "initMax": 2.5,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "减免致命一击",
+          "probability": "1%",
+          "initMin": 0.1,
+          "initMax": 1,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "减免致命一击伤害",
+          "probability": "6%",
+          "initMin": 1,
+          "initMax": 5,
+          "perLevelGain": 0.6,
+          "unit": "%"
+        },
+        {
+          "name": "减免致命一击伤害",
+          "probability": "2%",
+          "initMin": 10,
+          "initMax": 15,
+          "perLevelGain": 0.6,
+          "unit": "%"
+        },
+        {
+          "name": "魅惑抗性",
+          "probability": "10%",
+          "initMin": 5,
+          "initMax": 15,
+          "perLevelGain": 2
+        },
+        {
+          "name": "眩晕抗性",
+          "probability": "10%",
+          "initMin": 5,
+          "initMax": 15,
+          "perLevelGain": 2
+        },
+        {
+          "name": "定身抗性",
+          "probability": "10%",
+          "initMin": 5,
+          "initMax": 15,
+          "perLevelGain": 2
+        }
+      ]
+    }
+  ]
+}

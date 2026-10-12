@@ -1,0 +1,66 @@
+import fs from 'fs';
+
+const XYC_CONFIG = {
+    standard: {
+        gj: { name: "攻击", min: 200, max: 1000, gain: 20, unit: "" },
+        fy: { name: "防御", min: 100, max: 300, gain: 10, unit: "" },
+        qx: { name: "气血", min: 2000, max: 6000, gain: 100, unit: "" },
+        zq: { name: "真气", min: 500, max: 3000, gain: 50, unit: "" },
+        gj_r: { name: "攻击%", min: 3.5, max: 10, gain: 0.4, unit: "%" },
+        fy_r: { name: "防御%", min: 5, max: 10, gain: 0.5, unit: "%" },
+        qx_r: { name: "气血%", min: 2, max: 8, gain: 0.2, unit: "%" },
+        zq_r: { name: "真气%", min: 2, max: 8, gain: 0.2, unit: "%" },
+        ql_xy: { name: "眩晕抗性", min: 20, max: 80, gain: 1, unit: "", beast: "青龙" },
+        ql_ds: { name: "定身抗性", min: 20, max: 80, gain: 1, unit: "", beast: "青龙" },
+        ql_jnmz: { name: "技能命中", min: 5, max: 15, gain: 0.5, unit: "", beast: "青龙" },
+        ql_bs: { name: "暴击伤害", min: 20, max: 60, gain: 1, unit: "%", beast: "青龙" },
+        bh_kx: { name: "克仙", min: 3, max: 10, gain: 0.2, unit: "%", beast: "白虎" },
+        bh_mh: { name: "魅惑抗性", min: 20, max: 80, gain: 1, unit: "", beast: "白虎" },
+        bh_jbj: { name: "减暴击", min: 1, max: 5, gain: 0.1, unit: "%", beast: "白虎" },
+        bh_bj: { name: "暴击", min: 5, max: 12, gain: 0.3, unit: "%", beast: "白虎" },
+        zq_km: { name: "克魔", min: 3, max: 10, gain: 0.2, unit: "%", beast: "朱雀" },
+        zq_yl: { name: "元力值", min: 500, max: 1600, gain: 40, unit: "", beast: "朱雀" },
+        zq_yswn: { name: "元神威能", min: 20, max: 70, gain: 2, unit: "", beast: "朱雀" },
+        zq_hs: { name: "昏睡抗性", min: 20, max: 80, gain: 1, unit: "", beast: "朱雀" },
+        xw_kf: { name: "克佛", min: 3, max: 10, gain: 0.2, unit: "%", beast: "玄武" },
+        xw_xr: { name: "虚弱抗性", min: 20, max: 80, gain: 1, unit: "", beast: "玄武" },
+        xw_jbs: { name: "减免暴伤", min: 4, max: 8, gain: 0.2, unit: "%", beast: "玄武" },
+        xw_ws: { name: "无视减免", min: 3, max: 12, gain: 0.3, unit: "%", beast: "玄武" },
+    },
+    hero: {
+        gj: { name: "攻击", min: 280, max: 1400, gain: 20, unit: "" },
+        fy: { name: "防御", min: 125, max: 375, gain: 10, unit: "" },
+        qx: { name: "气血", min: 2800, max: 8400, gain: 100, unit: "" },
+        zq: { name: "真气", min: 700, max: 4200, gain: 50, unit: "" },
+        gj_r: { name: "攻击%", min: 4.4, max: 12.5, gain: 0.4, unit: "%" },
+        fy_r: { name: "防御%", min: 4.4, max: 12.5, gain: 0.5, unit: "%" },
+        qx_r: { name: "气血%", min: 2.5, max: 10, gain: 0.2, unit: "%" },
+        zq_r: { name: "真气%", min: 2.5, max: 10, gain: 0.2, unit: "%" },
+        ql_xy: { name: "眩晕抗性", min: 28, max: 112, gain: 1, unit: "", beast: "青龙" },
+        ql_ds: { name: "定身抗性", min: 28, max: 112, gain: 1, unit: "", beast: "青龙" },
+        ql_jnmz: { name: "技能命中", min: 6.3, max: 18.8, gain: 0.5, unit: "", beast: "青龙" },
+        ql_bs: { name: "暴击伤害", min: 25, max: 75, gain: 1, unit: "%", beast: "青龙" },
+        bh_kx: { name: "克仙", min: 4.2, max: 14, gain: 0.2, unit: "%", beast: "白虎" },
+        bh_mh: { name: "魅惑抗性", min: 28, max: 112, gain: 1, unit: "", beast: "白虎" },
+        bh_jbj: { name: "减暴击", min: 1.3, max: 6.3, gain: 0.1, unit: "%", beast: "白虎" },
+        bh_bj: { name: "暴击", min: 6.3, max: 15, gain: 0.3, unit: "%", beast: "白虎" },
+        zq_km: { name: "克魔", min: 4.2, max: 14, gain: 0.2, unit: "%", beast: "朱雀" },
+        zq_yl: { name: "元力值", min: 700, max: 2240, gain: 40, unit: "", beast: "朱雀" },
+        zq_yswn: { name: "元神威能", min: 25, max: 88, gain: 2, unit: "", beast: "朱雀" },
+        zq_hs: { name: "昏睡抗性", min: 28, max: 112, gain: 1, unit: "", beast: "朱雀" },
+        xw_kf: { name: "克佛", min: 4.2, max: 14, gain: 0.2, unit: "%", beast: "玄武" },
+        xw_xr: { name: "虚弱抗性", min: 28, max: 112, gain: 1, unit: "", beast: "玄武" },
+        xw_jbs: { name: "减免暴伤", min: 5.6, min20: 9.6, max: 11.2, gain: 0.2, unit: "%", beast: "玄武" },
+        xw_ws: { name: "无视减免", min: 3.8, max: 15, gain: 0.3, unit: "%", beast: "玄武" },
+    },
+    beasts: {
+        青龙: { color: "#11ff11", tag: "ql", specificKeys: ["ql_xy", "ql_ds", "ql_jnmz", "ql_bs"] },
+        白虎: { color: "#ffcb4a", tag: "bh", specificKeys: ["bh_kx", "bh_mh", "bh_jbj", "bh_bj"] },
+        朱雀: { color: "#ff4d4f", tag: "zq", specificKeys: ["zq_km", "zq_yl", "zq_yswn", "zq_hs"] },
+        玄武: { color: "#11aaff", tag: "xw", specificKeys: ["xw_kf", "xw_xr", "xw_jbs", "xw_ws"] }
+    },
+    commonKeys: ["gj", "fy", "qx", "zq", "gj_r", "fy_r", "qx_r", "zq_r"]
+};
+
+fs.writeFileSync('web_app/public/game_data/xyc_rules.json', JSON.stringify(XYC_CONFIG, null, 2), 'utf8');
+console.log('Saved xyc_rules.json successfully!');

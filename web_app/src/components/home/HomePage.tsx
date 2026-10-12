@@ -942,6 +942,33 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
             <span className="pill-num text-rose-300">{stats.guides}</span>
             <span className="pill-label">攻略条目</span>
           </button>
+
+          <button
+            className="metric-pill group"
+            onClick={() => navigate(ROUTE.fabao)}
+            title="点击前往 精选法宝图鉴"
+          >
+            <span className="pill-num text-purple-300">139</span>
+            <span className="pill-label">战斗法宝</span>
+          </button>
+
+          <button
+            className="metric-pill group"
+            onClick={() => navigate(ROUTE.equip)}
+            title="点击前往 精选装备图鉴"
+          >
+            <span className="pill-num text-cyan-300">1138</span>
+            <span className="pill-label">主流装备</span>
+          </button>
+
+          <button
+            className="metric-pill group"
+            onClick={() => navigate(ROUTE.serverRadar)}
+            title="点击前往 开服雷达监测"
+          >
+            <span className="pill-num text-emerald-300">33</span>
+            <span className="pill-label">开服雷达</span>
+          </button>
         </div>
       </div>
     </div>

@@ -20,17 +20,21 @@ import {
 } from 'lucide-react';
 import { SkillsView } from '../skills/SkillsView';
 import { BossCompendiumView } from './BossCompendiumView';
+import { FabaoCompendiumView } from './FabaoCompendiumView';
+import { EquipCompendiumView } from './EquipCompendiumView';
 import clsx from 'clsx';
 import { chipCls, chipCountCls, CHIP_ROW_BASE } from '../ui/chipStyles';
 import type { AttributeCeilingRow, SupportRole, StatSourceSection } from '../../services/DataService';
 import type { SearchTarget } from '../GlobalSearch';
 
-export type CompendiumPrimaryTab = 'ceiling' | 'skills' | 'support' | 'boss';
+export type CompendiumPrimaryTab = 'ceiling' | 'fabao' | 'equip' | 'skills' | 'support' | 'boss';
 export type AttributeSubTab = 'ignore' | 'reduction' | 'critReduction' | 'monsterDamageBonus' | 'dodge';
 export type SubTab = CompendiumPrimaryTab | AttributeSubTab;
 
 export const PRIMARY_TABS: { id: CompendiumPrimaryTab; label: string; icon: React.ReactNode }[] = [
     { id: 'ceiling', label: '极致属性攻略', icon: <Target className="w-4 h-4" /> },
+    { id: 'fabao', label: '精选法宝图鉴', icon: <Sparkles className="w-4 h-4" /> },
+    { id: 'equip', label: '精选装备图鉴', icon: <Shield className="w-4 h-4" /> },
     { id: 'skills', label: '职业技能速查', icon: <Swords className="w-4 h-4" /> },
     { id: 'support', label: '职业状态一览', icon: <Users className="w-4 h-4" /> },
     { id: 'boss', label: '副本 BOSS 速查', icon: <Crosshair className="w-4 h-4" /> },
@@ -1441,7 +1445,7 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
     // 子页状态由 URL 驱动：刷新 / 直达链接 / 前进后退 均可复现
     useEffect(() => {
         if (!sub) return;
-        if (sub === 'skills' || sub === 'support' || sub === 'boss') {
+        if (sub === 'skills' || sub === 'support' || sub === 'boss' || sub === 'fabao' || sub === 'equip') {
             setActivePrimaryTab(sub);
         } else if (sub === 'ceiling') {
             setActivePrimaryTab('ceiling');
@@ -1469,6 +1473,10 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
                 // 同 skills：副本选中（?d=）与 Boss 高亮（?m=）的定位、以及 consume 都交给 BossCompendiumView。
                 // 本组件要到「切到 boss」的那次渲染才挂载它，此处提前 consume 会让深链失效。
                 return;
+            } else if (s === 'fabao') {
+                setActivePrimaryTab('fabao');
+            } else if (s === 'equip') {
+                setActivePrimaryTab('equip');
             } else if (s === 'ceiling') {
                 setActivePrimaryTab('ceiling');
             } else if (['ignore', 'reduction', 'critReduction', 'monsterDamageBonus', 'dodge'].includes(s)) {
@@ -1565,6 +1573,8 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
 
             {/* 板块主体渲染 */}
             {activePrimaryTab === 'ceiling' && attributeContent}
+            {activePrimaryTab === 'fabao' && <FabaoCompendiumView />}
+            {activePrimaryTab === 'equip' && <EquipCompendiumView />}
             {activePrimaryTab === 'skills' && (
                 <div className="w-full">
                     <SkillsView
