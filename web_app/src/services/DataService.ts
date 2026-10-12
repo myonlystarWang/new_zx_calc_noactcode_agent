@@ -4,7 +4,9 @@ import type {
     Buff,
     Dungeon,
     Monster,
-    RankConfig
+    RankConfig,
+    FabaoItem,
+    CuratedEquipItem
 } from '../types';
 
 const DATA_BASE_URL = '/game_data';
@@ -86,6 +88,8 @@ export class DataService {
     private attributeCeilingGuide: AttributeCeilingGuide | null = null;
     private statSourceLists: StatSourceLists | null = null;
     private skillMeta: any = null;
+    private fabaoList: FabaoItem[] | null = null;
+    private equipList: CuratedEquipItem[] | null = null;
 
     private constructor() { }
 
@@ -250,5 +254,21 @@ export class DataService {
 
     public getSupportRoles(): SupportRoles | null {
         return this.skillMeta?.supportRoles ?? null;
+    }
+
+    public async getFabaoList(): Promise<FabaoItem[]> {
+        if (this.fabaoList) return this.fabaoList;
+        const res = await fetch(`${DATA_BASE_URL}/fabao_curated.json`);
+        if (!res.ok) throw new Error(`加载 fabao_curated.json 失败: ${res.status}`);
+        this.fabaoList = await res.json();
+        return this.fabaoList!;
+    }
+
+    public async getEquipList(): Promise<CuratedEquipItem[]> {
+        if (this.equipList) return this.equipList;
+        const res = await fetch(`${DATA_BASE_URL}/equip_curated.json`);
+        if (!res.ok) throw new Error(`加载 equip_curated.json 失败: ${res.status}`);
+        this.equipList = await res.json();
+        return this.equipList!;
     }
 }

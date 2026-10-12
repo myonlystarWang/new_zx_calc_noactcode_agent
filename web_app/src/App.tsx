@@ -18,6 +18,7 @@ import { BuffPanel } from './components/business/BuffPanel';
 import { ResultSection } from './components/business/ResultsSection';
 import { SimulationArena } from './components/arena/SimulationArena';
 import { CompendiumView } from './components/compendium/CompendiumView';
+import { ToolsHubView } from './components/tools/ToolsHubView';
 import { ChangelogPage } from './components/changelog/ChangelogPage';
 import { decodeSharePayload } from './utils/shareSnapshot';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -318,6 +319,9 @@ const MainContent: React.FC = () => {
 
         <Route path={ROUTE.compendium} element={<CompendiumRoute {...compendiumRouteProps} />} />
         <Route path={`${ROUTE.compendium}/:seg`} element={<CompendiumRoute {...compendiumRouteProps} />} />
+
+        <Route path={ROUTE.tools} element={<ToolsHubView />} />
+        <Route path={`${ROUTE.tools}/:toolSeg`} element={<ToolsHubView />} />
 
         <Route
           path={ROUTE.changelog}

@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { MessageSquare, Check } from 'lucide-react';
 import { ROUTE } from '../../routes';
 
+import type { PrimaryTab } from '../../routes';
+
 interface FooterProps {
-    activeTab?: 'home' | 'calculator' | 'arena' | 'compendium';
+    activeTab?: PrimaryTab;
 }
 
 // 暂时封掉右侧 WeChat 入口（2026-09-16），需要恢复显示时改为 true 即可

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Calculator, ChevronDown, Crosshair, Swords, Target, Users } from 'lucide-react';
+import { Calculator, ChevronDown, Crosshair, Shield, Sparkles, Swords, Target, Users } from 'lucide-react';
 import clsx from 'clsx';
 import { GlobalSearch } from '../GlobalSearch';
 import type { SearchTarget } from '../GlobalSearch';
@@ -13,6 +13,7 @@ const NAV_TABS = [
     { id: 'calculator', short: '战力', full: '属性战力计算器', path: ROUTE.calculator },
     { id: 'arena', short: '模拟', full: '副本模拟训练场', path: ROUTE.arena },
     { id: 'compendium', short: '资料库', full: '全景战斗资料库', path: ROUTE.ceiling },
+    { id: 'tools', short: '微工具', full: '微工具实验室', path: ROUTE.serverRadar },
 ] as const;
 
 /**
@@ -21,6 +22,8 @@ const NAV_TABS = [
  */
 const COMPENDIUM_MENU: { label: string; path: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { label: '极致属性攻略', path: ROUTE.ceiling, icon: Target },
+    { label: '精选法宝图鉴', path: ROUTE.fabao, icon: Sparkles },
+    { label: '精选装备图鉴', path: ROUTE.equip, icon: Shield },
     { label: '职业技能速查', path: ROUTE.skills, icon: Swords },
     { label: '职业状态一览', path: ROUTE.support, icon: Users },
     { label: '副本 BOSS 速查', path: ROUTE.boss, icon: Crosshair },
