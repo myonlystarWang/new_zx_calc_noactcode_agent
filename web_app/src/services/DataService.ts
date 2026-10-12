@@ -90,6 +90,9 @@ export class DataService {
     private skillMeta: any = null;
     private fabaoList: FabaoItem[] | null = null;
     private equipList: CuratedEquipItem[] | null = null;
+    private xycRules: any = null;
+    private tianyuanData: any = null;
+    private serverList: any[] | null = null;
 
     private constructor() { }
 
@@ -270,5 +273,29 @@ export class DataService {
         if (!res.ok) throw new Error(`加载 equip_curated.json 失败: ${res.status}`);
         this.equipList = await res.json();
         return this.equipList!;
+    }
+
+    public async getXycRules(): Promise<any> {
+        if (this.xycRules) return this.xycRules;
+        const res = await fetch(`${DATA_BASE_URL}/xyc_rules.json`);
+        if (!res.ok) throw new Error(`加载 xyc_rules.json 失败: ${res.status}`);
+        this.xycRules = await res.json();
+        return this.xycRules;
+    }
+
+    public async getNewTianYuanData(): Promise<any> {
+        if (this.tianyuanData) return this.tianyuanData;
+        const res = await fetch(`${DATA_BASE_URL}/new_tianyuan_data.json`);
+        if (!res.ok) throw new Error(`加载 new_tianyuan_data.json 失败: ${res.status}`);
+        this.tianyuanData = await res.json();
+        return this.tianyuanData;
+    }
+
+    public async getServerList(): Promise<any[]> {
+        if (this.serverList) return this.serverList;
+        const res = await fetch(`${DATA_BASE_URL}/server_list.json`);
+        if (!res.ok) throw new Error(`加载 server_list.json 失败: ${res.status}`);
+        this.serverList = await res.json();
+        return this.serverList!;
     }
 }

@@ -89,6 +89,22 @@ export const GameAICopilotModal: React.FC = () => {
         return () => window.removeEventListener('paste', handlePaste);
     }, [isOpen]);
 
+    // 监听全局外部唤起 AI Copilot 事件
+    useEffect(() => {
+        const handleOpenEvent = (e: any) => {
+            setIsOpen(true);
+            if (e.detail?.prompt) {
+                if (e.detail.autoSend) {
+                    handleSend(e.detail.prompt);
+                } else {
+                    setInputValue(e.detail.prompt);
+                }
+            }
+        };
+        window.addEventListener('open-zx-copilot', handleOpenEvent);
+        return () => window.removeEventListener('open-zx-copilot', handleOpenEvent);
+    }, []);
+
     const handleSaveKeys = () => {
         copilot.saveUserKeys(customKeys);
         setKeysSaved(true);
