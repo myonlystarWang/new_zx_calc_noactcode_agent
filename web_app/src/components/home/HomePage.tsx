@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { SearchTarget } from '../GlobalSearch';
-import { Sparkles, Calculator, Swords, Zap, Crosshair, Award } from 'lucide-react';
+import { Sparkles, Calculator, Swords, Zap, Crosshair, Award, Bot, Radio, Compass, Layers, ArrowRight } from 'lucide-react';
 import { buildSearchIndex, buildSearchStats, matchGrouped } from '../search/searchIndex';
 import type { CompiledSearchItem } from '../search/searchIndex';
 import { ROUTE, buildPathFromTarget } from '../../routes';
@@ -37,6 +37,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
   /** 卡片 / 统计胶囊统一走路由（资料库入口折算为 #/compendium/<sub>） */
   const goCompendium = (sub: 'ceiling' | 'skills' | 'support' | 'boss') =>
     navigate(buildPathFromTarget({ tab: 'compendium', sub }));
+
+  const triggerAICopilot = (prompt?: string, autoSend?: boolean) => {
+    window.dispatchEvent(new CustomEvent('open-zx-copilot', { detail: { prompt, autoSend } }));
+  };
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -505,6 +509,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
       <div className="hero-t">
         <h2 className="rise d1">诛仙3 副本战斗实验室</h2>
         <p className="rise d2">属性计算 · 战斗模拟 · 全景资料速查 —— 输入拼音首字母或关键词，一站直达</p>
+
+        {/* 2026 双轨 AI 战术推演胶囊 */}
+        <div className="rise d2 mt-4 inline-flex items-center gap-2 p-1.5 px-3.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 backdrop-blur-md shadow-lg shadow-cyan-950/40">
+          <span className="flex h-2 w-2 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+          </span>
+          <span className="text-xs text-cyan-200 font-medium">
+            2026 双轨 AI 战术智囊已就绪 · 支持 C 面板截屏测算 T20 伤害与四象推演
+          </span>
+          <button
+            type="button"
+            onClick={() => triggerAICopilot()}
+            className="ml-1 px-2.5 py-0.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-black text-[11px] font-bold flex items-center gap-1 transition-all"
+          >
+            <Bot className="w-3 h-3" />
+            <span>开启智囊</span>
+          </button>
+        </div>
       </div>
 
       {/* 搜索框区（方案 A+C：搜索框 + 呼吸渐变 + 彗星跑圈 + 下拉浮层） */}
@@ -740,6 +763,139 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
                 <span>{word}</span>
               </button>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 2026 AI 战术诊断与微工具展示专区 */}
+      <div className="w-full max-w-[1280px] mx-auto px-4 mt-8 mb-4 rise d4">
+        <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-4 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full" />
+            <h3 className="text-sm font-bold text-gray-200 tracking-wide">
+              AI 战术推演与高保真微工具
+            </h3>
+            <span className="px-2 py-0.5 rounded text-[10px] bg-cyan-950 text-cyan-300 border border-cyan-800/40">
+              问答 · 识图 · 拟真
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigate(ROUTE.tools)}
+            className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors"
+          >
+            <span>进入微工具实验室</span>
+            <ArrowRight className="w-3 h-3" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          {/* 卡片 1: 识图测 T20 伤害 */}
+          <div
+            onClick={() => triggerAICopilot('请帮我识别属性并测算对T20副本的实战伤害')}
+            className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-cyan-500/20 hover:border-cyan-400/60 shadow-lg hover:shadow-cyan-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                  <Bot className="w-4 h-4" />
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/60">
+                  多模态识图
+                </span>
+              </div>
+              <h4 className="text-sm font-bold text-gray-100 group-hover:text-cyan-300 transition-colors">
+                C 界面识图测伤
+              </h4>
+              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                直接粘贴游戏面板截图，秒级提取攻防三大件，精确推算对 T20 断浪碎晶宫爆发秒伤。
+              </p>
+            </div>
+            <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-cyan-400">
+              <span>唤起 AI 识图诊断</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+
+          {/* 卡片 2: 四象轩辕策鉴宝 */}
+          <div
+            onClick={() => navigate(ROUTE.xycSimulator)}
+            className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-emerald-500/20 hover:border-emerald-400/60 shadow-lg hover:shadow-emerald-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  <Compass className="w-4 h-4" />
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/60">
+                  1~20 阶推算
+                </span>
+              </div>
+              <h4 className="text-sm font-bold text-gray-100 group-hover:text-emerald-300 transition-colors">
+                四象轩辕策鉴宝
+              </h4>
+              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                游戏原生文字色彩，录入任意品阶反推 1 阶初始底子，推算 20 阶满级极限与毕业度。
+              </p>
+            </div>
+            <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-emerald-400">
+              <span>进入四象推演</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+
+          {/* 卡片 3: 实时开服雷达 */}
+          <div
+            onClick={() => navigate(ROUTE.serverRadar)}
+            className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-amber-500/20 hover:border-amber-400/60 shadow-lg hover:shadow-amber-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="p-2 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  <Radio className="w-4 h-4" />
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800/60">
+                  三音阶声光
+                </span>
+              </div>
+              <h4 className="text-sm font-bold text-gray-100 group-hover:text-amber-300 transition-colors">
+                全区开服雷达监测
+              </h4>
+              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                9 大战区 33 服毫秒心跳探测，开服 Web Audio 拟真音效提醒，支持个人服务器收藏。
+              </p>
+            </div>
+            <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-amber-400">
+              <span>查看开服状态</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+
+          {/* 卡片 4: 微工具百宝箱 */}
+          <div
+            onClick={() => navigate(ROUTE.tools)}
+            className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-purple-500/20 hover:border-purple-400/60 shadow-lg hover:shadow-purple-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="p-2 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                  <Layers className="w-4 h-4" />
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800/60">
+                  高保真微工具
+                </span>
+              </div>
+              <h4 className="text-sm font-bold text-gray-100 group-hover:text-purple-300 transition-colors">
+                微工具实验室
+              </h4>
+              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                新版天缘须弥极限属性对照、四象品相成长推算、维护日毫秒探测一站式聚合。
+              </p>
+            </div>
+            <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-purple-400">
+              <span>探索全部微工具</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
           </div>
         </div>
       </div>

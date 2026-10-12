@@ -1,0 +1,83 @@
+[
+  {
+    "zhanQu": "体验服",
+    "servers": [
+      { "name": "先知", "server": "xianzhi", "serverId": "10086" },
+      { "name": "不通", "server": "butong", "serverId": "10087" }
+    ]
+  },
+  {
+    "zhanQu": "昊天战区",
+    "servers": [
+      { "name": "创世绮梦", "server": "chuangshiqimeng", "serverId": "517" },
+      { "name": "龙腾碧霄", "server": "longtengbixiao", "serverId": "519" },
+      { "name": "碧瑶(网通)", "server": "biyaowangtong", "serverId": "821" },
+      { "name": "雪琪(网通)", "server": "xueqiwangtong", "serverId": "2079" }
+    ]
+  },
+  {
+    "zhanQu": "炎天战区",
+    "servers": [
+      { "name": "瑶梦故城", "server": "yaomenggucheng", "serverId": "525" },
+      { "name": "沧海琼音", "server": "canghaiqiongyin", "serverId": "2060" },
+      { "name": "夜羽凰踪", "server": "yeyuhuangzong", "serverId": "2027" },
+      { "name": "幻月冰心", "server": "huanyuebingxin", "serverId": "531" },
+      { "name": "皓月长生", "server": "haoyuechangsheng", "serverId": "545" }
+    ]
+  },
+  {
+    "zhanQu": "阳天战区",
+    "servers": [
+      { "name": "决胜风云", "server": "jueshengfengyun", "serverId": "2064" },
+      { "name": "月舞江南", "server": "yuewujiangnan", "serverId": "2065" },
+      { "name": "独霸天关", "server": "dubatianguan", "serverId": "554" }
+    ]
+  },
+  {
+    "zhanQu": "朱天战区",
+    "servers": [
+      { "name": "万毒行疆", "server": "wanduxingjiang", "serverId": "583" },
+      { "name": "瀚海潮歌", "server": "hanhaichaoge", "serverId": "811" },
+      { "name": "掣马凌霄", "server": "chemalingxiao", "serverId": "514" },
+      { "name": "剑啸青锋", "server": "jianxiaoqingfeng", "serverId": "2088" }
+    ]
+  },
+  {
+    "zhanQu": "幽天战区",
+    "servers": [
+      { "name": "云龙剑影", "server": "yunlongjianying", "serverId": "990" },
+      { "name": "龙战乾坤", "server": "longzhanqiankun", "serverId": "947" },
+      { "name": "十载仙梦", "server": "shizaixianmeng", "serverId": "2051" },
+      { "name": "九天奇缘", "server": "jiutianqiyuan", "serverId": "2008" },
+      { "name": "万里河山", "server": "wanliheshan", "serverId": "968" }
+    ]
+  },
+  {
+    "zhanQu": "变天战区",
+    "servers": [
+      { "name": "星耀至尊", "server": "xingyaozhizun", "serverId": "581" },
+      { "name": "剑尊鸿威", "server": "jianzunhongwei", "serverId": "822" },
+      { "name": "雷龙耀世", "server": "leilongyaoshi", "serverId": "513" },
+      { "name": "烽火流年", "server": "fenghuoliunian", "serverId": "804" },
+      { "name": "金龙碧海", "server": "jinlongbihai", "serverId": "541" },
+      { "name": "碧瑶(电信)", "server": "biyao", "serverId": "847" }
+    ]
+  },
+  {
+    "zhanQu": "苍天战区",
+    "servers": [
+      { "name": "紫电荣光", "server": "zidianrongguang", "serverId": "527" },
+      { "name": "霜雪玉龙", "server": "shuangxueyulong", "serverId": "507" },
+      { "name": "承天问影", "server": "chengtianwenying", "serverId": "550" },
+      { "name": "幻月御风", "server": "huanyueyufeng", "serverId": "502" }
+    ]
+  },
+  {
+    "zhanQu": "扶风战区",
+    "servers": [
+      { "name": "大竹峰", "server": "dazhufeng", "serverId": "819" },
+      { "name": "小竹峰", "server": "xiaozhufeng", "serverId": "546" },
+      { "name": "滴血洞", "server": "dixuedong", "serverId": "2089" }
+    ]
+  }
+]
