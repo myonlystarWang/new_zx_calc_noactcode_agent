@@ -63,6 +63,12 @@ const STAR_SCORE: Record<string, number> = {
     '★★★★': 8, '★★★★★': 10
 };
 
+// 8. 历年生肖护符 13 阶序列 (甲午护符 ~ 丙午护符)
+const SHENGXIAO_HUFU_TIERS = [
+    '甲午护符', '乙未护符', '丙申护符', '丁酉护符', '戊戌护符', '己亥护符',
+    '庚子护符', '辛丑护符', '壬寅护符', '癸卯护符', '甲辰护符', '乙巳护符', '丙午护符'
+];
+
 /**
  * 分析识别单件装备所属的进化系列，并返回完整的升阶/降阶兄弟节点列表与当前索引
  */
@@ -386,6 +392,21 @@ export function getEquipSeries(
             currentIndex: curIdx >= 0 ? curIdx : 0,
             currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${starMatches.length}阶`
         };
+    }
+
+    // 15. 历年生肖护符系列
+    if (SHENGXIAO_HUFU_TIERS.includes(name) || (item.slot === '护符' && name.endsWith('护符'))) {
+        const siblings = SHENGXIAO_HUFU_TIERS.map(n => allEquips.find(e => e.name === n)).filter(Boolean) as CuratedEquipItem[];
+        if (siblings.length > 1) {
+            const curIdx = siblings.findIndex(e => e.name === name);
+            return {
+                seriesKey: '生肖护符',
+                seriesName: '历年生肖护符系列',
+                items: siblings,
+                currentIndex: curIdx >= 0 ? curIdx : 0,
+                currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${siblings.length}阶`
+            };
+        }
     }
 
     return null;

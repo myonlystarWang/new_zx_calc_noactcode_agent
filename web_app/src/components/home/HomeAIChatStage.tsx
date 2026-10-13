@@ -11,7 +11,6 @@ import {
     Check,
     Copy,
     ArrowRight,
-    Cpu,
     Radio
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -23,10 +22,11 @@ import {
 } from '../../services/CopilotService';
 import { FabaoDetailCard } from '../compendium/FabaoDetailCard';
 import { EquipDetailCard } from '../compendium/EquipDetailCard';
+import { SkillDetailCard } from '../compendium/SkillDetailCard';
 import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
 import { useApp } from '../../context/AppContext';
-import type { FabaoItem, CuratedEquipItem } from '../../types';
+import type { FabaoItem, CuratedEquipItem, CuratedSkillItem } from '../../types';
 
 interface HomeAIChatStageProps {
     messages: CopilotMessage[];
@@ -204,13 +204,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         <Plus className="w-3.5 h-3.5" />
                         <span>新对话</span>
                     </button>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-slate-300">
-                        <Cpu className="w-3 h-3 text-cyan-400" />
-                        <span>双轨多模态引擎 · 确定性战斗仿真</span>
-                    </div>
                 </div>
             </div>
 
@@ -480,27 +473,59 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             </div>
                                         )}
 
-                                        {/* 3. 技能机制大卡片 */}
+                                        {/* 3. 技能机制大卡片 (1:1 游戏原生高保真卡片) */}
                                         {msg.cardType === 'skill' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#121824] border border-cyan-500/20 p-4 space-y-3">
-                                                <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                                                    <div className="text-sm font-bold text-cyan-300">{msg.cardData.name}</div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => navigate(msg.cardData.route)}
-                                                        className="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1"
-                                                    >
-                                                        <span>技能库详情</span>
-                                                        <ExternalLink className="w-3 h-3" />
-                                                    </button>
-                                                </div>
-                                                <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
-                                                    <span>命中段数: <strong className="text-cyan-300">{msg.cardData.hits}</strong></span>
-                                                    <span>冷却时间: <strong className="text-cyan-300">{msg.cardData.cooldown}s</strong></span>
-                                                    <span>施法时间: <strong className="text-cyan-300">{msg.cardData.castTime}s</strong></span>
-                                                </div>
+                                            <div className="w-full">
+                                                {msg.cardData.skill ? (
+                                                    <SkillDetailCard skill={msg.cardData.skill} />
+                                                ) : (
+                                                    <div className="rounded-xl bg-[#121824] border border-cyan-500/20 p-4 space-y-3">
+                                                        <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                                                            <div className="text-sm font-bold text-cyan-300">{msg.cardData.name}</div>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => navigate(msg.cardData.route)}
+                                                                className="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1"
+                                                            >
+                                                                <span>技能库详情</span>
+                                                                <ExternalLink className="w-3 h-3" />
+                                                            </button>
+                                                        </div>
+                                                        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
+                                                            <span>命中段数: <strong className="text-cyan-300">{msg.cardData.hits}</strong></span>
+                                                            <span>冷却时间: <strong className="text-cyan-300">{msg.cardData.cooldown}s</strong></span>
+                                                            <span>施法时间: <strong className="text-cyan-300">{msg.cardData.castTime}</strong>s</span>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         )}
+
+                                        {/* 3.1 技能多候选切换 */}
+                                        {msg.cardType === 'skill_candidates' && msg.cardData?.candidates && (() => {
+                                            const list: CuratedSkillItem[] = msg.cardData.candidates;
+                                            const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
+                                            const activeItem = list[activeIdx] || list[0];
+
+                                            return (
+                                                <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
+                                                    <CandidateSelectorBar
+                                                        items={list.map((c, idx) => ({
+                                                            id: `${c.id || 0}_${c.name}_${idx}`,
+                                                            title: c.name,
+                                                            badge: c.group_name || `${c.el_max || 1}阶`
+                                                        }))}
+                                                        activeIndex={activeIdx}
+                                                        onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
+                                                        summaryText={`为你检索到 ${list.length} 个符合条件的技能：`}
+                                                    />
+
+                                                    {activeItem && (
+                                                        <SkillDetailCard key={activeItem.id || activeItem.name} skill={activeItem} />
+                                                    )}
+                                                </div>
+                                            );
+                                        })()}
 
                                         {/* 4. 极致属性攻略卡片 */}
                                         {msg.cardType === 'ceiling' && msg.cardData && (
