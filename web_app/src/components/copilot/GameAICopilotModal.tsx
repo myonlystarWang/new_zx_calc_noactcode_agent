@@ -178,7 +178,7 @@ export const GameAICopilotModal: React.FC = () => {
             // 路径 B: 纯文本问答
             else {
                 // 1. 先尝试 L1 本地秒答引擎（0ms、0 Token 消耗）
-                const localMatch = copilot.matchLocalIntent(text);
+                const localMatch = await copilot.matchLocalIntent(text);
                 if (localMatch) {
                     setMessages(prev => [...prev, localMatch]);
                 } else {
