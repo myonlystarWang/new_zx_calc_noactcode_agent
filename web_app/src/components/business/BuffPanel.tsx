@@ -33,7 +33,7 @@ export const BuffPanel: React.FC<{ onNavigateToFocus?: () => void }> = ({ onNavi
                     </div>
                     <div className="pt-2 border-t border-slate-700/50">
                         <p className="text-xs text-slate-550">
-                            💡 提示：点击副本卡片可展开查看每个怪物和技能的详细伤害数据。
+                            提示：点击副本卡片可展开查看每个怪物和技能的详细伤害数据。
                         </p>
                     </div>
                 </div>

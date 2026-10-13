@@ -116,7 +116,7 @@ export const BossConfigPanel: React.FC<BossConfigPanelProps> = ({
                                 value={searchQuery}
                                 onFocus={() => setIsSearchFocused(true)}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="🔍 输入 Boss 姓名或副本搜索一秒锁定..."
+                                placeholder="输入 Boss 姓名或副本搜索一秒锁定..."
                                 className="w-full bg-slate-950/80 border border-slate-800 text-slate-200 rounded-xl pl-8 pr-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-red-500/40 transition-colors"
                             />
                             <Search className="w-3.5 h-3.5 text-slate-650 absolute left-2.5 top-1/2 -translate-y-1/2" />
