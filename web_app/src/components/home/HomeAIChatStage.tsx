@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
     ArrowLeft,
     Plus,
@@ -58,14 +58,26 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     const [copiedId, setCopiedId] = useState<string | null>(null);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
+    const lastUserMsgElRef = useRef<HTMLDivElement | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
+    const lastUserMsgId = useMemo(() => {
+        for (let i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].sender === 'user') return messages[i].id;
+        }
+        return null;
+    }, [messages]);
 
     useEffect(() => {
-        scrollToBottom();
+        if (lastUserMsgElRef.current && chatContainerRef.current) {
+            const container = chatContainerRef.current;
+            const target = lastUserMsgElRef.current;
+            const targetTop = target.offsetTop - container.offsetTop - 12;
+            container.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+        } else {
+            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
     }, [messages, isLoading]);
 
     // 监听全局 Ctrl+V 粘贴截图
@@ -196,13 +208,15 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
             </div>
 
             {/* 消息对话主画卷：独立定高内部滚动区，不再让全局窗口拉伸 */}
-            <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6 min-h-0">
+            <div ref={chatContainerRef} className="flex-1 overflow-y-auto px-4 py-5 space-y-6 min-h-0">
                 {messages.map((msg) => {
                     const isUser = msg.sender === 'user';
+                    const isLastUserMsg = msg.id === lastUserMsgId;
 
                     return (
                         <div
                             key={msg.id}
+                            ref={isLastUserMsg ? (el) => { lastUserMsgElRef.current = el; } : undefined}
                             className={clsx(
                                 'flex flex-col animate-in fade-in duration-200',
                                 isUser ? 'items-end' : 'items-start'
@@ -606,7 +620,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         items={list.map((c, idx) => ({
                                                             id: c.id || idx,
                                                             title: c.name,
-                                                            badge: `${c.q} · ${c.slot}`
+                                                            badge: c.q ? `${c.q} · ${c.slot}` : (c.slot || '通用')
                                                         }))}
                                                         activeIndex={activeIdx}
                                                         onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
