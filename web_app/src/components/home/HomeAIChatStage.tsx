@@ -608,12 +608,13 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             );
                                         })()}
 
-                                        {/* 8. 装备单卡 (1:1 高保真卡片，支持强化 -1 / 强化 +1) */}
+                                        {/* 8. 装备单卡 (1:1 高保真卡片，支持强化 / 升降阶) */}
                                         {msg.cardType === 'equip' && msg.cardData && (
                                             <div className="w-full">
                                                 <EquipDetailCard
                                                     item={msg.cardData.equip || msg.cardData}
                                                     initialRefLevel={msg.cardData.initialRefLevel}
+                                                    allEquips={msg.cardData.allEquips}
                                                 />
                                             </div>
                                         )}
@@ -621,6 +622,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {/* 8.1 装备多候选切换 */}
                                         {msg.cardType === 'equip_candidates' && msg.cardData?.candidates && (() => {
                                             const list: CuratedEquipItem[] = msg.cardData.candidates;
+                                            const allEquips: CuratedEquipItem[] = msg.cardData.allEquips || list;
 
                                             // 按剔除（男）/（女）括号后的纯净名称去重，避免男女版生成两个重复按钮
                                             const uniqueCandidates: { item: CuratedEquipItem; rawIdx: number }[] = [];
@@ -653,8 +655,10 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
 
                                                     {activeItem && (
                                                         <EquipDetailCard
+                                                            key={`${activeItem.id || activeItem.name}_${activeIdx}`}
                                                             item={activeItem}
                                                             initialRefLevel={msg.cardData.initialRefLevel}
+                                                            allEquips={allEquips}
                                                         />
                                                     )}
                                                 </div>
