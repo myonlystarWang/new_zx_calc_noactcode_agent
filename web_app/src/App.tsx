@@ -23,6 +23,7 @@ import { ChangelogPage } from './components/changelog/ChangelogPage';
 import { GameAICopilotModal } from './components/copilot/GameAICopilotModal';
 import { decodeSharePayload } from './utils/shareSnapshot';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { AlertTriangle } from 'lucide-react';
 import type { SearchTarget } from './components/GlobalSearch';
 import type { SubTab } from './components/compendium/CompendiumView';
 import {
@@ -242,7 +243,7 @@ const MainContent: React.FC = () => {
     >
       {loadError && (
         <div className="w-full bg-red-950/60 border-b border-red-500/40 px-4 py-2 text-sm text-red-200 flex items-center gap-2">
-          <span aria-hidden>⚠️</span>
+          <AlertTriangle className="w-4 h-4 shrink-0" />
           <span className="flex-1">{loadError}</span>
           <button
             type="button"
@@ -255,7 +256,7 @@ const MainContent: React.FC = () => {
       )}
       {shareNotice && (
         <div className="w-full bg-amber-950/60 border-b border-amber-500/40 px-4 py-2 text-sm text-amber-100 flex items-center gap-2">
-          <span aria-hidden>⚠️</span>
+          <AlertTriangle className="w-4 h-4 shrink-0" />
           <span className="flex-1">{shareNotice}</span>
           <button
             type="button"

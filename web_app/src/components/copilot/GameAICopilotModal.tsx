@@ -354,25 +354,25 @@ export const GameAICopilotModal: React.FC = () => {
                             onClick={() => handleQuickPrompt('今天哪个服开机了？', true)}
                             className="shrink-0 px-2.5 py-1 rounded-full bg-black/40 hover:bg-white/10 border border-white/10 text-gray-300 text-[11px] transition-all"
                         >
-                            📡 开服雷达
+                            开服雷达
                         </button>
                         <button
                             onClick={() => handleQuickPrompt('极致无视伤害减免最高多少？', true)}
                             className="shrink-0 px-2.5 py-1 rounded-full bg-black/40 hover:bg-white/10 border border-white/10 text-gray-300 text-[11px] transition-all"
                         >
-                            🛡️ 极致无视
+                            极致无视
                         </button>
                         <button
                             onClick={() => handleQuickPrompt('逆戟鲸神', true)}
                             className="shrink-0 px-2.5 py-1 rounded-full bg-black/40 hover:bg-white/10 border border-white/10 text-gray-300 text-[11px] transition-all"
                         >
-                            👾 T20首领抗性
+                            T20首领抗性
                         </button>
                         <button
                             onClick={() => handleQuickPrompt('四象青龙书满级极限如何？', true)}
                             className="shrink-0 px-2.5 py-1 rounded-full bg-black/40 hover:bg-white/10 border border-white/10 text-gray-300 text-[11px] transition-all"
                         >
-                            📜 轩辕策四象
+                            轩辕策四象
                         </button>
                     </div>
 

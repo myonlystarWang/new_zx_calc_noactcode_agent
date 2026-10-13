@@ -1,10 +1,26 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { SearchTarget } from '../GlobalSearch';
-import { Sparkles, Calculator, Swords, Zap, Crosshair, Award, Bot, Radio, Compass, Layers, ArrowRight } from 'lucide-react';
+import {
+  Sparkles,
+  Calculator,
+  Swords,
+  Zap,
+  Crosshair,
+  Award,
+  ImagePlus,
+  X,
+  Send,
+  ArrowRight,
+  Compass,
+  Radio,
+  Cpu
+} from 'lucide-react';
 import { buildSearchIndex, buildSearchStats, matchGrouped } from '../search/searchIndex';
 import type { CompiledSearchItem } from '../search/searchIndex';
 import { ROUTE, buildPathFromTarget } from '../../routes';
+import { CopilotService, type CopilotMessage } from '../../services/CopilotService';
+import { HomeAIChatStage } from './HomeAIChatStage';
 
 const HOT_SEARCH_TAGS = [
   '苍龙啸',    // 技能汉字
@@ -38,9 +54,245 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
   const goCompendium = (sub: 'ceiling' | 'skills' | 'support' | 'boss') =>
     navigate(buildPathFromTarget({ tab: 'compendium', sub }));
 
-  const triggerAICopilot = (prompt?: string, autoSend?: boolean) => {
-    window.dispatchEvent(new CustomEvent('open-zx-copilot', { detail: { prompt, autoSend } }));
+  // AI 战术对话态
+  const [isChatActive, setIsChatActive] = useState(false);
+  const [chatMessages, setChatMessages] = useState<CopilotMessage[]>([]);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [attachedImage, setAttachedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const copilot = useMemo(() => CopilotService.getInstance(), []);
+
+  // 监听全局 Ctrl+V 粘贴截图
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          if (blob) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              setAttachedImage(event.target?.result as string);
+              inputRef.current?.focus();
+            };
+            reader.readAsDataURL(blob);
+            e.preventDefault();
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('paste', handlePaste);
+    return () => window.removeEventListener('paste', handlePaste);
+  }, []);
+
+  const handleStartAiChat = async (promptText: string, imageBase64?: string | null) => {
+    const text = promptText.trim();
+    const img = imageBase64 || attachedImage;
+    if (!text && !img) return;
+
+    setIsChatActive(true);
+    setIsFocused(false);
+    inputRef.current?.blur();
+
+    const now = new Date();
+    const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+    const userMsg: CopilotMessage = {
+      id: `usr-${Date.now()}`,
+      sender: 'user',
+      text: text || (img ? '[发送了游戏截图]' : ''),
+      image: img || undefined,
+      time: timeStr
+    };
+
+    setChatMessages([userMsg]);
+    setAttachedImage(null);
+    setQuery('');
+    setIsAiLoading(true);
+
+    try {
+      if (img) {
+        const diag = await copilot.diagnoseImage(img, text);
+        let assistantMsg: CopilotMessage;
+
+        if (diag.mode === 'c_panel' && diag.cPanelData) {
+          const dmg = copilot.calculateT20Damage(diag.cPanelData);
+          assistantMsg = {
+            id: `ast-${Date.now()}`,
+            sender: 'assistant',
+            text: `${diag.rawExplanation}\n\n已通过确定性战斗引擎测算出该面板在【${dmg.dungeonName}】的实战战力（见下方诊断报告）：`,
+            time: timeStr,
+            cardType: 'c_panel_diag',
+            cardData: {
+              cPanel: diag.cPanelData,
+              damage: dmg
+            }
+          };
+        } else if (diag.mode === 'xyc' && diag.xycData) {
+          assistantMsg = {
+            id: `ast-${Date.now()}`,
+            sender: 'assistant',
+            text: `${diag.rawExplanation}\n\n识别到【${diag.xycData.beast}】轩辕策（当前 ${diag.xycData.level} 阶），点击卡片可直接进入四象模拟器：`,
+            time: timeStr,
+            cardType: 'xyc_diag',
+            cardData: {
+              title: `${diag.xycData.beast}轩辕策`,
+              route: `/tools/xyc?beast=${encodeURIComponent(diag.xycData.beast)}&lvl=${diag.xycData.level}`,
+              desc: '支持四象 1~20 阶成长推算与极品毕业度评级'
+            }
+          };
+        } else {
+          assistantMsg = {
+            id: `ast-${Date.now()}`,
+            sender: 'assistant',
+            text: diag.rawExplanation || '已完成图像特征解析。',
+            time: timeStr
+          };
+        }
+        setChatMessages(prev => [...prev, assistantMsg]);
+      } else {
+        const localMatch = copilot.matchLocalIntent(text);
+        if (localMatch) {
+          setChatMessages(prev => [...prev, localMatch]);
+        } else {
+          const reply = await copilot.chatText(text);
+          setChatMessages(prev => [
+            ...prev,
+            {
+              id: `ast-${Date.now()}`,
+              sender: 'assistant',
+              text: reply,
+              time: timeStr
+            }
+          ]);
+        }
+      }
+    } catch (err) {
+      console.error('AI chat error:', err);
+      setChatMessages(prev => [
+        ...prev,
+        {
+          id: `err-${Date.now()}`,
+          sender: 'assistant',
+          text: '推演过程发生网络异常，请重试。',
+          time: timeStr
+        }
+      ]);
+    } finally {
+      setIsAiLoading(false);
+    }
   };
+
+  const handleFollowUpMessage = async (text: string, image?: string) => {
+    const now = new Date();
+    const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+    const userMsg: CopilotMessage = {
+      id: `usr-${Date.now()}`,
+      sender: 'user',
+      text: text || (image ? '[发送了游戏截图]' : ''),
+      image: image,
+      time: timeStr
+    };
+
+    setChatMessages(prev => [...prev, userMsg]);
+    setIsAiLoading(true);
+
+    try {
+      if (image) {
+        const diag = await copilot.diagnoseImage(image, text);
+        let assistantMsg: CopilotMessage;
+
+        if (diag.mode === 'c_panel' && diag.cPanelData) {
+          const dmg = copilot.calculateT20Damage(diag.cPanelData);
+          assistantMsg = {
+            id: `ast-${Date.now()}`,
+            sender: 'assistant',
+            text: `${diag.rawExplanation}\n\n已测算在【${dmg.dungeonName}】的实战战力：`,
+            time: timeStr,
+            cardType: 'c_panel_diag',
+            cardData: {
+              cPanel: diag.cPanelData,
+              damage: dmg
+            }
+          };
+        } else if (diag.mode === 'xyc' && diag.xycData) {
+          assistantMsg = {
+            id: `ast-${Date.now()}`,
+            sender: 'assistant',
+            text: `${diag.rawExplanation}\n\n识别到【${diag.xycData.beast}】轩辕策（当前 ${diag.xycData.level} 阶）：`,
+            time: timeStr,
+            cardType: 'xyc_diag',
+            cardData: {
+              title: `${diag.xycData.beast}轩辕策`,
+              route: `/tools/xyc?beast=${encodeURIComponent(diag.xycData.beast)}&lvl=${diag.xycData.level}`,
+              desc: '支持四象 1~20 阶成长推算与极品毕业度评级'
+            }
+          };
+        } else {
+          assistantMsg = {
+            id: `ast-${Date.now()}`,
+            sender: 'assistant',
+            text: diag.rawExplanation || '已完成图像特征解析。',
+            time: timeStr
+          };
+        }
+        setChatMessages(prev => [...prev, assistantMsg]);
+      } else {
+        const localMatch = copilot.matchLocalIntent(text);
+        if (localMatch) {
+          setChatMessages(prev => [...prev, localMatch]);
+        } else {
+          const history = chatMessages.slice(-4).map(m => ({
+            role: m.sender === 'user' ? 'user' : 'assistant',
+            content: m.text
+          }));
+          const reply = await copilot.chatText(text, history);
+          setChatMessages(prev => [
+            ...prev,
+            {
+              id: `ast-${Date.now()}`,
+              sender: 'assistant',
+              text: reply,
+              time: timeStr
+            }
+          ]);
+        }
+      }
+    } catch (err) {
+      console.error('Follow-up error:', err);
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setAttachedImage(event.target?.result as string);
+        inputRef.current?.focus();
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  useEffect(() => {
+    const handleOpenEvent = (e: any) => {
+      if (e.detail?.prompt) {
+        handleStartAiChat(e.detail.prompt);
+      } else {
+        setIsChatActive(true);
+      }
+    };
+    window.addEventListener('open-zx-copilot', handleOpenEvent);
+    return () => window.removeEventListener('open-zx-copilot', handleOpenEvent);
+  }, []);
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -409,8 +661,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
       }
     } else if (ev.key === 'Enter') {
       ev.preventDefault();
-      if (flatList.length > 0 && flatList[activeIndex]) {
+      const isQuestion = query.includes('?') || query.includes('？') || query.includes('多少') || query.includes('怎么') || query.includes('打') || query.trim().length > 6;
+      if (flatList.length > 0 && flatList[activeIndex] && !attachedImage && !isQuestion) {
         handleChoose(flatList[activeIndex]);
+      } else if (query.trim() || attachedImage) {
+        handleStartAiChat(query, attachedImage);
       }
     } else if (ev.key === 'Escape') {
       setIsFocused(false);
@@ -503,31 +758,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
 
   let flatCounter = -1;
 
+  if (isChatActive) {
+    return (
+      <HomeAIChatStage
+        messages={chatMessages}
+        isLoading={isAiLoading}
+        onSendMessage={handleFollowUpMessage}
+        onBackToHome={() => setIsChatActive(false)}
+        onNewChat={() => {
+          setChatMessages([]);
+          setIsChatActive(false);
+          setQuery('');
+          setAttachedImage(null);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="hero">
       {/* 标头区 */}
       <div className="hero-t">
         <h2 className="rise d1">诛仙3 副本战斗实验室</h2>
-        <p className="rise d2">属性计算 · 战斗模拟 · 全景资料速查 —— 输入拼音首字母或关键词，一站直达</p>
-
-        {/* 2026 双轨 AI 战术推演胶囊 */}
-        <div className="rise d2 mt-4 inline-flex items-center gap-2 p-1.5 px-3.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 backdrop-blur-md shadow-lg shadow-cyan-950/40">
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-          </span>
-          <span className="text-xs text-cyan-200 font-medium">
-            2026 双轨 AI 战术智囊已就绪 · 支持 C 面板截屏测算 T20 伤害与四象推演
-          </span>
-          <button
-            type="button"
-            onClick={() => triggerAICopilot()}
-            className="ml-1 px-2.5 py-0.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-black text-[11px] font-bold flex items-center gap-1 transition-all"
-          >
-            <Bot className="w-3 h-3" />
-            <span>开启智囊</span>
-          </button>
-        </div>
+        <p className="rise d2">属性计算 · 战斗模拟 · 全景资料速查 —— 支持自然语言提问与截图诊断</p>
       </div>
 
       {/* 搜索框区（方案 A+C：搜索框 + 呼吸渐变 + 彗星跑圈 + 下拉浮层） */}
@@ -537,6 +790,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
           <div className={`search-glow ${isFocused ? 'focus' : ''}`} id="searchGlow" ref={glowRef}>
             <canvas className="comet-canvas" id="cometCanvas" ref={canvasRef} />
             <div className="search-box">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                accept="image/*"
+                className="hidden"
+                aria-label="上传游戏截图"
+              />
+
               <svg
                 className="ic"
                 viewBox="0 0 24 24"
@@ -549,13 +811,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.3-4.3" />
               </svg>
+
+              {attachedImage && (
+                <div className="flex items-center gap-1.5 pl-2 pr-1.5 py-1 bg-cyan-950/80 border border-cyan-500/40 rounded-lg text-xs text-cyan-200 shrink-0">
+                  <span className="text-[11px]">已贴截图</span>
+                  <button
+                    type="button"
+                    onClick={() => setAttachedImage(null)}
+                    className="hover:text-white p-0.5"
+                    title="移除截图"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
+
               <input
                 id="q"
                 ref={inputRef}
                 type="text"
                 autoComplete="off"
                 spellCheck="false"
-                placeholder={PH[0]}
+                placeholder={attachedImage ? '补充问题，如：测算对T20爆发伤害（回车发送）' : PH[0]}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setIsFocused(true)}
@@ -568,6 +845,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
                 }}
                 onKeyDown={handleKeyDown}
               />
+
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="p-1.5 text-gray-400 hover:text-cyan-400 transition-colors rounded-md hover:bg-white/5 shrink-0"
+                title="上传截图 (支持 Ctrl+V 粘贴)"
+              >
+                <ImagePlus className="w-4 h-4" />
+              </button>
+
               {query && (
                 <button
                   type="button"
@@ -593,6 +880,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
                   </svg>
                 </button>
               )}
+
+              <button
+                type="button"
+                onClick={() => handleStartAiChat(query, attachedImage)}
+                disabled={!query.trim() && !attachedImage}
+                className="p-1.5 text-cyan-400 hover:text-cyan-300 disabled:opacity-25 disabled:hover:text-cyan-400 transition-colors rounded-md hover:bg-cyan-500/10 shrink-0"
+                title="AI 战术推演 (Enter)"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+
               <span className="kbd-hint" title="支持快捷键 Ctrl+K 聚焦">
                 Ctrl K
               </span>
@@ -767,7 +1065,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
         </div>
       </div>
 
-      {/* 2026 AI 战术诊断与微工具展示专区 */}
+      {/* 2026 AI 战术推演与快捷微工具建议卡 */}
       <div className="w-full max-w-[1280px] mx-auto px-4 mt-8 mb-4 rise d4">
         <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
           <div className="flex items-center gap-2">
@@ -792,13 +1090,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {/* 卡片 1: 识图测 T20 伤害 */}
           <div
-            onClick={() => triggerAICopilot('请帮我识别属性并测算对T20副本的实战伤害')}
+            onClick={() => handleStartAiChat('请帮我识别属性并测算对T20副本的实战伤害')}
             className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-cyan-500/20 hover:border-cyan-400/60 shadow-lg hover:shadow-cyan-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
                 <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  <Bot className="w-4 h-4" />
+                  <Cpu className="w-4 h-4" />
                 </div>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/60">
                   多模态识图
@@ -871,29 +1169,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
             </div>
           </div>
 
-          {/* 卡片 4: 微工具百宝箱 */}
+          {/* 卡片 4: 首领抗性与破防门槛 */}
           <div
-            onClick={() => navigate(ROUTE.tools)}
+            onClick={() => handleStartAiChat('请分析当前T20副本各首领的破防与暴击抗性门槛')}
             className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-purple-500/20 hover:border-purple-400/60 shadow-lg hover:shadow-purple-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
                 <div className="p-2 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                  <Layers className="w-4 h-4" />
+                  <Crosshair className="w-4 h-4" />
                 </div>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800/60">
-                  高保真微工具
+                  Boss 战术分析
                 </span>
               </div>
               <h4 className="text-sm font-bold text-gray-100 group-hover:text-purple-300 transition-colors">
-                微工具实验室
+                首领抗性与破防门槛
               </h4>
               <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-                新版天缘须弥极限属性对照、四象品相成长推算、维护日毫秒探测一站式聚合。
+                16 大副本 102 位关卡 BOSS 减爆伤、防御与血量深度对比，推算队伍破防指标。
               </p>
             </div>
             <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-purple-400">
-              <span>探索全部微工具</span>
+              <span>咨询首领机制</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>

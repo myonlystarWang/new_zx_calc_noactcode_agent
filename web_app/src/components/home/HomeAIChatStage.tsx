@@ -1,0 +1,660 @@
+import React, { useState, useRef, useEffect } from 'react';
+import {
+    ArrowLeft,
+    Plus,
+    Send,
+    Image as ImageIcon,
+    X,
+    ExternalLink,
+    RefreshCw,
+    Sliders,
+    Check,
+    Copy,
+    ArrowRight,
+    Cpu,
+    Radio
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
+import {
+    CopilotService,
+    type CopilotMessage,
+    type ExtractedCPanel
+} from '../../services/CopilotService';
+import { useApp } from '../../context/AppContext';
+
+interface HomeAIChatStageProps {
+    messages: CopilotMessage[];
+    isLoading: boolean;
+    onSendMessage: (text: string, image?: string) => void;
+    onBackToHome: () => void;
+    onNewChat: () => void;
+}
+
+export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
+    messages,
+    isLoading,
+    onSendMessage,
+    onBackToHome,
+    onNewChat
+}) => {
+    const navigate = useNavigate();
+    const { updateCharacterAttributes, updateCharacterClass } = useApp();
+
+    const [inputText, setInputText] = useState('');
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+    // 活跃的微调面板状态（按消息 ID 索引）
+    const [expandedTunerMsgId, setExpandedTunerMsgId] = useState<string | null>(null);
+    const [tuningCPanels, setTuningCPanels] = useState<Record<string, ExtractedCPanel>>({});
+    const [copiedId, setCopiedId] = useState<string | null>(null);
+
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages, isLoading]);
+
+    // 监听全局 Ctrl+V 粘贴截图
+    useEffect(() => {
+        const handlePaste = (e: ClipboardEvent) => {
+            const items = e.clipboardData?.items;
+            if (!items) return;
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const blob = items[i].getAsFile();
+                    if (blob) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            setSelectedImage(event.target?.result as string);
+                        };
+                        reader.readAsDataURL(blob);
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('paste', handlePaste);
+        return () => window.removeEventListener('paste', handlePaste);
+    }, []);
+
+    const handleSend = () => {
+        const text = inputText.trim();
+        if (!text && !selectedImage) return;
+
+        onSendMessage(text, selectedImage || undefined);
+        setInputText('');
+        setSelectedImage(null);
+    };
+
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setSelectedImage(event.target?.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const getTunedPanel = (msgId: string, initialPanel: ExtractedCPanel): ExtractedCPanel => {
+        return tuningCPanels[msgId] || initialPanel;
+    };
+
+    const updateTunedField = (msgId: string, base: ExtractedCPanel, field: keyof ExtractedCPanel, val: number) => {
+        const current = getTunedPanel(msgId, base);
+        setTuningCPanels(prev => ({
+            ...prev,
+            [msgId]: {
+                ...current,
+                [field]: isNaN(val) ? 0 : val
+            }
+        }));
+    };
+
+    const stepTunedField = (msgId: string, base: ExtractedCPanel, field: keyof ExtractedCPanel, delta: number) => {
+        const current = getTunedPanel(msgId, base);
+        const nextVal = Math.max(0, Number(((Number(current[field] || 0)) + delta).toFixed(2)));
+        setTuningCPanels(prev => ({
+            ...prev,
+            [msgId]: {
+                ...current,
+                [field]: nextVal
+            }
+        }));
+    };
+
+    const handleImportToSimulator = (panel: ExtractedCPanel) => {
+        if (panel.characterClass) {
+            updateCharacterClass(panel.characterClass, panel.faction || 'XIAN');
+        }
+        updateCharacterAttributes({
+            CharacterMaxAttack: panel.attack || 180000,
+            CharacterMinAttack: (panel.attack || 180000) * 0.9,
+            CharacterDefense: panel.defense || 90000,
+            CharacterHealth: panel.hp || 3000000,
+            CharacterMana: panel.mp || 1000000,
+            CharacterCriticalHitRatePercent: panel.critRate || 140,
+            CharacterCriticalHitDamagePercent: panel.critDamage || 850,
+            CharacterMonsterDamageIncreasePercent: panel.monsterDamageBonus || 70,
+        });
+        navigate('/');
+    };
+
+    const handleCopyJson = (msgId: string, panel: ExtractedCPanel) => {
+        navigator.clipboard.writeText(JSON.stringify(panel, null, 2));
+        setCopiedId(msgId);
+        setTimeout(() => setCopiedId(null), 2000);
+    };
+
+    return (
+        <div className="w-full max-w-[1060px] mx-auto min-h-[82vh] flex flex-col animate-in fade-in duration-300">
+            {/* 顶部控制栏 */}
+            <div className="sticky top-0 z-30 py-3 px-4 backdrop-blur-xl bg-[#0b0e14]/90 border-b border-white/10 flex items-center justify-between rounded-t-2xl">
+                <div className="flex items-center gap-3">
+                    <button
+                        type="button"
+                        onClick={onBackToHome}
+                        className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all"
+                    >
+                        <ArrowLeft className="w-3.5 h-3.5" />
+                        <span>返回主页</span>
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onNewChat}
+                        className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all"
+                    >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>新对话</span>
+                    </button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-slate-300">
+                        <Cpu className="w-3 h-3 text-cyan-400" />
+                        <span>双轨多模态引擎 · 确定性战斗仿真</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* 消息对话主画卷 */}
+            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+                {messages.map((msg) => {
+                    const isUser = msg.sender === 'user';
+
+                    return (
+                        <div
+                            key={msg.id}
+                            className={clsx(
+                                'flex flex-col animate-in fade-in duration-200',
+                                isUser ? 'items-end' : 'items-start'
+                            )}
+                        >
+                            {/* 发送者标签 */}
+                            <div className="flex items-center gap-1.5 mb-1.5 px-1 text-[11px] font-medium text-slate-400">
+                                <span>{isUser ? '你' : 'AI 战术智囊'}</span>
+                                <span className="text-[10px] text-slate-600">· {msg.time}</span>
+                            </div>
+
+                            {/* 消息主体容器 */}
+                            <div
+                                className={clsx(
+                                    'w-full max-w-[94%] rounded-2xl text-sm leading-relaxed p-4 transition-all',
+                                    isUser
+                                        ? 'bg-[#162032] border border-cyan-500/30 text-slate-100 rounded-tr-sm ml-auto'
+                                        : 'bg-[#0f141d] border border-white/10 text-slate-200 rounded-tl-sm'
+                                )}
+                            >
+                                {/* 用户附件图片 */}
+                                {msg.image && (
+                                    <div className="mb-3 max-w-sm rounded-xl overflow-hidden border border-white/15 bg-black/40">
+                                        <img src={msg.image} alt="User attachment" className="w-full object-cover max-h-72" />
+                                    </div>
+                                )}
+
+                                {/* 纯文本说明 */}
+                                <div className="whitespace-pre-wrap text-slate-200 text-sm leading-relaxed">
+                                    {msg.text}
+                                </div>
+
+                                {/* 宽幅富交互大卡片体系 */}
+                                {msg.cardType && (
+                                    <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
+                                        {/* 1. C 界面识图测伤与实战伤害报告 */}
+                                        {msg.cardType === 'c_panel_diag' && msg.cardData && (() => {
+                                            const basePanel: ExtractedCPanel = msg.cardData.cPanel;
+                                            const activePanel = getTunedPanel(msg.id, basePanel);
+                                            const liveDamage = CopilotService.getInstance().calculateT20Damage(activePanel);
+                                            const isTunerOpen = expandedTunerMsgId === msg.id;
+
+                                            return (
+                                                <div className="rounded-xl bg-gradient-to-br from-[#121927] to-[#0d121c] border border-cyan-500/30 p-5 space-y-4 shadow-xl">
+                                                    {/* 报告标头与秒伤 KPI */}
+                                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+                                                        <div>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-sm font-bold text-slate-100">
+                                                                    {activePanel.characterClass || '角色'} 属性推演报告
+                                                                </span>
+                                                                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-300 border border-cyan-800/60">
+                                                                    {activePanel.faction === 'FO' ? '佛' : activePanel.faction === 'MO' ? '魔' : '仙'}阵营
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-xs text-slate-400 mt-0.5">
+                                                                测算首领: {liveDamage.dungeonName} · {liveDamage.bossName}
+                                                            </p>
+                                                        </div>
+
+                                                        {/* 秒伤大字 KPI */}
+                                                        <div className="sm:text-right">
+                                                            <div className="text-[11px] text-amber-300 font-medium">T20 实战爆发秒伤推演</div>
+                                                            <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-100 tracking-tight">
+                                                                {liveDamage.estimatedTotalDamage}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* 核心面板攻防 8 项数值矩阵 */}
+                                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                            <div className="text-[11px] text-slate-400">大攻攻击力</div>
+                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                {(activePanel.attack || 0).toLocaleString()}
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                            <div className="text-[11px] text-slate-400">防御力</div>
+                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                {(activePanel.defense || 0).toLocaleString()}
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                            <div className="text-[11px] text-amber-300 font-medium">无视伤害减免</div>
+                                                            <div className="text-sm font-bold text-amber-300 mt-0.5">
+                                                                {activePanel.ignoreReduction || 0}%
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                            <div className="text-[11px] text-emerald-300 font-medium">减免伤害</div>
+                                                            <div className="text-sm font-bold text-emerald-300 mt-0.5">
+                                                                {activePanel.damageReduction || 0}%
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                            <div className="text-[11px] text-rose-300 font-medium">对怪物增伤</div>
+                                                            <div className="text-sm font-bold text-rose-300 mt-0.5">
+                                                                {activePanel.monsterDamageBonus || 0}%
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                            <div className="text-[11px] text-slate-400">暴击率 / 暴伤</div>
+                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                {activePanel.critRate || 0}% / {activePanel.critDamage || 0}%
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                            <div className="text-[11px] text-slate-400">减暴击率</div>
+                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                {activePanel.critReduction || 0}%
+                                                            </div>
+                                                        </div>
+                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                            <div className="text-[11px] text-slate-400">气血总量 (HP)</div>
+                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                {(activePanel.hp || 0).toLocaleString()}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* 内嵌横向数值微调面板 (无需弹窗，在画布内直接改) */}
+                                                    <div className="pt-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setExpandedTunerMsgId(isTunerOpen ? null : msg.id)}
+                                                            className="text-xs font-semibold text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5 transition-colors"
+                                                        >
+                                                            <Sliders className="w-3.5 h-3.5" />
+                                                            <span>{isTunerOpen ? '收起属性微调工作台' : '展开数值微调工作台（可单点校对 OCR 数值并即时重测）'}</span>
+                                                        </button>
+
+                                                        {isTunerOpen && (
+                                                            <div className="mt-3 p-4 rounded-xl bg-black/40 border border-white/10 space-y-3 animate-in slide-in-from-top-2 duration-200">
+                                                                <div className="text-xs font-medium text-slate-300">
+                                                                    微调数值实时联动刷新上方 T20 伤害推演：
+                                                                </div>
+                                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                                                                    <InlineNumberRow
+                                                                        label="大攻攻击力"
+                                                                        value={activePanel.attack || 0}
+                                                                        unit="点"
+                                                                        step={5000}
+                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'attack', v)}
+                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'attack', d)}
+                                                                    />
+                                                                    <InlineNumberRow
+                                                                        label="防御力"
+                                                                        value={activePanel.defense || 0}
+                                                                        unit="点"
+                                                                        step={2000}
+                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'defense', v)}
+                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'defense', d)}
+                                                                    />
+                                                                    <InlineNumberRow
+                                                                        label="无视伤害减免"
+                                                                        value={activePanel.ignoreReduction || 0}
+                                                                        unit="%"
+                                                                        step={0.5}
+                                                                        highlight="text-amber-300 font-semibold"
+                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'ignoreReduction', v)}
+                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'ignoreReduction', d)}
+                                                                    />
+                                                                    <InlineNumberRow
+                                                                        label="减免伤害"
+                                                                        value={activePanel.damageReduction || 0}
+                                                                        unit="%"
+                                                                        step={0.5}
+                                                                        highlight="text-emerald-300 font-semibold"
+                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'damageReduction', v)}
+                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'damageReduction', d)}
+                                                                    />
+                                                                    <InlineNumberRow
+                                                                        label="对怪伤害增加"
+                                                                        value={activePanel.monsterDamageBonus || 0}
+                                                                        unit="%"
+                                                                        step={1.0}
+                                                                        highlight="text-rose-300 font-semibold"
+                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'monsterDamageBonus', v)}
+                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'monsterDamageBonus', d)}
+                                                                    />
+                                                                    <InlineNumberRow
+                                                                        label="暴击伤害"
+                                                                        value={activePanel.critDamage || 0}
+                                                                        unit="%"
+                                                                        step={5.0}
+                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'critDamage', v)}
+                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'critDamage', d)}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    {/* 操作底栏 */}
+                                                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleCopyJson(msg.id, activePanel)}
+                                                            className="px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 text-slate-300 text-xs flex items-center gap-1.5 transition-colors"
+                                                        >
+                                                            {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                                                            <span>{copiedId === msg.id ? '已复制' : '复制属性 JSON'}</span>
+                                                        </button>
+
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleImportToSimulator(activePanel)}
+                                                            className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-950/40 transition-all"
+                                                        >
+                                                            <span>一键带入主战斗模拟室</span>
+                                                            <ArrowRight className="w-3.5 h-3.5" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })()}
+
+                                        {/* 2. BOSS 首领抗性大卡片 */}
+                                        {msg.cardType === 'boss' && msg.cardData && (
+                                            <div className="rounded-xl bg-[#121824] border border-cyan-500/20 p-4 space-y-3">
+                                                <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                                                    <div>
+                                                        <div className="text-sm font-bold text-cyan-300">{msg.cardData.name}</div>
+                                                        <div className="text-xs text-slate-400">副本: {msg.cardData.dungeonName}</div>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => navigate(msg.cardData.route)}
+                                                        className="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1"
+                                                    >
+                                                        <span>全景资料馆</span>
+                                                        <ExternalLink className="w-3 h-3" />
+                                                    </button>
+                                                </div>
+                                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                                                    <div className="p-2 rounded bg-black/40 border border-white/5">
+                                                        <span className="text-slate-400 block text-[11px]">防御力</span>
+                                                        <span className="font-semibold text-slate-200">{msg.cardData.def}</span>
+                                                    </div>
+                                                    <div className="p-2 rounded bg-black/40 border border-white/5">
+                                                        <span className="text-slate-400 block text-[11px]">气血总量</span>
+                                                        <span className="font-semibold text-rose-300">{msg.cardData.hp}</span>
+                                                    </div>
+                                                    <div className="p-2 rounded bg-black/40 border border-white/5">
+                                                        <span className="text-slate-400 block text-[11px]">减暴击率</span>
+                                                        <span className="font-semibold text-amber-300">{msg.cardData.critRed}%</span>
+                                                    </div>
+                                                    <div className="p-2 rounded bg-black/40 border border-white/5">
+                                                        <span className="text-slate-400 block text-[11px]">减暴击伤害</span>
+                                                        <span className="font-semibold text-amber-300">{msg.cardData.critDmgRed}%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* 3. 技能机制大卡片 */}
+                                        {msg.cardType === 'skill' && msg.cardData && (
+                                            <div className="rounded-xl bg-[#121824] border border-cyan-500/20 p-4 space-y-3">
+                                                <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                                                    <div className="text-sm font-bold text-cyan-300">{msg.cardData.name}</div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => navigate(msg.cardData.route)}
+                                                        className="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1"
+                                                    >
+                                                        <span>技能库详情</span>
+                                                        <ExternalLink className="w-3 h-3" />
+                                                    </button>
+                                                </div>
+                                                <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
+                                                    <span>命中段数: <strong className="text-cyan-300">{msg.cardData.hits}</strong></span>
+                                                    <span>冷却时间: <strong className="text-cyan-300">{msg.cardData.cooldown}s</strong></span>
+                                                    <span>施法时间: <strong className="text-cyan-300">{msg.cardData.castTime}s</strong></span>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* 4. 极致属性攻略卡片 */}
+                                        {msg.cardType === 'ceiling' && msg.cardData && (
+                                            <div className="rounded-xl bg-[#151a24] border border-amber-500/30 p-4 flex items-center justify-between gap-4">
+                                                <div>
+                                                    <div className="text-sm font-bold text-amber-300">{msg.cardData.title}</div>
+                                                    <div className="text-xs text-slate-400 mt-0.5">理论最高基准: {msg.cardData.ceilingVal}%</div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => navigate(msg.cardData.route)}
+                                                    className="px-3.5 py-1.5 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/40 text-amber-200 text-xs font-medium flex items-center gap-1.5"
+                                                >
+                                                    <span>查看极致攻略拆解</span>
+                                                    <ExternalLink className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {/* 5. 轩辕策四象卡片 */}
+                                        {msg.cardType === 'xyc_diag' && msg.cardData && (
+                                            <div className="rounded-xl bg-[#151a24] border border-teal-500/30 p-4 flex items-center justify-between gap-4">
+                                                <div>
+                                                    <div className="text-sm font-bold text-teal-300">{msg.cardData.title}</div>
+                                                    <div className="text-xs text-slate-400 mt-0.5">{msg.cardData.desc}</div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => navigate(msg.cardData.route)}
+                                                    className="px-3.5 py-1.5 rounded-lg bg-teal-600/30 hover:bg-teal-600/50 border border-teal-500/40 text-teal-200 text-xs font-medium flex items-center gap-1.5"
+                                                >
+                                                    <span>进入四象模拟器</span>
+                                                    <ExternalLink className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        {/* 6. 开服雷达卡片 */}
+                                        {msg.cardType === 'server' && msg.cardData && (
+                                            <div className="rounded-xl bg-[#121824] border border-emerald-500/30 p-4 flex items-center justify-between gap-4">
+                                                <div className="flex items-center gap-2.5">
+                                                    <Radio className="w-4 h-4 text-emerald-400" />
+                                                    <div>
+                                                        <div className="text-sm font-bold text-emerald-300">{msg.cardData.title}</div>
+                                                        <div className="text-xs text-slate-400 mt-0.5">{msg.cardData.desc}</div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => navigate(msg.cardData.route)}
+                                                    className="px-3.5 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-200 text-xs font-medium flex items-center gap-1.5"
+                                                >
+                                                    <span>查看开服雷达</span>
+                                                    <ExternalLink className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+
+                {isLoading && (
+                    <div className="flex items-center gap-2 text-xs text-cyan-300 p-3 rounded-xl bg-white/5 border border-white/5 w-fit">
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        <span>推演运算中，正在提取数据并调用确定性战斗引擎...</span>
+                    </div>
+                )}
+                <div ref={messagesEndRef} />
+            </div>
+
+            {/* 底部悬浮对话输入舱 */}
+            <div className="sticky bottom-0 z-30 p-3 backdrop-blur-xl bg-[#0b0e14]/95 border-t border-white/10 rounded-b-2xl">
+                {/* 选中的图片缩略预览 */}
+                {selectedImage && (
+                    <div className="mb-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-between max-w-sm">
+                        <div className="flex items-center gap-2">
+                            <img src={selectedImage} alt="Attachment" className="w-8 h-8 rounded object-cover border border-white/20" />
+                            <span className="text-xs text-slate-300">已附加截图（将激活视觉通道）</span>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setSelectedImage(null)}
+                            className="p-1 rounded text-slate-400 hover:text-white"
+                        >
+                            <X className="w-3.5 h-3.5" />
+                        </button>
+                    </div>
+                )}
+
+                <div className="flex items-center gap-2">
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileSelect}
+                        className="hidden"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        title="上传截图 / 支持直接 Ctrl+V 粘贴"
+                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors"
+                    >
+                        <ImageIcon className="w-4 h-4" />
+                    </button>
+
+                    <input
+                        type="text"
+                        value={inputText}
+                        onChange={e => setInputText(e.target.value)}
+                        onKeyDown={e => {
+                            if (e.key === 'Enter') handleSend();
+                        }}
+                        placeholder="继续向 AI 提问、粘贴下一张截图，或输入首领/技能机制..."
+                        className="flex-1 px-4 py-2.5 rounded-xl bg-black/50 border border-white/10 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500/60 transition-colors"
+                    />
+
+                    <button
+                        type="button"
+                        onClick={handleSend}
+                        disabled={isLoading || (!inputText.trim() && !selectedImage)}
+                        className="p-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white font-medium transition-all shadow-md shadow-cyan-950/50"
+                    >
+                        <Send className="w-4 h-4" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+interface InlineNumberRowProps {
+    label: string;
+    value: number;
+    unit: string;
+    step: number;
+    highlight?: string;
+    onChange: (val: number) => void;
+    onStep: (delta: number) => void;
+}
+
+const InlineNumberRow: React.FC<InlineNumberRowProps> = ({
+    label,
+    value,
+    unit,
+    step,
+    highlight,
+    onChange,
+    onStep
+}) => {
+    return (
+        <div className="flex items-center justify-between gap-1.5 p-2 rounded-lg bg-black/30 border border-white/5">
+            <span className={clsx('text-[11px]', highlight || 'text-slate-300')}>{label}</span>
+            <div className="flex items-center gap-1">
+                <button
+                    type="button"
+                    onClick={() => onStep(-step)}
+                    className="w-5 h-5 flex items-center justify-center rounded bg-white/5 hover:bg-white/10 text-slate-300 text-[10px]"
+                >
+                    -
+                </button>
+                <div className="relative">
+                    <input
+                        type="number"
+                        value={value}
+                        onChange={e => onChange(parseFloat(e.target.value))}
+                        className="w-20 px-1.5 py-0.5 text-xs text-right bg-black/60 border border-white/10 rounded text-cyan-200 focus:outline-none focus:border-cyan-400 pr-4"
+                    />
+                    <span className="absolute right-1 top-0.5 text-[9px] text-slate-500 pointer-events-none">
+                        {unit}
+                    </span>
+                </div>
+                <button
+                    type="button"
+                    onClick={() => onStep(step)}
+                    className="w-5 h-5 flex items-center justify-center rounded bg-white/5 hover:bg-white/10 text-slate-300 text-[10px]"
+                >
+                    +
+                </button>
+            </div>
+        </div>
+    );
+};
