@@ -9,6 +9,7 @@
 import { DataService } from './DataService';
 import { calculateDungeonPower } from '../utils/calculator';
 import type { CharacterAttributes, Dungeon, Skill } from '../types';
+import { stripGameColor } from '../components/ui/GameColorText';
 
 export interface CopilotMessage {
     id: string;
@@ -112,12 +113,12 @@ export class CopilotService {
                     const skillInfo = variants['普通'] || Object.values(variants)[0] || null;
                     const cdMatch = skillInfo?.str2?.match(/技能冷却时间：([^\n]+)/);
                     const cooldown = cdMatch ? cdMatch[1] : '';
-                    const descText = matchedFabao.描述_纯文本 || matchedFabao.描述_原始 || '';
+                    const descText = matchedFabao.描述_纯文本 || stripGameColor(matchedFabao.描述_原始 || '');
 
                     return {
                         id: `msg-${Date.now()}`,
                         sender: 'assistant',
-                        text: `为你速查到法宝【${matchedFabao.名称}】。\n${descText ? `获取来源/说明：${descText}\n` : ''}${matchedFabao.skillName ? `法宝特技：【${matchedFabao.skillName}】${cooldown ? `（冷却时间: ${cooldown}）` : ''}` : ''}`,
+                        text: `为你速查到法宝【${matchedFabao.名称}】（${matchedFabao.类型 || '战斗法宝'}）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：`,
                         time: timeStr,
                         cardType: 'fabao',
                         cardData: {
@@ -128,7 +129,8 @@ export class CopilotService {
                             skillName: matchedFabao.skillName,
                             cooldown: cooldown,
                             skillEffect: skillInfo?.str1 ? `${skillInfo.str1}\n${skillInfo.str2 || ''}` : (skillInfo?.str2 || ''),
-                            route: `/compendium/fabao?name=${encodeURIComponent(matchedFabao.名称)}`
+                            route: `/compendium/fabao?name=${encodeURIComponent(matchedFabao.名称)}`,
+                            fabao: matchedFabao
                         }
                     };
                 }
