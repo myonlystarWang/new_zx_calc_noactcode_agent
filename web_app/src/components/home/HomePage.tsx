@@ -760,18 +760,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
 
   if (isChatActive) {
     return (
-      <HomeAIChatStage
-        messages={chatMessages}
-        isLoading={isAiLoading}
-        onSendMessage={handleFollowUpMessage}
-        onBackToHome={() => setIsChatActive(false)}
-        onNewChat={() => {
-          setChatMessages([]);
-          setIsChatActive(false);
-          setQuery('');
-          setAttachedImage(null);
-        }}
-      />
+      <div className="w-full flex-1 flex flex-col items-center justify-start px-2 sm:px-4 py-1 overflow-hidden">
+        <HomeAIChatStage
+          messages={chatMessages}
+          isLoading={isAiLoading}
+          onSendMessage={handleFollowUpMessage}
+          onBackToHome={() => setIsChatActive(false)}
+          onNewChat={() => {
+            setChatMessages([]);
+            setIsChatActive(false);
+            setQuery('');
+            setAttachedImage(null);
+          }}
+        />
+      </div>
     );
   }
 
