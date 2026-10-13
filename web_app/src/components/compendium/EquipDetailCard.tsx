@@ -189,27 +189,25 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                     </div>
                 )}
 
-                {/* 附加属性列表：紧随基础/固定数值平滑排列，无缝对接无多余空隙，经典游戏蓝 #8080ff */}
+                {/* 附加属性列表：未激活前缀为灰色的 (+X)，激活后展示为经典游戏蓝 */}
                 {item.ad && item.ad.length > 0 && (
                     <div>
                         {item.ad.map((attr, aIdx) => {
                             const isUnlocked = refLevel >= attr.l;
+                            const formattedText = formatAttrText(attr.d || attr.n);
+                            const displayText = !isUnlocked && attr.l > 0
+                                ? `(+${attr.l})${formattedText}`
+                                : formattedText;
                             return (
                                 <div
                                     key={aIdx}
                                     style={{
                                         color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED,
                                         display: 'flex',
-                                        justifyContent: 'space-between',
                                         alignItems: 'center'
                                     }}
                                 >
-                                    <span>{formatAttrText(attr.d || attr.n)}</span>
-                                    {!isUnlocked && (
-                                        <span className="text-[11px] opacity-75 font-mono">
-                                            (需蕴灵 +{attr.l})
-                                        </span>
-                                    )}
+                                    <span>{displayText}</span>
                                 </div>
                             );
                         })}
