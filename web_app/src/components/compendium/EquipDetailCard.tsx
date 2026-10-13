@@ -5,13 +5,18 @@ import type { CuratedEquipItem } from '../../types';
 import {
     GAME_COLORS,
     getYunlingColor,
-    getShenjiTierColor,
     getEquipQualityColor
 } from '../../constants/gameColorSystem';
 
 export interface EquipDetailCardProps {
     item: CuratedEquipItem;
     className?: string;
+}
+
+function formatAttrText(text: string): string {
+    if (!text) return '';
+    // 如果 + 或 - 前面紧挨着非空白字符，补充一个空格，对齐游戏原生规范（如 "攻击 +36.00%"）
+    return text.replace(/([^\s])([+\-＋－])/g, '$1 $2');
 }
 
 function getRefKey(it: CuratedEquipItem): 'atk' | 'def' | 'hp' | 'mp' | null {
@@ -184,9 +189,9 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                     </div>
                 )}
 
-                {/* 附加属性列表：激活为经典游戏蓝 #8080ff，未激活置灰 */}
+                {/* 附加属性列表：紧随基础/固定数值平滑排列，无缝对接无多余空隙，经典游戏蓝 #8080ff */}
                 {item.ad && item.ad.length > 0 && (
-                    <div className="my-1.5 py-1 border-t border-b border-[#1c2436]/60">
+                    <div>
                         {item.ad.map((attr, aIdx) => {
                             const isUnlocked = refLevel >= attr.l;
                             return (
@@ -199,7 +204,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                         alignItems: 'center'
                                     }}
                                 >
-                                    <span>{attr.d || attr.n}</span>
+                                    <span>{formatAttrText(attr.d || attr.n)}</span>
                                     {!isUnlocked && (
                                         <span className="text-[11px] opacity-75 font-mono">
                                             (需蕴灵 +{attr.l})
@@ -211,9 +216,9 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                     </div>
                 )}
 
-                {/* 神机属性：分阶显示原生色彩与词条池（15阶极·炽红、13阶明黄、11阶碧绿） */}
+                {/* 神机属性洗炼池：无多余极·前缀，纯净档位与词条概率区间展示 */}
                 {item.sj && Object.entries(item.sj).length > 0 && (
-                    <div className="my-1.5 py-1 border-b border-[#1c2436]/60 flex flex-col gap-1.5">
+                    <div className="mt-2 pt-1 border-t border-[#1c2436]/60 flex flex-col gap-1">
                         <div className="text-[12px] font-bold text-amber-300">
                             神机洗炼属性池:
                         </div>
@@ -225,24 +230,22 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                         const tierItems = bonusList.filter(b => b.l === tier);
                                         if (tierItems.length === 0) return null;
                                         const isUnlocked = refLevel >= tier;
-                                        const tierColor = getShenjiTierColor(tier);
-                                        const tierLabel = tier === 15 ? '极·神机' : '神机';
 
                                         return (
                                             <div
                                                 key={tier}
                                                 className="text-[12px] pl-1"
                                                 style={{
-                                                    color: isUnlocked ? tierColor : GAME_COLORS.TEXT_LOCKED
+                                                    color: isUnlocked ? '#ffd272' : GAME_COLORS.TEXT_LOCKED
                                                 }}
                                             >
                                                 <div className="font-semibold flex items-center justify-between text-[11px] mb-0.5 opacity-90">
-                                                    <span>+{tier} 阶档位 ({tierLabel})</span>
+                                                    <span>+{tier}档位</span>
                                                     <span>{isUnlocked ? '已激活' : '需蕴灵 +' + tier}</span>
                                                 </div>
                                                 {tierItems.map((bi, bIdx) => (
                                                     <div key={bIdx} className="pl-2">
-                                                        · {tierLabel} {bi.d}
+                                                        · {formatAttrText(bi.d)}
                                                     </div>
                                                 ))}
                                             </div>
