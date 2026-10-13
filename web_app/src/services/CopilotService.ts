@@ -108,7 +108,9 @@ export class CopilotService {
             '护腕': '袖甲', '手环': '袖甲', '手': '袖甲', '钏': '袖甲', '腕': '袖甲',
             '带': '腰带',
             '金身': '法身',
-            '印': '玺绶', '玉玺': '玺绶'
+            '印': '玺绶', '玉玺': '玺绶',
+            '戒': '戒指', '指环': '戒指',
+            '链': '项链', '项圈': '项链'
         };
         const profs = [
             '逐霜', '青云', '鬼王', '合欢', '天音', '鬼道', '焚香', '九黎', '烈山', '怀光',
@@ -157,13 +159,7 @@ export class CopilotService {
         try {
             const rawEquips = await dataService.getEquipList();
             if (Array.isArray(rawEquips) && rawEquips.length > 0) {
-                // 过滤掉所有各职业专属护符（只保留通用护符或非护符大类装备）
-                const equips = rawEquips.filter(e => {
-                    if (e.slot === '护符') {
-                        return !e.prof || e.prof.length === 0 || e.prof.includes('通用');
-                    }
-                    return true;
-                });
+                const equips = rawEquips;
 
                 const cleanTokens = tokens.filter(t =>
                     t !== matchedQ?.toLowerCase() &&
