@@ -152,9 +152,10 @@ input[type="range"] {
   cursor: pointer;
 }
 
+input[type="range"]::-webkit-slider-runnable-track,
 input[type="range"]::-webkit-slider-track {
-  background: var(--color-bg-tertiary);
-  height: 0.25rem;
+  background: #334155;
+  height: 0.375rem;
   border-radius: var(--radius-full);
 }
 
@@ -177,8 +178,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 input[type="range"]::-moz-range-track {
-  background: var(--color-bg-tertiary);
-  height: 0.25rem;
+  background: #334155;
+  height: 0.375rem;
   border-radius: var(--radius-full);
 }
 

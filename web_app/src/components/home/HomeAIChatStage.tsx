@@ -12,8 +12,7 @@ import {
     Copy,
     ArrowRight,
     Cpu,
-    Radio,
-    Zap
+    Radio
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
@@ -23,6 +22,8 @@ import {
     type ExtractedCPanel
 } from '../../services/CopilotService';
 import { useApp } from '../../context/AppContext';
+import { FabaoDetailCard } from '../compendium/FabaoDetailCard';
+import { GameColorText } from '../ui/GameColorText';
 
 interface HomeAIChatStageProps {
     messages: CopilotMessage[];
@@ -225,7 +226,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
 
                                 {/* 纯文本说明 */}
                                 <div className="whitespace-pre-wrap text-slate-200 text-sm leading-relaxed">
-                                    {msg.text}
+                                    <GameColorText text={msg.text} />
                                 </div>
 
                                 {/* 宽幅富交互大卡片体系 */}
@@ -531,55 +532,27 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             </div>
                                         )}
 
-                                        {/* 7. 法宝图鉴卡片 */}
+                                        {/* 7. 法宝图鉴卡片 (1:1 复用图鉴右侧高保真卡片，支持形态切换与1~5阶拖拽) */}
                                         {msg.cardType === 'fabao' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4.5 space-y-3.5 shadow-lg">
-                                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-base font-bold text-cyan-300">{msg.cardData.name}</span>
-                                                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-200 border border-cyan-800/40">
-                                                                {msg.cardData.grade || '战斗法宝'}
-                                                            </span>
-                                                            {msg.cardData.skillName && (
-                                                                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/40">
-                                                                    特技：{msg.cardData.skillName}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                        {msg.cardData.description && (
-                                                            <div className="text-xs text-slate-400 mt-1.5 whitespace-pre-line leading-relaxed">
-                                                                {msg.cardData.description}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => navigate(msg.cardData.route)}
-                                                        className="px-3.5 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1.5 shrink-0 self-start sm:self-auto transition-all"
-                                                    >
-                                                        <span>全阶法宝图鉴</span>
-                                                        <ExternalLink className="w-3.5 h-3.5" />
-                                                    </button>
-                                                </div>
-
-                                                {/* 特技效果展示 */}
-                                                {msg.cardData.skillEffect && (
-                                                    <div className="p-3.5 rounded-lg bg-black/40 border border-white/5 space-y-1.5">
-                                                        <div className="flex items-center justify-between text-xs">
-                                                            <span className="font-semibold text-emerald-300 flex items-center gap-1.5">
-                                                                <Zap className="w-3.5 h-3.5 text-emerald-400" />
-                                                                <span>特技机制与成长（普通/承/真 1~5阶）</span>
-                                                            </span>
-                                                            {msg.cardData.cooldown && (
-                                                                <span className="text-[11px] text-slate-400 font-mono">冷却时间: {msg.cardData.cooldown}</span>
-                                                            )}
-                                                        </div>
-                                                        <div className="text-xs text-slate-300 leading-relaxed whitespace-pre-line font-sans">
-                                                            {msg.cardData.skillEffect}
-                                                        </div>
-                                                    </div>
-                                                )}
+                                            <div className="w-full">
+                                                <FabaoDetailCard
+                                                    fabao={msg.cardData.fabao || {
+                                                        id: msg.cardData.id || 0,
+                                                        名称: msg.cardData.name || '法宝',
+                                                        等级: 135,
+                                                        类型: msg.cardData.grade || '战斗法宝',
+                                                        skillName: msg.cardData.skillName,
+                                                        描述_纯文本: msg.cardData.description,
+                                                        技能特效: {
+                                                            普通: {
+                                                                name: msg.cardData.skillName || '法宝特技',
+                                                                str1: msg.cardData.skillEffect,
+                                                                str2: msg.cardData.cooldown ? `技能冷却时间：${msg.cardData.cooldown}` : undefined
+                                                            }
+                                                        }
+                                                    }}
+                                                    showExternalLink={true}
+                                                />
                                             </div>
                                         )}
 
