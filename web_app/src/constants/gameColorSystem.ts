@@ -56,15 +56,19 @@ export function getShenjiTierColor(tier: number): string {
     return GAME_COLORS.WHITE;
 }
 
-/**
- * 装备品质主色调
- */
-export function getEquipQualityColor(q: string): string {
+export function getEquipQualityColor(q?: string, name?: string): string {
+    if (!q) {
+        if (name && name.includes('至尊')) return '#ffd700';
+        return GAME_COLORS.OWNER_ORANGE;
+    }
     switch (q) {
         case '神隐': return GAME_COLORS.SHENYIN_CYAN;
         case '彰武': return '#ff4d4f';
         case '昭武': return '#b37feb';
         case '修武': return '#36cfc9';
-        default: return '#38bdf8';
+        case '至尊': return '#ffd700';
+        case '神级': return GAME_COLORS.OWNER_ORANGE;
+        case '天命': return '#ba68c8';
+        default: return GAME_COLORS.OWNER_ORANGE;
     }
 }

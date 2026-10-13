@@ -67,6 +67,33 @@ async function extractEquipFull() {
         }
     }
 
+    const specialSlots = ['法身', '罡气', '护符', '勋章', '玺绶', '锦囊', '佩章'];
+    for (const s of specialSlots) {
+        const url = `${API_BASE}/equip/list?slot=${encodeURIComponent(s)}`;
+        try {
+            const data = await fetchWithRetry(url);
+            const items = data.items || [];
+            let added = 0;
+            for (const it of items) {
+                const key = `${it.name}_${it.q || ''}_${it.slot || s}`;
+                if (!seenKeys.has(key)) {
+                    seenKeys.add(key);
+                    allItems.push({
+                        ...it,
+                        q: it.q || '',
+                        slot: it.slot || s
+                    });
+                    added++;
+                }
+            }
+            if (added > 0) {
+                console.log(`  - [全品质] [${s}]: 获取到 ${added} 件`);
+            }
+        } catch (err) {
+            console.error(`  - 获取 [全品质 - ${s}] 失败:`, err.message);
+        }
+    }
+
     console.log(`装备抽取完成，总计去重后得到 ${allItems.length} 件装备。`);
     const outPath = path.join(TARGET_DIR, 'equip_curated.json');
     fs.writeFileSync(outPath, JSON.stringify(allItems, null, 2), 'utf8');

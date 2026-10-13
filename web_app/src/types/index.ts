@@ -74,9 +74,12 @@ export interface CuratedEquipItem {
     def?: number;
     hp?: number;
     mp?: number;
+    hit?: number;
+    dod?: number;
     rng?: number;
     dura?: number;
-    ref: number[];
+    price?: number;
+    ref?: number[];
     q: EquipQuality;
     ad: EquipAdditionalAttr[];
     sj?: Record<string, EquipSpecialBonusPoolItem[]>;
