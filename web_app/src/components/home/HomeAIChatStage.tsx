@@ -23,6 +23,7 @@ import {
 } from '../../services/CopilotService';
 import { FabaoDetailCard } from '../compendium/FabaoDetailCard';
 import { EquipDetailCard } from '../compendium/EquipDetailCard';
+import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
 import { useApp } from '../../context/AppContext';
 import type { FabaoItem, CuratedEquipItem } from '../../types';
@@ -164,9 +165,9 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     };
 
     return (
-        <div className="w-full max-w-[1060px] mx-auto min-h-[82vh] flex flex-col animate-in fade-in duration-300">
-            {/* 顶部控制栏 */}
-            <div className="sticky top-0 z-30 py-3 px-4 backdrop-blur-xl bg-[#0b0e14]/90 border-b border-white/10 flex items-center justify-between rounded-t-2xl">
+        <div className="w-full max-w-[1060px] mx-auto h-[calc(100vh-5rem)] min-h-[580px] max-h-[920px] flex flex-col rounded-2xl border border-white/10 bg-[#0b0e14]/90 shadow-2xl overflow-hidden my-1 animate-in fade-in duration-300">
+            {/* 顶部控制栏：固定顶部不滚动 */}
+            <div className="py-2.5 px-4 backdrop-blur-xl bg-[#0b0e14]/95 border-b border-white/10 flex items-center justify-between rounded-t-2xl shrink-0">
                 <div className="flex items-center gap-3">
                     <button
                         type="button"
@@ -194,8 +195,8 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                 </div>
             </div>
 
-            {/* 消息对话主画卷 */}
-            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+            {/* 消息对话主画卷：独立定高内部滚动区，不再让全局窗口拉伸 */}
+            <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6 min-h-0">
                 {messages.map((msg) => {
                     const isUser = msg.sender === 'user';
 
@@ -568,29 +569,16 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
 
                                             return (
                                                 <div className="w-full flex flex-col gap-3">
-                                                    <div className="flex items-center gap-2 overflow-x-auto pb-1.5 no-scrollbar">
-                                                        {list.map((c, idx) => {
-                                                            const isActive = idx === activeIdx;
-                                                            return (
-                                                                <button
-                                                                    key={c.id || idx}
-                                                                    type="button"
-                                                                    onClick={() => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
-                                                                    className={clsx(
-                                                                        'px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border shadow-sm',
-                                                                        isActive
-                                                                            ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.3)]'
-                                                                            : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
-                                                                    )}
-                                                                >
-                                                                    <span>{c.名称}</span>
-                                                                    <span className="text-[10px] font-mono text-slate-500 font-normal">
-                                                                        {c.等级 || 135}级
-                                                                    </span>
-                                                                </button>
-                                                            );
-                                                        })}
-                                                    </div>
+                                                    <CandidateSelectorBar
+                                                        items={list.map((c, idx) => ({
+                                                            id: c.id || idx,
+                                                            title: c.名称,
+                                                            badge: `${c.等级 || 135}级`
+                                                        }))}
+                                                        activeIndex={activeIdx}
+                                                        onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
+                                                        summaryText={`为你检索到 ${list.length} 件符合条件的候选法宝：`}
+                                                    />
 
                                                     {activeItem && (
                                                         <FabaoDetailCard fabao={activeItem} />
@@ -614,29 +602,16 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
 
                                             return (
                                                 <div className="w-full flex flex-col gap-3">
-                                                    <div className="flex items-center gap-2 overflow-x-auto pb-1.5 no-scrollbar">
-                                                        {list.map((c, idx) => {
-                                                            const isActive = idx === activeIdx;
-                                                            return (
-                                                                <button
-                                                                    key={c.id || idx}
-                                                                    type="button"
-                                                                    onClick={() => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
-                                                                    className={clsx(
-                                                                        'px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border shadow-sm',
-                                                                        isActive
-                                                                            ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.3)]'
-                                                                            : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
-                                                                    )}
-                                                                >
-                                                                    <span>{c.name}</span>
-                                                                    <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-400">
-                                                                        {c.q} · {c.slot}
-                                                                    </span>
-                                                                </button>
-                                                            );
-                                                        })}
-                                                    </div>
+                                                    <CandidateSelectorBar
+                                                        items={list.map((c, idx) => ({
+                                                            id: c.id || idx,
+                                                            title: c.name,
+                                                            badge: `${c.q} · ${c.slot}`
+                                                        }))}
+                                                        activeIndex={activeIdx}
+                                                        onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
+                                                        summaryText={`为你检索到 ${list.length} 件符合条件的候选装备：`}
+                                                    />
 
                                                     {activeItem && (
                                                         <EquipDetailCard item={activeItem} />
@@ -660,8 +635,8 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* 底部悬浮对话输入舱 */}
-            <div className="sticky bottom-0 z-30 p-3 backdrop-blur-xl bg-[#0b0e14]/95 border-t border-white/10 rounded-b-2xl">
+            {/* 底部固定对话输入舱 */}
+            <div className="p-3 backdrop-blur-xl bg-[#0b0e14]/95 border-t border-white/10 rounded-b-2xl shrink-0">
                 {/* 选中的图片缩略预览 */}
                 {selectedImage && (
                     <div className="mb-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-between max-w-sm">
