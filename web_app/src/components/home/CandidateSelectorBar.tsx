@@ -44,26 +44,39 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
         return () => window.removeEventListener('resize', updateScrollState);
     }, [updateScrollState, items]);
 
+    // 精确将活动项平滑居中滚动至横向视图中央（仅滚动容器自身，绝不干扰外层页面垂直布局）
+    const scrollToActiveItem = useCallback((smooth = true) => {
+        const container = scrollRef.current;
+        if (!container) return;
+        const activeNode = container.children[activeIndex] as HTMLElement;
+        if (!activeNode) return;
+
+        const targetLeft = activeNode.offsetLeft - (container.clientWidth / 2) + (activeNode.clientWidth / 2);
+        container.scrollTo({
+            left: Math.max(0, targetLeft),
+            behavior: smooth ? 'smooth' : 'auto'
+        });
+        setTimeout(updateScrollState, 160);
+    }, [activeIndex, updateScrollState]);
+
     // 当展开/收起状态切换或选中项切换时，刷新横向滚动尺寸并对齐活动项
     useEffect(() => {
-        const timer = setTimeout(() => {
-            updateScrollState();
-            if (!isExpanded && scrollRef.current) {
-                const activeNode = scrollRef.current.children[activeIndex] as HTMLElement;
-                if (activeNode) {
-                    activeNode.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                }
-            }
-        }, 50);
-        return () => clearTimeout(timer);
-    }, [isExpanded, activeIndex, updateScrollState]);
+        updateScrollState();
+        if (!isExpanded) {
+            const timer = setTimeout(() => {
+                scrollToActiveItem(true);
+            }, 60);
+            return () => clearTimeout(timer);
+        }
+    }, [isExpanded, activeIndex, scrollToActiveItem, updateScrollState]);
 
-    // 监听横向滚轮：在收起模式下滚轮垂直滚动转化为横向滑动，体验极度顺滑
+    // 监听横向滚轮：在收起横滑模式下垂直滚轮实时转为横向滑动
     useEffect(() => {
         const el = scrollRef.current;
-        if (!el || isExpanded) return;
+        if (!el) return;
 
         const handleWheel = (e: WheelEvent) => {
+            if (isExpanded) return;
             if (e.deltaY !== 0) {
                 e.preventDefault();
                 el.scrollLeft += e.deltaY;
@@ -74,15 +87,6 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
         el.addEventListener('wheel', handleWheel, { passive: false });
         return () => el.removeEventListener('wheel', handleWheel);
     }, [isExpanded, updateScrollState]);
-
-    // 选中项居中滚动
-    useEffect(() => {
-        if (isExpanded || !scrollRef.current) return;
-        const activeNode = scrollRef.current.children[activeIndex] as HTMLElement;
-        if (activeNode) {
-            activeNode.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
-    }, [activeIndex, isExpanded]);
 
     const handleScrollStep = (direction: 'left' | 'right') => {
         const el = scrollRef.current;
@@ -121,15 +125,14 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                 )}
             </div>
 
-            {/* 候选列表区 */}
-            {isExpanded ? (
-                /* 展开网格模式：全部一览无余，一键直达 */
+            {/* 展开网格模式：全部一览无余，一键直达 */}
+            {isExpanded && (
                 <div className="flex flex-wrap gap-2 p-2.5 rounded-xl bg-slate-950/70 border border-slate-800/80 max-h-56 overflow-y-auto animate-in fade-in duration-200">
                     {items.map((item, idx) => {
                         const isActive = idx === activeIndex;
                         return (
                             <button
-                                key={item.id}
+                                key={`exp_${item.id}_${idx}`}
                                 type="button"
                                 onClick={() => {
                                     onSelect(idx);
@@ -151,65 +154,68 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                         );
                     })}
                 </div>
-            ) : (
-                /* 收起横滑模式：带左右精准平滑切滑按钮与滚轮穿透映射 */
-                <div className="relative group flex items-center w-full min-w-0 max-w-full overflow-hidden">
-                    {/* 左滑导航按钮 */}
-                    {canScrollLeft && (
-                        <button
-                            type="button"
-                            onClick={() => handleScrollStep('left')}
-                            className="absolute left-0 z-20 w-7 h-8 flex items-center justify-center rounded-r-lg bg-slate-950/90 hover:bg-slate-900 border-y border-r border-slate-700/80 text-cyan-300 shadow-lg backdrop-blur-md transition-all -ml-1"
-                            title="向左滚动候选列表"
-                        >
-                            <ChevronLeft className="w-4 h-4" />
-                        </button>
-                    )}
-
-                    {/* 滚动容器 */}
-                    <div
-                        ref={scrollRef}
-                        onScroll={updateScrollState}
-                        className="w-full min-w-0 flex items-center gap-2 overflow-x-auto py-1.5 px-0.5 scroll-smooth no-scrollbar"
-                    >
-                        {items.map((item, idx) => {
-                            const isActive = idx === activeIndex;
-                            return (
-                                <button
-                                    key={item.id}
-                                    type="button"
-                                    onClick={() => onSelect(idx)}
-                                    className={clsx(
-                                        'whitespace-nowrap shrink-0 flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border shadow-sm select-none',
-                                        isActive
-                                            ? 'bg-cyan-500/25 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.35)]'
-                                            : 'bg-slate-900/90 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
-                                    )}
-                                >
-                                    <span className="whitespace-nowrap">{item.title}</span>
-                                    {item.badge && (
-                                        <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-400 font-normal">
-                                            {item.badge}
-                                        </span>
-                                    )}
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    {/* 右滑导航按钮 */}
-                    {canScrollRight && (
-                        <button
-                            type="button"
-                            onClick={() => handleScrollStep('right')}
-                            className="absolute right-0 z-20 w-7 h-8 flex items-center justify-center rounded-l-lg bg-slate-950/90 hover:bg-slate-900 border-y border-l border-slate-700/80 text-cyan-300 shadow-lg backdrop-blur-md transition-all -mr-1"
-                            title="向右滚动候选列表"
-                        >
-                            <ChevronRight className="w-4 h-4" />
-                        </button>
-                    )}
-                </div>
             )}
+
+            {/* 收起横滑模式：带左右精准平滑切滑按钮与滚轮穿透映射（常驻挂载，保证DOM引用与滚轮监听永不丢失） */}
+            <div className={clsx(
+                'relative group flex items-center w-full min-w-0 max-w-full overflow-hidden',
+                isExpanded && 'hidden'
+            )}>
+                {/* 左滑导航按钮 */}
+                {canScrollLeft && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('left')}
+                        className="absolute left-0 z-20 w-7 h-8 flex items-center justify-center rounded-r-lg bg-slate-950/90 hover:bg-slate-900 border-y border-r border-slate-700/80 text-cyan-300 shadow-lg backdrop-blur-md transition-all -ml-1"
+                        title="向左滚动候选列表"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                    </button>
+                )}
+
+                {/* 滚动容器 */}
+                <div
+                    ref={scrollRef}
+                    onScroll={updateScrollState}
+                    className="w-full min-w-0 flex items-center gap-2 overflow-x-auto py-1.5 px-0.5 no-scrollbar"
+                >
+                    {items.map((item, idx) => {
+                        const isActive = idx === activeIndex;
+                        return (
+                            <button
+                                key={`col_${item.id}_${idx}`}
+                                type="button"
+                                onClick={() => onSelect(idx)}
+                                className={clsx(
+                                    'whitespace-nowrap shrink-0 flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border shadow-sm select-none',
+                                    isActive
+                                        ? 'bg-cyan-500/25 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.35)]'
+                                        : 'bg-slate-900/90 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
+                                )}
+                            >
+                                <span className="whitespace-nowrap">{item.title}</span>
+                                {item.badge && (
+                                    <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-400 font-normal">
+                                        {item.badge}
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* 右滑导航按钮 */}
+                {canScrollRight && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('right')}
+                        className="absolute right-0 z-20 w-7 h-8 flex items-center justify-center rounded-l-lg bg-slate-950/90 hover:bg-slate-900 border-y border-l border-slate-700/80 text-cyan-300 shadow-lg backdrop-blur-md transition-all -mr-1"
+                        title="向右滚动候选列表"
+                    >
+                        <ChevronRight className="w-4 h-4" />
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
