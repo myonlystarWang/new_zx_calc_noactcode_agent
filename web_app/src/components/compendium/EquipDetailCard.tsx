@@ -20,21 +20,15 @@ function formatAttrText(text: string): string {
 }
 
 function getRefKey(it: CuratedEquipItem): 'atk' | 'def' | 'hp' | 'mp' | null {
-    let best: 'atk' | 'def' | 'hp' | 'mp' | null = null;
-    let bv = -1;
-    if (it.atk && it.atk[1] > bv) {
-        bv = it.atk[1];
-        best = 'atk';
-    }
-    const K: ('def' | 'hp' | 'mp')[] = ['def', 'hp', 'mp'];
-    for (const k of K) {
-        const v = it[k] || 0;
-        if (v > bv) {
-            bv = v;
-            best = k;
-        }
-    }
-    return best;
+    const slot = it.slot || '';
+    if (slot === '武器' || it.atk) return 'atk';
+    if (slot === '衣服') return 'def';
+    if (slot === '袖甲' || slot === '护腕') return 'mp';
+    if (['靴子', '鞋', '头盔', '帽子', '腰带'].includes(slot)) return 'hp';
+    if (it.hp) return 'hp';
+    if (it.def) return 'def';
+    if (it.mp) return 'mp';
+    return null;
 }
 
 export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
@@ -68,11 +62,6 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                     <span className="font-mono font-bold text-sm tracking-wide" style={{ color: yunlingColor }}>
                         +{refLevel}
                     </span>
-                    {currentRefBonus > 0 && (
-                        <span className="font-mono text-xs font-bold px-2 py-0.5 rounded border border-cyan-500/30 bg-cyan-500/10 text-cyan-300">
-                            加成: +{currentRefBonus}
-                        </span>
-                    )}
                 </div>
 
                 <div className="flex items-center gap-2">
