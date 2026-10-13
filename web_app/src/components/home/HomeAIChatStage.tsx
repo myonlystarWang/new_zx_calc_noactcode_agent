@@ -21,9 +21,11 @@ import {
     type CopilotMessage,
     type ExtractedCPanel
 } from '../../services/CopilotService';
-import { useApp } from '../../context/AppContext';
 import { FabaoDetailCard } from '../compendium/FabaoDetailCard';
+import { EquipDetailCard } from '../compendium/EquipDetailCard';
 import { GameColorText } from '../ui/GameColorText';
+import { useApp } from '../../context/AppContext';
+import type { FabaoItem, CuratedEquipItem } from '../../types';
 
 interface HomeAIChatStageProps {
     messages: CopilotMessage[];
@@ -45,6 +47,9 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
 
     const [inputText, setInputText] = useState('');
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+    // 候选列表选中的索引状态（按消息 ID 索引）
+    const [selectedCandidateIndex, setSelectedCandidateIndex] = useState<Record<string, number>>({});
 
     // 活跃的微调面板状态（按消息 ID 索引）
     const [expandedTunerMsgId, setExpandedTunerMsgId] = useState<string | null>(null);
@@ -532,7 +537,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             </div>
                                         )}
 
-                                        {/* 7. 法宝图鉴卡片 (1:1 复用图鉴右侧高保真卡片，支持形态切换与1~5阶拖拽) */}
+                                        {/* 7. 法宝图鉴单卡 */}
                                         {msg.cardType === 'fabao' && msg.cardData && (
                                             <div className="w-full">
                                                 <FabaoDetailCard
@@ -551,48 +556,94 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                             }
                                                         }
                                                     }}
-                                                    showExternalLink={true}
                                                 />
                                             </div>
                                         )}
 
-                                        {/* 8. 装备图鉴卡片 */}
-                                        {msg.cardType === 'equip' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4.5 space-y-3.5 shadow-lg">
-                                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-base font-bold text-cyan-300">{msg.cardData.name}</span>
-                                                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-200 border border-cyan-800/40">
-                                                                {msg.cardData.q}系列 · {msg.cardData.slot}
-                                                            </span>
-                                                        </div>
-                                                        <div className="text-xs text-slate-400 mt-1">
-                                                            适用职业：{(msg.cardData.prof || []).join('、')}
-                                                        </div>
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => navigate(msg.cardData.route)}
-                                                        className="px-3.5 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1.5 shrink-0 self-start sm:self-auto transition-all"
-                                                    >
-                                                        <span>装备炼器图鉴</span>
-                                                        <ExternalLink className="w-3.5 h-3.5" />
-                                                    </button>
-                                                </div>
+                                        {/* 7.1 法宝多候选切换 */}
+                                        {msg.cardType === 'fabao_candidates' && msg.cardData?.candidates && (() => {
+                                            const list: FabaoItem[] = msg.cardData.candidates;
+                                            const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
+                                            const activeItem = list[activeIdx] || list[0];
 
-                                                {Array.isArray(msg.cardData.ad) && msg.cardData.ad.length > 0 && (
-                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                                                        {msg.cardData.ad.map((attr: any, idx: number) => (
-                                                            <div key={idx} className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between">
-                                                                <span className="text-slate-400">{attr.n || attr.name}</span>
-                                                                <span className="font-semibold text-emerald-300">{attr.d || attr.desc}</span>
-                                                            </div>
-                                                        ))}
+                                            return (
+                                                <div className="w-full flex flex-col gap-3">
+                                                    <div className="flex items-center gap-2 overflow-x-auto pb-1.5 no-scrollbar">
+                                                        {list.map((c, idx) => {
+                                                            const isActive = idx === activeIdx;
+                                                            return (
+                                                                <button
+                                                                    key={c.id || idx}
+                                                                    type="button"
+                                                                    onClick={() => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
+                                                                    className={clsx(
+                                                                        'px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border shadow-sm',
+                                                                        isActive
+                                                                            ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.3)]'
+                                                                            : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
+                                                                    )}
+                                                                >
+                                                                    <span>{c.名称}</span>
+                                                                    <span className="text-[10px] font-mono text-slate-500 font-normal">
+                                                                        {c.等级 || 135}级
+                                                                    </span>
+                                                                </button>
+                                                            );
+                                                        })}
                                                     </div>
-                                                )}
+
+                                                    {activeItem && (
+                                                        <FabaoDetailCard fabao={activeItem} />
+                                                    )}
+                                                </div>
+                                            );
+                                        })()}
+
+                                        {/* 8. 装备单卡 (1:1 高保真卡片，支持强化 -1 / 强化 +1) */}
+                                        {msg.cardType === 'equip' && msg.cardData && (
+                                            <div className="w-full">
+                                                <EquipDetailCard item={msg.cardData.equip || msg.cardData} />
                                             </div>
                                         )}
+
+                                        {/* 8.1 装备多候选切换 */}
+                                        {msg.cardType === 'equip_candidates' && msg.cardData?.candidates && (() => {
+                                            const list: CuratedEquipItem[] = msg.cardData.candidates;
+                                            const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
+                                            const activeItem = list[activeIdx] || list[0];
+
+                                            return (
+                                                <div className="w-full flex flex-col gap-3">
+                                                    <div className="flex items-center gap-2 overflow-x-auto pb-1.5 no-scrollbar">
+                                                        {list.map((c, idx) => {
+                                                            const isActive = idx === activeIdx;
+                                                            return (
+                                                                <button
+                                                                    key={c.id || idx}
+                                                                    type="button"
+                                                                    onClick={() => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
+                                                                    className={clsx(
+                                                                        'px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border shadow-sm',
+                                                                        isActive
+                                                                            ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.3)]'
+                                                                            : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
+                                                                    )}
+                                                                >
+                                                                    <span>{c.name}</span>
+                                                                    <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-400">
+                                                                        {c.q} · {c.slot}
+                                                                    </span>
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>
+
+                                                    {activeItem && (
+                                                        <EquipDetailCard item={activeItem} />
+                                                    )}
+                                                </div>
+                                            );
+                                        })()}
                                     </div>
                                 )}
                             </div>
