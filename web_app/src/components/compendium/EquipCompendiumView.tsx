@@ -1,20 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { DataService } from '../../services/DataService';
 import type { CuratedEquipItem } from '../../types';
-import { GameTooltipShell } from '../ui/GameColorText';
 import {
     Shield,
     Search,
     X,
-    Sliders,
-    Sparkles,
-    CheckCircle2,
-    Lock,
-    Award,
-    Layers
+    Layers,
+    Award
 } from 'lucide-react';
 import clsx from 'clsx';
 import { chipCls, CHIP_ROW_BASE } from '../ui/chipStyles';
+import { EquipDetailCard } from './EquipDetailCard';
 
 const QUALITY_COLOR_MAP: Record<string, {
     text: string;
@@ -48,25 +45,8 @@ const QUALITY_COLOR_MAP: Record<string, {
     },
 };
 
-function getRefKey(it: CuratedEquipItem): 'atk' | 'def' | 'hp' | 'mp' | null {
-    let best: 'atk' | 'def' | 'hp' | 'mp' | null = null;
-    let bv = -1;
-    if (it.atk && it.atk[1] > bv) {
-        bv = it.atk[1];
-        best = 'atk';
-    }
-    const K: ('def' | 'hp' | 'mp')[] = ['def', 'hp', 'mp'];
-    for (const k of K) {
-        const v = it[k] || 0;
-        if (v > bv) {
-            bv = v;
-            best = k;
-        }
-    }
-    return best;
-}
-
 export const EquipCompendiumView: React.FC = () => {
+    const [searchParams] = useSearchParams();
     const [equipList, setEquipList] = useState<CuratedEquipItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -78,7 +58,6 @@ export const EquipCompendiumView: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
 
     const [selectedItem, setSelectedItem] = useState<CuratedEquipItem | null>(null);
-    const [refLevel, setRefLevel] = useState<number>(11); // 默认 +11 (主流档位)
 
     useEffect(() => {
         let mounted = true;
@@ -134,16 +113,17 @@ export const EquipCompendiumView: React.FC = () => {
         });
     }, [equipList, qualityFilter, slotFilter, profFilter, genderFilter, searchQuery]);
 
-    // 选中的装备当前强化加成
-    const currentRefBonus = useMemo(() => {
-        if (!selectedItem || !selectedItem.ref || refLevel <= 0) return 0;
-        return selectedItem.ref[refLevel - 1] || 0;
-    }, [selectedItem, refLevel]);
-
-    const targetRefKey = useMemo(() => {
-        if (!selectedItem) return null;
-        return getRefKey(selectedItem);
-    }, [selectedItem]);
+    // 响应 URL 参数变化同步切换当前高亮装备
+    useEffect(() => {
+        if (equipList.length === 0) return;
+        const nameParam = searchParams.get('name');
+        if (nameParam) {
+            const matched = equipList.find(x => x.name === nameParam);
+            if (matched) {
+                setSelectedItem(matched);
+            }
+        }
+    }, [searchParams, equipList]);
 
     if (loading) {
         return (
@@ -161,8 +141,6 @@ export const EquipCompendiumView: React.FC = () => {
             </div>
         );
     }
-
-    const qTheme = selectedItem ? (QUALITY_COLOR_MAP[selectedItem.q] || QUALITY_COLOR_MAP['修武']) : QUALITY_COLOR_MAP['修武'];
 
     return (
         <div className="flex flex-col gap-4">
@@ -344,25 +322,14 @@ export const EquipCompendiumView: React.FC = () => {
                                             </span>
                                         </div>
 
-                                        {/* 基础属性概要 */}
-                                        <div className="flex items-center gap-3 text-[11px] font-mono text-slate-300 bg-slate-950/40 p-2 rounded-lg border border-slate-850">
-                                            {item.atk && (
-                                                <span>攻击 {item.atk[0]}-{item.atk[1]}</span>
-                                            )}
-                                            {item.def !== undefined && (
-                                                <span>防御 +{item.def}</span>
-                                            )}
-                                            {item.hp !== undefined && (
-                                                <span>气血 +{item.hp}</span>
-                                            )}
-                                            {item.mp !== undefined && (
-                                                <span>真气 +{item.mp}</span>
-                                            )}
-                                            {item.ad && item.ad.length > 0 && (
-                                                <span className="text-slate-500 ml-auto font-sans">
-                                                    附加 {item.ad.length} 条
-                                                </span>
-                                            )}
+                                        {/* 附加条目概要 */}
+                                        <div className="flex items-center justify-between text-[11px] text-slate-400 bg-slate-950/40 px-2.5 py-1.5 rounded-lg border border-slate-850">
+                                            <span className="text-slate-400 font-sans">
+                                                可洗炼附加属性
+                                            </span>
+                                            <span className="font-mono text-cyan-400 font-semibold">
+                                                {item.ad?.length || 0} 条
+                                            </span>
                                         </div>
                                     </div>
                                 );
@@ -371,320 +338,10 @@ export const EquipCompendiumView: React.FC = () => {
                     )}
                 </div>
 
-                {/* 右栏：保真装备详细 Tooltip + 0~+15 炼器交互 (lg: 5列, sticky) */}
+                {/* 右栏：保真装备详细 Tooltip + 强化步进交互 (lg: 5列, sticky) */}
                 <div className="lg:col-span-5 sticky top-20 flex flex-col gap-3">
                     {selectedItem ? (
-                        <div className="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col gap-4">
-                            {/* 标题栏与品质徽章 */}
-                            <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-3">
-                                <div>
-                                    <div className="flex items-center gap-2 flex-wrap">
-                                        <h3 className={clsx('text-lg font-black tracking-wide', qTheme.text)}>
-                                            {selectedItem.name}
-                                        </h3>
-                                        {refLevel > 0 && (
-                                            <span className="font-mono font-bold text-amber-400 text-base">
-                                                +{refLevel}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className="text-xs text-slate-400 mt-0.5">
-                                        {selectedItem.slot} · {selectedItem.q}品质 · {selectedItem.lv}级
-                                    </div>
-                                </div>
-                                <span className={clsx('text-xs font-bold px-2 py-0.5 rounded border font-mono', qTheme.badge)}>
-                                    {selectedItem.q}
-                                </span>
-                            </div>
-
-                            {/* 炼器强化滑块与快捷等级按钮 (+0 ~ +15) */}
-                            <div className="flex flex-col gap-2 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                                <div className="flex items-center justify-between text-xs">
-                                    <span className="text-slate-300 font-semibold flex items-center gap-1.5">
-                                        <Sliders className="w-3.5 h-3.5 text-cyan-400" />
-                                        <span>炼器强化等级:</span>
-                                        <span className="font-mono font-bold text-amber-400 text-sm">
-                                            +{refLevel}
-                                        </span>
-                                    </span>
-                                    {currentRefBonus > 0 && (
-                                        <span className="font-mono text-cyan-300 font-bold text-xs bg-cyan-500/15 border border-cyan-500/30 px-2 py-0.5 rounded">
-                                            强化加成: +{currentRefBonus}
-                                        </span>
-                                    )}
-                                </div>
-
-                                {/* 滑块 */}
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={15}
-                                    step={1}
-                                    value={refLevel}
-                                    onChange={(e) => setRefLevel(Number(e.target.value))}
-                                    className="w-full accent-cyan-400 cursor-pointer"
-                                />
-
-                                {/* 快捷档位选择网格 */}
-                                <div className="grid grid-cols-8 gap-1 pt-1">
-                                    {[0, 1, 3, 5, 7, 9, 10, 11, 12, 13, 14, 15].map(lv => (
-                                        <button
-                                            key={lv}
-                                            onClick={() => setRefLevel(lv)}
-                                            className={clsx(
-                                                'py-1 rounded text-xs font-mono font-bold transition-all text-center',
-                                                refLevel === lv
-                                                    ? 'bg-cyan-500 text-slate-950 shadow-[0_0_8px_rgba(6,182,212,0.4)]'
-                                                    : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200'
-                                            )}
-                                        >
-                                            +{lv}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* 游戏保真 Tooltip 面板 */}
-                            <GameTooltipShell
-                                title={`${selectedItem.name} ${refLevel > 0 ? `+${refLevel}` : ''}`}
-                                titleColor={selectedItem.q === '神隐' ? '#ffcb4a' : selectedItem.q === '彰武' ? '#ff4d4f' : selectedItem.q === '昭武' ? '#b37feb' : '#36cfc9'}
-                                className="border-slate-700/80 bg-[#0c1017]/95 text-xs font-sans leading-relaxed"
-                            >
-                                <div className="space-y-1 pb-2 border-b border-slate-800/80">
-                                    <div className="flex justify-between">
-                                        <span className="text-slate-400">品质：</span>
-                                        <span className={clsx('font-bold', qTheme.text)}>{selectedItem.q}品质</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-slate-400">部位：</span>
-                                        <span className="text-slate-200">{selectedItem.slot}</span>
-                                    </div>
-
-                                    {/* 攻击力 (含炼器强化) */}
-                                    {selectedItem.atk && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">攻击：</span>
-                                            <span className="font-mono font-bold text-slate-100">
-                                                {selectedItem.atk[0] + (targetRefKey === 'atk' ? currentRefBonus : 0)} - {selectedItem.atk[1] + (targetRefKey === 'atk' ? currentRefBonus : 0)}
-                                                {targetRefKey === 'atk' && currentRefBonus > 0 && (
-                                                    <span className="text-cyan-400 font-bold ml-1.5">
-                                                        (+{currentRefBonus})
-                                                    </span>
-                                                )}
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {/* 防御力 */}
-                                    {selectedItem.def !== undefined && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">防御：</span>
-                                            <span className="font-mono font-bold text-slate-100">
-                                                +{selectedItem.def + (targetRefKey === 'def' ? currentRefBonus : 0)}
-                                                {targetRefKey === 'def' && currentRefBonus > 0 && (
-                                                    <span className="text-cyan-400 font-bold ml-1.5">
-                                                        (+{currentRefBonus})
-                                                    </span>
-                                                )}
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {/* 气血 */}
-                                    {selectedItem.hp !== undefined && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">气血：</span>
-                                            <span className="font-mono font-bold text-slate-100">
-                                                +{selectedItem.hp + (targetRefKey === 'hp' ? currentRefBonus : 0)}
-                                                {targetRefKey === 'hp' && currentRefBonus > 0 && (
-                                                    <span className="text-cyan-400 font-bold ml-1.5">
-                                                        (+{currentRefBonus})
-                                                    </span>
-                                                )}
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {/* 真气 */}
-                                    {selectedItem.mp !== undefined && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">真气：</span>
-                                            <span className="font-mono font-bold text-slate-100">
-                                                +{selectedItem.mp + (targetRefKey === 'mp' ? currentRefBonus : 0)}
-                                                {targetRefKey === 'mp' && currentRefBonus > 0 && (
-                                                    <span className="text-cyan-400 font-bold ml-1.5">
-                                                        (+{currentRefBonus})
-                                                    </span>
-                                                )}
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {selectedItem.rng && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">攻击距离：</span>
-                                            <span className="text-slate-200">{selectedItem.rng}</span>
-                                        </div>
-                                    )}
-                                    <div className="flex justify-between">
-                                        <span className="text-slate-400">等级限制：</span>
-                                        <span className="text-slate-200">{selectedItem.lv} 级</span>
-                                    </div>
-                                    {selectedItem.xz && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">修真限制：</span>
-                                            <span className="text-slate-200">{selectedItem.xz}</span>
-                                        </div>
-                                    )}
-                                    {selectedItem.prof && selectedItem.prof.length > 0 && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">门派限制：</span>
-                                            <span className="text-slate-200">{selectedItem.prof.join('、')}</span>
-                                        </div>
-                                    )}
-                                    {selectedItem.g && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">性别限制：</span>
-                                            <span className="text-slate-200">{selectedItem.g}</span>
-                                        </div>
-                                    )}
-                                    {selectedItem.dura && (
-                                        <div className="flex justify-between">
-                                            <span className="text-slate-400">耐久：</span>
-                                            <span className="text-slate-200">{selectedItem.dura}</span>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* 附加属性列表 (根据 refLevel 动态判断激活与锁定) */}
-                                {selectedItem.ad && selectedItem.ad.length > 0 && (
-                                    <div className="py-2 border-b border-slate-800/80">
-                                        <div className="text-[11px] font-bold text-amber-300 pb-1 flex items-center justify-between">
-                                            <span>附加属性:</span>
-                                            <span className="text-[10px] text-slate-500 font-mono">
-                                                激活 {selectedItem.ad.filter(a => refLevel >= a.l).length} / {selectedItem.ad.length}
-                                            </span>
-                                        </div>
-                                        <div className="space-y-1">
-                                            {selectedItem.ad.map((attr, aIdx) => {
-                                                const isUnlocked = refLevel >= attr.l;
-                                                return (
-                                                    <div
-                                                        key={aIdx}
-                                                        className={clsx(
-                                                            'flex items-center justify-between py-0.5 text-xs font-mono transition-colors',
-                                                            isUnlocked
-                                                                ? 'text-[#11ff11] font-medium'
-                                                                : 'text-slate-500 opacity-60'
-                                                        )}
-                                                    >
-                                                        <div className="flex items-center gap-1.5">
-                                                            {isUnlocked ? (
-                                                                <CheckCircle2 className="w-3 h-3 text-[#11ff11]" />
-                                                            ) : (
-                                                                <Lock className="w-3 h-3 text-slate-500" />
-                                                            )}
-                                                            <span>{attr.d || attr.n}</span>
-                                                        </div>
-                                                        {attr.l > 0 && (
-                                                            <span className={clsx(
-                                                                'text-[10px] px-1.5 py-0.2 rounded border',
-                                                                isUnlocked
-                                                                    ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300'
-                                                                    : 'bg-slate-800 border-slate-700 text-slate-500'
-                                                            )}>
-                                                                +{attr.l} 解锁
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* 神机属性 (可抽取洗炼词条池) */}
-                                {selectedItem.sj && (
-                                    <div className="pt-2 flex flex-col gap-2">
-                                        <div className="text-[11px] font-bold text-orange-400 flex items-center gap-1">
-                                            <Sparkles className="w-3.5 h-3.5 text-orange-400" />
-                                            <span>神机洗炼属性池:</span>
-                                        </div>
-                                        {Object.entries(selectedItem.sj).map(([groupKey, bonusList]) => {
-                                            if (!bonusList || bonusList.length === 0) return null;
-                                            return (
-                                                <div key={groupKey} className="space-y-1.5">
-                                                    {[11, 13, 15].map(tier => {
-                                                        const tierItems = bonusList.filter(b => b.l === tier);
-                                                        if (tierItems.length === 0) return null;
-                                                        const isUnlocked = refLevel >= tier;
-
-                                                        return (
-                                                            <div
-                                                                key={tier}
-                                                                className={clsx(
-                                                                    'p-2 rounded-lg border text-xs flex flex-col gap-1',
-                                                                    isUnlocked
-                                                                        ? 'bg-orange-950/30 border-orange-500/40 text-orange-200'
-                                                                        : 'bg-slate-900/60 border-slate-800 text-slate-500 opacity-60'
-                                                                )}
-                                                            >
-                                                                <div className="flex items-center justify-between font-mono font-bold">
-                                                                    <span className={isUnlocked ? 'text-orange-400' : 'text-slate-500'}>
-                                                                        +{tier} 档位神机池 ({groupKey})
-                                                                    </span>
-                                                                    <span className="text-[10px]">
-                                                                        {isUnlocked ? '当前已激活' : '需炼器 +' + tier}
-                                                                    </span>
-                                                                </div>
-                                                                <div className="space-y-0.5 pl-1 font-mono text-[11px]">
-                                                                    {tierItems.map((bi, bIdx) => (
-                                                                        <div key={bIdx} className="truncate">
-                                                                            · {bi.d}
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </GameTooltipShell>
-
-                            {/* 完整 +1~+15 炼器递增数值表 (速查小矩阵) */}
-                            {selectedItem.ref && (
-                                <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800 text-xs flex flex-col gap-2">
-                                    <span className="text-slate-400 font-bold flex items-center justify-between">
-                                        <span>+1 至 +15 炼器数值递增表:</span>
-                                        <span className="text-[10px] text-slate-500">点击任意等阶直接切换</span>
-                                    </span>
-                                    <div className="grid grid-cols-5 gap-1.5">
-                                        {selectedItem.ref.slice(0, 15).map((bonus, idx) => {
-                                            const lv = idx + 1;
-                                            const isActive = refLevel === lv;
-                                            return (
-                                                <button
-                                                    key={lv}
-                                                    onClick={() => setRefLevel(lv)}
-                                                    className={clsx(
-                                                        'p-1.5 rounded-lg border text-center transition-all flex flex-col items-center',
-                                                        isActive
-                                                            ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-300 ring-1 ring-cyan-500/40 shadow-sm'
-                                                            : 'bg-slate-900/80 border-slate-800/80 text-slate-400 hover:bg-slate-800'
-                                                    )}
-                                                >
-                                                    <span className="text-[10px] font-mono text-slate-500 leading-tight">+{lv}</span>
-                                                    <span className="text-xs font-mono font-bold text-slate-200 mt-0.5">+{bonus}</span>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        <EquipDetailCard item={selectedItem} />
                     ) : (
                         <div className="zx-card p-12 text-center text-slate-500">
                             请从左侧列表选择一件装备查看详细属性与炼器数值

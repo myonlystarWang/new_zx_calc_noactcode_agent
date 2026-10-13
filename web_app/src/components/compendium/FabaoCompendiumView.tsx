@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { DataService } from '../../services/DataService';
 import type { FabaoItem } from '../../types';
-import { GameColorText, stripGameColor } from '../ui/GameColorText';
+import { stripGameColor } from '../ui/GameColorText';
 import {
     Sparkles,
     Search,
@@ -308,10 +308,6 @@ export const FabaoCompendiumView: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        {/* 简要说明片段 */}
-                                        <div className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed bg-slate-950/40 p-1.5 rounded-lg border border-slate-850">
-                                            <GameColorText text={item.描述_带换行 || item.描述_纯文本 || ''} />
-                                        </div>
                                     </div>
                                 );
                             })}

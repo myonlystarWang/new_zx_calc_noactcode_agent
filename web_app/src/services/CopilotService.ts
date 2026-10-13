@@ -9,7 +9,6 @@
 import { DataService } from './DataService';
 import { calculateDungeonPower } from '../utils/calculator';
 import type { CharacterAttributes, Dungeon, Skill } from '../types';
-import { stripGameColor } from '../components/ui/GameColorText';
 
 export interface CopilotMessage {
     id: string;
@@ -17,7 +16,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'skill' | 'fabao' | 'equip' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag';
+    cardType?: 'boss' | 'skill' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag';
     cardData?: any;
 }
 
@@ -92,45 +91,91 @@ export class CopilotService {
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-        // 1. 法宝查询意图（如 "玉净瓶", "玉净瓶法宝", "天琊", "噬魂", "伤心花", "八卦石", "斩龙剑"）
+        // 1. 法宝查询意图（支持法宝名、特技名、特效机制、门派、种族等多维检索）
         try {
             const fabaos = await dataService.getFabaoList();
             if (Array.isArray(fabaos) && fabaos.length > 0) {
-                const cleanedQ = q.replace(/法宝|特技|怎么样|如何|获取|好用吗|介绍/g, '').trim() || q;
+                // 提取关键词：去除常见助词与疑问词
+                let keyword = q.replace(/带|有|的|法宝|特技|特效|是哪个|有哪些|怎么样|如何|获取|好用吗|介绍|\?|？/g, '').trim();
+                if (!keyword) keyword = q;
 
-                const matchedFabao = fabaos.find(f => {
-                    const name = (f.名称 || '').toLowerCase();
-                    const sName = (f.skillName || '').toLowerCase();
-                    if (name === cleanedQ || name === q) return true;
-                    if (cleanedQ.length >= 2 && name.includes(cleanedQ)) return true;
-                    if (q.includes(name) && name.length >= 2) return true;
-                    if (sName && (sName === cleanedQ || (cleanedQ.length >= 3 && sName.includes(cleanedQ)))) return true;
-                    return false;
-                });
+                // 智能机制同义词/标签扩展
+                const searchTerms = [keyword];
+                if (keyword.includes('爆伤')) {
+                    searchTerms.push('致命一击伤害', '暴击伤害');
+                } else if (keyword.includes('暴击')) {
+                    searchTerms.push('致命一击率');
+                } else if (keyword.includes('破防') || keyword.includes('降防')) {
+                    searchTerms.push('降低目标防御', '防御尽散');
+                } else if (keyword.includes('易伤') || keyword.includes('增伤')) {
+                    searchTerms.push('受到伤害增加', '递增伤害');
+                } else if (keyword.includes('解控') || keyword.includes('驱散')) {
+                    searchTerms.push('驱除', '清除不利');
+                } else if (keyword.includes('流失')) {
+                    searchTerms.push('气血流失', '损失气血');
+                } else if (keyword.includes('禁食')) {
+                    searchTerms.push('禁食');
+                }
 
-                if (matchedFabao) {
-                    const variants = matchedFabao.技能特效 || {};
-                    const skillInfo = variants['普通'] || Object.values(variants)[0] || null;
-                    const cdMatch = skillInfo?.str2?.match(/技能冷却时间：([^\n]+)/);
-                    const cooldown = cdMatch ? cdMatch[1] : '';
-                    const descText = matchedFabao.描述_纯文本 || stripGameColor(matchedFabao.描述_原始 || '');
-
+                // 优先精确定位名称
+                const exactName = fabaos.find(f => f.名称.toLowerCase() === keyword || f.名称.toLowerCase() === q);
+                if (exactName) {
                     return {
                         id: `msg-${Date.now()}`,
                         sender: 'assistant',
-                        text: `为你速查到法宝【${matchedFabao.名称}】（${matchedFabao.类型 || '战斗法宝'}）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：`,
+                        text: `为你速查到法宝【${exactName.名称}】（${exactName.类型 || '战斗法宝'}）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：`,
                         time: timeStr,
                         cardType: 'fabao',
                         cardData: {
-                            id: matchedFabao.id,
-                            name: matchedFabao.名称,
-                            grade: matchedFabao.类型 || '战斗法宝',
-                            description: descText,
-                            skillName: matchedFabao.skillName,
-                            cooldown: cooldown,
-                            skillEffect: skillInfo?.str1 ? `${skillInfo.str1}\n${skillInfo.str2 || ''}` : (skillInfo?.str2 || ''),
-                            route: `/compendium/fabao?name=${encodeURIComponent(matchedFabao.名称)}`,
-                            fabao: matchedFabao
+                            id: exactName.id,
+                            name: exactName.名称,
+                            grade: exactName.类型 || '战斗法宝',
+                            fabao: exactName
+                        }
+                    };
+                }
+
+                // 检索所有匹配法宝 (按名称、特技名、门派、种族、技能特效文本与描述)
+                const matchedList = fabaos.filter(f => {
+                    const name = (f.名称 || '').toLowerCase();
+                    const sName = (f.skillName || '').toLowerCase();
+                    const mp = (f.门派 || '').toLowerCase();
+                    const zc = (f.种族 || '').toLowerCase();
+                    const jsonStr = JSON.stringify(f).toLowerCase();
+
+                    return searchTerms.some(term => {
+                        const t = term.toLowerCase();
+                        if (name.includes(t) || sName.includes(t) || mp.includes(t) || zc.includes(t)) return true;
+                        if (jsonStr.includes(t)) return true;
+                        return false;
+                    });
+                });
+
+                if (matchedList.length === 1) {
+                    const single = matchedList[0];
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你速查到匹配【${keyword}】的法宝【${single.名称}】（${single.类型 || '战斗法宝'}）：`,
+                        time: timeStr,
+                        cardType: 'fabao',
+                        cardData: {
+                            id: single.id,
+                            name: single.名称,
+                            grade: single.类型 || '战斗法宝',
+                            fabao: single
+                        }
+                    };
+                } else if (matchedList.length > 1) {
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你检索到 ${matchedList.length} 件符合【${keyword}】的候选法宝，可在下方直接切换查看详情：`,
+                        time: timeStr,
+                        cardType: 'fabao_candidates',
+                        cardData: {
+                            keyword,
+                            candidates: matchedList
                         }
                     };
                 }
@@ -139,34 +184,66 @@ export class CopilotService {
             console.warn('Load fabao for intent failed:', e);
         }
 
-        // 2. 装备查询意图（如 "修武", "昭武", "彰武", "神隐", "千秋岁"）
+        // 2. 装备查询意图（如 "修武", "昭武", "彰武", "神隐", "千秋岁", "断仇", "辟尘甲"）
         try {
             const equips = await dataService.getEquipList();
             if (Array.isArray(equips) && equips.length > 0) {
-                const cleanedQ = q.replace(/装备|属性|怎么样|如何|炼器/g, '').trim() || q;
-                const matchedEquip = equips.find(e => {
-                    const name = (e.name || '').toLowerCase();
-                    return (cleanedQ.length >= 3 && name.includes(cleanedQ)) ||
-                           (q.includes(name) && name.length >= 4);
-                });
+                let keyword = q.replace(/带|有|的|装备|品质|属性|怎么样|如何|炼器|是哪个|有哪些|\?|？/g, '').trim();
+                if (!keyword) keyword = q;
 
-                if (matchedEquip) {
+                // 优先精确名称匹配
+                const exactEquip = equips.find(e => e.name.toLowerCase() === keyword || e.name.toLowerCase() === q);
+                if (exactEquip) {
                     return {
                         id: `msg-${Date.now()}`,
                         sender: 'assistant',
-                        text: `为你速查到装备【${matchedEquip.name}】（${matchedEquip.q}系列 · ${matchedEquip.slot}）。适用职业：${(matchedEquip.prof || []).join('、')}。`,
+                        text: `为你速查到装备【${exactEquip.name}】（${exactEquip.q}品质 · ${exactEquip.slot}）。支持在下方卡片中直接进行【强化 -1 / 强化 +1】推演：`,
                         time: timeStr,
                         cardType: 'equip',
                         cardData: {
-                            id: matchedEquip.id,
-                            name: matchedEquip.name,
-                            slot: matchedEquip.slot,
-                            lv: matchedEquip.lv,
-                            q: matchedEquip.q,
-                            prof: matchedEquip.prof,
-                            atk: matchedEquip.atk,
-                            ad: matchedEquip.ad,
-                            route: `/compendium/equip?name=${encodeURIComponent(matchedEquip.name)}`
+                            equip: exactEquip
+                        }
+                    };
+                }
+
+                // 模糊/前缀/词条匹配
+                const matchedEquips = equips.filter(e => {
+                    const name = e.name.toLowerCase();
+                    const qName = e.q.toLowerCase();
+                    const slot = e.slot.toLowerCase();
+                    const profs = (e.prof || []).join(' ').toLowerCase();
+
+                    if (keyword.length >= 2 && (name.includes(keyword) || qName.includes(keyword) || slot.includes(keyword) || profs.includes(keyword))) {
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (matchedEquips.length === 1) {
+                    const single = matchedEquips[0];
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你速查到装备【${single.name}】（${single.q}品质 · ${single.slot}）：`,
+                        time: timeStr,
+                        cardType: 'equip',
+                        cardData: {
+                            equip: single
+                        }
+                    };
+                } else if (matchedEquips.length > 1) {
+                    // 若匹配项较多，截取前 20 件代表性候选
+                    const topCandidates = matchedEquips.slice(0, 20);
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你检索到 ${matchedEquips.length} 件符合【${keyword}】的候选装备（已精选展示前 ${topCandidates.length} 件），可在下方切换查看详情：`,
+                        time: timeStr,
+                        cardType: 'equip_candidates',
+                        cardData: {
+                            keyword,
+                            candidates: topCandidates,
+                            totalCount: matchedEquips.length
                         }
                     };
                 }

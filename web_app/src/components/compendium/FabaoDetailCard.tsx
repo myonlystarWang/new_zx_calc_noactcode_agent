@@ -1,27 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import {
     Sliders,
     Zap,
-    Info,
-    ExternalLink
+    Info
 } from 'lucide-react';
 import type { FabaoItem, FabaoSkillDetail } from '../../types';
 import { GameColorText, GameTooltipShell } from '../ui/GameColorText';
 
 interface FabaoDetailCardProps {
     fabao: FabaoItem;
-    showExternalLink?: boolean;
     className?: string;
 }
 
 export const FabaoDetailCard: React.FC<FabaoDetailCardProps> = ({
     fabao,
-    showExternalLink = false,
     className
 }) => {
-    const navigate = useNavigate();
     const [activeVariantKey, setActiveVariantKey] = useState<'普通' | '承' | '真'>('普通');
     const [rankLevel, setRankLevel] = useState<number>(5);
 
@@ -76,18 +71,6 @@ export const FabaoDetailCard: React.FC<FabaoDetailCardProps> = ({
                             {fabao.等级 || 135}级 · {fabao.类型}
                         </span>
                     </div>
-
-                    {showExternalLink && (
-                        <button
-                            type="button"
-                            onClick={() => navigate(`/compendium/fabao?name=${encodeURIComponent(fabao.名称)}`)}
-                            className="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1.5 transition-all shadow-sm"
-                            title="前往法宝图鉴查看所有法宝与筛选"
-                        >
-                            <span>前往法宝图鉴</span>
-                            <ExternalLink className="w-3.5 h-3.5" />
-                        </button>
-                    )}
                 </div>
 
                 {/* 普通 / 承 / 真 特技变体切换 Pills */}
@@ -236,19 +219,6 @@ export const FabaoDetailCard: React.FC<FabaoDetailCardProps> = ({
                 <div className="text-slate-300 leading-relaxed pl-4">
                     <GameColorText text={fabao.描述_带换行 || fabao.描述_纯文本 || '暂无说明'} />
                 </div>
-                {fabao.skillName来源URL && (
-                    <div className="pt-1 pl-4">
-                        <a
-                            href={fabao.skillName来源URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-cyan-400 hover:text-cyan-300 text-[11px] inline-flex items-center gap-1 transition-colors"
-                        >
-                            <span>官方论坛资料出处</span>
-                            <ExternalLink className="w-3 h-3" />
-                        </a>
-                    </div>
-                )}
             </div>
         </div>
     );
