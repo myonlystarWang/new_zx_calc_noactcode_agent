@@ -639,7 +639,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             const activeItem = list[activeIdx] || list[0];
 
                                             return (
-                                                <div className="w-full flex flex-col gap-3">
+                                                <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
                                                     <CandidateSelectorBar
                                                         items={uniqueCandidates.map((u) => ({
                                                             id: u.item.id || u.rawIdx,

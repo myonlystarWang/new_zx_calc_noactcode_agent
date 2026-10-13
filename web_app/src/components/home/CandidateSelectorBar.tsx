@@ -42,7 +42,21 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
         updateScrollState();
         window.addEventListener('resize', updateScrollState);
         return () => window.removeEventListener('resize', updateScrollState);
-    }, [updateScrollState, items, isExpanded]);
+    }, [updateScrollState, items]);
+
+    // 当展开/收起状态切换或选中项切换时，刷新横向滚动尺寸并对齐活动项
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            updateScrollState();
+            if (!isExpanded && scrollRef.current) {
+                const activeNode = scrollRef.current.children[activeIndex] as HTMLElement;
+                if (activeNode) {
+                    activeNode.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }
+        }, 50);
+        return () => clearTimeout(timer);
+    }, [isExpanded, activeIndex, updateScrollState]);
 
     // 监听横向滚轮：在收起模式下滚轮垂直滚动转化为横向滑动，体验极度顺滑
     useEffect(() => {
@@ -84,7 +98,7 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
     if (!items || items.length === 0) return null;
 
     return (
-        <div className={clsx('w-full flex flex-col gap-2', className)}>
+        <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-2', className)}>
             {/* 顶栏信息与展开/收起切换 */}
             <div className="flex items-center justify-between text-xs text-slate-400 px-0.5">
                 <span className="font-medium text-slate-300">
@@ -121,13 +135,13 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                                     onSelect(idx);
                                 }}
                                 className={clsx(
-                                    'px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border shadow-sm',
+                                    'whitespace-nowrap shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border shadow-sm select-none',
                                     isActive
                                         ? 'bg-cyan-500/25 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.35)]'
                                         : 'bg-slate-900/90 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
                                 )}
                             >
-                                <span>{item.title}</span>
+                                <span className="whitespace-nowrap">{item.title}</span>
                                 {item.badge && (
                                     <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-400 font-normal">
                                         {item.badge}
@@ -139,7 +153,7 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                 </div>
             ) : (
                 /* 收起横滑模式：带左右精准平滑切滑按钮与滚轮穿透映射 */
-                <div className="relative group flex items-center">
+                <div className="relative group flex items-center w-full min-w-0 max-w-full overflow-hidden">
                     {/* 左滑导航按钮 */}
                     {canScrollLeft && (
                         <button
@@ -156,7 +170,7 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                     <div
                         ref={scrollRef}
                         onScroll={updateScrollState}
-                        className="w-full flex items-center gap-2 overflow-x-auto py-1.5 px-0.5 scroll-smooth no-scrollbar"
+                        className="w-full min-w-0 flex items-center gap-2 overflow-x-auto py-1.5 px-0.5 scroll-smooth no-scrollbar"
                     >
                         {items.map((item, idx) => {
                             const isActive = idx === activeIndex;
@@ -166,13 +180,13 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                                     type="button"
                                     onClick={() => onSelect(idx)}
                                     className={clsx(
-                                        'px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border shadow-sm select-none',
+                                        'whitespace-nowrap shrink-0 flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border shadow-sm select-none',
                                         isActive
                                             ? 'bg-cyan-500/25 text-cyan-200 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.35)]'
                                             : 'bg-slate-900/90 text-slate-400 hover:text-slate-200 border-slate-800 hover:border-slate-700'
                                     )}
                                 >
-                                    <span>{item.title}</span>
+                                    <span className="whitespace-nowrap">{item.title}</span>
                                     {item.badge && (
                                         <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-400 font-normal">
                                             {item.badge}

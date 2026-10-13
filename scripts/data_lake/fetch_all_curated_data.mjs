@@ -67,7 +67,7 @@ async function extractEquipFull() {
         }
     }
 
-    const specialSlots = ['法身', '罡气', '护符', '勋章', '玺绶', '锦囊', '佩章'];
+    const specialSlots = ['项链', '戒指', '法身', '罡气', '护符', '勋章', '玺绶', '锦囊', '佩章'];
     for (const s of specialSlots) {
         const url = `${API_BASE}/equip/list?slot=${encodeURIComponent(s)}`;
         try {
@@ -94,9 +94,18 @@ async function extractEquipFull() {
         }
     }
 
-    console.log(`装备抽取完成，总计去重后得到 ${allItems.length} 件装备。`);
+    // 剔除 5 个部位（武器、头盔、衣服、靴子、袖甲）中非修武/昭武/彰武/混虚的老旧装备
+    const YUNLING_SLOTS = ['武器', '头盔', '衣服', '靴子', '袖甲'];
+    const filteredItems = allItems.filter(it => {
+        if (YUNLING_SLOTS.includes(it.slot)) {
+            return (it.name && it.name.includes('混虚')) || ['修武', '昭武', '彰武'].includes(it.q);
+        }
+        return true;
+    });
+
+    console.log(`装备抽取完成，总计去重后得到 ${filteredItems.length} 件装备。`);
     const outPath = path.join(TARGET_DIR, 'equip_curated.json');
-    fs.writeFileSync(outPath, JSON.stringify(allItems, null, 2), 'utf8');
+    fs.writeFileSync(outPath, JSON.stringify(filteredItems, null, 2), 'utf8');
     console.log(`已写入: ${outPath} (${(fs.statSync(outPath).size / 1024 / 1024).toFixed(2)} MB)`);
 }
 
