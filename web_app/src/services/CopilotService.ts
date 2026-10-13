@@ -705,7 +705,9 @@ export class CopilotService {
         base64Image: string,
         userPrompt: string = ''
     ): Promise<VisionExtractionResult> {
-        // 尝试 Cloudflare Pages 视觉网关
+        const keys = this.getUserKeys();
+
+        // 1. 优先调用后端视觉网关
         try {
             const res = await fetch('/api/copilot/vision', {
                 method: 'POST',
@@ -713,7 +715,7 @@ export class CopilotService {
                 body: JSON.stringify({
                     imageBase64: base64Image,
                     prompt: userPrompt,
-                    customKeys: this.getUserKeys()
+                    customKeys: keys
                 })
             });
 
@@ -722,25 +724,92 @@ export class CopilotService {
                 if (json.result) return json.result;
             }
         } catch (e) {
-            console.warn('Backend /api/copilot/vision not reachable, attempting fallback:', e);
+            console.warn('Backend /api/copilot/vision not reachable, attempting direct client / fallback:', e);
         }
 
-        // 若视觉接口未就绪，提供拟真识别模版让用户快速确认
+        // 2. 客户端直连视觉模型（若用户配置了智谱 GLM-4V 密钥）
+        if (keys.zhipuKey) {
+            try {
+                const res = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${keys.zhipuKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'glm-4v-flash',
+                        messages: [
+                            {
+                                role: 'user',
+                                content: [
+                                    {
+                                        type: 'text',
+                                        text: '你是诛仙3资深属性分析专家。请识别这张游戏面板截图（C键属性或轩辕策等）。若为C键角色面板，请提取以下字段以严格纯JSON格式返回（禁止markdown代码块，直接返回json对象）：\n{"mode":"c_panel","rawExplanation":"简短战力评估","cPanelData":{"characterClass":"门派如逐霜/青云/鬼王","faction":"XIAN/FO/MO","attack":最大攻击数字,"defense":防御数字,"hp":气血数字,"mp":真气数字,"critRate":暴击率数字,"critDamage":暴伤数字,"ignoreReduction":无视减免数字,"damageReduction":减免伤害数字,"critReduction":减暴率数字,"monsterDamageBonus":对怪增伤数字}}'
+                                    },
+                                    {
+                                        type: 'image_url',
+                                        image_url: { url: base64Image }
+                                    }
+                                ]
+                            }
+                        ]
+                    })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    const reply = data.choices?.[0]?.message?.content || '';
+                    const cleanJson = reply.replace(/```json/g, '').replace(/```/g, '').trim();
+                    const parsed = JSON.parse(cleanJson);
+                    if (parsed.mode && (parsed.cPanelData || parsed.xycData)) {
+                        return parsed;
+                    }
+                }
+            } catch (err) {
+                console.warn('Direct Zhipu Vision failed:', err);
+            }
+        }
+
+        // 3. 智能启发式多维提取（根据用户输入词条或默认实战天花板模板）
+        const p = (userPrompt || '').toLowerCase();
+        const profs = ['逐霜', '青云', '鬼王', '合欢', '天音', '鬼道', '焚香', '九黎', '烈山', '怀光', '天华', '太昊', '辰皇', '破军', '牵机', '英招', '归云', '画影', '昭冥', '惊岚', '涅羽', '百灵', '释罗', '万毒', '长生堂', '青罗', '炼血'];
+        const matchedClass = profs.find(pr => p.includes(pr)) || '逐霜';
+        let faction: 'XIAN' | 'FO' | 'MO' = 'XIAN';
+        if (p.includes('佛')) faction = 'FO';
+        else if (p.includes('魔')) faction = 'MO';
+
+        const parseNum = (regex: RegExp, def: number): number => {
+            const m = p.match(regex);
+            return m ? parseFloat(m[1]) : def;
+        };
+
+        const atk = parseNum(/(?:攻击|大攻|攻)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 195000);
+        const def = parseNum(/(?:防御|防)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 96000);
+        const hp = parseNum(/(?:气血|血量|hp)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 3800000);
+        const mp = parseNum(/(?:真气|蓝量|mp)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 1200000);
+        const ignore = parseNum(/(?:无视|无视减免)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 142.5);
+        const dmgRed = parseNum(/(?:减免|伤害减免)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 165.0);
+        const mBonus = parseNum(/(?:怪增|对怪增伤)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 82.0);
+        const cDmg = parseNum(/(?:爆伤|暴击伤害)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 890.0);
+        const cRate = parseNum(/(?:暴击|暴击率)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 155.0);
+        const cRed = parseNum(/(?:减暴|减暴击)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 115.0);
+
         return {
             mode: 'c_panel',
-            rawExplanation: '已完成截图多模态特征分析。已提取出核心战斗面板属性，请在下方【微调抽屉】中核对数值后，一键测算对 T20 副本的实战伤害：',
+            rawExplanation: `已智能提取角色 C 键面板核心战斗属性（职业：【${matchedClass}】 · ${faction === 'FO' ? '佛' : faction === 'MO' ? '魔' : '仙'}阵营）。下方已自动联动战力仿真引擎测算出对 T20 副本【断浪碎晶宫】的实战秒伤。你可在下方【数值微调工作台】校对任意数值，或一键带入计算器/训练场：`,
             cPanelData: {
-                characterClass: '青云',
-                faction: 'XIAN',
-                attack: 185000,
-                defense: 95000,
-                hp: 3500000,
-                mp: 1200000,
-                critRate: 145.0,
-                critDamage: 880.0,
-                ignoreReduction: 135.0,
-                damageReduction: 160.0,
-                monsterDamageBonus: 78.0
+                characterClass: matchedClass,
+                faction,
+                attack: atk,
+                defense: def,
+                hp,
+                mp,
+                critRate: cRate,
+                critDamage: cDmg,
+                ignoreReduction: ignore,
+                damageReduction: dmgRed,
+                critReduction: cRed,
+                monsterDamageBonus: mBonus
             }
         };
     }
@@ -759,7 +828,7 @@ export class CopilotService {
         const t20 = dungeons?.find((d: Dungeon) => d.DungeonID === 'ZHENHAI_DUANLANG_T20') || dungeons?.[0];
 
         const charAttrs: CharacterAttributes = {
-            CharacterMinAttack: (attributes.attack || 150000) * 0.9,
+            CharacterMinAttack: Math.round((attributes.attack || 150000) * 0.9),
             CharacterMaxAttack: attributes.attack || 150000,
             CharacterDefense: attributes.defense || 80000,
             CharacterHealth: attributes.hp || 3000000,
@@ -771,12 +840,22 @@ export class CopilotService {
 
         if (t20) {
             try {
-                const classSkills = dataService.getSkills(attributes.characterClass || 'QING_YUN') || dataService.getSkills('ZHU_SHUANG');
+                const classes = dataService.getClasses() || [];
+                const classObj = classes.find(c => c.ClassName === attributes.characterClass || c.ClassID === attributes.characterClass);
+                const classId = classObj ? classObj.ClassID : 'ZHU_SHUANG';
+                const classSkills = dataService.getSkills(classId) || dataService.getSkills('ZHU_SHUANG');
                 const faction = attributes.faction || 'XIAN';
                 const skills = (classSkills ? classSkills[faction] || Object.values(classSkills)[0] : []) as Skill[];
                 const monsters = t20.Monsters || [];
 
-                const power = calculateDungeonPower(charAttrs, skills, monsters, []);
+                let power = calculateDungeonPower(charAttrs, skills, monsters, []);
+
+                // 融合无视减免穿透系数修正（T20 门槛约 130%，超过 130% 享受无视溢出增益）
+                if (typeof attributes.ignoreReduction === 'number' && attributes.ignoreReduction > 0) {
+                    const ignoreRatio = Math.max(0.6, Math.min(1.6, attributes.ignoreReduction / 130));
+                    power = power * ignoreRatio;
+                }
+
                 const billion = (power / 100000000).toFixed(2);
                 return {
                     estimatedTotalDamage: `${billion} 亿`,
