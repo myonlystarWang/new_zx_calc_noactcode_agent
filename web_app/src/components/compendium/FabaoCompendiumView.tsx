@@ -49,8 +49,13 @@ export const FabaoCompendiumView: React.FC = () => {
                 if (mounted) {
                     setFabaoList(data);
                     setLoading(false);
-                    // 默认高亮选中天琊或第一件热门法宝
-                    const defaultItem = data.find(x => x.名称 === '天琊') || data[0];
+                    // 默认高亮选中 URL 参数指定的法宝，或者天琊，或者第一件法宝
+                    const rawHash = window.location.hash || '';
+                    const hashQuery = rawHash.includes('?') ? rawHash.split('?')[1] : '';
+                    const urlParams = new URLSearchParams(window.location.search || hashQuery);
+                    const nameParam = urlParams.get('name');
+                    const targetItem = nameParam ? data.find(x => x.名称 === nameParam) : null;
+                    const defaultItem = targetItem || data.find(x => x.名称 === '天琊') || data[0];
                     if (defaultItem) setSelectedFabao(defaultItem);
                 }
             })

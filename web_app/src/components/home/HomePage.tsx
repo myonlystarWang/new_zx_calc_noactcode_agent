@@ -155,7 +155,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
         }
         setChatMessages(prev => [...prev, assistantMsg]);
       } else {
-        const localMatch = copilot.matchLocalIntent(text);
+        const localMatch = await copilot.matchLocalIntent(text);
         if (localMatch) {
           setChatMessages(prev => [...prev, localMatch]);
         } else {
@@ -243,7 +243,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
         }
         setChatMessages(prev => [...prev, assistantMsg]);
       } else {
-        const localMatch = copilot.matchLocalIntent(text);
+        const localMatch = await copilot.matchLocalIntent(text);
         if (localMatch) {
           setChatMessages(prev => [...prev, localMatch]);
         } else {

@@ -16,7 +16,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'skill' | 'fabao' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag';
+    cardType?: 'boss' | 'skill' | 'fabao' | 'equip' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag';
     cardData?: any;
 }
 
@@ -81,9 +81,9 @@ export class CopilotService {
 
     /**
      * L1: 本地极速意图识别（不消耗任何大模型 Token 和 RPM）
-     * 覆盖 Boss、技能、法宝、极致攻略、开服状态
+     * 覆盖 法宝、装备、Boss、技能、极致攻略、开服状态、四象
      */
-    public matchLocalIntent(query: string): CopilotMessage | null {
+    public async matchLocalIntent(query: string): Promise<CopilotMessage | null> {
         const q = query.trim().toLowerCase();
         if (!q) return null;
 
@@ -91,59 +91,86 @@ export class CopilotService {
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-        // 1. 开服状态意图
-        if (q.includes('开服') || q.includes('开没开') || q.includes('维护') || q.includes('选服')) {
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: '为你打开【开服雷达监测】服务。你可以实时追踪全区服心跳，并开启开服三音阶声光提醒！',
-                time: timeStr,
-                cardType: 'server',
-                cardData: {
-                    title: '诛仙3 开服雷达',
-                    route: '/tools/server',
-                    desc: '支持9大战区33个服务器实时在线监测'
+        // 1. 法宝查询意图（如 "玉净瓶", "玉净瓶法宝", "天琊", "噬魂", "伤心花", "八卦石", "斩龙剑"）
+        try {
+            const fabaos = await dataService.getFabaoList();
+            if (Array.isArray(fabaos) && fabaos.length > 0) {
+                const cleanedQ = q.replace(/法宝|特技|怎么样|如何|获取|好用吗|介绍/g, '').trim() || q;
+
+                const matchedFabao = fabaos.find(f => {
+                    const name = (f.名称 || '').toLowerCase();
+                    const sName = (f.skillName || '').toLowerCase();
+                    if (name === cleanedQ || name === q) return true;
+                    if (cleanedQ.length >= 2 && name.includes(cleanedQ)) return true;
+                    if (q.includes(name) && name.length >= 2) return true;
+                    if (sName && (sName === cleanedQ || (cleanedQ.length >= 3 && sName.includes(cleanedQ)))) return true;
+                    return false;
+                });
+
+                if (matchedFabao) {
+                    const variants = matchedFabao.技能特效 || {};
+                    const skillInfo = variants['普通'] || Object.values(variants)[0] || null;
+                    const cdMatch = skillInfo?.str2?.match(/技能冷却时间：([^\n]+)/);
+                    const cooldown = cdMatch ? cdMatch[1] : '';
+                    const descText = matchedFabao.描述_纯文本 || matchedFabao.描述_原始 || '';
+
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你速查到法宝【${matchedFabao.名称}】。\n${descText ? `获取来源/说明：${descText}\n` : ''}${matchedFabao.skillName ? `法宝特技：【${matchedFabao.skillName}】${cooldown ? `（冷却时间: ${cooldown}）` : ''}` : ''}`,
+                        time: timeStr,
+                        cardType: 'fabao',
+                        cardData: {
+                            id: matchedFabao.id,
+                            name: matchedFabao.名称,
+                            grade: matchedFabao.类型 || '战斗法宝',
+                            description: descText,
+                            skillName: matchedFabao.skillName,
+                            cooldown: cooldown,
+                            skillEffect: skillInfo?.str1 ? `${skillInfo.str1}\n${skillInfo.str2 || ''}` : (skillInfo?.str2 || ''),
+                            route: `/compendium/fabao?name=${encodeURIComponent(matchedFabao.名称)}`
+                        }
+                    };
                 }
-            };
+            }
+        } catch (e) {
+            console.warn('Load fabao for intent failed:', e);
         }
 
-        // 2. 极致属性攻略意图
-        if (q.includes('极致无视') || q.includes('极致减免') || q.includes('极致减暴') || q.includes('怪增') || q.includes('躲闪') || q.includes('天花板')) {
-            let attrKey = 'ignore';
-            let title = '极致无视伤害减免攻略';
-            let ceilingVal = 175.7;
+        // 2. 装备查询意图（如 "修武", "昭武", "彰武", "神隐", "千秋岁"）
+        try {
+            const equips = await dataService.getEquipList();
+            if (Array.isArray(equips) && equips.length > 0) {
+                const cleanedQ = q.replace(/装备|属性|怎么样|如何|炼器/g, '').trim() || q;
+                const matchedEquip = equips.find(e => {
+                    const name = (e.name || '').toLowerCase();
+                    return (cleanedQ.length >= 3 && name.includes(cleanedQ)) ||
+                           (q.includes(name) && name.length >= 4);
+                });
 
-            if (q.includes('减免')) {
-                attrKey = 'reduction';
-                title = '极致减免伤害攻略';
-                ceilingVal = 210.0;
-            } else if (q.includes('减暴')) {
-                attrKey = 'critReduction';
-                title = '极致减暴击攻略';
-                ceilingVal = 180.0;
-            } else if (q.includes('怪增')) {
-                attrKey = 'monsterDamageBonus';
-                title = '极致对怪物增伤攻略';
-                ceilingVal = 120.0;
-            } else if (q.includes('躲闪')) {
-                attrKey = 'dodge';
-                title = '极致技能躲闪攻略';
-                ceilingVal = 230.0;
-            }
-
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: `查询到【${title}】的核心上限基准（理论最高约 ${ceilingVal}%）。点击卡片可直接查看全领域细分与大致毕业门槛：`,
-                time: timeStr,
-                cardType: 'ceiling',
-                cardData: {
-                    title,
-                    attrKey,
-                    ceilingVal,
-                    route: `/compendium/ceiling?attr=${attrKey}`
+                if (matchedEquip) {
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你速查到装备【${matchedEquip.name}】（${matchedEquip.q}系列 · ${matchedEquip.slot}）。适用职业：${(matchedEquip.prof || []).join('、')}。`,
+                        time: timeStr,
+                        cardType: 'equip',
+                        cardData: {
+                            id: matchedEquip.id,
+                            name: matchedEquip.name,
+                            slot: matchedEquip.slot,
+                            lv: matchedEquip.lv,
+                            q: matchedEquip.q,
+                            prof: matchedEquip.prof,
+                            atk: matchedEquip.atk,
+                            ad: matchedEquip.ad,
+                            route: `/compendium/equip?name=${encodeURIComponent(matchedEquip.name)}`
+                        }
+                    };
                 }
-            };
+            }
+        } catch (e) {
+            console.warn('Load equip for intent failed:', e);
         }
 
         // 3. 副本 BOSS 查询意图
@@ -206,7 +233,46 @@ export class CopilotService {
             }
         }
 
-        // 5. 轩辕策四象计算意图
+        // 5. 极致属性攻略意图
+        if (q.includes('极致无视') || q.includes('极致减免') || q.includes('极致减暴') || q.includes('怪增') || q.includes('躲闪') || q.includes('天花板') || q.includes('上限')) {
+            let attrKey = 'ignore';
+            let title = '极致无视伤害减免攻略';
+            let ceilingVal = 175.7;
+
+            if (q.includes('减免')) {
+                attrKey = 'reduction';
+                title = '极致减免伤害攻略';
+                ceilingVal = 210.0;
+            } else if (q.includes('减暴')) {
+                attrKey = 'critReduction';
+                title = '极致减暴击攻略';
+                ceilingVal = 180.0;
+            } else if (q.includes('怪增')) {
+                attrKey = 'monsterDamageBonus';
+                title = '极致对怪物增伤攻略';
+                ceilingVal = 120.0;
+            } else if (q.includes('躲闪')) {
+                attrKey = 'dodge';
+                title = '极致技能躲闪攻略';
+                ceilingVal = 230.0;
+            }
+
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `查询到【${title}】的核心上限基准（理论最高约 ${ceilingVal}%）。点击卡片可直接查看全领域细分与大致毕业门槛：`,
+                time: timeStr,
+                cardType: 'ceiling',
+                cardData: {
+                    title,
+                    attrKey,
+                    ceilingVal,
+                    route: `/compendium/ceiling?attr=${attrKey}`
+                }
+            };
+        }
+
+        // 6. 轩辕策四象计算意图
         if (q.includes('轩辕策') || q.includes('青龙书') || q.includes('白虎书') || q.includes('玄武书') || q.includes('朱雀书')) {
             return {
                 id: `msg-${Date.now()}`,
@@ -222,11 +288,27 @@ export class CopilotService {
             };
         }
 
+        // 7. 开服状态意图
+        if (q.includes('开服') || q.includes('开没开') || q.includes('维护') || q.includes('选服') || q.includes('战区') || q.includes('几服')) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你打开【全区开服雷达监测】服务。实时追踪 9 大战区 33 服心跳，并可开启开服三音阶声光提醒！',
+                time: timeStr,
+                cardType: 'server',
+                cardData: {
+                    title: '全区开服雷达监测站',
+                    route: '/tools/server',
+                    desc: '支持9大战区33个服务器实时在线监测'
+                }
+            };
+        }
+
         return null;
     }
 
     /**
-     * L2: 纯文本聊天通道（只走纯文本模型池，严禁占用视觉配额）
+     * L2: 纯文本聊天通道（智能知识回复，无 Key 或网络故障时提供高质量诛仙3战术与机制应答）
      */
     public async chatText(
         prompt: string,
@@ -265,7 +347,7 @@ export class CopilotService {
                     body: JSON.stringify({
                         model: 'glm-4-flash',
                         messages: [
-                            { role: 'system', content: '你是诛仙3资深战斗配装与机制专家，回答精炼严谨，紧扣副本战力与属性。' },
+                            { role: 'system', content: '你是诛仙3资深战斗配装与机制专家，回答精炼严谨，紧扣副本战力与属性。回答禁止使用 LaTeX，公式请用纯文本表示。' },
                             ...history,
                             { role: 'user', content: prompt }
                         ]
@@ -280,7 +362,34 @@ export class CopilotService {
             }
         }
 
-        return `为你匹配到相关战斗咨询：目前诛仙3以无视减免、对怪增伤、减免百分比为核心攻防三大件。若针对特定首领（如T20断浪碎晶宫），建议保持无视达到130%以上、怪增75%以上以实现破防真伤。`;
+        // 本地智能领域知识引擎（杜绝单一死板的硬编码一句话）
+        const p = prompt.trim().toLowerCase();
+
+        if (p.includes('法宝')) {
+            return `关于【诛仙3法宝体系】：\n当前副本主流输出与辅助法宝梯队：\n1. 【天琊 / 噬魂】：经典核心法宝，具备高额本体攻击与附加攻击成长，传承特效提供强大的减防与破防收益。\n2. 【伤心花 / 斩龙剑】：具备极佳的爆发增伤、禁食与控场机制。\n3. 【玉净瓶】：通用型自保与解控法宝，提供技能净化与气血防护。\n你可以直接输入具体法宝名称（如：玉净瓶、天琊、噬魂）调取全阶特技数值与图鉴直达卡片。`;
+        }
+
+        if (p.includes('逐霜') || p.includes('苍龙啸')) {
+            return `关于【逐霜】职业副本战力定位：\n1. 核心机制：逐霜主要依赖【苍龙啸】的多段爆发。在仙阵营与龙怒状态下，爆发秒伤达到全门派第一梯队。\n2. 属性优先级：\n- 无视减免：优先堆叠至 140%+ 满足 T20 门槛；\n- 对怪增伤：建议达到 80%+；\n- 暴击率与暴伤：暴击率需抵消副本 Boss 减暴（T20 需 170%+），爆伤建议 850%+。\n3. 你可以点击左上角直接进入【属性战力计算器】精确录入逐霜面板并测算每段伤害。`;
+        }
+
+        if (p.includes('青云') || p.includes('神剑')) {
+            return `关于【青云门】职业副本战力定位：\n1. 核心机制：以【神剑御雷真诀】等大范围持续群攻与高频段数为核心，佛青云拥有优秀自保与续航，魔青云偏向极致减防爆发。\n2. 属性优先级：追求极致攻击力、本体攻击比例与技能附加伤害，配合减爆免与无视减免打满群桩秒伤。`;
+        }
+
+        if (p.includes('鬼王') || p.includes('未名斩')) {
+            return `关于【鬼王宗】职业副本战力定位：\n1. 核心机制：【未名斩】多段单体爆发配合聚灵一击的极限瞬间出伤。\n2. 属性优先级：真气总量直接决定聚灵爆发伤害，同时需兼顾对怪增伤与暴击爆伤。`;
+        }
+
+        if (p.includes('破防') || p.includes('伤害') || p.includes('计算') || p.includes('公式') || p.includes('门槛')) {
+            return `【诛仙3实战破防与秒伤机制说明】：\n实战最终技能伤害由以下维度层层相乘：\n1. 基础破防：(人物攻击 - 首领防御) * 技能百分比 + 技能附加攻击\n2. 减免穿透：若 人物无视减免 <= 首领伤害减免，伤害将大幅衰减；当无视溢出后开始享受真伤增幅。\n3. 暴击结算：若 人物暴击率 <= 首领减暴，则无法暴击；暴击后伤害倍率为 (人物暴伤 - 首领减暴伤)。\n4. 怪物增伤加成：直接对最终结果进行 (1 + 对怪增伤百分比) 的全额增幅。\n\n在 T20 断浪碎晶宫（赤梭）实战中，推荐指标：攻击 >= 85,000，无视 >= 130%，怪增 >= 75%，暴击率 >= 170%。`;
+        }
+
+        if (p.includes('配装') || p.includes('装备') || p.includes('元婴') || p.includes('轩辕策')) {
+            return `【诛仙3主流副本配装梯度建议】：\n1. 武器防具：神隐 / 混虚彰武为当前毕业选择，平民进阶推荐混虚昭武 +11 蕴灵。\n2. 元婴属性：输出职业首选「双无视 + 双爆伤」或「三无视」，辅助自保职业首选「双减免 + 双减暴」。\n3. 轩辕策四象：青龙书与白虎书主增伤技能成长，朱雀书与玄武书主抗性与保命，推荐使用本站【轩辕策四象模拟器】推算满级毕业度。\n4. 佩章与阵灵：优先选择带怪物增伤、无视人物减免的组合词条。`;
+        }
+
+        return `为你检索诛仙3数据库与战斗模型：\n目前针对该咨询，建议通过以下途径获取精确数值：\n1. 【识图打桩】：在此处直接粘贴（Ctrl+V）游戏内 C 键面板属性截图，AI 将自动秒测对 T20 副本的实战爆发秒伤。\n2. 【实体速查】：输入具体的法宝名（如「玉净瓶」）、首领名（如「赤梭」）、技能名（如「苍龙啸」）获取原色数据卡。\n3. 【极值攻略】：输入「无视」、「减免」、「怪增」可查看当前版本全服天花板极限数值。`;
     }
 
     /**
