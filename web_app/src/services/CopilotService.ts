@@ -9,6 +9,7 @@
 import { DataService } from './DataService';
 import { calculateDungeonPower } from '../utils/calculator';
 import type { CharacterAttributes, Dungeon, Skill, CuratedEquipItem } from '../types';
+import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
 export interface CopilotMessage {
     id: string;
@@ -138,13 +139,17 @@ export class CopilotService {
         const isYunling = (it: CuratedEquipItem) =>
             Boolean(it.ref && it.ref.length > 0 && YUNLING_SLOTS.includes(it.slot || ''));
 
-        const buildEquipReplyText = (it: CuratedEquipItem) => {
+        const buildEquipReplyText = (it: CuratedEquipItem, allList?: CuratedEquipItem[]) => {
             const qText = it.q ? `${it.q}品质 · ` : '';
             const slotText = it.slot || '';
             const meta = qText ? `${qText}${slotText}` : slotText;
-            const hint = isYunling(it)
-                ? '支持在下方卡片中进行【强化 -1 / 强化 +1】推演：'
-                : '装备原生属性卡如下：';
+            const series = allList ? getEquipSeries(it, allList) : null;
+            let hint = '装备原生属性卡如下：';
+            if (isYunling(it)) {
+                hint = '支持在卡片右上角进行【强化 -1 / 强化 +1】推演：';
+            } else if (series && series.items.length > 1) {
+                hint = `支持在卡片右上角进行【降阶 / 升阶】查看同系共 ${series.items.length} 阶属性：`;
+            }
             return `为你速查到装备【${it.name}】${meta ? `（${meta}）` : ''}。${hint}`;
         };
 
@@ -189,15 +194,25 @@ export class CopilotService {
                         return raw === q || base === q;
                     });
                     if (exactEquip) {
+                        // 如果命中该系列的基础装备且用户未指定具体星级/阶位，默认展示最高阶（如 ★★★），并支持卡片内降阶
+                        let targetEquip = exactEquip;
+                        const series = getEquipSeries(exactEquip, equips);
+                        if (series && series.items.length > 1) {
+                            const hasSpecificTier = q.includes('★') || q.includes('星') || q.includes('初') || q.includes('阶');
+                            if (!hasSpecificTier) {
+                                targetEquip = series.items[series.items.length - 1];
+                            }
+                        }
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
-                            text: buildEquipReplyText(exactEquip),
+                            text: buildEquipReplyText(targetEquip, equips),
                             time: timeStr,
                             cardType: 'equip',
                             cardData: {
-                                equip: exactEquip,
-                                initialRefLevel: targetRefLevel
+                                equip: targetEquip,
+                                initialRefLevel: targetRefLevel,
+                                allEquips: equips
                             }
                         };
                     }
@@ -241,32 +256,37 @@ export class CopilotService {
                         return (b.lv || 0) - (a.lv || 0);
                     });
 
-                    if (matchedEquips.length === 1) {
-                        const single = matchedEquips[0];
+                    // 将同系列的中间阶位聚合去重，默认保留最高阶作为系列候选代表（避免数十件同系中间阶位填满候选栏）
+                    const collapsedCandidates = collapseSeriesCandidates(matchedEquips, equips);
+
+                    if (collapsedCandidates.length === 1) {
+                        const single = collapsedCandidates[0];
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
-                            text: buildEquipReplyText(single),
+                            text: buildEquipReplyText(single, equips),
                             time: timeStr,
                             cardType: 'equip',
                             cardData: {
                                 equip: single,
-                                initialRefLevel: targetRefLevel
+                                initialRefLevel: targetRefLevel,
+                                allEquips: equips
                             }
                         };
-                    } else if (matchedEquips.length > 1) {
-                        const topCandidates = matchedEquips.slice(0, 60);
+                    } else if (collapsedCandidates.length > 1) {
+                        const topCandidates = collapsedCandidates.slice(0, 60);
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
-                            text: `为你检索到 ${matchedEquips.length} 件符合【${query}】的候选装备，可在下方直接切换查看详情：`,
+                            text: `为你检索到 ${collapsedCandidates.length} 件符合【${query}】的候选装备，可在下方直接切换查看详情：`,
                             time: timeStr,
                             cardType: 'equip_candidates',
                             cardData: {
                                 keyword: query,
                                 candidates: topCandidates,
-                                totalCount: matchedEquips.length,
-                                initialRefLevel: targetRefLevel
+                                totalCount: collapsedCandidates.length,
+                                initialRefLevel: targetRefLevel,
+                                allEquips: equips
                             }
                         };
                     }

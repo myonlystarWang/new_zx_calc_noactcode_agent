@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import clsx from 'clsx';
 import type { CuratedEquipItem } from '../../types';
 import {
@@ -6,11 +6,14 @@ import {
     getYunlingColor,
     getEquipQualityColor
 } from '../../constants/gameColorSystem';
+import { getEquipSeries } from '../../utils/equipSeries';
+import { DataService } from '../../services/DataService';
 
 export interface EquipDetailCardProps {
     item: CuratedEquipItem;
     initialRefLevel?: number;
     className?: string;
+    allEquips?: CuratedEquipItem[];
 }
 
 const YUNLING_SLOTS = ['武器', '头盔', '帽子', '衣服', '靴子', '鞋', '袖甲', '护腕'];
@@ -40,37 +43,67 @@ function getRefKey(it: CuratedEquipItem): 'atk' | 'def' | 'hp' | 'mp' | null {
 export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
     item,
     initialRefLevel,
-    className
+    className,
+    allEquips
 }) => {
+    // 当前呈现的装备对象（支持在同系升降阶时切换）
+    const [currentItem, setCurrentItem] = useState<CuratedEquipItem>(item);
+    const [equipList, setEquipList] = useState<CuratedEquipItem[]>(allEquips || []);
+
     // 默认高亮 +11（主流分水岭档位），或用户指令中指定的阶位
     const [refLevel, setRefLevel] = useState<number>(initialRefLevel ?? 11);
 
+    // 当父级传入的 item 改变时同步更新
+    useEffect(() => {
+        setCurrentItem(item);
+    }, [item]);
+
+    // 装备全集数据同步与异步兜底加载
+    useEffect(() => {
+        if (allEquips && allEquips.length > 0) {
+            setEquipList(allEquips);
+            return;
+        }
+        DataService.getInstance().getEquipList()
+            .then(list => {
+                if (Array.isArray(list)) setEquipList(list);
+            })
+            .catch(err => {
+                console.warn('Load equip list for series failed:', err);
+            });
+    }, [allEquips]);
+
+    // 提取当前装备的进化系列信息（金身、法身、战罡、锦囊、印、项链、戒指等）
+    const seriesInfo = useMemo(() => {
+        return getEquipSeries(currentItem, equipList);
+    }, [currentItem, equipList]);
+
     // 判断当前装备是否属于蕴灵炼器范畴（防具/武器且具备 ref 梯度）
     const hasYunling = useMemo(() => {
-        return Boolean(item.ref && item.ref.length > 0 && YUNLING_SLOTS.includes(item.slot || ''));
-    }, [item.ref, item.slot]);
+        return Boolean(currentItem.ref && currentItem.ref.length > 0 && YUNLING_SLOTS.includes(currentItem.slot || ''));
+    }, [currentItem.ref, currentItem.slot]);
 
     // 格式化装备全名，防止（男）（男）重复
     const cleanName = useMemo(() => {
-        let name = item.name || '';
+        let name = currentItem.name || '';
         const hasGenderInName = /[（(][男女][）)]/.test(name);
-        if (!hasGenderInName && item.g) {
-            name += `（${item.g}）`;
+        if (!hasGenderInName && currentItem.g) {
+            name += `（${currentItem.g}）`;
         }
         return name;
-    }, [item.name, item.g]);
+    }, [currentItem.name, currentItem.g]);
 
-    const qualityColor = useMemo(() => getEquipQualityColor(item.q, item.name), [item.q, item.name]);
+    const qualityColor = useMemo(() => getEquipQualityColor(currentItem.q, currentItem.name), [currentItem.q, currentItem.name]);
     const yunlingColor = useMemo(() => getYunlingColor(refLevel), [refLevel]);
     const titleColor = hasYunling ? yunlingColor : qualityColor;
-    const targetRefKey = useMemo(() => getRefKey(item), [item]);
+    const targetRefKey = useMemo(() => getRefKey(currentItem), [currentItem]);
 
     // 计算当前 +N 阶炼器数值加成
     const currentRefBonus = useMemo(() => {
-        if (!hasYunling || !item.ref || refLevel === 0) return 0;
-        const idx = Math.min(refLevel - 1, item.ref.length - 1);
-        return item.ref[idx] || 0;
-    }, [hasYunling, item.ref, refLevel]);
+        if (!hasYunling || !currentItem.ref || refLevel === 0) return 0;
+        const idx = Math.min(refLevel - 1, currentItem.ref.length - 1);
+        return currentItem.ref[idx] || 0;
+    }, [hasYunling, currentItem.ref, refLevel]);
 
     return (
         <div className={clsx(
@@ -86,7 +119,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                     letterSpacing: '0.3px'
                 }}
             >
-                {/* 首行装备名称与强化步进按钮：移除单独顶栏与胶囊，强化按钮直接放置于右上角 */}
+                {/* 首行装备名称与强化/升降阶步进按钮 */}
                 <div
                     className="font-bold text-[14px] pb-1.5 mb-2 border-b border-[#1f293d]/80 flex items-center justify-between"
                     style={{ color: titleColor }}
@@ -95,6 +128,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                         {hasYunling ? `${cleanName}（蕴灵 +${refLevel}）` : cleanName}
                     </span>
 
+                    {/* 1. 蕴灵装备：强化 -1 / 强化 +1 */}
                     {hasYunling && (
                         <div className="flex items-center gap-1.5">
                             <button
@@ -125,59 +159,102 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                             </button>
                         </div>
                     )}
+
+                    {/* 2. 同系装备（金身、法身、大乘战罡、锦囊、印、项链、戒指等）：降阶 / 升阶 */}
+                    {!hasYunling && seriesInfo && seriesInfo.items.length > 1 && (
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-[11px] font-sans text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30">
+                                {seriesInfo.currentIndex + 1}/{seriesInfo.items.length}阶
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (seriesInfo.currentIndex > 0) {
+                                        setCurrentItem(seriesInfo.items[seriesInfo.currentIndex - 1]);
+                                    }
+                                }}
+                                disabled={seriesInfo.currentIndex <= 0}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-xs font-bold transition-all border font-sans',
+                                    seriesInfo.currentIndex <= 0
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
+                                )}
+                            >
+                                降阶
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (seriesInfo.currentIndex < seriesInfo.items.length - 1) {
+                                        setCurrentItem(seriesInfo.items[seriesInfo.currentIndex + 1]);
+                                    }
+                                }}
+                                disabled={seriesInfo.currentIndex >= seriesInfo.items.length - 1}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-xs font-bold transition-all border font-sans',
+                                    seriesInfo.currentIndex >= seriesInfo.items.length - 1
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-amber-600/30 border-amber-500/50 text-amber-200 hover:bg-amber-600/50 hover:text-white'
+                                )}
+                            >
+                                升阶
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 {/* 攻击距离（武器专属，纯白字） */}
-                {item.rng !== undefined && (
+                {currentItem.rng !== undefined && (
                     <div style={{ color: GAME_COLORS.WHITE }}>
-                        攻击距离 {item.rng.toFixed(2)}
+                        攻击距离 {currentItem.rng.toFixed(2)}
                     </div>
                 )}
 
                 {/* 基础攻击（经典游戏蓝 #8080ff，炼器加成直接合并不分行、不带右侧括号） */}
-                {item.atk && (
+                {currentItem.atk && (
                     <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        基础攻击 {item.atk[0] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)} － {item.atk[1] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)}
+                        基础攻击 {currentItem.atk[0] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)} － {currentItem.atk[1] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)}
                     </div>
                 )}
 
                 {/* 命中与躲闪（常见于法身、金身） */}
-                {item.hit !== undefined && (
+                {currentItem.hit !== undefined && (
                     <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        命中 ＋{item.hit}
+                        命中 ＋{currentItem.hit}
                     </div>
                 )}
-                {item.dod !== undefined && (
+                {currentItem.dod !== undefined && (
                     <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        躲闪 ＋{item.dod}
+                        躲闪 ＋{currentItem.dod}
                     </div>
                 )}
 
                 {/* 防御力（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
-                {item.def !== undefined && (
+                {currentItem.def !== undefined && (
                     <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        基础防御 ＋{item.def + (hasYunling && targetRefKey === 'def' ? currentRefBonus : 0)}
+                        基础防御 ＋{currentItem.def + (hasYunling && targetRefKey === 'def' ? currentRefBonus : 0)}
                     </div>
                 )}
 
                 {/* 基础气血（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
-                {item.hp !== undefined && (
+                {currentItem.hp !== undefined && (
                     <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        基础气血 ＋{item.hp + (hasYunling && targetRefKey === 'hp' ? currentRefBonus : 0)}
+                        基础气血 ＋{currentItem.hp + (hasYunling && targetRefKey === 'hp' ? currentRefBonus : 0)}
                     </div>
                 )}
 
                 {/* 基础真气（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
-                {item.mp !== undefined && (
+                {currentItem.mp !== undefined && (
                     <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        基础真气 ＋{item.mp + (hasYunling && targetRefKey === 'mp' ? currentRefBonus : 0)}
+                        基础真气 ＋{currentItem.mp + (hasYunling && targetRefKey === 'mp' ? currentRefBonus : 0)}
                     </div>
                 )}
 
                 {/* 附加属性列表：未激活前缀为灰色的 (+X)，激活后展示为经典游戏蓝 */}
-                {item.ad && item.ad.length > 0 && (
+                {currentItem.ad && currentItem.ad.length > 0 && (
                     <div>
-                        {item.ad.map((attr, aIdx) => {
+                        {currentItem.ad.map((attr, aIdx) => {
                             const isUnlocked = !hasYunling || refLevel >= attr.l;
                             const formattedText = formatAttrText(attr.d || attr.n);
                             const displayText = !isUnlocked && attr.l > 0
@@ -200,12 +277,12 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                 )}
 
                 {/* 神机属性洗炼池：仅当装备支持蕴灵且具备神机属性时展示 */}
-                {hasYunling && item.sj && Object.entries(item.sj).length > 0 && (
+                {hasYunling && currentItem.sj && Object.entries(currentItem.sj).length > 0 && (
                     <div className="mt-2 pt-1 border-t border-[#1c2436]/60 flex flex-col gap-1">
                         <div className="text-[12px] font-bold text-amber-300">
                             神机洗炼属性池:
                         </div>
-                        {Object.entries(item.sj).map(([groupKey, bonusList]) => {
+                        {Object.entries(currentItem.sj).map(([groupKey, bonusList]) => {
                             if (!bonusList || bonusList.length === 0) return null;
                             return (
                                 <div key={groupKey} className="space-y-1">
@@ -247,30 +324,30 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                     </div>
                     <div style={{ color: GAME_COLORS.WHITE }}>
                         穿戴要求：
-                        {item.prof && item.prof.length > 0 && item.prof[0] !== '通用' && (
+                        {currentItem.prof && currentItem.prof.length > 0 && currentItem.prof[0] !== '通用' && (
                             <span style={{ color: GAME_COLORS.PURE_RED }}>
-                                {item.prof.join('、')}，
+                                {currentItem.prof.join('、')}，
                             </span>
                         )}
-                        {item.xz && (
+                        {currentItem.xz && (
                             <span style={{ color: GAME_COLORS.PURE_RED }}>
-                                {item.xz}，
+                                {currentItem.xz}，
                             </span>
                         )}
                         <span style={{ color: GAME_COLORS.PURE_RED }}>
-                            {item.lv ? `${item.lv}级` : '105级'}
+                            {currentItem.lv ? `${currentItem.lv}级` : '105级'}
                         </span>
                     </div>
                     <div style={{ color: GAME_COLORS.WHITE }}>
                         无法交易
                     </div>
-                    {item.price !== undefined && (
+                    {currentItem.price !== undefined && (
                         <div style={{ color: GAME_COLORS.WHITE }}>
-                            价格 {Math.floor(item.price / 100) || 1} 银
+                            价格 {Math.floor(currentItem.price / 100) || 1} 银
                         </div>
                     )}
                     <div style={{ color: GAME_COLORS.WHITE }}>
-                        {item.slot}
+                        {currentItem.slot}
                     </div>
                 </div>
             </div>

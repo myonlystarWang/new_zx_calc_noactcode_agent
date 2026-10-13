@@ -338,10 +338,14 @@ export const EquipCompendiumView: React.FC = () => {
                     )}
                 </div>
 
-                {/* 右栏：保真装备详细 Tooltip + 强化步进交互 (lg: 5列, sticky) */}
+                {/* 右栏：保真装备详细 Tooltip + 强化/升降阶步进交互 (lg: 5列, sticky) */}
                 <div className="lg:col-span-5 sticky top-20 flex flex-col gap-3">
                     {selectedItem ? (
-                        <EquipDetailCard item={selectedItem} />
+                        <EquipDetailCard
+                            key={`${selectedItem.id || selectedItem.name}`}
+                            item={selectedItem}
+                            allEquips={equipList}
+                        />
                     ) : (
                         <div className="zx-card p-12 text-center text-slate-500">
                             请从左侧列表选择一件装备查看详细属性与炼器数值
