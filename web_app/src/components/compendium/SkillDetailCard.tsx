@@ -145,6 +145,21 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
                     <GameColorText text={currentDesc} />
                 </div>
             </GameTooltipShell>
+
+            {/* 联动天书与强化技能标签 */}
+            {skill.buffed_by && skill.buffed_by.length > 0 && (
+                <div className="flex items-center gap-2 flex-wrap pt-1 text-xs">
+                    <span className="text-slate-400 font-medium">关联天书与强化:</span>
+                    {skill.buffed_by.map(([buffId, buffName]) => (
+                        <span
+                            key={buffId}
+                            className="px-2.5 py-0.5 rounded-md bg-cyan-950/60 border border-cyan-800/50 text-cyan-300 font-mono text-[11px]"
+                        >
+                            {buffName}
+                        </span>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

@@ -97,5 +97,6 @@ export interface CuratedSkillItem {
     tags?: string[];
     group_name?: string;
     group_kind?: string;
+    buffed_by?: [number, string][];
 }
 

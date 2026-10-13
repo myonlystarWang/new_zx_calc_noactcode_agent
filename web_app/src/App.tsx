@@ -20,7 +20,6 @@ import { SimulationArena } from './components/arena/SimulationArena';
 import { CompendiumView } from './components/compendium/CompendiumView';
 import { ToolsHubView } from './components/tools/ToolsHubView';
 import { ChangelogPage } from './components/changelog/ChangelogPage';
-import { GameAICopilotModal } from './components/copilot/GameAICopilotModal';
 import { decodeSharePayload } from './utils/shareSnapshot';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AlertTriangle } from 'lucide-react';
@@ -336,8 +335,6 @@ const MainContent: React.FC = () => {
 
         <Route path="*" element={<Navigate to={ROUTE.home} replace />} />
       </Routes>
-
-      <GameAICopilotModal />
 
       {activeTab !== 'arena' && <Footer activeTab={activeTab} />}
     </div>

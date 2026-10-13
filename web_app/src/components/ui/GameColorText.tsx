@@ -62,7 +62,7 @@ export const GameColorText: React.FC<GameColorTextProps> = ({
 
     const content = segments.map((seg, idx) => {
         // 如果分段中包含换行，拆分为带 <br/> 的节点
-        const lines = seg.text.split('\n');
+        const lines = seg.text.replace(/\r/g, '').split('\n');
         return (
             <span key={idx} style={{ color: seg.color }}>
                 {lines.map((line, lIdx) => (

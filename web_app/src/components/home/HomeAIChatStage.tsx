@@ -20,6 +20,7 @@ import {
     type CopilotMessage,
     type ExtractedCPanel
 } from '../../services/CopilotService';
+import { DataService } from '../../services/DataService';
 import { FabaoDetailCard } from '../compendium/FabaoDetailCard';
 import { EquipDetailCard } from '../compendium/EquipDetailCard';
 import { SkillDetailCard } from '../compendium/SkillDetailCard';
@@ -160,13 +161,16 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         }));
     };
 
-    const handleImportToSimulator = (panel: ExtractedCPanel) => {
-        if (panel.characterClass) {
-            updateCharacterClass(panel.characterClass, panel.faction || 'XIAN');
-        }
+    const handleImportToSimulator = (panel: ExtractedCPanel, target: 'calc' | 'arena' = 'calc') => {
+        const dataService = DataService.getInstance();
+        const classes = dataService.getClasses() || [];
+        const classObj = classes.find(c => c.ClassName === panel.characterClass || c.ClassID === panel.characterClass);
+        const classId = classObj ? classObj.ClassID : (panel.characterClass || 'ZHU_SHUANG');
+
+        updateCharacterClass(classId, panel.faction || 'XIAN');
         updateCharacterAttributes({
             CharacterMaxAttack: panel.attack || 180000,
-            CharacterMinAttack: (panel.attack || 180000) * 0.9,
+            CharacterMinAttack: Math.round((panel.attack || 180000) * 0.9),
             CharacterDefense: panel.defense || 90000,
             CharacterHealth: panel.hp || 3000000,
             CharacterMana: panel.mp || 1000000,
@@ -174,7 +178,12 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
             CharacterCriticalHitDamagePercent: panel.critDamage || 850,
             CharacterMonsterDamageIncreasePercent: panel.monsterDamageBonus || 70,
         });
-        navigate('/');
+
+        if (target === 'arena') {
+            navigate('/arena');
+        } else {
+            navigate('/calculator');
+        }
     };
 
     const handleCopyJson = (msgId: string, panel: ExtractedCPanel) => {
@@ -422,14 +431,25 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                             <span>{copiedId === msg.id ? '已复制' : '复制属性 JSON'}</span>
                                                         </button>
 
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleImportToSimulator(activePanel)}
-                                                            className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-950/40 transition-all"
-                                                        >
-                                                            <span>一键带入主战斗模拟室</span>
-                                                            <ArrowRight className="w-3.5 h-3.5" />
-                                                        </button>
+                                                        <div className="flex items-center gap-2.5 flex-wrap">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleImportToSimulator(activePanel, 'arena')}
+                                                                className="px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white font-medium text-xs flex items-center gap-1.5 transition-all"
+                                                            >
+                                                                <span>前往副本模拟训练场</span>
+                                                                <ExternalLink className="w-3.5 h-3.5" />
+                                                            </button>
+
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleImportToSimulator(activePanel, 'calc')}
+                                                                className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-950/40 transition-all"
+                                                            >
+                                                                <span>一键带入战力计算器</span>
+                                                                <ArrowRight className="w-3.5 h-3.5" />
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             );
