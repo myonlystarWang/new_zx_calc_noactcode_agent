@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import {
     ArrowLeft,
     Plus,
@@ -69,16 +69,23 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         return null;
     }, [messages]);
 
-    useEffect(() => {
-        if (lastUserMsgElRef.current && chatContainerRef.current) {
-            const container = chatContainerRef.current;
-            const target = lastUserMsgElRef.current;
-            const targetTop = target.offsetTop - container.offsetTop - 12;
-            container.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
-        } else {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const scrollToLatestUserMsg = useCallback(() => {
+        if (lastUserMsgElRef.current) {
+            lastUserMsgElRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
-    }, [messages, isLoading]);
+    }, []);
+
+    useEffect(() => {
+        const t1 = setTimeout(scrollToLatestUserMsg, 60);
+        const t2 = setTimeout(scrollToLatestUserMsg, 240);
+        return () => {
+            clearTimeout(t1);
+            clearTimeout(t2);
+        };
+    }, [messages, isLoading, scrollToLatestUserMsg]);
 
     // 监听全局 Ctrl+V 粘贴截图
     useEffect(() => {
@@ -218,7 +225,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                             key={msg.id}
                             ref={isLastUserMsg ? (el) => { lastUserMsgElRef.current = el; } : undefined}
                             className={clsx(
-                                'flex flex-col animate-in fade-in duration-200',
+                                'flex flex-col animate-in fade-in duration-200 scroll-mt-4',
                                 isUser ? 'items-end' : 'items-start'
                             )}
                         >
@@ -604,31 +611,51 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {/* 8. 装备单卡 (1:1 高保真卡片，支持强化 -1 / 强化 +1) */}
                                         {msg.cardType === 'equip' && msg.cardData && (
                                             <div className="w-full">
-                                                <EquipDetailCard item={msg.cardData.equip || msg.cardData} />
+                                                <EquipDetailCard
+                                                    item={msg.cardData.equip || msg.cardData}
+                                                    initialRefLevel={msg.cardData.initialRefLevel}
+                                                />
                                             </div>
                                         )}
 
                                         {/* 8.1 装备多候选切换 */}
                                         {msg.cardType === 'equip_candidates' && msg.cardData?.candidates && (() => {
                                             const list: CuratedEquipItem[] = msg.cardData.candidates;
+
+                                            // 按剔除（男）/（女）括号后的纯净名称去重，避免男女版生成两个重复按钮
+                                            const uniqueCandidates: { item: CuratedEquipItem; rawIdx: number }[] = [];
+                                            const seenNames = new Set<string>();
+                                            list.forEach((c, idx) => {
+                                                const clean = (c.name || '').replace(/[（(][男女][）)]/g, '').trim();
+                                                if (!seenNames.has(clean)) {
+                                                    seenNames.add(clean);
+                                                    uniqueCandidates.push({ item: c, rawIdx: idx });
+                                                }
+                                            });
+
                                             const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
                                             const activeItem = list[activeIdx] || list[0];
 
                                             return (
                                                 <div className="w-full flex flex-col gap-3">
                                                     <CandidateSelectorBar
-                                                        items={list.map((c, idx) => ({
-                                                            id: c.id || idx,
-                                                            title: c.name,
-                                                            badge: c.q ? `${c.q} · ${c.slot}` : (c.slot || '通用')
+                                                        items={uniqueCandidates.map((u) => ({
+                                                            id: u.item.id || u.rawIdx,
+                                                            title: (u.item.name || '').replace(/[（(][男女][）)]/g, '').trim()
                                                         }))}
-                                                        activeIndex={activeIdx}
-                                                        onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
-                                                        summaryText={`为你检索到 ${list.length} 件符合条件的候选装备：`}
+                                                        activeIndex={uniqueCandidates.findIndex(u => u.rawIdx === activeIdx) >= 0 ? uniqueCandidates.findIndex(u => u.rawIdx === activeIdx) : 0}
+                                                        onSelect={(uIdx) => {
+                                                            const targetRawIdx = uniqueCandidates[uIdx]?.rawIdx ?? 0;
+                                                            setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: targetRawIdx }));
+                                                        }}
+                                                        summaryText={`为你检索到 ${uniqueCandidates.length} 件候选装备：`}
                                                     />
 
                                                     {activeItem && (
-                                                        <EquipDetailCard item={activeItem} />
+                                                        <EquipDetailCard
+                                                            item={activeItem}
+                                                            initialRefLevel={msg.cardData.initialRefLevel}
+                                                        />
                                                     )}
                                                 </div>
                                             );
@@ -649,14 +676,14 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* 底部固定对话输入舱 */}
-            <div className="p-3 backdrop-blur-xl bg-[#0b0e14]/95 border-t border-white/10 rounded-b-2xl shrink-0">
+            {/* 底部固定对话输入舱：高对比度、科技光晕边缘与醒目交互，强化视觉焦点 */}
+            <div className="p-3 md:p-4 backdrop-blur-xl bg-[#090d15]/98 border-t border-cyan-500/30 rounded-b-2xl shrink-0 shadow-[0_-8px_24px_rgba(0,0,0,0.6)]">
                 {/* 选中的图片缩略预览 */}
                 {selectedImage && (
-                    <div className="mb-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-between max-w-sm">
+                    <div className="mb-2 px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-500/40 flex items-center justify-between max-w-sm">
                         <div className="flex items-center gap-2">
-                            <img src={selectedImage} alt="Attachment" className="w-8 h-8 rounded object-cover border border-white/20" />
-                            <span className="text-xs text-slate-300">已附加截图（将激活视觉通道）</span>
+                            <img src={selectedImage} alt="Attachment" className="w-8 h-8 rounded object-cover border border-cyan-400/30" />
+                            <span className="text-xs text-cyan-200">已附加截图（将激活视觉通道）</span>
                         </div>
                         <button
                             type="button"
@@ -668,7 +695,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                     </div>
                 )}
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-[#0c111c] border-2 border-cyan-500/40 hover:border-cyan-400/70 focus-within:border-cyan-400 focus-within:shadow-[0_0_24px_rgba(6,182,212,0.3)] rounded-xl p-1.5 transition-all">
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -680,7 +707,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         title="上传截图 / 支持直接 Ctrl+V 粘贴"
-                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors"
+                        className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-cyan-300 transition-colors"
                     >
                         <ImageIcon className="w-4 h-4" />
                     </button>
@@ -692,17 +719,18 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         onKeyDown={e => {
                             if (e.key === 'Enter') handleSend();
                         }}
-                        placeholder="继续向 AI 提问、粘贴下一张截图，或输入首领/技能机制..."
-                        className="flex-1 px-4 py-2.5 rounded-xl bg-black/50 border border-white/10 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500/60 transition-colors"
+                        placeholder="向 AI 提问、粘贴截图，或输入如「大乘战罡」「逍遥锦囊」「太虚」「惊涛」..."
+                        className="flex-1 px-3 py-2 bg-transparent text-slate-100 placeholder-slate-400 text-sm focus:outline-none"
                     />
 
                     <button
                         type="button"
                         onClick={handleSend}
                         disabled={isLoading || (!inputText.trim() && !selectedImage)}
-                        className="p-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white font-medium transition-all shadow-md shadow-cyan-950/50"
+                        className="px-3.5 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-40 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 flex items-center gap-1.5"
                     >
-                        <Send className="w-4 h-4" />
+                        <Send className="w-4 h-4 text-slate-950" />
+                        <span className="text-xs hidden sm:inline">发送</span>
                     </button>
                 </div>
             </div>

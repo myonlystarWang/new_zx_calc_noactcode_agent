@@ -8,7 +8,7 @@
 
 import { DataService } from './DataService';
 import { calculateDungeonPower } from '../utils/calculator';
-import type { CharacterAttributes, Dungeon, Skill } from '../types';
+import type { CharacterAttributes, Dungeon, Skill, CuratedEquipItem } from '../types';
 
 export interface CopilotMessage {
     id: string;
@@ -127,53 +127,77 @@ export class CopilotService {
         }
         const matchedProf = profs.find(pr => tokens.some(t => t.includes(pr.toLowerCase())) || q.includes(pr.toLowerCase()));
 
-        // 判断是否为明确的装备查询意图（含有品质、部位、装备字样，或已知装备名）
-        const isEquipIntent = Boolean(
-            matchedQ ||
-            matchedSlot ||
-            q.includes('装备') ||
-            q.includes('贯海') ||
-            q.includes('千秋岁') ||
-            q.includes('断仇') ||
-            q.includes('辟尘') ||
-            q.includes('忘宵') ||
-            q.includes('绝峰') ||
-            q.includes('月藏海') ||
-            q.includes('蚩尤') ||
-            q.includes('煌武') ||
-            q.includes('无量珠') ||
-            q.includes('无常空相') ||
-            q.includes('万流至尊') ||
-            q.includes('佩章')
-        );
+        // 提取用户指令中可能包含的强化/蕴灵目标等级（如 "13"、"+15"、"11阶"）
+        let targetRefLevel: number | undefined = undefined;
+        const refMatch = q.match(/(?:\+)?(1[0-5]|[0-9])(?:阶|级)?(?:\s|$)/);
+        if (refMatch) {
+            targetRefLevel = parseInt(refMatch[1], 10);
+        }
+
+        const YUNLING_SLOTS = ['武器', '头盔', '衣服', '靴子', '袖甲'];
+        const isYunling = (it: CuratedEquipItem) =>
+            Boolean(it.ref && it.ref.length > 0 && YUNLING_SLOTS.includes(it.slot || ''));
+
+        const buildEquipReplyText = (it: CuratedEquipItem) => {
+            const qText = it.q ? `${it.q}品质 · ` : '';
+            const slotText = it.slot || '';
+            const meta = qText ? `${qText}${slotText}` : slotText;
+            const hint = isYunling(it)
+                ? '支持在下方卡片中进行【强化 -1 / 强化 +1】推演：'
+                : '装备原生属性卡如下：';
+            return `为你速查到装备【${it.name}】${meta ? `（${meta}）` : ''}。${hint}`;
+        };
 
         // 1. 装备查询意图（多槽位复合搜索，优先级高于泛化文本）
-        if (isEquipIntent) {
-            try {
-                const equips = await dataService.getEquipList();
-                if (Array.isArray(equips) && equips.length > 0) {
-                    const cleanTokens = tokens.filter(t =>
-                        t !== matchedQ?.toLowerCase() &&
-                        t !== matchedSlot?.toLowerCase() &&
-                        t !== matchedProf?.toLowerCase() &&
-                        !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示'].includes(t)
-                    );
+        try {
+            const rawEquips = await dataService.getEquipList();
+            if (Array.isArray(rawEquips) && rawEquips.length > 0) {
+                // 过滤掉所有各职业专属护符（只保留通用护符或非护符大类装备）
+                const equips = rawEquips.filter(e => {
+                    if (e.slot === '护符') {
+                        return !e.prof || e.prof.length === 0 || e.prof.includes('通用');
+                    }
+                    return true;
+                });
 
+                const cleanTokens = tokens.filter(t =>
+                    t !== matchedQ?.toLowerCase() &&
+                    t !== matchedSlot?.toLowerCase() &&
+                    t !== matchedProf?.toLowerCase() &&
+                    t !== String(targetRefLevel) &&
+                    t !== `+${targetRefLevel}` &&
+                    !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示'].includes(t)
+                );
+
+                const hasEquipNameMatch = equips.some(e =>
+                    e.name.toLowerCase().includes(q) ||
+                    cleanTokens.some(ct => ct.length >= 2 && e.name.toLowerCase().includes(ct))
+                );
+
+                const isEquipIntent = Boolean(
+                    matchedQ ||
+                    matchedSlot ||
+                    hasEquipNameMatch ||
+                    q.includes('装备')
+                );
+
+                if (isEquipIntent) {
                     // 1) 优先精确定位名称（忽略末尾性别括号）
                     const exactEquip = equips.find(e => {
                         const raw = e.name.toLowerCase();
-                        const base = raw.replace(/（[男女]）/, '');
+                        const base = raw.replace(/[（(][男女][）)]/g, '').trim();
                         return raw === q || base === q;
                     });
                     if (exactEquip) {
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
-                            text: `为你速查到装备【${exactEquip.name}】（${exactEquip.q}品质 · ${exactEquip.slot}）。支持在下方卡片中进行【强化 -1 / 强化 +1】推演：`,
+                            text: buildEquipReplyText(exactEquip),
                             time: timeStr,
                             cardType: 'equip',
                             cardData: {
-                                equip: exactEquip
+                                equip: exactEquip,
+                                initialRefLevel: targetRefLevel
                             }
                         };
                     }
@@ -197,11 +221,24 @@ export class CopilotService {
                         if (matchedProf && !eProfs.some(p => p.includes(matchedProf.toLowerCase())) && !eName.includes(matchedProf.toLowerCase())) {
                             return false;
                         }
-                        // 其余自由关键词匹配（如 "贯海凛威钏"）
+                        // 其余自由关键词匹配（如 "大乘战罡"、"逍遥"、"惊涛"）
                         for (const ct of cleanTokens) {
                             if (!eName.includes(ct)) return false;
                         }
                         return true;
+                    });
+
+                    // 针对匹配结果进行高阶与星级优先排序（三星 > 二星 > 一星 > 满计/高阶 > 等级）
+                    matchedEquips.sort((a, b) => {
+                        const starA = (a.name.match(/\u2605/g) || []).length;
+                        const starB = (b.name.match(/\u2605/g) || []).length;
+                        if (starB !== starA) return starB - starA;
+
+                        const highA = a.name.includes('万计') || a.name.includes('自在') || a.name.includes('若水') || a.name.includes('混虚');
+                        const highB = b.name.includes('万计') || b.name.includes('自在') || b.name.includes('若水') || b.name.includes('混虚');
+                        if (highA !== highB) return highA ? -1 : 1;
+
+                        return (b.lv || 0) - (a.lv || 0);
                     });
 
                     if (matchedEquips.length === 1) {
@@ -209,15 +246,16 @@ export class CopilotService {
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
-                            text: `为你速查到装备【${single.name}】（${single.q}品质 · ${single.slot}）：`,
+                            text: buildEquipReplyText(single),
                             time: timeStr,
                             cardType: 'equip',
                             cardData: {
-                                equip: single
+                                equip: single,
+                                initialRefLevel: targetRefLevel
                             }
                         };
                     } else if (matchedEquips.length > 1) {
-                        const topCandidates = matchedEquips.slice(0, 30);
+                        const topCandidates = matchedEquips.slice(0, 60);
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
@@ -227,14 +265,15 @@ export class CopilotService {
                             cardData: {
                                 keyword: query,
                                 candidates: topCandidates,
-                                totalCount: matchedEquips.length
+                                totalCount: matchedEquips.length,
+                                initialRefLevel: targetRefLevel
                             }
                         };
                     }
                 }
-            } catch (e) {
-                console.warn('Load equip for intent failed:', e);
             }
+        } catch (e) {
+            console.warn('Load equip for intent failed:', e);
         }
 
         // 2. 法宝查询意图（支持法宝名、特技名、特效机制、门派、种族等多维检索）

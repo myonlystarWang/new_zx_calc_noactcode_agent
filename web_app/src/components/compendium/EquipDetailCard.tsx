@@ -9,6 +9,7 @@ import {
 
 export interface EquipDetailCardProps {
     item: CuratedEquipItem;
+    initialRefLevel?: number;
     className?: string;
 }
 
@@ -38,10 +39,11 @@ function getRefKey(it: CuratedEquipItem): 'atk' | 'def' | 'hp' | 'mp' | null {
 
 export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
     item,
+    initialRefLevel,
     className
 }) => {
-    // 默认高亮 +11（主流分水岭档位）
-    const [refLevel, setRefLevel] = useState<number>(11);
+    // 默认高亮 +11（主流分水岭档位），或用户指令中指定的阶位
+    const [refLevel, setRefLevel] = useState<number>(initialRefLevel ?? 11);
 
     // 判断当前装备是否属于蕴灵炼器范畴（防具/武器且具备 ref 梯度）
     const hasYunling = useMemo(() => {
