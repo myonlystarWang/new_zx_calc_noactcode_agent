@@ -59,10 +59,13 @@ export interface EquipSpecialBonusPoolItem {
     d: string;
 }
 
+export type EquipSlot = '武器' | '头盔' | '衣服' | '靴子' | '袖甲' | '腰带' | '项链' | '戒指' | '法身' | '罡气' | '护符' | '勋章' | '玺绶' | '锦囊' | string;
+export type EquipQuality = '修武' | '昭武' | '彰武' | '神隐' | '神级' | '至尊' | '天命' | string;
+
 export interface CuratedEquipItem {
     id: number;
     name: string;
-    slot: '武器' | '头盔' | '衣服' | '靴子';
+    slot: EquipSlot;
     lv: number;
     xz?: string;
     prof: string[];
@@ -74,7 +77,7 @@ export interface CuratedEquipItem {
     rng?: number;
     dura?: number;
     ref: number[];
-    q: '修武' | '昭武' | '彰武' | '神隐';
+    q: EquipQuality;
     ad: EquipAdditionalAttr[];
     sj?: Record<string, EquipSpecialBonusPoolItem[]>;
 }

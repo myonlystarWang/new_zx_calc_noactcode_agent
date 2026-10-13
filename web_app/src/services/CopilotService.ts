@@ -91,7 +91,149 @@ export class CopilotService {
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-        // 1. 法宝查询意图（支持法宝名、特技名、特效机制、门派、种族等多维检索）
+        // ----------------------------------------------------
+        // 0. 提取多维度实体槽位（品质、部位、门派/职业、名称词）
+        // ----------------------------------------------------
+        const tokens = q.split(/[\s,，+＋/、·\-_\(\)（）]+/).filter(Boolean);
+        const qualities = ['修武', '昭武', '彰武', '神隐', '神级', '天命', '至尊', '混虚'];
+        const slots = [
+            '武器', '头盔', '衣服', '靴子', '袖甲', '腰带',
+            '项链', '戒指', '法身', '罡气', '护符', '勋章', '玺绶', '锦囊'
+        ];
+        const slotAliases: Record<string, string> = {
+            '帽子': '头盔', '头': '头盔', '冠': '头盔', '盔': '头盔',
+            '甲': '衣服', '铠': '衣服', '袍': '衣服',
+            '鞋': '靴子', '鞋子': '靴子', '履': '靴子',
+            '护腕': '袖甲', '手环': '袖甲', '手': '袖甲', '钏': '袖甲', '腕': '袖甲',
+            '带': '腰带',
+            '金身': '法身'
+        };
+        const profs = [
+            '逐霜', '青云', '鬼王', '合欢', '天音', '鬼道', '焚香', '九黎', '烈山', '怀光',
+            '天华', '太昊', '辰皇', '破军', '牵机', '英招', '归云', '画影', '昭冥', '惊岚',
+            '涅羽', '百灵', '释罗', '万毒', '长生堂', '青罗', '炼血'
+        ];
+
+        const matchedQ = qualities.find(qu => tokens.some(t => t.includes(qu.toLowerCase())) || q.includes(qu.toLowerCase()));
+        let matchedSlot = slots.find(sl => tokens.some(t => t.includes(sl.toLowerCase())) || q.includes(sl.toLowerCase()));
+        if (!matchedSlot) {
+            for (const [alias, realSlot] of Object.entries(slotAliases)) {
+                if (tokens.some(t => t.includes(alias)) || q.includes(alias)) {
+                    matchedSlot = realSlot;
+                    break;
+                }
+            }
+        }
+        const matchedProf = profs.find(pr => tokens.some(t => t.includes(pr.toLowerCase())) || q.includes(pr.toLowerCase()));
+
+        // 判断是否为明确的装备查询意图（含有品质、部位、装备字样，或已知装备名）
+        const isEquipIntent = Boolean(
+            matchedQ ||
+            matchedSlot ||
+            q.includes('装备') ||
+            q.includes('贯海') ||
+            q.includes('千秋岁') ||
+            q.includes('断仇') ||
+            q.includes('辟尘') ||
+            q.includes('忘宵') ||
+            q.includes('绝峰') ||
+            q.includes('月藏海') ||
+            q.includes('蚩尤') ||
+            q.includes('煌武') ||
+            q.includes('无量珠')
+        );
+
+        // 1. 装备查询意图（多槽位复合搜索，优先级高于泛化文本）
+        if (isEquipIntent) {
+            try {
+                const equips = await dataService.getEquipList();
+                if (Array.isArray(equips) && equips.length > 0) {
+                    const cleanTokens = tokens.filter(t =>
+                        t !== matchedQ?.toLowerCase() &&
+                        t !== matchedSlot?.toLowerCase() &&
+                        t !== matchedProf?.toLowerCase() &&
+                        !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示'].includes(t)
+                    );
+
+                    // 1) 优先精确定位名称（忽略末尾性别括号）
+                    const exactEquip = equips.find(e => {
+                        const raw = e.name.toLowerCase();
+                        const base = raw.replace(/（[男女]）/, '');
+                        return raw === q || base === q;
+                    });
+                    if (exactEquip) {
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `为你速查到装备【${exactEquip.name}】（${exactEquip.q}品质 · ${exactEquip.slot}）。支持在下方卡片中进行【强化 -1 / 强化 +1】推演：`,
+                            time: timeStr,
+                            cardType: 'equip',
+                            cardData: {
+                                equip: exactEquip
+                            }
+                        };
+                    }
+
+                    // 2) 多槽位组合过滤（品质 / 部位 / 职业 / 关键词）
+                    const matchedEquips = equips.filter(e => {
+                        const eName = e.name.toLowerCase();
+                        const eQ = (e.q || '').toLowerCase();
+                        const eSlot = (e.slot || '').toLowerCase();
+                        const eProfs = (e.prof || []).map(p => p.toLowerCase());
+
+                        // 品质匹配
+                        if (matchedQ && !eQ.includes(matchedQ.toLowerCase()) && !eName.includes(matchedQ.toLowerCase())) {
+                            return false;
+                        }
+                        // 部位匹配
+                        if (matchedSlot && eSlot !== matchedSlot.toLowerCase()) {
+                            return false;
+                        }
+                        // 职业匹配
+                        if (matchedProf && !eProfs.some(p => p.includes(matchedProf.toLowerCase())) && !eName.includes(matchedProf.toLowerCase())) {
+                            return false;
+                        }
+                        // 其余自由关键词匹配（如 "贯海凛威钏"）
+                        for (const ct of cleanTokens) {
+                            if (!eName.includes(ct)) return false;
+                        }
+                        return true;
+                    });
+
+                    if (matchedEquips.length === 1) {
+                        const single = matchedEquips[0];
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `为你速查到装备【${single.name}】（${single.q}品质 · ${single.slot}）：`,
+                            time: timeStr,
+                            cardType: 'equip',
+                            cardData: {
+                                equip: single
+                            }
+                        };
+                    } else if (matchedEquips.length > 1) {
+                        const topCandidates = matchedEquips.slice(0, 30);
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `为你检索到 ${matchedEquips.length} 件符合【${query}】的候选装备，可在下方直接切换查看详情：`,
+                            time: timeStr,
+                            cardType: 'equip_candidates',
+                            cardData: {
+                                keyword: query,
+                                candidates: topCandidates,
+                                totalCount: matchedEquips.length
+                            }
+                        };
+                    }
+                }
+            } catch (e) {
+                console.warn('Load equip for intent failed:', e);
+            }
+        }
+
+        // 2. 法宝查询意图（支持法宝名、特技名、特效机制、门派、种族等多维检索）
         try {
             const fabaos = await dataService.getFabaoList();
             if (Array.isArray(fabaos) && fabaos.length > 0) {
@@ -182,74 +324,6 @@ export class CopilotService {
             }
         } catch (e) {
             console.warn('Load fabao for intent failed:', e);
-        }
-
-        // 2. 装备查询意图（如 "修武", "昭武", "彰武", "神隐", "千秋岁", "断仇", "辟尘甲"）
-        try {
-            const equips = await dataService.getEquipList();
-            if (Array.isArray(equips) && equips.length > 0) {
-                let keyword = q.replace(/带|有|的|装备|品质|属性|怎么样|如何|炼器|是哪个|有哪些|\?|？/g, '').trim();
-                if (!keyword) keyword = q;
-
-                // 优先精确名称匹配
-                const exactEquip = equips.find(e => e.name.toLowerCase() === keyword || e.name.toLowerCase() === q);
-                if (exactEquip) {
-                    return {
-                        id: `msg-${Date.now()}`,
-                        sender: 'assistant',
-                        text: `为你速查到装备【${exactEquip.name}】（${exactEquip.q}品质 · ${exactEquip.slot}）。支持在下方卡片中直接进行【强化 -1 / 强化 +1】推演：`,
-                        time: timeStr,
-                        cardType: 'equip',
-                        cardData: {
-                            equip: exactEquip
-                        }
-                    };
-                }
-
-                // 模糊/前缀/词条匹配
-                const matchedEquips = equips.filter(e => {
-                    const name = e.name.toLowerCase();
-                    const qName = e.q.toLowerCase();
-                    const slot = e.slot.toLowerCase();
-                    const profs = (e.prof || []).join(' ').toLowerCase();
-
-                    if (keyword.length >= 2 && (name.includes(keyword) || qName.includes(keyword) || slot.includes(keyword) || profs.includes(keyword))) {
-                        return true;
-                    }
-                    return false;
-                });
-
-                if (matchedEquips.length === 1) {
-                    const single = matchedEquips[0];
-                    return {
-                        id: `msg-${Date.now()}`,
-                        sender: 'assistant',
-                        text: `为你速查到装备【${single.name}】（${single.q}品质 · ${single.slot}）：`,
-                        time: timeStr,
-                        cardType: 'equip',
-                        cardData: {
-                            equip: single
-                        }
-                    };
-                } else if (matchedEquips.length > 1) {
-                    // 若匹配项较多，截取前 20 件代表性候选
-                    const topCandidates = matchedEquips.slice(0, 20);
-                    return {
-                        id: `msg-${Date.now()}`,
-                        sender: 'assistant',
-                        text: `为你检索到 ${matchedEquips.length} 件符合【${keyword}】的候选装备（已精选展示前 ${topCandidates.length} 件），可在下方切换查看详情：`,
-                        time: timeStr,
-                        cardType: 'equip_candidates',
-                        cardData: {
-                            keyword,
-                            candidates: topCandidates,
-                            totalCount: matchedEquips.length
-                        }
-                    };
-                }
-            }
-        } catch (e) {
-            console.warn('Load equip for intent failed:', e);
         }
 
         // 3. 副本 BOSS 查询意图
