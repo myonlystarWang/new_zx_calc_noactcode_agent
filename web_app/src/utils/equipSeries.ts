@@ -47,6 +47,22 @@ const SHOUDAI_TIERS = ['勇者绶带', '季军绶带', '亚军绶带', '冠军�
 const LEIBU_TIERS = ['雷部使者印', '雷部总兵印', '雷部天尊印', '雷部鸿钧印'];
 const TITLE_YIN_TIERS = ['威者印', '尊者印', '王者印'];
 
+// 5. 煌武·极意天问 14 阶进阶宝珠序列 (先天珠 ~ 无量珠)
+const HUANGWU_TIERS = [
+    '先天珠', '自在珠', '净尘珠', '南无珠', '般若珠',
+    '声闻珠', '缘觉珠', '涅槃珠', '帝释珠', '无晦珠',
+    '斗穹珠', '道祖珠', '法天珠', '无量珠'
+];
+
+// 6. 跨服等级项链 4 阶序列 (仙华·魄光皇道真如子、神谕·衍天尊武血菩提、圣谛·乾昊极天玲珑玉)
+const LEVEL_TIERS = ['一级', '二级', '三级', '四级'];
+
+// 7. 星级与半星评分字典 (覆盖 圣瑞、圣谛、战罡 等满星与半星进阶)
+const STAR_SCORE: Record<string, number> = {
+    '': 0, '★': 2, '★☆': 3, '★★': 4, '★★☆': 5, '★★★': 6,
+    '★★★★': 8, '★★★★★': 10
+};
+
 /**
  * 分析识别单件装备所属的进化系列，并返回完整的升阶/降阶兄弟节点列表与当前索引
  */
@@ -229,11 +245,59 @@ export function getEquipSeries(
         }
     }
 
-    // 10. 项链 (太昊 / 太乙 6大分支神级项链)
+    // 10. 煌武·极意天问 14 阶宝珠系列 (先天珠 ~ 无量珠)
+    if (name.startsWith('煌武·极意天问')) {
+        const bead = name.replace('煌武·极意天问', '');
+        const idx = HUANGWU_TIERS.indexOf(bead);
+        if (idx !== -1) {
+            const siblings: CuratedEquipItem[] = [];
+            for (const b of HUANGWU_TIERS) {
+                const match = allEquips.find(e => e.name === `煌武·极意天问${b}`);
+                if (match) siblings.push(match);
+            }
+            if (siblings.length > 1) {
+                const curIdx = siblings.findIndex(e => e.name === name);
+                return {
+                    seriesKey: '煌武_极意天问',
+                    seriesName: '煌武·极意天问系列',
+                    items: siblings,
+                    currentIndex: curIdx >= 0 ? curIdx : 0,
+                    currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${siblings.length}阶`
+                };
+            }
+        }
+    }
+
+    // 11. 跨服等级项链 (一级 ~ 四级，覆盖 仙华·魄光皇道真如子、神谕·衍天尊武血菩提、圣谛·乾昊极天玲珑玉)
+    const levelMatch = name.match(/^(.+?)（(一级|二级|三级|四级)）$/);
+    if (levelMatch) {
+        const baseName = levelMatch[1];
+        const siblings: CuratedEquipItem[] = [];
+        for (const lvl of LEVEL_TIERS) {
+            const targetName = `${baseName}（${lvl}）`;
+            const match = allEquips.find(e => e.name === targetName);
+            if (match) siblings.push(match);
+        }
+        if (siblings.length > 1) {
+            const curIdx = siblings.findIndex(e => e.name === name);
+            return {
+                seriesKey: `level_${baseName}`,
+                seriesName: `${baseName}系列`,
+                items: siblings,
+                currentIndex: curIdx >= 0 ? curIdx : 0,
+                currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${siblings.length}阶`
+            };
+        }
+    }
+
+    // 12. 项链 (太昊 / 太乙 6大分支神级印记项链)
     if (item.slot === '项链') {
         for (const [branch, godList] of Object.entries(ACCESSORY_BRANCH_GODS)) {
+            const branchAlt = branch === '天弈' ? ['天弈', '天奕']
+                : (branch === '天遁' ? ['天遁', '天循']
+                : (branch === '天戍' ? ['天戍', '天戌'] : [branch]));
             const matchedGod = godList.find(g => name.includes(g));
-            if (matchedGod && (name.includes('·' + branch) || name.includes(branch))) {
+            if (matchedGod && branchAlt.some(b => name.includes(b))) {
                 const isTaiyi = name.includes('太乙');
                 const isTaihao = name.includes('太昊');
                 const subSuffix = isTaiyi ? '太乙' : (isTaihao ? '太昊' : '');
@@ -261,14 +325,16 @@ export function getEquipSeries(
         }
     }
 
-    // 11. 戒指 (符石 / 血玉 6大分支)
+    // 13. 戒指 (符石 / 血玉 6大分支)
     if (item.slot === '戒指') {
         const isFuShi = name.includes('符石');
         const isXueYu = name.includes('血玉');
         const ringType = isFuShi ? '符石' : (isXueYu ? '血玉' : '');
         if (ringType) {
             for (const [branch, godList] of Object.entries(ACCESSORY_BRANCH_GODS)) {
-                const branchAlt = branch === '天弈' ? ['天弈', '天奕'] : [branch];
+                const branchAlt = branch === '天弈' ? ['天弈', '天奕']
+                    : (branch === '天遁' ? ['天遁', '天循']
+                    : (branch === '天戍' ? ['天戍', '天戌'] : [branch]));
                 const matchedGod = godList.find(g => name.includes(g));
                 if (matchedGod && branchAlt.some(b => name.includes(b))) {
                     const siblings: CuratedEquipItem[] = [];
@@ -296,22 +362,26 @@ export function getEquipSeries(
         }
     }
 
-    // 12. 通用星级进阶 (如 大乘战罡、玄灵战罡、无常空相、天道玄妙、观心自在锦囊等)
-    const baseName = name.replace(/★+$/, '');
+    // 14. 通用星级与半星进阶 (覆盖 圣瑞·凤翔九霄宝文玉、圣谛·神雷劫天灭魂玉、大乘战罡、玄灵战罡等)
+    const starMatch = name.match(/^(.+?)([★☆]+)$/);
+    const starBase = starMatch ? starMatch[1] : name;
     const starMatches = allEquips.filter(e => {
-        const eBase = (e.name || '').replace(/★+$/, '');
-        return eBase === baseName && (e.slot === item.slot || !item.slot);
+        const eMatch = (e.name || '').match(/^(.+?)([★☆]+)$/);
+        const eBase = eMatch ? eMatch[1] : (e.name || '');
+        return eBase === starBase && (e.slot === item.slot || !item.slot);
     });
     if (starMatches.length > 1) {
         starMatches.sort((a, b) => {
-            const countA = (a.name.match(/★/g) || []).length;
-            const countB = (b.name.match(/★/g) || []).length;
-            return countA - countB;
+            const aSuffix = (a.name || '').slice(starBase.length);
+            const bSuffix = (b.name || '').slice(starBase.length);
+            const scoreA = STAR_SCORE[aSuffix] ?? 0;
+            const scoreB = STAR_SCORE[bSuffix] ?? 0;
+            return scoreA - scoreB;
         });
         const curIdx = starMatches.findIndex(e => e.name === name);
         return {
-            seriesKey: `star_${baseName}`,
-            seriesName: `${baseName}系列`,
+            seriesKey: `star_${starBase}`,
+            seriesName: `${starBase}系列`,
             items: starMatches,
             currentIndex: curIdx >= 0 ? curIdx : 0,
             currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${starMatches.length}阶`
@@ -334,6 +404,9 @@ export function collapseSeriesCandidates(
     const result: CuratedEquipItem[] = [];
 
     for (const c of candidates) {
+        // 体验版装备不作为主要候选展示
+        if ((c.name || '').includes('体验版')) continue;
+
         const s = getEquipSeries(c, allEquips);
         if (s && s.items.length > 1) {
             if (!seriesSeen.has(s.seriesKey)) {
@@ -343,7 +416,7 @@ export function collapseSeriesCandidates(
                 result.push(topItem);
             }
         } else {
-            // 普通独立装备按纯净名称去重（去除性别后缀）
+            // 普通独立装备按纯净名称去重（去除性别后缀与多余空格）
             const cleanName = (c.name || '').replace(/[（(][男女][）)]/g, '').trim();
             if (!seriesSeen.has(cleanName)) {
                 seriesSeen.set(cleanName, c);

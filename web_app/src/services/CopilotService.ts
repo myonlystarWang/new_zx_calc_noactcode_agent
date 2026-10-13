@@ -118,15 +118,21 @@ export class CopilotService {
             '涅羽', '百灵', '释罗', '万毒', '长生堂', '青罗', '炼血'
         ];
 
+        const isYinji = tokens.some(t => t.includes('印记')) || q.includes('印记');
         const matchedQ = qualities.find(qu => tokens.some(t => t.includes(qu.toLowerCase())) || q.includes(qu.toLowerCase()));
         let matchedSlot = slots.find(sl => tokens.some(t => t.includes(sl.toLowerCase())) || q.includes(sl.toLowerCase()));
         if (!matchedSlot) {
             for (const [alias, realSlot] of Object.entries(slotAliases)) {
+                if (alias === '印' && isYinji) continue; // 印记属于神级项链，不作为玺绶
                 if (tokens.some(t => t.includes(alias)) || q.includes(alias)) {
                     matchedSlot = realSlot;
                     break;
                 }
             }
+        }
+        // 如果搜【印记】且用户未显式指定其他部位，自动对应神级项链
+        if (isYinji && !matchedSlot) {
+            matchedSlot = '项链';
         }
         const matchedProf = profs.find(pr => tokens.some(t => t.includes(pr.toLowerCase())) || q.includes(pr.toLowerCase()));
 
@@ -159,7 +165,8 @@ export class CopilotService {
         try {
             const rawEquips = await dataService.getEquipList();
             if (Array.isArray(rawEquips) && rawEquips.length > 0) {
-                const equips = rawEquips;
+                // 完全屏蔽所有职业护符，不参与检索与推荐
+                const equips = rawEquips.filter(e => e.slot !== '护符');
 
                 const cleanTokens = tokens.filter(t =>
                     t !== matchedQ?.toLowerCase() &&
@@ -170,10 +177,21 @@ export class CopilotService {
                     !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示'].includes(t)
                 );
 
-                const hasEquipNameMatch = equips.some(e =>
-                    e.name.toLowerCase().includes(q) ||
-                    cleanTokens.some(ct => ct.length >= 2 && e.name.toLowerCase().includes(ct))
-                );
+                const hasEquipNameMatch = equips.some(e => {
+                    const eName = e.name.toLowerCase();
+                    if (eName.includes(q)) return true;
+                    if (q.includes('天奕') && eName.includes('天弈')) return true;
+                    if (q.includes('天循') && eName.includes('天遁')) return true;
+                    if (q.includes('天戌') && eName.includes('天戍')) return true;
+                    return cleanTokens.some(ct => {
+                        if (ct.length < 2) return false;
+                        if (eName.includes(ct)) return true;
+                        if (ct === '天奕' && eName.includes('天弈')) return true;
+                        if (ct === '天循' && eName.includes('天遁')) return true;
+                        if (ct === '天戌' && eName.includes('天戍')) return true;
+                        return false;
+                    });
+                });
 
                 const isEquipIntent = Boolean(
                     matchedQ ||
@@ -232,9 +250,12 @@ export class CopilotService {
                         if (matchedProf && !eProfs.some(p => p.includes(matchedProf.toLowerCase())) && !eName.includes(matchedProf.toLowerCase())) {
                             return false;
                         }
-                        // 其余自由关键词匹配（如 "大乘战罡"、"逍遥"、"惊涛"）
+                        // 其余自由关键词匹配（如 "大乘战罡"、"逍遥"、"惊涛"、"天弈"、"天循"）
                         for (const ct of cleanTokens) {
-                            if (!eName.includes(ct)) return false;
+                            const term = ct === '天奕' ? '天弈' : (ct === '天循' ? '天遁' : (ct === '天戌' ? '天戍' : ct));
+                            const altTerm = ct === '天弈' ? '天奕' : (ct === '天遁' ? '天循' : (ct === '天戍' ? '天戌' : ''));
+                            const matches = eName.includes(term) || (altTerm ? eName.includes(altTerm) : false);
+                            if (!matches) return false;
                         }
                         return true;
                     });
@@ -245,8 +266,8 @@ export class CopilotService {
                         const starB = (b.name.match(/\u2605/g) || []).length;
                         if (starB !== starA) return starB - starA;
 
-                        const highA = a.name.includes('万计') || a.name.includes('自在') || a.name.includes('若水') || a.name.includes('混虚');
-                        const highB = b.name.includes('万计') || b.name.includes('自在') || b.name.includes('若水') || b.name.includes('混虚');
+                        const highA = a.name.includes('万计') || a.name.includes('自在') || a.name.includes('若水') || a.name.includes('混虚') || a.name.includes('无量');
+                        const highB = b.name.includes('万计') || b.name.includes('自在') || b.name.includes('若水') || b.name.includes('混虚') || b.name.includes('无量');
                         if (highA !== highB) return highA ? -1 : 1;
 
                         return (b.lv || 0) - (a.lv || 0);

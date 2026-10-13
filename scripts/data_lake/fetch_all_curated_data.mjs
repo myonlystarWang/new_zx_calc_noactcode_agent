@@ -67,7 +67,7 @@ async function extractEquipFull() {
         }
     }
 
-    const specialSlots = ['项链', '戒指', '法身', '罡气', '护符', '勋章', '玺绶', '锦囊', '佩章'];
+    const specialSlots = ['项链', '戒指', '法身', '罡气', '勋章', '玺绶', '锦囊', '佩章'];
     for (const s of specialSlots) {
         const url = `${API_BASE}/equip/list?slot=${encodeURIComponent(s)}`;
         try {

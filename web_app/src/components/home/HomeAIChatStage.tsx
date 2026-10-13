@@ -641,8 +641,8 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             return (
                                                 <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
                                                     <CandidateSelectorBar
-                                                        items={uniqueCandidates.map((u) => ({
-                                                            id: u.item.id || u.rawIdx,
+                                                        items={uniqueCandidates.map((u, uIdx) => ({
+                                                            id: `${u.item.id || 0}_${u.item.name}_${uIdx}`,
                                                             title: (u.item.name || '').replace(/[（(][男女][）)]/g, '').trim()
                                                         }))}
                                                         activeIndex={uniqueCandidates.findIndex(u => u.rawIdx === activeIdx) >= 0 ? uniqueCandidates.findIndex(u => u.rawIdx === activeIdx) : 0}
