@@ -6,7 +6,8 @@ import type {
     Monster,
     RankConfig,
     FabaoItem,
-    CuratedEquipItem
+    CuratedEquipItem,
+    CuratedSkillItem
 } from '../types';
 
 const DATA_BASE_URL = '/game_data';
@@ -297,5 +298,15 @@ export class DataService {
         if (!res.ok) throw new Error(`加载 server_list.json 失败: ${res.status}`);
         this.serverList = await res.json();
         return this.serverList!;
+    }
+
+    private allCuratedSkills: CuratedSkillItem[] | null = null;
+
+    public async getAllCuratedSkills(): Promise<CuratedSkillItem[]> {
+        if (this.allCuratedSkills) return this.allCuratedSkills;
+        const res = await fetch(`${DATA_BASE_URL}/all_skills_curated.json`);
+        if (!res.ok) throw new Error(`加载 all_skills_curated.json 失败: ${res.status}`);
+        this.allCuratedSkills = await res.json();
+        return this.allCuratedSkills!;
     }
 }

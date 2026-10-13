@@ -8,7 +8,7 @@
 
 import { DataService } from './DataService';
 import { calculateDungeonPower } from '../utils/calculator';
-import type { CharacterAttributes, Dungeon, Skill, CuratedEquipItem } from '../types';
+import type { CharacterAttributes, Dungeon, Skill, CuratedEquipItem, CuratedSkillItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
 export interface CopilotMessage {
@@ -17,7 +17,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'skill' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag';
+    cardType?: 'boss' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag';
     cardData?: any;
 }
 
@@ -165,8 +165,13 @@ export class CopilotService {
         try {
             const rawEquips = await dataService.getEquipList();
             if (Array.isArray(rawEquips) && rawEquips.length > 0) {
-                // 完全屏蔽所有职业护符，不参与检索与推荐
-                const equips = rawEquips.filter(e => e.slot !== '护符');
+                // 仅保留通用/生肖护符，完全屏蔽各门派专属技能护符
+                const equips = rawEquips.filter(e => {
+                    if (e.slot === '护符') {
+                        return !e.prof || e.prof.length === 0 || e.prof.includes('通用');
+                    }
+                    return true;
+                });
 
                 const cleanTokens = tokens.filter(t =>
                     t !== matchedQ?.toLowerCase() &&
@@ -177,18 +182,32 @@ export class CopilotService {
                     !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示'].includes(t)
                 );
 
+                const ZODIAC_HUFU_MAP: Record<string, string> = {
+                    '鼠年护符': '庚子护符', '牛年护符': '辛丑护符', '虎年护符': '壬寅护符',
+                    '兔年护符': '癸卯护符', '龙年护符': '甲辰护符', '蛇年护符': '乙巳护符',
+                    '马年护符': '丙午护符', '羊年护符': '乙未护符', '猴年护符': '丙申护符',
+                    '鸡年护符': '丁酉护符', '狗年护符': '戊戌护符', '猪年护符': '己亥护符',
+                    '生肖护符': '丙午护符'
+                };
+
                 const hasEquipNameMatch = equips.some(e => {
                     const eName = e.name.toLowerCase();
                     if (eName.includes(q)) return true;
                     if (q.includes('天奕') && eName.includes('天弈')) return true;
                     if (q.includes('天循') && eName.includes('天遁')) return true;
                     if (q.includes('天戌') && eName.includes('天戍')) return true;
+                    for (const [zAlias, realName] of Object.entries(ZODIAC_HUFU_MAP)) {
+                        if (q.includes(zAlias) && eName.includes(realName)) return true;
+                    }
                     return cleanTokens.some(ct => {
                         if (ct.length < 2) return false;
                         if (eName.includes(ct)) return true;
                         if (ct === '天奕' && eName.includes('天弈')) return true;
                         if (ct === '天循' && eName.includes('天遁')) return true;
                         if (ct === '天戌' && eName.includes('天戍')) return true;
+                        for (const [zAlias, realName] of Object.entries(ZODIAC_HUFU_MAP)) {
+                            if (ct.includes(zAlias) && eName.includes(realName)) return true;
+                        }
                         return false;
                     });
                 });
@@ -435,35 +454,89 @@ export class CopilotService {
             }
         }
 
-        // 4. 技能查询意图
-        const allSkills = dataService.getAllSkills();
-        if (allSkills) {
-            for (const [classId, factions] of Object.entries(allSkills)) {
-                if (!factions || typeof factions !== 'object') continue;
-                for (const [factionId, skList] of Object.entries(factions as Record<string, any>)) {
-                    if (!Array.isArray(skList)) continue;
-                    for (const sk of skList) {
-                        if (sk.SkillName && q.includes(sk.SkillName.toLowerCase())) {
-                            return {
-                                id: `msg-${Date.now()}`,
-                                sender: 'assistant',
-                                text: `为你速查到技能【${sk.SkillName}】的机制与数值：`,
-                                time: timeStr,
-                                cardType: 'skill',
-                                cardData: {
-                                    name: sk.SkillName,
-                                    classId,
-                                    factionId,
-                                    cooldown: sk.Cooldown,
-                                    hits: sk.Hits,
-                                    castTime: sk.CastTime,
-                                    route: `/compendium/skills?class=${classId}&faction=${factionId}&skill=${encodeURIComponent(sk.SkillName)}`
-                                }
-                            };
-                        }
+        // 4. 技能查询意图（挂载 5,927 全量 1:1 游戏原生高保真卡片与等级推演器）
+        try {
+            const allCuratedSkills = await dataService.getAllCuratedSkills();
+            if (Array.isArray(allCuratedSkills) && allCuratedSkills.length > 0) {
+                const isExplicitSkillQuery = q.includes('技能') || q.includes('神通') || q.includes('天书');
+                const cleanTokens = tokens.filter(t =>
+                    !['技能', '神通', '天书', '机制', '数值', '效果', '查询', '速查'].includes(t) &&
+                    !profs.includes(t)
+                );
+
+                const candidates: { sk: CuratedSkillItem; score: number }[] = [];
+                for (const sk of allCuratedSkills) {
+                    if (!sk.name || !sk.name.trim()) continue;
+                    const sName = sk.name.trim().toLowerCase();
+                    const sGroup = (sk.group_name || '').toLowerCase();
+
+                    // 如果明确指定了门派（如逐霜），优先限制在其门派树下
+                    if (matchedProf && !sGroup.includes(matchedProf.toLowerCase())) {
+                        continue;
+                    }
+
+                    let score = 0;
+                    if (sName === q || (cleanTokens.length > 0 && cleanTokens.some(t => t === sName))) {
+                        score = 100;
+                    } else if (cleanTokens.length > 0 && cleanTokens.some(t => t.length >= 2 && sName.includes(t))) {
+                        score = 50;
+                    } else if (cleanTokens.length > 0 && cleanTokens.some(t => t.length >= 2 && t.includes(sName))) {
+                        score = 30;
+                    } else if (isExplicitSkillQuery && matchedProf && sk.group_kind === 'prof') {
+                        score = 10;
+                    }
+
+                    if (score > 0) {
+                        candidates.push({ sk, score });
                     }
                 }
+
+                // 排除内部触发/怪物技能，除非精确指定
+                const filtered = candidates.filter(c => {
+                    if (c.sk.group_name === '触发技能' || c.sk.group_name === '怪物技能') {
+                        return c.score >= 100;
+                    }
+                    return true;
+                });
+
+                filtered.sort((a, b) => {
+                    if (b.score !== a.score) return b.score - a.score;
+                    if (a.sk.group_kind === 'prof' && b.sk.group_kind !== 'prof') return -1;
+                    if (b.sk.group_kind === 'prof' && a.sk.group_kind !== 'prof') return 1;
+                    return a.sk.name.length - b.sk.name.length;
+                });
+
+                const matchedSkills = filtered.slice(0, 30).map(c => c.sk);
+
+                if (matchedSkills.length === 1) {
+                    const single = matchedSkills[0];
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你速查到技能【${single.name}】（${single.group_name || '门派技能'}）的 1:1 游戏原生视图，可在卡片右上角推演任意阶位效果：`,
+                        time: timeStr,
+                        cardType: 'skill',
+                        cardData: {
+                            skill: single,
+                            name: single.name
+                        }
+                    };
+                } else if (matchedSkills.length > 1) {
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你检索到 ${matchedSkills.length} 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：`,
+                        time: timeStr,
+                        cardType: 'skill_candidates',
+                        cardData: {
+                            candidates: matchedSkills,
+                            skill: matchedSkills[0]
+                        }
+                    };
+                }
             }
+        } catch (e) {
+            console.warn('Load curated skills for intent failed:', e);
         }
 
         // 5. 极致属性攻略意图
