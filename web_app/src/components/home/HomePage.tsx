@@ -478,7 +478,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               </div>
             )}
 
-            <div className="flex items-center gap-2 px-2 py-1">
+            <div className="flex items-center px-1.5 py-1">
               <input
                 type="file"
                 ref={fileInputRef}
@@ -493,7 +493,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 onClick={() => setIsPlusMenuOpen((prev) => !prev)}
                 title={isPlusMenuOpen ? '收起工作台菜单' : '战术工作台与全知工具 (+)'}
                 className={clsx(
-                  'p-2 bg-transparent border-0 outline-none transition-colors cursor-pointer shrink-0',
+                  'p-1.5 bg-transparent border-0 outline-none transition-colors cursor-pointer shrink-0 rounded-lg hover:bg-white/5',
                   isPlusMenuOpen ? 'text-cyan-300' : 'text-slate-400 hover:text-cyan-300'
                 )}
               >
@@ -516,7 +516,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                     ? '已粘贴截图，输入补充指令或直接回车启动推演...'
                     : '问点什么，比如昭武、技能、法宝、计算等...'
                 }
-                className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none px-2 py-1.5"
+                className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none px-1 py-1.5"
               />
 
               {/* 发送按钮 */}
@@ -529,7 +529,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                   }
                   handleStartAiChat(query, attachedImage);
                 }}
-                className="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 cursor-pointer shrink-0 active:scale-95"
+                className="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 cursor-pointer shrink-0 active:scale-95 ml-2"
                 title="发送至天书大模型 (Enter)"
               >
                 <Send className="w-4 h-4 text-slate-950" />
@@ -583,13 +583,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
             <button
               type="button"
-              onClick={() => {
-                setWorkspaceState({ isOpen: true, mode: 'xyc', isMaximized: false });
-                handleStartAiChat('轩辕策');
-              }}
-              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-purple-500/30 text-xs text-slate-300 hover:text-purple-300 transition-all cursor-pointer shadow-sm active:scale-95"
+              disabled
+              className="pill-btn flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/40 border border-slate-800/60 text-xs text-slate-500 cursor-not-allowed select-none opacity-60 shadow-none transition-none"
+              title="各类模拟器（暂未开放）"
             >
-              <Sparkles className="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform shrink-0" />
+              <Sparkles className="w-3.5 h-3.5 text-slate-600 shrink-0" />
               <span className="font-medium whitespace-nowrap">各类模拟器</span>
             </button>
           </div>

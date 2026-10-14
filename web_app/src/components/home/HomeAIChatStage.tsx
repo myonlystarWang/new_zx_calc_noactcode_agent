@@ -224,20 +224,15 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                     </button>
                 </div>
 
-                {onToggleSplit && (
+                {onToggleSplit && !isSplitOpen && (
                     <button
                         type="button"
                         onClick={onToggleSplit}
-                        className={clsx(
-                            'px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer',
-                            isSplitOpen
-                                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
-                                : 'bg-white/5 hover:bg-white/10 border-white/10 text-slate-300 hover:text-white'
-                        )}
-                        title={isSplitOpen ? '收起右侧工作区' : '展开右侧战力推演与微工具工作区'}
+                        className="px-2.5 sm:px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer"
+                        title="展开右侧战力推演与微工具工作区"
                     >
                         <Sliders className="w-3.5 h-3.5" />
-                        <span>{isSplitOpen ? '收起工作区' : '右侧工作区'}</span>
+                        <span>右侧工作区</span>
                     </button>
                 )}
             </div>
@@ -285,8 +280,15 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         <>
                                             {/* 纯文本说明 (候选列表类卡片已内聚了统计与引导文案，合并至下方 CandidateSelectorBar，消除重复) */}
                                             {!isCandidateCard && msg.text && (
-                                                <div className="whitespace-pre-wrap text-slate-200 text-sm leading-relaxed">
-                                                    <GameColorText text={msg.text} />
+                                                <div className={clsx(
+                                                    'whitespace-pre-wrap text-sm leading-relaxed font-sans',
+                                                    isUser ? 'text-slate-100 font-medium' : 'text-slate-200'
+                                                )}>
+                                                    {isUser ? (
+                                                        <span>{msg.text}</span>
+                                                    ) : (
+                                                        <GameColorText text={msg.text} />
+                                                    )}
                                                 </div>
                                             )}
 
@@ -787,7 +789,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                     </div>
                 )}
 
-                <div className="relative flex items-center gap-2 bg-[#0c111c] border-2 border-cyan-500/40 hover:border-cyan-400/70 focus-within:border-cyan-400 focus-within:shadow-[0_0_24px_rgba(6,182,212,0.3)] rounded-xl p-1.5 transition-all">
+                <div className="relative flex items-center bg-[#0c111c] border-2 border-cyan-500/40 hover:border-cyan-400/70 focus-within:border-cyan-400 focus-within:shadow-[0_0_24px_rgba(6,182,212,0.3)] rounded-xl p-1.5 transition-all">
                     <ChatPlusMenu
                         isOpen={isPlusMenuOpen}
                         onClose={() => setIsPlusMenuOpen(false)}
@@ -809,7 +811,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         onClick={() => setIsPlusMenuOpen(prev => !prev)}
                         title={isPlusMenuOpen ? '收起工作台菜单' : '战术工作台与微工具 (+)'}
                         className={clsx(
-                            'p-2 bg-transparent border-0 outline-none transition-colors shrink-0 cursor-pointer',
+                            'p-1.5 bg-transparent border-0 outline-none transition-colors shrink-0 cursor-pointer rounded-lg hover:bg-white/5',
                             isPlusMenuOpen
                                 ? 'text-cyan-300'
                                 : 'text-slate-400 hover:text-cyan-300'
@@ -826,17 +828,17 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                             if (e.key === 'Enter') handleSend();
                         }}
                         placeholder="问点什么，比如昭武、技能、法宝、计算等..."
-                        className="flex-1 px-3 py-2 bg-transparent text-slate-100 placeholder-slate-400 text-sm focus:outline-none"
+                        className="flex-1 px-1 py-2 bg-transparent text-slate-100 placeholder-slate-400 text-sm focus:outline-none"
                     />
 
                     <button
                         type="button"
                         onClick={handleSend}
                         disabled={isLoading}
-                        className="px-3.5 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        className="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 cursor-pointer shrink-0 active:scale-95 disabled:opacity-50 ml-2"
+                        title="发送至天书大模型 (Enter)"
                     >
                         <Send className="w-4 h-4 text-slate-950" />
-                        <span className="text-xs hidden sm:inline">发送</span>
                     </button>
                 </div>
 

@@ -55,39 +55,14 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
   const { userCharacter, updateCharacterAttributes } = useApp();
 
   return (
-    <div className="flex flex-col h-full bg-[#080c14] border-l border-slate-800/80 shadow-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300">
-      {/* 顶部控制栏 */}
-      <div className="py-2 px-3 sm:px-4 border-b border-slate-800/80 bg-[#0d121c]/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
-        {/* 左侧模块切换 Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-          {WORKSPACE_TABS.map((tab) => {
-            const isActive = mode === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => onModeChange(tab.id)}
-                className={clsx(
-                  'px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap border cursor-pointer',
-                  isActive
-                    ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
-                    : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                )}
-                title={tab.label}
-              >
-                {tab.icon}
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* 右侧视窗控制：最大化 / 还原 / 关闭 */}
-        <div className="flex items-center gap-1.5 shrink-0">
+    <div className="relative flex flex-col h-full bg-[#080c14] border-l border-slate-800/80 shadow-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300">
+      {/* 开服雷达模式：隐藏整个顶部切换栏，让开服雷达直接置顶占满，右上角采用轻量浮层控制 */}
+      {mode === 'server' ? (
+        <div className="absolute top-3 right-4 z-30 flex items-center gap-1.5">
           <button
             type="button"
             onClick={onToggleMaximize}
-            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-cyan-300 transition-colors border border-white/5"
+            className="p-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-cyan-300 transition-colors border border-slate-700/80 shadow-xl backdrop-blur-md cursor-pointer"
             title={isMaximized ? '还原分屏 (双轨对照)' : '最大化工作区 (全屏模式)'}
             aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
           >
@@ -96,14 +71,63 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-300 transition-colors border border-white/5"
+            className="p-1.5 rounded-xl bg-slate-900/90 hover:bg-red-500/20 text-slate-400 hover:text-red-300 transition-colors border border-slate-700/80 shadow-xl backdrop-blur-md cursor-pointer"
             title="关闭右侧工作区 (返回居中对话)"
             aria-label="关闭工作区"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
-      </div>
+      ) : (
+        /* 其他模式顶部控制栏 */
+        <div className="py-2 px-3 sm:px-4 border-b border-slate-800/80 bg-[#0d121c]/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
+          {/* 左侧模块切换 Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            {WORKSPACE_TABS.map((tab) => {
+              const isActive = mode === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => onModeChange(tab.id)}
+                  className={clsx(
+                    'px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap border cursor-pointer',
+                    isActive
+                      ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+                      : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                  )}
+                  title={tab.label}
+                >
+                  {tab.icon}
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* 右侧视窗控制：最大化 / 还原 / 关闭 */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={onToggleMaximize}
+              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-cyan-300 transition-colors border border-white/5"
+              title={isMaximized ? '还原分屏 (双轨对照)' : '最大化工作区 (全屏模式)'}
+              aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
+            >
+              {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-300 transition-colors border border-white/5"
+              title="关闭右侧工作区 (返回居中对话)"
+              aria-label="关闭工作区"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 工作区主内容呈现 */}
       <div className="flex-1 overflow-y-auto min-h-0 bg-[#070a10]">

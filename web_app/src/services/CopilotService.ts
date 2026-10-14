@@ -11,7 +11,7 @@ import { calculateDungeonPower } from '../utils/calculator';
 import type { CharacterAttributes, Dungeon, Skill, CuratedEquipItem, CuratedSkillItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
-export const UNIFIED_NOT_FOUND_REPLY = '天书万象 AI 暂未收录该条目，你可以输入具体的技能全名、装备品阶、法宝或副本首领名称进行精准速查。';
+export const UNIFIED_NOT_FOUND_REPLY = '天书万象 AI 暂未收录该条目，你可以输入具体的技能全名、装备品阶、法宝或副本 BOSS 名称进行精准速查。';
 
 
 export interface CopilotMessage {
@@ -709,13 +709,7 @@ export class CopilotService {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
                 text: '为你打开【全区开服雷达监测】服务。实时追踪 9 大战区 33 服心跳，并可开启开服三音阶声光提醒！',
-                time: timeStr,
-                cardType: 'server',
-                cardData: {
-                    title: '全区开服雷达监测站',
-                    route: '/tools/server',
-                    desc: '支持9大战区33个服务器实时在线监测'
-                }
+                time: timeStr
             };
         }
 
