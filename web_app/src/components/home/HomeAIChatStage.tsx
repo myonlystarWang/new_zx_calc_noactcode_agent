@@ -497,7 +497,10 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {msg.cardType === 'skill' && msg.cardData && (
                                             <div className="w-full">
                                                 {msg.cardData.skill ? (
-                                                    <SkillDetailCard skill={msg.cardData.skill} />
+                                                    <SkillDetailCard
+                                                        skill={msg.cardData.skill}
+                                                        onSelectSkillName={(name) => onSendMessage(name)}
+                                                    />
                                                 ) : (
                                                     <div className="rounded-xl bg-[#121824] border border-cyan-500/20 p-4 space-y-3">
                                                         <div className="flex items-center justify-between border-b border-white/5 pb-2">
@@ -542,7 +545,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                     />
 
                                                     {activeItem && (
-                                                        <SkillDetailCard key={activeItem.id || activeItem.name} skill={activeItem} />
+                                                        <SkillDetailCard
+                                                            key={activeItem.id || activeItem.name}
+                                                            skill={activeItem}
+                                                            onSelectSkillName={(name) => onSendMessage(name)}
+                                                        />
                                                     )}
                                                 </div>
                                             );

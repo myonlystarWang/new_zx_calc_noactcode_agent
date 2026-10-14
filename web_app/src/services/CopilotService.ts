@@ -156,7 +156,7 @@ export class CopilotService {
             if (isYunling(it)) {
                 hint = '支持在卡片右上角进行【强化 -1 / 强化 +1】推演：';
             } else if (series && series.items.length > 1) {
-                hint = `支持在卡片右上角进行【降阶 / 升阶】查看同系共 ${series.items.length} 阶属性：`;
+                hint = `支持在卡片右上角进行【等级 -1 / 等级 +1】推演查看同系共 ${series.items.length} 级属性：`;
             }
             return `为你速查到装备【${it.name}】${meta ? `（${meta}）` : ''}。${hint}`;
         };
@@ -535,7 +535,7 @@ export class CopilotService {
                     return {
                         id: `msg-${Date.now()}`,
                         sender: 'assistant',
-                        text: `为你速查到技能【${single.name}】（${single.group_name || '门派技能'}）的 1:1 游戏原生视图，可在卡片右上角推演任意阶位效果：`,
+                        text: `为你速查到技能【${single.name}】（${single.group_name || '门派技能'}）的 1:1 游戏原生视图，可在卡片右上角进行【等级 -1 / 等级 +1】推演：`,
                         time: timeStr,
                         cardType: 'skill',
                         cardData: {
