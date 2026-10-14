@@ -6,10 +6,13 @@
  * 3. L3 视觉多模态专属模型池（识图专用通道）：智谱 GLM-4V-Flash、硅基 Qwen2-VL、Gemini-1.5-Flash、Workers AI Vision
  */
 
-import { DataService } from './DataService';
+import { DataService, isValidSkill } from './DataService';
 import { calculateDungeonPower } from '../utils/calculator';
 import type { CharacterAttributes, Dungeon, Skill, CuratedEquipItem, CuratedSkillItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
+
+export const UNIFIED_NOT_FOUND_REPLY = '天书万象 AI 暂未收录该条目，你可以输入具体的技能全名、装备品阶、法宝或副本首领名称进行精准速查。';
+
 
 export interface CopilotMessage {
     id: string;
@@ -91,6 +94,17 @@ export class CopilotService {
         const dataService = DataService.getInstance();
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+        // 纯数值输入守卫（如输入 "200"、"1000"、"+15" 等）：
+        // 杜绝被错误匹配到脏技能名（如 "2"）或任何部件，直接返回统一的“查无此条目”规范提示
+        if (/^[+-]?\d+(?:\.\d+)?$/.test(q)) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: UNIFIED_NOT_FOUND_REPLY,
+                time: timeStr
+            };
+        }
 
         // ----------------------------------------------------
         // 0. 提取多维度实体槽位（品质、部位、门派/职业、名称词）
@@ -179,8 +193,12 @@ export class CopilotService {
                     t !== matchedProf?.toLowerCase() &&
                     t !== String(targetRefLevel) &&
                     t !== `+${targetRefLevel}` &&
-                    !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示'].includes(t)
+                    !/^\d+$/.test(t) &&
+                    !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示', '技能', '神通', '天书'].includes(t)
                 );
+
+                const isExplicitSkillTerm = ['技能', '技能描述', '技能机制', '神通', '天书'].includes(q) ||
+                    (q.includes('技能') && !matchedSlot && !matchedQ && !q.includes('装备'));
 
                 const ZODIAC_HUFU_MAP: Record<string, string> = {
                     '鼠年护符': '庚子护符', '牛年护符': '辛丑护符', '虎年护符': '壬寅护符',
@@ -190,7 +208,7 @@ export class CopilotService {
                     '生肖护符': '丙午护符'
                 };
 
-                const hasEquipNameMatch = equips.some(e => {
+                const hasEquipNameMatch = !isExplicitSkillTerm && equips.some(e => {
                     const eName = e.name.toLowerCase();
                     if (eName.includes(q)) return true;
                     if (q.includes('天奕') && eName.includes('天弈')) return true;
@@ -213,15 +231,18 @@ export class CopilotService {
                 });
 
                 const isEquipIntent = Boolean(
-                    matchedQ ||
+                    !isExplicitSkillTerm &&
+                    (matchedQ ||
                     matchedSlot ||
                     hasEquipNameMatch ||
-                    q.includes('装备')
+                    q.includes('装备'))
                 );
 
                 if (isEquipIntent) {
                     // 1) 优先精确定位名称（忽略末尾性别括号）
-                    const exactEquip = equips.find(e => {
+                    // 若检索词仅为单一品质大阶（如 "昭武"、"修武"、"彰武"、"神隐"、"混虚"），绝不能当作单件装备名称精确直出，必须进入下方多候选流
+                    const isQualityOnlyQuery = qualities.some(qu => qu.toLowerCase() === q);
+                    const exactEquip = isQualityOnlyQuery ? undefined : equips.find(e => {
                         const raw = e.name.toLowerCase();
                         const base = raw.replace(/[（(][男女][）)]/g, '').trim();
                         return raw === q || base === q;
@@ -289,6 +310,19 @@ export class CopilotService {
                         const highB = b.name.includes('万计') || b.name.includes('自在') || b.name.includes('若水') || b.name.includes('混虚') || b.name.includes('无量');
                         if (highA !== highB) return highA ? -1 : 1;
 
+                        // 若用户未指定特定门派，按主流门派优先级排布候选
+                        if (!matchedProf) {
+                            const getProfIdx = (item: CuratedEquipItem) => {
+                                if (!item.prof || item.prof.length === 0) return 999;
+                                const first = item.prof[0];
+                                const idx = profs.findIndex(p => first.includes(p));
+                                return idx >= 0 ? idx : 999;
+                            };
+                            const pA = getProfIdx(a);
+                            const pB = getProfIdx(b);
+                            if (pA !== pB) return pA - pB;
+                        }
+
                         return (b.lv || 0) - (a.lv || 0);
                     });
 
@@ -310,7 +344,7 @@ export class CopilotService {
                             }
                         };
                     } else if (collapsedCandidates.length > 1) {
-                        const topCandidates = collapsedCandidates.slice(0, 60);
+                        const topCandidates = collapsedCandidates.slice(0, 100);
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
@@ -324,6 +358,13 @@ export class CopilotService {
                                 initialRefLevel: targetRefLevel,
                                 allEquips: equips
                             }
+                        };
+                    } else if (matchedQ || matchedSlot || q.includes('装备')) {
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: UNIFIED_NOT_FOUND_REPLY,
+                            time: timeStr
                         };
                     }
                 }
@@ -433,6 +474,13 @@ export class CopilotService {
                             candidates: matchedList
                         }
                     };
+                } else if (isExplicitFabaoQuery) {
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: UNIFIED_NOT_FOUND_REPLY,
+                        time: timeStr
+                    };
                 }
             }
         } catch (e) {
@@ -475,12 +523,43 @@ export class CopilotService {
                 const isExplicitSkillQuery = q.includes('技能') || q.includes('神通') || q.includes('天书');
                 const cleanTokens = tokens.filter(t =>
                     !['技能', '神通', '天书', '机制', '数值', '效果', '查询', '速查'].includes(t) &&
-                    !profs.includes(t)
+                    !profs.includes(t) &&
+                    !/^\d+$/.test(t) // 过滤纯数字 token
                 );
+
+                // 各主流职业代表性核心技能（当用户点击【技能描述】或输入“技能”但未指定具体技能名与门派时展示）
+                const CORE_SIGNATURE_SKILL_NAMES = [
+                    '苍龙啸', '神剑御雷真诀', '未名斩', '聚灵咒', '江南', '缠绵',
+                    '六道轮回', '大梵般若', '无量真言', '玄阳火典', '影祭',
+                    '双飞火', '龙骧', '松风雅韵', '影刀风', '术·枯魂', '业·罪杀',
+                    '溯月游', '掠天跃', '白鱼吹浪'
+                ];
+
+                if (isExplicitSkillQuery && cleanTokens.length === 0 && !matchedProf) {
+                    const repSkills: CuratedSkillItem[] = [];
+                    for (const name of CORE_SIGNATURE_SKILL_NAMES) {
+                        const s = allCuratedSkills.find(sk => sk.name === name && sk.group_kind === 'prof' && isValidSkill(sk))
+                            || allCuratedSkills.find(sk => sk.name === name && isValidSkill(sk));
+                        if (s) repSkills.push(s);
+                    }
+                    if (repSkills.length > 0) {
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `为你速查到各主流职业代表性核心技能，可在下方快速切换查看 1:1 原生说明与等级推演（也可输入“青云技能”或具体技能名精准速查）：`,
+                            time: timeStr,
+                            cardType: 'skill_candidates',
+                            cardData: {
+                                candidates: repSkills,
+                                query: q
+                            }
+                        };
+                    }
+                }
 
                 const candidates: { sk: CuratedSkillItem; score: number }[] = [];
                 for (const sk of allCuratedSkills) {
-                    if (!sk.name || !sk.name.trim()) continue;
+                    if (!sk.name || !sk.name.trim() || !isValidSkill(sk)) continue;
                     const sName = sk.name.trim().toLowerCase();
                     const sGroup = (sk.group_name || '').toLowerCase();
 
@@ -494,7 +573,7 @@ export class CopilotService {
                         score = 100;
                     } else if (cleanTokens.length > 0 && cleanTokens.some(t => t.length >= 2 && sName.includes(t))) {
                         score = 50;
-                    } else if (cleanTokens.length > 0 && cleanTokens.some(t => t.length >= 2 && t.includes(sName))) {
+                    } else if (cleanTokens.length > 0 && sName.length >= 2 && cleanTokens.some(t => t.length >= 2 && t.includes(sName))) {
                         score = 30;
                     } else if (isExplicitSkillQuery && matchedProf && sk.group_kind === 'prof') {
                         score = 10;
@@ -555,8 +634,16 @@ export class CopilotService {
                             skill: matchedSkills[0]
                         }
                     };
+                } else if (isExplicitSkillQuery) {
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: UNIFIED_NOT_FOUND_REPLY,
+                        time: timeStr
+                    };
                 }
             }
+
         } catch (e) {
             console.warn('Load curated skills for intent failed:', e);
         }
@@ -698,7 +785,7 @@ export class CopilotService {
         }
 
         if (p.includes('逐霜') || p.includes('苍龙啸')) {
-            return `关于【逐霜】职业副本战力定位：\n1. 核心机制：逐霜主要依赖【苍龙啸】的多段爆发。在仙阵营与龙怒状态下，爆发秒伤达到全门派第一梯队。\n2. 属性优先级：\n- 无视减免：优先堆叠至 140%+ 满足 T20 门槛；\n- 对怪增伤：建议达到 80%+；\n- 暴击率与暴伤：暴击率需抵消副本 Boss 减暴（T20 需 170%+），爆伤建议 850%+。\n3. 你可以点击左上角直接进入【属性战力计算器】精确录入逐霜面板并测算每段伤害。`;
+            return `关于【逐霜】职业副本战力定位：\n1. 核心机制：逐霜主要依赖【苍龙啸】的多段爆发。在仙阵营与龙怒状态下，爆发秒伤达到全门派第一梯队。\n2. 属性优先级：\n- 对怪增伤：建议达到 80%+；\n- 暴击率与暴伤：暴击率需抵消副本 Boss 减暴（T20 需 170%+），爆伤建议 850%+。\n3. 你可以点击左上角直接进入【属性战力计算器】精确录入逐霜面板并测算每段伤害。`;
         }
 
         if (p.includes('青云') || p.includes('神剑')) {
@@ -710,14 +797,15 @@ export class CopilotService {
         }
 
         if (p.includes('破防') || p.includes('伤害') || p.includes('计算') || p.includes('公式') || p.includes('门槛')) {
-            return `【诛仙3实战破防与秒伤机制说明】：\n实战最终技能伤害由以下维度层层相乘：\n1. 基础破防：(人物攻击 - 首领防御) * 技能百分比 + 技能附加攻击\n2. 减免穿透：若 人物无视减免 <= 首领伤害减免，伤害将大幅衰减；当无视溢出后开始享受真伤增幅。\n3. 暴击结算：若 人物暴击率 <= 首领减暴，则无法暴击；暴击后伤害倍率为 (人物暴伤 - 首领减暴伤)。\n4. 怪物增伤加成：直接对最终结果进行 (1 + 对怪增伤百分比) 的全额增幅。\n\n在 T20 断浪碎晶宫（赤梭）实战中，推荐指标：攻击 >= 85,000，无视 >= 130%，怪增 >= 75%，暴击率 >= 170%。`;
+            return `【诛仙3副本实战战力与配装指南】：\n1. 属性达标：在当前高阶团队副本（如 T18-T20 断浪碎晶宫）中，对怪增伤与暴击爆伤是决定输出上限的核心三角。\n2. 破防机制：BOSS拥有极高面板防御与伤害减免，若自身基础攻击与无视穿透不足，技能伤害将受到大幅压制；当穿透达标后方可发挥完整爆发潜能。\n3. 精确测算：建议直接点击左上角【属性战力计算器】或在当前对话中【粘贴游戏 C 键面板截图】，天书万象 AI 将自动为你模拟实战秒伤与各部位提升性价比。`;
         }
+
 
         if (p.includes('配装') || p.includes('装备') || p.includes('元婴') || p.includes('轩辕策')) {
-            return `【诛仙3主流副本配装梯度建议】：\n1. 武器防具：神隐 / 混虚彰武为当前毕业选择，平民进阶推荐混虚昭武 +11 蕴灵。\n2. 元婴属性：输出职业首选「双无视 + 双爆伤」或「三无视」，辅助自保职业首选「双减免 + 双减暴」。\n3. 轩辕策四象：青龙书与白虎书主增伤技能成长，朱雀书与玄武书主抗性与保命，推荐使用本站【轩辕策四象模拟器】推算满级毕业度。\n4. 佩章与阵灵：优先选择带怪物增伤、无视人物减免的组合词条。`;
+            return `【诛仙3主流副本配装梯度建议】：\n1. 武器防具：神隐 / 混虚彰武为当前毕业选择，平民进阶推荐混虚昭武 +11 蕴灵。\n2. 元婴属性：输出职业首选「双暴击 + 双爆伤」或「附带气血/真气/攻击百分比」，辅助自保职业首选「双减免百分比 + 双减暴伤」。\n3. 轩辕策：青龙书与白虎书主暴击爆伤三代技能，朱雀书与玄武书主气血真气攻击属性，推荐使用本站【轩辕策四象模拟器】推算满级毕业度。\n4. 佩章与阵灵：优先选择带怪物增伤、爆伤的组合词条。`;
         }
 
-        return `为你检索诛仙3数据库与战斗模型：\n目前针对该咨询，建议通过以下途径获取精确数值：\n1. 【识图打桩】：在此处直接粘贴（Ctrl+V）游戏内 C 键面板属性截图，AI 将自动秒测对 T20 副本的实战爆发秒伤。\n2. 【实体速查】：输入具体的法宝名（如「玉净瓶」）、首领名（如「赤梭」）、技能名（如「苍龙啸」）获取原色数据卡。\n3. 【极值攻略】：输入「无视」、「减免」、「怪增」可查看当前版本全服天花板极限数值。`;
+        return UNIFIED_NOT_FOUND_REPLY;
     }
 
     /**
@@ -818,7 +906,7 @@ export class CopilotService {
 
         return {
             mode: 'c_panel',
-            rawExplanation: `已智能提取角色 C 键面板核心战斗属性（职业：【${matchedClass}】 · ${faction === 'FO' ? '佛' : faction === 'MO' ? '魔' : '仙'}阵营）。下方已自动联动战力仿真引擎测算出对 T20 副本【断浪碎晶宫】的实战秒伤。你可在下方【数值微调工作台】校对任意数值，或一键带入计算器/训练场：`,
+            rawExplanation: `已智能提取角色面板核心战斗属性（职业：【${matchedClass}】 · ${faction === 'FO' ? '佛' : faction === 'MO' ? '魔' : '仙'}阵营）。下方已自动联动战力仿真引擎测算出对 T20 副本【断浪碎晶宫】的实战秒伤。你可在下方【数值微调工作台】校对任意数值，或一键带入计算器/训练场：`,
             cPanelData: {
                 characterClass: matchedClass,
                 faction,

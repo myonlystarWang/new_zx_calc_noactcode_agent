@@ -260,20 +260,35 @@ export class DataService {
         return this.skillMeta?.supportRoles ?? null;
     }
 
+    private fabaoListPromise: Promise<FabaoItem[]> | null = null;
+    private equipListPromise: Promise<CuratedEquipItem[]> | null = null;
+    private allCuratedSkillsPromise: Promise<CuratedSkillItem[]> | null = null;
+
     public async getFabaoList(): Promise<FabaoItem[]> {
         if (this.fabaoList) return this.fabaoList;
-        const res = await fetch(`${DATA_BASE_URL}/fabao_curated.json`);
-        if (!res.ok) throw new Error(`加载 fabao_curated.json 失败: ${res.status}`);
-        this.fabaoList = await res.json();
-        return this.fabaoList!;
+        if (!this.fabaoListPromise) {
+            this.fabaoListPromise = (async () => {
+                const res = await fetch(`${DATA_BASE_URL}/fabao_curated.json`);
+                if (!res.ok) throw new Error(`加载 fabao_curated.json 失败: ${res.status}`);
+                this.fabaoList = await res.json();
+                return this.fabaoList!;
+            })();
+        }
+        return this.fabaoListPromise;
     }
 
     public async getEquipList(): Promise<CuratedEquipItem[]> {
         if (this.equipList) return this.equipList;
-        const res = await fetch(`${DATA_BASE_URL}/equip_curated.json`);
-        if (!res.ok) throw new Error(`加载 equip_curated.json 失败: ${res.status}`);
-        this.equipList = await res.json();
-        return this.equipList!;
+        if (!this.equipListPromise) {
+            this.equipListPromise = (async () => {
+                const res = await fetch(`${DATA_BASE_URL}/equip_curated.json`);
+                if (!res.ok) throw new Error(`加载 equip_curated.json 失败: ${res.status}`);
+                const raw: CuratedEquipItem[] = await res.json();
+                this.equipList = Array.isArray(raw) ? raw.filter(isValidEquip) : [];
+                return this.equipList;
+            })();
+        }
+        return this.equipListPromise;
     }
 
     public async getXycRules(): Promise<any> {
@@ -304,9 +319,81 @@ export class DataService {
 
     public async getAllCuratedSkills(): Promise<CuratedSkillItem[]> {
         if (this.allCuratedSkills) return this.allCuratedSkills;
-        const res = await fetch(`${DATA_BASE_URL}/all_skills_curated.json`);
-        if (!res.ok) throw new Error(`加载 all_skills_curated.json 失败: ${res.status}`);
-        this.allCuratedSkills = await res.json();
-        return this.allCuratedSkills!;
+        if (!this.allCuratedSkillsPromise) {
+            this.allCuratedSkillsPromise = (async () => {
+                const res = await fetch(`${DATA_BASE_URL}/all_skills_curated.json`);
+                if (!res.ok) throw new Error(`加载 all_skills_curated.json 失败: ${res.status}`);
+                const raw: CuratedSkillItem[] = await res.json();
+                this.allCuratedSkills = Array.isArray(raw) ? raw.filter(isValidSkill) : [];
+                return this.allCuratedSkills;
+            })();
+        }
+        return this.allCuratedSkillsPromise;
+    }
+
+    /**
+     * 在打开主页时异步静默提取并预热所有 Copilot 意图识别与图鉴核心数据
+     * 避免首次对话查询时产生网络与解析等待
+     */
+    public preloadCopilotData(): void {
+        Promise.allSettled([
+            this.getEquipList(),
+            this.getFabaoList(),
+            this.getAllCuratedSkills(),
+            this.getServerList(),
+            this.getXycRules()
+        ]).catch(() => {});
     }
 }
+
+/**
+ * 校验技能是否具备完整有效的描述说明与正文，排除开发测试占位符与脏数据
+ */
+export function isValidSkill(s: CuratedSkillItem): boolean {
+    if (!s || !s.name) return false;
+    const name = s.name.trim();
+    if (!name) return false;
+    // 屏蔽纯数字技能名（开发测试占位符，如 "2"、"111"、"5239" 等）
+    if (/^\d+$/.test(name)) return false;
+    // 屏蔽废弃、作废、测试等脏数据
+    if (/^(废弃|作废|测试|temp|test)/i.test(name) || name.includes('大逃杀')) return false;
+
+    // 屏蔽所有没有技能描述的技能
+    if (!s.el_descs || !Array.isArray(s.el_descs) || s.el_descs.length === 0) return false;
+
+    // 检查是否存在实质性的技能描述文本（不仅是学习条件）
+    return s.el_descs.some(desc => {
+        if (!desc || typeof desc !== 'string') return false;
+        const clean = desc.replace(/\r/g, '').replace(/\^[0-9a-fA-F]{6}/g, '').trim();
+        if (!clean) return false;
+        const withoutReq = clean.replace(/学习条件[：:][\s\S]*$/, '').trim();
+        return withoutReq.length > 0;
+    });
+}
+
+/**
+ * 校验装备是否具备实质性属性与词条，排除无属性测试道具与脏数据
+ */
+export function isValidEquip(e: CuratedEquipItem): boolean {
+    if (!e || !e.name) return false;
+    const name = e.name.trim();
+    if (!name) return false;
+    // 屏蔽纯数字装备名
+    if (/^\d+$/.test(name)) return false;
+    // 屏蔽测试废弃数据与大逃杀活动道具
+    if (/^(不用|废弃|作废|测试|temp|test)/i.test(name) || name.includes('（不用）') || name.includes('(不用)') || name.includes('大逃杀')) return false;
+
+    // 屏蔽单独以大阶品质名（如“昭武”、“修武”、“彰武”、“神隐”）命名的低等级入门装或测试占位条目
+    const qualityNames = ['修武', '昭武', '彰武', '神隐'];
+    if (qualityNames.includes(name) || e.id === 93997) return false;
+    if (qualityNames.includes(e.q || '') && (e.lv || 0) < 100) return false;
+
+    // 装备必须具备实质性属性或描述（基础属性、附加属性、套装/洗炼池或蕴灵成长）
+    const hasBasic = Boolean(e.atk || e.def || e.hp || e.mp || e.hit || e.dod || e.rng);
+    const hasAd = Boolean(e.ad && Array.isArray(e.ad) && e.ad.length > 0);
+    const hasSj = Boolean(e.sj && typeof e.sj === 'object' && Object.keys(e.sj).length > 0);
+    const hasRef = Boolean(e.ref && Array.isArray(e.ref) && e.ref.length > 0);
+
+    return hasBasic || hasAd || hasSj || hasRef;
+}
+
