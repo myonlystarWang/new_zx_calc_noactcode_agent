@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>天书万象 AI · Moonshot 风格月相浑天视觉概念页</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+    
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #05080f;
+      color: #e2e8f0;
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+    }
+    .font-serif-sc {
+      font-family: 'Noto Serif SC', serif;
+    }
+
+    /* 宇宙深空背景：纯正黑曜墨夜与暗蓝星云 (100% 不透明纯深色，根除浏览器默认白底透光) */
+    .cosmic-bg {
+      background-color: #05080f;
+      background-image: radial-gradient(circle at 50% 38%, #0b1325 0%, #070d19 45%, #05080f 85%);
+    }
+
+    /* 浑天月环幽微呼吸感 (纯净微光脉动，不叠加重度 drop-shadow 滤镜避免曝光失真) */
+    @keyframes celestial-pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+      }
+    }
+    .celestial-glow {
+      animation: celestial-pulse 6s ease-in-out infinite;
+    }
+
+    /* 浑天八卦同心圆逆行旋转 */
+    @keyframes orbit-cw {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes orbit-ccw {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(-360deg); }
+    }
+    /* 外部外层：高亮纯白日蚀光弧 逆时针公转 (22s 慢巡弋) */
+    .orbit-outer-white {
+      animation: orbit-ccw 22s linear infinite;
+      transform-origin: center;
+    }
+    /* 外部内层：玄青渐变次弧 逆时针公转 (14s 快巡弋，产生内外双星追逐视差) */
+    .orbit-inner-cyan {
+      animation: orbit-ccw 14s linear infinite;
+      transform-origin: center;
+    }
+    .orbit-slow-ccw {
+      animation: orbit-ccw 26s linear infinite;
+      transform-origin: center;
+    }
+
+    /* 内部核心太极天书星轮整体顺时针自转 */
+    @keyframes spin-cw {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow {
+      animation: spin-cw 18s linear infinite;
+      transform-origin: center;
+    }
+
+    /* 内部微动效 1：神经网络量子数据脉冲流动 */
+    @keyframes data-stream {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: -24; }
+    }
+    .animate-data-stream {
+      animation: data-stream 1.6s linear infinite;
+    }
+
+    /* 内部微动效 2：神经元突触光斑交错呼吸 */
+    @keyframes node-breathe-1 {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+    @keyframes node-breathe-2 {
+      0%, 100% { transform: scale(1.3); opacity: 1; }
+      50% { transform: scale(1); opacity: 0.7; }
+    }
+    .animate-node-pulse-1 {
+      animation: node-breathe-1 2.2s ease-in-out infinite;
+      transform-origin: 50px 50px;
+    }
+    .animate-node-pulse-2 {
+      animation: node-breathe-2 2.2s ease-in-out infinite;
+      transform-origin: 50px 50px;
+    }
+
+    /* 内部微动效 3：中央全知天目星芒脉冲聚光 */
+    @keyframes eye-beacon {
+      0%, 100% { transform: scale(0.92); opacity: 0.8; filter: drop-shadow(0 0 2px rgba(34, 211, 238, 0.6)); }
+      50% { transform: scale(1.28); opacity: 1; filter: drop-shadow(0 0 7px rgba(34, 211, 238, 0.95)) drop-shadow(0 0 12px rgba(251, 191, 36, 0.6)); }
+    }
+    .animate-eye-beacon {
+      animation: eye-beacon 2.4s ease-in-out infinite;
+      transform-origin: 50px 50px;
+    }
+
+    /* 内部微动效 4：天书竹简简牍明暗律动 */
+    @keyframes slips-lum {
+      0%, 100% { opacity: 0.55; }
+      50% { opacity: 0.95; }
+    }
+    .animate-slips-lum {
+      animation: slips-lum 3.6s ease-in-out infinite;
+    }
+
+    /* 内部微动效 5：太极双鱼玄气流水微光起伏 */
+    @keyframes taiji-lum {
+      0%, 100% { opacity: 0.75; stroke-width: 1.4; }
+      50% { opacity: 1; stroke-width: 1.9; }
+    }
+    .animate-taiji-lum {
+      animation: taiji-lum 4s ease-in-out infinite;
+    }
+
+    /* 极光流光文字渐变 */
+    .aurora-text {
+      background: linear-gradient(135deg, #a5f3fc 0%, #ffffff 40%, #fde68a 85%, #fbbf24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* 自定义轻量滚动条 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen h-[100dvh] flex flex-col justify-between cosmic-bg relative overflow-hidden">
+
+  <!-- 背景星空与宇宙粒子 Canvas -->
+  <canvas id="cosmicCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- 1. 顶部毛玻璃导航栏 (对齐 Moonshot / Kimi 风格) -->
+  <header class="w-full py-3.5 px-6 border-b border-white/5 bg-[#05080f]/60 backdrop-blur-xl sticky top-0 z-50">
+    <div class="w-full max-w-5xl mx-auto flex items-center justify-between">
+      <!-- 品牌标识 -->
+      <a href="#" class="flex items-center gap-3 group text-decoration-none">
+        <span class="block p-1 bg-gradient-to-br from-cyan-500/20 via-purple-500/10 to-amber-500/20 rounded-xl border border-cyan-500/30 group-hover:border-cyan-400/50 shadow-sm shadow-cyan-500/20 transition-all">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="transition-transform group-hover:scale-105"
+            aria-label="天书万象 AI Logo"
+          >
+            <defs>
+              <radialGradient id="hdr_tsBgGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#162032" />
+                <stop offset="60%" stop-color="#0b0f17" />
+                <stop offset="100%" stop-color="#070a10" />
+              </radialGradient>
+              <linearGradient id="hdr_tsCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#67e8f9" />
+                <stop offset="50%" stop-color="#22d3ee" />
+                <stop offset="100%" stop-color="#0891b2" />
+              </linearGradient>
+              <linearGradient id="hdr_tsGoldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#fde68a" />
+                <stop offset="50%" stop-color="#fbbf24" />
+                <stop offset="100%" stop-color="#d97706" />
+              </linearGradient>
+              <linearGradient id="hdr_tsDualGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#22d3ee" />
+                <stop offset="50%" stop-color="#818cf8" />
+                <stop offset="100%" stop-color="#fbbf24" />
+              </linearGradient>
+              <filter id="hdr_tsGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+            <circle cx="50" cy="50" r="48" fill="url(#hdr_tsBgGrad)" stroke="#1e293b" stroke-width="1" />
+            <circle cx="50" cy="50" r="44" stroke="url(#hdr_tsCyanGrad)" stroke-width="1.2" stroke-dasharray="4 2" opacity="0.6" />
+            <circle cx="50" cy="50" r="41" stroke="url(#hdr_tsGoldGrad)" stroke-width="0.8" stroke-dasharray="16 4 2 4" opacity="0.75" />
+            <line x1="94" y1="50" x2="97" y2="50" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+            <line x1="81.11" y1="81.11" x2="83.23" y2="83.23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+            <line x1="50" y1="94" x2="50" y2="97" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+            <line x1="18.89" y1="81.11" x2="16.77" y2="83.23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+            <line x1="6" y1="50" x2="3" y2="50" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+            <line x1="18.89" y1="18.89" x2="16.77" y2="16.77" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+            <line x1="50" y1="6" x2="50" y2="3" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+            <line x1="81.11" y1="18.89" x2="83.23" y2="16.77" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+            <path d="M 50 18 A 16 16 0 0 1 50 50 A 16 16 0 0 0 50 82 A 32 32 0 0 1 50 18 Z" fill="url(#hdr_tsCyanGrad)" opacity="0.12" />
+            <path d="M 50 18 A 16 16 0 0 1 50 50 A 16 16 0 0 0 50 82" stroke="url(#hdr_tsCyanGrad)" stroke-width="1.5" stroke-linecap="round" fill="none" filter="url(#hdr_tsGlow)" opacity="0.85" />
+            <rect x="36" y="27" width="4" height="46" rx="2" fill="url(#hdr_tsCyanGrad)" opacity="0.35" />
+            <rect x="44" y="23" width="4" height="54" rx="2" fill="url(#hdr_tsDualGrad)" opacity="0.7" />
+            <rect x="52" y="23" width="4" height="54" rx="2" fill="url(#hdr_tsDualGrad)" opacity="0.7" />
+            <rect x="60" y="27" width="4" height="46" rx="2" fill="url(#hdr_tsGoldGrad)" opacity="0.35" />
+            <path d="M 32 38 L 46 32 L 54 44 L 68 36" stroke="#67e8f9" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
+            <path d="M 32 62 L 46 56 L 54 68 L 68 62" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
+            <path d="M 46 32 L 54 68 M 54 44 L 46 56" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 2" opacity="0.6" />
+            <circle cx="32" cy="38" r="2.2" fill="#22d3ee" filter="url(#hdr_tsGlow)" />
+            <circle cx="46" cy="32" r="2.8" fill="#ffffff" stroke="#22d3ee" stroke-width="1" />
+            <circle cx="54" cy="44" r="3" fill="#ffffff" stroke="#fbbf24" stroke-width="1" />
+            <circle cx="68" cy="36" r="2.2" fill="#fbbf24" filter="url(#hdr_tsGlow)" />
+            <circle cx="32" cy="62" r="2.2" fill="#22d3ee" filter="url(#hdr_tsGlow)" />
+            <circle cx="46" cy="56" r="3" fill="#ffffff" stroke="#22d3ee" stroke-width="1" />
+            <circle cx="54" cy="68" r="2.8" fill="#ffffff" stroke="#fbbf24" stroke-width="1" />
+            <circle cx="68" cy="62" r="2.2" fill="#fbbf24" filter="url(#hdr_tsGlow)" />
+            <circle cx="50" cy="50" r="4.2" fill="#ffffff" filter="url(#hdr_tsGlow)" />
+            <circle cx="50" cy="50" r="2.2" fill="#22d3ee" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-indigo-200 to-amber-300 tracking-tight group-hover:brightness-110 transition-all">
+          天书万象 AI
+        </span>
+      </a>
+
+      <!-- 快捷导航 (更新动态 -> 意见反馈 -> 关于本站) -->
+      <div class="flex items-center gap-6 sm:gap-7 text-xs sm:text-sm font-medium">
+        <a href="#changelog" class="text-slate-300 hover:text-cyan-300 transition-colors flex items-center gap-1.5" title="查看更新动态">
+          <span>更新动态</span>
+          <span class="px-1 py-0.5 rounded-full bg-rose-500/90 text-white text-[9px] font-bold">NEW</span>
+        </a>
+        <a href="#guestbook" class="text-slate-300 hover:text-cyan-300 transition-colors" title="仙友留言板与意见反馈">
+          <span>意见反馈</span>
+        </a>
+        <a href="#about" class="text-slate-300 hover:text-cyan-300 transition-colors" title="关于本站愿景与理念">
+          <span>关于本站</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. 中间核心视觉区：留足震撼的“天书浑天月相神环”空间 -->
+  <main class="flex-1 flex flex-col items-center justify-center px-4 relative z-10 -mt-2">
+    <div class="w-full max-w-4xl flex flex-col items-center text-center">
+
+      <!-- 浑天月环宇宙视觉图腾 (模拟 Moonshot 月相日冕 + 诛仙太极量子浑天仪) -->
+      <div id="celestialStage" class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center cursor-pointer mb-3 select-none transition-transform duration-300 hover:scale-105">
+        <!-- 外部极光色散日冕光晕 (幽邃深空微光) -->
+        <div class="absolute -inset-4 rounded-full bg-gradient-to-tr from-cyan-500/20 via-indigo-600/15 to-amber-400/10 blur-xl celestial-glow pointer-events-none"></div>
+
+        <!-- 外部外层：日全食贝利珠纯白流光弧 (r=88，外层巡弋，22s 逆转) -->
+        <svg class="absolute inset-0 w-full h-full orbit-outer-white pointer-events-none" viewBox="0 0 200 200" fill="none">
+          <defs>
+            <filter id="beadGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+          <!-- 外层纯白光弧 (长约 110 度) -->
+          <circle cx="100" cy="100" r="88" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="110 440" opacity="0.95"/>
+          <!-- 贝利珠耀斑聚光星点 -->
+          <circle cx="100" cy="12" r="2.6" fill="#ffffff" filter="url(#beadGlow)"/>
+        </svg>
+
+        <!-- 外部内层：玄青至浅金日冕渐变弧 (r=78，内层快巡弋，14s 逆转，与外层隔离 10px 形成双星追逐) -->
+        <svg class="absolute inset-0 w-full h-full orbit-inner-cyan pointer-events-none" viewBox="0 0 200 200" fill="none">
+          <defs>
+            <linearGradient id="innerEclipseRim" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.95" />
+              <stop offset="45%" stop-color="#818cf8" stop-opacity="0.75" />
+              <stop offset="85%" stop-color="#fbbf24" stop-opacity="0.25" />
+              <stop offset="100%" stop-color="#fbbf24" stop-opacity="0" />
+            </linearGradient>
+            <filter id="innerCoronaBlur">
+              <feGaussianBlur stdDeviation="2.5" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+          <!-- 内层柔光渐变长弧 (长约 150 度) -->
+          <circle cx="100" cy="100" r="78" stroke="url(#innerEclipseRim)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="150 340" filter="url(#innerCoronaBlur)"/>
+        </svg>
+
+        <!-- 逆向旋转的八卦星轨金环 (26s 逆转) -->
+        <div class="absolute inset-2.5 rounded-full border border-amber-400/25 border-dashed orbit-slow-ccw pointer-events-none"></div>
+        <!-- 逆向旋转的青灵星轨点环 (26s 逆转) -->
+        <div class="absolute inset-6 rounded-full border border-cyan-400/20 orbit-slow-ccw pointer-events-none" style="border-style: dotted;"></div>
+
+        <!-- 浑天球本体：深邃墨色球体 + 核心八卦神经元全息投影 -->
+        <div class="relative w-40 h-40 sm:w-44 sm:h-44 rounded-full bg-[#070b14] border border-cyan-500/40 shadow-[inset_0_0_30px_rgba(34,211,238,0.25)] flex items-center justify-center overflow-hidden">
+          <!-- 内部量子扫描光栅线 -->
+          <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(6,182,212,0.08)_51%)] bg-[length:100%_4px] pointer-events-none"></div>
+
+          <!-- 正式天书万象 AI 完整 Logo (高精矢量八卦神经元太极印) -->
+          <svg
+            class="w-36 h-36 sm:w-40 sm:h-40 animate-spin-slow drop-shadow-[0_0_24px_rgba(34,211,238,0.35)]"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="天书万象 AI 核心图腾"
+          >
+            <defs>
+              <!-- 背景渐变 -->
+              <radialGradient id="ctr_tsBgGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#162032" />
+                <stop offset="60%" stop-color="#0b0f17" />
+                <stop offset="100%" stop-color="#070a10" />
+              </radialGradient>
+
+              <!-- 玄青灵光渐变 -->
+              <linearGradient id="ctr_tsCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#67e8f9" />
+                <stop offset="50%" stop-color="#22d3ee" />
+                <stop offset="100%" stop-color="#0891b2" />
+              </linearGradient>
+
+              <!-- 浅金道芒渐变 -->
+              <linearGradient id="ctr_tsGoldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#fde68a" />
+                <stop offset="50%" stop-color="#fbbf24" />
+                <stop offset="100%" stop-color="#d97706" />
+              </linearGradient>
+
+              <!-- 混合光晕 -->
+              <linearGradient id="ctr_tsDualGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#22d3ee" />
+                <stop offset="50%" stop-color="#818cf8" />
+                <stop offset="100%" stop-color="#fbbf24" />
+              </linearGradient>
+
+              <!-- 辉光滤镜 -->
+              <filter id="ctr_tsGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+
+            <!-- 底盘微光圆 -->
+            <circle cx="50" cy="50" r="48" fill="url(#ctr_tsBgGrad)" stroke="#1e293b" stroke-width="1" />
+
+            <!-- 外圈：八卦太极道印能量星轨 (随整体顺时针自转) -->
+            <circle
+              cx="50"
+              cy="50"
+              r="44"
+              stroke="url(#ctr_tsCyanGrad)"
+              stroke-width="1.2"
+              stroke-dasharray="4 2"
+              opacity="0.65"
+            />
+            <circle
+              cx="50"
+              cy="50"
+              r="41"
+              stroke="url(#ctr_tsGoldGrad)"
+              stroke-width="0.8"
+              stroke-dasharray="16 4 2 4"
+              opacity="0.8"
+            />
+
+            <!-- 八卦方位道标星轨点 (8个基准卦位) -->
+            <line x1="94" y1="50" x2="97" y2="50" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+            <line x1="81.11" y1="81.11" x2="83.23" y2="83.23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+            <line x1="50" y1="94" x2="50" y2="97" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+            <line x1="18.89" y1="81.11" x2="16.77" y2="83.23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+            <line x1="6" y1="50" x2="3" y2="50" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+            <line x1="18.89" y1="18.89" x2="16.77" y2="16.77" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+            <line x1="50" y1="6" x2="50" y2="3" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+            <line x1="81.11" y1="18.89" x2="83.23" y2="16.77" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+
+            <!-- 太极双鱼玄气流水 -->
+            <path
+              d="M 50 18 A 16 16 0 0 1 50 50 A 16 16 0 0 0 50 82 A 32 32 0 0 1 50 18 Z"
+              fill="url(#ctr_tsCyanGrad)"
+              opacity="0.14"
+            />
+            <path
+              class="animate-taiji-lum"
+              d="M 50 18 A 16 16 0 0 1 50 50 A 16 16 0 0 0 50 82"
+              stroke="url(#ctr_tsCyanGrad)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              fill="none"
+              filter="url(#ctr_tsGlow)"
+              opacity="0.85"
+            />
+
+            <!-- 核心内芯：天书竹简几何光束展开与神经网络交织 (简牍柔和明暗呼吸) -->
+            <g class="animate-slips-lum">
+              <rect x="36" y="27" width="4" height="46" rx="2" fill="url(#ctr_tsCyanGrad)" opacity="0.35" />
+              <rect x="44" y="23" width="4" height="54" rx="2" fill="url(#ctr_tsDualGrad)" opacity="0.75" />
+              <rect x="52" y="23" width="4" height="54" rx="2" fill="url(#ctr_tsDualGrad)" opacity="0.75" />
+              <rect x="60" y="27" width="4" height="46" rx="2" fill="url(#ctr_tsGoldGrad)" opacity="0.35" />
+            </g>
+
+            <!-- 神经网络节点互联连线 -->
+            <path
+              d="M 32 38 L 46 32 L 54 44 L 68 36"
+              stroke="#67e8f9"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              opacity="0.8"
+            />
+            <path
+              d="M 32 62 L 46 56 L 54 68 L 68 62"
+              stroke="#fbbf24"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              opacity="0.8"
+            />
+            <!-- 突触量子数据流脉冲 (流动的虚线！) -->
+            <path
+              class="animate-data-stream"
+              d="M 46 32 L 54 68 M 54 44 L 46 56"
+              stroke="#c084fc"
+              stroke-width="1.3"
+              stroke-dasharray="3 3"
+              opacity="0.9"
+            />
+
+            <!-- 神经网络聚能光斑结点 (交替呼吸脉冲) -->
+            <g class="animate-node-pulse-1">
+              <circle cx="32" cy="38" r="2.2" fill="#22d3ee" filter="url(#ctr_tsGlow)" />
+              <circle cx="54" cy="44" r="3" fill="#ffffff" stroke="#fbbf24" stroke-width="1" />
+              <circle cx="46" cy="56" r="3" fill="#ffffff" stroke="#22d3ee" stroke-width="1" />
+              <circle cx="68" cy="62" r="2.2" fill="#fbbf24" filter="url(#ctr_tsGlow)" />
+            </g>
+            <g class="animate-node-pulse-2">
+              <circle cx="46" cy="32" r="2.8" fill="#ffffff" stroke="#22d3ee" stroke-width="1" />
+              <circle cx="68" cy="36" r="2.2" fill="#fbbf24" filter="url(#ctr_tsGlow)" />
+              <circle cx="32" cy="62" r="2.2" fill="#22d3ee" filter="url(#ctr_tsGlow)" />
+              <circle cx="54" cy="68" r="2.8" fill="#ffffff" stroke="#fbbf24" stroke-width="1" />
+            </g>
+
+            <!-- 中央全知天目星芒 (强律动微聚光) -->
+            <g class="animate-eye-beacon">
+              <circle cx="50" cy="50" r="4.2" fill="#ffffff" filter="url(#ctr_tsGlow)" />
+              <circle cx="50" cy="50" r="2.2" fill="#22d3ee" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 3. 核心品牌主标题与愿景副标题 -->
+      <div class="space-y-2 mb-6">
+        <h1 class="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight aurora-text">
+          天书万象 AI · 诛仙全知大模型
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 font-serif-sc tracking-[0.22em] text-shadow">
+          天地不仁以万物为刍狗 · 天书通晓诛仙万象规则
+        </p>
+      </div>
+
+      <!-- 4. 现代化输入栏 (全功能交互：集成 + 号微菜单) -->
+      <div class="relative w-full max-w-2xl bg-[#090d18]/95 border-2 border-slate-700/60 focus-within:border-cyan-500/80 focus-within:shadow-[0_0_35px_rgba(6,182,212,0.3)] rounded-2xl p-2 transition-all shadow-2xl">
+        
+        <!-- 下拉微工具菜单 -->
+        <div id="plusMenu" class="hidden absolute top-full left-0 mt-2.5 w-full bg-[#0a101f]/96 border border-slate-700/80 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] backdrop-blur-2xl p-2 z-50 text-left">
+          <div class="space-y-1 max-h-[380px] overflow-y-auto no-scrollbar">
+            <!-- 1. 上传截图 -->
+            <button class="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-colors group cursor-pointer">
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-cyan-300 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <span class="text-[13px] text-slate-100 group-hover:text-cyan-300 shrink-0">上传截图</span>
+                <span class="text-[13px] text-slate-400 group-hover:text-slate-300 truncate">从电脑中上传 C 界面 / 轩辕策截图进行智能打桩诊断</span>
+              </div>
+            </button>
+            <!-- 2. 战力推演计算器 -->
+            <button class="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-colors group cursor-pointer">
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-cyan-300 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <span class="text-[13px] text-slate-100 group-hover:text-cyan-300 shrink-0">战力计算</span>
+                <span class="text-[13px] text-slate-400 group-hover:text-slate-300 truncate">属性录入 · 增益勾选 · T20/团本秒伤推演</span>
+              </div>
+            </button>
+            <!-- 3. 开服雷达 -->
+            <button class="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-colors group cursor-pointer">
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-cyan-300 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <span class="text-[13px] text-slate-100 group-hover:text-cyan-300 shrink-0">开服雷达</span>
+                <span class="text-[13px] text-slate-400 group-hover:text-slate-300 truncate">9 大战区 33 服毫秒心跳探测与声光提醒</span>
+              </div>
+            </button>
+            <!-- 4. 轩辕策四象 -->
+            <button class="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-colors group cursor-pointer">
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-cyan-300 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <span class="text-[13px] text-slate-100 group-hover:text-cyan-300 shrink-0">轩辕策</span>
+                <span class="text-[13px] text-slate-400 group-hover:text-slate-300 truncate">1~20 阶反推初始底子与极品毕业度评级</span>
+              </div>
+            </button>
+            <!-- 5. 仙友留言 -->
+            <button class="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-left transition-colors group cursor-pointer">
+              <svg class="w-4 h-4 text-slate-400 group-hover:text-cyan-300 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <span class="text-[13px] text-slate-100 group-hover:text-cyan-300 shrink-0">仙友留言</span>
+                <span class="text-[13px] text-slate-400 group-hover:text-slate-300 truncate">战术心得 · 数值捉虫 · 新功能催更</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 核心输入行 -->
+        <div class="flex items-center gap-2 px-2 py-1">
+          <!-- + 号按钮 (展开变 X) -->
+          <button id="plusBtn" type="button" class="p-2 bg-transparent border-0 outline-none text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer shrink-0">
+            <svg id="plusIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <svg id="closeIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+
+          <!-- 输入文本框 -->
+          <input
+            id="chatInput"
+            type="text"
+            placeholder="问点什么，比如昭武、技能、法宝、伤害等..."
+            class="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none px-2 py-1.5"
+          />
+
+          <!-- 发送按钮 -->
+          <button id="sendBtn" type="button" class="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 cursor-pointer shrink-0 active:scale-95">
+            <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. 快捷微工具药丸 (与输入框对齐) -->
+      <div class="flex flex-wrap items-center justify-center gap-2 max-w-2xl w-full pt-3">
+        <button class="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-cyan-500/30 text-xs text-slate-300 hover:text-cyan-300 transition-all cursor-pointer">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+          <span>装备属性</span>
+        </button>
+        <button class="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-emerald-500/30 text-xs text-slate-300 hover:text-emerald-300 transition-all cursor-pointer">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>技能描述</span>
+        </button>
+        <button class="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-amber-500/30 text-xs text-slate-300 hover:text-amber-300 transition-all cursor-pointer">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+          <span>伤害计算</span>
+        </button>
+        <button class="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-sky-500/30 text-xs text-slate-300 hover:text-sky-300 transition-all cursor-pointer">
+          <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+          <span>开服检测</span>
+        </button>
+        <button class="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-purple-500/30 text-xs text-slate-300 hover:text-purple-300 transition-all cursor-pointer">
+          <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+          <span>各类模拟器</span>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 7. 极简单行居中页脚（Apple 极简风格） -->
+  <footer class="w-full pb-4 pt-3 bg-transparent relative z-10 shrink-0 select-none">
+    <!-- 顶部微光渐变分割线（中间微亮、两端隐没，不切割宇宙星空画布） -->
+    <div class="w-full max-w-2xl mx-auto h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-3"></div>
+    
+    <div class="w-full max-w-5xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs tracking-normal text-center text-slate-500">
+      <span class="whitespace-nowrap">&copy; 2026 天书万象 AI</span>
+      <span class="text-slate-700 select-none" aria-hidden="true">·</span>
+      <span class="whitespace-nowrap">
+        Created with pride by <span class="text-slate-400 hover:text-slate-200 transition-colors cursor-default">星耀-萝卜</span>
+      </span>
+    </div>
+  </footer>
+
+  <!-- 交互脚本与星空渲染 -->
+  <script>
+    // 1. 浑天月相星空粒子模拟
+    const canvas = document.getElementById('cosmicCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const stars = [];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (let i = 0; i < 90; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 1.5 + 0.3,
+        alpha: Math.random() * 0.8 + 0.2,
+        speed: Math.random() * 0.02 + 0.005
+      });
+    }
+
+    function renderStars() {
+      ctx.clearRect(0, 0, width, height);
+      for (const s of stars) {
+        s.alpha += Math.sin(Date.now() * s.speed) * 0.01;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, Math.min(1, s.alpha))})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(renderStars);
+    }
+    renderStars();
+
+    // 2. 浑天神球 3D 鼠标微倾角视差交互
+    const stage = document.getElementById('celestialStage');
+    window.addEventListener('mousemove', (e) => {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight * 0.38;
+      const dx = (e.clientX - cx) / cx;
+      const dy = (e.clientY - cy) / cy;
+      stage.style.transform = `rotateY(${dx * 12}deg) rotateX(${-dy * 12}deg)`;
+    });
+
+    // 3. + 号菜单展开/收起切换
+    const plusBtn = document.getElementById('plusBtn');
+    const plusMenu = document.getElementById('plusMenu');
+    const plusIcon = document.getElementById('plusIcon');
+    const closeIcon = document.getElementById('closeIcon');
+
+    plusBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !plusMenu.classList.contains('hidden');
+      if (isOpen) {
+        plusMenu.classList.add('hidden');
+        plusIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        plusBtn.classList.remove('text-cyan-300');
+        plusBtn.classList.add('text-slate-400');
+      } else {
+        plusMenu.classList.remove('hidden');
+        plusIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+        plusBtn.classList.add('text-cyan-300');
+        plusBtn.classList.remove('text-slate-400');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!plusMenu.contains(e.target) && !plusBtn.contains(e.target)) {
+        plusMenu.classList.add('hidden');
+        plusIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        plusBtn.classList.remove('text-cyan-300');
+        plusBtn.classList.add('text-slate-400');
+      }
+    });
+
+    // 4. 药丸点击填入输入框
+    document.querySelectorAll('.pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const text = btn.innerText.trim();
+        document.getElementById('chatInput').value = text;
+        document.getElementById('chatInput').focus();
+      });
+    });
+  </script>
+</body>
+</html>
