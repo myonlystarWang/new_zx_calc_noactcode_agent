@@ -10,6 +10,7 @@ export const Header: React.FC = () => {
 
     const onChangelogPage = pathname.startsWith(ROUTE.changelog);
     const onAboutPage = pathname.startsWith(ROUTE.about);
+    const onFeedbackPage = pathname.startsWith(ROUTE.feedback);
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -21,17 +22,6 @@ export const Header: React.FC = () => {
             document.body.removeChild(script);
         };
     }, []);
-
-    const handleOpenGuestbook = () => {
-        if (pathname !== ROUTE.home) {
-            navigate(ROUTE.home);
-            setTimeout(() => {
-                window.dispatchEvent(new CustomEvent('open-zx-workspace', { detail: { mode: 'guestbook' } }));
-            }, 100);
-        } else {
-            window.dispatchEvent(new CustomEvent('open-zx-workspace', { detail: { mode: 'guestbook' } }));
-        }
-    };
 
     return (
         <header className="w-full py-3.5 px-4 sm:px-6 border-b border-white/5 bg-[#05080f]/60 backdrop-blur-xl sticky top-0 z-[100] transition-all shrink-0">
@@ -82,8 +72,11 @@ export const Header: React.FC = () => {
 
                     <button
                         type="button"
-                        onClick={handleOpenGuestbook}
-                        className="transition-colors cursor-pointer select-none py-1 text-slate-300 hover:text-cyan-300"
+                        onClick={() => navigate(ROUTE.feedback)}
+                        className={clsx(
+                            'transition-colors cursor-pointer select-none py-1',
+                            onFeedbackPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-cyan-300'
+                        )}
                         title="仙友留言板与意见反馈"
                         aria-label="意见反馈"
                     >

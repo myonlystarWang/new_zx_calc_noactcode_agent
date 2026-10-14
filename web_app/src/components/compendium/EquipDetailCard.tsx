@@ -127,101 +127,123 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
     return (
         <div className={clsx(
-            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left',
+            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left w-full min-w-0',
             className
         )}>
             {/* 1:1 游戏实机与寻宝天行原生 Tooltip 视效容器 */}
             <div
-                className="rounded-xl p-4 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0"
                 style={{
                     fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
                     letterSpacing: '0.3px'
                 }}
             >
-                {/* 首行装备名称与强化/升降阶步进按钮 */}
-                <div
-                    className="font-bold text-[14px] pb-1.5 mb-2 border-b border-[#1f293d]/80 flex items-center justify-between"
-                    style={{ color: titleColor }}
-                >
-                    <span>
+                {/* 装备头部区域：两层式布局，彻底解决分屏长装备名截断与按钮挤压问题 */}
+                <div className="pb-2 mb-2 border-b border-[#1f293d]/80 flex flex-col gap-1.5 min-w-0">
+                    {/* 第 1 行：完整装备名称（全宽展示，无省略号截断，允许整词自然换行） */}
+                    <div
+                        className="font-bold text-[13px] sm:text-[14px] leading-snug break-words"
+                        style={{ color: titleColor }}
+                    >
                         {hasYunling ? `${cleanName}（蕴灵 +${refLevel}）` : cleanName}
-                    </span>
+                    </div>
 
-                    {/* 1. 蕴灵装备：强化 -1 / 强化 +1 */}
-                    {hasYunling && (
-                        <div className="flex items-center gap-1.5">
-                            <button
-                                type="button"
-                                onClick={() => setRefLevel(prev => Math.max(0, prev - 1))}
-                                disabled={refLevel <= 0}
-                                className={clsx(
-                                    'px-2 py-0.5 rounded text-xs font-bold transition-all border font-sans',
-                                    refLevel <= 0
-                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
-                                        : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
-                                )}
-                            >
-                                强化 -1
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setRefLevel(prev => Math.min(15, prev + 1))}
-                                disabled={refLevel >= 15}
-                                className={clsx(
-                                    'px-2 py-0.5 rounded text-xs font-bold transition-all border font-sans',
-                                    refLevel >= 15
-                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
-                                        : 'bg-cyan-600/30 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/50 hover:text-white'
-                                )}
-                            >
-                                强化 +1
-                            </button>
+                    {/* 第 2 行：品质/部位微标 与 强化/升降阶步进控制台（左右分栏，永不挤占名称空间） */}
+                    <div className="flex items-center justify-between gap-2 min-w-0 flex-wrap">
+                        {/* 左侧：品质与部位胶囊 */}
+                        <div className="flex items-center gap-1.5 text-[11px] font-sans">
+                            {currentItem.q && (
+                                <span className="px-1.5 py-0.5 rounded bg-slate-800/80 text-amber-300/90 border border-amber-500/20 whitespace-nowrap">
+                                    {currentItem.q}品质
+                                </span>
+                            )}
+                            {currentItem.slot && (
+                                <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-300 border border-slate-700/50 whitespace-nowrap">
+                                    {currentItem.slot}
+                                </span>
+                            )}
                         </div>
-                    )}
 
-                    {/* 2. 同系装备（金身、法身、大乘战罡、锦囊、印、项链、戒指等）：等级 -1 / 等级 +1 */}
-                    {!hasYunling && seriesInfo && seriesInfo.items.length > 1 && (
-                        <div className="flex items-center gap-1.5">
-                            <span className="text-[11px] font-sans text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30">
-                                {seriesInfo.currentIndex + 1}级
-                            </span>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    if (seriesInfo.currentIndex > 0) {
-                                        setCurrentItem(seriesInfo.items[seriesInfo.currentIndex - 1]);
-                                    }
-                                }}
-                                disabled={seriesInfo.currentIndex <= 0}
-                                className={clsx(
-                                    'px-2 py-0.5 rounded text-xs font-bold transition-all border font-sans',
-                                    seriesInfo.currentIndex <= 0
-                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
-                                        : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
-                                )}
-                            >
-                                等级 -1
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    if (seriesInfo.currentIndex < seriesInfo.items.length - 1) {
-                                        setCurrentItem(seriesInfo.items[seriesInfo.currentIndex + 1]);
-                                    }
-                                }}
-                                disabled={seriesInfo.currentIndex >= seriesInfo.items.length - 1}
-                                className={clsx(
-                                    'px-2 py-0.5 rounded text-xs font-bold transition-all border font-sans',
-                                    seriesInfo.currentIndex >= seriesInfo.items.length - 1
-                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
-                                        : 'bg-amber-600/30 border-amber-500/50 text-amber-200 hover:bg-amber-600/50 hover:text-white'
-                                )}
-                            >
-                                等级 +1
-                            </button>
-                        </div>
-                    )}
+                        {/* 右侧：步进推演控制（右侧并排，强制不换行） */}
+                        {/* 1. 蕴灵装备：强化 -1 / 强化 +1 */}
+                        {hasYunling && (
+                            <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
+                                <span className="text-[10px] sm:text-[11px] font-sans text-cyan-300/90 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30 whitespace-nowrap">
+                                    +{refLevel}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => setRefLevel(prev => Math.max(0, prev - 1))}
+                                    disabled={refLevel <= 0}
+                                    className={clsx(
+                                        'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                        refLevel <= 0
+                                            ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                            : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
+                                    )}
+                                >
+                                    强化 -1
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setRefLevel(prev => Math.min(15, prev + 1))}
+                                    disabled={refLevel >= 15}
+                                    className={clsx(
+                                        'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                        refLevel >= 15
+                                            ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                            : 'bg-cyan-600/30 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/50 hover:text-white'
+                                    )}
+                                >
+                                    强化 +1
+                                </button>
+                            </div>
+                        )}
+
+                        {/* 2. 同系装备（金身、法身、大乘战罡、锦囊、印、项链、戒指等）：等级 -1 / 等级 +1 */}
+                        {!hasYunling && seriesInfo && seriesInfo.items.length > 1 && (
+                            <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
+                                <span className="text-[10px] sm:text-[11px] font-sans text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30 whitespace-nowrap">
+                                    {seriesInfo.currentIndex + 1}级
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (seriesInfo.currentIndex > 0) {
+                                            setCurrentItem(seriesInfo.items[seriesInfo.currentIndex - 1]);
+                                        }
+                                    }}
+                                    disabled={seriesInfo.currentIndex <= 0}
+                                    className={clsx(
+                                        'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                        seriesInfo.currentIndex <= 0
+                                            ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                            : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
+                                    )}
+                                >
+                                    等级 -1
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (seriesInfo.currentIndex < seriesInfo.items.length - 1) {
+                                            setCurrentItem(seriesInfo.items[seriesInfo.currentIndex + 1]);
+                                        }
+                                    }}
+                                    disabled={seriesInfo.currentIndex >= seriesInfo.items.length - 1}
+                                    className={clsx(
+                                        'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                        seriesInfo.currentIndex >= seriesInfo.items.length - 1
+                                            ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                            : 'bg-amber-600/30 border-amber-500/50 text-amber-200 hover:bg-amber-600/50 hover:text-white'
+                                    )}
+                                >
+                                    等级 +1
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* 攻击距离（武器专属，纯白字） */}

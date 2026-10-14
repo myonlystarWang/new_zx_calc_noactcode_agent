@@ -31,9 +31,10 @@ export const ROUTE = {
     newTianYuan: '/tools/newtianyuan',
     changelog: '/changelog',
     about: '/about',
+    feedback: '/feedback',
 } as const;
 
-export type PrimaryTab = 'home' | 'calculator' | 'arena' | 'compendium' | 'tools' | 'changelog' | 'about';
+export type PrimaryTab = 'home' | 'calculator' | 'arena' | 'compendium' | 'tools' | 'changelog' | 'about' | 'feedback';
 
 /** 资料库一级子页（与 CompendiumView 的 CompendiumPrimaryTab 对齐） */
 export const COMPENDIUM_SEGMENTS = ['ceiling', 'skills', 'support', 'boss', 'fabao', 'equip'] as const;
@@ -56,6 +57,7 @@ export function primaryTabFromPath(pathname: string): PrimaryTab {
     if (pathname.startsWith(ROUTE.tools)) return 'tools';
     if (pathname.startsWith(ROUTE.changelog)) return 'changelog';
     if (pathname.startsWith(ROUTE.about)) return 'about';
+    if (pathname.startsWith(ROUTE.feedback)) return 'feedback';
     return 'home';
 }
 
@@ -92,6 +94,7 @@ export function titleForPath(pathname: string): string {
     if (parts[0] === 'arena') return `副本模拟训练场 · ${SITE_NAME}`;
     if (parts[0] === 'changelog') return `更新动态 · ${SITE_NAME}`;
     if (parts[0] === 'about') return `关于本站 · ${SITE_NAME}`;
+    if (parts[0] === 'feedback') return `仙友留言板 · ${SITE_NAME}`;
     if (parts[0] === 'compendium') {
         const map: Record<string, string> = {
             ceiling: '极致属性攻略',

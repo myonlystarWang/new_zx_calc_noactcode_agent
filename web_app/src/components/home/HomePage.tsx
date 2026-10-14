@@ -361,7 +361,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             className={clsx(
               'flex flex-col h-full overflow-hidden transition-all duration-300',
               workspaceState.isOpen
-                ? 'w-[420px] shrink-0 border-r border-slate-800/80 bg-[#080c14]'
+                ? 'w-[460px] xl:w-[480px] 2xl:w-[500px] shrink-0 border-r border-slate-800/80 bg-[#080c14]'
                 : 'flex-1 max-w-[960px] mx-auto w-full'
             )}
           >
@@ -431,7 +431,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
       {/* 主舞台居中容器 (微上浮 -mt-2，黄金视线聚焦) */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 relative z-10 -mt-2 min-h-0">
         <div className="w-full max-w-4xl flex flex-col items-center text-center">
-          
+
           {/* 浑天月相太极星核动效天体 */}
           <CelestialStage onClick={() => inputRef.current?.focus()} />
 
@@ -573,7 +573,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               type="button"
               onClick={() => {
                 setWorkspaceState({ isOpen: true, mode: 'server', isMaximized: false });
-                handleStartAiChat('开服雷达');
+                handleStartAiChat('开服检测');
               }}
               className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-sky-500/30 text-xs text-slate-300 hover:text-sky-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >

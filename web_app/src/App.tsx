@@ -22,6 +22,7 @@ import { CompendiumView } from './components/compendium/CompendiumView';
 import { ToolsHubView } from './components/tools/ToolsHubView';
 import { ChangelogPage } from './components/changelog/ChangelogPage';
 import { AboutPage } from './components/about/AboutPage';
+import { FeedbackPage } from './components/feedback/FeedbackPage';
 import { decodeSharePayload } from './utils/shareSnapshot';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AlertTriangle } from 'lucide-react';
@@ -373,6 +374,18 @@ const MainContent: React.FC = () => {
                 <AboutPage />
               </main>
               <Footer activeTab="about" />
+            </div>
+          }
+        />
+
+        <Route
+          path={ROUTE.feedback}
+          element={
+            <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
+              <main className="w-full flex-1">
+                <FeedbackPage />
+              </main>
+              <Footer activeTab="feedback" />
             </div>
           }
         />
