@@ -568,6 +568,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         items={list.map((c, idx) => ({
                                                             id: `${c.id || 0}_${c.name}_${idx}`,
                                                             title: c.name,
+                                                            badge: c.group_name || undefined,
                                                             tags: c.tags
                                                         }))}
                                                         activeIndex={activeIdx}
@@ -768,7 +769,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
             </div>
 
             {/* 底部固定对话输入舱：高对比度、科技光晕边缘与醒目交互，强化视觉焦点 */}
-            <div className="p-3 md:p-4 backdrop-blur-xl bg-[#090d15]/98 border-t border-cyan-500/30 rounded-b-2xl shrink-0 shadow-[0_-8px_24px_rgba(0,0,0,0.6)]">
+            <div className="relative z-30 p-3 md:p-4 backdrop-blur-xl bg-[#090d15]/98 border-t border-cyan-500/30 rounded-b-2xl shrink-0 shadow-[0_-8px_24px_rgba(0,0,0,0.6)]">
                 {/* 选中的图片缩略预览 */}
                 {selectedImage && (
                     <div className="mb-2 px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-500/40 flex items-center justify-between max-w-sm">
@@ -824,7 +825,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         onKeyDown={e => {
                             if (e.key === 'Enter') handleSend();
                         }}
-                        placeholder="问点什么，比如昭武、技能、法宝、伤害等..."
+                        placeholder="问点什么，比如昭武、技能、法宝、计算等..."
                         className="flex-1 px-3 py-2 bg-transparent text-slate-100 placeholder-slate-400 text-sm focus:outline-none"
                     />
 

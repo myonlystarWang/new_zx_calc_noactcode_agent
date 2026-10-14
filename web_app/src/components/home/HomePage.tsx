@@ -11,12 +11,15 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 import type { SearchTarget } from '../GlobalSearch';
-import { TianShuLogo } from '../ui/TianShuLogo';
 import { Footer } from '../layout/Footer';
 import { HomeAIChatStage } from './HomeAIChatStage';
 import { SplitScreenWorkspace, type WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import { CopilotService, type CopilotMessage } from '../../services/CopilotService';
+import { DataService } from '../../services/DataService';
+import { CelestialStage } from './CelestialStage';
+import { CosmicStarCanvas } from './CosmicStarCanvas';
+
 
 interface HomePageProps {
   onSearchNavigate: (target: SearchTarget) => void;
@@ -29,7 +32,6 @@ interface WorkspaceState {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchNavigate }) => {
-
   // 对话流状态
   const [isChatActive, setIsChatActive] = useState(false);
   const [chatMessages, setChatMessages] = useState<CopilotMessage[]>([]);
@@ -39,7 +41,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
   // 输入框左侧 + 号菜单展开状态
   const [isPlusMenuOpen, setIsPlusMenuOpen] = useState(false);
-
 
   // 双轨分屏工作区状态
   const [workspaceState, setWorkspaceState] = useState<WorkspaceState>({
@@ -78,6 +79,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     window.addEventListener('paste', handlePaste);
     return () => window.removeEventListener('paste', handlePaste);
   }, []);
+
+  // 打开主页时异步静默提取 Copilot 意图与图鉴核心数据，避免用户第一次提问时等待数据下载
+  useEffect(() => {
+    DataService.getInstance().preloadCopilotData();
+  }, []);
+
 
   // 快捷键 Ctrl+K 聚焦输入框
   useEffect(() => {
@@ -335,6 +342,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
   // 快捷微工具药丸点击：直接滑开右侧对应工作区
   const handleOpenMicroTool = (mode: WorkspaceMode) => {
+    setIsPlusMenuOpen(false);
     setIsChatActive(true);
     setWorkspaceState({
       isOpen: true,
@@ -342,7 +350,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
       isMaximized: false,
     });
   };
-
 
   // 1. 对话展开态（含居中全宽态与双轨分屏态）
   if (isChatActive) {
@@ -415,30 +422,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     );
   }
 
-  // 2. 初始未对话状态 (ChatGPT 范式纯粹大模型工作台)
+  // 2. 初始主页：定稿版 Moonshot 风格月相浑天视觉全知推演台
   return (
-    <div className="w-full flex-1 min-h-0 flex flex-col justify-between overflow-hidden relative">
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-2 min-h-0 overflow-y-auto">
-        <div className="w-full max-w-4xl flex flex-col items-center text-center space-y-6 animate-in fade-in zoom-in-95 duration-400">
-          {/* 居中天书品牌与全新八卦神经元矢量 Logo */}
-          <div className="flex flex-col items-center space-y-3.5">
-            <div className="p-3.5 sm:p-4 rounded-3xl bg-gradient-to-br from-cyan-500/20 via-purple-500/10 to-amber-500/20 border border-cyan-500/30 shadow-[0_0_35px_rgba(6,182,212,0.3)]">
-              <TianShuLogo size={80} className="animate-spin-slow" />
-            </div>
+    <div className="w-full flex-1 min-h-0 flex flex-col justify-between overflow-hidden relative cosmic-bg select-none">
+      {/* 背景动态深空星河微粒 Canvas */}
+      <CosmicStarCanvas />
 
-            <div className="space-y-2">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-indigo-200 to-amber-300 tracking-tight drop-shadow-md py-1">
-                天书万象 AI · 诛仙全知大模型
-              </h1>
-              <p className="text-sm sm:text-base text-slate-400 font-serif tracking-widest text-shadow">
-                天地不仁以万物为刍狗 · 天书通晓诛仙万象规则
-              </p>
-            </div>
+      {/* 主舞台居中容器 (微上浮 -mt-2，黄金视线聚焦) */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 relative z-10 -mt-2 min-h-0">
+        <div className="w-full max-w-4xl flex flex-col items-center text-center">
+          
+          {/* 浑天月相太极星核动效天体 */}
+          <CelestialStage onClick={() => inputRef.current?.focus()} />
+
+          {/* 核心主标题与愿景副标题 */}
+          <div className="space-y-2 mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight aurora-text">
+              天书万象 AI · 诛仙全知大模型
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-400 font-serif-sc tracking-[0.22em] text-shadow">
+              天地不仁以万物为刍狗 · 天书通晓诛仙万象规则
+            </p>
           </div>
 
-          {/* 现代化 ChatGPT 风格输入容器 (含左侧 + 号弹窗菜单，加宽至 max-w-3xl) */}
-          <div className="relative w-full max-w-3xl bg-[#0d121c]/95 border-2 border-slate-700/60 focus-within:border-cyan-500/80 focus-within:shadow-[0_0_30px_rgba(6,182,212,0.25)] rounded-2xl p-2 transition-all shadow-xl">
-            {/* 左侧 + 号悬浮微工具与操作菜单 */}
+          {/* 现代化 AI 输入栏 (全功能交互：集成 + 号微菜单与快捷发送) */}
+          <div className="relative w-full max-w-2xl bg-[#090d18]/95 border-2 border-slate-700/60 focus-within:border-cyan-500/80 focus-within:shadow-[0_0_35px_rgba(6,182,212,0.3)] rounded-2xl p-2 transition-all shadow-2xl">
+            {/* 左侧 + 号微工具菜单 */}
             <ChatPlusMenu
               isOpen={isPlusMenuOpen}
               onClose={() => setIsPlusMenuOpen(false)}
@@ -447,7 +456,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               placement="down"
             />
 
-            {/* 已选图片浮层 */}
+            {/* 已选截图预载小卡片 */}
             {attachedImage && (
               <div className="mb-2 px-3 py-1.5 rounded-xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -456,7 +465,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                     alt="Attachment"
                     className="w-8 h-8 rounded-lg object-cover border border-cyan-400/40"
                   />
-                  <span className="text-xs text-cyan-200 font-medium">已就绪 C 界面截图（将触发智能打桩测算）</span>
+                  <span className="text-xs text-cyan-200 font-medium">已就绪 C 界面截图（回车启动诊断推演）</span>
                 </div>
                 <button
                   type="button"
@@ -478,21 +487,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 className="hidden"
               />
 
-              {/* ChatGPT 风格 + 号展开菜单按钮 (纯透明无底色无边框，仅加号本身响应 hover 变色) */}
+              {/* + 号微菜单展开按钮 */}
               <button
                 type="button"
                 onClick={() => setIsPlusMenuOpen((prev) => !prev)}
                 title={isPlusMenuOpen ? '收起工作台菜单' : '战术工作台与全知工具 (+)'}
                 className={clsx(
                   'p-2 bg-transparent border-0 outline-none transition-colors cursor-pointer shrink-0',
-                  isPlusMenuOpen
-                    ? 'text-cyan-300'
-                    : 'text-slate-400 hover:text-cyan-300'
+                  isPlusMenuOpen ? 'text-cyan-300' : 'text-slate-400 hover:text-cyan-300'
                 )}
               >
                 {isPlusMenuOpen ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
               </button>
 
+              {/* 输入文本框 */}
               <input
                 ref={inputRef}
                 type="text"
@@ -506,11 +514,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 placeholder={
                   attachedImage
                     ? '已粘贴截图，输入补充指令或直接回车启动推演...'
-                    : '问点什么，比如昭武、技能、法宝、伤害等...'
+                    : '问点什么，比如昭武、技能、法宝、计算等...'
                 }
                 className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none px-2 py-1.5"
               />
 
+              {/* 发送按钮 */}
               <button
                 type="button"
                 onClick={() => {
@@ -528,12 +537,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             </div>
           </div>
 
-          {/* 核心战术功能直达短小引导药丸 (移至对话框下方，与输入框同宽对齐) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 max-w-3xl w-full pt-1">
+          {/* 快捷微工具引导药丸 (间距适度拉大，呼吸感提升) */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-2xl w-full pt-5 sm:pt-6">
             <button
               type="button"
               onClick={() => handleStartAiChat('昭武')}
-              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-cyan-500/30 hover:border-cyan-400/70 text-xs text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-sm active:scale-95"
+              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-cyan-500/30 text-xs text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Shield className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="font-medium whitespace-nowrap">装备属性</span>
@@ -542,7 +551,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             <button
               type="button"
               onClick={() => handleStartAiChat('技能')}
-              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-emerald-500/30 hover:border-emerald-400/70 text-xs text-slate-300 hover:text-emerald-300 transition-all cursor-pointer shadow-sm active:scale-95"
+              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-emerald-500/30 text-xs text-slate-300 hover:text-emerald-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Zap className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="font-medium whitespace-nowrap">技能描述</span>
@@ -554,7 +563,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 setWorkspaceState({ isOpen: true, mode: 'calc', isMaximized: false });
                 handleStartAiChat('计算实战战力');
               }}
-              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-amber-500/30 hover:border-amber-400/70 text-xs text-slate-300 hover:text-amber-300 transition-all cursor-pointer shadow-sm active:scale-95"
+              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-amber-500/30 text-xs text-slate-300 hover:text-amber-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Calculator className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="font-medium whitespace-nowrap">伤害计算</span>
@@ -566,7 +575,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 setWorkspaceState({ isOpen: true, mode: 'server', isMaximized: false });
                 handleStartAiChat('开服雷达');
               }}
-              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-sky-500/30 hover:border-sky-400/70 text-xs text-slate-300 hover:text-sky-300 transition-all cursor-pointer shadow-sm active:scale-95"
+              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-sky-500/30 text-xs text-slate-300 hover:text-sky-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Radio className="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="font-medium whitespace-nowrap">开服检测</span>
@@ -578,7 +587,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 setWorkspaceState({ isOpen: true, mode: 'xyc', isMaximized: false });
                 handleStartAiChat('轩辕策');
               }}
-              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-purple-500/30 hover:border-purple-400/70 text-xs text-slate-300 hover:text-purple-300 transition-all cursor-pointer shadow-sm active:scale-95"
+              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-purple-500/30 text-xs text-slate-300 hover:text-purple-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Sparkles className="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="font-medium whitespace-nowrap">各类模拟器</span>
@@ -587,7 +596,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
         </div>
       </div>
 
-      {/* 恢复主分支 footer，并始终贴附于页面最底部 */}
+      {/* 极简 Apple 风格单行页脚 */}
       <Footer activeTab="home" />
     </div>
   );

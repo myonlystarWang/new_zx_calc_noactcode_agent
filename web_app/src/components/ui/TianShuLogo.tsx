@@ -3,9 +3,10 @@ import React from 'react';
 interface TianShuLogoProps {
   size?: number;
   className?: string;
+  animated?: boolean;
 }
 
-export const TianShuLogo: React.FC<TianShuLogoProps> = ({ size = 32, className = '' }) => {
+export const TianShuLogo: React.FC<TianShuLogoProps> = ({ size = 32, className = '', animated = false }) => {
   return (
     <svg
       width={size}
@@ -63,7 +64,7 @@ export const TianShuLogo: React.FC<TianShuLogoProps> = ({ size = 32, className =
         stroke="url(#tsCyanGrad)"
         strokeWidth="1.2"
         strokeDasharray="4 2"
-        opacity="0.6"
+        opacity="0.65"
       />
       <circle
         cx="50"
@@ -72,7 +73,7 @@ export const TianShuLogo: React.FC<TianShuLogoProps> = ({ size = 32, className =
         stroke="url(#tsGoldGrad)"
         strokeWidth="0.8"
         strokeDasharray="16 4 2 4"
-        opacity="0.75"
+        opacity="0.8"
       />
 
       {/* 八卦方位道标星轨点 (8个基准卦位) */}
@@ -101,9 +102,10 @@ export const TianShuLogo: React.FC<TianShuLogoProps> = ({ size = 32, className =
       <path
         d="M 50 18 A 16 16 0 0 1 50 50 A 16 16 0 0 0 50 82 A 32 32 0 0 1 50 18 Z"
         fill="url(#tsCyanGrad)"
-        opacity="0.12"
+        opacity="0.14"
       />
       <path
+        className={animated ? 'animate-taiji-lum' : undefined}
         d="M 50 18 A 16 16 0 0 1 50 50 A 16 16 0 0 0 50 82"
         stroke="url(#tsCyanGrad)"
         strokeWidth="1.5"
@@ -114,11 +116,12 @@ export const TianShuLogo: React.FC<TianShuLogoProps> = ({ size = 32, className =
       />
 
       {/* 核心内芯：天书竹简几何光束展开与神经元网络交织 */}
-      {/* 简牍竖向几何条束 */}
-      <rect x="36" y="27" width="4" height="46" rx="2" fill="url(#tsCyanGrad)" opacity="0.35" />
-      <rect x="44" y="23" width="4" height="54" rx="2" fill="url(#tsDualGrad)" opacity="0.7" />
-      <rect x="52" y="23" width="4" height="54" rx="2" fill="url(#tsDualGrad)" opacity="0.7" />
-      <rect x="60" y="27" width="4" height="46" rx="2" fill="url(#tsGoldGrad)" opacity="0.35" />
+      <g className={animated ? 'animate-slips-lum' : undefined}>
+        <rect x="36" y="27" width="4" height="46" rx="2" fill="url(#tsCyanGrad)" opacity="0.35" />
+        <rect x="44" y="23" width="4" height="54" rx="2" fill="url(#tsDualGrad)" opacity="0.75" />
+        <rect x="52" y="23" width="4" height="54" rx="2" fill="url(#tsDualGrad)" opacity="0.75" />
+        <rect x="60" y="27" width="4" height="46" rx="2" fill="url(#tsGoldGrad)" opacity="0.35" />
+      </g>
 
       {/* 神经元节点互联连线 */}
       <path
@@ -135,28 +138,35 @@ export const TianShuLogo: React.FC<TianShuLogoProps> = ({ size = 32, className =
         strokeLinecap="round"
         opacity="0.8"
       />
+      {/* 突触量子数据流脉冲 */}
       <path
+        className={animated ? 'animate-data-stream' : undefined}
         d="M 46 32 L 54 68 M 54 44 L 46 56"
         stroke="#c084fc"
-        strokeWidth="1"
-        strokeDasharray="2 2"
-        opacity="0.6"
+        strokeWidth="1.3"
+        strokeDasharray="3 3"
+        opacity="0.9"
       />
 
-      {/* 神经元聚能光斑结点 */}
-      <circle cx="32" cy="38" r="2.2" fill="#22d3ee" filter="url(#tsGlow)" />
-      <circle cx="46" cy="32" r="2.8" fill="#ffffff" stroke="#22d3ee" strokeWidth="1" />
-      <circle cx="54" cy="44" r="3" fill="#ffffff" stroke="#fbbf24" strokeWidth="1" />
-      <circle cx="68" cy="36" r="2.2" fill="#fbbf24" filter="url(#tsGlow)" />
+      {/* 神经元聚能光斑结点 (交替呼吸脉冲) */}
+      <g className={animated ? 'animate-node-pulse-1' : undefined}>
+        <circle cx="32" cy="38" r="2.2" fill="#22d3ee" filter="url(#tsGlow)" />
+        <circle cx="54" cy="44" r="3" fill="#ffffff" stroke="#fbbf24" strokeWidth="1" />
+        <circle cx="46" cy="56" r="3" fill="#ffffff" stroke="#22d3ee" strokeWidth="1" />
+        <circle cx="68" cy="62" r="2.2" fill="#fbbf24" filter="url(#tsGlow)" />
+      </g>
+      <g className={animated ? 'animate-node-pulse-2' : undefined}>
+        <circle cx="46" cy="32" r="2.8" fill="#ffffff" stroke="#22d3ee" strokeWidth="1" />
+        <circle cx="68" cy="36" r="2.2" fill="#fbbf24" filter="url(#tsGlow)" />
+        <circle cx="32" cy="62" r="2.2" fill="#22d3ee" filter="url(#tsGlow)" />
+        <circle cx="54" cy="68" r="2.8" fill="#ffffff" stroke="#fbbf24" strokeWidth="1" />
+      </g>
 
-      <circle cx="32" cy="62" r="2.2" fill="#22d3ee" filter="url(#tsGlow)" />
-      <circle cx="46" cy="56" r="3" fill="#ffffff" stroke="#22d3ee" strokeWidth="1" />
-      <circle cx="54" cy="68" r="2.8" fill="#ffffff" stroke="#fbbf24" strokeWidth="1" />
-      <circle cx="68" cy="62" r="2.2" fill="#fbbf24" filter="url(#tsGlow)" />
-
-      {/* 中央全知天目星芒 */}
-      <circle cx="50" cy="50" r="4.2" fill="#ffffff" filter="url(#tsGlow)" />
-      <circle cx="50" cy="50" r="2.2" fill="#22d3ee" />
+      {/* 中央全知天目星芒 (强律动微聚光) */}
+      <g className={animated ? 'animate-eye-beacon' : undefined}>
+        <circle cx="50" cy="50" r="4.2" fill="#ffffff" filter="url(#tsGlow)" />
+        <circle cx="50" cy="50" r="2.2" fill="#22d3ee" />
+      </g>
     </svg>
   );
 };
