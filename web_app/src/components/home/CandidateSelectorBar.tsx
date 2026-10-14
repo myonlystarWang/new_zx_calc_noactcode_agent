@@ -1,13 +1,16 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
+import type { SkillTagItem } from '../../types';
 
 export interface CandidateItem {
     id: string | number;
     title: string;
     badge?: string;
     subtitle?: string;
+    tags?: SkillTagItem[];
 }
+
 
 interface CandidateSelectorBarProps {
     items: CandidateItem[];
@@ -99,6 +102,27 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
         setTimeout(updateScrollState, 260);
     };
 
+    const renderTagBadge = (t: SkillTagItem, key: React.Key) => {
+        const label = t.v ? `${t.n} ${t.v}` : t.n;
+        const colorClass =
+            t.n.includes('绿点') ? 'bg-emerald-950/70 border-emerald-500/50 text-emerald-300' :
+            t.n.includes('紫点') ? 'bg-purple-950/70 border-purple-500/50 text-purple-300' :
+            t.n.includes('增伤') ? 'bg-amber-950/70 border-amber-500/50 text-amber-300' :
+            t.n.includes('破防') ? 'bg-rose-950/70 border-rose-500/50 text-rose-300' :
+            'bg-slate-800/80 border-slate-700 text-slate-300';
+        return (
+            <span
+                key={key}
+                className={clsx(
+                    'text-[10px] font-sans px-1.5 py-0.5 rounded border font-semibold tracking-tight',
+                    colorClass
+                )}
+            >
+                {label}
+            </span>
+        );
+    };
+
     if (!items || items.length === 0) return null;
 
     return (
@@ -150,6 +174,7 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                                         {item.badge}
                                     </span>
                                 )}
+                                {item.tags && item.tags.length > 0 && item.tags.map((t, tIdx) => renderTagBadge(t, tIdx))}
                             </button>
                         );
                     })}
@@ -199,6 +224,7 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                                         {item.badge}
                                     </span>
                                 )}
+                                {item.tags && item.tags.length > 0 && item.tags.map((t, tIdx) => renderTagBadge(t, tIdx))}
                             </button>
                         );
                     })}

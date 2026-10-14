@@ -82,13 +82,30 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
             >
                 {/* 首行技能名称与升降阶步进按钮 */}
                 <div className="font-bold text-[14px] pb-1.5 mb-2 border-b border-[#1f293d]/80 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                         <GameColorText text={titleLineClean} />
                         {skill.group_name && (
                             <span className="text-[11px] font-sans text-cyan-300/80 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30 font-normal">
                                 {skill.group_name}
                             </span>
                         )}
+                        {skill.tags && skill.tags.map((t, tIdx) => {
+                            const label = t.v ? `${t.n} ${t.v}` : t.n;
+                            const colorCls =
+                                t.n.includes('绿点') ? 'bg-emerald-950/70 border-emerald-500/50 text-emerald-300' :
+                                t.n.includes('紫点') ? 'bg-purple-950/70 border-purple-500/50 text-purple-300' :
+                                t.n.includes('增伤') ? 'bg-amber-950/70 border-amber-500/50 text-amber-300' :
+                                t.n.includes('破防') ? 'bg-rose-950/70 border-rose-500/50 text-rose-300' :
+                                'bg-slate-800/80 border-slate-700 text-slate-300';
+                            return (
+                                <span
+                                    key={tIdx}
+                                    className={clsx('text-[11px] font-sans px-1.5 py-0.5 rounded border font-semibold tracking-tight', colorCls)}
+                                >
+                                    {label}
+                                </span>
+                            );
+                        })}
                     </div>
 
                     {/* 多阶技能：升降阶步进按钮 */}

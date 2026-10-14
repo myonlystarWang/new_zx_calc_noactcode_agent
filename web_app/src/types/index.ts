@@ -85,6 +85,11 @@ export interface CuratedEquipItem {
     sj?: Record<string, EquipSpecialBonusPoolItem[]>;
 }
 
+export interface SkillTagItem {
+    n: string;
+    v: string;
+}
+
 export interface CuratedSkillItem {
     id: number;
     name: string;
@@ -94,9 +99,10 @@ export interface CuratedSkillItem {
     el_mp?: number;
     el_req?: number;
     occ?: number;
-    tags?: string[];
+    tags?: SkillTagItem[];
     group_name?: string;
     group_kind?: string;
     buffed_by?: [number, string][];
 }
+
 
