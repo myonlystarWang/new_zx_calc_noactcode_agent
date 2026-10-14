@@ -336,6 +336,7 @@ export class CopilotService {
         try {
             const fabaos = await dataService.getFabaoList();
             if (Array.isArray(fabaos) && fabaos.length > 0) {
+                const isExplicitFabaoQuery = q.includes('法宝') || q.includes('特技');
                 // 提取关键词：去除常见助词与疑问词
                 let keyword = q.replace(/带|有|的|法宝|特技|特效|是哪个|有哪些|怎么样|如何|获取|好用吗|介绍|\?|？/g, '').trim();
                 if (!keyword) keyword = q;
@@ -358,8 +359,13 @@ export class CopilotService {
                     searchTerms.push('禁食');
                 }
 
-                // 优先精确定位名称
-                const exactName = fabaos.find(f => f.名称.toLowerCase() === keyword || f.名称.toLowerCase() === q);
+                // 优先精确定位名称或法宝特技名
+                const exactName = fabaos.find(f =>
+                    f.名称.toLowerCase() === keyword ||
+                    f.名称.toLowerCase() === q ||
+                    (f.skillName && f.skillName.toLowerCase() === keyword) ||
+                    (f.skillName && f.skillName.toLowerCase() === q)
+                );
                 if (exactName) {
                     return {
                         id: `msg-${Date.now()}`,
@@ -376,18 +382,26 @@ export class CopilotService {
                     };
                 }
 
-                // 检索所有匹配法宝 (按名称、特技名、门派、种族、技能特效文本与描述)
+                // 检索所有匹配法宝 (按名称、特技名、门派、种族、技能特效文本)
+                // 注意：只有当用户明确指定“法宝”意图，或者关键词命中法宝名/自身特技名时才触发。
+                // 绝对禁止对整个法宝做全局模糊匹配（避免天琊等法宝中枚举的全门派影响技能误劫持普通技能检索）
                 const matchedList = fabaos.filter(f => {
                     const name = (f.名称 || '').toLowerCase();
                     const sName = (f.skillName || '').toLowerCase();
                     const mp = (f.门派 || '').toLowerCase();
                     const zc = (f.种族 || '').toLowerCase();
-                    const jsonStr = JSON.stringify(f).toLowerCase();
 
                     return searchTerms.some(term => {
                         const t = term.toLowerCase();
-                        if (name.includes(t) || sName.includes(t) || mp.includes(t) || zc.includes(t)) return true;
-                        if (jsonStr.includes(t)) return true;
+                        if (name.includes(t) || sName.includes(t)) return true;
+                        if (isExplicitFabaoQuery) {
+                            if (mp && mp.includes(t)) return true;
+                            if (zc && zc.includes(t)) return true;
+                            // 检查法宝技能特效说明，但过滤掉“影响技能” cross-reference 段落
+                            const effectStr = JSON.stringify(f.技能特效 || '').toLowerCase();
+                            const cleanEffect = effectStr.replace(/影响技能[^\n"]*/g, '');
+                            if (cleanEffect.includes(t)) return true;
+                        }
                         return false;
                     });
                 });
@@ -485,6 +499,14 @@ export class CopilotService {
                     } else if (isExplicitSkillQuery && matchedProf && sk.group_kind === 'prof') {
                         score = 10;
                     }
+                    if (sk.tags && sk.tags.length > 0 && cleanTokens.length > 0) {
+                        for (const t of cleanTokens) {
+                            if (t.length >= 2 && sk.tags.some(tag => tag.n.includes(t) || t.includes(tag.n))) {
+                                score += 40;
+                                break;
+                            }
+                        }
+                    }
 
                     if (score > 0) {
                         candidates.push({ sk, score });
@@ -493,7 +515,7 @@ export class CopilotService {
 
                 // 排除内部触发/怪物技能，除非精确指定
                 const filtered = candidates.filter(c => {
-                    if (c.sk.group_name === '触发技能' || c.sk.group_name === '怪物技能') {
+                    if (c.sk.group_name === '触发技能' || c.sk.group_name === '怪物技能' || c.sk.name.includes('触发')) {
                         return c.score >= 100;
                     }
                     return true;
