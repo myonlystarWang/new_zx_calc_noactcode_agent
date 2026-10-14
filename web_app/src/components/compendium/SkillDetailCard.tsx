@@ -42,27 +42,38 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
         return skill.el_descs[idx] || '';
     }, [skill, currentLevel]);
 
-    // 分离第一行（原生技能标题）与正文内容
-    const { titleLineClean, bodyDesc } = useMemo(() => {
+    // 分离第一行（原生技能标题与等级）与正文内容
+    const { titleWithLevel, bodyDesc } = useMemo(() => {
         if (!currentDesc) {
             return {
-                titleLineClean: `^ffffff${skill.name}`,
+                titleWithLevel: `^ffffff${skill.name} ^ffcb4a${currentLevel}/${maxLevel}`,
                 bodyDesc: '暂无技能说明'
             };
         }
         const cleaned = currentDesc.replace(/\r/g, '');
         const lines = cleaned.split('\n');
         const first = lines[0]?.trim() || '';
-        // 剥离第一行可能自带的静态等级后缀，以便实时拼装当前推演等级
-        const titleClean = first
-            .replace(/[\s\u3000]*(\^[0-9a-fA-F]{6})?[\s\u3000]*\d+\/\d+.*$/, '')
-            .trim();
+
+        // 匹配第一行原生自带的技能名与阶位等级（如 ^ffffff苍龙啸 ^ffcb4a11/10 或 ^ffffff重击 ^ffcb4a7/6）
+        // 原生数据源在法宝+1或护符加成下会呈现超越上限的真实阶位，保持与数据源1:1一致
+        const match = first.match(/^(.*?)([\s\u3000]*(\^[0-9a-fA-F]{6})?[\s\u3000]*\d+\/\d+)(.*)$/);
+        if (match) {
+            const title = (match[1] + match[2]).trim();
+            const remainder = match[4]?.trim() || '';
+            const rest = [remainder, ...lines.slice(1)].filter(Boolean).join('\n').trim();
+            return {
+                titleWithLevel: title,
+                bodyDesc: rest
+            };
+        }
+
+        // 若第一行未解析到标准等级比例，则保底拼装当前阶位
         const rest = lines.slice(1).join('\n').trim();
         return {
-            titleLineClean: titleClean || `^ffffff${skill.name}`,
+            titleWithLevel: first ? `${first} ^ffcb4a${currentLevel}/${maxLevel}` : `^ffffff${skill.name} ^ffcb4a${currentLevel}/${maxLevel}`,
             bodyDesc: rest
         };
-    }, [currentDesc, skill.name]);
+    }, [currentDesc, skill.name, currentLevel, maxLevel]);
 
     const handleStep = (delta: number) => {
         setCurrentLevel(prev => Math.min(maxLevel, Math.max(1, prev + delta)));
@@ -85,8 +96,8 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
                 {/* 首行技能名称与升降阶步进按钮 */}
                 <div className="font-bold text-[14px] pb-1.5 mb-2 border-b border-[#1f293d]/80 flex items-center justify-between">
                     <div className="flex items-center gap-2 flex-wrap">
-                        {/* 技能名 + 原始黄色阶位等级（如 5/7），字号与技能名严格一致 */}
-                        <GameColorText text={`${titleLineClean} ^ffcb4a${currentLevel}/${maxLevel}`} />
+                        {/* 技能名 + 原始黄色阶位等级（如 11/10），与数据源 1:1 严格一致 */}
+                        <GameColorText text={titleWithLevel} />
                         {skill.group_name && (
                             <span className="text-[11px] font-sans text-cyan-300/80 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30 font-normal">
                                 {skill.group_name}
