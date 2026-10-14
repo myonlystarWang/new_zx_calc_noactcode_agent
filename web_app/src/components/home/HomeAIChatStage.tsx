@@ -536,7 +536,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         items={list.map((c, idx) => ({
                                                             id: `${c.id || 0}_${c.name}_${idx}`,
                                                             title: c.name,
-                                                            badge: c.group_name || `${c.el_max || 1}阶`,
                                                             tags: c.tags
                                                         }))}
                                                         activeIndex={activeIdx}
