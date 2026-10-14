@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <radialGradient id="tsBgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#162032" />
+      <stop offset="60%" stop-color="#0b0f17" />
+      <stop offset="100%" stop-color="#070a10" />
+    </radialGradient>
+    <linearGradient id="tsCyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#67e8f9" />
+      <stop offset="50%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#0891b2" />
+    </linearGradient>
+    <linearGradient id="tsGoldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fde68a" />
+      <stop offset="50%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="tsDualGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+    <filter id="tsGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#tsBgGrad)" stroke="#1e293b" stroke-width="1" />
+  <circle cx="50" cy="50" r="44" stroke="url(#tsCyanGrad)" stroke-width="1.2" stroke-dasharray="4 2" opacity="0.6" />
+  <circle cx="50" cy="50" r="41" stroke="url(#tsGoldGrad)" stroke-width="0.8" stroke-dasharray="16 4 2 4" opacity="0.75" />
+  <line x1="94" y1="50" x2="97" y2="50" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+  <line x1="81.11" y1="81.11" x2="83.23" y2="83.23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+  <line x1="50" y1="94" x2="50" y2="97" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+  <line x1="18.89" y1="81.11" x2="16.77" y2="83.23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+  <line x1="6" y1="50" x2="3" y2="50" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+  <line x1="18.89" y1="18.89" x2="16.77" y2="16.77" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+  <line x1="50" y1="6" x2="50" y2="3" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+  <line x1="81.11" y1="18.89" x2="83.23" y2="16.77" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
+  <path d="M 50 18 A 16 16 0 0 1 50 50 A 16 16 0 0 0 50 82 A 32 32 0 0 1 50 18 Z" fill="url(#tsCyanGrad)" opacity="0.12" />
+  <path d="M 50 18 A 16 16 0 0 1 50 50 A 16 16 0 0 0 50 82" stroke="url(#tsCyanGrad)" stroke-width="1.5" stroke-linecap="round" fill="none" filter="url(#tsGlow)" opacity="0.85" />
+  <rect x="36" y="27" width="4" height="46" rx="2" fill="url(#tsCyanGrad)" opacity="0.35" />
+  <rect x="44" y="23" width="4" height="54" rx="2" fill="url(#tsDualGrad)" opacity="0.7" />
+  <rect x="52" y="23" width="4" height="54" rx="2" fill="url(#tsDualGrad)" opacity="0.7" />
+  <rect x="60" y="27" width="4" height="46" rx="2" fill="url(#tsGoldGrad)" opacity="0.35" />
+  <path d="M 32 38 L 46 32 L 54 44 L 68 36" stroke="#67e8f9" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
+  <path d="M 32 62 L 46 56 L 54 68 L 68 62" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
+  <path d="M 46 32 L 54 68 M 54 44 L 46 56" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 2" opacity="0.6" />
+  <circle cx="32" cy="38" r="2.2" fill="#22d3ee" filter="url(#tsGlow)" />
+  <circle cx="46" cy="32" r="2.8" fill="#ffffff" stroke="#22d3ee" stroke-width="1" />
+  <circle cx="54" cy="44" r="3" fill="#ffffff" stroke="#fbbf24" stroke-width="1" />
+  <circle cx="68" cy="36" r="2.2" fill="#fbbf24" filter="url(#tsGlow)" />
+  <circle cx="32" cy="62" r="2.2" fill="#22d3ee" filter="url(#tsGlow)" />
+  <circle cx="46" cy="56" r="3" fill="#ffffff" stroke="#22d3ee" stroke-width="1" />
+  <circle cx="54" cy="68" r="2.8" fill="#ffffff" stroke="#fbbf24" stroke-width="1" />
+  <circle cx="68" cy="62" r="2.2" fill="#fbbf24" filter="url(#tsGlow)" />
+  <circle cx="50" cy="50" r="4.2" fill="#ffffff" filter="url(#tsGlow)" />
+  <circle cx="50" cy="50" r="2.2" fill="#22d3ee" />
+</svg>

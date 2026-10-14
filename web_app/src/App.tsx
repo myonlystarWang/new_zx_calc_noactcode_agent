@@ -20,6 +20,7 @@ import { SimulationArena } from './components/arena/SimulationArena';
 import { CompendiumView } from './components/compendium/CompendiumView';
 import { ToolsHubView } from './components/tools/ToolsHubView';
 import { ChangelogPage } from './components/changelog/ChangelogPage';
+import { AboutPage } from './components/about/AboutPage';
 import { decodeSharePayload } from './utils/shareSnapshot';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AlertTriangle } from 'lucide-react';
@@ -67,17 +68,20 @@ const CompendiumRoute: React.FC<CompendiumRouteProps> = ({
   }
 
   return (
-    <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-4 pb-8 animate-in fade-in duration-300">
-      <CompendiumView
-        sub={compendiumSubFromLocation(location.pathname, searchParams)}
-        onSubChange={onSubChange}
-        searchNav={searchNav}
-        onSearchConsumed={onSearchConsumed}
-        onNavigateCalculator={onNavigateCalculator}
-        onBossDungeonChange={onBossDungeonChange}
-        onSkillsFilterChange={onSkillsFilterChange}
-      />
-    </main>
+    <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
+      <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-4 pb-8 animate-in fade-in duration-300 flex-1">
+        <CompendiumView
+          sub={compendiumSubFromLocation(location.pathname, searchParams)}
+          onSubChange={onSubChange}
+          searchNav={searchNav}
+          onSearchConsumed={onSearchConsumed}
+          onNavigateCalculator={onNavigateCalculator}
+          onBossDungeonChange={onBossDungeonChange}
+          onSkillsFilterChange={onSkillsFilterChange}
+        />
+      </main>
+      <Footer activeTab="compendium" />
+    </div>
   );
 };
 
@@ -235,9 +239,7 @@ const MainContent: React.FC = () => {
 
   return (
     <div
-      className={`bg-slate-950 zx-ink-bg transition-all duration-1000 overflow-x-hidden flex flex-col ${
-        activeTab === 'arena' ? 'h-screen overflow-hidden pb-0' : 'min-h-screen'
-      }`}
+      className="h-screen h-[100dvh] overflow-hidden flex flex-col bg-slate-950 zx-ink-bg"
       data-theme={activeTab === 'calculator' ? userCharacter.Faction : undefined}
     >
       {loadError && (
@@ -272,7 +274,7 @@ const MainContent: React.FC = () => {
         <Route
           path={ROUTE.home}
           element={
-            <main className="w-full flex-1 flex flex-col justify-center">
+            <main className="w-full flex-1 min-h-0 overflow-hidden flex flex-col">
               <HomePage onSearchNavigate={handleSearchNav} />
             </main>
           }
@@ -281,31 +283,34 @@ const MainContent: React.FC = () => {
         <Route
           path={ROUTE.calculator}
           element={
-            <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-2 pb-2 grid grid-cols-1 xl:grid-cols-12 gap-4 xl:gap-5 animate-in fade-in duration-300">
-              {/* 左栏：属性录入 */}
-              <div className="xl:col-span-4 flex flex-col">
-                <AttributePanel
-                  attributes={userCharacter.BaseAttributes}
-                  onChange={updateCharacterAttributes}
-                />
-              </div>
-
-              {/* 中栏：增益勾选与雷达图 */}
-              <div className="xl:col-span-4 flex flex-col">
-                <BuffPanel
-                  onNavigateToFocus={() =>
-                    handleSearchNav({ tab: 'compendium', sub: 'support', item: '专注值参考' })
-                  }
-                />
-              </div>
-
-              {/* 右栏：测算结果 */}
-              <div className="xl:col-span-4 flex flex-col">
-                <div className="xl:sticky xl:top-20 flex-1">
-                  <ResultSection searchNav={searchNav} onSearchConsumed={() => setSearchNav(null)} />
+            <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
+              <main className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-2 pb-6 grid grid-cols-1 xl:grid-cols-12 gap-4 xl:gap-5 animate-in fade-in duration-300 flex-1">
+                {/* 左栏：属性录入 */}
+                <div className="xl:col-span-4 flex flex-col">
+                  <AttributePanel
+                    attributes={userCharacter.BaseAttributes}
+                    onChange={updateCharacterAttributes}
+                  />
                 </div>
-              </div>
-            </main>
+
+                {/* 中栏：增益勾选与雷达图 */}
+                <div className="xl:col-span-4 flex flex-col">
+                  <BuffPanel
+                    onNavigateToFocus={() =>
+                      handleSearchNav({ tab: 'compendium', sub: 'support', item: '专注值参考' })
+                    }
+                  />
+                </div>
+
+                {/* 右栏：测算结果 */}
+                <div className="xl:col-span-4 flex flex-col">
+                  <div className="xl:sticky xl:top-2 flex-1">
+                    <ResultSection searchNav={searchNav} onSearchConsumed={() => setSearchNav(null)} />
+                  </div>
+                </div>
+              </main>
+              <Footer activeTab={activeTab} />
+            </div>
           }
         />
 
@@ -321,22 +326,55 @@ const MainContent: React.FC = () => {
         <Route path={ROUTE.compendium} element={<CompendiumRoute {...compendiumRouteProps} />} />
         <Route path={`${ROUTE.compendium}/:seg`} element={<CompendiumRoute {...compendiumRouteProps} />} />
 
-        <Route path={ROUTE.tools} element={<ToolsHubView />} />
-        <Route path={`${ROUTE.tools}/:toolSeg`} element={<ToolsHubView />} />
+        <Route
+          path={ROUTE.tools}
+          element={
+            <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
+              <main className="w-full flex-1">
+                <ToolsHubView />
+              </main>
+              <Footer activeTab="tools" />
+            </div>
+          }
+        />
+        <Route
+          path={`${ROUTE.tools}/:toolSeg`}
+          element={
+            <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
+              <main className="w-full flex-1">
+                <ToolsHubView />
+              </main>
+              <Footer activeTab="tools" />
+            </div>
+          }
+        />
 
         <Route
           path={ROUTE.changelog}
           element={
-            <main className="w-full flex-1">
-              <ChangelogPage />
-            </main>
+            <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
+              <main className="w-full flex-1">
+                <ChangelogPage />
+              </main>
+              <Footer activeTab="changelog" />
+            </div>
+          }
+        />
+
+        <Route
+          path={ROUTE.about}
+          element={
+            <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
+              <main className="w-full flex-1">
+                <AboutPage />
+              </main>
+              <Footer activeTab="about" />
+            </div>
           }
         />
 
         <Route path="*" element={<Navigate to={ROUTE.home} replace />} />
       </Routes>
-
-      {activeTab !== 'arena' && <Footer activeTab={activeTab} />}
     </div>
   );
 };

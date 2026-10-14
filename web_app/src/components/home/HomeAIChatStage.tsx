@@ -3,7 +3,6 @@ import {
     ArrowLeft,
     Plus,
     Send,
-    Image as ImageIcon,
     X,
     ExternalLink,
     RefreshCw,
@@ -27,6 +26,7 @@ import { SkillDetailCard } from '../compendium/SkillDetailCard';
 import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
 import { useApp } from '../../context/AppContext';
+import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import type { FabaoItem, CuratedEquipItem, CuratedSkillItem } from '../../types';
 
 interface HomeAIChatStageProps {
@@ -34,7 +34,9 @@ interface HomeAIChatStageProps {
     isLoading: boolean;
     onSendMessage: (text: string, image?: string) => void;
     onBackToHome: () => void;
-    onNewChat: () => void;
+    isSplitOpen?: boolean;
+    onToggleSplit?: () => void;
+    onOpenSplitWorkspace?: (mode: 'calc' | 'guestbook' | 'server' | 'xyc' | 'newtianyuan' | 'ninglingqi') => void;
 }
 
 export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
@@ -42,13 +44,16 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     isLoading,
     onSendMessage,
     onBackToHome,
-    onNewChat
+    isSplitOpen = false,
+    onToggleSplit,
+    onOpenSplitWorkspace,
 }) => {
     const navigate = useNavigate();
     const { updateCharacterAttributes, updateCharacterClass } = useApp();
 
     const [inputText, setInputText] = useState('');
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [isPlusMenuOpen, setIsPlusMenuOpen] = useState(false);
 
     // 候选列表选中的索引状态（按消息 ID 索引）
     const [selectedCandidateIndex, setSelectedCandidateIndex] = useState<Record<string, number>>({});
@@ -182,7 +187,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         if (target === 'arena') {
             navigate('/arena');
         } else {
-            navigate('/calculator');
+            if (onOpenSplitWorkspace) {
+                onOpenSplitWorkspace('calc');
+            } else {
+                navigate('/calculator');
+            }
         }
     };
 
@@ -193,31 +202,48 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     };
 
     return (
-        <div className="w-full max-w-[1060px] mx-auto h-[calc(100vh-5rem)] min-h-[580px] max-h-[920px] flex flex-col rounded-2xl border border-white/10 bg-[#0b0e14]/90 shadow-2xl overflow-hidden my-1 animate-in fade-in duration-300">
+        <div
+            className={clsx(
+                'flex flex-col h-full bg-[#0b0e14]/95 overflow-hidden transition-all duration-300',
+                isSplitOpen
+                    ? 'w-full rounded-none border-none'
+                    : 'w-full max-w-[960px] mx-auto rounded-2xl border border-white/10 shadow-2xl my-1'
+            )}
+        >
             {/* 顶部控制栏：固定顶部不滚动 */}
             <div className="py-2.5 px-4 backdrop-blur-xl bg-[#0b0e14]/95 border-b border-white/10 flex items-center justify-between rounded-t-2xl shrink-0">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                     <button
                         type="button"
                         onClick={onBackToHome}
-                        className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all"
+                        className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer"
+                        title="返回天书主页"
                     >
                         <ArrowLeft className="w-3.5 h-3.5" />
                         <span>返回主页</span>
                     </button>
+                </div>
+
+                {onToggleSplit && (
                     <button
                         type="button"
-                        onClick={onNewChat}
-                        className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all"
+                        onClick={onToggleSplit}
+                        className={clsx(
+                            'px-2.5 sm:px-3 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer',
+                            isSplitOpen
+                                ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
+                                : 'bg-white/5 hover:bg-white/10 border-white/10 text-slate-300 hover:text-white'
+                        )}
+                        title={isSplitOpen ? '收起右侧工作区' : '展开右侧战力推演与微工具工作区'}
                     >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>新对话</span>
+                        <Sliders className="w-3.5 h-3.5" />
+                        <span>{isSplitOpen ? '收起工作区' : '右侧工作区'}</span>
                     </button>
-                </div>
+                )}
             </div>
 
             {/* 消息对话主画卷：独立定高内部滚动区，不再让全局窗口拉伸 */}
-            <div ref={chatContainerRef} className="flex-1 overflow-y-auto px-4 py-5 space-y-6 min-h-0">
+            <div ref={chatContainerRef} className="flex-1 overflow-y-auto px-3 sm:px-4 py-5 space-y-6 min-h-0">
                 {messages.map((msg) => {
                     const isUser = msg.sender === 'user';
                     const isLastUserMsg = msg.id === lastUserMsgId;
@@ -233,7 +259,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         >
                             {/* 发送者标签 */}
                             <div className="flex items-center gap-1.5 mb-1.5 px-1 text-[11px] font-medium text-slate-400">
-                                <span>{isUser ? '你' : 'AI 战术智囊'}</span>
+                                <span>{isUser ? '你' : '天书万象 AI'}</span>
                                 <span className="text-[10px] text-slate-600">· {msg.time}</span>
                             </div>
 
@@ -253,15 +279,21 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                     </div>
                                 )}
 
-                                {/* 纯文本说明 */}
-                                <div className="whitespace-pre-wrap text-slate-200 text-sm leading-relaxed">
-                                    <GameColorText text={msg.text} />
-                                </div>
+                                {(() => {
+                                    const isCandidateCard = msg.cardType === 'equip_candidates' || msg.cardType === 'skill_candidates' || msg.cardType === 'fabao_candidates';
+                                    return (
+                                        <>
+                                            {/* 纯文本说明 (候选列表类卡片已内聚了统计与引导文案，合并至下方 CandidateSelectorBar，消除重复) */}
+                                            {!isCandidateCard && msg.text && (
+                                                <div className="whitespace-pre-wrap text-slate-200 text-sm leading-relaxed">
+                                                    <GameColorText text={msg.text} />
+                                                </div>
+                                            )}
 
-                                {/* 宽幅富交互大卡片体系 */}
-                                {msg.cardType && (
-                                    <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
-                                        {/* 1. C 界面识图测伤与实战伤害报告 */}
+                                            {/* 宽幅富交互大卡片体系 */}
+                                            {msg.cardType && (
+                                                <div className={clsx('space-y-3', !isCandidateCard && 'mt-4 pt-4 border-t border-white/10')}>
+                                                    {/* 1. C 界面识图测伤与实战伤害报告 */}
                                         {msg.cardType === 'c_panel_diag' && msg.cardData && (() => {
                                             const basePanel: ExtractedCPanel = msg.cardData.cPanel;
                                             const activePanel = getTunedPanel(msg.id, basePanel);
@@ -444,9 +476,9 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleImportToSimulator(activePanel, 'calc')}
-                                                                className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-950/40 transition-all"
+                                                                className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-950/40 transition-all cursor-pointer"
                                                             >
-                                                                <span>一键带入战力计算器</span>
+                                                                <span>带入推演 (分屏计算器)</span>
                                                                 <ArrowRight className="w-3.5 h-3.5" />
                                                             </button>
                                                         </div>
@@ -540,7 +572,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         }))}
                                                         activeIndex={activeIdx}
                                                         onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
-                                                        summaryText={`为你检索到 ${list.length} 个符合条件的技能：`}
+                                                        summaryText={`为你检索到 ${list.length} 个符合条件的技能，支持点选切换查看：`}
                                                     />
 
                                                     {activeItem && (
@@ -650,7 +682,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         }))}
                                                         activeIndex={activeIdx}
                                                         onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
-                                                        summaryText={`为你检索到 ${list.length} 件符合条件的候选法宝：`}
+                                                        summaryText={`为你检索到 ${list.length} 件符合条件的候选法宝，支持点选切换查看：`}
                                                     />
 
                                                     {activeItem && (
@@ -702,7 +734,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                             const targetRawIdx = uniqueCandidates[uIdx]?.rawIdx ?? 0;
                                                             setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: targetRawIdx }));
                                                         }}
-                                                        summaryText={`为你检索到 ${uniqueCandidates.length} 件候选装备：`}
+                                                        summaryText={`为你检索到 ${uniqueCandidates.length} 件候选装备，支持点选切换查看：`}
                                                     />
 
                                                     {activeItem && (
@@ -718,6 +750,9 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         })()}
                                     </div>
                                 )}
+                                        </>
+                                    );
+                                })()}
                             </div>
                         </div>
                     );
@@ -751,7 +786,15 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                     </div>
                 )}
 
-                <div className="flex items-center gap-2 bg-[#0c111c] border-2 border-cyan-500/40 hover:border-cyan-400/70 focus-within:border-cyan-400 focus-within:shadow-[0_0_24px_rgba(6,182,212,0.3)] rounded-xl p-1.5 transition-all">
+                <div className="relative flex items-center gap-2 bg-[#0c111c] border-2 border-cyan-500/40 hover:border-cyan-400/70 focus-within:border-cyan-400 focus-within:shadow-[0_0_24px_rgba(6,182,212,0.3)] rounded-xl p-1.5 transition-all">
+                    <ChatPlusMenu
+                        isOpen={isPlusMenuOpen}
+                        onClose={() => setIsPlusMenuOpen(false)}
+                        onSelectUpload={() => fileInputRef.current?.click()}
+                        onSelectWorkspace={(mode) => onOpenSplitWorkspace && onOpenSplitWorkspace(mode)}
+                        placement="up"
+                    />
+
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -759,13 +802,19 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         onChange={handleFileSelect}
                         className="hidden"
                     />
+
                     <button
                         type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        title="上传截图 / 支持直接 Ctrl+V 粘贴"
-                        className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-cyan-300 transition-colors"
+                        onClick={() => setIsPlusMenuOpen(prev => !prev)}
+                        title={isPlusMenuOpen ? '收起工作台菜单' : '战术工作台与微工具 (+)'}
+                        className={clsx(
+                            'p-2 bg-transparent border-0 outline-none transition-colors shrink-0 cursor-pointer',
+                            isPlusMenuOpen
+                                ? 'text-cyan-300'
+                                : 'text-slate-400 hover:text-cyan-300'
+                        )}
                     >
-                        <ImageIcon className="w-4 h-4" />
+                        {isPlusMenuOpen ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                     </button>
 
                     <input
@@ -775,20 +824,24 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         onKeyDown={e => {
                             if (e.key === 'Enter') handleSend();
                         }}
-                        placeholder="向 AI 提问、粘贴截图，或输入如「大乘战罡」「逍遥锦囊」「太虚」「惊涛」..."
+                        placeholder="问点什么，比如昭武、技能、法宝、伤害等..."
                         className="flex-1 px-3 py-2 bg-transparent text-slate-100 placeholder-slate-400 text-sm focus:outline-none"
                     />
 
                     <button
                         type="button"
                         onClick={handleSend}
-                        disabled={isLoading || (!inputText.trim() && !selectedImage)}
-                        className="px-3.5 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-40 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 flex items-center gap-1.5"
+                        disabled={isLoading}
+                        className="px-3.5 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                     >
                         <Send className="w-4 h-4 text-slate-950" />
                         <span className="text-xs hidden sm:inline">发送</span>
                     </button>
                 </div>
+
+                <p className="text-[11px] text-slate-500 tracking-wide text-center pt-2 select-none">
+                    天书万象 AI 诛仙全知大模型 · 规则与数据源于实测
+                </p>
             </div>
         </div>
     );
