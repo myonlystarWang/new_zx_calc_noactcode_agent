@@ -243,7 +243,7 @@ export const ServerRadarView: React.FC = () => {
     return (
         <div className="flex flex-col gap-5 max-w-[1500px] mx-auto w-full">
             {/* 顶栏标题栏 */}
-            <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4 md:pr-24">
                 <div className="flex items-center gap-3">
                     <div className="p-2.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">
                         <Radio className="w-6 h-6 animate-pulse text-cyan-400" />
