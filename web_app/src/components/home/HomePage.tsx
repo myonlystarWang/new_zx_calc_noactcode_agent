@@ -1,64 +1,54 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import type { SearchTarget } from '../GlobalSearch';
 import {
-  Sparkles,
-  Calculator,
-  Swords,
-  Zap,
-  Crosshair,
-  Award,
-  ImagePlus,
-  X,
   Send,
-  ArrowRight,
-  Compass,
+  Plus,
+  X,
+  Calculator,
+  Zap,
+  Shield,
   Radio,
-  Cpu
+  Sparkles
 } from 'lucide-react';
-import { buildSearchIndex, buildSearchStats, matchGrouped } from '../search/searchIndex';
-import type { CompiledSearchItem } from '../search/searchIndex';
-import { ROUTE, buildPathFromTarget } from '../../routes';
-import { CopilotService, type CopilotMessage } from '../../services/CopilotService';
+import clsx from 'clsx';
+import type { SearchTarget } from '../GlobalSearch';
+import { TianShuLogo } from '../ui/TianShuLogo';
+import { Footer } from '../layout/Footer';
 import { HomeAIChatStage } from './HomeAIChatStage';
-
-const HOT_SEARCH_TAGS = [
-  '苍龙啸',    // 技能汉字
-  '未名斩',    // 技能汉字
-  '秋声雅韵',  // 技能汉字
-  '流波惊变',  // 副本名字
-  '天帝宝库',  // 副本名字
-  '赤梭',      // Boss 名字
-  '玄铠',      // Boss 名字
-  '极致无视',  // 攻略名字
-  '专注值参考',// 攻略名字
-  '易伤',      // 攻略/增益名字
-];
-const HOT = HOT_SEARCH_TAGS;
-const RECENT_KEY = 'zx_home_recent_searches';
-
-const PH = [
-  '搜索 Boss / 技能 / 增益 / 攻略，如 苍龙啸',
-  '输入拼音首字母，如 th → 天华、clx → 苍龙啸',
-  '搜索怪物首领，如 赤梭',
-  '输入战斗增益，如 易伤、专注值参考',
-];
+import { SplitScreenWorkspace, type WorkspaceMode } from '../workspace/SplitScreenWorkspace';
+import { ChatPlusMenu } from '../chat/ChatPlusMenu';
+import { CopilotService, type CopilotMessage } from '../../services/CopilotService';
 
 interface HomePageProps {
   onSearchNavigate: (target: SearchTarget) => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
-  const navigate = useNavigate();
-  /** 卡片 / 统计胶囊统一走路由（资料库入口折算为 #/compendium/<sub>） */
-  const goCompendium = (sub: 'ceiling' | 'skills' | 'support' | 'boss') =>
-    navigate(buildPathFromTarget({ tab: 'compendium', sub }));
+interface WorkspaceState {
+  isOpen: boolean;
+  mode: WorkspaceMode;
+  isMaximized: boolean;
+}
 
-  // AI 战术对话态
+export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchNavigate }) => {
+
+  // 对话流状态
   const [isChatActive, setIsChatActive] = useState(false);
   const [chatMessages, setChatMessages] = useState<CopilotMessage[]>([]);
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [query, setQuery] = useState('');
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
+
+  // 输入框左侧 + 号菜单展开状态
+  const [isPlusMenuOpen, setIsPlusMenuOpen] = useState(false);
+
+
+  // 双轨分屏工作区状态
+  const [workspaceState, setWorkspaceState] = useState<WorkspaceState>({
+    isOpen: false,
+    mode: 'calc',
+    isMaximized: false,
+  });
+
+  const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const copilot = useMemo(() => CopilotService.getInstance(), []);
 
@@ -89,13 +79,62 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
     return () => window.removeEventListener('paste', handlePaste);
   }, []);
 
+  // 快捷键 Ctrl+K 聚焦输入框
+  useEffect(() => {
+    const handleKeyDown = (ev: KeyboardEvent) => {
+      if ((ev.ctrlKey || ev.metaKey) && (ev.key === 'k' || ev.key === 'K')) {
+        ev.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // 监听外部打开工作台事件 (来自 Header 或其他入口)
+  useEffect(() => {
+    const handleOpenWorkspace = (e: any) => {
+      const mode = (e.detail?.mode as WorkspaceMode) || 'calc';
+      setIsChatActive(true);
+      setWorkspaceState({
+        isOpen: true,
+        mode,
+        isMaximized: false,
+      });
+    };
+
+    const handleOpenCopilot = (e: any) => {
+      if (e.detail?.prompt) {
+        handleStartAiChat(e.detail.prompt);
+      } else {
+        setIsChatActive(true);
+      }
+    };
+
+    window.addEventListener('open-zx-workspace', handleOpenWorkspace);
+    window.addEventListener('open-zx-copilot', handleOpenCopilot);
+    return () => {
+      window.removeEventListener('open-zx-workspace', handleOpenWorkspace);
+      window.removeEventListener('open-zx-copilot', handleOpenCopilot);
+    };
+  }, []);
+
+  // 发起 AI 对话
   const handleStartAiChat = async (promptText: string, imageBase64?: string | null) => {
     const text = promptText.trim();
     const img = imageBase64 || attachedImage;
     if (!text && !img) return;
 
+    // 当用户输入“计算”、“测算”或带有计算意图时，自动拉开右侧工作区分屏
+    if (text.includes('计算') || text.includes('测算') || text.includes('秒伤') || text.includes('战力')) {
+      setWorkspaceState({
+        isOpen: true,
+        mode: 'calc',
+        isMaximized: false,
+      });
+    }
+
     setIsChatActive(true);
-    setIsFocused(false);
     inputRef.current?.blur();
 
     const now = new Date();
@@ -106,7 +145,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
       sender: 'user',
       text: text || (img ? '[发送了游戏截图]' : ''),
       image: img || undefined,
-      time: timeStr
+      time: timeStr,
     };
 
     setChatMessages([userMsg]);
@@ -129,8 +168,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
             cardType: 'c_panel_diag',
             cardData: {
               cPanel: diag.cPanelData,
-              damage: dmg
-            }
+              damage: dmg,
+            },
           };
         } else if (diag.mode === 'xyc' && diag.xycData) {
           assistantMsg = {
@@ -142,69 +181,81 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
             cardData: {
               title: `${diag.xycData.beast}轩辕策`,
               route: `/tools/xyc?beast=${encodeURIComponent(diag.xycData.beast)}&lvl=${diag.xycData.level}`,
-              desc: '支持四象 1~20 阶成长推算与极品毕业度评级'
-            }
+              desc: '支持四象 1~20 阶成长推算与极品毕业度评级',
+            },
           };
         } else {
           assistantMsg = {
             id: `ast-${Date.now()}`,
             sender: 'assistant',
             text: diag.rawExplanation || '已完成图像特征解析。',
-            time: timeStr
+            time: timeStr,
           };
         }
-        setChatMessages(prev => [...prev, assistantMsg]);
+        setChatMessages((prev) => [...prev, assistantMsg]);
       } else {
         const localMatch = await copilot.matchLocalIntent(text);
         if (localMatch) {
-          setChatMessages(prev => [...prev, localMatch]);
+          setChatMessages((prev) => [...prev, localMatch]);
         } else {
           const reply = await copilot.chatText(text);
-          setChatMessages(prev => [
+          setChatMessages((prev) => [
             ...prev,
             {
               id: `ast-${Date.now()}`,
               sender: 'assistant',
               text: reply,
-              time: timeStr
-            }
+              time: timeStr,
+            },
           ]);
         }
       }
     } catch (err) {
       console.error('AI chat error:', err);
-      setChatMessages(prev => [
+      setChatMessages((prev) => [
         ...prev,
         {
           id: `err-${Date.now()}`,
           sender: 'assistant',
-          text: '推演过程发生网络异常，请重试。',
-          time: timeStr
-        }
+          text: '推演过程发生异常，请重试。',
+          time: timeStr,
+        },
       ]);
     } finally {
       setIsAiLoading(false);
     }
   };
 
+  // 后续追加对话
   const handleFollowUpMessage = async (text: string, image?: string) => {
+    const trimmed = text.trim();
+    if (!trimmed && !image) return;
+
+    if (trimmed.includes('计算') || trimmed.includes('测算') || trimmed.includes('秒伤') || trimmed.includes('战力')) {
+      setWorkspaceState({
+        isOpen: true,
+        mode: 'calc',
+        isMaximized: false,
+      });
+    }
+
     const now = new Date();
     const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
     const userMsg: CopilotMessage = {
       id: `usr-${Date.now()}`,
       sender: 'user',
-      text: text || (image ? '[发送了游戏截图]' : ''),
-      image: image,
-      time: timeStr
+      text: trimmed || (image ? '[发送了游戏截图]' : ''),
+      image,
+      time: timeStr,
     };
 
-    setChatMessages(prev => [...prev, userMsg]);
+    setChatMessages((prev) => [...prev, userMsg]);
     setIsAiLoading(true);
 
     try {
       if (image) {
-        const diag = await copilot.diagnoseImage(image, text);
+        const diag = await copilot.diagnoseImage(image, trimmed);
         let assistantMsg: CopilotMessage;
 
         if (diag.mode === 'c_panel' && diag.cPanelData) {
@@ -217,8 +268,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
             cardType: 'c_panel_diag',
             cardData: {
               cPanel: diag.cPanelData,
-              damage: dmg
-            }
+              damage: dmg,
+            },
           };
         } else if (diag.mode === 'xyc' && diag.xycData) {
           assistantMsg = {
@@ -230,36 +281,36 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
             cardData: {
               title: `${diag.xycData.beast}轩辕策`,
               route: `/tools/xyc?beast=${encodeURIComponent(diag.xycData.beast)}&lvl=${diag.xycData.level}`,
-              desc: '支持四象 1~20 阶成长推算与极品毕业度评级'
-            }
+              desc: '支持四象 1~20 阶成长推算与极品毕业度评级',
+            },
           };
         } else {
           assistantMsg = {
             id: `ast-${Date.now()}`,
             sender: 'assistant',
             text: diag.rawExplanation || '已完成图像特征解析。',
-            time: timeStr
+            time: timeStr,
           };
         }
-        setChatMessages(prev => [...prev, assistantMsg]);
+        setChatMessages((prev) => [...prev, assistantMsg]);
       } else {
-        const localMatch = await copilot.matchLocalIntent(text);
+        const localMatch = await copilot.matchLocalIntent(trimmed);
         if (localMatch) {
-          setChatMessages(prev => [...prev, localMatch]);
+          setChatMessages((prev) => [...prev, localMatch]);
         } else {
-          const history = chatMessages.slice(-4).map(m => ({
-            role: m.sender === 'user' ? 'user' : 'assistant',
-            content: m.text
+          const history = chatMessages.slice(-4).map((m) => ({
+            role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
+            content: m.text,
           }));
-          const reply = await copilot.chatText(text, history);
-          setChatMessages(prev => [
+          const reply = await copilot.chatText(trimmed, history);
+          setChatMessages((prev) => [
             ...prev,
             {
               id: `ast-${Date.now()}`,
               sender: 'assistant',
               text: reply,
-              time: timeStr
-            }
+              time: timeStr,
+            },
           ]);
         }
       }
@@ -282,1151 +333,262 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate }) => {
     }
   };
 
-  useEffect(() => {
-    const handleOpenEvent = (e: any) => {
-      if (e.detail?.prompt) {
-        handleStartAiChat(e.detail.prompt);
-      } else {
-        setIsChatActive(true);
-      }
-    };
-    window.addEventListener('open-zx-copilot', handleOpenEvent);
-    return () => window.removeEventListener('open-zx-copilot', handleOpenEvent);
-  }, []);
-  const [query, setQuery] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [recentList, setRecentList] = useState<CompiledSearchItem[]>([]);
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
-  const zoneRef = useRef<HTMLDivElement>(null);
-  const bodyRef = useRef<HTMLDivElement>(null);
-  const isFocusedRef = useRef(isFocused);
-  isFocusedRef.current = isFocused;
-
-  // 读取本地存储中的最近访问
-  const loadRecent = (): CompiledSearchItem[] => {
-    try {
-      const raw = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
-      return (Array.isArray(raw) ? raw : []).map((x: any) =>
-        x.label
-          ? x
-          : { label: x.l, group: x.g, category: x.c, keywords: x.k || [], target: x.t, pyInitials: x.i || '', pyFull: x.f || '' },
-      );
-    } catch {
-      return [];
-    }
+  // 快捷微工具药丸点击：直接滑开右侧对应工作区
+  const handleOpenMicroTool = (mode: WorkspaceMode) => {
+    setIsChatActive(true);
+    setWorkspaceState({
+      isOpen: true,
+      mode,
+      isMaximized: false,
+    });
   };
 
-  useEffect(() => {
-    setRecentList(loadRecent());
-  }, []);
 
-  const saveRecent = (entry: CompiledSearchItem) => {
-    const list = loadRecent().filter((x) => x.label !== entry.label);
-    list.unshift(entry);
-    const updated = list.slice(0, 6);
-    localStorage.setItem(RECENT_KEY, JSON.stringify(updated));
-    setRecentList(updated);
-  };
-
-  const clearRecent = () => {
-    localStorage.removeItem(RECENT_KEY);
-    setRecentList([]);
-  };
-
-  // 搜索索引与统计：统一来自共享搜索层（与右上角 GlobalSearch 同源，改一处即两处生效）
-  const searchIndex = useMemo(() => buildSearchIndex(), []);
-  const stats = useMemo(() => buildSearchStats(searchIndex), [searchIndex]);
-
-  // 匹配与多分类聚合：统一来自共享搜索层
-  const groupedResults = useMemo(() => matchGrouped(searchIndex, query), [searchIndex, query]);
-
-  // 动态出字打字机动画：直接操作 DOM placeholder，杜绝引发整页 900 行组件高频 Re-render（极度节省 CPU）
-  useEffect(() => {
-    let wordIdx = 0;
-    let charIdx = 0;
-    let deleting = false;
-    let timeoutId = 0;
-
-    function step() {
-      if (isFocusedRef.current) {
-        timeoutId = window.setTimeout(step, 250);
-        return;
-      }
-
-      const w = PH[wordIdx];
-      if (!deleting) {
-        charIdx++;
-        if (inputRef.current) inputRef.current.placeholder = w.slice(0, charIdx);
-        if (charIdx === w.length) {
-          deleting = true;
-          timeoutId = window.setTimeout(step, 1800);
-          return;
-        }
-        timeoutId = window.setTimeout(step, 110);
-      } else {
-        charIdx--;
-        if (inputRef.current) inputRef.current.placeholder = w.slice(0, charIdx);
-        if (charIdx === 0) {
-          wordIdx = (wordIdx + 1) % PH.length;
-          deleting = false;
-          timeoutId = window.setTimeout(step, 300);
-          return;
-        }
-        timeoutId = window.setTimeout(step, 40);
-      }
-    }
-
-    timeoutId = window.setTimeout(step, 600);
-    return () => clearTimeout(timeoutId);
-  }, []);
-
-  // 彗星动画逻辑：测量目标严格限定为 .search-glow（仅包裹输入框，绝不越界至热搜下方）
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const glowEl = glowRef.current;
-    if (!canvas || !glowEl) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animId = 0;
-    let isRunning = false;
-    const PAD = 40;
-    let w = 0;
-    let h = 0;
-    const r = 20;
-    let arc = 0;
-    let P = 0;
-    let dist = 0;
-    let lastTime = 0;
-    let lastRender = 0;
-
-    function resize() {
-      if (!glowEl || !canvas) return;
-      const rect = glowEl.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      w = rect.width;
-      h = rect.height;
-      arc = Math.PI * r * 0.5;
-      P = 2 * (w - 2 * r) + 2 * (h - 2 * r) + 4 * arc;
-
-      canvas.width = (w + 2 * PAD) * dpr;
-      canvas.height = (h + 2 * PAD) * dpr;
-      canvas.style.width = `${w + 2 * PAD}px`;
-      canvas.style.height = `${h + 2 * PAD}px`;
-      canvas.style.left = `${-PAD}px`;
-      canvas.style.top = `${-PAD}px`;
-      ctx?.setTransform(1, 0, 0, 1, 0, 0);
-      ctx?.scale(dpr, dpr);
-    }
-
-    function getPoint(dVal: number) {
-      let d = ((dVal % P) + P) % P;
-      const lTop = w - 2 * r;
-      if (d < lTop) return { x: r + d, y: 0, isH: true };
-      d -= lTop;
-      if (d < arc) {
-        const th = -Math.PI * 0.5 + d / r;
-        return { x: w - r + r * Math.cos(th), y: r + r * Math.sin(th), isH: false };
-      }
-      d -= arc;
-      const lR = h - 2 * r;
-      if (d < lR) return { x: w, y: r + d, isH: false };
-      d -= lR;
-      if (d < arc) {
-        const th = d / r;
-        return { x: w - r + r * Math.cos(th), y: h - r + r * Math.sin(th), isH: false };
-      }
-      d -= arc;
-      const lBot = w - 2 * r;
-      if (d < lBot) return { x: w - r - d, y: h, isH: true };
-      d -= lBot;
-      if (d < arc) {
-        const th = Math.PI * 0.5 + d / r;
-        return { x: r + r * Math.cos(th), y: h - r + r * Math.sin(th), isH: false };
-      }
-      d -= arc;
-      const lL = h - 2 * r;
-      if (d < lL) return { x: 0, y: h - r - d, isH: false };
-      d -= lL;
-      const th = Math.PI + d / r;
-      return { x: r + r * Math.cos(th), y: r + r * Math.sin(th), isH: false };
-    }
-
-    function getColor(x: number) {
-      const t = Math.max(0, Math.min(1, x / (w || 1)));
-      let rC: number, gC: number, bC: number;
-      if (t <= 0.5) {
-        const k = t / 0.5;
-        rC = Math.round(34 + k * (129 - 34));
-        gC = Math.round(211 + k * (140 - 211));
-        bC = Math.round(238 + k * (248 - 238));
-      } else {
-        const k = (t - 0.5) / 0.5;
-        rC = Math.round(129 + k * (192 - 129));
-        gC = Math.round(140 + k * (132 - 140));
-        bC = Math.round(248 + k * (252 - 248));
-      }
-      return { r: rC, g: gC, b: bC };
-    }
-
-    function frame(timestamp: number) {
-      if (!isRunning) return;
-
-      // 帧率节流：上限约 40fps（~25ms），在保持极其顺滑视觉的同时大幅削减 GPU/CPU 合成压力
-      if (timestamp - lastRender < 24) {
-        animId = requestAnimationFrame(frame);
-        return;
-      }
-      lastRender = timestamp;
-
-      if (!lastTime) lastTime = timestamp;
-      const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
-      lastTime = timestamp;
-
-      // 聚焦时彗星隐藏由 CSS opacity 负责，且跳过计算渲染节省资源
-      if (w > 0 && P > 0 && !document.hidden && !isFocusedRef.current) {
-        const head = getPoint(dist);
-        const u = Math.max(0, Math.min(1, head.x / w));
-        const speedMult = head.isH ? 0.9 + 0.55 * Math.sin(Math.PI * u) : 0.9;
-        const baseSpeed = 160;
-        dist += baseSpeed * speedMult * dt;
-
-        ctx?.clearRect(0, 0, w + 2 * PAD, h + 2 * PAD);
-
-        const tailLen = 45 + 55 * ((speedMult - 0.9) / 0.55);
-        const steps = 10;
-        const stepDist = tailLen / steps;
-
-        ctx?.save();
-        ctx?.translate(PAD, PAD);
-        ctx!.lineCap = 'round';
-
-        let prevPt = getPoint(dist);
-        for (let i = 1; i <= steps; i++) {
-          const currPt = getPoint(dist - i * stepDist);
-          const p = i / steps;
-          const alpha = Math.pow(1 - p, 1.4) * 0.92;
-          const col = getColor((prevPt.x + currPt.x) * 0.5);
-
-          // 核心优化：使用双通道轻量绘制（外晕 + 内芯）替代每帧 30 次昂贵 shadowBlur 高斯模糊
-          // 通道1：外围柔和辉光
-          ctx!.beginPath();
-          ctx!.strokeStyle = `rgba(${col.r}, ${col.g}, ${col.b}, ${(alpha * 0.28).toFixed(3)})`;
-          ctx!.lineWidth = 4.5 + 4.5 * (1 - p);
-          ctx!.moveTo(prevPt.x, prevPt.y);
-          ctx!.lineTo(currPt.x, currPt.y);
-          ctx!.stroke();
-
-          // 通道2：核心高亮光束
-          ctx!.beginPath();
-          ctx!.strokeStyle = `rgba(${col.r}, ${col.g}, ${col.b}, ${alpha.toFixed(3)})`;
-          ctx!.lineWidth = 1.4 + 2.4 * (1 - p);
-          ctx!.moveTo(prevPt.x, prevPt.y);
-          ctx!.lineTo(currPt.x, currPt.y);
-          ctx!.stroke();
-
-          prevPt = currPt;
-        }
-
-        const headCol = getColor(head.x);
-        const bloomR = 32;
-        const radGrad = ctx!.createRadialGradient(head.x, head.y, 0, head.x, head.y, bloomR);
-        radGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-        radGrad.addColorStop(0.12, `rgba(${headCol.r}, ${headCol.g}, ${headCol.b}, 0.92)`);
-        radGrad.addColorStop(0.35, `rgba(${headCol.r}, ${headCol.g}, ${headCol.b}, 0.55)`);
-        radGrad.addColorStop(0.68, `rgba(${headCol.r}, ${headCol.g}, ${headCol.b}, 0.20)`);
-        radGrad.addColorStop(1, `rgba(${headCol.r}, ${headCol.g}, ${headCol.b}, 0)`);
-
-        ctx!.fillStyle = radGrad;
-        ctx!.beginPath();
-        ctx!.arc(head.x, head.y, bloomR, 0, Math.PI * 2);
-        ctx!.fill();
-
-        // 仅在单点头部绘制微小白核，并立即重置 shadowBlur
-        ctx!.shadowBlur = 8;
-        ctx!.shadowColor = '#ffffff';
-        ctx!.fillStyle = '#ffffff';
-        ctx!.beginPath();
-        ctx!.arc(head.x, head.y, 2.4, 0, Math.PI * 2);
-        ctx!.fill();
-        ctx!.shadowBlur = 0;
-
-        ctx?.restore();
-      }
-
-      animId = requestAnimationFrame(frame);
-    }
-
-    function startAnim() {
-      if (!isRunning && !document.hidden) {
-        isRunning = true;
-        lastTime = 0;
-        lastRender = 0;
-        animId = requestAnimationFrame(frame);
-      }
-    }
-
-    function stopAnim() {
-      if (isRunning) {
-        isRunning = false;
-        cancelAnimationFrame(animId);
-      }
-    }
-
-    let idleTimer: number | null = null;
-    const IDLE_TIMEOUT_MS = 8000;
-
-    function resetIdleTimer() {
-      startAnim();
-      if (idleTimer !== null) window.clearTimeout(idleTimer);
-      idleTimer = window.setTimeout(() => {
-        stopAnim();
-      }, IDLE_TIMEOUT_MS);
-    }
-
-    const onUserActivity = () => {
-      resetIdleTimer();
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        if (idleTimer !== null) window.clearTimeout(idleTimer);
-        stopAnim();
-      } else {
-        resetIdleTimer();
-      }
-    };
-
-    resize();
-    window.addEventListener('resize', resize);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('mousemove', onUserActivity, { passive: true });
-    window.addEventListener('keydown', onUserActivity, { passive: true });
-    window.addEventListener('scroll', onUserActivity, { passive: true });
-    window.addEventListener('touchstart', onUserActivity, { passive: true });
-    resetIdleTimer();
-
-    return () => {
-      window.removeEventListener('resize', resize);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('mousemove', onUserActivity);
-      window.removeEventListener('keydown', onUserActivity);
-      window.removeEventListener('scroll', onUserActivity);
-      window.removeEventListener('touchstart', onUserActivity);
-      if (idleTimer !== null) window.clearTimeout(idleTimer);
-      stopAnim();
-    };
-  }, []);
-
-  // 聚焦时淡出彗星画布
-  useEffect(() => {
-    if (canvasRef.current) {
-      canvasRef.current.style.opacity = isFocused ? '0' : '1';
-    }
-  }, [isFocused]);
-
-  // 快捷键 Ctrl+K 与 / 聚焦
-  useEffect(() => {
-    const handleKeyDown = (ev: KeyboardEvent) => {
-      if ((ev.ctrlKey || ev.metaKey) && (ev.key === 'k' || ev.key === 'K')) {
-        ev.preventDefault();
-        inputRef.current?.focus();
-      }
-      if (ev.code === 'Slash' && document.activeElement !== inputRef.current) {
-        ev.preventDefault();
-        inputRef.current?.focus();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  // 键盘操作选择
-  const handleKeyDown = (ev: React.KeyboardEvent) => {
-    const flatList = groupedResults.flatList || [];
-    if (ev.key === 'ArrowDown') {
-      ev.preventDefault();
-      if (flatList.length > 0) {
-        setActiveIndex((prev) => (prev + 1) % flatList.length);
-      }
-    } else if (ev.key === 'ArrowUp') {
-      ev.preventDefault();
-      if (flatList.length > 0) {
-        setActiveIndex((prev) => (prev - 1 + flatList.length) % flatList.length);
-      }
-    } else if (ev.key === 'Enter') {
-      ev.preventDefault();
-      const isQuestion = query.includes('?') || query.includes('？') || query.includes('多少') || query.includes('怎么') || query.includes('打') || query.trim().length > 6;
-      if (flatList.length > 0 && flatList[activeIndex] && !attachedImage && !isQuestion) {
-        handleChoose(flatList[activeIndex]);
-      } else if (query.trim() || attachedImage) {
-        handleStartAiChat(query, attachedImage);
-      }
-    } else if (ev.key === 'Escape') {
-      setIsFocused(false);
-      inputRef.current?.blur();
-    }
-  };
-
-  // 键盘上下选择时，自动将当前高亮项平滑滚动到可视区域中
-  useEffect(() => {
-    if (!bodyRef.current) return;
-    if (activeIndex === 0) {
-      bodyRef.current.scrollTop = 0;
-      return;
-    }
-    const activeEl = bodyRef.current.querySelector('.row.on') as HTMLElement;
-    if (activeEl) {
-      activeEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    }
-  }, [activeIndex]);
-
-  // 搜索关键字变化时重置滚动条位置和高亮项
-  useEffect(() => {
-    setActiveIndex(0);
-    if (bodyRef.current) {
-      bodyRef.current.scrollTop = 0;
-    }
-  }, [query]);
-
-  // 结果超出容器高度时，底部固定一条「共 N 条 · 滚动查看」提示（滚动到底自动隐去）
-  const [panelOverflow, setPanelOverflow] = useState(false);
-  const [panelAtBottom, setPanelAtBottom] = useState(false);
-  useEffect(() => {
-    const el = bodyRef.current;
-    if (!el) {
-      setPanelOverflow(false);
-      return;
-    }
-    const measure = () => {
-      const over = el.scrollHeight - el.clientHeight > 8;
-      setPanelOverflow(over);
-      setPanelAtBottom(over && el.scrollTop + el.clientHeight >= el.scrollHeight - 8);
-    };
-    measure();
-    const timer = window.setTimeout(measure, 80);
-    return () => window.clearTimeout(timer);
-  }, [query, groupedResults.flatList.length]);
-  const onPanelScroll = () => {
-    const el = bodyRef.current;
-    if (!el) return;
-    setPanelAtBottom(el.scrollTop + el.clientHeight >= el.scrollHeight - 8);
-  };
-
-  const handleChoose = (item: CompiledSearchItem) => {
-    saveRecent(item);
-    setQuery('');
-    setIsFocused(false);
-    inputRef.current?.blur();
-    onSearchNavigate(item.target);
-  };
-
-  // 高亮搜索命中字符（支持精确词及 Token 命中）
-  function renderHighlightedText(text: string, q: string) {
-    if (!q) return text;
-    const qLower = q.trim().toLowerCase();
-    const idx = text.toLowerCase().indexOf(qLower);
-    if (idx >= 0) {
-      return (
-        <>
-          {text.slice(0, idx)}
-          <mark>{text.slice(idx, idx + qLower.length)}</mark>
-          {text.slice(idx + qLower.length)}
-        </>
-      );
-    }
-    const tokens = qLower.split(/[\s·\-_/\\|、]+/).filter(Boolean);
-    for (const t of tokens) {
-      const tIdx = text.toLowerCase().indexOf(t);
-      if (tIdx >= 0) {
-        return (
-          <>
-            {text.slice(0, tIdx)}
-            <mark>{text.slice(tIdx, tIdx + t.length)}</mark>
-            {text.slice(tIdx + t.length)}
-          </>
-        );
-      }
-    }
-    return text;
-  }
-
-  let flatCounter = -1;
-
+  // 1. 对话展开态（含居中全宽态与双轨分屏态）
   if (isChatActive) {
     return (
-      <div className="w-full flex-1 flex flex-col items-center justify-start px-2 sm:px-4 py-1 overflow-hidden">
-        <HomeAIChatStage
-          messages={chatMessages}
-          isLoading={isAiLoading}
-          onSendMessage={handleFollowUpMessage}
-          onBackToHome={() => setIsChatActive(false)}
-          onNewChat={() => {
-            setChatMessages([]);
-            setIsChatActive(false);
-            setQuery('');
-            setAttachedImage(null);
-          }}
-        />
+      <div className="w-full flex-1 min-h-0 flex overflow-hidden">
+        {/* 左侧 AI 窄栏 / 居中主栏 */}
+        {!workspaceState.isMaximized && (
+          <div
+            className={clsx(
+              'flex flex-col h-full overflow-hidden transition-all duration-300',
+              workspaceState.isOpen
+                ? 'w-[420px] shrink-0 border-r border-slate-800/80 bg-[#080c14]'
+                : 'flex-1 max-w-[960px] mx-auto w-full'
+            )}
+          >
+            <HomeAIChatStage
+              messages={chatMessages}
+              isLoading={isAiLoading}
+              onSendMessage={handleFollowUpMessage}
+              onBackToHome={() => {
+                setIsChatActive(false);
+                setWorkspaceState((prev) => ({ ...prev, isOpen: false }));
+                setChatMessages([]);
+                setAttachedImage(null);
+                setQuery('');
+              }}
+              isSplitOpen={workspaceState.isOpen}
+              onToggleSplit={() =>
+                setWorkspaceState((prev) => ({
+                  ...prev,
+                  isOpen: !prev.isOpen,
+                  isMaximized: false,
+                }))
+              }
+              onOpenSplitWorkspace={(mode) =>
+                setWorkspaceState({
+                  isOpen: true,
+                  mode,
+                  isMaximized: false,
+                })
+              }
+            />
+          </div>
+        )}
+
+        {/* 右侧多功能工作区 */}
+        {workspaceState.isOpen && (
+          <div className="flex-1 min-w-0 h-full overflow-hidden flex flex-col">
+            <SplitScreenWorkspace
+              mode={workspaceState.mode}
+              onModeChange={(m) => setWorkspaceState((prev) => ({ ...prev, mode: m }))}
+              isMaximized={workspaceState.isMaximized}
+              onToggleMaximize={() =>
+                setWorkspaceState((prev) => ({
+                  ...prev,
+                  isMaximized: !prev.isMaximized,
+                }))
+              }
+              onClose={() =>
+                setWorkspaceState((prev) => ({
+                  ...prev,
+                  isOpen: false,
+                  isMaximized: false,
+                }))
+              }
+            />
+          </div>
+        )}
       </div>
     );
   }
 
+  // 2. 初始未对话状态 (ChatGPT 范式纯粹大模型工作台)
   return (
-    <div className="hero">
-      {/* 标头区 */}
-      <div className="hero-t">
-        <h2 className="rise d1">诛仙3 副本战斗实验室</h2>
-        <p className="rise d2">属性计算 · 战斗模拟 · 全景资料速查 —— 支持自然语言提问与截图诊断</p>
-      </div>
+    <div className="w-full flex-1 min-h-0 flex flex-col justify-between overflow-hidden relative">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-2 min-h-0 overflow-y-auto">
+        <div className="w-full max-w-4xl flex flex-col items-center text-center space-y-6 animate-in fade-in zoom-in-95 duration-400">
+          {/* 居中天书品牌与全新八卦神经元矢量 Logo */}
+          <div className="flex flex-col items-center space-y-3.5">
+            <div className="p-3.5 sm:p-4 rounded-3xl bg-gradient-to-br from-cyan-500/20 via-purple-500/10 to-amber-500/20 border border-cyan-500/30 shadow-[0_0_35px_rgba(6,182,212,0.3)]">
+              <TianShuLogo size={80} className="animate-spin-slow" />
+            </div>
 
-      {/* 搜索框区（方案 A+C：搜索框 + 呼吸渐变 + 彗星跑圈 + 下拉浮层） */}
-      <div className="rise d3 search-wrap">
-        <div className="search-zone" id="searchZone" ref={zoneRef}>
-          {/* 外框轨道层：彗星轨道绑定该元素 */}
-          <div className={`search-glow ${isFocused ? 'focus' : ''}`} id="searchGlow" ref={glowRef}>
-            <canvas className="comet-canvas" id="cometCanvas" ref={canvasRef} />
-            <div className="search-box">
+            <div className="space-y-2">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-indigo-200 to-amber-300 tracking-tight drop-shadow-md py-1">
+                天书万象 AI · 诛仙全知大模型
+              </h1>
+              <p className="text-sm sm:text-base text-slate-400 font-serif tracking-widest text-shadow">
+                天地不仁以万物为刍狗 · 天书通晓诛仙万象规则
+              </p>
+            </div>
+          </div>
+
+          {/* 现代化 ChatGPT 风格输入容器 (含左侧 + 号弹窗菜单，加宽至 max-w-3xl) */}
+          <div className="relative w-full max-w-3xl bg-[#0d121c]/95 border-2 border-slate-700/60 focus-within:border-cyan-500/80 focus-within:shadow-[0_0_30px_rgba(6,182,212,0.25)] rounded-2xl p-2 transition-all shadow-xl">
+            {/* 左侧 + 号悬浮微工具与操作菜单 */}
+            <ChatPlusMenu
+              isOpen={isPlusMenuOpen}
+              onClose={() => setIsPlusMenuOpen(false)}
+              onSelectUpload={() => fileInputRef.current?.click()}
+              onSelectWorkspace={(mode) => handleOpenMicroTool(mode)}
+              placement="down"
+            />
+
+            {/* 已选图片浮层 */}
+            {attachedImage && (
+              <div className="mb-2 px-3 py-1.5 rounded-xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={attachedImage}
+                    alt="Attachment"
+                    className="w-8 h-8 rounded-lg object-cover border border-cyan-400/40"
+                  />
+                  <span className="text-xs text-cyan-200 font-medium">已就绪 C 界面截图（将触发智能打桩测算）</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setAttachedImage(null)}
+                  className="p-1 rounded text-slate-400 hover:text-white"
+                  title="移除截图"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2 px-2 py-1">
               <input
                 type="file"
                 ref={fileInputRef}
-                onChange={handleFileSelect}
                 accept="image/*"
+                onChange={handleFileSelect}
                 className="hidden"
-                aria-label="上传游戏截图"
               />
 
-              <svg
-                className="ic"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              {/* ChatGPT 风格 + 号展开菜单按钮 (纯透明无底色无边框，仅加号本身响应 hover 变色) */}
+              <button
+                type="button"
+                onClick={() => setIsPlusMenuOpen((prev) => !prev)}
+                title={isPlusMenuOpen ? '收起工作台菜单' : '战术工作台与全知工具 (+)'}
+                className={clsx(
+                  'p-2 bg-transparent border-0 outline-none transition-colors cursor-pointer shrink-0',
+                  isPlusMenuOpen
+                    ? 'text-cyan-300'
+                    : 'text-slate-400 hover:text-cyan-300'
+                )}
               >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-
-              {attachedImage && (
-                <div className="flex items-center gap-1.5 pl-2 pr-1.5 py-1 bg-cyan-950/80 border border-cyan-500/40 rounded-lg text-xs text-cyan-200 shrink-0">
-                  <span className="text-[11px]">已贴截图</span>
-                  <button
-                    type="button"
-                    onClick={() => setAttachedImage(null)}
-                    className="hover:text-white p-0.5"
-                    title="移除截图"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              )}
+                {isPlusMenuOpen ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+              </button>
 
               <input
-                id="q"
                 ref={inputRef}
                 type="text"
-                autoComplete="off"
-                spellCheck="false"
-                placeholder={attachedImage ? '补充问题，如：测算对T20爆发伤害（回车发送）' : PH[0]}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => {
-                  setTimeout(() => {
-                    if (!zoneRef.current?.contains(document.activeElement)) {
-                      setIsFocused(false);
-                    }
-                  }, 140);
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleStartAiChat(query, attachedImage);
+                  }
                 }}
-                onKeyDown={handleKeyDown}
+                placeholder={
+                  attachedImage
+                    ? '已粘贴截图，输入补充指令或直接回车启动推演...'
+                    : '问点什么，比如昭武、技能、法宝、伤害等...'
+                }
+                className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none px-2 py-1.5"
               />
 
               <button
                 type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="p-1.5 text-gray-400 hover:text-cyan-400 transition-colors rounded-md hover:bg-white/5 shrink-0"
-                title="上传截图 (支持 Ctrl+V 粘贴)"
-              >
-                <ImagePlus className="w-4 h-4" />
-              </button>
-
-              {query && (
-                <button
-                  type="button"
-                  className="clear-btn show"
-                  id="clearBtn"
-                  title="清空搜索"
-                  aria-label="清空搜索"
-                  onClick={() => {
-                    setQuery('');
-                    inputRef.current?.focus();
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M18 6 6 18" />
-                    <path d="m6 6 12 12" />
-                  </svg>
-                </button>
-              )}
-
-              <button
-                type="button"
-                onClick={() => handleStartAiChat(query, attachedImage)}
-                disabled={!query.trim() && !attachedImage}
-                className="p-1.5 text-cyan-400 hover:text-cyan-300 disabled:opacity-25 disabled:hover:text-cyan-400 transition-colors rounded-md hover:bg-cyan-500/10 shrink-0"
-                title="AI 战术推演 (Enter)"
-              >
-                <Send className="w-4 h-4" />
-              </button>
-
-              <span className="kbd-hint" title="支持快捷键 Ctrl+K 聚焦">
-                Ctrl K
-              </span>
-            </div>
-          </div>
-
-          {/* 搜索下拉面板（完全对齐 index.html 视觉与交互） */}
-          <div className={`panel ${isFocused ? 'open' : ''}`} id="panel">
-            <div className="panel-body" id="panelBody" ref={bodyRef} onScroll={onPanelScroll}>
-              {!query.trim() ? (
-                /* 闲置态：热门搜索 + 最近访问 */
-                <>
-                  <div className="empty-block">
-                    <h5>
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-                      </svg>
-                      热门搜索
-                    </h5>
-                    <div className="chips">
-                      {HOT.map((w) => (
-                        <button
-                          key={w}
-                          className="chip"
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            setQuery(w);
-                            inputRef.current?.focus();
-                          }}
-                        >
-                          {w}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {recentList.length > 0 && (
-                    <div className="empty-block">
-                      <div className="recent-row">
-                        <h5 style={{ margin: 0 }}>
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                            <path d="M3 3v5h5" />
-                            <path d="M12 7v5l4 2" />
-                          </svg>
-                          最近访问
-                        </h5>
-                        <button className="link" id="clearRecent" onMouseDown={clearRecent}>
-                          清空
-                        </button>
-                      </div>
-                      <div className="chips" style={{ marginTop: '9px' }}>
-                        {recentList.map((e) => (
-                          <button
-                            key={e.label}
-                            className="chip"
-                            onMouseDown={(ev) => {
-                              ev.preventDefault();
-                              handleChoose(e);
-                            }}
-                          >
-                            {e.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </>
-              ) : groupedResults.groupedList && groupedResults.groupedList.length === 0 ? (
-                /* 无结果提示 */
-                <div className="no-result">
-                  没有找到「{query}」，试试中文名或拼音首字母（如 clx、cs、th、ys）
-                </div>
-              ) : (
-                /* 分类聚合搜索结果列表 */
-                groupedResults.groupedList.map((grp) => (
-                  <div key={grp.cat}>
-                    <div className="grp-h">
-                      {grp.catName}
-                      <span className="tag">{grp.items.length}</span>
-                    </div>
-                    {grp.items.map((e) => {
-                      flatCounter++;
-                      const currentIdx = flatCounter;
-                      const isEn = /^[a-z0-9]+$/i.test(query.trim());
-                      const py = isEn && e.pyInitials ? e.pyInitials.slice(0, 8) : '';
-                      const isRowActive = currentIdx === activeIndex;
-
-                      return (
-                        <div
-                          key={`${e.label}-${e.group}-${currentIdx}`}
-                          className={`row ${isRowActive ? 'on' : ''} cursor-pointer`}
-                          onMouseDown={(ev) => {
-                            ev.preventDefault();
-                            handleChoose(e);
-                          }}
-                          onMouseEnter={() => setActiveIndex(currentIdx)}
-                        >
-                          <span className="dot"></span>
-                          <span className="main">
-                            <div className="nm">{renderHighlightedText(e.label, query)}</div>
-                            <div className="gp">{e.group}</div>
-                          </span>
-                          {py && <span className="py">{py}</span>}
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))
-              )}
-              {panelOverflow && !panelAtBottom && groupedResults.flatList.length > 0 && (
-                <div className="panel-more-hint">共 {groupedResults.flatList.length} 条 · 滚动查看</div>
-              )}
-            </div>
-
-            {/* 底部按键指引 */}
-            <div className="panel-foot">
-              <span>
-                <span className="keycap">↑</span>
-                <span className="keycap">↓</span> 选择
-              </span>
-              <span>
-                <span className="keycap">Enter</span> 直达
-              </span>
-              <span>
-                <span className="keycap">Esc</span> 关闭
-              </span>
-              <span style={{ marginLeft: 'auto' }}>
-                支持拼音首字母，如 <b>clx → 苍龙啸</b>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* 热门搜索快捷标签 (Quick Search Pills) */}
-        <div className="quick-tags rise d3">
-          <span className="quick-tags-label">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>热门速搜:</span>
-          </span>
-          <div className="quick-tags-list">
-            {HOT_SEARCH_TAGS.map((word) => (
-              <button
-                key={word}
-                type="button"
-                className="quick-tag-pill"
                 onClick={() => {
-                  setQuery(word);
-                  setIsFocused(true);
-                  inputRef.current?.focus();
+                  if (!query.trim() && !attachedImage) {
+                    inputRef.current?.focus();
+                    return;
+                  }
+                  handleStartAiChat(query, attachedImage);
                 }}
-                title={`点击即搜“${word}”`}
+                className="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-950 font-bold transition-all shadow-md shadow-cyan-500/30 cursor-pointer shrink-0 active:scale-95"
+                title="发送至天书大模型 (Enter)"
               >
-                <span>{word}</span>
+                <Send className="w-4 h-4 text-slate-950" />
               </button>
-            ))}
+            </div>
+          </div>
+
+          {/* 核心战术功能直达短小引导药丸 (移至对话框下方，与输入框同宽对齐) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 max-w-3xl w-full pt-1">
+            <button
+              type="button"
+              onClick={() => handleStartAiChat('昭武')}
+              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-cyan-500/30 hover:border-cyan-400/70 text-xs text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-sm active:scale-95"
+            >
+              <Shield className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-medium whitespace-nowrap">装备属性</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleStartAiChat('技能')}
+              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-emerald-500/30 hover:border-emerald-400/70 text-xs text-slate-300 hover:text-emerald-300 transition-all cursor-pointer shadow-sm active:scale-95"
+            >
+              <Zap className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-medium whitespace-nowrap">技能描述</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setWorkspaceState({ isOpen: true, mode: 'calc', isMaximized: false });
+                handleStartAiChat('计算实战战力');
+              }}
+              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-amber-500/30 hover:border-amber-400/70 text-xs text-slate-300 hover:text-amber-300 transition-all cursor-pointer shadow-sm active:scale-95"
+            >
+              <Calculator className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-medium whitespace-nowrap">伤害计算</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setWorkspaceState({ isOpen: true, mode: 'server', isMaximized: false });
+                handleStartAiChat('开服雷达');
+              }}
+              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-sky-500/30 hover:border-sky-400/70 text-xs text-slate-300 hover:text-sky-300 transition-all cursor-pointer shadow-sm active:scale-95"
+            >
+              <Radio className="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-medium whitespace-nowrap">开服检测</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setWorkspaceState({ isOpen: true, mode: 'xyc', isMaximized: false });
+                handleStartAiChat('轩辕策');
+              }}
+              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-purple-500/30 hover:border-purple-400/70 text-xs text-slate-300 hover:text-purple-300 transition-all cursor-pointer shadow-sm active:scale-95"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-purple-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-medium whitespace-nowrap">各类模拟器</span>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* 2026 AI 战术推演与快捷微工具建议卡 */}
-      <div className="w-full max-w-[1280px] mx-auto px-4 mt-8 mb-4 rise d4">
-        <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-4 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full" />
-            <h3 className="text-sm font-bold text-gray-200 tracking-wide">
-              AI 战术推演与高保真微工具
-            </h3>
-            <span className="px-2 py-0.5 rounded text-[10px] bg-cyan-950 text-cyan-300 border border-cyan-800/40">
-              问答 · 识图 · 拟真
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={() => navigate(ROUTE.tools)}
-            className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors"
-          >
-            <span>进入微工具实验室</span>
-            <ArrowRight className="w-3 h-3" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          {/* 卡片 1: 识图测 T20 伤害 */}
-          <div
-            onClick={() => handleStartAiChat('请帮我识别属性并测算对T20副本的实战伤害')}
-            className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-cyan-500/20 hover:border-cyan-400/60 shadow-lg hover:shadow-cyan-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  <Cpu className="w-4 h-4" />
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/60">
-                  多模态识图
-                </span>
-              </div>
-              <h4 className="text-sm font-bold text-gray-100 group-hover:text-cyan-300 transition-colors">
-                C 界面识图测伤
-              </h4>
-              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-                直接粘贴游戏面板截图，秒级提取攻防三大件，精确推算对 T20 断浪碎晶宫爆发秒伤。
-              </p>
-            </div>
-            <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-cyan-400">
-              <span>唤起 AI 识图诊断</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </div>
-
-          {/* 卡片 2: 四象轩辕策鉴宝 */}
-          <div
-            onClick={() => navigate(ROUTE.xycSimulator)}
-            className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-emerald-500/20 hover:border-emerald-400/60 shadow-lg hover:shadow-emerald-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  <Compass className="w-4 h-4" />
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/60">
-                  1~20 阶推算
-                </span>
-              </div>
-              <h4 className="text-sm font-bold text-gray-100 group-hover:text-emerald-300 transition-colors">
-                四象轩辕策鉴宝
-              </h4>
-              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-                游戏原生文字色彩，录入任意品阶反推 1 阶初始底子，推算 20 阶满级极限与毕业度。
-              </p>
-            </div>
-            <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-emerald-400">
-              <span>进入四象推演</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </div>
-
-          {/* 卡片 3: 实时开服雷达 */}
-          <div
-            onClick={() => navigate(ROUTE.serverRadar)}
-            className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-amber-500/20 hover:border-amber-400/60 shadow-lg hover:shadow-amber-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <div className="p-2 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                  <Radio className="w-4 h-4" />
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800/60">
-                  三音阶声光
-                </span>
-              </div>
-              <h4 className="text-sm font-bold text-gray-100 group-hover:text-amber-300 transition-colors">
-                全区开服雷达监测
-              </h4>
-              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-                9 大战区 33 服毫秒心跳探测，开服 Web Audio 拟真音效提醒，支持个人服务器收藏。
-              </p>
-            </div>
-            <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-amber-400">
-              <span>查看开服状态</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </div>
-
-          {/* 卡片 4: 首领抗性与破防门槛 */}
-          <div
-            onClick={() => handleStartAiChat('请分析当前T20副本各首领的破防与暴击抗性门槛')}
-            className="group cursor-pointer p-3.5 rounded-xl bg-gradient-to-br from-[#121824] to-[#0c1017] border border-purple-500/20 hover:border-purple-400/60 shadow-lg hover:shadow-purple-950/50 transition-all transform hover:-translate-y-0.5 flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <div className="p-2 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                  <Crosshair className="w-4 h-4" />
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800/60">
-                  Boss 战术分析
-                </span>
-              </div>
-              <h4 className="text-sm font-bold text-gray-100 group-hover:text-purple-300 transition-colors">
-                首领抗性与破防门槛
-              </h4>
-              <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-                16 大副本 102 位关卡 BOSS 减爆伤、防御与血量深度对比，推算队伍破防指标。
-              </p>
-            </div>
-            <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-purple-400">
-              <span>咨询首领机制</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 5 大核心功能卡片（视觉专属色彩微光体系，层次清晰） */}
-      <section className="cards">
-        {/* 卡片 1: 属性战力计算器 (激光青蓝) */}
-        <button className="card card-cyan rise d4 group" onClick={() => navigate(ROUTE.calculator)}>
-          <div className="card-top">
-            <div className="card-ic">
-              <Calculator className="w-5 h-5 text-cyan-300" />
-            </div>
-          </div>
-          <div className="card-mid">
-            <h3>属性战力计算器</h3>
-            <p>录入面板属性、勾选战斗增益，实时测算对各副本 Boss 的技能伤害，保存多套方案，一键分享。</p>
-          </div>
-          <span className="go">
-            <span>进入计算器</span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </span>
-        </button>
-
-        {/* 卡片 2: 副本模拟训练场 (熔火流金 / 燃橙) */}
-        <button className="card card-amber rise d5 group" onClick={() => navigate(ROUTE.arena)}>
-          <div className="card-top">
-            <div className="card-ic">
-              <Swords className="w-5 h-5 text-amber-300" />
-            </div>
-          </div>
-          <div className="card-mid">
-            <h3>副本模拟训练场</h3>
-            <p>配置队伍与技能策略，逐秒模拟整场实战，输出伤害曲线、技能时序与详尽报表。</p>
-          </div>
-          <span className="go">
-            <span>进入训练场</span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </span>
-        </button>
-
-        {/* 卡片 3: 职业技能速查 (极光翠青) */}
-        <button className="card card-emerald rise d5 group" onClick={() => goCompendium('skills')}>
-          <div className="card-top">
-            <div className="card-ic">
-              <Zap className="w-5 h-5 text-emerald-300" />
-            </div>
-          </div>
-          <div className="card-mid">
-            <h3>职业技能速查</h3>
-            <p>全门派技能充能、冷却、命中段数、伤害加成与机制说明一站式分类直达。</p>
-          </div>
-          <span className="go">
-            <span>进入技能库</span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </span>
-        </button>
-
-        {/* 卡片 4: 副本 BOSS 速查 (暗金 / 渊紫) */}
-        <button className="card card-purple rise d6 group" onClick={() => goCompendium('boss')}>
-          <div className="card-top">
-            <div className="card-ic">
-              <Crosshair className="w-5 h-5 text-purple-300" />
-            </div>
-          </div>
-          <div className="card-mid">
-            <h3>副本 BOSS 速查</h3>
-            <p>16 大副本 102 位关卡BOSS属性速查，包含减爆伤、防御、血量与暴击爆伤等。</p>
-          </div>
-          <span className="go">
-            <span>进入BOSS库</span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </span>
-        </button>
-
-        {/* 卡片 5: 极致属性攻略 (星曜金红) */}
-        <button className="card card-rose rise d6 group" onClick={() => goCompendium('ceiling')}>
-          <div className="card-top">
-            <div className="card-ic">
-              <Award className="w-5 h-5 text-rose-300" />
-            </div>
-          </div>
-          <div className="card-mid">
-            <h3>极致属性攻略</h3>
-            <p>极致无视/减免/减暴/怪增/躲闪拆解，职业状态一览与战斗增益上限基准。</p>
-          </div>
-          <span className="go">
-            <span>查看极致攻略</span>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </span>
-        </button>
-      </section>
-
-      {/* 底部全站数据统计看板（可交互 Metric Pills，支持点击直达） */}
-      <div className="metric-pills-container rise d6" id="stats">
-        <div className="metric-pill-header">
-          <span className="w-1.5 h-3.5 bg-cyan-400 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.6)]"></span>
-          <span>全景数据沉淀 · 点击快捷直达</span>
-        </div>
-        <div className="metric-pills-grid">
-          <button
-            className="metric-pill group"
-            onClick={() => goCompendium('boss')}
-            title="点击前往 副本 BOSS 速查"
-          >
-            <span className="pill-num text-cyan-300">{stats.dungeons}</span>
-            <span className="pill-label">副本收录</span>
-          </button>
-
-          <button
-            className="metric-pill group"
-            onClick={() => goCompendium('boss')}
-            title="点击前往 副本 BOSS 速查"
-          >
-            <span className="pill-num text-purple-300">{stats.monsters}</span>
-            <span className="pill-label">Boss / 怪物</span>
-          </button>
-
-          <button
-            className="metric-pill group"
-            onClick={() => goCompendium('skills')}
-            title="点击前往 职业技能速查"
-          >
-            <span className="pill-num text-emerald-300">{stats.skills}</span>
-            <span className="pill-label">职业技能</span>
-          </button>
-
-          <button
-            className="metric-pill group"
-            onClick={() => goCompendium('support')}
-            title="点击前往 职业状态一览"
-          >
-            <span className="pill-num text-amber-300">{stats.buffs}</span>
-            <span className="pill-label">战斗增益</span>
-          </button>
-
-          <button
-            className="metric-pill group"
-            onClick={() => goCompendium('support')}
-            title="点击前往 职业状态评级"
-          >
-            <span className="pill-num text-sky-300">{stats.roles}</span>
-            <span className="pill-label">职业评级</span>
-          </button>
-
-          <button
-            className="metric-pill group"
-            onClick={() => goCompendium('ceiling')}
-            title="点击前往 极致属性攻略"
-          >
-            <span className="pill-num text-rose-300">{stats.guides}</span>
-            <span className="pill-label">攻略条目</span>
-          </button>
-
-          <button
-            className="metric-pill group"
-            onClick={() => navigate(ROUTE.fabao)}
-            title="点击前往 精选法宝图鉴"
-          >
-            <span className="pill-num text-purple-300">139</span>
-            <span className="pill-label">战斗法宝</span>
-          </button>
-
-          <button
-            className="metric-pill group"
-            onClick={() => navigate(ROUTE.equip)}
-            title="点击前往 精选装备图鉴"
-          >
-            <span className="pill-num text-cyan-300">1138</span>
-            <span className="pill-label">主流装备</span>
-          </button>
-
-          <button
-            className="metric-pill group"
-            onClick={() => navigate(ROUTE.serverRadar)}
-            title="点击前往 开服雷达监测"
-          >
-            <span className="pill-num text-emerald-300">33</span>
-            <span className="pill-label">开服雷达</span>
-          </button>
-        </div>
-      </div>
+      {/* 恢复主分支 footer，并始终贴附于页面最底部 */}
+      <Footer activeTab="home" />
     </div>
   );
 };

@@ -11,7 +11,7 @@ import { DataService } from './services/DataService';
 import type { SearchTarget } from './components/search/searchIndex';
 import type { SubTab } from './components/compendium/CompendiumView';
 
-export const SITE_NAME = '诛仙3 副本战斗实验室';
+export const SITE_NAME = '天书万象 AI · 诛仙全知大模型';
 
 /** 路由路径常量 */
 export const ROUTE = {
@@ -30,9 +30,10 @@ export const ROUTE = {
     xycSimulator: '/tools/xyc',
     newTianYuan: '/tools/newtianyuan',
     changelog: '/changelog',
+    about: '/about',
 } as const;
 
-export type PrimaryTab = 'home' | 'calculator' | 'arena' | 'compendium' | 'tools';
+export type PrimaryTab = 'home' | 'calculator' | 'arena' | 'compendium' | 'tools' | 'changelog' | 'about';
 
 /** 资料库一级子页（与 CompendiumView 的 CompendiumPrimaryTab 对齐） */
 export const COMPENDIUM_SEGMENTS = ['ceiling', 'skills', 'support', 'boss', 'fabao', 'equip'] as const;
@@ -49,11 +50,12 @@ const toFaction = (v: string | null): string | undefined =>
 
 /** 由路径推导 Header / 布局所需的当前一级页面 */
 export function primaryTabFromPath(pathname: string): PrimaryTab {
-    // 更新日志不属于四大主栏目：Header 不高亮任何 tab，页脚按默认版式渲染（Footer 只区分 home/其他）
     if (pathname.startsWith(ROUTE.calculator)) return 'calculator';
     if (pathname.startsWith(ROUTE.arena)) return 'arena';
     if (pathname.startsWith(ROUTE.compendium)) return 'compendium';
     if (pathname.startsWith(ROUTE.tools)) return 'tools';
+    if (pathname.startsWith(ROUTE.changelog)) return 'changelog';
+    if (pathname.startsWith(ROUTE.about)) return 'about';
     return 'home';
 }
 
@@ -85,10 +87,11 @@ export function isValidDungeonId(id: string): boolean {
 /** 浏览器标签页/收藏夹标题 */
 export function titleForPath(pathname: string): string {
     const parts = pathname.split('/').filter(Boolean);
-    if (parts.length === 0) return `${SITE_NAME} · 属性计算 · 战斗模拟 · 全景资料速查`;
+    if (parts.length === 0) return SITE_NAME;
     if (parts[0] === 'calculator') return `属性战力计算器 · ${SITE_NAME}`;
     if (parts[0] === 'arena') return `副本模拟训练场 · ${SITE_NAME}`;
-    if (parts[0] === 'changelog') return `更新日志 · ${SITE_NAME}`;
+    if (parts[0] === 'changelog') return `更新动态 · ${SITE_NAME}`;
+    if (parts[0] === 'about') return `关于本站 · ${SITE_NAME}`;
     if (parts[0] === 'compendium') {
         const map: Record<string, string> = {
             ceiling: '极致属性攻略',

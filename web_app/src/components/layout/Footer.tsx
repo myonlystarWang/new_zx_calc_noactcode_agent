@@ -15,10 +15,9 @@ const SHOW_WECHAT = false;
 export const Footer: React.FC<FooterProps> = ({ activeTab = 'calculator' }) => {
     const navigate = useNavigate();
     const [contactCopied, setContactCopied] = useState(false);
-    const [feedbackCopied, setFeedbackCopied] = useState(false);
     const wechatId = "Myonly_sTar12345678";
 
-    const copyWechat = async (kind: 'contact' | 'feedback') => {
+    const copyWechat = async () => {
         try {
             // Try modern Clipboard API first (requires secure context HTTPS or localhost)
             if (navigator.clipboard && window.isSecureContext) {
@@ -44,23 +43,29 @@ export const Footer: React.FC<FooterProps> = ({ activeTab = 'calculator' }) => {
                 if (!successful) throw new Error('Copy failed');
             }
 
-            if (kind === 'contact') {
-                setContactCopied(true);
-                setTimeout(() => setContactCopied(false), 2000);
-            } else {
-                setFeedbackCopied(true);
-                setTimeout(() => setFeedbackCopied(false), 2000);
-            }
+            setContactCopied(true);
+            setTimeout(() => setContactCopied(false), 2000);
         } catch (err) {
             console.error('Copy failed:', err);
         }
     };
 
+    const handleOpenGuestbook = () => {
+        if (activeTab !== 'home') {
+            navigate(ROUTE.home);
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('open-zx-workspace', { detail: { mode: 'guestbook' } }));
+            }, 100);
+        } else {
+            window.dispatchEvent(new CustomEvent('open-zx-workspace', { detail: { mode: 'guestbook' } }));
+        }
+    };
+
     return (
-        <footer className="w-full py-1.5 md:py-2 mt-auto border-t border-slate-800/40 bg-slate-900/20 backdrop-blur-sm">
+        <footer className="w-full py-2 mt-auto border-t border-slate-800/40 bg-slate-900/20 backdrop-blur-sm">
             <div
                 className={`w-full mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-slate-400 transition-all duration-300 ${
-                    activeTab === 'home' ? 'max-w-[1240px]' : 'max-w-[1760px]'
+                    activeTab === 'home' ? 'max-w-5xl' : 'max-w-[1760px]'
                 }`}
             >
                 <div className="text-xs font-mono tracking-wider text-center md:text-left">
@@ -81,33 +86,25 @@ export const Footer: React.FC<FooterProps> = ({ activeTab = 'calculator' }) => {
                             title="查看更新日志"
                             aria-label="查看更新日志"
                         >
-                            更新日志
+                            更新日志 (v 1.1.10)
                         </button>
                     </p>
                 </div>
 
                 <div className="flex items-center gap-3">
-                    {/* 意见反馈 */}
+                    {/* 意见反馈：点击直达留言板 */}
                     <button
                         type="button"
-                        onClick={() => copyWechat('feedback')}
+                        onClick={handleOpenGuestbook}
                         className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 hover:bg-slate-800/60 cursor-pointer transition-all active:scale-95 select-none"
-                        title="点击复制微信号，添加后反馈问题"
-                        aria-label="意见反馈：点击复制微信号"
+                        title="打开仙友留言板与反馈墙"
+                        aria-label="意见反馈：直达仙友留言板"
                     >
-                        <div
-                            className={`p-1.5 rounded-full transition-colors ${
-                                feedbackCopied ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-400 group-hover:text-cyan-400'
-                            }`}
-                        >
-                            {feedbackCopied ? <Check className="w-3.5 h-3.5" /> : <MessageSquare className="w-3.5 h-3.5" />}
+                        <div className="p-1.5 rounded-full bg-slate-800 text-slate-400 group-hover:text-cyan-400 transition-colors">
+                            <MessageSquare className="w-3.5 h-3.5" />
                         </div>
-                        <span
-                            className={`text-xs font-medium tracking-wide transition-colors ${
-                                feedbackCopied ? 'text-emerald-400 font-semibold' : 'text-slate-400 group-hover:text-slate-200'
-                            }`}
-                        >
-                            {feedbackCopied ? '已复制微信号，请添加微信反馈' : '意见反馈'}
+                        <span className="text-xs font-medium tracking-wide text-slate-400 group-hover:text-slate-200 transition-colors">
+                            意见反馈
                         </span>
                     </button>
 
@@ -115,7 +112,7 @@ export const Footer: React.FC<FooterProps> = ({ activeTab = 'calculator' }) => {
                     {SHOW_WECHAT && (
                         <button
                             type="button"
-                            onClick={() => copyWechat('contact')}
+                            onClick={() => copyWechat()}
                             className="group flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 hover:bg-slate-800/60 cursor-pointer transition-all active:scale-95 select-none"
                             title="点击复制微信号"
                             aria-label="点击复制微信号"
