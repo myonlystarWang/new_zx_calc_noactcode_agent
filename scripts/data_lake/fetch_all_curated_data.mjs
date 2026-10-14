@@ -157,9 +157,14 @@ async function extractSkillsFull() {
     }
 
     console.log(`技能抽取完成，总计收集 ${allSkills.length} 个有效职业技能。`);
-    const outPath = path.join(TARGET_DIR, 'all_skills_curated.json');
-    fs.writeFileSync(outPath, JSON.stringify(allSkills, null, 2), 'utf8');
-    console.log(`已写入: ${outPath} (${(fs.statSync(outPath).size / 1024 / 1024).toFixed(2)} MB)`);
+    const partsCount = 3;
+    const chunkSize = Math.ceil(allSkills.length / partsCount);
+    for (let i = 0; i < partsCount; i++) {
+        const chunk = allSkills.slice(i * chunkSize, (i + 1) * chunkSize);
+        const chunkPath = path.join(TARGET_DIR, `all_skills_curated_${i + 1}.json`);
+        fs.writeFileSync(chunkPath, JSON.stringify(chunk), 'utf8');
+        console.log(`已写入分卷: ${chunkPath} (${(fs.statSync(chunkPath).size / 1024 / 1024).toFixed(2)} MB)`);
+    }
 }
 
 async function main() {
@@ -167,9 +172,9 @@ async function main() {
         fs.mkdirSync(TARGET_DIR, { recursive: true });
     }
     await extractEquipFull();
-    const skillsPath = path.join(TARGET_DIR, 'all_skills_curated.json');
+    const skillsPath = path.join(TARGET_DIR, 'all_skills_curated_1.json');
     if (fs.existsSync(skillsPath) && fs.statSync(skillsPath).size > 1024 * 1024) {
-        console.log(`all_skills_curated.json 已存在 (${(fs.statSync(skillsPath).size / 1024 / 1024).toFixed(2)} MB)，跳过重复抓取。`);
+        console.log(`全量技能分卷数据已存在，跳过重复抓取。`);
     } else {
         await extractSkillsFull();
     }
