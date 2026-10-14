@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import clsx from 'clsx';
-import { Minus, Plus, Zap, Award } from 'lucide-react';
 import type { CuratedSkillItem } from '../../types';
-import { GameColorText, GameTooltipShell } from '../ui/GameColorText';
+import { GameColorText } from '../ui/GameColorText';
 
 interface SkillDetailCardProps {
     skill: CuratedSkillItem;
@@ -36,10 +35,32 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
     }, [skill.id, maxLevel, initialLevel]);
 
     const currentDesc = useMemo(() => {
-        if (!skill.el_descs || skill.el_descs.length === 0) return '暂无技能说明';
+        if (!skill.el_descs || skill.el_descs.length === 0) return '';
         const idx = Math.min(Math.max(0, currentLevel - 1), skill.el_descs.length - 1);
         return skill.el_descs[idx] || '';
     }, [skill, currentLevel]);
+
+    // 分离第一行（原生技能标题）与正文内容
+    const { titleLineClean, bodyDesc } = useMemo(() => {
+        if (!currentDesc) {
+            return {
+                titleLineClean: `^ffffff${skill.name}`,
+                bodyDesc: '暂无技能说明'
+            };
+        }
+        const cleaned = currentDesc.replace(/\r/g, '');
+        const lines = cleaned.split('\n');
+        const first = lines[0]?.trim() || '';
+        // 剥离第一行可能自带的当前等级后缀（如 ^ffcb4a1/7），避免与右上角等级指示器重复
+        const titleClean = first
+            .replace(/[\s\u3000]*(\^[0-9a-fA-F]{6})?[\s\u3000]*\d+\/\d+.*$/, '')
+            .trim();
+        const rest = lines.slice(1).join('\n').trim();
+        return {
+            titleLineClean: titleClean || `^ffffff${skill.name}`,
+            bodyDesc: rest
+        };
+    }, [currentDesc, skill.name]);
 
     const handleStep = (delta: number) => {
         setCurrentLevel(prev => Math.min(maxLevel, Math.max(1, prev + delta)));
@@ -47,113 +68,81 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
 
     return (
         <div className={clsx(
-            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col gap-4 text-left select-none',
+            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left select-none',
             className
         )}>
-            {/* 顶栏：技能名、门派分类与等级推演器 */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
-                <div className="flex items-center gap-2.5 flex-wrap">
-                    <h3 className="text-lg font-black text-amber-300 tracking-wide flex items-center gap-1.5">
-                        <Zap className="w-4 h-4 text-cyan-400" />
-                        <span>{skill.name}</span>
-                    </h3>
-
-                    {skill.group_name && (
-                        <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-700/60 text-cyan-300 font-medium flex items-center gap-1">
-                            <Award className="w-3 h-3 text-cyan-400" />
-                            <span>{skill.group_name}</span>
-                        </span>
-                    )}
-
-                    <span className="text-xs px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono">
-                        共 {maxLevel} 阶
-                    </span>
-                </div>
-
-                {/* 等级推演切换 Stepper */}
-                <div className="flex items-center gap-1.5 self-start sm:self-auto bg-slate-950/80 p-1 rounded-xl border border-slate-800">
-                    <button
-                        type="button"
-                        onClick={() => handleStep(-1)}
-                        disabled={currentLevel <= 1}
-                        className={clsx(
-                            'px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all',
-                            currentLevel <= 1
-                                ? 'text-slate-600 cursor-not-allowed'
-                                : 'text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700'
-                        )}
-                        title="降低 1 级"
-                    >
-                        <Minus className="w-3 h-3" />
-                        <span className="text-[11px]">-1</span>
-                    </button>
-
-                    <div className="px-3 py-0.5 text-center min-w-[76px]">
-                        <div className="text-[10px] text-slate-400 font-mono">推演等级</div>
-                        <div className="text-xs font-bold text-amber-300 font-mono">
-                            {currentLevel} / {maxLevel}
-                        </div>
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={() => handleStep(1)}
-                        disabled={currentLevel >= maxLevel}
-                        className={clsx(
-                            'px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all',
-                            currentLevel >= maxLevel
-                                ? 'text-slate-600 cursor-not-allowed'
-                                : 'text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700'
-                        )}
-                        title="提升 1 级"
-                    >
-                        <Plus className="w-3 h-3" />
-                        <span className="text-[11px]">+1</span>
-                    </button>
-
-                    {/* 快捷跳转首阶 / 满阶 */}
-                    <div className="flex items-center gap-1 pl-1 border-l border-slate-800 ml-1">
-                        <button
-                            type="button"
-                            onClick={() => setCurrentLevel(1)}
-                            className={clsx(
-                                'px-1.5 py-1 rounded text-[10px] font-mono transition-all',
-                                currentLevel === 1 ? 'bg-cyan-600/40 text-cyan-200 border border-cyan-500/50' : 'text-slate-500 hover:text-slate-300'
-                            )}
-                        >
-                            初始
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setCurrentLevel(maxLevel)}
-                            className={clsx(
-                                'px-1.5 py-1 rounded text-[10px] font-mono transition-all',
-                                currentLevel === maxLevel ? 'bg-cyan-600/40 text-cyan-200 border border-cyan-500/50' : 'text-slate-500 hover:text-slate-300'
-                            )}
-                        >
-                            满阶
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* 1:1 游戏原生 Tooltip 视效卡 */}
-            <GameTooltipShell
-                className="w-full bg-[#0a0d14]/95 border-[#222b3d] shadow-[0_8px_30px_rgb(0_0_0/0.7)]"
+            {/* 1:1 游戏实机原生 Tooltip 视效容器 */}
+            <div
+                className="rounded-xl p-4 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl"
+                style={{
+                    fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
+                    letterSpacing: '0.3px'
+                }}
             >
-                <div className="text-xs leading-relaxed">
-                    <GameColorText text={currentDesc} />
+                {/* 首行技能名称与升降阶步进按钮 */}
+                <div className="font-bold text-[14px] pb-1.5 mb-2 border-b border-[#1f293d]/80 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <GameColorText text={titleLineClean} />
+                        {skill.group_name && (
+                            <span className="text-[11px] font-sans text-cyan-300/80 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30 font-normal">
+                                {skill.group_name}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* 多阶技能：升降阶步进按钮 */}
+                    {maxLevel > 1 && (
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-[11px] font-sans text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30">
+                                {currentLevel}/{maxLevel}阶
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => handleStep(-1)}
+                                disabled={currentLevel <= 1}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-xs font-bold transition-all border font-sans',
+                                    currentLevel <= 1
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
+                                )}
+                            >
+                                降阶
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleStep(1)}
+                                disabled={currentLevel >= maxLevel}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-xs font-bold transition-all border font-sans',
+                                    currentLevel >= maxLevel
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-amber-600/30 border-amber-500/50 text-amber-200 hover:bg-amber-600/50 hover:text-white'
+                                )}
+                            >
+                                升阶
+                            </button>
+                        </div>
+                    )}
                 </div>
-            </GameTooltipShell>
+
+                {/* 技能正文 */}
+                {bodyDesc && (
+                    <div className="text-[13px] leading-[22px]">
+                        <GameColorText text={bodyDesc} />
+                    </div>
+                )}
+            </div>
 
             {/* 联动天书与强化技能标签 */}
             {skill.buffed_by && skill.buffed_by.length > 0 && (
-                <div className="flex items-center gap-2 flex-wrap pt-1 text-xs">
+                <div className="flex items-center gap-2 flex-wrap px-1 text-xs">
                     <span className="text-slate-400 font-medium">关联天书与强化:</span>
                     {skill.buffed_by.map(([buffId, buffName]) => (
                         <span
                             key={buffId}
-                            className="px-2.5 py-0.5 rounded-md bg-cyan-950/60 border border-cyan-800/50 text-cyan-300 font-mono text-[11px]"
+                            className="px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/50 text-cyan-300 font-mono text-[11px]"
                         >
                             {buffName}
                         </span>
