@@ -6,6 +6,12 @@ export default {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ['"Noto Sans SC"', '-apple-system', 'BlinkMacSystemFont', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', '"Segoe UI"', 'system-ui', 'Roboto', 'sans-serif'],
+                serif: ['"Noto Serif SC"', '"Source Han Serif SC"', 'SimSun', 'serif'],
+                'serif-sc': ['"Noto Serif SC"', '"Source Han Serif SC"', 'SimSun', 'serif'],
+            },
+
             colors: {
                 slate: {
                     350: '#b0bccd',

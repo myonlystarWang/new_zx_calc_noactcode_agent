@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   HashRouter,
@@ -239,7 +240,10 @@ const MainContent: React.FC = () => {
 
   return (
     <div
-      className="h-screen h-[100dvh] overflow-hidden flex flex-col bg-slate-950 zx-ink-bg"
+      className={clsx(
+        "h-screen h-[100dvh] overflow-hidden flex flex-col",
+        activeTab === 'home' ? 'cosmic-bg' : 'bg-slate-950 zx-ink-bg'
+      )}
       data-theme={activeTab === 'calculator' ? userCharacter.Faction : undefined}
     >
       {loadError && (

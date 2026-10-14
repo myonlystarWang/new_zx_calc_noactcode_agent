@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { ROUTE } from '../../routes';
-import { hasUnseenChangelog } from '../../utils/changelogSeen';
 import { TianShuLogo } from '../ui/TianShuLogo';
 
 export const Header: React.FC = () => {
@@ -11,11 +10,6 @@ export const Header: React.FC = () => {
 
     const onChangelogPage = pathname.startsWith(ROUTE.changelog);
     const onAboutPage = pathname.startsWith(ROUTE.about);
-    const [showNewBadge, setShowNewBadge] = useState(() => !onChangelogPage && hasUnseenChangelog());
-
-    useEffect(() => {
-        setShowNewBadge(!onChangelogPage && hasUnseenChangelog());
-    }, [onChangelogPage]);
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -28,8 +22,19 @@ export const Header: React.FC = () => {
         };
     }, []);
 
+    const handleOpenGuestbook = () => {
+        if (pathname !== ROUTE.home) {
+            navigate(ROUTE.home);
+            setTimeout(() => {
+                window.dispatchEvent(new CustomEvent('open-zx-workspace', { detail: { mode: 'guestbook' } }));
+            }, 100);
+        } else {
+            window.dispatchEvent(new CustomEvent('open-zx-workspace', { detail: { mode: 'guestbook' } }));
+        }
+    };
+
     return (
-        <header className="w-full py-3 px-4 sm:px-6 border-b border-white/5 bg-[#070a10]/70 backdrop-blur-xl sticky top-0 z-[100] transition-all shrink-0">
+        <header className="w-full py-3.5 px-4 sm:px-6 border-b border-white/5 bg-[#05080f]/60 backdrop-blur-xl sticky top-0 z-[100] transition-all shrink-0">
             <div className="w-full max-w-5xl mx-auto flex items-center justify-between">
                 {/* 品牌区：点击 Logo 与标题直接返回首页 */}
                 <button
@@ -47,32 +52,42 @@ export const Header: React.FC = () => {
                     </span>
                 </button>
 
-                {/* 统计打桩占位（供不蒜子无感知计数） */}
-                <span id="busuanzi_container_site_uv" className="hidden">
-                    <span id="busuanzi_value_site_uv" />
-                </span>
+                {/* 统计打桩占位（绝对定位零尺寸隔离，供不蒜子无感知计数，彻底杜绝居中数字跳出） */}
+                <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+                    <span id="busuanzi_container_site_uv">
+                        <span id="busuanzi_value_site_uv" />
+                    </span>
+                </div>
 
-                {/* 右侧导航项：【更新动态】与【关于本站】 */}
+                {/* 右侧导航项：【更新动态】 -> 【意见反馈】 -> 【关于本站】 */}
                 <div className="flex items-center gap-5 sm:gap-7 text-xs sm:text-sm font-medium">
                     <button
                         type="button"
                         onClick={() => navigate(ROUTE.changelog)}
                         className={clsx(
-                            'relative transition-colors cursor-pointer select-none py-1',
-                            onChangelogPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-white'
+                            'flex items-center gap-1.5 transition-colors cursor-pointer select-none py-1',
+                            onChangelogPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-cyan-300'
                         )}
                         title="查看天书全知大模型更新动态与排期"
                         aria-label="更新动态"
                     >
                         <span>更新动态</span>
-                        {showNewBadge && (
-                            <span
-                                className="absolute -top-1 -right-3.5 px-1 py-px rounded-full bg-rose-500 text-white text-[9px] font-black leading-tight shadow-sm shadow-rose-500/50"
-                                aria-hidden
-                            >
-                                NEW
-                            </span>
-                        )}
+                        <span
+                            className="px-1.5 py-0.5 rounded-full bg-rose-500/90 text-white text-[9px] font-black leading-none shadow-sm shadow-rose-500/40"
+                            aria-hidden
+                        >
+                            NEW
+                        </span>
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={handleOpenGuestbook}
+                        className="transition-colors cursor-pointer select-none py-1 text-slate-300 hover:text-cyan-300"
+                        title="仙友留言板与意见反馈"
+                        aria-label="意见反馈"
+                    >
+                        <span>意见反馈</span>
                     </button>
 
                     <button
@@ -80,7 +95,7 @@ export const Header: React.FC = () => {
                         onClick={() => navigate(ROUTE.about)}
                         className={clsx(
                             'transition-colors cursor-pointer select-none py-1',
-                            onAboutPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-white'
+                            onAboutPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-cyan-300'
                         )}
                         title="查看关于本站愿景与理念"
                         aria-label="关于本站"
@@ -92,4 +107,3 @@ export const Header: React.FC = () => {
         </header>
     );
 };
-
