@@ -321,9 +321,15 @@ export class DataService {
         if (this.allCuratedSkills) return this.allCuratedSkills;
         if (!this.allCuratedSkillsPromise) {
             this.allCuratedSkillsPromise = (async () => {
-                const res = await fetch(`${DATA_BASE_URL}/all_skills_curated.json`);
-                if (!res.ok) throw new Error(`加载 all_skills_curated.json 失败: ${res.status}`);
-                const raw: CuratedSkillItem[] = await res.json();
+                const parts = ['all_skills_curated_1.json', 'all_skills_curated_2.json', 'all_skills_curated_3.json'];
+                const chunks = await Promise.all(
+                    parts.map(async file => {
+                        const res = await fetch(`${DATA_BASE_URL}/${file}`);
+                        if (!res.ok) throw new Error(`加载 ${file} 失败: ${res.status}`);
+                        return (await res.json()) as CuratedSkillItem[];
+                    })
+                );
+                const raw = chunks.flat();
                 this.allCuratedSkills = Array.isArray(raw) ? raw.filter(isValidSkill) : [];
                 return this.allCuratedSkills;
             })();
