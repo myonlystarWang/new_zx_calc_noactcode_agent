@@ -7,12 +7,14 @@ interface SkillDetailCardProps {
     skill: CuratedSkillItem;
     initialLevel?: number;
     className?: string;
+    onSelectSkillName?: (skillName: string) => void;
 }
 
 export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
     skill,
     initialLevel,
-    className = ''
+    className = '',
+    onSelectSkillName
 }) => {
     const maxLevel = useMemo(() => {
         return Math.max(1, skill.el_max || (skill.el_descs?.length ?? 1));
@@ -51,7 +53,7 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
         const cleaned = currentDesc.replace(/\r/g, '');
         const lines = cleaned.split('\n');
         const first = lines[0]?.trim() || '';
-        // 剥离第一行可能自带的当前等级后缀（如 ^ffcb4a1/7），避免与右上角等级指示器重复
+        // 剥离第一行可能自带的静态等级后缀，以便实时拼装当前推演等级
         const titleClean = first
             .replace(/[\s\u3000]*(\^[0-9a-fA-F]{6})?[\s\u3000]*\d+\/\d+.*$/, '')
             .trim();
@@ -83,7 +85,8 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
                 {/* 首行技能名称与升降阶步进按钮 */}
                 <div className="font-bold text-[14px] pb-1.5 mb-2 border-b border-[#1f293d]/80 flex items-center justify-between">
                     <div className="flex items-center gap-2 flex-wrap">
-                        <GameColorText text={titleLineClean} />
+                        {/* 技能名 + 原始黄色阶位等级（如 5/7），字号与技能名严格一致 */}
+                        <GameColorText text={`${titleLineClean} ^ffcb4a${currentLevel}/${maxLevel}`} />
                         {skill.group_name && (
                             <span className="text-[11px] font-sans text-cyan-300/80 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30 font-normal">
                                 {skill.group_name}
@@ -108,11 +111,11 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
                         })}
                     </div>
 
-                    {/* 多阶技能：升降阶步进按钮 */}
+                    {/* 多阶技能：等级 -1 / 等级 +1 步进按钮 */}
                     {maxLevel > 1 && (
                         <div className="flex items-center gap-1.5">
                             <span className="text-[11px] font-sans text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30">
-                                {currentLevel}/{maxLevel}阶
+                                {currentLevel}级
                             </span>
                             <button
                                 type="button"
@@ -125,7 +128,7 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
                                         : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
                                 )}
                             >
-                                降阶
+                                等级 -1
                             </button>
                             <button
                                 type="button"
@@ -138,7 +141,7 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
                                         : 'bg-amber-600/30 border-amber-500/50 text-amber-200 hover:bg-amber-600/50 hover:text-white'
                                 )}
                             >
-                                升阶
+                                等级 +1
                             </button>
                         </div>
                     )}
@@ -157,12 +160,21 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
                 <div className="flex items-center gap-2 flex-wrap px-1 text-xs">
                     <span className="text-slate-400 font-medium">关联天书与强化:</span>
                     {skill.buffed_by.map(([buffId, buffName]) => (
-                        <span
+                        <button
                             key={buffId}
-                            className="px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/50 text-cyan-300 font-mono text-[11px]"
+                            type="button"
+                            onClick={() => onSelectSkillName?.(buffName)}
+                            title={`点击速查「${buffName}」天书与机制卡片`}
+                            className={clsx(
+                                'px-2.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/60 text-cyan-300 font-mono text-[11px] transition-all flex items-center gap-1 select-none',
+                                onSelectSkillName
+                                    ? 'hover:bg-cyan-900/70 hover:border-cyan-400 hover:text-white cursor-pointer active:scale-95 shadow-sm'
+                                    : 'cursor-default'
+                            )}
                         >
-                            {buffName}
-                        </span>
+                            <span>{buffName}</span>
+                            <span className="text-[9px] text-cyan-400/80 font-sans">↗</span>
+                        </button>
                     ))}
                 </div>
             )}

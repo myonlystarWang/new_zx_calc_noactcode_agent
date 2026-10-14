@@ -180,11 +180,11 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                         </div>
                     )}
 
-                    {/* 2. 同系装备（金身、法身、大乘战罡、锦囊、印、项链、戒指等）：降阶 / 升阶 */}
+                    {/* 2. 同系装备（金身、法身、大乘战罡、锦囊、印、项链、戒指等）：等级 -1 / 等级 +1 */}
                     {!hasYunling && seriesInfo && seriesInfo.items.length > 1 && (
                         <div className="flex items-center gap-1.5">
                             <span className="text-[11px] font-sans text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30">
-                                {seriesInfo.currentIndex + 1}/{seriesInfo.items.length}阶
+                                {seriesInfo.currentIndex + 1}级
                             </span>
                             <button
                                 type="button"
@@ -201,7 +201,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                         : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
                                 )}
                             >
-                                降阶
+                                等级 -1
                             </button>
                             <button
                                 type="button"
@@ -218,7 +218,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                         : 'bg-amber-600/30 border-amber-500/50 text-amber-200 hover:bg-amber-600/50 hover:text-white'
                                 )}
                             >
-                                升阶
+                                等级 +1
                             </button>
                         </div>
                     )}
