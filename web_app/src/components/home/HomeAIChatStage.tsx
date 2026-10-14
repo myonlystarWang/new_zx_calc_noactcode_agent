@@ -27,6 +27,7 @@ import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
 import { useApp } from '../../context/AppContext';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
+import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 import type { FabaoItem, CuratedEquipItem, CuratedSkillItem } from '../../types';
 
 interface HomeAIChatStageProps {
@@ -36,7 +37,7 @@ interface HomeAIChatStageProps {
     onBackToHome: () => void;
     isSplitOpen?: boolean;
     onToggleSplit?: () => void;
-    onOpenSplitWorkspace?: (mode: 'calc' | 'guestbook' | 'server' | 'xyc' | 'newtianyuan' | 'ninglingqi') => void;
+    onOpenSplitWorkspace?: (mode: WorkspaceMode) => void;
 }
 
 export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
@@ -185,7 +186,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         });
 
         if (target === 'arena') {
-            navigate('/arena');
+            if (onOpenSplitWorkspace) {
+                onOpenSplitWorkspace('arena');
+            } else {
+                navigate('/arena');
+            }
         } else {
             if (onOpenSplitWorkspace) {
                 onOpenSplitWorkspace('calc');

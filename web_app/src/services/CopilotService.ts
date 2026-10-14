@@ -116,13 +116,13 @@ export class CopilotService {
             '项链', '戒指', '法身', '罡气', '护符', '勋章', '玺绶', '锦囊', '佩章'
         ];
         const slotAliases: Record<string, string> = {
-            '帽子': '头盔', '头': '头盔', '冠': '头盔', '盔': '头盔',
-            '甲': '衣服', '铠': '衣服', '袍': '衣服',
-            '鞋': '靴子', '鞋子': '靴子', '履': '靴子',
-            '护腕': '袖甲', '手环': '袖甲', '手': '袖甲', '钏': '袖甲', '腕': '袖甲',
-            '带': '腰带',
+            '帽子': '头盔', '头': '头盔', '冠': '头盔', '盔': '头盔', '帽': '头盔',
+            '衣服': '衣服', '甲': '衣服', '铠': '衣服', '铠甲': '衣服', '袍': '衣服', '衣': '衣服', '服': '衣服',
+            '鞋': '靴子', '鞋子': '靴子', '靴': '靴子', '履': '靴子',
+            '护腕': '袖甲', '手环': '袖甲', '手': '袖甲', '手套': '袖甲', '钏': '袖甲', '腕': '袖甲', '袖': '袖甲',
+            '带': '腰带', '腰带': '腰带',
             '金身': '法身',
-            '印': '玺绶', '玉玺': '玺绶',
+            '印': '玺绶', '玉玺': '玺绶', '玺': '玺绶',
             '戒': '戒指', '指环': '戒指',
             '链': '项链', '项圈': '项链'
         };
@@ -134,11 +134,11 @@ export class CopilotService {
 
         const isYinji = tokens.some(t => t.includes('印记')) || q.includes('印记');
         const matchedQ = qualities.find(qu => tokens.some(t => t.includes(qu.toLowerCase())) || q.includes(qu.toLowerCase()));
-        let matchedSlot = slots.find(sl => tokens.some(t => t.includes(sl.toLowerCase())) || q.includes(sl.toLowerCase()));
+        let matchedSlot = slots.find(sl => tokens.some(t => t === sl.toLowerCase() || (t.length >= 2 && t.includes(sl.toLowerCase()))));
         if (!matchedSlot) {
             for (const [alias, realSlot] of Object.entries(slotAliases)) {
                 if (alias === '印' && isYinji) continue; // 印记属于神级项链，不作为玺绶
-                if (tokens.some(t => t.includes(alias)) || q.includes(alias)) {
+                if (tokens.some(t => t === alias || (alias.length >= 2 && t.includes(alias))) || q.includes(alias)) {
                     matchedSlot = realSlot;
                     break;
                 }
@@ -187,15 +187,25 @@ export class CopilotService {
                     return true;
                 });
 
-                const cleanTokens = tokens.filter(t =>
-                    t !== matchedQ?.toLowerCase() &&
-                    t !== matchedSlot?.toLowerCase() &&
-                    t !== matchedProf?.toLowerCase() &&
-                    t !== String(targetRefLevel) &&
-                    t !== `+${targetRefLevel}` &&
-                    !/^\d+$/.test(t) &&
-                    !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示', '技能', '神通', '天书'].includes(t)
-                );
+                // 智能提取自由关键词：剥离品质、部位标准名、部位俗称别名（帽子/鞋/衣服/甲等）、职业、强化数值与常见助词
+                const sortedAliases = Object.keys(slotAliases).sort((a, b) => b.length - a.length);
+                const cleanTokens: string[] = [];
+                for (const tok of tokens) {
+                    let remainder = tok.toLowerCase();
+                    // 过滤纯强化数字
+                    if (/^\+?\d+$/.test(remainder) || remainder === String(targetRefLevel) || remainder === `+${targetRefLevel}`) {
+                        continue;
+                    }
+                    for (const qu of qualities) remainder = remainder.replace(qu.toLowerCase(), ' ');
+                    for (const sl of slots) remainder = remainder.replace(sl.toLowerCase(), ' ');
+                    for (const al of sortedAliases) remainder = remainder.replace(al.toLowerCase(), ' ');
+                    for (const pr of profs) remainder = remainder.replace(pr.toLowerCase(), ' ');
+                    const parts = remainder.split(/\s+/).map(s => s.trim()).filter(s =>
+                        s.length >= 2 &&
+                        !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示', '技能', '神通', '天书'].includes(s)
+                    );
+                    cleanTokens.push(...parts);
+                }
 
                 const isExplicitSkillTerm = ['技能', '技能描述', '技能机制', '神通', '天书'].includes(q) ||
                     (q.includes('技能') && !matchedSlot && !matchedQ && !q.includes('装备'));

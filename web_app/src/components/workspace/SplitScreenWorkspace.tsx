@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Calculator,
-  MessageSquare,
+  Swords,
   Radio,
   Compass,
   Sparkles,
@@ -10,19 +10,18 @@ import {
   X,
   Layers
 } from 'lucide-react';
-import clsx from 'clsx';
 import { useApp } from '../../context/AppContext';
 import { AttributePanel } from '../business/AttributePanel';
 import { BuffPanel } from '../business/BuffPanel';
 import { ResultSection } from '../business/ResultsSection';
-import { GuestbookPanel } from './GuestbookPanel';
+import { SimulationArena } from '../arena/SimulationArena';
 import { ServerRadarView } from '../tools/ServerRadarView';
 import { XycSimulatorView } from '../tools/XycSimulatorView';
 import { NewTianYuanSimulatorView } from '../tools/NewTianYuanSimulatorView';
 
 export type WorkspaceMode =
   | 'calc'
-  | 'guestbook'
+  | 'arena'
   | 'server'
   | 'xyc'
   | 'newtianyuan'
@@ -30,39 +29,48 @@ export type WorkspaceMode =
 
 export interface SplitScreenWorkspaceProps {
   mode: WorkspaceMode;
-  onModeChange: (mode: WorkspaceMode) => void;
+  onModeChange?: (mode: WorkspaceMode) => void;
   isMaximized: boolean;
   onToggleMaximize: () => void;
   onClose: () => void;
 }
 
-const WORKSPACE_TABS: { id: WorkspaceMode; label: string; icon: React.ReactNode }[] = [
-  { id: 'calc', label: '战力计算器', icon: <Calculator className="w-3.5 h-3.5" /> },
-  { id: 'guestbook', label: '仙友留言板', icon: <MessageSquare className="w-3.5 h-3.5" /> },
-  { id: 'server', label: '开服雷达', icon: <Radio className="w-3.5 h-3.5" /> },
-  { id: 'xyc', label: '轩辕策四象', icon: <Compass className="w-3.5 h-3.5" /> },
-  { id: 'newtianyuan', label: '神级天缘', icon: <Sparkles className="w-3.5 h-3.5" /> },
-  { id: 'ninglingqi', label: '凝灵契模拟', icon: <Layers className="w-3.5 h-3.5" /> },
-];
+const FEATURE_META: Record<WorkspaceMode, { label: string; icon: React.ReactNode }> = {
+  calc: { label: '战力计算器', icon: <Calculator className="w-3.5 h-3.5 text-slate-400" /> },
+  arena: { label: '副本训练场', icon: <Swords className="w-3.5 h-3.5 text-slate-400" /> },
+  server: { label: '开服检测', icon: <Radio className="w-3.5 h-3.5 text-slate-400" /> },
+  xyc: { label: '轩辕策属性', icon: <Compass className="w-3.5 h-3.5 text-slate-400" /> },
+  newtianyuan: { label: '天缘属性', icon: <Sparkles className="w-3.5 h-3.5 text-slate-400" /> },
+  ninglingqi: { label: '凝灵契模拟', icon: <Layers className="w-3.5 h-3.5 text-slate-400" /> },
+};
 
 export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
   mode,
-  onModeChange,
   isMaximized,
   onToggleMaximize,
   onClose,
 }) => {
   const { userCharacter, updateCharacterAttributes } = useApp();
+  const currentMeta = FEATURE_META[mode] || FEATURE_META.calc;
 
   return (
     <div className="relative flex flex-col h-full bg-[#080c14] border-l border-slate-800/80 shadow-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300">
-      {/* 开服雷达模式：隐藏整个顶部切换栏，让开服雷达直接置顶占满，右上角采用轻量浮层控制 */}
-      {mode === 'server' ? (
-        <div className="absolute top-3 right-4 z-30 flex items-center gap-1.5">
+      {/* 统一顶栏格式：5个功能统一保留该顶栏 */}
+      <div className="py-2 px-3 sm:px-4 border-b border-slate-800/80 bg-[#0d121c]/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
+        {/* 顶栏最左侧：该功能的名字带框，非选中的样式 */}
+        <div className="flex items-center">
+          <div className="px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap border bg-slate-800/50 border-slate-700/50 text-slate-300">
+            {currentMeta.icon}
+            <span>{currentMeta.label}</span>
+          </div>
+        </div>
+
+        {/* 顶栏最右侧：放大/还原 和 关闭 */}
+        <div className="flex items-center gap-1.5 shrink-0">
           <button
             type="button"
             onClick={onToggleMaximize}
-            className="p-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-cyan-300 transition-colors border border-slate-700/80 shadow-xl backdrop-blur-md cursor-pointer"
+            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-cyan-300 transition-colors border border-white/5 cursor-pointer"
             title={isMaximized ? '还原分屏 (双轨对照)' : '最大化工作区 (全屏模式)'}
             aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
           >
@@ -71,63 +79,14 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-xl bg-slate-900/90 hover:bg-red-500/20 text-slate-400 hover:text-red-300 transition-colors border border-slate-700/80 shadow-xl backdrop-blur-md cursor-pointer"
+            className="p-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-300 transition-colors border border-white/5 cursor-pointer"
             title="关闭右侧工作区 (返回居中对话)"
             aria-label="关闭工作区"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
-      ) : (
-        /* 其他模式顶部控制栏 */
-        <div className="py-2 px-3 sm:px-4 border-b border-slate-800/80 bg-[#0d121c]/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
-          {/* 左侧模块切换 Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-            {WORKSPACE_TABS.map((tab) => {
-              const isActive = mode === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => onModeChange(tab.id)}
-                  className={clsx(
-                    'px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap border cursor-pointer',
-                    isActive
-                      ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
-                      : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                  )}
-                  title={tab.label}
-                >
-                  {tab.icon}
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* 右侧视窗控制：最大化 / 还原 / 关闭 */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            <button
-              type="button"
-              onClick={onToggleMaximize}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-cyan-300 transition-colors border border-white/5"
-              title={isMaximized ? '还原分屏 (双轨对照)' : '最大化工作区 (全屏模式)'}
-              aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
-            >
-              {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-slate-400 hover:text-red-300 transition-colors border border-white/5"
-              title="关闭右侧工作区 (返回居中对话)"
-              aria-label="关闭工作区"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
+      </div>
 
       {/* 工作区主内容呈现 */}
       <div className="flex-1 overflow-y-auto min-h-0 bg-[#070a10]">
@@ -155,22 +114,26 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
           </div>
         )}
 
-        {mode === 'guestbook' && <GuestbookPanel />}
+        {mode === 'arena' && (
+          <div className="h-full flex flex-col overflow-hidden animate-in fade-in duration-200">
+            <SimulationArena />
+          </div>
+        )}
 
         {mode === 'server' && (
-          <div className="p-4 max-w-[1760px] mx-auto">
+          <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
             <ServerRadarView />
           </div>
         )}
 
         {mode === 'xyc' && (
-          <div className="p-4 max-w-[1760px] mx-auto">
+          <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
             <XycSimulatorView />
           </div>
         )}
 
         {mode === 'newtianyuan' && (
-          <div className="p-4 max-w-[1760px] mx-auto">
+          <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
             <NewTianYuanSimulatorView />
           </div>
         )}

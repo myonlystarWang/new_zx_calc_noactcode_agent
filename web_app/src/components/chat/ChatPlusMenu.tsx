@@ -7,7 +7,6 @@ import {
   Sparkles,
   Swords
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 
 export interface ChatPlusMenuProps {
@@ -25,7 +24,6 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
   onSelectWorkspace,
   placement = 'down',
 }) => {
-  const navigate = useNavigate();
   const menuRef = useRef<HTMLDivElement>(null);
 
   // 点击外部自动收起
@@ -49,14 +47,9 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
     onClose();
   };
 
-  const handleArenaClick = () => {
-    navigate('/arena');
-    onClose();
-  };
-
   const isDown = placement === 'down';
 
-  // 精简后的 6 个核心工具项（已移除：仙友留言、凝灵契、更新日志）
+  // 精简后的 6 个核心工具项
   const menuItems = [
     {
       id: 'upload',
@@ -71,37 +64,37 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
     {
       id: 'calc',
       icon: Calculator,
-      title: '战力计算',
+      title: '战力计算器',
       desc: '属性录入 · 增益勾选 · T20/团本秒伤推演',
       onClick: () => handleToolClick('calc'),
     },
     {
+      id: 'arena',
+      icon: Swords,
+      title: '副本训练场',
+      desc: '多角色逐秒实战仿真 · 技能循环与伤害报表',
+      onClick: () => handleToolClick('arena'),
+    },
+    {
       id: 'server',
       icon: Radio,
-      title: '开服雷达',
+      title: '开服检测',
       desc: '9 大战区 33 服毫秒心跳探测与声光提醒',
       onClick: () => handleToolClick('server'),
     },
     {
       id: 'xyc',
       icon: Compass,
-      title: '轩辕策',
+      title: '轩辕策属性',
       desc: '1~20 阶反推初始底子与极品毕业度评级',
       onClick: () => handleToolClick('xyc'),
     },
     {
       id: 'tianyuan',
       icon: Sparkles,
-      title: '神级天缘',
+      title: '天缘属性',
       desc: '须弥装备天缘与天命属性理论上限推演',
       onClick: () => handleToolClick('newtianyuan'),
-    },
-    {
-      id: 'arena',
-      icon: Swords,
-      title: '训练场',
-      desc: '多角色逐秒实战仿真 · 技能循环与伤害报表',
-      onClick: handleArenaClick,
     },
   ];
 

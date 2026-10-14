@@ -1,10 +1,78 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import pkg from './package.json'
+import net from 'net'
+
+function zhuxianServerRadarPlugin(): Plugin {
+  const probeTcpServer = (server: string, timeout = 2500): Promise<{ status: number; ping: number; msg: string }> => {
+    return new Promise((resolve) => {
+      const start = Date.now();
+      const host = `${server}.link.zhuxian.com.cn`;
+      const conn = net.createConnection({ host, port: 29000, timeout }, () => {
+        const ping = Date.now() - start;
+        conn.end();
+        resolve({ status: 1, ping, msg: '已开服' });
+      });
+      conn.on('error', (err: any) => {
+        resolve({ status: 0, ping: 0, msg: err.code === 'ECONNREFUSED' ? '维护中 (端口未开放)' : '未开服 / 维护中' });
+      });
+      conn.on('timeout', () => {
+        conn.destroy();
+        resolve({ status: 0, ping: 0, msg: '未开服 / 探测超时' });
+      });
+    });
+  };
+
+  const handleRadarApi = async (req: any, res: any, next: any) => {
+    if (!req.url || !req.url.startsWith('/api/jiance')) {
+      return next();
+    }
+    const parsedUrl = new URL(req.url, 'http://localhost');
+    const srv = parsedUrl.searchParams.get('server');
+    const serversParam = parsedUrl.searchParams.get('servers');
+
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    try {
+      if (serversParam) {
+        const list = serversParam.split(',').map((s: string) => s.trim()).filter(Boolean);
+        const results = await Promise.all(list.map(async (s: string) => {
+          const probe = await probeTcpServer(s);
+          return { server: s, ...probe };
+        }));
+        res.end(JSON.stringify({ sc: true, results }));
+        return;
+      }
+
+      if (!srv) {
+        res.statusCode = 400;
+        res.end(JSON.stringify({ sc: false, error: 'Missing server parameter' }));
+        return;
+      }
+
+      const probe = await probeTcpServer(srv);
+      res.end(JSON.stringify({ sc: true, content: probe }));
+    } catch (e: any) {
+      res.statusCode = 500;
+      res.end(JSON.stringify({ sc: false, error: e.message }));
+    }
+  };
+
+  return {
+    name: 'zhuxian-server-radar',
+    configureServer(server) {
+      server.middlewares.use(handleRadarApi);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(handleRadarApi);
+    }
+  };
+}
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), zhuxianServerRadarPlugin()],
   // 版本号唯一来源：package.json 的 version（Header 版本徽章 / 更新日志页 均由 __APP_VERSION__ 读出）
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
