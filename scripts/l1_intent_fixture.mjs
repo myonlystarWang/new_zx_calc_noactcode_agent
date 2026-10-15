@@ -272,6 +272,10 @@ function buildExpectation(r) {
         if (cd.candidates[0]?.id !== undefined) expect['cardData.candidates.0.id'] = cd.candidates[0].id;
     }
     if (typeof cd.totalCount === 'number') expect['cardData.totalCount'] = cd.totalCount;
+    // 单卡用例必须冻结实体身份，否则"返回错了同类实体"的回归抓不到
+    if (cd.equip?.name) expect['cardData.equip.name'] = cd.equip.name;
+    if (typeof cd.name === 'string') expect['cardData.name'] = cd.name;       // fabao 单卡
+    if (cd.monsterId) expect['cardData.monsterId'] = cd.monsterId;           // boss 单卡
     return expect;
 }
 
