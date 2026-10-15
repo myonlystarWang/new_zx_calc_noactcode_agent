@@ -12234,5 +12234,6170 @@
         }
       ]
     }
+  },
+  "gen-equip-修武-武器": {
+    "sender": "assistant",
+    "text": "为你检索到 56 件符合【修武 武器】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "修武 武器",
+      "candidates": {
+        "__count": 56,
+        "__first": 109832
+      },
+      "totalCount": 56
+    }
+  },
+  "gen-equip-修武-头盔": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【修武 头盔】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "修武 头盔",
+      "candidates": {
+        "__count": 54,
+        "__first": 115878
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-修武-衣服": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【修武 衣服】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "修武 衣服",
+      "candidates": {
+        "__count": 54,
+        "__first": 112452
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-修武-靴子": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【修武 靴子】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "修武 靴子",
+      "candidates": {
+        "__count": 54,
+        "__first": 118307
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-修武-袖甲": {
+    "sender": "assistant",
+    "text": "为你检索到 26 件符合【修武 袖甲】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "修武 袖甲",
+      "candidates": {
+        "__count": 26,
+        "__first": 126606
+      },
+      "totalCount": 26
+    }
+  },
+  "gen-equip-修武-腰带": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【修武 腰带】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "修武 腰带",
+      "candidates": {
+        "__count": 54,
+        "__first": 120829
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-修武-项链": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-修武-戒指": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-修武-法身": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-修武-罡气": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-修武-护符": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-修武-勋章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-修武-玺绶": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-修武-锦囊": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-修武-佩章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-武器": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【昭武 武器】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "昭武 武器",
+      "candidates": {
+        "__count": 54,
+        "__first": 109832
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-昭武-头盔": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【昭武 头盔】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "昭武 头盔",
+      "candidates": {
+        "__count": 54,
+        "__first": 115878
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-昭武-衣服": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【昭武 衣服】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "昭武 衣服",
+      "candidates": {
+        "__count": 54,
+        "__first": 112452
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-昭武-靴子": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【昭武 靴子】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "昭武 靴子",
+      "candidates": {
+        "__count": 54,
+        "__first": 118307
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-昭武-袖甲": {
+    "sender": "assistant",
+    "text": "为你检索到 26 件符合【昭武 袖甲】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "昭武 袖甲",
+      "candidates": {
+        "__count": 26,
+        "__first": 126606
+      },
+      "totalCount": 26
+    }
+  },
+  "gen-equip-昭武-腰带": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【昭武 腰带】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "昭武 腰带",
+      "candidates": {
+        "__count": 54,
+        "__first": 120829
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-昭武-项链": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-戒指": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-法身": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-罡气": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-护符": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-勋章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-玺绶": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-锦囊": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-昭武-佩章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-武器": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【彰武 武器】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "彰武 武器",
+      "candidates": {
+        "__count": 54,
+        "__first": 109832
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-彰武-头盔": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【彰武 头盔】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "彰武 头盔",
+      "candidates": {
+        "__count": 54,
+        "__first": 115878
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-彰武-衣服": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【彰武 衣服】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "彰武 衣服",
+      "candidates": {
+        "__count": 54,
+        "__first": 112452
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-彰武-靴子": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【彰武 靴子】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "彰武 靴子",
+      "candidates": {
+        "__count": 54,
+        "__first": 118307
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-彰武-袖甲": {
+    "sender": "assistant",
+    "text": "为你检索到 26 件符合【彰武 袖甲】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "彰武 袖甲",
+      "candidates": {
+        "__count": 26,
+        "__first": 126606
+      },
+      "totalCount": 26
+    }
+  },
+  "gen-equip-彰武-腰带": {
+    "sender": "assistant",
+    "text": "为你检索到 54 件符合【彰武 腰带】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "彰武 腰带",
+      "candidates": {
+        "__count": 54,
+        "__first": 120829
+      },
+      "totalCount": 54
+    }
+  },
+  "gen-equip-彰武-项链": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-戒指": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-法身": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-罡气": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-护符": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-勋章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-玺绶": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-锦囊": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-彰武-佩章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-武器": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-头盔": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-衣服": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-靴子": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-袖甲": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-腰带": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-项链": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-戒指": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-法身": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-罡气": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-护符": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-勋章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-玺绶": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-锦囊": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神隐-佩章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-武器": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-头盔": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-衣服": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-靴子": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-袖甲": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-腰带": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-项链": {
+    "sender": "assistant",
+    "text": "为你检索到 6 件符合【神级 项链】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "神级 项链",
+      "candidates": {
+        "__count": 6,
+        "__first": 3432
+      },
+      "totalCount": 6
+    }
+  },
+  "gen-equip-神级-戒指": {
+    "sender": "assistant",
+    "text": "为你检索到 12 件符合【神级 戒指】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "神级 戒指",
+      "candidates": {
+        "__count": 12,
+        "__first": 3433
+      },
+      "totalCount": 12
+    }
+  },
+  "gen-equip-神级-法身": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-罡气": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-护符": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-勋章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-玺绶": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-锦囊": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-神级-佩章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-武器": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-头盔": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-衣服": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-靴子": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-袖甲": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-腰带": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-项链": {
+    "sender": "assistant",
+    "text": "为你速查到装备【天命】（项链）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 3432,
+        "name": "天命",
+        "slot": "项链"
+      }
+    }
+  },
+  "gen-equip-天命-戒指": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-法身": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-罡气": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-护符": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-勋章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-玺绶": {
+    "sender": "assistant",
+    "text": "为你速查到装备【2024玺绶惊天命中（暂时搁置）】（玺绶）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 24174,
+        "name": "2024玺绶惊天命中（暂时搁置）",
+        "slot": "玺绶"
+      }
+    }
+  },
+  "gen-equip-天命-锦囊": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-天命-佩章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-武器": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-头盔": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-衣服": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-靴子": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-袖甲": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-腰带": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-项链": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-戒指": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-法身": {
+    "sender": "assistant",
+    "text": "为你检索到 2 件符合【至尊 法身】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "至尊 法身",
+      "candidates": {
+        "__count": 2,
+        "__first": 20136
+      },
+      "totalCount": 2
+    }
+  },
+  "gen-equip-至尊-罡气": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-护符": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-勋章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-玺绶": {
+    "sender": "assistant",
+    "text": "为你检索到 3 件符合【至尊 玺绶】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "至尊 玺绶",
+      "candidates": {
+        "__count": 3,
+        "__first": 24174
+      },
+      "totalCount": 3
+    }
+  },
+  "gen-equip-至尊-锦囊": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-至尊-佩章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-武器": {
+    "sender": "assistant",
+    "text": "为你检索到 81 件符合【混虚 武器】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "混虚 武器",
+      "candidates": {
+        "__count": 81,
+        "__first": 109832
+      },
+      "totalCount": 81
+    }
+  },
+  "gen-equip-混虚-头盔": {
+    "sender": "assistant",
+    "text": "为你检索到 81 件符合【混虚 头盔】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "混虚 头盔",
+      "candidates": {
+        "__count": 81,
+        "__first": 115878
+      },
+      "totalCount": 81
+    }
+  },
+  "gen-equip-混虚-衣服": {
+    "sender": "assistant",
+    "text": "为你检索到 81 件符合【混虚 衣服】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "混虚 衣服",
+      "candidates": {
+        "__count": 81,
+        "__first": 112452
+      },
+      "totalCount": 81
+    }
+  },
+  "gen-equip-混虚-靴子": {
+    "sender": "assistant",
+    "text": "为你检索到 81 件符合【混虚 靴子】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "混虚 靴子",
+      "candidates": {
+        "__count": 81,
+        "__first": 118307
+      },
+      "totalCount": 81
+    }
+  },
+  "gen-equip-混虚-袖甲": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-腰带": {
+    "sender": "assistant",
+    "text": "为你检索到 81 件符合【混虚 腰带】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "混虚 腰带",
+      "candidates": {
+        "__count": 81,
+        "__first": 120829
+      },
+      "totalCount": 81
+    }
+  },
+  "gen-equip-混虚-项链": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-戒指": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-法身": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-罡气": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-护符": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-勋章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-玺绶": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-锦囊": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-equip-混虚-佩章": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-boss-赤眼猪妖": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "赤眼猪妖",
+      "candidates": {
+        "__count": 2,
+        "__first": "JIEQI_KONGSANG_NORMAL_CHIYAN_ZHUYAO_NORMAL"
+      }
+    }
+  },
+  "gen-boss-姻缘古树": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "姻缘古树",
+      "candidates": {
+        "__count": 2,
+        "__first": "JIEQI_KONGSANG_NORMAL_YINYUAN_GUSHU_NORMAL"
+      }
+    }
+  },
+  "gen-boss-黑心老人": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "黑心老人",
+      "candidates": {
+        "__count": 2,
+        "__first": "JIEQI_KONGSANG_NORMAL_HEIXIN_LAOREN_NORMAL"
+      }
+    }
+  },
+  "gen-boss-黑水玄蛇": {
+    "sender": "assistant",
+    "text": "为你找到 5 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "黑水玄蛇",
+      "candidates": {
+        "__count": 5,
+        "__first": "TIANDI_BAOKU_NORMAL_XUAN_SHE_NORMAL"
+      }
+    }
+  },
+  "gen-boss-天煞明王": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "天煞明王",
+      "candidates": {
+        "__count": 2,
+        "__first": "JIEQI_KONGSANG_NORMAL_TIANSHA_MINGWANG_NORMAL"
+      }
+    }
+  },
+  "gen-boss-幽冥圣母": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "幽冥圣母",
+      "candidates": {
+        "__count": 2,
+        "__first": "JIEQI_KONGSANG_NORMAL_YOUMING_SHENGMU_NORMAL"
+      }
+    }
+  },
+  "gen-boss-修罗鸟": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【修罗鸟】（出自副本：兽神降临（困难））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "修罗鸟",
+      "dungeonName": "兽神降临（困难）",
+      "dungeonId": "SHOUSHEN_JIANGLIN_HARD",
+      "monsterId": "XIULUO_NIAO_HARD",
+      "categoryLabel": "团本（兽神、空桑、天帝、流波）",
+      "def": 160000,
+      "critRed": 144,
+      "critDmgRed": 990,
+      "hp": 1456981149,
+      "route": "/compendium/boss?d=SHOUSHEN_JIANGLIN_HARD&m=XIULUO_NIAO_HARD"
+    }
+  },
+  "gen-boss-白骨妖蛇": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【白骨妖蛇】（出自副本：兽神降临（困难））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "白骨妖蛇",
+      "dungeonName": "兽神降临（困难）",
+      "dungeonId": "SHOUSHEN_JIANGLIN_HARD",
+      "monsterId": "BAIGU_YAOSHE_HARD",
+      "categoryLabel": "团本（兽神、空桑、天帝、流波）",
+      "def": 180000,
+      "critRed": 144,
+      "critDmgRed": 1045,
+      "hp": 1537924546,
+      "route": "/compendium/boss?d=SHOUSHEN_JIANGLIN_HARD&m=BAIGU_YAOSHE_HARD"
+    }
+  },
+  "gen-boss-六王魔骸": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【六王魔骸】（出自副本：兽神降临（困难））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "六王魔骸",
+      "dungeonName": "兽神降临（困难）",
+      "dungeonId": "SHOUSHEN_JIANGLIN_HARD",
+      "monsterId": "LIUWANG_MOHAI_HARD",
+      "categoryLabel": "团本（兽神、空桑、天帝、流波）",
+      "def": 200000,
+      "critRed": 160,
+      "critDmgRed": 1111,
+      "hp": 1295094355,
+      "route": "/compendium/boss?d=SHOUSHEN_JIANGLIN_HARD&m=LIUWANG_MOHAI_HARD"
+    }
+  },
+  "gen-boss-六王魔核": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【六王魔核】（出自副本：兽神降临（困难））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "六王魔核",
+      "dungeonName": "兽神降临（困难）",
+      "dungeonId": "SHOUSHEN_JIANGLIN_HARD",
+      "monsterId": "LIUWANG_MOHE_HARD",
+      "categoryLabel": "团本（兽神、空桑、天帝、流波）",
+      "def": 200000,
+      "critRed": 160,
+      "critDmgRed": 1056,
+      "hp": 323773588,
+      "route": "/compendium/boss?d=SHOUSHEN_JIANGLIN_HARD&m=LIUWANG_MOHE_HARD"
+    }
+  },
+  "gen-boss-兽神": {
+    "sender": "assistant",
+    "text": "为你速查到【兽神降临（困难）】下的全部 8 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "兽神",
+      "dungeonName": "兽神降临（困难）",
+      "candidates": {
+        "__count": 8,
+        "__first": "SHOUSHEN_JIANGLIN_HARD_XIULUO_NIAO_HARD"
+      }
+    }
+  },
+  "gen-boss-黑无常": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【黑无常】（出自副本：兽神降临（困难））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "黑无常",
+      "dungeonName": "兽神降临（困难）",
+      "dungeonId": "SHOUSHEN_JIANGLIN_HARD",
+      "monsterId": "HEI_WUCHANG_HARD",
+      "categoryLabel": "团本（兽神、空桑、天帝、流波）",
+      "def": 200000,
+      "critRed": 176,
+      "critDmgRed": 1133,
+      "hp": 1699811341,
+      "route": "/compendium/boss?d=SHOUSHEN_JIANGLIN_HARD&m=HEI_WUCHANG_HARD"
+    }
+  },
+  "gen-boss-白无常": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【白无常】（出自副本：兽神降临（困难））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "白无常",
+      "dungeonName": "兽神降临（困难）",
+      "dungeonId": "SHOUSHEN_JIANGLIN_HARD",
+      "monsterId": "BAI_WUCHANG_HARD",
+      "categoryLabel": "团本（兽神、空桑、天帝、流波）",
+      "def": 200000,
+      "critRed": 176,
+      "critDmgRed": 1133,
+      "hp": 1699811341,
+      "route": "/compendium/boss?d=SHOUSHEN_JIANGLIN_HARD&m=BAI_WUCHANG_HARD"
+    }
+  },
+  "gen-boss-兽神（完全形态）": {
+    "sender": "assistant",
+    "text": "为你速查到【兽神降临（困难）】下的全部 8 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "兽神（完全形态）",
+      "dungeonName": "兽神降临（困难）",
+      "candidates": {
+        "__count": 8,
+        "__first": "SHOUSHEN_JIANGLIN_HARD_XIULUO_NIAO_HARD"
+      }
+    }
+  },
+  "gen-boss-罪·玄龟": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【罪·玄龟】（出自副本：试炼·四象五行（七杀罪狱））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "罪·玄龟",
+      "dungeonName": "试炼·四象五行（七杀罪狱）",
+      "dungeonId": "SIXIANG_QI",
+      "monsterId": "ZUI_XUAN_WU",
+      "categoryLabel": "历练与试炼（四象七、悬夜林）",
+      "def": 265000,
+      "critRed": 265,
+      "critDmgRed": 1200,
+      "hp": 833362477,
+      "route": "/compendium/boss?d=SIXIANG_QI&m=ZUI_XUAN_WU"
+    }
+  },
+  "gen-boss-罪·玄蛇": {
+    "sender": "assistant",
+    "text": "为你找到 4 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "罪·玄蛇",
+      "candidates": {
+        "__count": 4,
+        "__first": "SIXIANG_QI_ZUI_XUAN_SHE"
+      }
+    }
+  },
+  "gen-boss-罪·青龙": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "罪·青龙",
+      "candidates": {
+        "__count": 3,
+        "__first": "SIXIANG_QI_ZUI_QING_LONG"
+      }
+    }
+  },
+  "gen-boss-罪·白虎": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【罪·白虎】（出自副本：试炼·四象五行（七杀罪狱））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "罪·白虎",
+      "dungeonName": "试炼·四象五行（七杀罪狱）",
+      "dungeonId": "SIXIANG_QI",
+      "monsterId": "ZUI_HUA_HU",
+      "categoryLabel": "历练与试炼（四象七、悬夜林）",
+      "def": 200000,
+      "critRed": 255,
+      "critDmgRed": 1000,
+      "hp": 1072524216,
+      "route": "/compendium/boss?d=SIXIANG_QI&m=ZUI_HUA_HU"
+    }
+  },
+  "gen-boss-罪·朱雀": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【罪·朱雀】（出自副本：试炼·四象五行（七杀罪狱））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "罪·朱雀",
+      "dungeonName": "试炼·四象五行（七杀罪狱）",
+      "dungeonId": "SIXIANG_QI",
+      "monsterId": "ZUI_ZHU_QUE",
+      "categoryLabel": "历练与试炼（四象七、悬夜林）",
+      "def": 190000,
+      "critRed": 255,
+      "critDmgRed": 1000,
+      "hp": 1251630495,
+      "route": "/compendium/boss?d=SIXIANG_QI&m=ZUI_ZHU_QUE"
+    }
+  },
+  "gen-boss-罪·玄晔": {
+    "sender": "assistant",
+    "text": "为你找到 BOSS【罪·玄晔】（出自副本：试炼·四象五行（七杀罪狱））的完整实战抗性数据：",
+    "cardType": "boss",
+    "cardData": {
+      "name": "罪·玄晔",
+      "dungeonName": "试炼·四象五行（七杀罪狱）",
+      "dungeonId": "SIXIANG_QI",
+      "monsterId": "ZUI_XUAN_YE",
+      "categoryLabel": "历练与试炼（四象七、悬夜林）",
+      "def": 215000,
+      "critRed": 255,
+      "critDmgRed": 900,
+      "hp": 1228738310,
+      "route": "/compendium/boss?d=SIXIANG_QI&m=ZUI_XUAN_YE"
+    }
+  },
+  "gen-boss-乾荒": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "乾荒",
+      "candidates": {
+        "__count": 3,
+        "__first": "HUIMENG_LINGYUN_T16_QIAN_HUANG_T16"
+      }
+    }
+  },
+  "gen-boss-时弘": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "时弘",
+      "candidates": {
+        "__count": 3,
+        "__first": "HUIMENG_LINGYUN_T16_SHI_HONG_T16"
+      }
+    }
+  },
+  "gen-boss-阵眼": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "阵眼",
+      "candidates": {
+        "__count": 3,
+        "__first": "HUIMENG_LINGYUN_T16_ZHEN_YAN_T16"
+      }
+    }
+  },
+  "gen-boss-孽龙": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "孽龙",
+      "candidates": {
+        "__count": 3,
+        "__first": "HUIMENG_LINGYUN_T16_NIE_LONG_T16"
+      }
+    }
+  },
+  "gen-boss-玄上": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "玄上",
+      "candidates": {
+        "__count": 3,
+        "__first": "HUIMENG_LINGYUN_T16_XUAN_SHANG_T16"
+      }
+    }
+  },
+  "gen-boss-太灵": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "太灵",
+      "candidates": {
+        "__count": 3,
+        "__first": "HUIMENG_LINGYUN_T16_TAI_LING_T16"
+      }
+    }
+  },
+  "gen-boss-赤梭": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "赤梭",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
+      }
+    }
+  },
+  "gen-boss-玄铠": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "玄铠",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_XUAN_KAI_T19"
+      }
+    }
+  },
+  "gen-boss-望潮": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "望潮",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_WANG_CHAO_T19"
+      }
+    }
+  },
+  "gen-boss-裂魂": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "裂魂",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_LIE_HUN_T19"
+      }
+    }
+  },
+  "gen-boss-璃音": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "璃音",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_LI_YIN_T19"
+      }
+    }
+  },
+  "gen-boss-沧渊": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "沧渊",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_CANG_YUAN_T19"
+      }
+    }
+  },
+  "gen-boss-噬人花": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "噬人花",
+      "candidates": {
+        "__count": 3,
+        "__first": "TIANDI_BAOKU_NORMAL_SHI_REN_HUA_NORMAL"
+      }
+    }
+  },
+  "gen-boss-金瓶儿": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "金瓶儿",
+      "candidates": {
+        "__count": 3,
+        "__first": "TIANDI_BAOKU_NORMAL_JIN_PING_ER_NORMAL"
+      }
+    }
+  },
+  "gen-boss-秦无炎": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "秦无炎",
+      "candidates": {
+        "__count": 3,
+        "__first": "TIANDI_BAOKU_NORMAL_QIN_WU_YAN_NORMAL"
+      }
+    }
+  },
+  "gen-boss-陆雪琪": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "陆雪琪",
+      "candidates": {
+        "__count": 3,
+        "__first": "TIANDI_BAOKU_NORMAL_LU_XUE_QI_NORMAL"
+      }
+    }
+  },
+  "gen-boss-黄鸟": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "黄鸟",
+      "candidates": {
+        "__count": 3,
+        "__first": "TIANDI_BAOKU_NORMAL_HUANG_NIAO_NORMAL"
+      }
+    }
+  },
+  "gen-boss-玄蛇": {
+    "sender": "assistant",
+    "text": "为你找到 6 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "玄蛇",
+      "candidates": {
+        "__count": 6,
+        "__first": "SIXIANG_QI_ZUI_XUAN_SHE"
+      }
+    }
+  },
+  "gen-boss-小灰": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "小灰",
+      "candidates": {
+        "__count": 3,
+        "__first": "TIANDI_BAOKU_NORMAL_XIAO_HUI_NORMAL"
+      }
+    }
+  },
+  "gen-boss-七尾蜈蚣·雌": {
+    "sender": "assistant",
+    "text": "为你速查到【悬夜林（七尾蜈蚣）】下的全部 2 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "七尾蜈蚣·雌",
+      "dungeonName": "悬夜林（七尾蜈蚣）",
+      "candidates": {
+        "__count": 2,
+        "__first": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+      }
+    }
+  },
+  "gen-boss-七尾蜈蚣·雄": {
+    "sender": "assistant",
+    "text": "为你速查到【悬夜林（七尾蜈蚣）】下的全部 2 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "七尾蜈蚣·雄",
+      "dungeonName": "悬夜林（七尾蜈蚣）",
+      "candidates": {
+        "__count": 2,
+        "__first": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+      }
+    }
+  },
+  "gen-boss-缚魂触": null,
+  "gen-boss-化生触": null,
+  "gen-boss-潮音骨": null,
+  "gen-boss-年老大": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "年老大",
+      "candidates": {
+        "__count": 2,
+        "__first": "LIU_BO_JING_BIAN_CHUSHI_NIANLAODA_CHUSHI"
+      }
+    }
+  },
+  "gen-boss-玉阳子": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "玉阳子",
+      "candidates": {
+        "__count": 2,
+        "__first": "LIU_BO_JING_BIAN_CHUSHI_YUYANGZI_CHUSHI"
+      }
+    }
+  },
+  "gen-boss-青龙": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "青龙",
+      "candidates": {
+        "__count": 3,
+        "__first": "SIXIANG_QI_ZUI_QING_LONG"
+      }
+    }
+  },
+  "gen-boss-幽姬": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "幽姬",
+      "candidates": {
+        "__count": 2,
+        "__first": "LIU_BO_JING_BIAN_CHUSHI_YOUJI_CHUSHI"
+      }
+    }
+  },
+  "gen-boss-夔牛": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "夔牛",
+      "candidates": {
+        "__count": 2,
+        "__first": "LIU_BO_JING_BIAN_CHUSHI_KUINIU_CHUSHI"
+      }
+    }
+  },
+  "gen-boss-苍松": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "苍松",
+      "candidates": {
+        "__count": 2,
+        "__first": "LIU_BO_JING_BIAN_CHUSHI_CANGSONG_CHUSHI"
+      }
+    }
+  },
+  "gen-boss-炼血堂教众": null,
+  "gen-boss-炼血堂精英": null,
+  "gen-skill-鬼王 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼王】神通技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3072
+      },
+      "skill": {
+        "id": 3072,
+        "name": "未名斩<煞>"
+      }
+    }
+  },
+  "gen-skill-鬼王 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼王】天书技能（共 89 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 618
+      },
+      "skill": {
+        "id": 618,
+        "name": "狂魔"
+      }
+    }
+  },
+  "gen-skill-鬼王 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼王】造化技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1557
+      },
+      "skill": {
+        "id": 1557,
+        "name": "火焰刀II"
+      }
+    }
+  },
+  "gen-skill-鬼王 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼王】飞升技能（共 66 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1304
+      },
+      "skill": {
+        "id": 1304,
+        "name": "九变：玄"
+      }
+    }
+  },
+  "gen-skill-鬼王 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼王】心法技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10761
+      },
+      "skill": {
+        "id": 10761,
+        "name": "伏龙鼎"
+      }
+    }
+  },
+  "gen-skill-鬼王 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼王】星宿技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6811
+      },
+      "skill": {
+        "id": 6811,
+        "name": "玄烛·狱龙破·曦日"
+      }
+    }
+  },
+  "gen-skill-鬼王 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-合欢 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【合欢】天书技能（共 88 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 720
+      },
+      "skill": {
+        "id": 720,
+        "name": "相济"
+      }
+    }
+  },
+  "gen-skill-合欢 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【合欢】神通技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3077
+      },
+      "skill": {
+        "id": 3077,
+        "name": "旧梦<煞>"
+      }
+    }
+  },
+  "gen-skill-合欢 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【合欢】造化技能（共 52 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1560
+      },
+      "skill": {
+        "id": 1560,
+        "name": "决绝II"
+      }
+    }
+  },
+  "gen-skill-合欢 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【合欢】飞升技能（共 65 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1312
+      },
+      "skill": {
+        "id": 1312,
+        "name": "再回首：玄"
+      }
+    }
+  },
+  "gen-skill-合欢 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-合欢 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【合欢】星宿技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6847
+      },
+      "skill": {
+        "id": 6847,
+        "name": "玄烛·倾情·曦日"
+      }
+    }
+  },
+  "gen-skill-合欢 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【合欢】心法技能（共 45 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10928
+      },
+      "skill": {
+        "id": 10928,
+        "name": "雾隐"
+      }
+    }
+  },
+  "gen-skill-青云 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【青云】天书技能（共 89 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 567
+      },
+      "skill": {
+        "id": 567,
+        "name": "寒冰烈炎"
+      }
+    }
+  },
+  "gen-skill-青云 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【青云】神通技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3066
+      },
+      "skill": {
+        "id": 3066,
+        "name": "天尊法身<煞>"
+      }
+    }
+  },
+  "gen-skill-青云 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【青云】造化技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2044
+      },
+      "skill": {
+        "id": 2044,
+        "name": "逍遥游II"
+      }
+    }
+  },
+  "gen-skill-青云 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【青云】飞升技能（共 66 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1301
+      },
+      "skill": {
+        "id": 1301,
+        "name": "五雷天劫：玄"
+      }
+    }
+  },
+  "gen-skill-青云 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【青云】心法技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10785
+      },
+      "skill": {
+        "id": 10785,
+        "name": "正气夷形"
+      }
+    }
+  },
+  "gen-skill-青云 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【青云】星宿技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6823
+      },
+      "skill": {
+        "id": 6823,
+        "name": "玄烛·逍遥游·曦日"
+      }
+    }
+  },
+  "gen-skill-青云 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-天音 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【天音】天书技能（共 92 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 669
+      },
+      "skill": {
+        "id": 669,
+        "name": "明王妙喻"
+      }
+    }
+  },
+  "gen-skill-天音 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【天音】神通技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3073
+      },
+      "skill": {
+        "id": 3073,
+        "name": "雷音法谕<煞>"
+      }
+    }
+  },
+  "gen-skill-天音 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【天音】造化技能（共 56 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2061
+      },
+      "skill": {
+        "id": 2061,
+        "name": "宏愿II"
+      }
+    }
+  },
+  "gen-skill-天音 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【天音】飞升技能（共 69 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1307
+      },
+      "skill": {
+        "id": 1307,
+        "name": "天外佛光：玄"
+      }
+    }
+  },
+  "gen-skill-天音 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-天音 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【天音】心法技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10912
+      },
+      "skill": {
+        "id": 10912,
+        "name": "梵境无常"
+      }
+    }
+  },
+  "gen-skill-天音 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【天音】星宿技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6829
+      },
+      "skill": {
+        "id": 6829,
+        "name": "玄烛·御空术·曦日"
+      }
+    }
+  },
+  "gen-skill-鬼道 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼道】天书技能（共 92 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1150
+      },
+      "skill": {
+        "id": 1150,
+        "name": "血雾"
+      }
+    }
+  },
+  "gen-skill-鬼道 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼道】神通技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3081
+      },
+      "skill": {
+        "id": 3081,
+        "name": "灭魂狂飙<煞>"
+      }
+    }
+  },
+  "gen-skill-鬼道 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼道】造化技能（共 56 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1543
+      },
+      "skill": {
+        "id": 1543,
+        "name": "仙鬼同拥"
+      }
+    }
+  },
+  "gen-skill-鬼道 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼道】星宿技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6859
+      },
+      "skill": {
+        "id": 6859,
+        "name": "玄烛·血雾·曦日"
+      }
+    }
+  },
+  "gen-skill-鬼道 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼道】心法技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10753
+      },
+      "skill": {
+        "id": 10753,
+        "name": "断情妖蛊"
+      }
+    }
+  },
+  "gen-skill-鬼道 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【鬼道】飞升技能（共 69 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 1317
+      },
+      "skill": {
+        "id": 1317,
+        "name": "幽击：玄"
+      }
+    }
+  },
+  "gen-skill-鬼道 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-焚香 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【焚香】神通技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3575
+      },
+      "skill": {
+        "id": 3575,
+        "name": "南巫天火<煞>"
+      }
+    }
+  },
+  "gen-skill-焚香 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【焚香】天书技能（共 85 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3373
+      },
+      "skill": {
+        "id": 3373,
+        "name": "丹心"
+      }
+    }
+  },
+  "gen-skill-焚香 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【焚香】造化技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3751
+      },
+      "skill": {
+        "id": 3751,
+        "name": "丰脉II"
+      }
+    }
+  },
+  "gen-skill-焚香 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【焚香】飞升技能（共 62 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3762
+      },
+      "skill": {
+        "id": 3762,
+        "name": "山河逆：焚"
+      }
+    }
+  },
+  "gen-skill-焚香 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【焚香】星宿技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6871
+      },
+      "skill": {
+        "id": 6871,
+        "name": "玄烛·火猎护主·曦日"
+      }
+    }
+  },
+  "gen-skill-焚香 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【焚香】心法技能（共 42 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10709
+      },
+      "skill": {
+        "id": 10709,
+        "name": "焚天游龙"
+      }
+    }
+  },
+  "gen-skill-焚香 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-九黎 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【九黎】天书技能（共 89 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2074
+      },
+      "skill": {
+        "id": 2074,
+        "name": "辣手"
+      }
+    }
+  },
+  "gen-skill-九黎 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【九黎】神通技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3037
+      },
+      "skill": {
+        "id": 3037,
+        "name": "乱刃<玄>"
+      }
+    }
+  },
+  "gen-skill-九黎 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【九黎】造化技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2225
+      },
+      "skill": {
+        "id": 2225,
+        "name": "苦行II"
+      }
+    }
+  },
+  "gen-skill-九黎 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【九黎】飞升技能（共 66 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2247
+      },
+      "skill": {
+        "id": 2247,
+        "name": "天雷落：武"
+      }
+    }
+  },
+  "gen-skill-九黎 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-九黎 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【九黎】星宿技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6904
+      },
+      "skill": {
+        "id": 6904,
+        "name": "玄烛·怒喝·曦日"
+      }
+    }
+  },
+  "gen-skill-九黎 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【九黎】心法技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10809
+      },
+      "skill": {
+        "id": 10809,
+        "name": "怒罴"
+      }
+    }
+  },
+  "gen-skill-烈山 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【烈山】天书技能（共 89 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2125
+      },
+      "skill": {
+        "id": 2125,
+        "name": "春华"
+      }
+    }
+  },
+  "gen-skill-烈山 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【烈山】神通技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3041
+      },
+      "skill": {
+        "id": 3041,
+        "name": "三云龙<玄>"
+      }
+    }
+  },
+  "gen-skill-烈山 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【烈山】造化技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2220
+      },
+      "skill": {
+        "id": 2220,
+        "name": "醉芙蓉II"
+      }
+    }
+  },
+  "gen-skill-烈山 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【烈山】星宿技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6883
+      },
+      "skill": {
+        "id": 6883,
+        "name": "玄烛·固元术·曦日"
+      }
+    }
+  },
+  "gen-skill-烈山 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【烈山】飞升技能（共 66 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2255
+      },
+      "skill": {
+        "id": 2255,
+        "name": "三叹：武"
+      }
+    }
+  },
+  "gen-skill-烈山 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-烈山 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【烈山】心法技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10896
+      },
+      "skill": {
+        "id": 10896,
+        "name": "狐灵变"
+      }
+    }
+  },
+  "gen-skill-怀光 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【怀光】神通技能（共 52 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3093
+      },
+      "skill": {
+        "id": 3093,
+        "name": "无想<煞>"
+      }
+    }
+  },
+  "gen-skill-怀光 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【怀光】天书技能（共 91 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2523
+      },
+      "skill": {
+        "id": 2523,
+        "name": "肘锤"
+      }
+    }
+  },
+  "gen-skill-怀光 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【怀光】造化技能（共 55 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2699
+      },
+      "skill": {
+        "id": 2699,
+        "name": "血毒II"
+      }
+    }
+  },
+  "gen-skill-怀光 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【怀光】飞升技能（共 68 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2644
+      },
+      "skill": {
+        "id": 2644,
+        "name": "七里香：武"
+      }
+    }
+  },
+  "gen-skill-怀光 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【怀光】心法技能（共 48 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10769
+      },
+      "skill": {
+        "id": 10769,
+        "name": "镰伤"
+      }
+    }
+  },
+  "gen-skill-怀光 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【怀光】星宿技能（共 52 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6892
+      },
+      "skill": {
+        "id": 6892,
+        "name": "玄烛·血刃·曦日"
+      }
+    }
+  },
+  "gen-skill-怀光 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-天华 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【天华】天书技能（共 89 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2584
+      },
+      "skill": {
+        "id": 2584,
+        "name": "听魂"
+      }
+    }
+  },
+  "gen-skill-天华 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【天华】神通技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3050
+      },
+      "skill": {
+        "id": 3050,
+        "name": "九霄绝响<玄>"
+      }
+    }
+  },
+  "gen-skill-天华 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【天华】造化技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2704
+      },
+      "skill": {
+        "id": 2704,
+        "name": "升皇音刃II"
+      }
+    }
+  },
+  "gen-skill-天华 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【天华】星宿技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6916
+      },
+      "skill": {
+        "id": 6916,
+        "name": "玄烛·云水雅韵·曦日"
+      }
+    }
+  },
+  "gen-skill-天华 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【天华】飞升技能（共 66 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 2647
+      },
+      "skill": {
+        "id": 2647,
+        "name": "关山月：武"
+      }
+    }
+  },
+  "gen-skill-天华 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-天华 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【天华】心法技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10736
+      },
+      "skill": {
+        "id": 10736,
+        "name": "净莲生"
+      }
+    }
+  },
+  "gen-skill-辰皇 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【辰皇】神通技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 4590
+      },
+      "skill": {
+        "id": 4590,
+        "name": "元·无间<煞>"
+      }
+    }
+  },
+  "gen-skill-辰皇 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【辰皇】天书技能（共 90 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 4115
+      },
+      "skill": {
+        "id": 4115,
+        "name": "弗光"
+      }
+    }
+  },
+  "gen-skill-辰皇 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【辰皇】造化技能（共 54 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 4575
+      },
+      "skill": {
+        "id": 4575,
+        "name": "霸元·介II"
+      }
+    }
+  },
+  "gen-skill-辰皇 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【辰皇】飞升技能（共 70 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 4546
+      },
+      "skill": {
+        "id": 4546,
+        "name": "君临：武"
+      }
+    }
+  },
+  "gen-skill-辰皇 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【辰皇】星宿技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6931
+      },
+      "skill": {
+        "id": 6931,
+        "name": "玄烛·翔·曦日"
+      }
+    }
+  },
+  "gen-skill-辰皇 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【辰皇】心法技能（共 48 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10908
+      },
+      "skill": {
+        "id": 10908,
+        "name": "神曦·翼"
+      }
+    }
+  },
+  "gen-skill-辰皇 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-太昊 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【太昊】神通技能（共 52 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3573
+      },
+      "skill": {
+        "id": 3573,
+        "name": "三生判<玄>"
+      }
+    }
+  },
+  "gen-skill-太昊 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【太昊】天书技能（共 91 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3503
+      },
+      "skill": {
+        "id": 3503,
+        "name": "嚣魔"
+      }
+    }
+  },
+  "gen-skill-太昊 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【太昊】造化技能（共 55 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3741
+      },
+      "skill": {
+        "id": 3741,
+        "name": "杀破狼II"
+      }
+    }
+  },
+  "gen-skill-太昊 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【太昊】飞升技能（共 68 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 3833
+      },
+      "skill": {
+        "id": 3833,
+        "name": "临玄：武"
+      }
+    }
+  },
+  "gen-skill-太昊 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【太昊】星宿技能（共 52 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6937
+      },
+      "skill": {
+        "id": 6937,
+        "name": "玄烛·亢龙击·曦日"
+      }
+    }
+  },
+  "gen-skill-太昊 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-太昊 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【太昊】心法技能（共 48 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10876
+      },
+      "skill": {
+        "id": 10876,
+        "name": "升龙阶"
+      }
+    }
+  },
+  "gen-skill-牵机 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【牵机】天书技能（共 99 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5125
+      },
+      "skill": {
+        "id": 5125,
+        "name": "长生丹"
+      }
+    }
+  },
+  "gen-skill-牵机 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【牵机】神通技能（共 60 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5305
+      },
+      "skill": {
+        "id": 5305,
+        "name": "神来一笔<煞>"
+      }
+    }
+  },
+  "gen-skill-牵机 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【牵机】造化技能（共 63 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5295
+      },
+      "skill": {
+        "id": 5295,
+        "name": "澎湃II"
+      }
+    }
+  },
+  "gen-skill-牵机 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【牵机】飞升技能（共 52 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5250
+      },
+      "skill": {
+        "id": 5250,
+        "name": "墨染经年"
+      }
+    }
+  },
+  "gen-skill-牵机 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【牵机】星宿技能（共 60 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6949
+      },
+      "skill": {
+        "id": 6949,
+        "name": "玄烛·如归·曦日"
+      }
+    }
+  },
+  "gen-skill-牵机 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【牵机】心法技能（共 58 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10797
+      },
+      "skill": {
+        "id": 10797,
+        "name": "机关术：迷踪"
+      }
+    }
+  },
+  "gen-skill-牵机 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-英招 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【英招】天书技能（共 94 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5176
+      },
+      "skill": {
+        "id": 5176,
+        "name": "龙威"
+      }
+    }
+  },
+  "gen-skill-英招 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【英招】神通技能（共 55 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5271
+      },
+      "skill": {
+        "id": 5271,
+        "name": "霸无双<煞>"
+      }
+    }
+  },
+  "gen-skill-英招 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【英招】造化技能（共 58 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5257
+      },
+      "skill": {
+        "id": 5257,
+        "name": "阻截II"
+      }
+    }
+  },
+  "gen-skill-英招 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【英招】飞升技能（共 48 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5243
+      },
+      "skill": {
+        "id": 5243,
+        "name": "一夫当关"
+      }
+    }
+  },
+  "gen-skill-英招 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-英招 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【英招】心法技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10817
+      },
+      "skill": {
+        "id": 10817,
+        "name": "神军定"
+      }
+    }
+  },
+  "gen-skill-英招 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【英招】星宿技能（共 55 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6967
+      },
+      "skill": {
+        "id": 6967,
+        "name": "玄烛·急行·曦日"
+      }
+    }
+  },
+  "gen-skill-破军 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【破军】神通技能（共 55 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5706
+      },
+      "skill": {
+        "id": 5706,
+        "name": "坎水印<煞>"
+      }
+    }
+  },
+  "gen-skill-破军 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【破军】天书技能（共 94 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5447
+      },
+      "skill": {
+        "id": 5447,
+        "name": "紫微"
+      }
+    }
+  },
+  "gen-skill-破军 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【破军】造化技能（共 58 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5694
+      },
+      "skill": {
+        "id": 5694,
+        "name": "挪移咒II"
+      }
+    }
+  },
+  "gen-skill-破军 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【破军】飞升技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 5717
+      },
+      "skill": {
+        "id": 5717,
+        "name": "流光逐月"
+      }
+    }
+  },
+  "gen-skill-破军 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【破军】星宿技能（共 55 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6979
+      },
+      "skill": {
+        "id": 6979,
+        "name": "玄烛·坎水印·曦日"
+      }
+    }
+  },
+  "gen-skill-破军 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【破军】心法技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10887
+      },
+      "skill": {
+        "id": 10887,
+        "name": "瞬影千刃"
+      }
+    }
+  },
+  "gen-skill-破军 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-青罗 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【青罗】神通技能（共 56 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6242
+      },
+      "skill": {
+        "id": 6242,
+        "name": "小径香残<煞>"
+      }
+    }
+  },
+  "gen-skill-青罗 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【青罗】天书技能（共 92 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6022
+      },
+      "skill": {
+        "id": 6022,
+        "name": "广寒枝"
+      }
+    }
+  },
+  "gen-skill-青罗 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【青罗】造化技能（共 56 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6227
+      },
+      "skill": {
+        "id": 6227,
+        "name": "梅弄影II"
+      }
+    }
+  },
+  "gen-skill-青罗 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【青罗】飞升技能（共 45 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6009
+      },
+      "skill": {
+        "id": 6009,
+        "name": "双林落雁"
+      }
+    }
+  },
+  "gen-skill-青罗 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【青罗】心法技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10801
+      },
+      "skill": {
+        "id": 10801,
+        "name": "花破风来"
+      }
+    }
+  },
+  "gen-skill-青罗 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【青罗】星宿技能（共 53 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6991
+      },
+      "skill": {
+        "id": 6991,
+        "name": "玄烛·一川烟草·曦日"
+      }
+    }
+  },
+  "gen-skill-青罗 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-归云 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【归云】天书技能（共 93 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6460
+      },
+      "skill": {
+        "id": 6460,
+        "name": "玉笛飞声"
+      }
+    }
+  },
+  "gen-skill-归云 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【归云】神通技能（共 54 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6649
+      },
+      "skill": {
+        "id": 6649,
+        "name": "星庐听雨<禅>"
+      }
+    }
+  },
+  "gen-skill-归云 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【归云】造化技能（共 57 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6754
+      },
+      "skill": {
+        "id": 6754,
+        "name": "岁寒II"
+      }
+    }
+  },
+  "gen-skill-归云 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-归云 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【归云】飞升技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6720
+      },
+      "skill": {
+        "id": 6720,
+        "name": "月露星稀"
+      }
+    }
+  },
+  "gen-skill-归云 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【归云】星宿技能（共 54 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 6997
+      },
+      "skill": {
+        "id": 6997,
+        "name": "玄烛·冷露无声·曦日"
+      }
+    }
+  },
+  "gen-skill-归云 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【归云】心法技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10838
+      },
+      "skill": {
+        "id": 10838,
+        "name": "骤雨寒江"
+      }
+    }
+  },
+  "gen-skill-画影 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【画影】神通技能（共 55 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 7605
+      },
+      "skill": {
+        "id": 7605,
+        "name": "幻隐三千<玄>"
+      }
+    }
+  },
+  "gen-skill-画影 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【画影】天书技能（共 94 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 7309
+      },
+      "skill": {
+        "id": 7309,
+        "name": "澜香融"
+      }
+    }
+  },
+  "gen-skill-画影 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【画影】造化技能（共 58 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 7595
+      },
+      "skill": {
+        "id": 7595,
+        "name": "道心II"
+      }
+    }
+  },
+  "gen-skill-画影 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【画影】星宿技能（共 55 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 7634
+      },
+      "skill": {
+        "id": 7634,
+        "name": "玄烛·分元均·曦日"
+      }
+    }
+  },
+  "gen-skill-画影 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【画影】飞升技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 7584
+      },
+      "skill": {
+        "id": 7584,
+        "name": "取象无惑"
+      }
+    }
+  },
+  "gen-skill-画影 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-画影 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【画影】心法技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10777
+      },
+      "skill": {
+        "id": 10777,
+        "name": "摧卷五行"
+      }
+    }
+  },
+  "gen-skill-逐霜 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【逐霜】神通技能（共 48 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8072
+      },
+      "skill": {
+        "id": 8072,
+        "name": "苍龙啸<煞>"
+      }
+    }
+  },
+  "gen-skill-逐霜 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【逐霜】天书技能（共 81 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 7908
+      },
+      "skill": {
+        "id": 7908,
+        "name": "落霜洲"
+      }
+    }
+  },
+  "gen-skill-逐霜 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【逐霜】造化技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8060
+      },
+      "skill": {
+        "id": 8060,
+        "name": "刺血II"
+      }
+    }
+  },
+  "gen-skill-逐霜 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【逐霜】飞升技能（共 40 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8081
+      },
+      "skill": {
+        "id": 8081,
+        "name": "乱石崩云"
+      }
+    }
+  },
+  "gen-skill-逐霜 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【逐霜】星宿技能（共 48 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8051
+      },
+      "skill": {
+        "id": 8051,
+        "name": "玄烛·点龙睛·曦日"
+      }
+    }
+  },
+  "gen-skill-逐霜 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【逐霜】心法技能（共 44 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10830
+      },
+      "skill": {
+        "id": 10830,
+        "name": "乘时而化"
+      }
+    }
+  },
+  "gen-skill-逐霜 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-惊岚 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【惊岚】天书技能（共 77 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8315
+      },
+      "skill": {
+        "id": 8315,
+        "name": "钩刀"
+      }
+    }
+  },
+  "gen-skill-惊岚 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【惊岚】神通技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8393
+      },
+      "skill": {
+        "id": 8393,
+        "name": "飞虎暴<煞>"
+      }
+    }
+  },
+  "gen-skill-惊岚 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【惊岚】造化技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8381
+      },
+      "skill": {
+        "id": 8381,
+        "name": "步风罡II"
+      }
+    }
+  },
+  "gen-skill-惊岚 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【惊岚】飞升技能（共 40 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8594
+      },
+      "skill": {
+        "id": 8594,
+        "name": "八方披靡"
+      }
+    }
+  },
+  "gen-skill-惊岚 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-惊岚 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【惊岚】星宿技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8587
+      },
+      "skill": {
+        "id": 8587,
+        "name": "玄烛·亢风魔·曦日"
+      }
+    }
+  },
+  "gen-skill-惊岚 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【惊岚】心法技能（共 45 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10826
+      },
+      "skill": {
+        "id": 10826,
+        "name": "仙诀·炽风烈"
+      }
+    }
+  },
+  "gen-skill-昭冥 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【昭冥】天书技能（共 76 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 8932
+      },
+      "skill": {
+        "id": 8932,
+        "name": "雷引"
+      }
+    }
+  },
+  "gen-skill-昭冥 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【昭冥】神通技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9158
+      },
+      "skill": {
+        "id": 9158,
+        "name": "诡步诀<玄>"
+      }
+    }
+  },
+  "gen-skill-昭冥 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【昭冥】造化技能（共 52 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9143
+      },
+      "skill": {
+        "id": 9143,
+        "name": "麟凤游II"
+      }
+    }
+  },
+  "gen-skill-昭冥 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【昭冥】飞升技能（共 41 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9191
+      },
+      "skill": {
+        "id": 9191,
+        "name": "大象无形"
+      }
+    }
+  },
+  "gen-skill-昭冥 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【昭冥】星宿技能（共 52 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9187
+      },
+      "skill": {
+        "id": 9187,
+        "name": "玄烛·停云凝风·曦日"
+      }
+    }
+  },
+  "gen-skill-昭冥 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-昭冥 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【昭冥】心法技能（共 45 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10924
+      },
+      "skill": {
+        "id": 10924,
+        "name": "咒·相濡"
+      }
+    }
+  },
+  "gen-skill-涅羽 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【涅羽】天书技能（共 78 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9487
+      },
+      "skill": {
+        "id": 9487,
+        "name": "苦毒"
+      }
+    }
+  },
+  "gen-skill-涅羽 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【涅羽】神通技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9709
+      },
+      "skill": {
+        "id": 9709,
+        "name": "帝江流<煞>"
+      }
+    }
+  },
+  "gen-skill-涅羽 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【涅羽】造化技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9662
+      },
+      "skill": {
+        "id": 9662,
+        "name": "凰吻II"
+      }
+    }
+  },
+  "gen-skill-涅羽 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【涅羽】飞升技能（共 39 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9643
+      },
+      "skill": {
+        "id": 9643,
+        "name": "重瞳"
+      }
+    }
+  },
+  "gen-skill-涅羽 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【涅羽】心法技能（共 44 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10749
+      },
+      "skill": {
+        "id": 10749,
+        "name": "焚火"
+      }
+    }
+  },
+  "gen-skill-涅羽 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【涅羽】星宿技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 9696
+      },
+      "skill": {
+        "id": 9696,
+        "name": "玄烛·空羽行·曦日"
+      }
+    }
+  },
+  "gen-skill-涅羽 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-百灵 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【百灵】天书技能（共 78 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10038
+      },
+      "skill": {
+        "id": 10038,
+        "name": "初绽"
+      }
+    }
+  },
+  "gen-skill-百灵 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【百灵】神通技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10205
+      },
+      "skill": {
+        "id": 10205,
+        "name": "千鸟飞燕<煞>"
+      }
+    }
+  },
+  "gen-skill-百灵 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【百灵】造化技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10190
+      },
+      "skill": {
+        "id": 10190,
+        "name": "芳息II"
+      }
+    }
+  },
+  "gen-skill-百灵 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【百灵】飞升技能（共 39 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10093
+      },
+      "skill": {
+        "id": 10093,
+        "name": "渡心引脉"
+      }
+    }
+  },
+  "gen-skill-百灵 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-百灵 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【百灵】星宿技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10234
+      },
+      "skill": {
+        "id": 10234,
+        "name": "玄烛·梦魂难度·曦日"
+      }
+    }
+  },
+  "gen-skill-百灵 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【百灵】心法技能（共 43 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10728
+      },
+      "skill": {
+        "id": 10728,
+        "name": "万灵昭瑞"
+      }
+    }
+  },
+  "gen-skill-释罗 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【释罗】神通技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10582
+      },
+      "skill": {
+        "id": 10582,
+        "name": "释罗生相<煞>"
+      }
+    }
+  },
+  "gen-skill-释罗 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【释罗】造化技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10574
+      },
+      "skill": {
+        "id": 10574,
+        "name": "灭煞破II"
+      }
+    }
+  },
+  "gen-skill-释罗 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【释罗】天书技能（共 72 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10524
+      },
+      "skill": {
+        "id": 10524,
+        "name": "冥判"
+      }
+    }
+  },
+  "gen-skill-释罗 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【释罗】飞升技能（共 39 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10521
+      },
+      "skill": {
+        "id": 10521,
+        "name": "赦罪令"
+      }
+    }
+  },
+  "gen-skill-释罗 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【释罗】心法技能（共 43 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10865
+      },
+      "skill": {
+        "id": 10865,
+        "name": "断魂斩"
+      }
+    }
+  },
+  "gen-skill-释罗 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【释罗】星宿技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 10606
+      },
+      "skill": {
+        "id": 10606,
+        "name": "玄烛·衅孽外乘·曦日"
+      }
+    }
+  },
+  "gen-skill-释罗 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-长生堂 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【长生堂】天书技能（共 58 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11156
+      },
+      "skill": {
+        "id": 11156,
+        "name": "春生"
+      }
+    }
+  },
+  "gen-skill-长生堂 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【长生堂】神通技能（共 40 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11232
+      },
+      "skill": {
+        "id": 11232,
+        "name": "血咒<煞>"
+      }
+    }
+  },
+  "gen-skill-长生堂 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【长生堂】造化技能（共 43 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11226
+      },
+      "skill": {
+        "id": 11226,
+        "name": "守一II"
+      }
+    }
+  },
+  "gen-skill-长生堂 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【长生堂】飞升技能（共 32 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11211
+      },
+      "skill": {
+        "id": 11211,
+        "name": "寒芒障目"
+      }
+    }
+  },
+  "gen-skill-长生堂 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-长生堂 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【长生堂】星宿技能（共 40 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11258
+      },
+      "skill": {
+        "id": 11258,
+        "name": "玄烛·寂月寒·曦日"
+      }
+    }
+  },
+  "gen-skill-长生堂 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【长生堂】心法技能（共 36 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11259
+      },
+      "skill": {
+        "id": 11259,
+        "name": "幽芒万象"
+      }
+    }
+  },
+  "gen-skill-万毒 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【万毒】天书技能（共 60 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11807
+      },
+      "skill": {
+        "id": 11807,
+        "name": "匕现"
+      }
+    }
+  },
+  "gen-skill-万毒 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【万毒】神通技能（共 42 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 12030
+      },
+      "skill": {
+        "id": 12030,
+        "name": "神石咒<禅>"
+      }
+    }
+  },
+  "gen-skill-万毒 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【万毒】造化技能（共 44 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11886
+      },
+      "skill": {
+        "id": 11886,
+        "name": "断肠II"
+      }
+    }
+  },
+  "gen-skill-万毒 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【万毒】飞升技能（共 34 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11883
+      },
+      "skill": {
+        "id": 11883,
+        "name": "堕飞鸢"
+      }
+    }
+  },
+  "gen-skill-万毒 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-万毒 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【万毒】心法技能（共 38 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 12008
+      },
+      "skill": {
+        "id": 12008,
+        "name": "百密无疏"
+      }
+    }
+  },
+  "gen-skill-万毒 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【万毒】星宿技能（共 42 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 11982
+      },
+      "skill": {
+        "id": 11982,
+        "name": "玄烛·满汀沙·曦日"
+      }
+    }
+  },
+  "gen-skill-炼血 天书": {
+    "sender": "assistant",
+    "text": "为你速查到 【炼血】天书技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 12527
+      },
+      "skill": {
+        "id": 12527,
+        "name": "血凝"
+      }
+    }
+  },
+  "gen-skill-炼血 神通": {
+    "sender": "assistant",
+    "text": "为你速查到 【炼血】神通技能（共 37 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 12643
+      },
+      "skill": {
+        "id": 12643,
+        "name": "红影曳<玄>"
+      }
+    }
+  },
+  "gen-skill-炼血 造化": {
+    "sender": "assistant",
+    "text": "为你速查到 【炼血】造化技能（共 40 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 12626
+      },
+      "skill": {
+        "id": 12626,
+        "name": "枯血印II "
+      }
+    }
+  },
+  "gen-skill-炼血 星宿": {
+    "sender": "assistant",
+    "text": "为你速查到 【炼血】星宿技能（共 37 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 12665
+      },
+      "skill": {
+        "id": 12665,
+        "name": "玄烛·易形骸·曦日"
+      }
+    }
+  },
+  "gen-skill-炼血 飞升": {
+    "sender": "assistant",
+    "text": "为你速查到 【炼血】飞升技能（共 29 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 29,
+        "__first": 12598
+      },
+      "skill": {
+        "id": 12598,
+        "name": "春不眷"
+      }
+    }
+  },
+  "gen-skill-炼血 轩辕策": {
+    "sender": "assistant",
+    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
+    "cardType": "xyc_diag",
+    "cardData": {
+      "title": "轩辕策属性模拟",
+      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
+      "workspaceMode": "xyc",
+      "route": "/tools/xyc",
+      "btnText": "进入轩辕策属性"
+    }
+  },
+  "gen-skill-炼血 心法": {
+    "sender": "assistant",
+    "text": "为你速查到 【炼血】心法技能（共 33 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 30,
+        "__first": 12617
+      },
+      "skill": {
+        "id": 12617,
+        "name": "化万有"
+      }
+    }
+  },
+  "gen-skill-神通 仙(通用)": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skill-神通 佛(通用)": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skill-神通 魔(通用)": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skill-造化 仙(通用)": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skill-造化 魔(通用)": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skill-造化 佛(通用)": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skillclass-鬼王": {
+    "sender": "assistant",
+    "text": "为你检索到 37 件符合【鬼王】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "鬼王",
+      "candidates": {
+        "__count": 37,
+        "__first": 109832
+      },
+      "totalCount": 37
+    }
+  },
+  "gen-skillclass-合欢": {
+    "sender": "assistant",
+    "text": "为你检索到 37 件符合【合欢】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "合欢",
+      "candidates": {
+        "__count": 37,
+        "__first": 109832
+      },
+      "totalCount": 37
+    }
+  },
+  "gen-skillclass-青云": {
+    "sender": "assistant",
+    "text": "为你检索到 37 件符合【青云】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "青云",
+      "candidates": {
+        "__count": 37,
+        "__first": 109832
+      },
+      "totalCount": 37
+    }
+  },
+  "gen-skillclass-天音": {
+    "sender": "assistant",
+    "text": "为你检索到 37 件符合【天音】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "天音",
+      "candidates": {
+        "__count": 37,
+        "__first": 109832
+      },
+      "totalCount": 37
+    }
+  },
+  "gen-skillclass-鬼道": {
+    "sender": "assistant",
+    "text": "为你检索到 37 件符合【鬼道】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "鬼道",
+      "candidates": {
+        "__count": 37,
+        "__first": 109832
+      },
+      "totalCount": 37
+    }
+  },
+  "gen-skillclass-焚香": null,
+  "gen-skillclass-九黎": {
+    "sender": "assistant",
+    "text": "为你检索到 36 件符合【九黎】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "九黎",
+      "candidates": {
+        "__count": 36,
+        "__first": 109832
+      },
+      "totalCount": 36
+    }
+  },
+  "gen-skillclass-烈山": {
+    "sender": "assistant",
+    "text": "为你检索到 36 件符合【烈山】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "烈山",
+      "candidates": {
+        "__count": 36,
+        "__first": 109832
+      },
+      "totalCount": 36
+    }
+  },
+  "gen-skillclass-怀光": null,
+  "gen-skillclass-天华": {
+    "sender": "assistant",
+    "text": "为你速查到匹配【天华】的法宝【玉净瓶】（通用法宝）：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 100,
+      "name": "玉净瓶",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 100
+      }
+    }
+  },
+  "gen-skillclass-辰皇": null,
+  "gen-skillclass-太昊": {
+    "sender": "assistant",
+    "text": "为你速查到装备【太昊★★★】（项链）。支持在卡片右上角进行【等级 -1 / 等级 +1】推演查看同系共 4 级属性：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 3432,
+        "name": "太昊★★★",
+        "slot": "项链"
+      }
+    }
+  },
+  "gen-skillclass-牵机": null,
+  "gen-skillclass-英招": null,
+  "gen-skillclass-破军": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【破军】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 36,
+      "name": "破军",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 36
+      }
+    }
+  },
+  "gen-skillclass-青罗": null,
+  "gen-skillclass-归云": null,
+  "gen-skillclass-画影": null,
+  "gen-skillclass-逐霜": null,
+  "gen-skillclass-惊岚": null,
+  "gen-skillclass-昭冥": null,
+  "gen-skillclass-涅羽": {
+    "sender": "assistant",
+    "text": "为你速查到技能【涅羽】（涅羽）的 1:1 游戏原生视图，可在卡片右上角进行【等级 -1 / 等级 +1】推演：",
+    "cardType": "skill",
+    "cardData": {
+      "skill": {
+        "id": 9486,
+        "name": "涅羽"
+      },
+      "name": "涅羽"
+    }
+  },
+  "gen-skillclass-百灵": null,
+  "gen-skillclass-释罗": null,
+  "gen-skillclass-长生堂": null,
+  "gen-skillclass-万毒": {
+    "sender": "assistant",
+    "text": "为你检索到 34 件符合【万毒】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "万毒",
+      "candidates": {
+        "__count": 34,
+        "__first": 109832
+      },
+      "totalCount": 34
+    }
+  },
+  "gen-skillclass-炼血": null,
+  "gen-skillclass-通用天书": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skillclass-触发技能": {
+    "sender": "assistant",
+    "text": "为你检索到 10 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 10,
+        "__first": 11871
+      },
+      "skill": {
+        "id": 11871,
+        "name": "抛促织触发技能"
+      }
+    }
+  },
+  "gen-skillclass-飞升技能(通用)": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skillclass-连段技能": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skillclass-师徒技能": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skillclass-特殊技能": {
+    "sender": "assistant",
+    "text": "为你检索到 3 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": {
+        "__count": 3,
+        "__first": 1985
+      },
+      "skill": {
+        "id": 1985,
+        "name": "特殊备用"
+      }
+    }
+  },
+  "gen-skillclass-宠物技能": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skillclass-帮派技能": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-skillclass-夫妻技能": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "gen-fabao-1": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【八卦石】（种族法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 1,
+      "name": "八卦石",
+      "grade": "种族法宝",
+      "fabao": {
+        "id": 1
+      }
+    }
+  },
+  "gen-fabao-2": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【六合镜】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 2,
+      "name": "六合镜",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 2
+      }
+    }
+  },
+  "gen-fabao-3": {
+    "sender": "assistant",
+    "text": "为你速查到装备【七星剑秘笈】（佩章）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 4257,
+        "name": "七星剑秘笈",
+        "slot": "佩章"
+      }
+    }
+  },
+  "gen-fabao-4": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【琥珀朱绫】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 4,
+      "name": "琥珀朱绫",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 4
+      }
+    }
+  },
+  "gen-fabao-5": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【若雪】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 5,
+      "name": "若雪",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 5
+      }
+    }
+  },
+  "gen-fabao-6": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【朱雀印】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 6,
+      "name": "朱雀印",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 6
+      }
+    }
+  },
+  "gen-fabao-7": {
+    "sender": "assistant",
+    "text": "为你速查到装备【四灵幡秘笈】（佩章）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 4257,
+        "name": "四灵幡秘笈",
+        "slot": "佩章"
+      }
+    }
+  },
+  "gen-fabao-8": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【乾坤青光戒】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 8,
+      "name": "乾坤青光戒",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 8
+      }
+    }
+  },
+  "gen-fabao-9": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【天魔指】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 9,
+      "name": "天魔指",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 9
+      }
+    }
+  },
+  "gen-fabao-10": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【慑心铃】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 10,
+      "name": "慑心铃",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 10
+      }
+    }
+  },
+  "gen-fabao-11": {
+    "sender": "assistant",
+    "text": "为你速查到装备【多情环秘笈】（佩章）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 4257,
+        "name": "多情环秘笈",
+        "slot": "佩章"
+      }
+    }
+  },
+  "gen-fabao-12": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【千媚莲】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 12,
+      "name": "千媚莲",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 12
+      }
+    }
+  },
+  "gen-fabao-13": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【八极游龙】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 13,
+      "name": "八极游龙",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 13
+      }
+    }
+  },
+  "gen-fabao-14": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【轮回珠】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 14,
+      "name": "轮回珠",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 14
+      }
+    }
+  },
+  "gen-fabao-15": {
+    "sender": "assistant",
+    "text": "为你速查到装备【金刚杵秘笈】（佩章）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 4257,
+        "name": "金刚杵秘笈",
+        "slot": "佩章"
+      }
+    }
+  },
+  "gen-fabao-16": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【如意乾坤袋】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 16,
+      "name": "如意乾坤袋",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 16
+      }
+    }
+  },
+  "gen-fabao-17": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【六道生灭】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 17,
+      "name": "六道生灭",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 17
+      }
+    }
+  },
+  "gen-fabao-18": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【血玉骨片】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 18,
+      "name": "血玉骨片",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 18
+      }
+    }
+  },
+  "gen-fabao-19": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【破刹】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 19,
+      "name": "破刹",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 19
+      }
+    }
+  },
+  "gen-fabao-20": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【千毒蛊】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 20,
+      "name": "千毒蛊",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 20
+      }
+    }
+  },
+  "gen-fabao-21": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【鬼磬】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 21,
+      "name": "鬼磬",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 21
+      }
+    }
+  },
+  "gen-fabao-22": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【南明印】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 22,
+      "name": "南明印",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 22
+      }
+    }
+  },
+  "gen-fabao-23": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【衡天尺】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 23,
+      "name": "衡天尺",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 23
+      }
+    }
+  },
+  "gen-fabao-24": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【火玲珑】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 24,
+      "name": "火玲珑",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 24
+      }
+    }
+  },
+  "gen-fabao-25": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【九寒凝冰刺】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 25,
+      "name": "九寒凝冰刺",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 25
+      }
+    }
+  },
+  "gen-fabao-26": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【五色石】（种族法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 26,
+      "name": "五色石",
+      "grade": "种族法宝",
+      "fabao": {
+        "id": 26
+      }
+    }
+  },
+  "gen-fabao-27": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【怒兽幡】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 27,
+      "name": "怒兽幡",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 27
+      }
+    }
+  },
+  "gen-fabao-28": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【血枫枪】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 28,
+      "name": "血枫枪",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 28
+      }
+    }
+  },
+  "gen-fabao-29": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【罡岚】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 29,
+      "name": "罡岚",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 29
+      }
+    }
+  },
+  "gen-fabao-30": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【丧门剑】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 30,
+      "name": "丧门剑",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 30
+      }
+    }
+  },
+  "gen-fabao-31": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【丹朱】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 31,
+      "name": "丹朱",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 31
+      }
+    }
+  },
+  "gen-fabao-32": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【返魂香】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 32,
+      "name": "返魂香",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 32
+      }
+    }
+  },
+  "gen-fabao-33": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【浮影古镜】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 33,
+      "name": "浮影古镜",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 33
+      }
+    }
+  },
+  "gen-fabao-34": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【洛书】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 34,
+      "name": "洛书",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 34
+      }
+    }
+  },
+  "gen-fabao-35": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【七杀】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 35,
+      "name": "七杀",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 35
+      }
+    }
+  },
+  "gen-fabao-36": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【破军】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 36,
+      "name": "破军",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 36
+      }
+    }
+  },
+  "gen-fabao-37": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【贪狼】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 37,
+      "name": "贪狼",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 37
+      }
+    }
+  },
+  "gen-fabao-38": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【绝影】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 38,
+      "name": "绝影",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 38
+      }
+    }
+  },
+  "gen-fabao-39": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【九音螺】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 39,
+      "name": "九音螺",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 39
+      }
+    }
+  },
+  "gen-fabao-40": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【亚风】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 40,
+      "name": "亚风",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 40
+      }
+    }
+  },
+  "gen-fabao-41": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【琉璃盏】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 41,
+      "name": "琉璃盏",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 41
+      }
+    }
+  },
+  "gen-fabao-42": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【碧落飞鸿】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 42,
+      "name": "碧落飞鸿",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 42
+      }
+    }
+  },
+  "gen-fabao-43": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【雷公墨】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 43,
+      "name": "雷公墨",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 43
+      }
+    }
+  },
+  "gen-fabao-44": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【春秋锁】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 44,
+      "name": "春秋锁",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 44
+      }
+    }
+  },
+  "gen-fabao-45": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【子母阴阳扣】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 45,
+      "name": "子母阴阳扣",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 45
+      }
+    }
+  },
+  "gen-fabao-46": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【羲皇钟】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 46,
+      "name": "羲皇钟",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 46
+      }
+    }
+  },
+  "gen-fabao-47": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【率兜旗】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 47,
+      "name": "率兜旗",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 47
+      }
+    }
+  },
+  "gen-fabao-48": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【鼍鼓】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 48,
+      "name": "鼍鼓",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 48
+      }
+    }
+  },
+  "gen-fabao-49": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【落宝金钱】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 49,
+      "name": "落宝金钱",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 49
+      }
+    }
+  },
+  "gen-fabao-50": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【皇极】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 50,
+      "name": "皇极",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 50
+      }
+    }
+  },
+  "gen-fabao-51": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【天灵灯】（种族法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 51,
+      "name": "天灵灯",
+      "grade": "种族法宝",
+      "fabao": {
+        "id": 51
+      }
+    }
+  },
+  "gen-fabao-52": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【天极木】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 52,
+      "name": "天极木",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 52
+      }
+    }
+  },
+  "gen-fabao-53": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【罗睺玉】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 53,
+      "name": "罗睺玉",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 53
+      }
+    }
+  },
+  "gen-fabao-54": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【金羽变】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 54,
+      "name": "金羽变",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 54
+      }
+    }
+  },
+  "gen-fabao-55": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【赤星龙炎】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 55,
+      "name": "赤星龙炎",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 55
+      }
+    }
+  },
+  "gen-fabao-56": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【混元令】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 56,
+      "name": "混元令",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 56
+      }
+    }
+  },
+  "gen-fabao-57": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【七煞戈】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 57,
+      "name": "七煞戈",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 57
+      }
+    }
+  },
+  "gen-fabao-58": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【天都戟】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 58,
+      "name": "天都戟",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 58
+      }
+    }
+  },
+  "gen-fabao-59": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【五方神钺】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 59,
+      "name": "五方神钺",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 59
+      }
+    }
+  },
+  "gen-fabao-60": {
+    "sender": "assistant",
+    "text": "为你速查到装备【掠影夺锋印】（玺绶）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 24174,
+        "name": "掠影夺锋印",
+        "slot": "玺绶"
+      }
+    }
+  },
+  "gen-fabao-61": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【破命】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 61,
+      "name": "破命",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 61
+      }
+    }
+  },
+  "gen-fabao-62": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【烁雷】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 62,
+      "name": "烁雷",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 62
+      }
+    }
+  },
+  "gen-fabao-63": {
+    "sender": "assistant",
+    "text": "为你速查到装备【追魂沙】（佩章）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 6032,
+        "name": "追魂沙",
+        "slot": "佩章"
+      }
+    }
+  },
+  "gen-fabao-64": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【玉娥灯】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 64,
+      "name": "玉娥灯",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 64
+      }
+    }
+  },
+  "gen-fabao-65": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【冰玉壶】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 65,
+      "name": "冰玉壶",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 65
+      }
+    }
+  },
+  "gen-fabao-66": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【青天皇典】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 66,
+      "name": "青天皇典",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 66
+      }
+    }
+  },
+  "gen-fabao-67": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【珞珈】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 67,
+      "name": "珞珈",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 67
+      }
+    }
+  },
+  "gen-fabao-68": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【霁华灯】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 68,
+      "name": "霁华灯",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 68
+      }
+    }
+  },
+  "gen-fabao-69": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【望晴镜】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 69,
+      "name": "望晴镜",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 69
+      }
+    }
+  },
+  "gen-fabao-70": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【月琼壶】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 70,
+      "name": "月琼壶",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 70
+      }
+    }
+  },
+  "gen-fabao-71": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【妙璃】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 71,
+      "name": "妙璃",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 71
+      }
+    }
+  },
+  "gen-fabao-72": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【惜梦笔】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 72,
+      "name": "惜梦笔",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 72
+      }
+    }
+  },
+  "gen-fabao-73": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【惊才墨】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 73,
+      "name": "惊才墨",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 73
+      }
+    }
+  },
+  "gen-fabao-74": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【醉心笺】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 74,
+      "name": "醉心笺",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 74
+      }
+    }
+  },
+  "gen-fabao-75": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【珠玑砚】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 75,
+      "name": "珠玑砚",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 75
+      }
+    }
+  },
+  "gen-fabao-76": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【青玉案】（种族法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 76,
+      "name": "青玉案",
+      "grade": "种族法宝",
+      "fabao": {
+        "id": 76
+      }
+    }
+  },
+  "gen-fabao-77": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【丹书简】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 77,
+      "name": "丹书简",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 77
+      }
+    }
+  },
+  "gen-fabao-78": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【惊鸿箫】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 78,
+      "name": "惊鸿箫",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 78
+      }
+    }
+  },
+  "gen-fabao-79": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【缠霞刃】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 79,
+      "name": "缠霞刃",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 79
+      }
+    }
+  },
+  "gen-fabao-80": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【引月弓】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 80,
+      "name": "引月弓",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 80
+      }
+    }
+  },
+  "gen-fabao-81": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【飞虎钩】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 81,
+      "name": "飞虎钩",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 81
+      }
+    }
+  },
+  "gen-fabao-82": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【叱云扇】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 82,
+      "name": "叱云扇",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 82
+      }
+    }
+  },
+  "gen-fabao-83": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【捣龙锏】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 83,
+      "name": "捣龙锏",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 83
+      }
+    }
+  },
+  "gen-fabao-84": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【九阳尺】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 84,
+      "name": "九阳尺",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 84
+      }
+    }
+  },
+  "gen-fabao-85": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【垂星盘】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 85,
+      "name": "垂星盘",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 85
+      }
+    }
+  },
+  "gen-fabao-86": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【夙念结】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 86,
+      "name": "夙念结",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 86
+      }
+    }
+  },
+  "gen-fabao-87": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【笙歌如意】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 87,
+      "name": "笙歌如意",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 87
+      }
+    }
+  },
+  "gen-fabao-88": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【筮梦晷】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 88,
+      "name": "筮梦晷",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 88
+      }
+    }
+  },
+  "gen-fabao-89": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【玄风铃】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 89,
+      "name": "玄风铃",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 89
+      }
+    }
+  },
+  "gen-fabao-90": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【荡魂鼎】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 90,
+      "name": "荡魂鼎",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 90
+      }
+    }
+  },
+  "gen-fabao-91": {
+    "sender": "assistant",
+    "text": "为你速查到【悬夜林（七尾蜈蚣）】下的全部 2 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "悬夜翎",
+      "dungeonName": "悬夜林（七尾蜈蚣）",
+      "candidates": {
+        "__count": 2,
+        "__first": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+      }
+    }
+  },
+  "gen-fabao-92": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【噬魇镜】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 92,
+      "name": "噬魇镜",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 92
+      }
+    }
+  },
+  "gen-fabao-93": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【春驻】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 93,
+      "name": "春驻",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 93
+      }
+    }
+  },
+  "gen-fabao-94": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【折玉】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 94,
+      "name": "折玉",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 94
+      }
+    }
+  },
+  "gen-fabao-95": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【海生月】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 95,
+      "name": "海生月",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 95
+      }
+    }
+  },
+  "gen-fabao-96": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【同归引】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 96,
+      "name": "同归引",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 96
+      }
+    }
+  },
+  "gen-fabao-97": {
+    "sender": "assistant",
+    "text": "为你速查到装备【山河扇秘笈】（佩章）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 4257,
+        "name": "山河扇秘笈",
+        "slot": "佩章"
+      }
+    }
+  },
+  "gen-fabao-98": {
+    "sender": "assistant",
+    "text": "为你速查到装备【神木骰秘笈】（佩章）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 4257,
+        "name": "神木骰秘笈",
+        "slot": "佩章"
+      }
+    }
+  },
+  "gen-fabao-99": {
+    "sender": "assistant",
+    "text": "为你检索到 34 件符合【万毒鼎】的候选装备，可在下方直接切换查看详情：",
+    "cardType": "equip_candidates",
+    "cardData": {
+      "keyword": "万毒鼎",
+      "candidates": {
+        "__count": 34,
+        "__first": 109832
+      },
+      "totalCount": 34
+    }
+  },
+  "gen-fabao-100": {
+    "sender": "assistant",
+    "text": "为你速查到装备【玉净瓶秘笈】（佩章）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 4257,
+        "name": "玉净瓶秘笈",
+        "slot": "佩章"
+      }
+    }
+  },
+  "gen-fabao-101": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【阴阳镜】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 101,
+      "name": "阴阳镜",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 101
+      }
+    }
+  },
+  "gen-fabao-102": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【蟠龙幡】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 102,
+      "name": "蟠龙幡",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 102
+      }
+    }
+  },
+  "gen-fabao-103": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【金葫芦】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 103,
+      "name": "金葫芦",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 103
+      }
+    }
+  },
+  "gen-fabao-104": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【五龙轮】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 104,
+      "name": "五龙轮",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 104
+      }
+    }
+  },
+  "gen-fabao-105": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【九龙神火罩】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 105,
+      "name": "九龙神火罩",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 105
+      }
+    }
+  },
+  "gen-fabao-106": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【摄魂】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 106,
+      "name": "摄魂",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 106
+      }
+    }
+  },
+  "gen-fabao-107": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【噬血珠】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 107,
+      "name": "噬血珠",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 107
+      }
+    }
+  },
+  "gen-fabao-108": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【噬魂】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 108,
+      "name": "噬魂",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 108
+      }
+    }
+  },
+  "gen-fabao-109": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【玲珑塔】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 109,
+      "name": "玲珑塔",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 109
+      }
+    }
+  },
+  "gen-fabao-110": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【落魂灯】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 110,
+      "name": "落魂灯",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 110
+      }
+    }
+  },
+  "gen-fabao-111": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【逍遥扇】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 111,
+      "name": "逍遥扇",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 111
+      }
+    }
+  },
+  "gen-fabao-112": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【混元金斗】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 112,
+      "name": "混元金斗",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 112
+      }
+    }
+  },
+  "gen-fabao-113": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【錾光龙挂】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 113,
+      "name": "錾光龙挂",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 113
+      }
+    }
+  },
+  "gen-fabao-114": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【新月宝鉴】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 114,
+      "name": "新月宝鉴",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 114
+      }
+    }
+  },
+  "gen-fabao-115": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【浮屠】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 115,
+      "name": "浮屠",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 115
+      }
+    }
+  },
+  "gen-fabao-116": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【引魂幡】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 116,
+      "name": "引魂幡",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 116
+      }
+    }
+  },
+  "gen-fabao-117": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【无间】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 117,
+      "name": "无间",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 117
+      }
+    }
+  },
+  "gen-fabao-118": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【天琊】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 118,
+      "name": "天琊",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 118
+      }
+    }
+  },
+  "gen-fabao-119": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【伤心花】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 119,
+      "name": "伤心花",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 119
+      }
+    }
+  },
+  "gen-fabao-120": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【斩龙剑】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 120,
+      "name": "斩龙剑",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 120
+      }
+    }
+  },
+  "gen-fabao-121": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【合欢铃】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 121,
+      "name": "合欢铃",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 121
+      }
+    }
+  },
+  "gen-fabao-122": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【墨雪】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 122,
+      "name": "墨雪",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 122
+      }
+    }
+  },
+  "gen-fabao-123": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【箴言筒】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 123,
+      "name": "箴言筒",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 123
+      }
+    }
+  },
+  "gen-fabao-124": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【返魂杵】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 124,
+      "name": "返魂杵",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 124
+      }
+    }
+  },
+  "gen-fabao-125": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【珠华钦木】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 125,
+      "name": "珠华钦木",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 125
+      }
+    }
+  },
+  "gen-fabao-126": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【三清帝钟】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 126,
+      "name": "三清帝钟",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 126
+      }
+    }
+  },
+  "gen-fabao-127": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【玄火鉴】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 127,
+      "name": "玄火鉴",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 127
+      }
+    }
+  },
+  "gen-fabao-128": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【云光剑】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 128,
+      "name": "云光剑",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 128
+      }
+    }
+  },
+  "gen-fabao-129": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【白骨剑】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 129,
+      "name": "白骨剑",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 129
+      }
+    }
+  },
+  "gen-fabao-130": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【观月索】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 130,
+      "name": "观月索",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 130
+      }
+    }
+  },
+  "gen-fabao-131": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【离人锥】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 131,
+      "name": "离人锥",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 131
+      }
+    }
+  },
+  "gen-fabao-132": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【灵蛛印】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 132,
+      "name": "灵蛛印",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 132
+      }
+    }
+  },
+  "gen-fabao-133": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【黑蟾散】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 133,
+      "name": "黑蟾散",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 133
+      }
+    }
+  },
+  "gen-fabao-134": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【噬毒佩】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 134,
+      "name": "噬毒佩",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 134
+      }
+    }
+  },
+  "gen-fabao-135": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【万毒归宗袋】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 135,
+      "name": "万毒归宗袋",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 135
+      }
+    }
+  },
+  "gen-fabao-136": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【万化珠】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 136,
+      "name": "万化珠",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 136
+      }
+    }
+  },
+  "gen-fabao-137": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【噬魂玉】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 137,
+      "name": "噬魂玉",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 137
+      }
+    }
+  },
+  "gen-fabao-138": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【毒血幡】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 138,
+      "name": "毒血幡",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 138
+      }
+    }
+  },
+  "gen-fabao-139": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【归源血卷】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 139,
+      "name": "归源血卷",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 139
+      }
+    }
   }
 }
