@@ -1,0 +1,7854 @@
+[
+  {
+    "id": "gen-equip-修武-武器",
+    "input": "修武 武器",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 56,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 56
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-头盔",
+    "input": "修武 头盔",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 115878,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-衣服",
+    "input": "修武 衣服",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 112452,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-靴子",
+    "input": "修武 靴子",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 118307,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-袖甲",
+    "input": "修武 袖甲",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 26,
+      "cardData.candidates.0.id": 126606,
+      "cardData.totalCount": 26
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-腰带",
+    "input": "修武 腰带",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 120829,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-项链",
+    "input": "修武 项链",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-戒指",
+    "input": "修武 戒指",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-法身",
+    "input": "修武 法身",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-罡气",
+    "input": "修武 罡气",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-护符",
+    "input": "修武 护符",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-勋章",
+    "input": "修武 勋章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-玺绶",
+    "input": "修武 玺绶",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-锦囊",
+    "input": "修武 锦囊",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-修武-佩章",
+    "input": "修武 佩章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-武器",
+    "input": "昭武 武器",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-头盔",
+    "input": "昭武 头盔",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 115878,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-衣服",
+    "input": "昭武 衣服",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 112452,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-靴子",
+    "input": "昭武 靴子",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 118307,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-袖甲",
+    "input": "昭武 袖甲",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 26,
+      "cardData.candidates.0.id": 126606,
+      "cardData.totalCount": 26
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-腰带",
+    "input": "昭武 腰带",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 120829,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-项链",
+    "input": "昭武 项链",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-戒指",
+    "input": "昭武 戒指",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-法身",
+    "input": "昭武 法身",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-罡气",
+    "input": "昭武 罡气",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-护符",
+    "input": "昭武 护符",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-勋章",
+    "input": "昭武 勋章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-玺绶",
+    "input": "昭武 玺绶",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-锦囊",
+    "input": "昭武 锦囊",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-昭武-佩章",
+    "input": "昭武 佩章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-武器",
+    "input": "彰武 武器",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-头盔",
+    "input": "彰武 头盔",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 115878,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-衣服",
+    "input": "彰武 衣服",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 112452,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-靴子",
+    "input": "彰武 靴子",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 118307,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-袖甲",
+    "input": "彰武 袖甲",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 26,
+      "cardData.candidates.0.id": 126606,
+      "cardData.totalCount": 26
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-腰带",
+    "input": "彰武 腰带",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 120829,
+      "cardData.totalCount": 54
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-项链",
+    "input": "彰武 项链",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-戒指",
+    "input": "彰武 戒指",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-法身",
+    "input": "彰武 法身",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-罡气",
+    "input": "彰武 罡气",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-护符",
+    "input": "彰武 护符",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-勋章",
+    "input": "彰武 勋章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-玺绶",
+    "input": "彰武 玺绶",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-锦囊",
+    "input": "彰武 锦囊",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-彰武-佩章",
+    "input": "彰武 佩章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-武器",
+    "input": "神隐 武器",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-头盔",
+    "input": "神隐 头盔",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-衣服",
+    "input": "神隐 衣服",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-靴子",
+    "input": "神隐 靴子",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-袖甲",
+    "input": "神隐 袖甲",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-腰带",
+    "input": "神隐 腰带",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-项链",
+    "input": "神隐 项链",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-戒指",
+    "input": "神隐 戒指",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-法身",
+    "input": "神隐 法身",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-罡气",
+    "input": "神隐 罡气",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-护符",
+    "input": "神隐 护符",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-勋章",
+    "input": "神隐 勋章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-玺绶",
+    "input": "神隐 玺绶",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-锦囊",
+    "input": "神隐 锦囊",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神隐-佩章",
+    "input": "神隐 佩章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-武器",
+    "input": "神级 武器",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-头盔",
+    "input": "神级 头盔",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-衣服",
+    "input": "神级 衣服",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-靴子",
+    "input": "神级 靴子",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-袖甲",
+    "input": "神级 袖甲",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-腰带",
+    "input": "神级 腰带",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-项链",
+    "input": "神级 项链",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": 3432,
+      "cardData.totalCount": 6
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-戒指",
+    "input": "神级 戒指",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 12,
+      "cardData.candidates.0.id": 3433,
+      "cardData.totalCount": 12
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-法身",
+    "input": "神级 法身",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-罡气",
+    "input": "神级 罡气",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-护符",
+    "input": "神级 护符",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-勋章",
+    "input": "神级 勋章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-玺绶",
+    "input": "神级 玺绶",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-锦囊",
+    "input": "神级 锦囊",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-神级-佩章",
+    "input": "神级 佩章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-武器",
+    "input": "天命 武器",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-头盔",
+    "input": "天命 头盔",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-衣服",
+    "input": "天命 衣服",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-靴子",
+    "input": "天命 靴子",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-袖甲",
+    "input": "天命 袖甲",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-腰带",
+    "input": "天命 腰带",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-项链",
+    "input": "天命 项链",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-戒指",
+    "input": "天命 戒指",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-法身",
+    "input": "天命 法身",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-罡气",
+    "input": "天命 罡气",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-护符",
+    "input": "天命 护符",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-勋章",
+    "input": "天命 勋章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-玺绶",
+    "input": "天命 玺绶",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-锦囊",
+    "input": "天命 锦囊",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-天命-佩章",
+    "input": "天命 佩章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-武器",
+    "input": "至尊 武器",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-头盔",
+    "input": "至尊 头盔",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-衣服",
+    "input": "至尊 衣服",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-靴子",
+    "input": "至尊 靴子",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-袖甲",
+    "input": "至尊 袖甲",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-腰带",
+    "input": "至尊 腰带",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-项链",
+    "input": "至尊 项链",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-戒指",
+    "input": "至尊 戒指",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-法身",
+    "input": "至尊 法身",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": 20136,
+      "cardData.totalCount": 2
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-罡气",
+    "input": "至尊 罡气",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-护符",
+    "input": "至尊 护符",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-勋章",
+    "input": "至尊 勋章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-玺绶",
+    "input": "至尊 玺绶",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": 24174,
+      "cardData.totalCount": 3
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-锦囊",
+    "input": "至尊 锦囊",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-至尊-佩章",
+    "input": "至尊 佩章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-武器",
+    "input": "混虚 武器",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 81,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 81
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-头盔",
+    "input": "混虚 头盔",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 81,
+      "cardData.candidates.0.id": 115878,
+      "cardData.totalCount": 81
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-衣服",
+    "input": "混虚 衣服",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 81,
+      "cardData.candidates.0.id": 112452,
+      "cardData.totalCount": 81
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-靴子",
+    "input": "混虚 靴子",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 81,
+      "cardData.candidates.0.id": 118307,
+      "cardData.totalCount": 81
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-袖甲",
+    "input": "混虚 袖甲",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-腰带",
+    "input": "混虚 腰带",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 81,
+      "cardData.candidates.0.id": 120829,
+      "cardData.totalCount": 81
+    },
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-项链",
+    "input": "混虚 项链",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-戒指",
+    "input": "混虚 戒指",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-法身",
+    "input": "混虚 法身",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-罡气",
+    "input": "混虚 罡气",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-护符",
+    "input": "混虚 护符",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-勋章",
+    "input": "混虚 勋章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-玺绶",
+    "input": "混虚 玺绶",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-锦囊",
+    "input": "混虚 锦囊",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-equip-混虚-佩章",
+    "input": "混虚 佩章",
+    "expect": {},
+    "tags": [
+      "generated",
+      "equip"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-赤眼猪妖",
+    "input": "赤眼猪妖",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_CHIYAN_ZHUYAO_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-姻缘古树",
+    "input": "姻缘古树",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_YINYUAN_GUSHU_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-黑心老人",
+    "input": "黑心老人",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_HEIXIN_LAOREN_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-黑水玄蛇",
+    "input": "黑水玄蛇",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_XUAN_SHE_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-天煞明王",
+    "input": "天煞明王",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_TIANSHA_MINGWANG_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-幽冥圣母",
+    "input": "幽冥圣母",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_YOUMING_SHENGMU_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-修罗鸟",
+    "input": "修罗鸟",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-白骨妖蛇",
+    "input": "白骨妖蛇",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-六王魔骸",
+    "input": "六王魔骸",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-六王魔核",
+    "input": "六王魔核",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-兽神",
+    "input": "兽神",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 8,
+      "cardData.candidates.0.id": "SHOUSHEN_JIANGLIN_HARD_XIULUO_NIAO_HARD"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-黑无常",
+    "input": "黑无常",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-白无常",
+    "input": "白无常",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-兽神（完全形态）",
+    "input": "兽神（完全形态）",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 8,
+      "cardData.candidates.0.id": "SHOUSHEN_JIANGLIN_HARD_XIULUO_NIAO_HARD"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-罪·玄龟",
+    "input": "罪·玄龟",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-罪·玄蛇",
+    "input": "罪·玄蛇",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 4,
+      "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_SHE"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-罪·青龙",
+    "input": "罪·青龙",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "SIXIANG_QI_ZUI_QING_LONG"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-罪·白虎",
+    "input": "罪·白虎",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-罪·朱雀",
+    "input": "罪·朱雀",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-罪·玄晔",
+    "input": "罪·玄晔",
+    "expect": {
+      "cardType": "boss"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-乾荒",
+    "input": "乾荒",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_QIAN_HUANG_T16"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-时弘",
+    "input": "时弘",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_SHI_HONG_T16"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-阵眼",
+    "input": "阵眼",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_ZHEN_YAN_T16"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-孽龙",
+    "input": "孽龙",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_NIE_LONG_T16"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-玄上",
+    "input": "玄上",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_XUAN_SHANG_T16"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-太灵",
+    "input": "太灵",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-赤梭",
+    "input": "赤梭",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-玄铠",
+    "input": "玄铠",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_XUAN_KAI_T19"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-望潮",
+    "input": "望潮",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_WANG_CHAO_T19"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-裂魂",
+    "input": "裂魂",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_LIE_HUN_T19"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-璃音",
+    "input": "璃音",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_LI_YIN_T19"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-沧渊",
+    "input": "沧渊",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CANG_YUAN_T19"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-噬人花",
+    "input": "噬人花",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_SHI_REN_HUA_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-金瓶儿",
+    "input": "金瓶儿",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_JIN_PING_ER_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-秦无炎",
+    "input": "秦无炎",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_QIN_WU_YAN_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-陆雪琪",
+    "input": "陆雪琪",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_LU_XUE_QI_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-黄鸟",
+    "input": "黄鸟",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_HUANG_NIAO_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-玄蛇",
+    "input": "玄蛇",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_SHE"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-小灰",
+    "input": "小灰",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_XIAO_HUI_NORMAL"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-七尾蜈蚣·雌",
+    "input": "七尾蜈蚣·雌",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-七尾蜈蚣·雄",
+    "input": "七尾蜈蚣·雄",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-缚魂触",
+    "input": "缚魂触",
+    "expect": null,
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-化生触",
+    "input": "化生触",
+    "expect": null,
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-潮音骨",
+    "input": "潮音骨",
+    "expect": null,
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-年老大",
+    "input": "年老大",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_NIANLAODA_CHUSHI"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-玉阳子",
+    "input": "玉阳子",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_YUYANGZI_CHUSHI"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-青龙",
+    "input": "青龙",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "SIXIANG_QI_ZUI_QING_LONG"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-幽姬",
+    "input": "幽姬",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_YOUJI_CHUSHI"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-夔牛",
+    "input": "夔牛",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_KUINIU_CHUSHI"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-苍松",
+    "input": "苍松",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_CANGSONG_CHUSHI"
+    },
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-炼血堂教众",
+    "input": "炼血堂教众",
+    "expect": null,
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-boss-炼血堂精英",
+    "input": "炼血堂精英",
+    "expect": null,
+    "tags": [
+      "generated",
+      "boss"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼王 神通",
+    "input": "鬼王 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3072
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼王 天书",
+    "input": "鬼王 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 618
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼王 造化",
+    "input": "鬼王 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1557
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼王 飞升",
+    "input": "鬼王 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1304
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼王 心法",
+    "input": "鬼王 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10761
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼王 星宿",
+    "input": "鬼王 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6811
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼王 轩辕策",
+    "input": "鬼王 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-合欢 天书",
+    "input": "合欢 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 720
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-合欢 神通",
+    "input": "合欢 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3077
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-合欢 造化",
+    "input": "合欢 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1560
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-合欢 飞升",
+    "input": "合欢 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1312
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-合欢 轩辕策",
+    "input": "合欢 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-合欢 星宿",
+    "input": "合欢 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6847
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-合欢 心法",
+    "input": "合欢 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10928
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青云 天书",
+    "input": "青云 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 567
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青云 神通",
+    "input": "青云 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3066
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青云 造化",
+    "input": "青云 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2044
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青云 飞升",
+    "input": "青云 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1301
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青云 心法",
+    "input": "青云 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10785
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青云 星宿",
+    "input": "青云 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6823
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青云 轩辕策",
+    "input": "青云 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天音 天书",
+    "input": "天音 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 669
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天音 神通",
+    "input": "天音 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3073
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天音 造化",
+    "input": "天音 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2061
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天音 飞升",
+    "input": "天音 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1307
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天音 轩辕策",
+    "input": "天音 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天音 心法",
+    "input": "天音 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10912
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天音 星宿",
+    "input": "天音 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6829
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼道 天书",
+    "input": "鬼道 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1150
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼道 神通",
+    "input": "鬼道 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3081
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼道 造化",
+    "input": "鬼道 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1543
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼道 星宿",
+    "input": "鬼道 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6859
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼道 心法",
+    "input": "鬼道 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10753
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼道 飞升",
+    "input": "鬼道 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 1317
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-鬼道 轩辕策",
+    "input": "鬼道 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-焚香 神通",
+    "input": "焚香 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3575
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-焚香 天书",
+    "input": "焚香 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3373
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-焚香 造化",
+    "input": "焚香 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3751
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-焚香 飞升",
+    "input": "焚香 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3762
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-焚香 星宿",
+    "input": "焚香 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6871
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-焚香 心法",
+    "input": "焚香 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10709
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-焚香 轩辕策",
+    "input": "焚香 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-九黎 天书",
+    "input": "九黎 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2074
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-九黎 神通",
+    "input": "九黎 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3037
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-九黎 造化",
+    "input": "九黎 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2225
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-九黎 飞升",
+    "input": "九黎 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2247
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-九黎 轩辕策",
+    "input": "九黎 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-九黎 星宿",
+    "input": "九黎 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6904
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-九黎 心法",
+    "input": "九黎 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10809
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-烈山 天书",
+    "input": "烈山 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2125
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-烈山 神通",
+    "input": "烈山 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3041
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-烈山 造化",
+    "input": "烈山 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2220
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-烈山 星宿",
+    "input": "烈山 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6883
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-烈山 飞升",
+    "input": "烈山 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2255
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-烈山 轩辕策",
+    "input": "烈山 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-烈山 心法",
+    "input": "烈山 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10896
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-怀光 神通",
+    "input": "怀光 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3093
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-怀光 天书",
+    "input": "怀光 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2523
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-怀光 造化",
+    "input": "怀光 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2699
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-怀光 飞升",
+    "input": "怀光 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2644
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-怀光 心法",
+    "input": "怀光 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10769
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-怀光 星宿",
+    "input": "怀光 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6892
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-怀光 轩辕策",
+    "input": "怀光 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天华 天书",
+    "input": "天华 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2584
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天华 神通",
+    "input": "天华 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3050
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天华 造化",
+    "input": "天华 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2704
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天华 星宿",
+    "input": "天华 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6916
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天华 飞升",
+    "input": "天华 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 2647
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天华 轩辕策",
+    "input": "天华 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-天华 心法",
+    "input": "天华 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10736
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-辰皇 神通",
+    "input": "辰皇 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 4590
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-辰皇 天书",
+    "input": "辰皇 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 4115
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-辰皇 造化",
+    "input": "辰皇 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 4575
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-辰皇 飞升",
+    "input": "辰皇 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 4546
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-辰皇 星宿",
+    "input": "辰皇 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6931
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-辰皇 心法",
+    "input": "辰皇 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10908
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-辰皇 轩辕策",
+    "input": "辰皇 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-太昊 神通",
+    "input": "太昊 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3573
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-太昊 天书",
+    "input": "太昊 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3503
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-太昊 造化",
+    "input": "太昊 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3741
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-太昊 飞升",
+    "input": "太昊 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 3833
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-太昊 星宿",
+    "input": "太昊 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6937
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-太昊 轩辕策",
+    "input": "太昊 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-太昊 心法",
+    "input": "太昊 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10876
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-牵机 天书",
+    "input": "牵机 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5125
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-牵机 神通",
+    "input": "牵机 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5305
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-牵机 造化",
+    "input": "牵机 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5295
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-牵机 飞升",
+    "input": "牵机 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5250
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-牵机 星宿",
+    "input": "牵机 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6949
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-牵机 心法",
+    "input": "牵机 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10797
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-牵机 轩辕策",
+    "input": "牵机 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-英招 天书",
+    "input": "英招 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5176
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-英招 神通",
+    "input": "英招 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5271
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-英招 造化",
+    "input": "英招 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5257
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-英招 飞升",
+    "input": "英招 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5243
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-英招 轩辕策",
+    "input": "英招 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-英招 心法",
+    "input": "英招 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10817
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-英招 星宿",
+    "input": "英招 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6967
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-破军 神通",
+    "input": "破军 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5706
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-破军 天书",
+    "input": "破军 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5447
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-破军 造化",
+    "input": "破军 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5694
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-破军 飞升",
+    "input": "破军 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5717
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-破军 星宿",
+    "input": "破军 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6979
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-破军 心法",
+    "input": "破军 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10887
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-破军 轩辕策",
+    "input": "破军 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青罗 神通",
+    "input": "青罗 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6242
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青罗 天书",
+    "input": "青罗 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6022
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青罗 造化",
+    "input": "青罗 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6227
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青罗 飞升",
+    "input": "青罗 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6009
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青罗 心法",
+    "input": "青罗 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10801
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青罗 星宿",
+    "input": "青罗 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6991
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-青罗 轩辕策",
+    "input": "青罗 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-归云 天书",
+    "input": "归云 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6460
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-归云 神通",
+    "input": "归云 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6649
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-归云 造化",
+    "input": "归云 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6754
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-归云 轩辕策",
+    "input": "归云 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-归云 飞升",
+    "input": "归云 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6720
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-归云 星宿",
+    "input": "归云 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6997
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-归云 心法",
+    "input": "归云 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10838
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-画影 神通",
+    "input": "画影 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7605
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-画影 天书",
+    "input": "画影 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7309
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-画影 造化",
+    "input": "画影 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7595
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-画影 星宿",
+    "input": "画影 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7634
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-画影 飞升",
+    "input": "画影 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7584
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-画影 轩辕策",
+    "input": "画影 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-画影 心法",
+    "input": "画影 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10777
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-逐霜 神通",
+    "input": "逐霜 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8072
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-逐霜 天书",
+    "input": "逐霜 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7908
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-逐霜 造化",
+    "input": "逐霜 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8060
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-逐霜 飞升",
+    "input": "逐霜 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8081
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-逐霜 星宿",
+    "input": "逐霜 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8051
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-逐霜 心法",
+    "input": "逐霜 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10830
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-逐霜 轩辕策",
+    "input": "逐霜 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-惊岚 天书",
+    "input": "惊岚 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8315
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-惊岚 神通",
+    "input": "惊岚 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8393
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-惊岚 造化",
+    "input": "惊岚 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8381
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-惊岚 飞升",
+    "input": "惊岚 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8594
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-惊岚 轩辕策",
+    "input": "惊岚 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-惊岚 星宿",
+    "input": "惊岚 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8587
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-惊岚 心法",
+    "input": "惊岚 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10826
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-昭冥 天书",
+    "input": "昭冥 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8932
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-昭冥 神通",
+    "input": "昭冥 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9158
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-昭冥 造化",
+    "input": "昭冥 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9143
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-昭冥 飞升",
+    "input": "昭冥 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9191
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-昭冥 星宿",
+    "input": "昭冥 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9187
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-昭冥 轩辕策",
+    "input": "昭冥 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-昭冥 心法",
+    "input": "昭冥 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10924
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-涅羽 天书",
+    "input": "涅羽 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9487
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-涅羽 神通",
+    "input": "涅羽 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9709
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-涅羽 造化",
+    "input": "涅羽 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9662
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-涅羽 飞升",
+    "input": "涅羽 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9643
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-涅羽 心法",
+    "input": "涅羽 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10749
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-涅羽 星宿",
+    "input": "涅羽 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9696
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-涅羽 轩辕策",
+    "input": "涅羽 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-百灵 天书",
+    "input": "百灵 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10038
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-百灵 神通",
+    "input": "百灵 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10205
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-百灵 造化",
+    "input": "百灵 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10190
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-百灵 飞升",
+    "input": "百灵 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10093
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-百灵 轩辕策",
+    "input": "百灵 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-百灵 星宿",
+    "input": "百灵 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10234
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-百灵 心法",
+    "input": "百灵 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10728
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-释罗 神通",
+    "input": "释罗 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10582
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-释罗 造化",
+    "input": "释罗 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10574
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-释罗 天书",
+    "input": "释罗 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10524
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-释罗 飞升",
+    "input": "释罗 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10521
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-释罗 心法",
+    "input": "释罗 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10865
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-释罗 星宿",
+    "input": "释罗 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10606
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-释罗 轩辕策",
+    "input": "释罗 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-长生堂 天书",
+    "input": "长生堂 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11156
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-长生堂 神通",
+    "input": "长生堂 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11232
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-长生堂 造化",
+    "input": "长生堂 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11226
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-长生堂 飞升",
+    "input": "长生堂 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11211
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-长生堂 轩辕策",
+    "input": "长生堂 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-长生堂 星宿",
+    "input": "长生堂 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11258
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-长生堂 心法",
+    "input": "长生堂 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11259
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-万毒 天书",
+    "input": "万毒 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11807
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-万毒 神通",
+    "input": "万毒 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 12030
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-万毒 造化",
+    "input": "万毒 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11886
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-万毒 飞升",
+    "input": "万毒 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11883
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-万毒 轩辕策",
+    "input": "万毒 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-万毒 心法",
+    "input": "万毒 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 12008
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-万毒 星宿",
+    "input": "万毒 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11982
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-炼血 天书",
+    "input": "炼血 天书",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 12527
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-炼血 神通",
+    "input": "炼血 神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 12643
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-炼血 造化",
+    "input": "炼血 造化",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 12626
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-炼血 星宿",
+    "input": "炼血 星宿",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 12665
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-炼血 飞升",
+    "input": "炼血 飞升",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 29,
+      "cardData.candidates.0.id": 12598
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-炼血 轩辕策",
+    "input": "炼血 轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-炼血 心法",
+    "input": "炼血 心法",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 12617
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-神通 仙(通用)",
+    "input": "神通 仙(通用)",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-神通 佛(通用)",
+    "input": "神通 佛(通用)",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-神通 魔(通用)",
+    "input": "神通 魔(通用)",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-造化 仙(通用)",
+    "input": "造化 仙(通用)",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-造化 魔(通用)",
+    "input": "造化 魔(通用)",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skill-造化 佛(通用)",
+    "input": "造化 佛(通用)",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-鬼王",
+    "input": "鬼王",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 37,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 37
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-合欢",
+    "input": "合欢",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 37,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 37
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-青云",
+    "input": "青云",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 37,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 37
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-天音",
+    "input": "天音",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 37,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 37
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-鬼道",
+    "input": "鬼道",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 37,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 37
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-焚香",
+    "input": "焚香",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-九黎",
+    "input": "九黎",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 36,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 36
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-烈山",
+    "input": "烈山",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 36,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 36
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-怀光",
+    "input": "怀光",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-天华",
+    "input": "天华",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-辰皇",
+    "input": "辰皇",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-太昊",
+    "input": "太昊",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-牵机",
+    "input": "牵机",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-英招",
+    "input": "英招",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-破军",
+    "input": "破军",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-青罗",
+    "input": "青罗",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-归云",
+    "input": "归云",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-画影",
+    "input": "画影",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-逐霜",
+    "input": "逐霜",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-惊岚",
+    "input": "惊岚",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-昭冥",
+    "input": "昭冥",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-涅羽",
+    "input": "涅羽",
+    "expect": {
+      "cardType": "skill"
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-百灵",
+    "input": "百灵",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-释罗",
+    "input": "释罗",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-长生堂",
+    "input": "长生堂",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-万毒",
+    "input": "万毒",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 34,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 34
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-炼血",
+    "input": "炼血",
+    "expect": null,
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-通用天书",
+    "input": "通用天书",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-触发技能",
+    "input": "触发技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 10,
+      "cardData.candidates.0.id": 11871
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-飞升技能(通用)",
+    "input": "飞升技能(通用)",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-连段技能",
+    "input": "连段技能",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-师徒技能",
+    "input": "师徒技能",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-特殊技能",
+    "input": "特殊技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": 1985
+    },
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-宠物技能",
+    "input": "宠物技能",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-帮派技能",
+    "input": "帮派技能",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-skillclass-夫妻技能",
+    "input": "夫妻技能",
+    "expect": {},
+    "tags": [
+      "generated",
+      "skill"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-1",
+    "input": "八卦石",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-2",
+    "input": "六合镜",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-3",
+    "input": "七星剑",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-4",
+    "input": "琥珀朱绫",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-5",
+    "input": "若雪",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-6",
+    "input": "朱雀印",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-7",
+    "input": "四灵幡",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-8",
+    "input": "乾坤青光戒",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-9",
+    "input": "天魔指",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-10",
+    "input": "慑心铃",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-11",
+    "input": "多情环",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-12",
+    "input": "千媚莲",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-13",
+    "input": "八极游龙",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-14",
+    "input": "轮回珠",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-15",
+    "input": "金刚杵",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-16",
+    "input": "如意乾坤袋",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-17",
+    "input": "六道生灭",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-18",
+    "input": "血玉骨片",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-19",
+    "input": "破刹",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-20",
+    "input": "千毒蛊",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-21",
+    "input": "鬼磬",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-22",
+    "input": "南明印",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-23",
+    "input": "衡天尺",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-24",
+    "input": "火玲珑",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-25",
+    "input": "九寒凝冰刺",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-26",
+    "input": "五色石",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-27",
+    "input": "怒兽幡",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-28",
+    "input": "血枫枪",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-29",
+    "input": "罡岚",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-30",
+    "input": "丧门剑",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-31",
+    "input": "丹朱",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-32",
+    "input": "返魂香",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-33",
+    "input": "浮影古镜",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-34",
+    "input": "洛书",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-35",
+    "input": "七杀",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-36",
+    "input": "破军",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-37",
+    "input": "贪狼",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-38",
+    "input": "绝影",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-39",
+    "input": "九音螺",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-40",
+    "input": "亚风",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-41",
+    "input": "琉璃盏",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-42",
+    "input": "碧落飞鸿",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-43",
+    "input": "雷公墨",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-44",
+    "input": "春秋锁",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-45",
+    "input": "子母阴阳扣",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-46",
+    "input": "羲皇钟",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-47",
+    "input": "率兜旗",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-48",
+    "input": "鼍鼓",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-49",
+    "input": "落宝金钱",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-50",
+    "input": "皇极",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-51",
+    "input": "天灵灯",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-52",
+    "input": "天极木",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-53",
+    "input": "罗睺玉",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-54",
+    "input": "金羽变",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-55",
+    "input": "赤星龙炎",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-56",
+    "input": "混元令",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-57",
+    "input": "七煞戈",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-58",
+    "input": "天都戟",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-59",
+    "input": "五方神钺",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-60",
+    "input": "掠影",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-61",
+    "input": "破命",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-62",
+    "input": "烁雷",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-63",
+    "input": "追魂",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-64",
+    "input": "玉娥灯",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-65",
+    "input": "冰玉壶",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-66",
+    "input": "青天皇典",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-67",
+    "input": "珞珈",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-68",
+    "input": "霁华灯",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-69",
+    "input": "望晴镜",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-70",
+    "input": "月琼壶",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-71",
+    "input": "妙璃",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-72",
+    "input": "惜梦笔",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-73",
+    "input": "惊才墨",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-74",
+    "input": "醉心笺",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-75",
+    "input": "珠玑砚",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-76",
+    "input": "青玉案",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-77",
+    "input": "丹书简",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-78",
+    "input": "惊鸿箫",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-79",
+    "input": "缠霞刃",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-80",
+    "input": "引月弓",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-81",
+    "input": "飞虎钩",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-82",
+    "input": "叱云扇",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-83",
+    "input": "捣龙锏",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-84",
+    "input": "九阳尺",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-85",
+    "input": "垂星盘",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-86",
+    "input": "夙念结",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-87",
+    "input": "笙歌如意",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-88",
+    "input": "筮梦晷",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-89",
+    "input": "玄风铃",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-90",
+    "input": "荡魂鼎",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-91",
+    "input": "悬夜翎",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-92",
+    "input": "噬魇镜",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-93",
+    "input": "春驻",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-94",
+    "input": "折玉",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-95",
+    "input": "海生月",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-96",
+    "input": "同归引",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-97",
+    "input": "山河扇",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-98",
+    "input": "神木骰",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-99",
+    "input": "万毒鼎",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 34,
+      "cardData.candidates.0.id": 109832,
+      "cardData.totalCount": 34
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-100",
+    "input": "玉净瓶",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-101",
+    "input": "阴阳镜",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-102",
+    "input": "蟠龙幡",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-103",
+    "input": "金葫芦",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-104",
+    "input": "五龙轮",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-105",
+    "input": "九龙神火罩",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-106",
+    "input": "摄魂",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-107",
+    "input": "噬血珠",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-108",
+    "input": "噬魂",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-109",
+    "input": "玲珑塔",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-110",
+    "input": "落魂灯",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-111",
+    "input": "逍遥扇",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-112",
+    "input": "混元金斗",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-113",
+    "input": "錾光龙挂",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-114",
+    "input": "新月宝鉴",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-115",
+    "input": "浮屠",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-116",
+    "input": "引魂幡",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-117",
+    "input": "无间",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-118",
+    "input": "天琊",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-119",
+    "input": "伤心花",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-120",
+    "input": "斩龙剑",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-121",
+    "input": "合欢铃",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-122",
+    "input": "墨雪",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-123",
+    "input": "箴言筒",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-124",
+    "input": "返魂杵",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-125",
+    "input": "珠华钦木",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-126",
+    "input": "三清帝钟",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-127",
+    "input": "玄火鉴",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-128",
+    "input": "云光剑",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-129",
+    "input": "白骨剑",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-130",
+    "input": "观月索",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-131",
+    "input": "离人锥",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-132",
+    "input": "灵蛛印",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-133",
+    "input": "黑蟾散",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-134",
+    "input": "噬毒佩",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-135",
+    "input": "万毒归宗袋",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-136",
+    "input": "万化珠",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-137",
+    "input": "噬魂玉",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-138",
+    "input": "毒血幡",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  },
+  {
+    "id": "gen-fabao-139",
+    "input": "归源血卷",
+    "expect": {
+      "cardType": "fabao"
+    },
+    "tags": [
+      "generated",
+      "fabao"
+    ],
+    "assert": "strong",
+    "golden": "lean",
+    "source": "matrix"
+  }
+]

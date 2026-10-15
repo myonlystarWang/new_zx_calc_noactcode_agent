@@ -35,12 +35,15 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'web_app', 'src', 'services');
 const GAME_DATA = path.join(ROOT, 'web_app', 'public', 'game_data');
 const CASES_FILE = path.join(ROOT, 'regression_test', 'l1_intent_cases.json');
+const MATRIX_FILE = path.join(ROOT, 'regression_test', 'l1_intent_cases_matrix.json');
+const MATRIX_REPORT_FILE = path.join(ROOT, 'regression_test', 'l1_matrix_report.txt');
 const GOLDEN_FILE = path.join(ROOT, 'regression_test', 'l1_intent_golden.json');
 const BUNDLE = path.join(os.tmpdir(), `l1_fixture_bundle_${process.pid}.mjs`);
 
 const argv = process.argv.slice(2);
 const MODE_GOLDEN = argv.includes('--golden');
 const MODE_PROBE = argv.includes('--probe');
+const MODE_MATRIX = argv.includes('--generate-matrix');
 const VERBOSE = argv.includes('--verbose');
 const PROBE_INPUTS = MODE_PROBE ? argv.slice(argv.indexOf('--probe') + 1).filter(a => !a.startsWith('--')) : [];
 
@@ -240,11 +243,172 @@ if (MODE_PROBE) {
     process.exit(0);
 }
 
-const cases = readJson(CASES_FILE);
-if (!Array.isArray(cases) || cases.length === 0) {
-    console.error(`用例文件为空或格式错误: ${CASES_FILE}`);
+/* ---------------- 4b. 实体矩阵生成（T-01：从数据文件自动生成覆盖用例） ---------------- */
+// 词表与 CopilotService.ts 保持一致（行号基线 75c1454）：品质 611 / 部位 612-615 / 职业 627-631 / 技能类别词 1347
+const MATRIX_QUALITIES = ['修武', '昭武', '彰武', '神隐', '神级', '天命', '至尊', '混虚'];
+const MATRIX_SLOTS = ['武器', '头盔', '衣服', '靴子', '袖甲', '腰带', '项链', '戒指', '法身', '罡气', '护符', '勋章', '玺绶', '锦囊', '佩章'];
+
+// lean golden：矩阵用例的 candidates 只存 {__count, __first} 摘要——
+// 否则 120 个装备用例 × 上百候选会把 golden 撑爆；断言强度不受影响（断言读原始结果）
+function leanify(norm) {
+    if (!norm || !norm.cardData || !Array.isArray(norm.cardData.candidates)) return norm;
+    const c = norm.cardData.candidates;
+    return {
+        ...norm,
+        cardData: {
+            ...norm.cardData,
+            candidates: { __count: c.length, __first: c[0]?.id ?? null },
+        },
+    };
+}
+
+function buildExpectation(r) {
+    if (r === null || r?.__error) return null;
+    const expect = { cardType: r.cardType };
+    const cd = r.cardData;
+    if (!cd) return expect;
+    if (Array.isArray(cd.candidates)) {
+        expect['cardData.candidates.length'] = cd.candidates.length;
+        if (cd.candidates[0]?.id !== undefined) expect['cardData.candidates.0.id'] = cd.candidates[0].id;
+    }
+    if (typeof cd.totalCount === 'number') expect['cardData.totalCount'] = cd.totalCount;
+    return expect;
+}
+
+if (MODE_MATRIX) {
+    const monstersByDungeon = readJson(path.join(GAME_DATA, 'dungeons_monsters.json'));
+    const fabaoRaw = readJson(path.join(GAME_DATA, 'fabao_curated.json'));
+    const skillChunks = ['all_skills_curated_1.json', 'all_skills_curated_2.json', 'all_skills_curated_3.json']
+        .map((f) => readJson(path.join(GAME_DATA, f))).flat();
+
+    // 每类的期望意图族（用于覆盖报告分级）；null/guard 与族外结果都会被点名
+    const FAMILIES = {
+        equip: ['equip', 'equip_candidates'],
+        boss: ['boss', 'boss_candidates'],
+        skill: ['skill', 'skill_candidates'],
+        fabao: ['fabao', 'fabao_candidates'],
+    };
+
+    const matrix = [];   // { id, input, family }
+    const addMany = (items, family, idPrefix) => {
+        for (const it of items) matrix.push({ ...it, family, id: `${idPrefix}-${it.id}` });
+    };
+
+    // A. 装备：15 部位 × 8 品质
+    const equipInputs = [];
+    for (const q of MATRIX_QUALITIES) {
+        for (const s of MATRIX_SLOTS) {
+            equipInputs.push({ id: `${q}-${s}`, input: `${q} ${s}` });
+        }
+    }
+    addMany(equipInputs, 'equip', 'gen-equip');
+
+    // B. BOSS：全部怪物名（去重，跨难度同名只测一次）
+    const bossNames = [...new Set(Object.values(monstersByDungeon).flat().map((m) => m.MonsterName).filter(Boolean))];
+    addMany(bossNames.map((n) => ({ id: n, input: n })), 'boss', 'gen-boss');
+
+    // C. 技能：group_name「职业·类别·阵营」→「职业 类别」；另加裸职业名
+    // 非查询类别的组不进矩阵（相关/触发/特殊/连段/宠物/怪物 是数据分组，不是玩家查询语）
+    const NON_CATEGORY = new Set(['相关', '触发', '特殊', '连段', '宠物', '怪物']);
+    const classCat = new Set();
+    const classBare = new Set();
+    for (const s of skillChunks) {
+        const g = s.group_name || '';
+        if (!g) continue;
+        const parts = g.split('·');
+        if (parts.length >= 2) {
+            if (!NON_CATEGORY.has(parts[1])) classCat.add(`${parts[0]} ${parts[1]}`);
+        } else {
+            classBare.add(parts[0]);
+        }
+    }
+    addMany([...classCat].map((n) => ({ id: n, input: n })), 'skill', 'gen-skill');
+    addMany([...classBare].map((n) => ({ id: n, input: n })), 'skill', 'gen-skillclass');
+
+    // D. 法宝：全部名称
+    addMany(fabaoRaw.map((f) => ({ id: String(f.id), input: f.名称 })).filter((x) => x.input), 'fabao', 'gen-fabao');
+
+    // 装备交叉校验底稿：有效装备按 (品质, 部位) 计数——用于区分
+    // "查无是因为真没数据"（正常）vs "有数据却查无"（匹配 bug）
+    const validEquips = (readJson(path.join(GAME_DATA, 'equip_curated.json'))).filter(isValidEquip);
+    const equipDataCount = {};
+    for (const e of validEquips) {
+        const key = `${e.q || ''}|${e.slot || ''}`;
+        equipDataCount[key] = (equipDataCount[key] || 0) + 1;
+    }
+
+    // 逐条实测 → 生成带实测期望的用例
+    const generated = [];
+    const report = { equip: {}, boss: {}, skill: {}, fabao: {} };
+    const holes = { equip: [], boss: [], skill: [], fabao: [] };
+    const quirks = { equip: [], boss: [], skill: [], fabao: [] };
+    const guardWithData = [];   // 有数据却查无（疑似 bug）
+    let okEmptyCount = 0;       // 查无且确实无数据（正常）
+    for (const m of matrix) {
+        const r = await runOne(m.input);
+        const cardType = r?.__error ? '__error' : (r?.cardType ?? (r === null ? 'null' : 'text-only'));
+        report[m.family][cardType] = (report[m.family][cardType] || 0) + 1;
+        const inFamily = r !== null && FAMILIES[m.family].includes(r.cardType);
+        const isGuard = r !== null && r.cardType === undefined; // 查无提示（未命中意图）
+        if (r === null || r?.__error) holes[m.family].push(m.input);
+        else if (!inFamily && !isGuard) quirks[m.family].push(`${m.input} → ${r.cardType}`);
+        else if (isGuard && m.family === 'equip') {
+            const [q, s] = m.input.split(' ');
+            const dataCount = equipDataCount[`${q}|${s}`] || 0;
+            if (dataCount > 0) guardWithData.push(`${m.input}（数据有 ${dataCount} 件）`);
+            else okEmptyCount++;
+        }
+        generated.push({
+            id: m.id,
+            input: m.input,
+            expect: buildExpectation(r),
+            tags: ['generated', m.family],
+            assert: 'strong',
+            golden: 'lean',
+            source: 'matrix',
+        });
+    }
+    fs.writeFileSync(MATRIX_FILE, `${JSON.stringify(generated, null, 2)}\n`, 'utf8');
+
+    const lines = [];
+    const catTotal = (f) => Object.values(report[f]).reduce((a, b) => a + b, 0);
+    lines.push('==== 实体矩阵覆盖报告（T-01） ====');
+    for (const f of ['equip', 'boss', 'skill', 'fabao']) {
+        const dist = Object.entries(report[f]).map(([k, v]) => `${k} ${v}`).join(' / ');
+        lines.push(`${f}（${catTotal(f)} 输入）: ${dist}`);
+        if (holes[f].length) lines.push(`  [空洞] 未命中: ${holes[f].join(', ')}`);
+        if (quirks[f].length) lines.push(`  [族外] 需人工判断: ${quirks[f].join(' ; ')}`);
+    }
+    if (guardWithData.length) lines.push(`[装备疑似bug] 有数据却查无: ${guardWithData.join(', ')}`);
+    lines.push(`[装备正常空] 查无且确实无数据: ${okEmptyCount} 条`);
+    lines.push(`\n矩阵用例已写入: ${MATRIX_FILE}（${generated.length} 条，lean golden）`);
+    lines.push('下一步: 跑 --golden 收录快照，再跑默认模式验收');
+    const out = lines.join('\n');
+    console.log(out);
+    fs.writeFileSync(MATRIX_REPORT_FILE, `${out}\n`, 'utf8');
+    process.exit(0);
+}
+
+const cases = (() => {
+    const curated = readJson(CASES_FILE);
+    const matrix = fs.existsSync(MATRIX_FILE) ? readJson(MATRIX_FILE) : [];
+    const all = [...(Array.isArray(curated) ? curated : []), ...(Array.isArray(matrix) ? matrix : [])];
+    const seen = new Set();
+    for (const c of all) {
+        if (seen.has(c.id)) {
+            console.error(`用例 id 重复: ${c.id}（curated 与 matrix 不允许同名）`);
+            process.exit(2);
+        }
+        seen.add(c.id);
+    }
+    return all;
+})();
+if (cases.length === 0) {
+    console.error('用例为空');
     process.exit(2);
 }
+
+const goldenCache = MODE_GOLDEN ? null : readJson(GOLDEN_FILE);
 
 const results = [];
 let passCount = 0;
@@ -254,6 +418,8 @@ const failLines = [];
 for (const c of cases) {
     const r = await runOne(c.input);
     const norm = normalize(r);
+    // lean golden：矩阵用例的 candidates 压缩为摘要后再对拍/入库（断言仍读原始结果，强度不变）
+    const gnorm = c.golden === 'lean' ? leanify(norm) : norm;
     const failures = [];
 
     if (r?.__error) {
@@ -263,12 +429,11 @@ for (const c of cases) {
     }
     // golden 对拍（--golden 模式跳过：该模式即用于重建快照）
     if (!MODE_GOLDEN) {
-        const golden = readJson(GOLDEN_FILE);
-        const g = golden[c.id];
+        const g = goldenCache[c.id];
         if (g === undefined) {
             failures.push(`golden 中无此用例（新用例须先跑 --golden 收录）`);
-        } else if (stableStringify(g) !== stableStringify(norm)) {
-            failures.push(`与 golden 快照不一致${VERBOSE ? `\n  golden: ${stableStringify(g)}\n  actual: ${stableStringify(norm)}` : '（--verbose 看 diff）'}`);
+        } else if (stableStringify(g) !== stableStringify(gnorm)) {
+            failures.push(`与 golden 快照不一致${VERBOSE ? `\n  golden: ${stableStringify(g)}\n  actual: ${stableStringify(gnorm)}` : '（--verbose 看 diff）'}`);
         }
     }
 
@@ -280,7 +445,7 @@ for (const c of cases) {
         failLines.push(`FAIL ${c.id} [${(c.tags || []).join(',')}] input=${JSON.stringify(c.input)}`);
         for (const f of failures) failLines.push(`     - ${f}`);
     }
-    results.push({ id: c.id, input: c.input, norm });
+    results.push({ id: c.id, input: c.input, norm: gnorm });
 }
 
 for (const line of failLines) console.log(line);
