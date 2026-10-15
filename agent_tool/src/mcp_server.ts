@@ -203,7 +203,11 @@ async function handleTool(name: string, args: Record<string, unknown>): Promise<
           (c) => token(c.ClassID) === token(raw ?? '') || token(c.ClassName) === token(raw ?? '') || token(c.ClassName).includes(token(raw ?? ''))
         );
         if (!cls) return { text: JSON.stringify({ ok: false, error: '未知职业: ' + raw }), isError: true };
-        const skills = (data.skills[cls.ClassID] || []).map((s) => ({ skillId: s.SkillID, skillName: s.SkillName, actionType: s.ActionType }));
+        const classSkillGroups = data.skills[cls.ClassID];
+        const skillList: any[] = Array.isArray(classSkillGroups)
+          ? classSkillGroups
+          : Object.values(classSkillGroups || {}).flat();
+        const skills = skillList.map((s: any) => ({ skillId: s.SkillID, skillName: s.SkillName, actionType: s.ActionType }));
         return {
           text: JSON.stringify(
             { ok: true, classId: cls.ClassID, className: cls.ClassName, roleType: (cls as any).RoleType, capHealth: (cls as any).CapHealth, capMana: (cls as any).CapMana, skillCount: skills.length, skills },

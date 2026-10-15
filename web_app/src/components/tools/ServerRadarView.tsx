@@ -33,7 +33,7 @@ const SERVER_CONFIG: ZhanQu[] = [
         zhanQu: "体验服",
         servers: [
             { name: "先知", server: "xianzhi", serverId: "10086" },
-            { name: "不通", server: "butong", serverId: "10087" }
+            // { name: "不通", server: "butong", serverId: "10087" }
         ]
     },
     {
@@ -310,10 +310,12 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                             serverName: selectedServer.name,
                             status: 'online',
                             ping: content.ping,
-                            message: `已开服！响应延迟 ${content.ping}ms，官方通道通畅`
+                            message: `已开服！响应延迟 ${content.ping}ms，官方通道通畅 (已完成监测)`
                         },
                         ...prev.slice(0, 49)
                     ]);
+                    // 服务器状态正常/已开服，立即自动停止持续轮询监测（与小木匠开服即止逻辑一致）
+                    setIsProbing(false);
                 } else {
                     setLogs(prev => [
                         {
@@ -374,6 +376,22 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
         }
     };
 
+    const handleToggleProbing = () => {
+        if (isProbing) {
+            setIsProbing(false);
+            return;
+        }
+
+        const cached = serverStatusMap[selectedServer.server];
+        if (cached && cached.status === 1) {
+            // 已开服状态：仅执行一次单次探测校验，无需启动持续轮询
+            probeSelectedServer(false);
+            return;
+        }
+
+        setIsProbing(true);
+    };
+
     const activeZhanQu = SERVER_CONFIG[selectedZhanQuIndex];
 
     return (
@@ -387,7 +405,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                     <div>
                         <div className="flex items-center gap-2">
                             <h2 className="text-xl font-black text-slate-100 tracking-wide">
-                                诛仙3开服雷达监测站
+                                诛仙3开服雷达监测
                             </h2>
                             <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold flex items-center gap-1">
                                 {/* <Zap className="w-3 h-3 text-cyan-400" /> */}
@@ -395,7 +413,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                             </span>
                         </div>
                         <p className="text-xs text-slate-400 mt-0.5">
-                            全区状态扫描 · 秒级独占雷达 · 开服声音提醒
+                            全区状态扫描 · 秒级雷达监测 · 开服声音提醒
                         </p>
                     </div>
                 </div>
@@ -417,7 +435,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                     </button>
 
                     <button
-                        onClick={() => setIsProbing(!isProbing)}
+                        onClick={handleToggleProbing}
                         className={clsx(
                             'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border shadow-lg cursor-pointer',
                             isProbing
@@ -437,7 +455,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                                     type="button"
                                     onClick={onToggleMaximize}
                                     className="p-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-cyan-300 transition-colors border border-slate-700/80 shadow-sm cursor-pointer"
-                                    title={isMaximized ? '还原分屏 (双轨对照)' : '最大化工作区 (全屏模式)'}
+                                    title={isMaximized ? '还原分屏' : '最大化工作区'}
                                     aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
                                 >
                                     {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
@@ -448,7 +466,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                                     type="button"
                                     onClick={onClose}
                                     className="p-1.5 rounded-xl bg-slate-800/90 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 transition-colors border border-slate-700/80 shadow-sm cursor-pointer"
-                                    title="关闭右侧工作区 (返回居中对话)"
+                                    title="关闭右侧工作区"
                                     aria-label="关闭工作区"
                                 >
                                     <X className="w-4 h-4" />
