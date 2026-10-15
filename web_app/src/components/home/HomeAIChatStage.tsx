@@ -9,8 +9,7 @@ import {
     Sliders,
     Check,
     Copy,
-    ArrowRight,
-    Swords
+    ArrowRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
@@ -48,7 +47,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     onSendMessage,
     onBackToHome,
     isSplitOpen = false,
-    onToggleSplit,
+    onToggleSplit: _onToggleSplit,
     onOpenSplitWorkspace,
 }) => {
     const navigate = useNavigate();
