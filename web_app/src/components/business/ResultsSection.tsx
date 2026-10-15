@@ -207,11 +207,24 @@ export const TotalPowerCard: React.FC = () => {
 };
 
 export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearchConsumed?: () => void }> = ({ searchNav, onSearchConsumed }) => {
-    const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
+    const { userCharacter, activeBuffIds, buffs, buffValues, selectedDungeonId: contextDungeonId, selectedMonsterId: contextMonsterId } = useApp();
     const [selectedDungeonId, setSelectedDungeonId] = useState<string | null>(null);
     const [focusMonsterId, setFocusMonsterId] = useState<string | null>(null);
     const [focusSkillName, setFocusSkillName] = useState<string | null>(null);
     const [autoShowAttr, setAutoShowAttr] = useState(false);
+    const [activeMonsterId, setActiveMonsterId] = useState<string | null>(null);
+
+    // 同步来自全局上下文或 AI 对话“带入计算器”的副本与 BOSS 定位
+    useEffect(() => {
+        if (contextDungeonId) {
+            setSelectedDungeonId(contextDungeonId);
+        }
+        if (contextMonsterId) {
+            setFocusMonsterId(contextMonsterId);
+            setActiveMonsterId(contextMonsterId);
+            setAutoShowAttr(true);
+        }
+    }, [contextDungeonId, contextMonsterId]);
 
     const results = useMemo(() => {
         const service = DataService.getInstance();
@@ -326,7 +339,6 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         () => results.dungeonPowers.find((d) => d.DungeonID === selectedDungeonId) || results.dungeonPowers[0],
         [results.dungeonPowers, selectedDungeonId],
     );
-    const [activeMonsterId, setActiveMonsterId] = useState<string | null>(null);
     const activeBoss = useMemo(() => {
         if (!activeDungeon) return undefined;
         return activeDungeon.Monsters.find((m) => m.MonsterID === activeMonsterId) || activeDungeon.Monsters[0];

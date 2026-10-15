@@ -102,7 +102,7 @@ export const BossConfigPanel: React.FC<BossConfigPanelProps> = ({
                         <Target className="w-4 h-4 text-red-400" />
                     </div>
                     <div>
-                        <h3 className="text-xs font-bold text-slate-100 tracking-wide">首领目标槽 (Target HUD)</h3>
+                        <h3 className="text-xs font-bold text-slate-100 tracking-wide">BOSS目标槽 (Target HUD)</h3>
                         <p className="text-[9px] text-slate-500 font-semibold tracking-wider uppercase leading-none">Enemy Status</p>
                     </div>
                 </div>
@@ -238,7 +238,7 @@ export const BossConfigPanel: React.FC<BossConfigPanelProps> = ({
                             onClick={() => setIsDetailsExpanded(!isDetailsExpanded)}
                             className="w-full flex items-center justify-between text-[10px] font-bold text-slate-450 hover:text-slate-350 transition-colors"
                         >
-                            <span>首领详细免伤/抗性数据</span>
+                            <span>BOSS详细免伤/抗性数据</span>
                             {isDetailsExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                         </button>
 
@@ -270,7 +270,7 @@ export const BossConfigPanel: React.FC<BossConfigPanelProps> = ({
                                 </div>
                                 <div className="flex items-start gap-1 pt-1.5 text-[9px] text-amber-500 font-semibold leading-normal">
                                     <Flame className="w-3 h-3 shrink-0 mt-0.5" />
-                                    <span>免伤机制：当前首领具备防御与专属压缩比例，对极高爆发及多段伤害有明显的压缩收益。</span>
+                                    <span>免伤机制：当前BOSS具备防御与专属压缩比例，对极高爆发及多段伤害有明显的压缩收益。</span>
                                 </div>
                             </div>
                         )}
