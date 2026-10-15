@@ -310,7 +310,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                             serverName: selectedServer.name,
                             status: 'online',
                             ping: content.ping,
-                            message: `已开服！响应延迟 ${content.ping}ms，官方通道通畅 (已完成监测)`
+                            message: `已开服！响应延迟 ${content.ping}ms，官方通道通畅！`
                         },
                         ...prev.slice(0, 49)
                     ]);
@@ -414,9 +414,9 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                             <h2 className="text-lg font-black text-slate-100 tracking-wide">
                                 诛仙3开服雷达监测
                             </h2>
-                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-bold flex items-center gap-1">
+                            {/* <span className="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-bold flex items-center gap-1">
                                 <span>官方29000网关直连</span>
-                            </span>
+                            </span> */}
                         </div>
                         <p className="text-xs text-slate-400 mt-0.5">
                             全区状态扫描 · 秒级独占雷达 · 开服声光提醒
