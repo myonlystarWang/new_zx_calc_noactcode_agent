@@ -11,9 +11,6 @@ import {
   MessageCircle,
   CornerDownRight,
   X,
-  RefreshCw,
-  Cloud,
-  CloudOff,
   Loader2
 } from 'lucide-react';
 import clsx from 'clsx';
@@ -83,10 +80,10 @@ export const FeedbackPage: React.FC = () => {
           const savedPin = parsed.find((p: GuestbookEntry) => p && p.id === 'pin-1');
           const pinnedPost: GuestbookEntry = savedPin
             ? {
-                ...INITIAL_POSTS[0],
-                likes: typeof savedPin.likes === 'number' ? Math.max(INITIAL_POSTS[0].likes, savedPin.likes) : INITIAL_POSTS[0].likes,
-                replies: Array.isArray(savedPin.replies) ? savedPin.replies : (INITIAL_POSTS[0].replies || [])
-              }
+              ...INITIAL_POSTS[0],
+              likes: typeof savedPin.likes === 'number' ? Math.max(INITIAL_POSTS[0].likes, savedPin.likes) : INITIAL_POSTS[0].likes,
+              replies: Array.isArray(savedPin.replies) ? savedPin.replies : (INITIAL_POSTS[0].replies || [])
+            }
             : INITIAL_POSTS[0];
           const userPosts = parsed.filter((p: GuestbookEntry) => p && p.id !== 'pin-1');
           return [pinnedPost, ...userPosts];
@@ -98,9 +95,7 @@ export const FeedbackPage: React.FC = () => {
     return INITIAL_POSTS;
   });
 
-  const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isCloudSynced, setIsCloudSynced] = useState<boolean | null>(null);
 
   const [activeCategory, setActiveCategory] = useState<GuestbookCategory>('all');
   const [authorName, setAuthorName] = useState(() => {
@@ -113,7 +108,7 @@ export const FeedbackPage: React.FC = () => {
     try {
       const saved = localStorage.getItem(LIKED_STORAGE_KEY);
       if (saved) return JSON.parse(saved);
-    } catch {}
+    } catch { }
     return {};
   });
 
@@ -134,15 +129,13 @@ export const FeedbackPage: React.FC = () => {
   }, [posts]);
 
   // 从服务端拉取全量留言
-  const fetchPosts = useCallback(async (isSilent = false) => {
-    if (!isSilent) setIsLoading(true);
+  const fetchPosts = useCallback(async () => {
     try {
       const res = await fetch('/api/guestbook');
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.posts)) {
-          setIsCloudSynced(data.cloud !== false);
-          
+
           // 如果云端只有置顶帖，而本地有存量自创留言，则自动同步合入云端
           const localSaved = localStorage.getItem(STORAGE_KEY);
           let localUserPosts: GuestbookEntry[] = [];
@@ -152,7 +145,7 @@ export const FeedbackPage: React.FC = () => {
               if (Array.isArray(parsed)) {
                 localUserPosts = parsed.filter(p => p.id !== 'pin-1');
               }
-            } catch {}
+            } catch { }
           }
 
           if (data.cloud && data.posts.length <= 1 && localUserPosts.length > 0) {
@@ -179,18 +172,14 @@ export const FeedbackPage: React.FC = () => {
           return;
         }
       }
-      setIsCloudSynced(false);
     } catch (err) {
       console.warn('Guestbook fetch fallback to local storage:', err);
-      setIsCloudSynced(false);
-    } finally {
-      if (!isSilent) setIsLoading(false);
     }
   }, []);
 
   // 初始加载拉取云端
   useEffect(() => {
-    fetchPosts(false);
+    fetchPosts();
   }, [fetchPosts]);
 
   const handleRandomizeTitle = () => {
@@ -211,8 +200,8 @@ export const FeedbackPage: React.FC = () => {
     setLikedMap(nextLiked);
     try {
       localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify(nextLiked));
-    } catch {}
-    
+    } catch { }
+
     // 乐观更新
     setPosts(prev =>
       prev.map(p => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
@@ -279,7 +268,6 @@ export const FeedbackPage: React.FC = () => {
         const data = await res.json();
         if (data.success && Array.isArray(data.posts)) {
           setPosts(data.posts);
-          setIsCloudSynced(data.cloud !== false);
         }
       } else {
         const errData = await res.json().catch(() => ({}));
@@ -381,53 +369,13 @@ export const FeedbackPage: React.FC = () => {
             <div className="p-2.5 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-300 shadow-sm shadow-amber-500/10">
               <MessageSquare className="w-5 h-5" />
             </div>
-            <div className="flex items-center gap-2.5 flex-wrap">
+            <div className="flex items-center gap-2.5">
               <h1 className="text-xl sm:text-2xl font-black text-slate-100 tracking-wide">
                 仙友留言板
               </h1>
               <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-800/60 font-mono font-bold">
                 共 {posts.length} 条
               </span>
-              
-              {/* 云端全员共享指示器 */}
-              <div
-                className={clsx(
-                  'flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium border transition-colors',
-                  isCloudSynced === true
-                    ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
-                    : isCloudSynced === false
-                    ? 'bg-amber-950/60 border-amber-500/40 text-amber-300'
-                    : 'bg-slate-900 border-slate-700 text-slate-400'
-                )}
-                title={
-                  isCloudSynced === true
-                    ? '已接入 Cloudflare KV 云端持久化，全员仙友可见'
-                    : '当前使用本地离线缓存（待部署绑定 KV 后自动全网同步）'
-                }
-              >
-                {isCloudSynced === true ? (
-                  <>
-                    <Cloud className="w-3 h-3 text-emerald-400 animate-pulse" />
-                    <span>云端全网同步</span>
-                  </>
-                ) : (
-                  <>
-                    <CloudOff className="w-3 h-3 text-amber-400" />
-                    <span>离线缓存模式</span>
-                  </>
-                )}
-              </div>
-
-              {/* 手动刷新同步按钮 */}
-              <button
-                type="button"
-                onClick={() => fetchPosts(false)}
-                disabled={isLoading}
-                className="p-1 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-slate-800/60 transition-all cursor-pointer"
-                title="重新拉取云端最新留言"
-              >
-                <RefreshCw className={clsx('w-3.5 h-3.5', isLoading && 'animate-spin text-cyan-400')} />
-              </button>
             </div>
           </div>
 
