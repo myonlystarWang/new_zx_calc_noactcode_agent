@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../routes';
 import {
   Award,
-  Sparkles,
   GitBranch,
   MessageSquare,
   ShieldCheck,

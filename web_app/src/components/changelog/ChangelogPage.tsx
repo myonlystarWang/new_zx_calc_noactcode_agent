@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Sparkles,
   Bug,
@@ -9,16 +8,11 @@ import {
   Calendar,
   Filter,
   Search,
-  X,
-  GitBranch,
-  MessageSquare,
   ShieldCheck,
   Code2,
-  Heart,
-  Award
+  Heart
 } from 'lucide-react';
 import clsx from 'clsx';
-import { ROUTE } from '../../routes';
 import { CHANGELOG, type ChangeType, type ChangelogEntry } from '../../data/changelog';
 import { CURRENT_VERSION, markChangelogSeen } from '../../utils/changelogSeen';
 
@@ -107,7 +101,6 @@ function renderChangeText(text: string) {
 }
 
 export const ChangelogPage: React.FC = () => {
-  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
@@ -458,7 +451,6 @@ export const ChangelogPage: React.FC = () => {
                   <ul className="space-y-2.5 pt-1">
                     {entry.changes.map((change, cIdx) => {
                       const meta = TYPE_META[change.type];
-                      const Icon = meta.icon;
 
                       return (
                         <li

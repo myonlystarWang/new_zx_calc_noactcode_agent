@@ -10,8 +10,6 @@ import {
     VolumeX,
     Play,
     Pause,
-    Clock,
-    Zap,
     Wifi,
     Maximize2,
     Minimize2,

@@ -15,7 +15,7 @@ export interface BossDetailCardProps {
 export const BossDetailCard: React.FC<BossDetailCardProps> = ({
     monster,
     dungeon,
-    categoryLabel,
+    categoryLabel: _categoryLabel,
     onBringToCalculator,
     className,
 }) => {
