@@ -365,9 +365,14 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
         };
     }, [isProbing, probeSelectedServer]);
 
-    // 选择服务器响应
+    // 选择服务器响应（强化双向联动：自动定位并切换对应战区）
     const handleSelectServer = (srv: ServerInfo) => {
         setSelectedServer(srv);
+        // 自动计算该服务器真实所属战区，并同步激活左侧大区选中态
+        const targetZqIndex = SERVER_CONFIG.findIndex(zq => zq.servers.some(s => s.serverId === srv.serverId));
+        if (targetZqIndex !== -1 && targetZqIndex !== selectedZhanQuIndex) {
+            setSelectedZhanQuIndex(targetZqIndex);
+        }
         const cached = serverStatusMap[srv.server];
         if (cached) {
             setCurrentStatus(cached.status === 1 ? 'online' : 'offline');
@@ -393,27 +398,28 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
     };
 
     const activeZhanQu = SERVER_CONFIG[selectedZhanQuIndex];
+    // 获取当前聚焦服务器的真实战区名称，杜绝跨战区异步错位
+    const currentServerZhanQu = SERVER_CONFIG.find(zq => zq.servers.some(s => s.serverId === selectedServer.serverId))?.zhanQu || activeZhanQu.zhanQu;
 
     return (
-        <div className="flex flex-col gap-5 max-w-[1500px] mx-auto w-full">
+        <div className="flex flex-col gap-4 max-w-[1560px] mx-auto w-full">
             {/* 顶栏标题与控制栏 */}
-            <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-4 sm:p-4.5 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-md">
                 <div className="flex items-center gap-3">
                     <div className="p-2.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">
-                        <Radio className="w-6 h-6 animate-pulse text-cyan-400" />
+                        <Radio className="w-5 h-5 animate-pulse text-cyan-400" />
                     </div>
                     <div>
                         <div className="flex items-center gap-2">
-                            <h2 className="text-xl font-black text-slate-100 tracking-wide">
+                            <h2 className="text-lg font-black text-slate-100 tracking-wide">
                                 诛仙3开服雷达监测
                             </h2>
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold flex items-center gap-1">
-                                {/* <Zap className="w-3 h-3 text-cyan-400" /> */}
-                                <span>直连</span>
+                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-bold flex items-center gap-1">
+                                <span>官方29000网关直连</span>
                             </span>
                         </div>
                         <p className="text-xs text-slate-400 mt-0.5">
-                            全区状态扫描 · 秒级雷达监测 · 开服声音提醒
+                            全区状态扫描 · 秒级独占雷达 · 开服声光提醒
                         </p>
                     </div>
                 </div>
@@ -421,33 +427,35 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                 {/* 快捷操作控件 */}
                 <div className="flex items-center gap-2.5 flex-wrap">
                     <button
+                        type="button"
                         onClick={() => setSoundEnabled(!soundEnabled)}
                         className={clsx(
-                            'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer',
+                            'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer select-none',
                             soundEnabled
-                                ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300'
-                                : 'bg-slate-800 border-slate-700 text-slate-400'
+                                ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shadow-sm'
+                                : 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200'
                         )}
                         title="开服时播放提示音"
                     >
-                        {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                        {soundEnabled ? <Volume2 className="w-4 h-4 text-cyan-400" /> : <VolumeX className="w-4 h-4 text-slate-500" />}
                         <span>{soundEnabled ? '提示音开' : '提示音关'}</span>
                     </button>
 
                     <button
+                        type="button"
                         onClick={handleToggleProbing}
                         className={clsx(
-                            'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border shadow-lg cursor-pointer',
+                            'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border shadow-lg cursor-pointer select-none',
                             isProbing
                                 ? 'bg-rose-500/20 border-rose-500/50 text-rose-300 shadow-rose-500/20 animate-pulse'
-                                : 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-cyan-500/20 hover:bg-cyan-500/30'
+                                : 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-cyan-300 shadow-cyan-500/15 hover:from-cyan-500/30 hover:to-blue-500/30'
                         )}
                     >
-                        {isProbing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                        {isProbing ? <Pause className="w-4 h-4 text-rose-400" /> : <Play className="w-4 h-4 text-cyan-400" />}
                         <span>{isProbing ? '停止监测' : '启动监测'}</span>
                     </button>
 
-                    {/* 分屏工作区原生视窗控制按钮（零遮挡、零垂直空间浪费） */}
+                    {/* 分屏工作区原生视窗控制按钮 */}
                     {isSplitScreen && (
                         <div className="flex items-center gap-1.5 pl-2.5 ml-1 border-l border-slate-700/80">
                             {onToggleMaximize && (
@@ -477,10 +485,10 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                 </div>
             </div>
 
-            {/* 我的常驻关注快捷栏 */}
+            {/* 我的常驻关注快捷栏（带多层深度联动指示） */}
             {favorites.length > 0 && (
-                <div className="flex items-center gap-2 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800/80 text-xs">
-                    <span className="text-amber-400 font-bold flex items-center gap-1 pl-1 shrink-0">
+                <div className="flex items-center gap-2.5 bg-slate-900/80 px-3.5 py-2.5 rounded-xl border border-slate-800/80 text-xs shadow-md backdrop-blur-sm">
+                    <span className="text-amber-400 font-bold flex items-center gap-1.5 pl-0.5 shrink-0 select-none">
                         <Star className="w-3.5 h-3.5 fill-amber-400" />
                         <span>常驻关注:</span>
                     </span>
@@ -494,23 +502,24 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                                 return (
                                     <button
                                         key={favSrv.serverId}
+                                        type="button"
                                         onClick={() => handleSelectServer(favSrv)}
                                         className={clsx(
-                                            'px-2.5 py-1 rounded-lg text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer whitespace-nowrap',
+                                            'px-3 py-1 rounded-lg text-xs font-bold transition-all border flex items-center gap-2 cursor-pointer whitespace-nowrap select-none',
                                             isSelected
-                                                ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
-                                                : 'bg-slate-800/80 border-slate-700/60 text-slate-300 hover:bg-slate-700'
+                                                ? 'bg-amber-500/20 border-amber-500/60 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.25)] ring-1 ring-amber-500/40'
+                                                : 'bg-slate-800/80 border-slate-700/70 text-slate-300 hover:bg-slate-700/80 hover:text-slate-100'
                                         )}
                                     >
                                         <span>{favSrv.name}</span>
                                         {favStatus ? (
                                             <span className={clsx(
                                                 'w-1.5 h-1.5 rounded-full',
-                                                favStatus.status === 1 ? 'bg-emerald-400' : 'bg-slate-500'
+                                                favStatus.status === 1 ? 'bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.8)]' : 'bg-slate-500'
                                             )} />
                                         ) : null}
                                         {isSelected && isProbing && (
-                                            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
                                         )}
                                     </button>
                                 );
@@ -519,77 +528,95 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                 </div>
             )}
 
-            {/* 核心面板：1:1 游戏原生战区与服务器布局 */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-                {/* 左侧：战区列表 (3列) */}
-                <div className="lg:col-span-3 bg-slate-900/70 border border-slate-800/80 rounded-2xl p-3 flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between px-3 py-1">
-                        <span className="text-xs text-slate-400 font-bold">选择战区</span>
-                        <span className="text-[10px] text-slate-500 font-mono">共 9 大战区</span>
+            {/* 核心等高战备仪表板：左(战区)、中(矩阵+雷达)、右(实时遥测)，严格底平齐等高 */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch flex-1 min-h-[580px] lg:h-[calc(100vh-235px)] lg:max-h-[760px]">
+                {/* 左侧：战区选择导航轨 (3列，撑满等高) */}
+                <div className="lg:col-span-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 flex flex-col justify-between shadow-xl backdrop-blur-sm h-full">
+                    <div className="flex flex-col gap-1.5 flex-1">
+                        <div className="flex items-center justify-between px-2 pb-2 mb-1 border-b border-slate-800/80">
+                            <span className="text-xs text-slate-400 font-bold tracking-wide">战区选择</span>
+                            <span className="text-[11px] text-slate-500 font-mono">共 9 大战区</span>
+                        </div>
+
+                        <div className="flex flex-col gap-1.5 flex-1 justify-between">
+                            {SERVER_CONFIG.map((zq, idx) => {
+                                const isActive = selectedZhanQuIndex === idx;
+                                const onlineCount = zq.servers.filter(s => serverStatusMap[s.server]?.status === 1).length;
+                                const probedCount = zq.servers.filter(s => !!serverStatusMap[s.server]).length;
+
+                                return (
+                                    <button
+                                        key={zq.zhanQu}
+                                        type="button"
+                                        onClick={() => setSelectedZhanQuIndex(idx)}
+                                        className={clsx(
+                                            'px-3.5 py-2.5 rounded-xl text-left text-xs font-bold transition-all flex items-center justify-between cursor-pointer select-none border',
+                                            isActive
+                                                ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/10 border-cyan-500/60 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/30'
+                                                : 'bg-slate-950/40 border-transparent text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+                                        )}
+                                    >
+                                        <span className="tracking-wide">{zq.zhanQu}</span>
+                                        <div className="flex items-center gap-1.5">
+                                            {probedCount > 0 && (
+                                                <span className={clsx(
+                                                    'text-[10px] font-mono px-1.5 py-0.5 rounded font-bold',
+                                                    onlineCount > 0
+                                                        ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                                                        : 'bg-slate-800 text-slate-500 border border-slate-700/50'
+                                                )}>
+                                                    {onlineCount > 0 ? `${onlineCount}服在线` : '维护中'}
+                                                </span>
+                                            )}
+                                            <span className="text-[10px] font-mono opacity-50">
+                                                {zq.servers.length}服
+                                            </span>
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
 
-                    {SERVER_CONFIG.map((zq, idx) => {
-                        const isActive = selectedZhanQuIndex === idx;
-                        const onlineCount = zq.servers.filter(s => serverStatusMap[s.server]?.status === 1).length;
-                        const probedCount = zq.servers.filter(s => !!serverStatusMap[s.server]).length;
-
-                        return (
-                            <button
-                                key={zq.zhanQu}
-                                onClick={() => setSelectedZhanQuIndex(idx)}
-                                className={clsx(
-                                    'px-3.5 py-2.5 rounded-xl text-left text-xs font-bold transition-all flex items-center justify-between cursor-pointer',
-                                    isActive
-                                        ? 'bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 shadow-md'
-                                        : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                                )}
-                            >
-                                <span>{zq.zhanQu}</span>
-                                <div className="flex items-center gap-1.5">
-                                    {probedCount > 0 && (
-                                        <span className={clsx(
-                                            'text-[10px] font-mono px-1.5 py-0.2 rounded',
-                                            onlineCount > 0 ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-500'
-                                        )}>
-                                            {onlineCount > 0 ? `${onlineCount}开服` : '维护'}
-                                        </span>
-                                    )}
-                                    <span className="text-[10px] font-mono opacity-60">
-                                        {zq.servers.length} 个服务器
-                                    </span>
-                                </div>
-                            </button>
-                        );
-                    })}
+                    {/* 底部全服统计微栏 */}
+                    <div className="pt-3 mt-2 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-between px-1">
+                        <span className="flex items-center gap-1.5">
+                            <Activity className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>战区监控雷达</span>
+                        </span>
+                        <span className="font-mono text-cyan-400/80 font-bold">33组服务器在线</span>
+                    </div>
                 </div>
 
-                {/* 中间：区服选择网格与当前监测状态卡片 (6列) */}
-                <div className="lg:col-span-6 flex flex-col gap-4">
-                    {/* 区服选择网格 */}
-                    <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col gap-3">
-                        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                {/* 中间：区服选择矩阵 + 雷达中控台 (6列，整齐上下撑满) */}
+                <div className="lg:col-span-6 flex flex-col justify-between gap-4 h-full">
+                    {/* 上部：战区服务器矩阵 */}
+                    <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-xl flex-1 flex flex-col backdrop-blur-sm min-h-[300px]">
+                        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80">
                             <div className="flex items-center gap-2">
-                                <span className="text-sm font-black text-slate-200">
+                                <span className="text-sm font-black text-slate-200 tracking-wide">
                                     {activeZhanQu.zhanQu} · 服务器列表
                                 </span>
                                 {isBatchProbing && (
-                                    <span className="text-[10px] text-cyan-400 flex items-center gap-1 font-mono">
+                                    <span className="text-[11px] text-cyan-400 flex items-center gap-1 font-mono font-bold">
                                         <RefreshCw className="w-3 h-3 animate-spin" />
-                                        <span>检测本区中...</span>
+                                        <span>全区探测中...</span>
                                     </span>
                                 )}
                             </div>
                             <button
+                                type="button"
                                 onClick={() => probeZoneBatch(activeZhanQu.servers, true)}
-                                className="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 cursor-pointer transition-colors"
-                                title="手动刷新当前战区所有服务器状态"
+                                className="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1.5 cursor-pointer transition-colors px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30"
+                                title="立即手动刷新当前战区全部服务器状态"
                             >
-                                <RefreshCw className={clsx("w-3 h-3", isBatchProbing && "animate-spin")} />
+                                <RefreshCw className={clsx("w-3.5 h-3.5", isBatchProbing && "animate-spin")} />
                                 <span>刷新本区状态</span>
                             </button>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                        {/* 规格化网格排版：固定规范卡片，自适应充满 */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 flex-1 content-start">
                             {activeZhanQu.servers.map(srv => {
                                 const isSelected = selectedServer.serverId === srv.serverId;
                                 const isFav = favorites.includes(srv.serverId);
@@ -600,16 +627,16 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                                         key={srv.serverId}
                                         onClick={() => handleSelectServer(srv)}
                                         className={clsx(
-                                            'p-3 rounded-xl border cursor-pointer transition-all flex flex-col justify-between gap-2 select-none relative group',
+                                            'p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between gap-3 select-none relative group h-[88px]',
                                             isSelected
-                                                ? 'bg-cyan-950/40 border-cyan-500/60 shadow-[0_0_15px_rgba(6,182,212,0.25)] ring-1 ring-cyan-500/40'
-                                                : 'bg-slate-950/60 border-slate-800 hover:bg-slate-800/50'
+                                                ? 'bg-gradient-to-br from-cyan-950/60 to-slate-900 border-cyan-400/80 shadow-[0_0_20px_rgba(6,182,212,0.25)] ring-2 ring-cyan-500/50'
+                                                : 'bg-slate-950/50 border-slate-800/90 hover:bg-slate-800/50 hover:border-slate-700'
                                         )}
                                     >
                                         <div className="flex items-center justify-between">
                                             <span className={clsx(
-                                                'font-black text-xs sm:text-sm',
-                                                isSelected ? 'text-cyan-300' : 'text-slate-200'
+                                                'font-black text-xs sm:text-sm tracking-wide',
+                                                isSelected ? 'text-cyan-300 font-bold' : 'text-slate-200'
                                             )}>
                                                 {srv.name}
                                             </span>
@@ -619,44 +646,41 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                                                     e.stopPropagation();
                                                     toggleFavorite(srv.serverId);
                                                 }}
-                                                className="text-slate-600 hover:text-amber-400 cursor-pointer"
+                                                className="text-slate-600 hover:text-amber-400 p-0.5 cursor-pointer transition-colors"
+                                                title={isFav ? '取消关注' : '加入常驻关注'}
                                             >
                                                 <Star className={clsx(
-                                                    'w-3.5 h-3.5',
-                                                    isFav ? 'fill-amber-400 text-amber-400' : ''
+                                                    'w-4 h-4',
+                                                    isFav ? 'fill-amber-400 text-amber-400' : 'hover:text-slate-400'
                                                 )} />
                                             </button>
                                         </div>
 
                                         {/* 状态徽标与延迟 */}
-                                        <div className="flex items-center justify-between text-[10px]">
+                                        <div className="flex items-center justify-between text-[11px]">
                                             {statusItem ? (
                                                 statusItem.status === 1 ? (
-                                                    <span className="inline-flex items-center gap-1 text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/30 font-mono">
+                                                    <span className="inline-flex items-center gap-1.5 text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
                                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                                                         <span>已开服 {statusItem.ping}ms</span>
                                                     </span>
                                                 ) : (
-                                                    <span className="inline-flex items-center gap-1 text-slate-400 bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/50">
+                                                    <span className="inline-flex items-center gap-1 text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/50">
                                                         <span className="w-1.5 h-1.5 rounded-full bg-slate-500" />
                                                         <span>维护中</span>
                                                     </span>
                                                 )
                                             ) : isBatchProbing ? (
-                                                <span className="inline-flex items-center gap-1 text-cyan-400 font-mono">
+                                                <span className="inline-flex items-center gap-1 text-cyan-400 font-mono text-[10px]">
                                                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
                                                     <span>检测中...</span>
                                                 </span>
                                             ) : (
-                                                <span className="inline-flex items-center gap-1 text-slate-600">
+                                                <span className="inline-flex items-center gap-1 text-slate-500 text-[10px]">
                                                     <span className="w-1.5 h-1.5 rounded-full bg-slate-700" />
                                                     <span>待置状态</span>
                                                 </span>
                                             )}
-
-                                            {/* <span className="text-slate-500 font-mono text-[9px]">
-                                                {srv.server}
-                                            </span> */}
                                         </div>
                                     </div>
                                 );
@@ -664,110 +688,121 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                         </div>
                     </div>
 
-                    {/* 聚焦监测大卡片 */}
-                    <div className="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-5 shadow-2xl flex flex-col gap-3 relative overflow-hidden">
+                    {/* 下部：聚焦雷达中枢主控台 (固定高度，极具质感) */}
+                    <div className="bg-gradient-to-r from-slate-900/95 via-slate-900 to-slate-950 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col justify-between shrink-0 h-[148px]">
                         <div className="flex items-center justify-between">
                             <div>
-                                <span className="text-xs text-slate-400">雷达监测目标:</span>
-                                <div className="flex items-center gap-2 mt-0.5">
-                                    <h3 className="text-xl font-black text-slate-100">
+                                <span className="text-[11px] text-slate-400 font-medium">当前锁定监测目标:</span>
+                                <div className="flex items-center gap-2.5 mt-1">
+                                    <h3 className="text-xl font-black text-slate-100 tracking-wide">
                                         {selectedServer.name}
                                     </h3>
-                                    <span className="text-xs font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">
-                                        {activeZhanQu.zhanQu}
+                                    <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-950/60 px-2.5 py-0.5 rounded-lg border border-cyan-800/60 shadow-sm">
+                                        {currentServerZhanQu}
                                     </span>
-                                    {/* <span className="text-xs font-mono text-cyan-400/80 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-800/40">
-                                        {selectedServer.server}.link.zhuxian.com.cn:29000
-                                    </span> */}
                                 </div>
                             </div>
 
-                            {/* 状态大徽章 */}
+                            {/* 状态主徽章 */}
                             <div className="flex items-center gap-2">
                                 {currentStatus === 'online' && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-bold text-sm shadow-[0_0_12px_rgba(16,185,129,0.3)]">
-                                        <CheckCircle2 className="w-4 h-4" />
-                                        <span>已开服 (可登录)</span>
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-bold text-xs sm:text-sm shadow-[0_0_15px_rgba(16,185,129,0.35)]">
+                                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                                        <span>已开服 (可正常登录)</span>
                                     </div>
                                 )}
                                 {currentStatus === 'offline' && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 font-bold text-sm">
-                                        <AlertCircle className="w-4 h-4" />
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-300 font-bold text-xs sm:text-sm">
+                                        <AlertCircle className="w-4 h-4 text-slate-400" />
                                         <span>维护中 / 未开服</span>
                                     </div>
                                 )}
                                 {currentStatus === 'error' && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/20 border border-rose-500/50 text-rose-300 font-bold text-sm">
-                                        <Activity className="w-4 h-4" />
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/20 border border-rose-500/50 text-rose-300 font-bold text-xs sm:text-sm shadow-[0_0_12px_rgba(244,63,94,0.3)]">
+                                        <Activity className="w-4 h-4 text-rose-400 animate-spin" />
                                         <span>探测超时 / 重试中</span>
                                     </div>
                                 )}
                                 {currentStatus === 'unknown' && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 text-slate-400 text-xs">
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 text-slate-400 text-xs font-medium">
                                         <span>点击开始雷达监测</span>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        <div className="pt-2 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
-                            <span className="flex items-center gap-1.5">
+                        {/* 控制工具条 */}
+                        <div className="pt-2.5 border-t border-slate-800/80 text-xs text-slate-400 flex items-center justify-between">
+                            <span className="flex items-center gap-1.5 font-mono text-[11px] text-slate-400">
                                 <Wifi className="w-3.5 h-3.5 text-cyan-400" />
-                                <span>探测完美世界官方心跳</span>
+                                <span>完美官方网关 29000 端口心跳</span>
                             </span>
-                            <button
-                                onClick={() => probeSelectedServer(false)}
-                                className="text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 cursor-pointer transition-colors"
-                            >
-                                <RefreshCw className="w-3.5 h-3.5" />
-                                <span>立即单次检测</span>
-                            </button>
+
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => probeSelectedServer(false)}
+                                    className="text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1.5 cursor-pointer transition-colors px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30"
+                                >
+                                    <RefreshCw className="w-3.5 h-3.5" />
+                                    <span>立即单次检测</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* 右侧：实时日志流 (3列) */}
-                <div className="lg:col-span-3 bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 flex flex-col gap-3 max-h-[640px]">
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                {/* 右侧：实时日志流 (3列，撑满等高，与左/中底边绝对平齐) */}
+                <div className="lg:col-span-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between shadow-xl backdrop-blur-sm h-full">
+                    <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-slate-800/80">
                         <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                             <Activity className="w-3.5 h-3.5 text-cyan-400" />
                             <span>雷达探测日志</span>
                         </span>
                         {logs.length > 0 && (
                             <button
+                                type="button"
                                 onClick={() => setLogs([])}
-                                className="text-[10px] text-slate-500 hover:text-slate-300 cursor-pointer"
+                                className="text-[10px] text-slate-500 hover:text-slate-300 px-2 py-0.5 rounded hover:bg-slate-800 cursor-pointer transition-colors"
                             >
                                 清空
                             </button>
                         )}
                     </div>
 
-                    <div className="flex-1 overflow-y-auto space-y-2 pr-1 no-scrollbar min-h-[300px]">
+                    {/* 滚动容器 */}
+                    <div className="flex-1 overflow-y-auto space-y-2 pr-1 no-scrollbar">
                         {logs.length === 0 ? (
-                            <div className="text-center py-16 text-slate-600 text-xs flex flex-col items-center gap-2">
-                                <Radio className="w-6 h-6 text-slate-700 animate-pulse" />
-                                <span>雷达待命，开启监测后将在此实时显示结果</span>
+                            <div className="h-full flex flex-col items-center justify-center py-16 text-slate-500 text-xs gap-3">
+                                <div className="relative flex items-center justify-center w-14 h-14">
+                                    <div className="absolute inset-0 rounded-full border border-cyan-500/20 animate-ping opacity-75" />
+                                    <div className="absolute inset-2 rounded-full border border-cyan-500/40" />
+                                    <Radio className="w-6 h-6 text-cyan-400 animate-pulse" />
+                                </div>
+                                <span className="text-slate-400 font-medium">雷达站就绪待命</span>
+                                <span className="text-[11px] text-slate-600 text-center max-w-[200px]">
+                                    开启监测或单次检测后，毫秒心跳结果将在此实时滚屏播报
+                                </span>
                             </div>
                         ) : (
                             logs.map(log => (
                                 <div
                                     key={log.id}
-                                    className="p-2 rounded-lg bg-slate-950/60 border border-slate-800 text-xs font-mono flex flex-col gap-0.5"
+                                    className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800/80 text-xs font-mono flex flex-col gap-1 shadow-sm"
                                 >
                                     <div className="flex items-center justify-between text-[10px] text-slate-500">
-                                        <span>{log.time}</span>
+                                        <span className="font-mono">{log.time}</span>
                                         <span className={clsx(
-                                            'font-bold',
-                                            log.status === 'online' ? 'text-emerald-400' :
-                                                log.status === 'offline' ? 'text-slate-400' :
-                                                    log.status === 'unstable' ? 'text-purple-400' : 'text-rose-400'
+                                            'font-bold px-1.5 py-0.2 rounded',
+                                            log.status === 'online' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' :
+                                                log.status === 'offline' ? 'bg-slate-800 text-slate-400' :
+                                                    log.status === 'unstable' ? 'bg-purple-500/20 text-purple-400' : 'bg-rose-500/20 text-rose-400'
                                         )}>
                                             {log.serverName}
                                         </span>
                                     </div>
                                     <div className={clsx(
-                                        'text-xs font-sans font-medium',
+                                        'text-xs font-sans font-medium leading-relaxed',
                                         log.status === 'online' ? 'text-emerald-300' : 'text-slate-300'
                                     )}>
                                         {log.message}
@@ -776,24 +811,15 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                             ))
                         )}
                     </div>
-                </div>
-            </div>
 
-            {/* 底部信息标注 */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-2 text-[11px] text-slate-500 border-t border-slate-800/60">
-                <div className="flex items-center gap-2">
-                    {/* <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                    <span>心跳探测源自完美世界官方网络链路 · 协议数据参考 诛仙3 官方网关 · 界面与体验设计：星耀-萝卜</span> */}
-                </div>
-                <div className="flex items-center gap-3">
-                    {/* <span className="flex items-center gap-1 font-mono">
-                        <Clock className="w-3 h-3 text-slate-400" />
-                        <span>30分钟轮巡置状态</span>
-                    </span>
-                    <span className="flex items-center gap-1 font-mono text-cyan-400">
-                        <Zap className="w-3 h-3" />
-                        <span>4秒高频独占雷达</span>
-                    </span> */}
+                    {/* 底部雷达状态微指示灯 */}
+                    <div className="pt-2.5 mt-2 border-t border-slate-800/80 text-[10px] text-slate-500 flex items-center justify-between">
+                        <span className="flex items-center gap-1.5 font-mono">
+                            <span className={clsx("w-2 h-2 rounded-full", isProbing ? "bg-cyan-400 animate-ping" : "bg-slate-600")} />
+                            <span>{isProbing ? '4s 高频轮询中' : '心跳待命'}</span>
+                        </span>
+                        <span className="font-mono text-slate-500">{logs.length} 条记录</span>
+                    </div>
                 </div>
             </div>
         </div>
