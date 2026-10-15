@@ -57,13 +57,15 @@ const ipRateLimitMap = {
   create: new Map<string, number>(),
   reply: new Map<string, number>(),
   like: new Map<string, number>(),
+  sync: new Map<string, number>(),
   lastContent: new Map<string, string>()
 };
 
-const COOLDOWN_MS = {
-  create: 8000, // 发帖冷却：8秒
-  reply: 4000,  // 回复冷却：4秒
-  like: 1000    // 点赞冷却：1秒
+const COOLDOWN_MS: Record<string, number> = {
+  create: 8000,  // 发帖冷却：8秒
+  reply: 4000,   // 回复冷却：4秒
+  like: 1000,    // 点赞冷却：1秒
+  sync: 30000    // 批量同步冷却：30秒
 };
 
 const corsHeaders = {
@@ -227,9 +229,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
     }
 
     // 2. 防刷与 IP 频率冷却限制
-    if (action === 'create' || action === 'reply' || action === 'like') {
-      const lastActionTime = ipRateLimitMap[action].get(clientIp) || 0;
-      const cooldown = COOLDOWN_MS[action];
+    if (['create', 'reply', 'like', 'sync'].includes(action)) {
+      const lastActionTime = (ipRateLimitMap as any)[action]?.get(clientIp) || 0;
+      const cooldown = COOLDOWN_MS[action] || 1000;
       if (nowTs - lastActionTime < cooldown) {
         const waitSec = Math.ceil((cooldown - (nowTs - lastActionTime)) / 1000);
         return new Response(
@@ -390,6 +392,19 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
 
     // 安全合入存量留言 (批量同步)
     if (action === 'sync') {
+      // 门禁：仅当云端无用户留言（帖数 <= 1，仅官方公告）时才允许批量同步，已初始化后永久关门
+      if (currentPosts.length > 1) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: '云端留言板已完成初始化，不再允许批量同步'
+          }),
+          { status: 403, headers: corsHeaders }
+        );
+      }
+
+      ipRateLimitMap.sync.set(clientIp, nowTs);
+
       const incomingRaw: any[] = Array.isArray(body.posts) ? body.posts.slice(0, MAX_SYNC_BATCH) : [];
       const sanitizedBatch: GuestbookEntry[] = incomingRaw
         .map(sanitizeEntry)
