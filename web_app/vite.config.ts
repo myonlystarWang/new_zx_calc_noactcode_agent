@@ -143,7 +143,12 @@ function guestbookDevPlugin(): Plugin {
           }
 
           if (action === 'sync') {
-            const incoming = Array.isArray(body.posts) ? body.posts : [];
+            if (devPosts.length > 1) {
+              res.statusCode = 403;
+              res.end(JSON.stringify({ success: false, error: '云端留言板已完成初始化，不再允许批量同步' }));
+              return;
+            }
+            const incoming = Array.isArray(body.posts) ? body.posts.slice(0, 20) : [];
             const ids = new Set(devPosts.map(p => p.id));
             const fresh = incoming.filter((p: any) => p && p.id && !ids.has(p.id) && p.id !== 'pin-1');
             if (fresh.length > 0) {
