@@ -78,7 +78,7 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
     {
       id: 'server',
       icon: Radio,
-      title: '开服检测',
+      title: '开服雷达',
       desc: '9 大战区 33 服毫秒心跳探测与声光提醒',
       onClick: () => handleToolClick('server'),
     },
@@ -87,14 +87,16 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       icon: Compass,
       title: '轩辕策属性',
       desc: '1~20 阶反推初始底子与极品毕业度评级',
-      onClick: () => handleToolClick('xyc'),
+      disabled: true,
+      onClick: undefined,
     },
     {
       id: 'tianyuan',
       icon: Sparkles,
       title: '天缘属性',
       desc: '须弥装备天缘与天命属性理论上限推演',
-      onClick: () => handleToolClick('newtianyuan'),
+      disabled: true,
+      onClick: undefined,
     },
   ];
 
@@ -112,22 +114,38 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       <div className="space-y-0.5 max-h-[175px] sm:max-h-[185px] overflow-y-auto pr-1 menu-scrollbar">
         {menuItems.map((item) => {
           const Icon = item.icon;
+          const isDisabled = Boolean(item.disabled);
           return (
             <button
               key={item.id}
               type="button"
-              onClick={item.onClick}
-              className="w-full flex items-center gap-2.5 px-2.5 py-1 rounded-lg text-left hover:bg-white/[0.07] active:bg-white/10 transition-colors group cursor-pointer"
+              disabled={isDisabled}
+              onClick={isDisabled ? undefined : item.onClick}
+              className={`w-full flex items-center gap-2.5 px-2.5 py-1 rounded-lg text-left transition-colors select-none ${
+                isDisabled
+                  ? 'opacity-40 cursor-not-allowed bg-transparent'
+                  : 'hover:bg-white/[0.07] active:bg-white/10 group cursor-pointer'
+              }`}
             >
               <Icon
-                className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-300 transition-colors shrink-0"
+                className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+                  isDisabled ? 'text-slate-500' : 'text-slate-400 group-hover:text-cyan-300'
+                }`}
                 strokeWidth={1.75}
               />
               <div className="flex items-center gap-2 flex-1 min-w-0">
-                <span className="text-[12.5px] text-slate-100 group-hover:text-cyan-300 font-medium transition-colors shrink-0">
+                <span
+                  className={`text-[12.5px] font-medium transition-colors shrink-0 ${
+                    isDisabled ? 'text-slate-400' : 'text-slate-100 group-hover:text-cyan-300'
+                  }`}
+                >
                   {item.title}
                 </span>
-                <span className="text-[11.5px] text-slate-400 group-hover:text-slate-300 transition-colors truncate">
+                <span
+                  className={`text-[11.5px] transition-colors truncate ${
+                    isDisabled ? 'text-slate-500' : 'text-slate-400 group-hover:text-slate-300'
+                  }`}
+                >
                   {item.desc}
                 </span>
               </div>

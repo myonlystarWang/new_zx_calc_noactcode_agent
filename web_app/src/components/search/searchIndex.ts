@@ -339,7 +339,7 @@ export function buildSearchIndex(): CompiledSearchItem[] {
                 ])
             );
 
-            // Boss 条目 1：跳转副本 BOSS 速查（定位副本 + 自动高亮该首领）
+            // Boss 条目 1：跳转副本 BOSS 速查（定位副本 + 自动高亮该 BOSS）
             add(name, `${shortName} · ${role}`, 'monster', sharedKw, {
                 tab: 'compendium',
                 sub: 'boss',
@@ -350,7 +350,7 @@ export function buildSearchIndex(): CompiledSearchItem[] {
             // Boss 条目 2：带入属性战力计算器测算
             add(
                 `${name} (带入计算器测算)`,
-                `属性战力计算器 · ${shortName} · 首领测算`,
+                `属性战力计算器 · ${shortName} · BOSS测算`,
                 'page',
                 [...sharedKw, '计算器', '测算'],
                 { tab: 'calculator', dungeonId: d.DungeonID, monsterId: id }
