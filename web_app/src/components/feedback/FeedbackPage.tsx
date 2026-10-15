@@ -56,102 +56,28 @@ const INITIAL_POSTS: GuestbookEntry[] = [
     id: 'pin-1',
     author: '星耀-萝卜 (作者)',
     category: 'suggestion',
-    content: '欢迎仙友光临天书万象 AI 全知工作台！本平台 100% 运行于 Cloudflare Pages 静态边缘计算，数据全量开源且零商业推广。任何技能公式误差、BOSS抗性校对或战力对比建议，均可在此留言交流！',
+    content: '欢迎仙友使用天书万象 AI 诛仙全知大模型！本平台 100% 静态边缘计算，真实数据全量免费开放。任何技能公式误差、BOSS属性校对或战力对比建议，均可在此留言交流！',
     time: '2026-10-14 12:00',
     likes: 88,
     isPinned: true,
     statusBadge: 'adopted',
     statusText: '官方公告',
     replies: []
-  },
-  {
-    id: 'post-1',
-    author: '玉清剑客',
-    category: 'bug',
-    content: 'T20 首领的减爆伤数值在 1920% 左右，实测减免百分比在 91.5% 边界上存在阶段衰减，建议测算引擎增加对分阶段抗性波动的推演。',
-    time: '2026-10-14 11:20',
-    likes: 24,
-    statusBadge: 'in_progress',
-    statusText: '排期推演中',
-    replies: [
-      {
-        id: 'rep-1-1',
-        author: '星耀-萝卜 (作者)',
-        content: '已收录该抗性采样样本，确定性战斗引擎已在最新算法中加入动态阶段系数。',
-        time: '2026-10-14 11:35',
-        isAuthor: true
-      }
-    ]
-  },
-  {
-    id: 'post-2',
-    author: '浮生未歇',
-    category: 'build',
-    content: '佛逐霜配合天弈印记与 11 阶四象青龙策，破防无视达到 110% 后对 T20 碎晶宫爆发直接质变，推荐大家多堆无视！',
-    time: '2026-10-14 10:45',
-    likes: 36,
-    statusBadge: 'adopted',
-    statusText: '精选战术心得',
-    replies: [
-      {
-        id: 'rep-2-1',
-        author: '紫霞真人',
-        content: '确实，达到无视阈值后边际收益非常明显，比纯堆攻击划算多了。',
-        time: '2026-10-14 11:02'
-      }
-    ]
-  },
-  {
-    id: 'post-3',
-    author: '梵音清心',
-    category: 'feature',
-    content: '希望能增加类似凝灵契 1:1 的完美度洗练模拟器，以及须弥天缘的极品上限对比，这样就不用在游戏里盲目消耗材料了！',
-    time: '2026-10-14 09:30',
-    likes: 52,
-    statusBadge: 'fixed',
-    statusText: '已在最新版上线',
-    replies: [
-      {
-        id: 'rep-3-1',
-        author: '星耀-萝卜 (作者)',
-        content: '凝灵契与新版天缘模拟器已接入微工具箱，可在顶部导航模拟工具集随时体验！',
-        time: '2026-10-14 10:15',
-        isAuthor: true
-      }
-    ]
   }
 ];
 
-const STORAGE_KEY = 'tianshu_guestbook_posts_v2';
+const STORAGE_KEY = 'tianshu_guestbook_posts_v3';
 
 export const FeedbackPage: React.FC = () => {
   const [posts, setPosts] = useState<GuestbookEntry[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-      // 兼容旧版 key
-      const old = localStorage.getItem('tianshu_guestbook_posts_v1');
-      if (old) {
-        const parsed = JSON.parse(old);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map((p: any) => ({
-            id: p.id || `post-${Date.now()}`,
-            author: p.author || '仙友',
-            category: p.category || 'suggestion',
-            content: p.content || '',
-            time: p.time || '',
-            likes: p.likes || 1,
-            isPinned: p.isPinned,
-            statusBadge: p.statusBadge,
-            statusText: p.statusText,
-            replies: p.authorReply ? [{
-              id: `rep-legacy-${p.id}`,
-              author: '星耀-萝卜 (作者)',
-              content: p.authorReply,
-              time: p.time || '',
-              isAuthor: true
-            }] : []
-          }));
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          // 官方置顶公告（pin-1）始终与代码中最新的 INITIAL_POSTS 同步，避免修改文案后被本地旧缓存锁死
+          const userPosts = parsed.filter((p: GuestbookEntry) => p.id !== 'pin-1');
+          return [INITIAL_POSTS[0], ...userPosts];
         }
       }
     } catch {
@@ -409,8 +335,8 @@ export const FeedbackPage: React.FC = () => {
                         post.statusBadge === 'adopted'
                           ? 'bg-emerald-950/80 border-emerald-500/50 text-emerald-300'
                           : post.statusBadge === 'fixed'
-                          ? 'bg-cyan-950/80 border-cyan-500/50 text-cyan-300'
-                          : 'bg-amber-950/80 border-amber-500/50 text-amber-300'
+                            ? 'bg-cyan-950/80 border-cyan-500/50 text-cyan-300'
+                            : 'bg-amber-950/80 border-amber-500/50 text-amber-300'
                       )}
                     >
                       <CheckCircle2 className="w-3 h-3" />

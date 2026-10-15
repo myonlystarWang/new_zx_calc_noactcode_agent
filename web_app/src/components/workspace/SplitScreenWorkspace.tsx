@@ -38,7 +38,7 @@ export interface SplitScreenWorkspaceProps {
 const FEATURE_META: Record<WorkspaceMode, { label: string; icon: React.ReactNode }> = {
   calc: { label: '战力计算器', icon: <Calculator className="w-3.5 h-3.5 text-slate-400" /> },
   arena: { label: '副本训练场', icon: <Swords className="w-3.5 h-3.5 text-slate-400" /> },
-  server: { label: '开服检测', icon: <Radio className="w-3.5 h-3.5 text-slate-400" /> },
+  server: { label: '开服雷达', icon: <Radio className="w-3.5 h-3.5 text-slate-400" /> },
   xyc: { label: '轩辕策属性', icon: <Compass className="w-3.5 h-3.5 text-slate-400" /> },
   newtianyuan: { label: '天缘属性', icon: <Sparkles className="w-3.5 h-3.5 text-slate-400" /> },
   ninglingqi: { label: '凝灵契模拟', icon: <Layers className="w-3.5 h-3.5 text-slate-400" /> },

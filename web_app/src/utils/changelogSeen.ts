@@ -28,6 +28,9 @@ export function getSeenVersion(): string | null {
 export function markChangelogSeen(version: string = CURRENT_VERSION): void {
     try {
         localStorage.setItem(SEEN_KEY, version);
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new Event('changelog_seen'));
+        }
     } catch {
         /* 隐私模式 / 存储配额满：静默失败，不影响浏览 */
     }

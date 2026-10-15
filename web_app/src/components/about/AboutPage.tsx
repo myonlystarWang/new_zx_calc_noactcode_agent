@@ -28,9 +28,9 @@ export const AboutPage: React.FC = () => {
           </p>
 
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl text-center">
-            这是一个由硬核数值与算法玩家打造的一站式诛仙战术推理与全域数据库平台。
+            这是一个由诛仙资深老玩家打造的一站式诛仙战术推理与全域数据库平台。
             我们沉淀了海量真实的客户端底层数据，首创了高保真实战伤害计算公式与属性加权边际贡献分析体系，
-            并结合双轨全知大模型与丰富的趣味模拟器矩阵，让每一位仙友的属性养成、装备抉择与实战打桩都拥有确凿的数据支撑。
+            并结合诛仙全知大模型与丰富的装备属性模拟器，让每一位仙友的属性养成、装备抉择与副本实战都拥有确凿的数据支撑。
           </p>
 
           {/* 4 大核心关键指标看板 */}
@@ -39,7 +39,7 @@ export const AboutPage: React.FC = () => {
               <span className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300 font-mono">
                 17,000+
               </span>
-              <span className="text-xs text-slate-400 mt-1 font-medium">真实装备图鉴</span>
+              <span className="text-xs text-slate-400 mt-1 font-medium">真实装备属性图</span>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm flex flex-col items-center shadow-sm">
@@ -53,14 +53,14 @@ export const AboutPage: React.FC = () => {
               <span className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-300 font-mono">
                 97+
               </span>
-              <span className="text-xs text-slate-400 mt-1 font-medium">副本首领减免机制</span>
+              <span className="text-xs text-slate-400 mt-1 font-medium">副本BOSS属性</span>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-sm flex flex-col items-center shadow-sm">
               <span className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-300 font-mono">
-                0ms
+                10ms
               </span>
-              <span className="text-xs text-slate-400 mt-1 font-medium">极速确定性推理</span>
+              <span className="text-xs text-slate-400 mt-1 font-medium">极速技能伤害计算</span>
             </div>
           </div>
         </div>
@@ -119,11 +119,11 @@ export const AboutPage: React.FC = () => {
                 <h4 className="text-sm font-bold text-slate-100">
                   做这个站的人：<span className="text-cyan-300">星耀-萝卜</span>
                 </h4>
-                <span className="text-[11px] text-slate-500">硬核诛仙老玩家 · 数值与算法推演作者</span>
+                <span className="text-[11px] text-slate-500">19年诛仙老玩家 · 数据与算法爱好者</span>
               </div>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              天书万象一直在持续进化和修正。所有的更新细节与排期都记录在
+              天书万象 AI 一直在持续进化和修正。所有的更新细节与排期都记录在
               <button
                 type="button"
                 onClick={() => navigate(ROUTE.changelog)}
@@ -131,7 +131,7 @@ export const AboutPage: React.FC = () => {
               >
                 更新动态
               </button>
-              中；如果你在实测打桩中发现任何公式误差，或有新工具与攻略建议，随时来
+              中；如果你在游戏实测中发现任何公式误差，或有新工具与攻略建议，随时来
               <button
                 type="button"
                 onClick={() => navigate(ROUTE.feedback)}
@@ -180,15 +180,15 @@ export const AboutPage: React.FC = () => {
 
           <div className="md:col-span-7 space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
             <p>
-              从河阳城到青云之巅，诛仙已走过十数载春秋。随着版本更迭，系统日益繁复，无数仙友在养成与配装中往往只能依靠碎片化的经验摸索，
+              从河阳城到青云之巅，诛仙已走过十几数载春秋。随着版本更迭，系统日益繁复，无数仙友在养成与配装中往往只能依靠碎片化的经验摸索，
               付出了大量的试错代价。
             </p>
             <p>
-              我们创建天书万象的初衷非常简单：<strong className="text-slate-100">不搞弄虚作假的虚浮评分，只做实事求是的科学推演</strong>。
-              每一条装备词条、每一个技能描述、每一份副本数据，都经过我们与多位热爱诛仙的技术仙友逐项对照校验证实。
+              我们创建天书万象的初衷非常简单：<strong className="text-slate-100">不搞弄虚作假的虚浮名利，只做实事求是的科学推演</strong>。
+              每一条装备词条、每一个技能描述、每一份副本数据，每一次伤害数据，都经过我们与多位热爱诛仙的技术仙友逐项对照校验证实。
             </p>
             <p>
-              愿天书万象能成为每一位仙友行道诛仙路上的得力智囊——去推演，去探索，把每一份热爱与心血，都用在最值得的刀刃上。
+              愿天书万象 AI 能成为每一位仙友行道诛仙路上的得力智囊——去推演，去探索，把每一份热爱与心血，都用在最值得的刀刃上。
             </p>
           </div>
         </div>
@@ -201,7 +201,7 @@ export const AboutPage: React.FC = () => {
           </div>
           <div className="flex items-center gap-2 justify-center">
             <Code2 className="w-4 h-4 text-amber-400/80 shrink-0" />
-            <span>数据与算法全量开源 · 拒绝商业推广</span>
+            <span>真实数据全量开放 · 拒绝任何虚假宣传</span>
           </div>
           <div className="flex items-center gap-2 justify-center sm:justify-end">
             <Heart className="w-4 h-4 text-rose-400/80 shrink-0" />

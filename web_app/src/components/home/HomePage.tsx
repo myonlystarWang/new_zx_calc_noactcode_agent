@@ -132,15 +132,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     const img = imageBase64 || attachedImage;
     if (!text && !img) return;
 
-    // 当用户输入“计算”、“测算”或带有计算意图时，自动拉开右侧工作区分屏
-    if (text.includes('计算') || text.includes('测算') || text.includes('秒伤') || text.includes('战力')) {
-      setWorkspaceState({
-        isOpen: true,
-        mode: 'calc',
-        isMaximized: false,
-      });
-    }
-
     setIsChatActive(true);
     inputRef.current?.blur();
 
@@ -204,6 +195,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
         const localMatch = await copilot.matchLocalIntent(text);
         if (localMatch) {
           setChatMessages((prev) => [...prev, localMatch]);
+          if (localMatch.cardData?.workspaceMode) {
+            setWorkspaceState({
+              isOpen: true,
+              mode: localMatch.cardData.workspaceMode,
+              isMaximized: false,
+            });
+          }
         } else {
           const reply = await copilot.chatText(text);
           setChatMessages((prev) => [
@@ -237,14 +235,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
   const handleFollowUpMessage = async (text: string, image?: string) => {
     const trimmed = text.trim();
     if (!trimmed && !image) return;
-
-    if (trimmed.includes('计算') || trimmed.includes('测算') || trimmed.includes('秒伤') || trimmed.includes('战力')) {
-      setWorkspaceState({
-        isOpen: true,
-        mode: 'calc',
-        isMaximized: false,
-      });
-    }
 
     const now = new Date();
     const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -304,6 +294,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
         const localMatch = await copilot.matchLocalIntent(trimmed);
         if (localMatch) {
           setChatMessages((prev) => [...prev, localMatch]);
+          if (localMatch.cardData?.workspaceMode) {
+            setWorkspaceState({
+              isOpen: true,
+              mode: localMatch.cardData.workspaceMode,
+              isMaximized: false,
+            });
+          }
         } else {
           const history = chatMessages.slice(-4).map((m) => ({
             role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
@@ -573,12 +570,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               type="button"
               onClick={() => {
                 setWorkspaceState({ isOpen: true, mode: 'server', isMaximized: false });
-                handleStartAiChat('开服检测');
+                handleStartAiChat('开服雷达');
               }}
               className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-sky-500/30 text-xs text-slate-300 hover:text-sky-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Radio className="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform shrink-0" />
-              <span className="font-medium whitespace-nowrap">开服检测</span>
+              <span className="font-medium whitespace-nowrap">开服雷达</span>
             </button>
 
             <button
