@@ -70,9 +70,115 @@ function zhuxianServerRadarPlugin(): Plugin {
   };
 }
 
+function guestbookDevPlugin(): Plugin {
+  let devPosts: any[] = [
+    {
+      id: 'pin-1',
+      author: '星耀-萝卜 (作者)',
+      category: 'suggestion',
+      content: '欢迎仙友使用天书万象 AI 诛仙全知大模型！本平台 100% 静态边缘计算，真实数据全量免费开放。任何技能公式误差、BOSS属性校对或战力对比建议，均可在此留言交流！',
+      time: '2026-10-14 12:00',
+      likes: 88,
+      isPinned: true,
+      statusBadge: 'adopted',
+      statusText: '官方公告',
+      replies: []
+    }
+  ];
+
+  const handleGuestbookApi = async (req: any, res: any, next: any) => {
+    if (!req.url || !req.url.startsWith('/api/guestbook')) {
+      return next();
+    }
+
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    if (req.method === 'GET') {
+      res.end(JSON.stringify({ success: true, cloud: true, devMock: true, posts: devPosts, total: devPosts.length }));
+      return;
+    }
+
+    if (req.method === 'POST') {
+      let bodyStr = '';
+      req.on('data', (chunk: any) => { bodyStr += chunk; });
+      req.on('end', () => {
+        try {
+          const body = JSON.parse(bodyStr || '{}');
+          const action = body.action || 'create';
+          const now = new Date();
+          const timeStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+          if (action === 'create') {
+            const newEntry = {
+              id: `post-${Date.now()}`,
+              author: (body.author || '匿踪仙友').slice(0, 16),
+              category: body.category || 'suggestion',
+              content: (body.content || '').slice(0, 500),
+              time: timeStr,
+              likes: 1,
+              replies: []
+            };
+            devPosts = [devPosts[0], newEntry, ...devPosts.slice(1)];
+            res.end(JSON.stringify({ success: true, cloud: true, devMock: true, post: newEntry, posts: devPosts }));
+            return;
+          }
+
+          if (action === 'reply') {
+            const newReply = {
+              id: `rep-${Date.now()}`,
+              author: (body.author || '热心仙友').slice(0, 16),
+              content: (body.content || '').slice(0, 300),
+              time: timeStr
+            };
+            devPosts = devPosts.map(p => p.id === body.postId ? { ...p, replies: [...(p.replies || []), newReply] } : p);
+            res.end(JSON.stringify({ success: true, cloud: true, devMock: true, posts: devPosts }));
+            return;
+          }
+
+          if (action === 'like') {
+            devPosts = devPosts.map(p => p.id === body.postId ? { ...p, likes: (p.likes || 0) + 1 } : p);
+            res.end(JSON.stringify({ success: true, cloud: true, devMock: true, posts: devPosts }));
+            return;
+          }
+
+          if (action === 'sync') {
+            const incoming = Array.isArray(body.posts) ? body.posts : [];
+            const ids = new Set(devPosts.map(p => p.id));
+            const fresh = incoming.filter((p: any) => p && p.id && !ids.has(p.id) && p.id !== 'pin-1');
+            if (fresh.length > 0) {
+              devPosts = [devPosts[0], ...fresh, ...devPosts.slice(1)];
+            }
+            res.end(JSON.stringify({ success: true, cloud: true, devMock: true, posts: devPosts }));
+            return;
+          }
+
+          res.end(JSON.stringify({ success: true, posts: devPosts }));
+        } catch (e: any) {
+          res.statusCode = 500;
+          res.end(JSON.stringify({ success: false, error: e.message }));
+        }
+      });
+      return;
+    }
+
+    next();
+  };
+
+  return {
+    name: 'guestbook-dev-mock',
+    configureServer(server) {
+      server.middlewares.use(handleGuestbookApi);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(handleGuestbookApi);
+    }
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), zhuxianServerRadarPlugin()],
+  plugins: [react(), zhuxianServerRadarPlugin(), guestbookDevPlugin()],
   // 版本号唯一来源：package.json 的 version（Header 版本徽章 / 更新日志页 均由 __APP_VERSION__ 读出）
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),

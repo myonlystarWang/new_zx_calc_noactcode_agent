@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   MessageSquare,
   ThumbsUp,
@@ -10,7 +10,11 @@ import {
   Clock,
   MessageCircle,
   CornerDownRight,
-  X
+  X,
+  RefreshCw,
+  Cloud,
+  CloudOff,
+  Loader2
 } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -74,8 +78,7 @@ export const FeedbackPage: React.FC = () => {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          // 官方置顶公告（pin-1）始终与代码中最新的 INITIAL_POSTS 同步，避免修改文案后被本地旧缓存锁死
+        if (Array.isArray(parsed) && parsed.length > 0) {
           const userPosts = parsed.filter((p: GuestbookEntry) => p.id !== 'pin-1');
           return [INITIAL_POSTS[0], ...userPosts];
         }
@@ -85,6 +88,10 @@ export const FeedbackPage: React.FC = () => {
     }
     return INITIAL_POSTS;
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCloudSynced, setIsCloudSynced] = useState<boolean | null>(null);
 
   const [activeCategory, setActiveCategory] = useState<GuestbookCategory>('all');
   const [authorName, setAuthorName] = useState(() => {
@@ -101,6 +108,7 @@ export const FeedbackPage: React.FC = () => {
   });
   const [replyContent, setReplyContent] = useState('');
 
+  // 同步本地缓存
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
@@ -108,6 +116,66 @@ export const FeedbackPage: React.FC = () => {
       console.error('Failed to save guestbook posts', e);
     }
   }, [posts]);
+
+  // 从服务端拉取全量留言
+  const fetchPosts = useCallback(async (isSilent = false) => {
+    if (!isSilent) setIsLoading(true);
+    try {
+      const res = await fetch('/api/guestbook');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.posts)) {
+          setIsCloudSynced(data.cloud !== false);
+          
+          // 如果云端只有置顶帖，而本地有存量自创留言，则自动同步合入云端
+          const localSaved = localStorage.getItem(STORAGE_KEY);
+          let localUserPosts: GuestbookEntry[] = [];
+          if (localSaved) {
+            try {
+              const parsed = JSON.parse(localSaved);
+              if (Array.isArray(parsed)) {
+                localUserPosts = parsed.filter(p => p.id !== 'pin-1');
+              }
+            } catch {}
+          }
+
+          if (data.cloud && data.posts.length <= 1 && localUserPosts.length > 0) {
+            // 静默同步本地存量留言到云端
+            try {
+              const syncRes = await fetch('/api/guestbook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'sync', posts: localUserPosts })
+              });
+              if (syncRes.ok) {
+                const syncData = await syncRes.json();
+                if (syncData.success && Array.isArray(syncData.posts)) {
+                  setPosts(syncData.posts);
+                  return;
+                }
+              }
+            } catch (syncErr) {
+              console.warn('Auto sync local posts to cloud failed:', syncErr);
+            }
+          }
+
+          setPosts(data.posts);
+          return;
+        }
+      }
+      setIsCloudSynced(false);
+    } catch (err) {
+      console.warn('Guestbook fetch fallback to local storage:', err);
+      setIsCloudSynced(false);
+    } finally {
+      if (!isSilent) setIsLoading(false);
+    }
+  }, []);
+
+  // 初始加载拉取云端
+  useEffect(() => {
+    fetchPosts(false);
+  }, [fetchPosts]);
 
   const handleRandomizeTitle = () => {
     const filtered = IMMORTAL_TITLES.filter(t => t !== authorName);
@@ -121,50 +189,101 @@ export const FeedbackPage: React.FC = () => {
     setReplyAuthorName(next);
   };
 
-  const handleLike = (id: string) => {
+  const handleLike = async (id: string) => {
     if (likedMap[id]) return;
     setLikedMap(prev => ({ ...prev, [id]: true }));
+    
+    // 乐观更新
     setPosts(prev =>
       prev.map(p => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
     );
+
+    // 云端上报
+    try {
+      const res = await fetch('/api/guestbook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'like', postId: id })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.posts)) {
+          setPosts(data.posts);
+        }
+      }
+    } catch (e) {
+      console.warn('Like report error:', e);
+    }
   };
 
-  const handlePostSubmit = (e: React.FormEvent) => {
+  const handlePostSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const content = postContent.trim();
-    if (!content) return;
+    if (!content || isSubmitting) return;
+
+    setIsSubmitting(true);
+    const author = authorName.trim() || '匿踪仙友';
+    const category = newPostCategory;
 
     const now = new Date();
     const timeStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-    const newEntry: GuestbookEntry = {
+    // 乐观更新
+    const tempEntry: GuestbookEntry = {
       id: `post-${Date.now()}`,
-      author: authorName.trim() || '匿踪仙友',
-      category: newPostCategory,
+      author,
+      category,
       content,
       time: timeStr,
       likes: 1,
       replies: []
     };
 
-    setPosts(prev => [prev[0], newEntry, ...prev.slice(1)]);
+    setPosts(prev => [prev[0], tempEntry, ...prev.slice(1)]);
     setPostContent('');
+
+    // 发送至服务端云端存储
+    try {
+      const res = await fetch('/api/guestbook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create',
+          author,
+          category,
+          content
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.posts)) {
+          setPosts(data.posts);
+          setIsCloudSynced(data.cloud !== false);
+        }
+      }
+    } catch (err) {
+      console.warn('Post submit error, kept in local state:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleReplySubmit = (postId: string) => {
+  const handleReplySubmit = async (postId: string) => {
     const content = replyContent.trim();
     if (!content) return;
 
+    const author = replyAuthorName.trim() || '热心仙友';
     const now = new Date();
     const timeStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
     const newReply: GuestbookReply = {
       id: `rep-${Date.now()}`,
-      author: replyAuthorName.trim() || '热心仙友',
+      author,
       content,
       time: timeStr
     };
 
+    // 乐观更新
     setPosts(prev =>
       prev.map(p => {
         if (p.id === postId) {
@@ -179,6 +298,28 @@ export const FeedbackPage: React.FC = () => {
 
     setReplyContent('');
     setReplyingPostId(null);
+
+    // 上报云端
+    try {
+      const res = await fetch('/api/guestbook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'reply',
+          postId,
+          author,
+          content
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.posts)) {
+          setPosts(data.posts);
+        }
+      }
+    } catch (err) {
+      console.warn('Reply submit error:', err);
+    }
   };
 
   const filteredPosts = posts.filter(p => {
@@ -189,19 +330,59 @@ export const FeedbackPage: React.FC = () => {
   return (
     <div className="w-full min-h-full bg-[#05080f] text-slate-100 flex flex-col justify-between select-none">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12 w-full flex-1 flex flex-col gap-6">
-        {/* 顶部极简标头 */}
+        {/* 顶部标头与云端状态 */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-300 shadow-sm shadow-amber-500/10">
               <MessageSquare className="w-5 h-5" />
             </div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <h1 className="text-xl sm:text-2xl font-black text-slate-100 tracking-wide">
                 仙友留言板
               </h1>
               <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-800/60 font-mono font-bold">
                 共 {posts.length} 条
               </span>
+              
+              {/* 云端全员共享指示器 */}
+              <div
+                className={clsx(
+                  'flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium border transition-colors',
+                  isCloudSynced === true
+                    ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
+                    : isCloudSynced === false
+                    ? 'bg-amber-950/60 border-amber-500/40 text-amber-300'
+                    : 'bg-slate-900 border-slate-700 text-slate-400'
+                )}
+                title={
+                  isCloudSynced === true
+                    ? '已接入 Cloudflare KV 云端持久化，全员仙友可见'
+                    : '当前使用本地离线缓存（待部署绑定 KV 后自动全网同步）'
+                }
+              >
+                {isCloudSynced === true ? (
+                  <>
+                    <Cloud className="w-3 h-3 text-emerald-400 animate-pulse" />
+                    <span>云端全网同步</span>
+                  </>
+                ) : (
+                  <>
+                    <CloudOff className="w-3 h-3 text-amber-400" />
+                    <span>离线缓存模式</span>
+                  </>
+                )}
+              </div>
+
+              {/* 手动刷新同步按钮 */}
+              <button
+                type="button"
+                onClick={() => fetchPosts(false)}
+                disabled={isLoading}
+                className="p-1 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-slate-800/60 transition-all cursor-pointer"
+                title="重新拉取云端最新留言"
+              >
+                <RefreshCw className={clsx('w-3.5 h-3.5', isLoading && 'animate-spin text-cyan-400')} />
+              </button>
             </div>
           </div>
 
@@ -287,11 +468,15 @@ export const FeedbackPage: React.FC = () => {
             />
             <button
               type="submit"
-              disabled={!postContent.trim()}
+              disabled={!postContent.trim() || isSubmitting}
               className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 disabled:opacity-40 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-amber-950/40 cursor-pointer shrink-0"
             >
-              <Send className="w-3.5 h-3.5 text-slate-950" />
-              <span>发布留言</span>
+              {isSubmitting ? (
+                <Loader2 className="w-3.5 h-3.5 text-slate-950 animate-spin" />
+              ) : (
+                <Send className="w-3.5 h-3.5 text-slate-950" />
+              )}
+              <span>{isSubmitting ? '同步中...' : '发布留言'}</span>
             </button>
           </div>
         </form>
