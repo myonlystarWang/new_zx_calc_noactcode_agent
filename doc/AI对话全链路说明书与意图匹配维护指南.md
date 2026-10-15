@@ -396,7 +396,10 @@ for (const c of cases) {
 
 ### 7.4 Golden 快照与 approve 机制
 
-- **快照落盘前必须 normalize**：每条 return 都带 `id: msg-${Date.now()}` 和 `time: HH:MM`（第 352/359-361 行等），每次运行都不同——normalize 剔除 `id` 与 `time` 后，只比对 `{ cardType, cardData, text }`；**不 normalize 则每次重跑 100% 报差异，approve 机制直接失效**。另须按 JSON 语义剔除 `undefined` 值键（`cardData.difficulty` 等字段常年为 undefined）——否则内存对象与文件 round-trip 后的 golden 对拍必误报（P0 实施实测踩中，见 7.6）；
+- **快照落盘前必须 normalize**（三层，缺一即误报）：
+  1. **剔除 `id` 与 `time`**：每条 return 都带 `msg-${Date.now()}` 和 `HH:MM`（第 352/359-361 行等），每次运行都不同——不剔除则重跑 100% 报差异，approve 机制直接失效；
+  2. **按 JSON 语义剔除 `undefined` 值键**：`cardData.difficulty` 等字段常年为 undefined，内存对象与文件 round-trip 后的 golden 语义不一致，必误报；
+  3. **剔除数据回波字段**：`allEquips`（全量装备列表）/ 候选内的 `monster`/`dungeon` 原始对象 / `el_descs` 技能描述文本；`skill`/`equip`/`fabao` 实体对象只留 id/name 级标识、candidates 只保留原始字段（id/name/slot/lv + 战斗标量）。回波内容随数据文件更新（技改/装备调整）而变，纳入 golden 只会把 approve 淹死在噪音里——P0 实测：不做第 3 层 golden 达 1.5MB，做完后 259KB；
 - P2/P3 迁移前用现有实现跑全量用例生成 golden；迁移后重跑，**任何与快照的差异必须逐条人工确认**（预期变化 / 非预期回归），确认后才更新快照；
 - 快照文件：`regression_test/l1_intent_golden.json`（与计算引擎的 before/after 快照同目录同风格）。
 
@@ -422,6 +425,7 @@ P0 实施期实测发现并修复的 harness 级问题（后续维护者须知�
 1. **undefined 键对拍误报**：`cardData` 含 `undefined` 值键（如 `difficulty`），内存对象与 golden 文件 JSON round-trip 语义不一致——已按 JSON 语义 canonicalize（7.4 已同步）；
 2. **`totalCount` 与 `candidates.length` 不是一回事**：`equip_candidates` 的 `totalCount` 是聚合**前**总数、`candidates` 是 `collapseSeriesCandidates` 聚合**后**数组（「昭武」实测 296 → 100），断言时勿混用；
 3. **期望值必须实测取证**：本轮全部 48 条期望值经 `--probe` 实跑取证，未凭代码阅读推断——推断曾出错的典型：「玉净瓶」实际被装备意图劫持返回 equip 卡（不是法宝卡，已建 `fabao-order-quirk-01` 冻结该现状）；「逐霜的苍龙啸」因「的」字断词实际返回 null（已建 `inversion-gap-01` 冻结该缺口）。
+4. **harness 改完后必须读文件验货，不能只信全绿**：P0 二期给 golden 加回波裁剪时曾把 transform 参数顺序写反（字段值被替换成键名），因生成与比对走同一条坏路径而**假绿 48/48**——直接读 golden 文件内容才发现。任何 harness 改动后，除跑用例外必须抽查快照实际字段值。
 
 ---
 

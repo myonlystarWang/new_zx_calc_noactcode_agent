@@ -109,12 +109,15 @@ function stableStringify(v) {
 
 // JSON 语义规范化：递归剔除 undefined 值——否则内存对象（含 undefined 键）与
 // golden 文件（JSON round-trip 后键消失）对拍必然误报（cardData.difficulty 等字段常为 undefined）
-function canonicalize(v) {
-    if (Array.isArray(v)) return v.map(canonicalize);
+// transform(key, value)：可返回 undefined 剔除整个键（用于 golden 回波字段裁剪）
+function canonicalize(v, transform) {
+    if (Array.isArray(v)) return v.map((item) => canonicalize(item, transform));
     if (v && typeof v === 'object') {
         const out = {};
         for (const k of Object.keys(v)) {
-            const cv = canonicalize(v[k]);
+            const tv = transform ? transform(k, v[k]) : v[k];
+            if (tv === undefined) continue;
+            const cv = canonicalize(tv, transform);
             if (cv !== undefined) out[k] = cv;
         }
         return out;
@@ -123,10 +126,54 @@ function canonicalize(v) {
 }
 
 // golden 快照专用：剔除每次运行都不同的 id/time
-function normalize(msg) {
+// 另剔除两类噪音字段（否则数据文件一更新 golden 就误报，approve 机制被噪音淹没）：
+//   1. 体量回波：allEquips（全量装备列表）/ candidates[].monster / .dungeon 原始对象
+//   2. 实体回波：skill/equip/fabao 完整对象只留 id/name 级标识（技改常改描述，非逻辑回归）
+const PRUNE_KEYS = new Set(['allEquips', 'monster', 'dungeon']);
+const SUBSET_KEYS = {
+    skill: ['id', 'name'],
+    equip: ['id', 'name', 'slot'],
+    fabao: ['id', 'name', 'grade'],
+};
+// candidates 内额外剔除的文本回波键（el_descs 为技能描述文本，技改必动、非逻辑回归）
+const CANDIDATE_DROP_KEYS = new Set(['el_descs']);
+
+function pruneForGolden(key, v) {
+    if (PRUNE_KEYS.has(key)) return undefined;
+    if (SUBSET_KEYS[key] && v && typeof v === 'object' && !Array.isArray(v)) {
+        const out = {};
+        for (const k of SUBSET_KEYS[key]) {
+            if (v[k] !== undefined) out[k] = v[k];
+        }
+        return out;
+    }
+    // candidates 数组：只保留原始字段（string/number/boolean + 原始类型数组），
+    // 丢弃嵌套对象/数组（装备 ad/sj/ref 等大体量回波——其内容随数据更新而变，非逻辑回归）
+    if (key === 'candidates' && Array.isArray(v)) {
+        return v.map((item) => {
+            if (!item || typeof item !== 'object') return item;
+            const out = {};
+            for (const [k, val] of Object.entries(item)) {
+                if (CANDIDATE_DROP_KEYS.has(k)) continue;
+                if (val === null || val === undefined) continue;
+                if (typeof val === 'object') {
+                    if (Array.isArray(val) && val.every((x) => x === null || typeof x !== 'object')) {
+                        out[k] = val;
+                    }
+                    continue;
+                }
+                out[k] = val;
+            }
+            return out;
+        });
+    }
+    return v;
+}
+
+function normalize(msg, pruneEchoes = true) {
     if (!msg) return null;
     const { id, time, ...rest } = msg;
-    return canonicalize(rest);
+    return canonicalize(rest, pruneEchoes ? pruneForGolden : undefined);
 }
 
 function checkExpect(testCase, result) {
@@ -187,7 +234,8 @@ if (MODE_PROBE) {
     for (const input of PROBE_INPUTS) {
         const r = await runOne(input);
         console.log(`\n===== INPUT: ${JSON.stringify(input)} =====`);
-        console.log(JSON.stringify(normalize(r), null, 2));
+        // probe 保留全量字段（含回波），仅供人工核对期望值；golden 才裁剪
+        console.log(JSON.stringify(normalize(r, false), null, 2));
     }
     process.exit(0);
 }
