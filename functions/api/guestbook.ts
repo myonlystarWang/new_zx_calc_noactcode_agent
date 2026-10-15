@@ -1,11 +1,12 @@
 /**
  * Cloudflare Pages Function: /api/guestbook
- * 仙友留言板全员共享云端持久化 (Cloudflare KV 极简存储)
+ * 仙友留言板全员共享云端持久化 (Cloudflare KV 极简存储 + 安全加固与防刷保护)
+ * 生效根目录：仓库根目录 /functions
  * 绑定要求：在 Cloudflare Pages 设置中的 KV namespace bindings 绑定变量名 GUESTBOOK
  */
 
 interface Env {
-  GUESTBOOK?: any; // Cloudflare KVNamespace
+  GUESTBOOK?: any; // Cloudflare KVNamespace (大小写均可自适应识别)
 }
 
 export type GuestbookCategory = 'all' | 'suggestion' | 'bug' | 'build' | 'feature';
@@ -48,6 +49,22 @@ const INITIAL_POSTS: GuestbookEntry[] = [
 
 const KV_STORAGE_KEY = 'tianshu_guestbook_posts_v3';
 const MAX_POSTS_LIMIT = 300;
+const MAX_REPLIES_PER_POST = 20;
+const MAX_SYNC_BATCH = 20;
+
+// 防刷频率限制（内存冷却缓存）
+const ipRateLimitMap = {
+  create: new Map<string, number>(),
+  reply: new Map<string, number>(),
+  like: new Map<string, number>(),
+  lastContent: new Map<string, string>()
+};
+
+const COOLDOWN_MS = {
+  create: 8000, // 发帖冷却：8秒
+  reply: 4000,  // 回复冷却：4秒
+  like: 1000    // 点赞冷却：1秒
+};
 
 const corsHeaders = {
   'Content-Type': 'application/json; charset=utf-8',
@@ -68,7 +85,74 @@ const formatCurrentTime = (): string => {
   return `${y}-${m}-${d} ${hh}:${mm}`;
 };
 
+// 大小写自适应获取 KV 绑定
 const getKv = (env: any) => env?.GUESTBOOK || env?.guestbook || env?.Guestbook;
+
+// 提取真实客户端 IP
+const getClientIp = (request: Request): string => {
+  return (
+    request.headers.get('cf-connecting-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    '127.0.0.1'
+  );
+};
+
+// 字段清洗与规范化
+const sanitizeCategory = (cat: any): GuestbookCategory => {
+  const validCategories: GuestbookCategory[] = ['suggestion', 'bug', 'build', 'feature'];
+  return validCategories.includes(cat) ? cat : 'suggestion';
+};
+
+const sanitizeText = (text: any, maxLength: number): string => {
+  if (typeof text !== 'string') return '';
+  return text.trim().slice(0, maxLength);
+};
+
+const sanitizeReply = (raw: any): GuestbookReply | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  const content = sanitizeText(raw.content, 300);
+  if (!content) return null;
+  const author = sanitizeText(raw.author, 16) || '热心仙友';
+  const time = typeof raw.time === 'string' && raw.time.length >= 10 ? raw.time.slice(0, 20) : formatCurrentTime();
+  return {
+    id: typeof raw.id === 'string' && raw.id.length > 0 ? raw.id.slice(0, 32) : `rep-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    author,
+    content,
+    time
+  };
+};
+
+const sanitizeEntry = (raw: any): GuestbookEntry | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  // 禁止覆盖置顶官方公告 ID
+  if (raw.id === 'pin-1') return null;
+
+  const content = sanitizeText(raw.content, 500);
+  if (!content) return null;
+
+  const author = sanitizeText(raw.author, 16) || '匿踪仙友';
+  const category = sanitizeCategory(raw.category);
+  const time = typeof raw.time === 'string' && raw.time.length >= 10 ? raw.time.slice(0, 20) : formatCurrentTime();
+  const likes = typeof raw.likes === 'number' && Number.isFinite(raw.likes) ? Math.max(1, Math.min(raw.likes, 9999)) : 1;
+
+  const replies: GuestbookReply[] = Array.isArray(raw.replies)
+    ? raw.replies.map(sanitizeReply).filter((r): r is GuestbookReply => r !== null).slice(0, MAX_REPLIES_PER_POST)
+    : [];
+
+  const id = typeof raw.id === 'string' && raw.id.length > 0 && raw.id.length <= 48
+    ? raw.id
+    : `post-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+
+  return {
+    id,
+    author,
+    category,
+    content,
+    time,
+    likes,
+    replies
+  };
+};
 
 async function getStoredPosts(kv?: any): Promise<{ posts: GuestbookEntry[]; isCloud: boolean }> {
   if (!kv) {
@@ -131,16 +215,41 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
     const kv = getKv(context.env);
     const body: any = await context.request.json().catch(() => ({}));
     const action = body.action || 'create';
+    const clientIp = getClientIp(context.request);
+    const nowTs = Date.now();
+
+    // 1. 蜜罐校验 (Honeypot): 若脚本填写了隐藏字段，静默拦截，避免消耗写配额
+    if (body.faxian_trap || body.website || body.honeypot) {
+      return new Response(
+        JSON.stringify({ success: true, cloud: true, message: 'ok' }),
+        { status: 200, headers: corsHeaders }
+      );
+    }
+
+    // 2. 防刷与 IP 频率冷却限制
+    if (action === 'create' || action === 'reply' || action === 'like') {
+      const lastActionTime = ipRateLimitMap[action].get(clientIp) || 0;
+      const cooldown = COOLDOWN_MS[action];
+      if (nowTs - lastActionTime < cooldown) {
+        const waitSec = Math.ceil((cooldown - (nowTs - lastActionTime)) / 1000);
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: `仙友论道调息中，请稍候 ${waitSec} 秒后再试`
+          }),
+          { status: 429, headers: corsHeaders }
+        );
+      }
+    }
 
     const { posts: currentPosts, isCloud } = await getStoredPosts(kv);
     let updatedPosts = [...currentPosts];
 
+    // 发新留言
     if (action === 'create') {
-      const content = (body.content || '').trim();
-      const author = (body.author || '匿踪仙友').trim().slice(0, 16);
-      const category: GuestbookCategory = ['all', 'suggestion', 'bug', 'build', 'feature'].includes(body.category)
-        ? body.category
-        : 'suggestion';
+      const content = sanitizeText(body.content, 500);
+      const author = sanitizeText(body.author, 16) || '匿踪仙友';
+      const category = sanitizeCategory(body.category);
 
       if (!content) {
         return new Response(
@@ -149,11 +258,20 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
         );
       }
 
+      // 防刷：禁止同 IP 连续提交完全相同的内容
+      const lastContent = ipRateLimitMap.lastContent.get(clientIp);
+      if (lastContent && lastContent === content) {
+        return new Response(
+          JSON.stringify({ success: false, error: '请勿重复提交完全相同的心得' }),
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
       const newEntry: GuestbookEntry = {
-        id: `post-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-        author: author || '匿踪仙友',
+        id: `post-${nowTs}-${Math.random().toString(36).slice(2, 6)}`,
+        author,
         category,
-        content: content.slice(0, 500),
+        content,
         time: formatCurrentTime(),
         likes: 1,
         replies: []
@@ -164,6 +282,10 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       if (kv) {
         await kv.put(KV_STORAGE_KEY, JSON.stringify(updatedPosts));
       }
+
+      // 更新冷却记录
+      ipRateLimitMap.create.set(clientIp, nowTs);
+      ipRateLimitMap.lastContent.set(clientIp, content);
 
       return new Response(
         JSON.stringify({
@@ -176,10 +298,11 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       );
     }
 
+    // 回复留言
     if (action === 'reply') {
-      const postId = body.postId;
-      const content = (body.content || '').trim();
-      const author = (body.author || '热心仙友').trim().slice(0, 16);
+      const postId = sanitizeText(body.postId, 48);
+      const content = sanitizeText(body.content, 300);
+      const author = sanitizeText(body.author, 16) || '热心仙友';
 
       if (!postId || !content) {
         return new Response(
@@ -189,9 +312,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       }
 
       const newReply: GuestbookReply = {
-        id: `rep-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-        author: author || '热心仙友',
-        content: content.slice(0, 300),
+        id: `rep-${nowTs}-${Math.random().toString(36).slice(2, 6)}`,
+        author,
+        content,
         time: formatCurrentTime()
       };
 
@@ -199,9 +322,10 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       updatedPosts = updatedPosts.map(p => {
         if (p.id === postId) {
           found = true;
+          const currentReplies = p.replies || [];
           return {
             ...p,
-            replies: [...(p.replies || []), newReply]
+            replies: [...currentReplies, newReply].slice(-MAX_REPLIES_PER_POST)
           };
         }
         return p;
@@ -218,6 +342,8 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
         await kv.put(KV_STORAGE_KEY, JSON.stringify(updatedPosts));
       }
 
+      ipRateLimitMap.reply.set(clientIp, nowTs);
+
       return new Response(
         JSON.stringify({
           success: true,
@@ -229,8 +355,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       );
     }
 
+    // 点赞
     if (action === 'like') {
-      const postId = body.postId;
+      const postId = sanitizeText(body.postId, 48);
       if (!postId) {
         return new Response(
           JSON.stringify({ success: false, error: '缺少 postId' }),
@@ -249,6 +376,8 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
         await kv.put(KV_STORAGE_KEY, JSON.stringify(updatedPosts));
       }
 
+      ipRateLimitMap.like.set(clientIp, nowTs);
+
       return new Response(
         JSON.stringify({
           success: true,
@@ -259,10 +388,15 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
       );
     }
 
+    // 安全合入存量留言 (批量同步)
     if (action === 'sync') {
-      const incomingPosts: GuestbookEntry[] = Array.isArray(body.posts) ? body.posts : [];
+      const incomingRaw: any[] = Array.isArray(body.posts) ? body.posts.slice(0, MAX_SYNC_BATCH) : [];
+      const sanitizedBatch: GuestbookEntry[] = incomingRaw
+        .map(sanitizeEntry)
+        .filter((entry): entry is GuestbookEntry => entry !== null);
+
       const existingIds = new Set(updatedPosts.map(p => p.id));
-      const newlyAdded = incomingPosts.filter(p => p && p.id && !existingIds.has(p.id) && p.id !== 'pin-1');
+      const newlyAdded = sanitizedBatch.filter(p => !existingIds.has(p.id));
 
       if (newlyAdded.length > 0) {
         updatedPosts = [updatedPosts[0], ...newlyAdded, ...updatedPosts.slice(1)].slice(0, MAX_POSTS_LIMIT);
