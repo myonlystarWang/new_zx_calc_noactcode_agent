@@ -10625,5 +10625,1614 @@
         }
       ]
     }
+  },
+  "player-bare-num-19": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "player-bare-num-20": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "player-da19": null,
+  "player-20wuxun": null,
+  "equip-tier-zizhuang": null,
+  "server-zhanqu-haotian": {
+    "sender": "assistant",
+    "text": "已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方 9 大战区 33 个服务器毫秒级开服状态，支持开服声音即时提醒。",
+    "cardType": "server",
+    "cardData": {
+      "title": "全区开服雷达监测",
+      "desc": "9 大战区 33 个服务器实时检测开服状态，支持声音提醒与时延速览",
+      "workspaceMode": "server",
+      "route": "/tools/server",
+      "btnText": "进入开服雷达"
+    }
+  },
+  "server-name-chuanshi": null,
+  "skill-tag-pofang": {
+    "sender": "assistant",
+    "text": "为你检索到 30 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": [
+        {
+          "id": 8077,
+          "name": "疏影交横<禅>",
+          "el_max": 20,
+          "el_cd": 24000,
+          "el_mp": 685,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "逐霜·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 540,
+          "name": "极度深寒",
+          "el_max": 7,
+          "el_cd": 90000,
+          "el_mp": 370,
+          "el_req": 110,
+          "occ": 19,
+          "group_name": "青云",
+          "group_kind": "prof"
+        },
+        {
+          "id": 599,
+          "name": "冰域天机",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 105,
+          "occ": 7,
+          "group_name": "青云·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 610,
+          "name": "玄刹天威",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 75,
+          "occ": 7,
+          "group_name": "青云·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 1633,
+          "name": "五雷天劫：霸",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1200,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1298,
+          "name": "八荒真火：玄",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1630,
+          "name": "八荒真火：霸",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1650,
+          "name": "八荒真火：妙",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1670,
+          "name": "八荒真火：梵",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1690,
+          "name": "八荒真火：暗",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3785,
+          "name": "八荒真火：焚",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 11321,
+          "name": "八荒真火：命",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 263,
+          "name": "夺神斩",
+          "el_max": 10,
+          "el_cd": 2000,
+          "el_mp": 164,
+          "el_req": 75,
+          "occ": 3,
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 519,
+          "name": "霸天戮杀",
+          "el_max": 10,
+          "el_cd": 4000,
+          "el_mp": 623,
+          "el_req": 105,
+          "occ": 13,
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 775,
+          "name": "魔魂天咒",
+          "el_max": 7,
+          "el_cd": 9000,
+          "el_mp": 430,
+          "el_req": 135,
+          "occ": 14,
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 10761,
+          "name": "伏龙鼎",
+          "el_max": 1,
+          "el_cd": 450000,
+          "el_mp": 7500,
+          "el_req": 0,
+          "occ": 133,
+          "group_name": "鬼王·心法",
+          "group_kind": "sub"
+        },
+        {
+          "id": 250,
+          "name": "焚心斩",
+          "el_max": 10,
+          "el_cd": 2000,
+          "el_mp": 0,
+          "el_req": 60,
+          "occ": 2,
+          "group_name": "鬼王·相关",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1636,
+          "name": "九变：霸",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 305,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1302,
+          "name": "龙啸：玄",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1634,
+          "name": "龙啸：霸",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1654,
+          "name": "龙啸：妙",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1674,
+          "name": "龙啸：梵",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1694,
+          "name": "龙啸：暗",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3789,
+          "name": "龙啸：焚",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 11333,
+          "name": "龙啸：命",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1557,
+          "name": "火焰刀II",
+          "el_max": 10,
+          "el_cd": 90000,
+          "el_mp": 800,
+          "el_req": 125,
+          "occ": 149,
+          "group_name": "鬼王·造化·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1559,
+          "name": "聚灵咒II",
+          "el_max": 10,
+          "el_cd": 120000,
+          "el_mp": 1,
+          "el_req": 125,
+          "occ": 149,
+          "group_name": "鬼王·造化·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3069,
+          "name": "魔魂天咒<煞>",
+          "el_max": 20,
+          "el_cd": 9000,
+          "el_mp": 860,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "鬼王·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3021,
+          "name": "魔魂天咒<玄>",
+          "el_max": 20,
+          "el_cd": 9000,
+          "el_mp": 860,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "鬼王·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3117,
+          "name": "魔魂天咒<禅>",
+          "el_max": 20,
+          "el_cd": 9000,
+          "el_mp": 860,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "鬼王·神通·佛",
+          "group_kind": "sub"
+        }
+      ],
+      "skill": {
+        "id": 8077,
+        "name": "疏影交横<禅>"
+      }
+    }
+  },
+  "skill-tag-lvdian": {
+    "sender": "assistant",
+    "text": "为你检索到 30 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": [
+        {
+          "id": 7922,
+          "name": "摆龙尾",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 45,
+          "occ": 249,
+          "group_name": "逐霜·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 10761,
+          "name": "伏龙鼎",
+          "el_max": 1,
+          "el_cd": 450000,
+          "el_mp": 7500,
+          "el_req": 0,
+          "occ": 133,
+          "group_name": "鬼王·心法",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1533,
+          "name": "苍劫阵II",
+          "el_max": 10,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 125,
+          "occ": 148,
+          "group_name": "鬼王·造化·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3072,
+          "name": "未名斩<煞>",
+          "el_max": 20,
+          "el_cd": 13000,
+          "el_mp": 1167,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "鬼王·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3024,
+          "name": "未名斩<玄>",
+          "el_max": 20,
+          "el_cd": 13000,
+          "el_mp": 1167,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "鬼王·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3120,
+          "name": "未名斩<禅>",
+          "el_max": 20,
+          "el_cd": 13000,
+          "el_mp": 1167,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "鬼王·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6809,
+          "name": "玄烛·狱龙破·萤炬",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "鬼王·星宿",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6810,
+          "name": "玄烛·狱龙破·皓月",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "鬼王·星宿",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6811,
+          "name": "玄烛·狱龙破·曦日",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "鬼王·星宿",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3079,
+          "name": "怜影<煞>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 793,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "合欢·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5757,
+          "name": "江南III 《大地》",
+          "el_max": 3,
+          "el_cd": 15000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "合欢·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3083,
+          "name": "神鬼乱舞<煞>",
+          "el_max": 20,
+          "el_cd": 10500,
+          "el_mp": 726,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "鬼道·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3037,
+          "name": "乱刃<玄>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 1378,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "九黎·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3038,
+          "name": "八肱<玄>",
+          "el_max": 20,
+          "el_cd": 9600,
+          "el_mp": 1384,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "九黎·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3085,
+          "name": "乱刃<煞>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 1378,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "九黎·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3086,
+          "name": "八肱<煞>",
+          "el_max": 20,
+          "el_cd": 9600,
+          "el_mp": 1384,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "九黎·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3133,
+          "name": "乱刃<禅>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 1378,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "九黎·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3134,
+          "name": "八肱<禅>",
+          "el_max": 20,
+          "el_cd": 9600,
+          "el_mp": 1384,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "九黎·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1919,
+          "name": "三云龙",
+          "el_max": 6,
+          "el_cd": 10000,
+          "el_mp": 330,
+          "el_req": 135,
+          "occ": 43,
+          "group_name": "烈山",
+          "group_kind": "prof"
+        },
+        {
+          "id": 2230,
+          "name": "戮须子II",
+          "el_max": 10,
+          "el_cd": 180000,
+          "el_mp": 1200,
+          "el_req": 125,
+          "occ": 149,
+          "group_name": "烈山·造化·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5775,
+          "name": "三云龙III 《天空》",
+          "el_max": 3,
+          "el_cd": 14000,
+          "el_mp": 500,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "烈山·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5776,
+          "name": "三云龙III 《碧海》",
+          "el_max": 3,
+          "el_cd": 14000,
+          "el_mp": 500,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "烈山·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5778,
+          "name": "三云龙III 《英雄》",
+          "el_max": 3,
+          "el_cd": 14000,
+          "el_mp": 500,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "烈山·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5777,
+          "name": "三云龙III 《大地》",
+          "el_max": 3,
+          "el_cd": 14000,
+          "el_mp": 500,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "烈山·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 2553,
+          "name": "蚊须",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 55,
+          "occ": 45,
+          "affects": [],
+          "group_name": "怀光·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 3490,
+          "name": "星河陨",
+          "el_max": 9,
+          "el_cd": 4000,
+          "el_mp": 424,
+          "el_req": 120,
+          "occ": 99,
+          "group_name": "太昊",
+          "group_kind": "prof"
+        },
+        {
+          "id": 4634,
+          "name": "斗魂：皇",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "太昊·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3810,
+          "name": "星河陨II",
+          "el_max": 10,
+          "el_cd": 30000,
+          "el_mp": 615,
+          "el_req": 125,
+          "occ": 149,
+          "group_name": "太昊·造化·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 4589,
+          "name": "皇极·目苍穹<煞>",
+          "el_max": 20,
+          "el_cd": 15000,
+          "el_mp": 1000,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "辰皇·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5415,
+          "name": "繁星碎",
+          "el_max": 5,
+          "el_cd": 15000,
+          "el_mp": 650,
+          "el_req": 141,
+          "occ": 121,
+          "group_name": "破军",
+          "group_kind": "prof"
+        }
+      ],
+      "skill": {
+        "id": 7922,
+        "name": "摆龙尾"
+      }
+    }
+  },
+  "skill-tag-zidian": {
+    "sender": "assistant",
+    "text": "为你检索到 30 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": [
+        {
+          "id": 527,
+          "name": "苍劫阵",
+          "el_max": 10,
+          "el_cd": 12000,
+          "el_mp": 230,
+          "el_req": 125,
+          "occ": 13,
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 10761,
+          "name": "伏龙鼎",
+          "el_max": 1,
+          "el_cd": 450000,
+          "el_mp": 7500,
+          "el_req": 0,
+          "occ": 133,
+          "group_name": "鬼王·心法",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1533,
+          "name": "苍劫阵II",
+          "el_max": 10,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 125,
+          "occ": 148,
+          "group_name": "鬼王·造化·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3072,
+          "name": "未名斩<煞>",
+          "el_max": 20,
+          "el_cd": 13000,
+          "el_mp": 1167,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "鬼王·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3080,
+          "name": "风花雪月<煞>",
+          "el_max": 20,
+          "el_cd": 16000,
+          "el_mp": 974,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "合欢·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3128,
+          "name": "风花雪月<禅>",
+          "el_max": 20,
+          "el_cd": 16000,
+          "el_mp": 974,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "合欢·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3032,
+          "name": "风花雪月<玄>",
+          "el_max": 20,
+          "el_cd": 16000,
+          "el_mp": 974,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "合欢·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 2236,
+          "name": "破坚II",
+          "el_max": 10,
+          "el_cd": 0,
+          "el_mp": 600,
+          "el_req": 125,
+          "occ": 150,
+          "group_name": "九黎·造化·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3037,
+          "name": "乱刃<玄>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 1378,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "九黎·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3085,
+          "name": "乱刃<煞>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 1378,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "九黎·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3133,
+          "name": "乱刃<禅>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 1378,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "九黎·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3041,
+          "name": "三云龙<玄>",
+          "el_max": 20,
+          "el_cd": 20000,
+          "el_mp": 1001,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "烈山·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3089,
+          "name": "三云龙<煞>",
+          "el_max": 20,
+          "el_cd": 20000,
+          "el_mp": 1001,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "烈山·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3137,
+          "name": "三云龙<禅>",
+          "el_max": 20,
+          "el_cd": 20000,
+          "el_mp": 1001,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "烈山·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 2445,
+          "name": "分筋",
+          "el_max": 10,
+          "el_cd": 60000,
+          "el_mp": 575,
+          "el_req": 115,
+          "occ": 48,
+          "group_name": "怀光",
+          "group_kind": "prof"
+        },
+        {
+          "id": 2553,
+          "name": "蚊须",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 55,
+          "occ": 45,
+          "affects": [],
+          "group_name": "怀光·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 2705,
+          "name": "天籁：十面埋伏II",
+          "el_max": 10,
+          "el_cd": 87000,
+          "el_mp": 350,
+          "el_req": 125,
+          "occ": 149,
+          "group_name": "天华·造化·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 4633,
+          "name": "兵鉴：皇",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 980,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "太昊·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3810,
+          "name": "星河陨II",
+          "el_max": 10,
+          "el_cd": 30000,
+          "el_mp": 615,
+          "el_req": 125,
+          "occ": 149,
+          "group_name": "太昊·造化·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3585,
+          "name": "鬼神气<玄>",
+          "el_max": 20,
+          "el_cd": 90000,
+          "el_mp": 1054,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "太昊·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6920,
+          "name": "赤乌·听仇·萤炬",
+          "el_max": 5,
+          "el_cd": 60010,
+          "el_mp": 3000,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "辰皇·星宿",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6921,
+          "name": "赤乌·听仇·皓月",
+          "el_max": 5,
+          "el_cd": 50010,
+          "el_mp": 3000,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "辰皇·星宿",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6922,
+          "name": "赤乌·听仇·曦日",
+          "el_max": 5,
+          "el_cd": 40010,
+          "el_mp": 3000,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "辰皇·星宿",
+          "group_kind": "sub"
+        },
+        {
+          "id": 4577,
+          "name": "净涅·劫·听仇II",
+          "el_max": 10,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 125,
+          "occ": 149,
+          "group_name": "辰皇·造化·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5383,
+          "name": "暗剑藏锋",
+          "el_max": 6,
+          "el_cd": 30000,
+          "el_mp": 22,
+          "el_req": 35,
+          "occ": 117,
+          "group_name": "破军",
+          "group_kind": "prof"
+        },
+        {
+          "id": 5707,
+          "name": "万象鸿冥<煞>",
+          "el_max": 20,
+          "el_cd": 65000,
+          "el_mp": 520,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "破军·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5702,
+          "name": "万象鸿冥<玄>",
+          "el_max": 20,
+          "el_cd": 65000,
+          "el_mp": 520,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "破军·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6968,
+          "name": "赤乌·暗剑藏锋·萤炬",
+          "el_max": 5,
+          "el_cd": 40010,
+          "el_mp": 3000,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "破军·星宿",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6969,
+          "name": "赤乌·暗剑藏锋·皓月",
+          "el_max": 5,
+          "el_cd": 32010,
+          "el_mp": 3000,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "破军·星宿",
+          "group_kind": "sub"
+        },
+        {
+          "id": 6970,
+          "name": "赤乌·暗剑藏锋·曦日",
+          "el_max": 5,
+          "el_cd": 24010,
+          "el_mp": 3000,
+          "el_req": 0,
+          "occ": 151,
+          "group_name": "破军·星宿",
+          "group_kind": "sub"
+        }
+      ],
+      "skill": {
+        "id": 527,
+        "name": "苍劫阵"
+      }
+    }
+  },
+  "skill-tag-zengshang": {
+    "sender": "assistant",
+    "text": "为你检索到 30 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": [
+        {
+          "id": 10834,
+          "name": "银鳞悬冰",
+          "el_max": 1,
+          "el_cd": 150000,
+          "el_mp": 7500,
+          "el_req": 0,
+          "occ": 133,
+          "group_name": "逐霜·心法",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1650,
+          "name": "八荒真火：妙",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3017,
+          "name": "雷光遁龙诀<玄>",
+          "el_max": 20,
+          "el_cd": 4500,
+          "el_mp": 1638,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "青云·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1654,
+          "name": "龙啸：妙",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 2049,
+          "name": "旋龙幻杀II",
+          "el_max": 10,
+          "el_cd": 40000,
+          "el_mp": 216,
+          "el_req": 125,
+          "occ": 148,
+          "group_name": "鬼王·造化·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3117,
+          "name": "魔魂天咒<禅>",
+          "el_max": 20,
+          "el_cd": 9000,
+          "el_mp": 860,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "鬼王·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 781,
+          "name": "怜影",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 793,
+          "el_req": 135,
+          "occ": 17,
+          "group_name": "合欢",
+          "group_kind": "prof"
+        },
+        {
+          "id": 324,
+          "name": "山盟",
+          "el_max": 10,
+          "el_cd": 5000,
+          "el_mp": 537,
+          "el_req": 90,
+          "occ": 6,
+          "group_name": "合欢",
+          "group_kind": "prof"
+        },
+        {
+          "id": 532,
+          "name": "云雨",
+          "el_max": 10,
+          "el_cd": 5000,
+          "el_mp": 334,
+          "el_req": 115,
+          "occ": 16,
+          "group_name": "合欢",
+          "group_kind": "prof"
+        },
+        {
+          "id": 290,
+          "name": "情网",
+          "el_max": 10,
+          "el_cd": 60000,
+          "el_mp": 20,
+          "el_req": 30,
+          "occ": 4,
+          "group_name": "合欢·相关",
+          "group_kind": "sub"
+        },
+        {
+          "id": 298,
+          "name": "销魂",
+          "el_max": 10,
+          "el_cd": 5000,
+          "el_mp": 124,
+          "el_req": 60,
+          "occ": 5,
+          "group_name": "合欢·相关",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3079,
+          "name": "怜影<煞>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 793,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "合欢·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3127,
+          "name": "怜影<禅>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 793,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "合欢·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3031,
+          "name": "怜影<玄>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 793,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "合欢·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1662,
+          "name": "几多愁：妙",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 950,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1313,
+          "name": "曾记否：玄",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1645,
+          "name": "曾记否：霸",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1665,
+          "name": "曾记否：妙",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1685,
+          "name": "曾记否：梵",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1705,
+          "name": "曾记否：暗",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3800,
+          "name": "曾记否：焚",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 11344,
+          "name": "曾记否：命",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 790,
+          "name": "万象生佛",
+          "el_max": 5,
+          "el_cd": 60000,
+          "el_mp": 0,
+          "el_req": 135,
+          "occ": 23,
+          "group_name": "天音",
+          "group_kind": "prof"
+        },
+        {
+          "id": 788,
+          "name": "无量真言",
+          "el_max": 3,
+          "el_cd": 15000,
+          "el_mp": 561,
+          "el_req": 139,
+          "occ": 23,
+          "group_name": "天音",
+          "group_kind": "prof"
+        },
+        {
+          "id": 1593,
+          "name": "金刚护体II",
+          "el_max": 10,
+          "el_cd": 156000,
+          "el_mp": 999,
+          "el_req": 125,
+          "occ": 150,
+          "group_name": "天音·造化·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1658,
+          "name": "破魔迦蓝：妙",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1150,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "天音·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3074,
+          "name": "无量真言<煞>",
+          "el_max": 20,
+          "el_cd": 75000,
+          "el_mp": 1913,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "天音·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3122,
+          "name": "无量真言<禅>",
+          "el_max": 20,
+          "el_cd": 75000,
+          "el_mp": 1913,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "天音·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3026,
+          "name": "无量真言<玄>",
+          "el_max": 20,
+          "el_cd": 75000,
+          "el_mp": 1913,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "天音·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1544,
+          "name": "似水凋零",
+          "el_max": 10,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 125,
+          "occ": 148,
+          "group_name": "鬼道·造化·仙",
+          "group_kind": "sub"
+        }
+      ],
+      "skill": {
+        "id": 10834,
+        "name": "银鳞悬冰"
+      }
+    }
+  },
+  "skill-tag-yishang-gap": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "fabao-effect-baosshang": {
+    "sender": "assistant",
+    "text": "为你检索到 15 件符合【爆伤】的候选法宝，可在下方直接切换查看详情：",
+    "cardType": "fabao_candidates",
+    "cardData": {
+      "keyword": "爆伤",
+      "candidates": [
+        {
+          "id": 9,
+          "名称": "天魔指",
+          "描述_原始": "^00ffff鬼王宗135级门派法宝\\r\\r^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\\r飞仙观^11ff11鬼王使者·燕忠^ffcb4a处完成任务<魔陀之骨>获得",
+          "描述_带换行": "^00ffff鬼王宗135级门派法宝\n\n^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\n飞仙观^11ff11鬼王使者·燕忠^ffcb4a处完成任务<魔陀之骨>获得",
+          "描述_纯文本": "鬼王宗135级门派法宝\n\n河阳城小凳子处兑换\n飞仙观鬼王使者·燕忠处完成任务<魔陀之骨>获得",
+          "skillName": "鬼域幽歌",
+          "skillName来源": "xunbao178",
+          "skillName来源URL": "http://www.xunbao178.com/zx/search?isPhone=true&keyWord=%E5%A4%A9%E9%AD%94%E6%8C%87&orderBy=&page=1&shopid=160",
+          "xunbao_shopid": 160,
+          "xunbao_page": 1,
+          "等级": 135,
+          "门派": "鬼王宗",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 29,
+          "名称": "罡岚",
+          "描述_原始": "^00ffff九黎105级门派法宝\\r\\r^ffcb4a河阳城^11ff11神工·若男^ffcb4a处购买",
+          "描述_带换行": "^00ffff九黎105级门派法宝\n\n^ffcb4a河阳城^11ff11神工·若男^ffcb4a处购买",
+          "描述_纯文本": "九黎105级门派法宝\n\n河阳城神工·若男处购买",
+          "skillName": "狂澜灭杀",
+          "skillName来源": "wanmei_forum_205300",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=205300",
+          "等级": 105,
+          "门派": "九黎",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 42,
+          "名称": "碧落飞鸿",
+          "描述_原始": "^00ffff天华135级门派法宝\\r\\r^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\\r飞仙观^11ff11兰羽儿·天华使者^ffcb4a处完成任务<天籁之韵>获得",
+          "描述_带换行": "^00ffff天华135级门派法宝\n\n^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\n飞仙观^11ff11兰羽儿·天华使者^ffcb4a处完成任务<天籁之韵>获得",
+          "描述_纯文本": "天华135级门派法宝\n\n河阳城小凳子处兑换\n飞仙观兰羽儿·天华使者处完成任务<天籁之韵>获得",
+          "skillName": "天魔降伏",
+          "skillName来源": "wanmei_forum_205300",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=205300",
+          "等级": 135,
+          "门派": "天华",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 46,
+          "名称": "羲皇钟",
+          "描述_原始": "^00ffff太昊135级门派法宝\\r\\r^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\\r飞仙观^11ff11百里尉迟·太昊使者^ffcb4a处完成任务<太岳云英>获得",
+          "描述_带换行": "^00ffff太昊135级门派法宝\n\n^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\n飞仙观^11ff11百里尉迟·太昊使者^ffcb4a处完成任务<太岳云英>获得",
+          "描述_纯文本": "太昊135级门派法宝\n\n河阳城小凳子处兑换\n飞仙观百里尉迟·太昊使者处完成任务<太岳云英>获得",
+          "skillName": "浩气云天",
+          "skillName来源": "wanmei_forum_205300",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=205300",
+          "等级": 135,
+          "门派": "太昊",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 50,
+          "名称": "皇极",
+          "描述_原始": "^00ffff辰皇135级门派法宝\\r\\r^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\\r飞仙观^11ff11乐正先·辰皇使者^ffcb4a处完成任务<初尘剑契>获得",
+          "描述_带换行": "^00ffff辰皇135级门派法宝\n\n^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\n飞仙观^11ff11乐正先·辰皇使者^ffcb4a处完成任务<初尘剑契>获得",
+          "描述_纯文本": "辰皇135级门派法宝\n\n河阳城小凳子处兑换\n飞仙观乐正先·辰皇使者处完成任务<初尘剑契>获得",
+          "skillName": "无上无极",
+          "skillName来源": "wanmei_forum_205300",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=205300",
+          "xunbao_shopid": 160,
+          "xunbao_page": 1,
+          "等级": 135,
+          "门派": "辰皇",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 63,
+          "名称": "追魂",
+          "描述_原始": "^00ffff英招135级门派法宝\\r\\r^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\\r飞仙观^11ff11刑谦·英招使者^ffcb4a处完成任务<狂尸之灵>获得",
+          "描述_带换行": "^00ffff英招135级门派法宝\n\n^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\n飞仙观^11ff11刑谦·英招使者^ffcb4a处完成任务<狂尸之灵>获得",
+          "描述_纯文本": "英招135级门派法宝\n\n河阳城小凳子处兑换\n飞仙观刑谦·英招使者处完成任务<狂尸之灵>获得",
+          "skillName": "空鬼乱解",
+          "skillName来源": "skillstr.txt",
+          "等级": 135,
+          "门派": "英招",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 71,
+          "名称": "妙璃",
+          "描述_原始": "^00ffff归云135级门派法宝\\r\\r^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\\r飞仙观^11ff11陆昭云·归云使者^ffcb4a处完成任务<行云古记>获得",
+          "描述_带换行": "^00ffff归云135级门派法宝\n\n^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\n飞仙观^11ff11陆昭云·归云使者^ffcb4a处完成任务<行云古记>获得",
+          "描述_纯文本": "归云135级门派法宝\n\n河阳城小凳子处兑换\n飞仙观陆昭云·归云使者处完成任务<行云古记>获得",
+          "skillName": "妙心现影",
+          "skillName来源": "skillstr.txt",
+          "等级": 135,
+          "门派": "归云",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 83,
+          "名称": "捣龙锏",
+          "描述_原始": "^00ffff惊岚105级门派法宝\\r\\r^ffcb4a河阳城^11ff11游商·舜华^ffcb4a处购买",
+          "描述_带换行": "^00ffff惊岚105级门派法宝\n\n^ffcb4a河阳城^11ff11游商·舜华^ffcb4a处购买",
+          "描述_纯文本": "惊岚105级门派法宝\n\n河阳城游商·舜华处购买",
+          "skillName": "冥关破",
+          "skillName来源": "skillstr.txt",
+          "等级": 105,
+          "门派": "惊岚",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 87,
+          "名称": "笙歌如意",
+          "描述_原始": "^00ffff昭冥105级门派法宝\\r\\r^ffcb4a河阳城^11ff11游商·舜华^ffcb4a处购买",
+          "描述_带换行": "^00ffff昭冥105级门派法宝\n\n^ffcb4a河阳城^11ff11游商·舜华^ffcb4a处购买",
+          "描述_纯文本": "昭冥105级门派法宝\n\n河阳城游商·舜华处购买",
+          "skillName": "云行雨施",
+          "skillName来源": "xunbao178",
+          "skillName来源URL": "http://www.xunbao178.com/zx/search?isPhone=true&keyWord=%E7%AC%99%E6%AD%8C%E5%A6%82%E6%84%8F&orderBy=&page=1&shopid=160",
+          "xunbao_shopid": 160,
+          "xunbao_page": 1,
+          "等级": 105,
+          "门派": "昭冥",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 95,
+          "名称": "海生月",
+          "描述_原始": "^00ffff百灵105级门派法宝\\r\\r^ffcb4a河阳城^11ff11游商·舜华^ffcb4a处购买",
+          "描述_带换行": "^00ffff百灵105级门派法宝\n\n^ffcb4a河阳城^11ff11游商·舜华^ffcb4a处购买",
+          "描述_纯文本": "百灵105级门派法宝\n\n河阳城游商·舜华处购买",
+          "skillName": "月昭星离",
+          "skillName来源": "xunbao178",
+          "skillName来源URL": "http://www.xunbao178.com/zx/search?isPhone=true&keyWord=%E6%B5%B7%E7%94%9F%E6%9C%88&orderBy=&page=1&shopid=160",
+          "xunbao_shopid": 160,
+          "xunbao_page": 1,
+          "等级": 105,
+          "门派": "百灵",
+          "类型": "门派法宝"
+        },
+        {
+          "id": 99,
+          "名称": "万毒鼎",
+          "描述_原始": "^00ffff通用75级法宝\\r\\r^ffcb4a河阳城^11ff11摇钱树^ffcb4a处消耗御宝神篇兑换",
+          "描述_带换行": "^00ffff通用75级法宝\n\n^ffcb4a河阳城^11ff11摇钱树^ffcb4a处消耗御宝神篇兑换",
+          "描述_纯文本": "通用75级法宝\n\n河阳城摇钱树处消耗御宝神篇兑换",
+          "skillName": "万毒噬天",
+          "skillName来源": "wanmei_forum_204288",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=204288&highlight=%E6%B3%95%E5%AE%9D%E9%A3%9E%E5%8D%87",
+          "xunbao_shopid": 160,
+          "xunbao_page": 1,
+          "等级": 75,
+          "类型": "通用法宝"
+        },
+        {
+          "id": 107,
+          "名称": "噬血珠",
+          "描述_原始": "^00ffff通用135级法宝\\r\\r^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\\r神秘商店出售",
+          "描述_带换行": "^00ffff通用135级法宝\n\n^ffcb4a河阳城^11ff11小凳子^ffcb4a处兑换\n神秘商店出售",
+          "描述_纯文本": "通用135级法宝\n\n河阳城小凳子处兑换\n神秘商店出售",
+          "skillName": "噬血邪灵",
+          "skillName来源": "wanmei_forum_204288",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=204288&highlight=%E6%B3%95%E5%AE%9D%E9%A3%9E%E5%8D%87",
+          "等级": 135,
+          "类型": "通用法宝"
+        },
+        {
+          "id": 108,
+          "名称": "噬魂",
+          "描述_原始": "^00ffff通用135级法宝\\r\\r^ffcb4a河阳城^11ff11仙工·妙歌^ffcb4a处兑换\\r开启^11ff11太初首胜礼包^ffcb4a有概率获得",
+          "描述_带换行": "^00ffff通用135级法宝\n\n^ffcb4a河阳城^11ff11仙工·妙歌^ffcb4a处兑换\n开启^11ff11太初首胜礼包^ffcb4a有概率获得",
+          "描述_纯文本": "通用135级法宝\n\n河阳城仙工·妙歌处兑换\n开启太初首胜礼包有概率获得",
+          "skillName": "噬魂无双",
+          "skillName来源": "wanmei_forum_204288",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=204288&highlight=%E6%B3%95%E5%AE%9D%E9%A3%9E%E5%8D%87",
+          "等级": 135,
+          "类型": "通用法宝"
+        },
+        {
+          "id": 116,
+          "名称": "引魂幡",
+          "描述_原始": "^00ffff通用135级法宝\\r\\r^ffcb4a河阳城^11ff11摇钱树^ffcb4a处消耗御宝神篇兑换",
+          "描述_带换行": "^00ffff通用135级法宝\n\n^ffcb4a河阳城^11ff11摇钱树^ffcb4a处消耗御宝神篇兑换",
+          "描述_纯文本": "通用135级法宝\n\n河阳城摇钱树处消耗御宝神篇兑换",
+          "skillName": "百骨之咒",
+          "skillName来源": "wanmei_forum_204288",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=204288&highlight=%E6%B3%95%E5%AE%9D%E9%A3%9E%E5%8D%87",
+          "等级": 135,
+          "类型": "通用法宝"
+        },
+        {
+          "id": 121,
+          "名称": "合欢铃",
+          "描述_原始": "^00ffff通用135级法宝\\r\\r^ffcb4a诛仙九周年道具商城限量出售\\r特殊途径获得",
+          "描述_带换行": "^00ffff通用135级法宝\n\n^ffcb4a诛仙九周年道具商城限量出售\n特殊途径获得",
+          "描述_纯文本": "通用135级法宝\n\n诛仙九周年道具商城限量出售\n特殊途径获得",
+          "skillName": "翩若惊鸿",
+          "skillName来源": "wanmei_forum_204288",
+          "skillName来源URL": "http://bbs.wanmei.com/forum.php?mod=viewthread&tid=204288&highlight=%E6%B3%95%E5%AE%9D%E9%A3%9E%E5%8D%87",
+          "等级": 135,
+          "类型": "通用法宝"
+        }
+      ]
+    }
   }
 }
