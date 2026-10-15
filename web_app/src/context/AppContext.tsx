@@ -12,6 +12,7 @@ interface AppState {
     activeBuffIds: string[];
     buffValues: Record<string, number>;
     selectedDungeonId: string | null;
+    selectedMonsterId: string | null;
 }
 
 interface AppContextType extends AppState {
@@ -19,7 +20,7 @@ interface AppContextType extends AppState {
     updateCharacterClass: (classId: string, faction: 'XIAN' | 'FO' | 'MO') => void;
     toggleBuff: (buffId: string) => void;
     updateBuffValue: (buffId: string, value: number) => void;
-    selectDungeon: (dungeonId: string) => void;
+    selectDungeon: (dungeonId: string, monsterId?: string) => void;
     restoreBuffState: (activeIds: string[], values: Record<string, number>) => void;
 }
 
@@ -65,6 +66,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
 
     const [selectedDungeonId, setSelectedDungeonId] = useState<string | null>(null);
+    const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
 
     useEffect(() => {
         const initData = async () => {
@@ -141,8 +143,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }));
     };
 
-    const selectDungeon = (dungeonId: string) => {
+    const selectDungeon = (dungeonId: string, monsterId?: string) => {
         setSelectedDungeonId(dungeonId);
+        if (monsterId !== undefined) {
+            setSelectedMonsterId(monsterId);
+        }
     };
 
     // 批量恢复 buff 状态（方案切换用）
@@ -161,6 +166,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             activeBuffIds,
             buffValues,
             selectedDungeonId,
+            selectedMonsterId,
             updateCharacterAttributes,
             updateCharacterClass,
             toggleBuff,

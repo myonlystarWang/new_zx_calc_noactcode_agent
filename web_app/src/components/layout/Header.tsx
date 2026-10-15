@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { ROUTE } from '../../routes';
 import { TianShuLogo } from '../ui/TianShuLogo';
+import { hasUnseenChangelog } from '../../utils/changelogSeen';
 
 export const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -11,6 +12,22 @@ export const Header: React.FC = () => {
     const onChangelogPage = pathname.startsWith(ROUTE.changelog);
     const onAboutPage = pathname.startsWith(ROUTE.about);
     const onFeedbackPage = pathname.startsWith(ROUTE.feedback);
+
+    const [unseen, setUnseen] = useState<boolean>(() => hasUnseenChangelog());
+
+    useEffect(() => {
+        if (onChangelogPage) {
+            setUnseen(false);
+        } else {
+            setUnseen(hasUnseenChangelog());
+        }
+    }, [onChangelogPage, pathname]);
+
+    useEffect(() => {
+        const handleSeen = () => setUnseen(false);
+        window.addEventListener('changelog_seen', handleSeen);
+        return () => window.removeEventListener('changelog_seen', handleSeen);
+    }, []);
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -58,16 +75,18 @@ export const Header: React.FC = () => {
                             'flex items-center gap-1.5 transition-colors cursor-pointer select-none py-1',
                             onChangelogPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-cyan-300'
                         )}
-                        title="查看天书全知大模型更新动态与排期"
+                        // title="查看诛仙全知大模型更新动态与排期"
                         aria-label="更新动态"
                     >
                         <span>更新动态</span>
-                        <span
-                            className="px-1.5 py-0.5 rounded-full bg-rose-500/90 text-white text-[9px] font-black leading-none shadow-sm shadow-rose-500/40"
-                            aria-hidden
-                        >
-                            NEW
-                        </span>
+                        {unseen && (
+                            <span
+                                className="px-1.5 py-0.5 rounded-full bg-rose-500/90 text-white text-[9px] font-black leading-none shadow-sm shadow-rose-500/40 animate-pulse"
+                                aria-label="有新更新"
+                            >
+                                NEW
+                            </span>
+                        )}
                     </button>
 
                     <button
@@ -77,7 +96,7 @@ export const Header: React.FC = () => {
                             'transition-colors cursor-pointer select-none py-1',
                             onFeedbackPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-cyan-300'
                         )}
-                        title="仙友留言板与意见反馈"
+                        // title="仙友留言板与意见反馈"
                         aria-label="意见反馈"
                     >
                         <span>意见反馈</span>
@@ -90,7 +109,7 @@ export const Header: React.FC = () => {
                             'transition-colors cursor-pointer select-none py-1',
                             onAboutPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-cyan-300'
                         )}
-                        title="查看关于本站愿景与理念"
+                        // title="查看关于本站愿景与理念"
                         aria-label="关于本站"
                     >
                         <span>关于本站</span>
