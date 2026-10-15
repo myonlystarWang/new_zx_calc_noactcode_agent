@@ -53,5 +53,19 @@
   { "id": "inversion-gap-01", "input": "逐霜的苍龙啸", "expect": null, "tags": ["inversion"], "assert": "strong" },
   { "id": "inversion-ok-01", "input": "苍龙啸 逐霜", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4 }, "tags": ["inversion", "skill"], "assert": "strong" },
   { "id": "colloquial-01", "input": "T20 多少抗性来着", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6 }, "tags": ["colloquial", "dungeon"], "assert": "strong" },
-  { "id": "combo-single-intent-01", "input": "T20 抗性 逐霜技能", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6 }, "tags": ["combo", "dungeon"], "assert": "strong" }
+  { "id": "combo-single-intent-01", "input": "T20 抗性 逐霜技能", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6 }, "tags": ["combo", "dungeon"], "assert": "strong" },
+
+  { "id": "player-bare-num-19", "input": "19", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["player-real", "guard"], "assert": "strong" },
+  { "id": "player-bare-num-20", "input": "20", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["player-real", "guard"], "assert": "strong" },
+  { "id": "player-da19", "input": "打19", "expect": null, "tags": ["player-real", "colloquial"], "assert": "strong" },
+  { "id": "player-20wuxun", "input": "20要多少无视", "expect": null, "tags": ["player-real", "colloquial"], "assert": "strong" },
+  { "id": "equip-tier-zizhuang", "input": "紫装", "expect": null, "tags": ["player-real", "synonym"], "assert": "strong" },
+  { "id": "server-zhanqu-haotian", "input": "昊天战区", "expect": { "cardType": "server", "cardData.workspaceMode": "server" }, "tags": ["player-real", "server"], "assert": "strong" },
+  { "id": "server-name-chuanshi", "input": "创世绮梦", "expect": null, "tags": ["player-real", "server"], "assert": "strong" },
+  { "id": "skill-tag-pofang", "input": "破防技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 8077 }, "tags": ["standard", "skill"], "assert": "strong" },
+  { "id": "skill-tag-lvdian", "input": "绿点技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 7922 }, "tags": ["standard", "skill"], "assert": "strong" },
+  { "id": "skill-tag-zidian", "input": "紫点技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 527 }, "tags": ["standard", "skill"], "assert": "strong" },
+  { "id": "skill-tag-zengshang", "input": "增伤技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 10834 }, "tags": ["standard", "skill"], "assert": "strong" },
+  { "id": "skill-tag-yishang-gap", "input": "易伤技能", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["synonym", "skill"], "assert": "strong" },
+  { "id": "fabao-effect-baosshang", "input": "爆伤法宝", "expect": { "cardType": "fabao_candidates", "cardData.candidates.length": 15, "cardData.candidates.0.id": 9 }, "tags": ["synonym", "fabao"], "assert": "strong" }
 ]
