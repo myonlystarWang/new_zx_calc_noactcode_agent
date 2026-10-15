@@ -108,6 +108,7 @@ export const FeedbackPage: React.FC = () => {
   });
   const [newPostCategory, setNewPostCategory] = useState<GuestbookCategory>('suggestion');
   const [postContent, setPostContent] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [likedMap, setLikedMap] = useState<Record<string, boolean>>(() => {
     try {
       const saved = localStorage.getItem(LIKED_STORAGE_KEY);
@@ -270,7 +271,8 @@ export const FeedbackPage: React.FC = () => {
           action: 'create',
           author,
           category,
-          content
+          content,
+          faxian_trap: honeypot
         })
       });
       if (res.ok) {
@@ -278,6 +280,16 @@ export const FeedbackPage: React.FC = () => {
         if (data.success && Array.isArray(data.posts)) {
           setPosts(data.posts);
           setIsCloudSynced(data.cloud !== false);
+        }
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        if (res.status === 429) {
+          alert(errData.error || '仙友论道调息中，请稍后再试');
+          // 回滚乐观更新
+          setPosts(prev => prev.filter(p => p.id !== tempEntry.id));
+        } else if (errData.error) {
+          alert(errData.error);
+          setPosts(prev => prev.filter(p => p.id !== tempEntry.id));
         }
       }
     } catch (err) {
@@ -327,13 +339,27 @@ export const FeedbackPage: React.FC = () => {
           action: 'reply',
           postId,
           author,
-          content
+          content,
+          faxian_trap: honeypot
         })
       });
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.posts)) {
           setPosts(data.posts);
+        }
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        if (res.status === 429) {
+          alert(errData.error || '回复稍频，请稍后再试');
+          // 回滚该回复
+          setPosts(prev =>
+            prev.map(p =>
+              p.id === postId
+                ? { ...p, replies: (p.replies || []).filter(r => r.id !== newReply.id) }
+                : p
+            )
+          );
         }
       }
     } catch (err) {
@@ -475,6 +501,18 @@ export const FeedbackPage: React.FC = () => {
               与千万仙友真诚交流，共研诛仙万象大道
             </span>
           </div>
+
+          {/* 防刷蜜罐陷阱：爬虫脚本若填值则被服务端静默拦截 */}
+          <input
+            type="text"
+            name="faxian_trap"
+            value={honeypot}
+            onChange={e => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            style={{ display: 'none' }}
+            aria-hidden="true"
+          />
 
           <div className="flex items-center gap-2">
             <input
