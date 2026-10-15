@@ -353,7 +353,7 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
                 const dmg = data.damageApplied || 0;
                 const segmentIdx = data.segmentIndex != null ? data.segmentIndex + 1 : 1;
                 const totalSegs = data.totalSegments || 1;
-                return `【${actorName}】的【${skillName}】(第${segmentIdx}/${totalSegs}段) 命中首领造成 ${formatLargeNumber(dmg)}`;
+                return `【${actorName}】的【${skillName}】(第${segmentIdx}/${totalSegs}段) 命中BOSS造成 ${formatLargeNumber(dmg)}`;
             }
             case 'BUFF_APPLY': {
                 const effectName = data.effect?.EffectName || data.appliedEffectId || '状态';
@@ -531,7 +531,7 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
                         <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400">
                             <BookOpen className="w-4 h-4" />
                         </div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider">首领关卡信息</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider">BOSS关卡信息</span>
                     </div>
                     <div className="flex flex-col mt-1 leading-normal">
                         <span className="text-sm font-black text-slate-200 truncate">
@@ -795,7 +795,7 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
 
                                 <div className="bg-slate-900/20 border border-slate-850 p-4 rounded-2xl flex flex-col justify-between">
                                     <div className="flex items-center justify-between border-b border-slate-900/60 pb-2 mb-3">
-                                        <span className="text-xs font-black text-slate-200">首领状态监测 (Target Debuffs)</span>
+                                        <span className="text-xs font-black text-slate-200">BOSS状态监测 (Target Debuffs)</span>
                                         <span className="text-[10px] text-rose-450 bg-rose-500/5 px-2 py-0.5 rounded border border-rose-500/10 font-bold tracking-wide">
                                             DEBUFFS: {activeDebuffs.length}
                                         </span>
@@ -822,7 +822,7 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
                                         })}
                                         {activeDebuffs.length === 0 && (
                                             <div className="col-span-2 text-center py-6 text-xs text-slate-600 border border-dashed border-slate-900 rounded-xl">
-                                                当前首领身上无 Debuff 状态
+                                                当前BOSS身上无 Debuff 状态
                                             </div>
                                         )}
                                     </div>
@@ -844,7 +844,7 @@ export const SimulationReport: React.FC<SimulationReportProps> = ({
                                                     "text-[8px] font-bold px-1.5 py-0.2 rounded border font-mono tracking-wider",
                                                     lane.isBoss ? "text-rose-400 bg-rose-500/10 border-rose-500/20" : "text-cyan-400 bg-cyan-500/10 border-cyan-500/20"
                                                 )}>
-                                                    {lane.isBoss ? '首领' : '主角'}
+                                                    {lane.isBoss ? 'BOSS' : '主角'}
                                                 </span>
                                             </div>
 

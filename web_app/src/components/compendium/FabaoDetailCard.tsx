@@ -57,17 +57,17 @@ export const FabaoDetailCard: React.FC<FabaoDetailCardProps> = ({
 
     return (
         <div className={clsx(
-            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md flex flex-col gap-4 text-left',
+            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left w-full min-w-0',
             className
         )}>
             {/* 详情顶栏：法宝名称、品质、多阶变体切换 */}
-            <div className="flex flex-col gap-2.5 pb-3 border-b border-slate-800">
+            <div className="flex flex-col gap-2 pb-2.5 border-b border-slate-800 min-w-0">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-black text-amber-300 tracking-wide">
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="text-base sm:text-lg font-black text-amber-300 tracking-wide break-words">
                             {fabao.名称}
                         </h3>
-                        <span className="text-xs px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 font-mono">
+                        <span className="text-xs px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 font-mono whitespace-nowrap">
                             {fabao.等级 || 135}级 · {fabao.类型}
                         </span>
                     </div>
@@ -75,8 +75,8 @@ export const FabaoDetailCard: React.FC<FabaoDetailCardProps> = ({
 
                 {/* 普通 / 承 / 真 特技变体切换 Pills */}
                 {availableVariants.length > 1 && (
-                    <div className="flex items-center gap-1.5 pt-1">
-                        <span className="text-xs text-slate-400 font-semibold mr-1">传承形态:</span>
+                    <div className="flex items-center gap-1.5 pt-1 flex-wrap">
+                        <span className="text-xs text-slate-400 font-semibold mr-1 whitespace-nowrap">传承形态:</span>
                         {availableVariants.map(k => {
                             const isActive = activeVariantKey === k;
                             return (
@@ -85,7 +85,7 @@ export const FabaoDetailCard: React.FC<FabaoDetailCardProps> = ({
                                     type="button"
                                     onClick={() => setActiveVariantKey(k)}
                                     className={clsx(
-                                        'px-3.5 py-1 rounded-lg text-xs font-bold transition-all',
+                                        'px-3.5 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap',
                                         isActive
                                             ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.25)]'
                                             : 'bg-slate-800/80 text-slate-400 hover:text-slate-200 border border-slate-700/60'
@@ -100,7 +100,7 @@ export const FabaoDetailCard: React.FC<FabaoDetailCardProps> = ({
             </div>
 
             {/* 等阶调节滑块 (1~5阶) - 轨道明显可见 */}
-            <div className="flex items-center justify-between gap-3 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+            <div className="flex items-center justify-between gap-3 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex-wrap min-w-0">
                 <div className="flex items-center gap-2 text-xs text-slate-300 font-medium">
                     <Sliders className="w-3.5 h-3.5 text-cyan-400" />
                     <span>技能等阶:</span>

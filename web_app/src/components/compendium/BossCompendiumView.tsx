@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, X, Swords } from 'lucide-react';
+import { Search, X, ExternalLink } from 'lucide-react';
 import clsx from 'clsx';
 import { chipCls, chipCountCls } from '../ui/chipStyles';
 import { pinyin } from 'pinyin-pro';
@@ -106,7 +106,7 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
     const [searchKeyword, setSearchKeyword] = useState<string>('');
     const [highlightMonsterId, setHighlightMonsterId] = useState<string | null>(null);
 
-    // 统计各分类下的首领数量
+    // 统计各分类下的 BOSS 数量
     const categoryCounts = useMemo(() => {
         const counts: Record<DungeonCategory, number> = {
             all: 0,
@@ -172,7 +172,7 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
         return [...list].sort((a, b) => (DUNGEON_ORDER_MAP[a.DungeonID] || 999) - (DUNGEON_ORDER_MAP[b.DungeonID] || 999));
     }, [dungeons, activeCategory]);
 
-    // 过滤渲染副本与首领列表
+    // 过滤渲染副本与 BOSS 列表
     const filteredGroups = useMemo(() => {
         const kw = searchKeyword.trim().toLowerCase();
 
@@ -324,7 +324,7 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
                                         {diffMeta.label}
                                     </span>
                                     <span className="text-xs text-slate-400 font-mono">
-                                        {monsters.length} 位首领/目标
+                                        {monsters.length} 位 BOSS/目标
                                     </span>
                                 </div>
                                 {dungeon.Description && (
@@ -364,8 +364,6 @@ const BossCard: React.FC<{
     const mods = monster.MonsterAttributeModifiers || {};
     const displayAttrs = monster.displayAttributes || {};
 
-    // 核心减爆伤
-    const critDmgRed = mods.MonsterCriticalDamagePercentReduction ?? displayAttrs.critDamageReduction ?? 0;
 
     // 气血数据解析
     const health = displayAttrs.health ?? mods.MonsterHealth;
@@ -405,12 +403,12 @@ const BossCard: React.FC<{
         }
     }
 
-    // 2. 按指定顺序依次追加（有值才显示）
+    // 2. 按指定顺序依次追加（有值才显示，减爆伤在数据中高亮体现）
     if (critRateRed !== undefined && critRateRed !== null) {
         matrixItems.push({ label: '减暴击', value: `${critRateRed}%` });
     }
     if (critDmgRedRaw !== undefined && critDmgRedRaw !== null) {
-        matrixItems.push({ label: '减爆伤', value: `${critDmgRedRaw}%` });
+        matrixItems.push({ label: '减爆伤', value: `${critDmgRedRaw}%`, highlight: true });
     }
     if (defense !== undefined && defense !== null) {
         matrixItems.push({ label: '防御', value: formatNumber(defense) });
@@ -449,7 +447,7 @@ const BossCard: React.FC<{
                     : 'border-slate-800/80'
             )}
         >
-            {/* 1. 头部：首领名 + 关卡 + 等级 + 核心减爆伤徽章 + 测算按钮 */}
+            {/* 1. 头部：BOSS名 + 关卡 + 等级 + 测算按钮 */}
             <div className="flex items-center justify-between border-b border-slate-800/80 pb-3 gap-2">
                 <div className="flex items-center gap-2 flex-wrap min-w-0">
                     <span className="w-1.5 h-4.5 bg-cyan-400 rounded-full shrink-0"></span>
@@ -464,7 +462,7 @@ const BossCard: React.FC<{
                                 : 'bg-slate-700/40 border-slate-600/40 text-slate-400'
                         )}
                     >
-                        {isBoss ? '首领' : '小怪'}
+                        {isBoss ? 'BOSS' : '小怪'}
                     </span>
                     {monster.DungeonLevel ? (
                         <span className="text-[11px] font-mono text-slate-400 shrink-0">
@@ -479,45 +477,34 @@ const BossCard: React.FC<{
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                    {/* 减爆伤直接在右上角作为最显眼的核心抗性徽章 */}
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-950/70 border border-cyan-500/40 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.15)]">
-                        <span className="text-[10px] text-cyan-400/80 font-medium">减爆伤</span>
-                        <span className="font-mono font-black text-sm tracking-tight text-cyan-200">
-                            {critDmgRed > 0 ? `${critDmgRed}%` : '基础'}
-                        </span>
-                    </div>
-
                     {onNavigateCalculator && (
                         <button
                             onClick={() => onNavigateCalculator(dungeon.DungeonID, monster.MonsterID)}
-                            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-300 text-xs font-bold transition-all shrink-0 hover:scale-105"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium transition-all shrink-0 hover:scale-105 cursor-pointer shadow-sm"
                             title="将此 BOSS 带入计算器测算技能伤害"
                         >
-                            <Swords className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>测算</span>
+                            <span>带入计算器</span>
+                            <ExternalLink className="w-3.5 h-3.5" />
                         </button>
                     )}
                 </div>
             </div>
 
-            {/* 2. 属性矩阵网格 (Scheme B: 键左、值右的整齐单元格) */}
+            {/* 2. 属性矩阵网格 (3 列整齐单元格) */}
             {matrixItems.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
                     {matrixItems.map((item, idx) => (
                         <div
                             key={idx}
-                            className={clsx(
-                                'flex items-center justify-between px-2.5 py-1.5 rounded-lg border transition-colors',
-                                item.highlight
-                                    ? 'bg-rose-950/20 border-rose-500/30'
-                                    : 'bg-slate-950/60 border-slate-800/60'
-                            )}
+                            className="flex items-center justify-between px-2.5 py-1.5 rounded-lg border bg-slate-950/60 border-slate-800/60 transition-colors"
                         >
-                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">{item.label}</span>
+                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">
+                                {item.label}
+                            </span>
                             <span
                                 className={clsx(
                                     'font-mono font-bold text-xs shrink-0 whitespace-nowrap',
-                                    item.highlight ? 'text-rose-300' : 'text-slate-200'
+                                    item.highlight ? 'text-amber-300' : 'text-slate-200'
                                 )}
                             >
                                 {item.value}
@@ -527,7 +514,7 @@ const BossCard: React.FC<{
                 </div>
             ) : (
                 <div className="px-3 py-2 rounded-lg bg-slate-950/40 border border-slate-800/40 text-center text-xs text-slate-500 font-mono">
-                    首领其他实战抗性数据录入中
+                    BOSS其他实战抗性数据录入中
                 </div>
             )}
         </div>
