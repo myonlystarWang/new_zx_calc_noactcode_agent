@@ -10,19 +10,21 @@ import {
     Check,
     Copy,
     ArrowRight,
-    Radio
+    Swords
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import {
     CopilotService,
     type CopilotMessage,
-    type ExtractedCPanel
+    type ExtractedCPanel,
+    type BossCandidateItem
 } from '../../services/CopilotService';
 import { DataService } from '../../services/DataService';
 import { FabaoDetailCard } from '../compendium/FabaoDetailCard';
 import { EquipDetailCard } from '../compendium/EquipDetailCard';
 import { SkillDetailCard } from '../compendium/SkillDetailCard';
+import { BossDetailCard } from '../compendium/BossDetailCard';
 import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
 import { useApp } from '../../context/AppContext';
@@ -50,7 +52,16 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     onOpenSplitWorkspace,
 }) => {
     const navigate = useNavigate();
-    const { updateCharacterAttributes, updateCharacterClass } = useApp();
+    const { updateCharacterAttributes, updateCharacterClass, selectDungeon } = useApp();
+
+    const handleBringToCalculator = useCallback((dungeonId: string, monsterId: string) => {
+        selectDungeon(dungeonId, monsterId);
+        if (onOpenSplitWorkspace) {
+            onOpenSplitWorkspace('calc');
+        } else {
+            navigate('/calculator');
+        }
+    }, [selectDungeon, onOpenSplitWorkspace, navigate]);
 
     const [inputText, setInputText] = useState('');
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -229,7 +240,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                     </button>
                 </div>
 
-                {onToggleSplit && !isSplitOpen && (
+                {/* {onToggleSplit && !isSplitOpen && (
                     <button
                         type="button"
                         onClick={onToggleSplit}
@@ -239,7 +250,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         <Sliders className="w-3.5 h-3.5" />
                         <span>右侧工作区</span>
                     </button>
-                )}
+                )} */}
             </div>
 
             {/* 消息对话主画卷：独立定高内部滚动区，不再让全局窗口拉伸 */}
@@ -279,12 +290,8 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                     </div>
                                 )}
 
-                                {(() => {
-                                    const isCandidateCard = msg.cardType === 'equip_candidates' || msg.cardType === 'skill_candidates' || msg.cardType === 'fabao_candidates';
-                                    return (
-                                        <>
-                                            {/* 纯文本说明 (候选列表类卡片已内聚了统计与引导文案，合并至下方 CandidateSelectorBar，消除重复) */}
-                                            {!isCandidateCard && msg.text && (
+                                            {/* 纯文本说明 (AI 助手的消息正文，无论是否附带候选卡片，均完整呈现段落排版与自然语气) */}
+                                            {msg.text && (
                                                 <div className={clsx(
                                                     'whitespace-pre-wrap text-sm leading-relaxed font-sans',
                                                     isUser ? 'text-slate-100 font-medium' : 'text-slate-200'
@@ -299,469 +306,540 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
 
                                             {/* 宽幅富交互大卡片体系 */}
                                             {msg.cardType && (
-                                                <div className={clsx('space-y-3', !isCandidateCard && 'mt-4 pt-4 border-t border-white/10')}>
+                                                <div className={clsx('space-y-3', msg.text && 'mt-3.5 pt-3.5 border-t border-white/10')}>
                                                     {/* 1. C 界面识图测伤与实战伤害报告 */}
-                                        {msg.cardType === 'c_panel_diag' && msg.cardData && (() => {
-                                            const basePanel: ExtractedCPanel = msg.cardData.cPanel;
-                                            const activePanel = getTunedPanel(msg.id, basePanel);
-                                            const liveDamage = CopilotService.getInstance().calculateT20Damage(activePanel);
-                                            const isTunerOpen = expandedTunerMsgId === msg.id;
+                                                    {msg.cardType === 'c_panel_diag' && msg.cardData && (() => {
+                                                        const basePanel: ExtractedCPanel = msg.cardData.cPanel;
+                                                        const activePanel = getTunedPanel(msg.id, basePanel);
+                                                        const liveDamage = CopilotService.getInstance().calculateT20Damage(activePanel);
+                                                        const isTunerOpen = expandedTunerMsgId === msg.id;
 
-                                            return (
-                                                <div className="rounded-xl bg-gradient-to-br from-[#121927] to-[#0d121c] border border-cyan-500/30 p-5 space-y-4 shadow-xl">
-                                                    {/* 报告标头与秒伤 KPI */}
-                                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
-                                                        <div>
-                                                            <div className="flex items-center gap-2">
-                                                                <span className="text-sm font-bold text-slate-100">
-                                                                    {activePanel.characterClass || '角色'} 属性推演报告
-                                                                </span>
-                                                                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-300 border border-cyan-800/60">
-                                                                    {activePanel.faction === 'FO' ? '佛' : activePanel.faction === 'MO' ? '魔' : '仙'}阵营
-                                                                </span>
-                                                            </div>
-                                                            <p className="text-xs text-slate-400 mt-0.5">
-                                                                测算首领: {liveDamage.dungeonName} · {liveDamage.bossName}
-                                                            </p>
-                                                        </div>
+                                                        return (
+                                                            <div className="rounded-xl bg-gradient-to-br from-[#121927] to-[#0d121c] border border-cyan-500/30 p-5 space-y-4 shadow-xl">
+                                                                {/* 报告标头与秒伤 KPI */}
+                                                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+                                                                    <div>
+                                                                        <div className="flex items-center gap-2">
+                                                                            <span className="text-sm font-bold text-slate-100">
+                                                                                {activePanel.characterClass || '角色'} 属性推演报告
+                                                                            </span>
+                                                                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-300 border border-cyan-800/60">
+                                                                                {activePanel.faction === 'FO' ? '佛' : activePanel.faction === 'MO' ? '魔' : '仙'}阵营
+                                                                            </span>
+                                                                        </div>
+                                                                        <p className="text-xs text-slate-400 mt-0.5">
+                                                                            测算BOSS: {liveDamage.dungeonName} · {liveDamage.bossName}
+                                                                        </p>
+                                                                    </div>
 
-                                                        {/* 秒伤大字 KPI */}
-                                                        <div className="sm:text-right">
-                                                            <div className="text-[11px] text-amber-300 font-medium">T20 实战爆发秒伤推演</div>
-                                                            <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-100 tracking-tight">
-                                                                {liveDamage.estimatedTotalDamage}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* 核心面板攻防 8 项数值矩阵 */}
-                                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">大攻攻击力</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {(activePanel.attack || 0).toLocaleString()}
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">防御力</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {(activePanel.defense || 0).toLocaleString()}
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-amber-300 font-medium">无视伤害减免</div>
-                                                            <div className="text-sm font-bold text-amber-300 mt-0.5">
-                                                                {activePanel.ignoreReduction || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-emerald-300 font-medium">减免伤害</div>
-                                                            <div className="text-sm font-bold text-emerald-300 mt-0.5">
-                                                                {activePanel.damageReduction || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-rose-300 font-medium">对怪物增伤</div>
-                                                            <div className="text-sm font-bold text-rose-300 mt-0.5">
-                                                                {activePanel.monsterDamageBonus || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">暴击率 / 暴伤</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {activePanel.critRate || 0}% / {activePanel.critDamage || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">减暴击率</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {activePanel.critReduction || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">气血总量 (HP)</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {(activePanel.hp || 0).toLocaleString()}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* 内嵌横向数值微调面板 (无需弹窗，在画布内直接改) */}
-                                                    <div className="pt-2">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setExpandedTunerMsgId(isTunerOpen ? null : msg.id)}
-                                                            className="text-xs font-semibold text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5 transition-colors"
-                                                        >
-                                                            <Sliders className="w-3.5 h-3.5" />
-                                                            <span>{isTunerOpen ? '收起属性微调工作台' : '展开数值微调工作台（可单点校对 OCR 数值并即时重测）'}</span>
-                                                        </button>
-
-                                                        {isTunerOpen && (
-                                                            <div className="mt-3 p-4 rounded-xl bg-black/40 border border-white/10 space-y-3 animate-in slide-in-from-top-2 duration-200">
-                                                                <div className="text-xs font-medium text-slate-300">
-                                                                    微调数值实时联动刷新上方 T20 伤害推演：
+                                                                    {/* 秒伤大字 KPI */}
+                                                                    <div className="sm:text-right">
+                                                                        <div className="text-[11px] text-amber-300 font-medium">T20 实战爆发秒伤推演</div>
+                                                                        <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-100 tracking-tight">
+                                                                            {liveDamage.estimatedTotalDamage}
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                                                                    <InlineNumberRow
-                                                                        label="大攻攻击力"
-                                                                        value={activePanel.attack || 0}
-                                                                        unit="点"
-                                                                        step={5000}
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'attack', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'attack', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="防御力"
-                                                                        value={activePanel.defense || 0}
-                                                                        unit="点"
-                                                                        step={2000}
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'defense', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'defense', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="无视伤害减免"
-                                                                        value={activePanel.ignoreReduction || 0}
-                                                                        unit="%"
-                                                                        step={0.5}
-                                                                        highlight="text-amber-300 font-semibold"
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'ignoreReduction', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'ignoreReduction', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="减免伤害"
-                                                                        value={activePanel.damageReduction || 0}
-                                                                        unit="%"
-                                                                        step={0.5}
-                                                                        highlight="text-emerald-300 font-semibold"
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'damageReduction', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'damageReduction', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="对怪伤害增加"
-                                                                        value={activePanel.monsterDamageBonus || 0}
-                                                                        unit="%"
-                                                                        step={1.0}
-                                                                        highlight="text-rose-300 font-semibold"
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'monsterDamageBonus', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'monsterDamageBonus', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="暴击伤害"
-                                                                        value={activePanel.critDamage || 0}
-                                                                        unit="%"
-                                                                        step={5.0}
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'critDamage', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'critDamage', d)}
-                                                                    />
+
+                                                                {/* 核心面板攻防 8 项数值矩阵 */}
+                                                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                                                    <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                                        <div className="text-[11px] text-slate-400">大攻攻击力</div>
+                                                                        <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                            {(activePanel.attack || 0).toLocaleString()}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                                        <div className="text-[11px] text-slate-400">防御力</div>
+                                                                        <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                            {(activePanel.defense || 0).toLocaleString()}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                                        <div className="text-[11px] text-amber-300 font-medium">无视伤害减免</div>
+                                                                        <div className="text-sm font-bold text-amber-300 mt-0.5">
+                                                                            {activePanel.ignoreReduction || 0}%
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                                        <div className="text-[11px] text-emerald-300 font-medium">减免伤害</div>
+                                                                        <div className="text-sm font-bold text-emerald-300 mt-0.5">
+                                                                            {activePanel.damageReduction || 0}%
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                                        <div className="text-[11px] text-rose-300 font-medium">对怪物增伤</div>
+                                                                        <div className="text-sm font-bold text-rose-300 mt-0.5">
+                                                                            {activePanel.monsterDamageBonus || 0}%
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                                        <div className="text-[11px] text-slate-400">暴击率 / 暴伤</div>
+                                                                        <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                            {activePanel.critRate || 0}% / {activePanel.critDamage || 0}%
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                                        <div className="text-[11px] text-slate-400">减暴击率</div>
+                                                                        <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                            {activePanel.critReduction || 0}%
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
+                                                                        <div className="text-[11px] text-slate-400">气血总量 (HP)</div>
+                                                                        <div className="text-sm font-semibold text-slate-200 mt-0.5">
+                                                                            {(activePanel.hp || 0).toLocaleString()}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* 内嵌横向数值微调面板 (无需弹窗，在画布内直接改) */}
+                                                                <div className="pt-2">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setExpandedTunerMsgId(isTunerOpen ? null : msg.id)}
+                                                                        className="text-xs font-semibold text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5 transition-colors"
+                                                                    >
+                                                                        <Sliders className="w-3.5 h-3.5" />
+                                                                        <span>{isTunerOpen ? '收起属性微调工作台' : '展开数值微调工作台（可单点校对 OCR 数值并即时重测）'}</span>
+                                                                    </button>
+
+                                                                    {isTunerOpen && (
+                                                                        <div className="mt-3 p-4 rounded-xl bg-black/40 border border-white/10 space-y-3 animate-in slide-in-from-top-2 duration-200">
+                                                                            <div className="text-xs font-medium text-slate-300">
+                                                                                微调数值实时联动刷新上方 T20 伤害推演：
+                                                                            </div>
+                                                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                                                                                <InlineNumberRow
+                                                                                    label="大攻攻击力"
+                                                                                    value={activePanel.attack || 0}
+                                                                                    unit="点"
+                                                                                    step={5000}
+                                                                                    onChange={v => updateTunedField(msg.id, basePanel, 'attack', v)}
+                                                                                    onStep={d => stepTunedField(msg.id, basePanel, 'attack', d)}
+                                                                                />
+                                                                                <InlineNumberRow
+                                                                                    label="防御力"
+                                                                                    value={activePanel.defense || 0}
+                                                                                    unit="点"
+                                                                                    step={2000}
+                                                                                    onChange={v => updateTunedField(msg.id, basePanel, 'defense', v)}
+                                                                                    onStep={d => stepTunedField(msg.id, basePanel, 'defense', d)}
+                                                                                />
+                                                                                <InlineNumberRow
+                                                                                    label="无视伤害减免"
+                                                                                    value={activePanel.ignoreReduction || 0}
+                                                                                    unit="%"
+                                                                                    step={0.5}
+                                                                                    highlight="text-amber-300 font-semibold"
+                                                                                    onChange={v => updateTunedField(msg.id, basePanel, 'ignoreReduction', v)}
+                                                                                    onStep={d => stepTunedField(msg.id, basePanel, 'ignoreReduction', d)}
+                                                                                />
+                                                                                <InlineNumberRow
+                                                                                    label="减免伤害"
+                                                                                    value={activePanel.damageReduction || 0}
+                                                                                    unit="%"
+                                                                                    step={0.5}
+                                                                                    highlight="text-emerald-300 font-semibold"
+                                                                                    onChange={v => updateTunedField(msg.id, basePanel, 'damageReduction', v)}
+                                                                                    onStep={d => stepTunedField(msg.id, basePanel, 'damageReduction', d)}
+                                                                                />
+                                                                                <InlineNumberRow
+                                                                                    label="对怪伤害增加"
+                                                                                    value={activePanel.monsterDamageBonus || 0}
+                                                                                    unit="%"
+                                                                                    step={1.0}
+                                                                                    highlight="text-rose-300 font-semibold"
+                                                                                    onChange={v => updateTunedField(msg.id, basePanel, 'monsterDamageBonus', v)}
+                                                                                    onStep={d => stepTunedField(msg.id, basePanel, 'monsterDamageBonus', d)}
+                                                                                />
+                                                                                <InlineNumberRow
+                                                                                    label="暴击伤害"
+                                                                                    value={activePanel.critDamage || 0}
+                                                                                    unit="%"
+                                                                                    step={5.0}
+                                                                                    onChange={v => updateTunedField(msg.id, basePanel, 'critDamage', v)}
+                                                                                    onStep={d => stepTunedField(msg.id, basePanel, 'critDamage', d)}
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+
+                                                                {/* 操作底栏 */}
+                                                                <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleCopyJson(msg.id, activePanel)}
+                                                                        className="px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 text-slate-300 text-xs flex items-center gap-1.5 transition-colors"
+                                                                    >
+                                                                        {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                                                                        <span>{copiedId === msg.id ? '已复制' : '复制属性 JSON'}</span>
+                                                                    </button>
+
+                                                                    <div className="flex items-center gap-2.5 flex-wrap">
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => handleImportToSimulator(activePanel, 'arena')}
+                                                                            className="px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white font-medium text-xs flex items-center gap-1.5 transition-all"
+                                                                        >
+                                                                            <span>前往副本模拟训练场</span>
+                                                                            <ExternalLink className="w-3.5 h-3.5" />
+                                                                        </button>
+
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => handleImportToSimulator(activePanel, 'calc')}
+                                                                            className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-950/40 transition-all cursor-pointer"
+                                                                        >
+                                                                            <span>带入推演 (分屏计算器)</span>
+                                                                            <ArrowRight className="w-3.5 h-3.5" />
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        )}
-                                                    </div>
+                                                        );
+                                                    })()}
 
-                                                    {/* 操作底栏 */}
-                                                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleCopyJson(msg.id, activePanel)}
-                                                            className="px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 text-slate-300 text-xs flex items-center gap-1.5 transition-colors"
-                                                        >
-                                                            {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                                                            <span>{copiedId === msg.id ? '已复制' : '复制属性 JSON'}</span>
-                                                        </button>
-
-                                                        <div className="flex items-center gap-2.5 flex-wrap">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleImportToSimulator(activePanel, 'arena')}
-                                                                className="px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white font-medium text-xs flex items-center gap-1.5 transition-all"
-                                                            >
-                                                                <span>前往副本模拟训练场</span>
-                                                                <ExternalLink className="w-3.5 h-3.5" />
-                                                            </button>
-
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleImportToSimulator(activePanel, 'calc')}
-                                                                className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-950/40 transition-all cursor-pointer"
-                                                            >
-                                                                <span>带入推演 (分屏计算器)</span>
-                                                                <ArrowRight className="w-3.5 h-3.5" />
-                                                            </button>
+                                                    {/* 2. BOSS 抗性大卡片 (1:1 游戏原生高保真全维度矩阵) */}
+                                                    {msg.cardType === 'boss' && msg.cardData && (
+                                                        <div className="w-full">
+                                                            <BossDetailCard
+                                                                monster={msg.cardData.monster || {
+                                                                    MonsterID: msg.cardData.monsterId || '',
+                                                                    MonsterName: msg.cardData.name || '',
+                                                                    MonsterAttributeModifiers: {
+                                                                        MonsterDefense: msg.cardData.def ?? 0,
+                                                                        MonsterCriticalHitRateReduction: msg.cardData.critRed ?? 0,
+                                                                        MonsterCriticalDamagePercentReduction: msg.cardData.critDmgRed ?? 0,
+                                                                        MonsterHealth: msg.cardData.hp ?? 0,
+                                                                    },
+                                                                    displayAttributes: {
+                                                                        defense: msg.cardData.def ?? 0,
+                                                                        critRateReduction: msg.cardData.critRed ?? 0,
+                                                                        critDamageReduction: msg.cardData.critDmgRed ?? 0,
+                                                                        health: msg.cardData.hp ?? 0,
+                                                                    }
+                                                                }}
+                                                                dungeon={msg.cardData.dungeon || { DungeonID: msg.cardData.dungeonId, DungeonName: msg.cardData.dungeonName }}
+                                                                categoryLabel={msg.cardData.categoryLabel}
+                                                                onBringToCalculator={handleBringToCalculator}
+                                                            />
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })()}
+                                                    )}
 
-                                        {/* 2. BOSS 首领抗性大卡片 */}
-                                        {msg.cardType === 'boss' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#121824] border border-cyan-500/20 p-4 space-y-3">
-                                                <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                                                    <div>
-                                                        <div className="text-sm font-bold text-cyan-300">{msg.cardData.name}</div>
-                                                        <div className="text-xs text-slate-400">副本: {msg.cardData.dungeonName}</div>
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => navigate(msg.cardData.route)}
-                                                        className="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1"
-                                                    >
-                                                        <span>全景资料馆</span>
-                                                        <ExternalLink className="w-3 h-3" />
-                                                    </button>
-                                                </div>
-                                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                                                    <div className="p-2 rounded bg-black/40 border border-white/5">
-                                                        <span className="text-slate-400 block text-[11px]">防御力</span>
-                                                        <span className="font-semibold text-slate-200">{msg.cardData.def}</span>
-                                                    </div>
-                                                    <div className="p-2 rounded bg-black/40 border border-white/5">
-                                                        <span className="text-slate-400 block text-[11px]">气血总量</span>
-                                                        <span className="font-semibold text-rose-300">{msg.cardData.hp}</span>
-                                                    </div>
-                                                    <div className="p-2 rounded bg-black/40 border border-white/5">
-                                                        <span className="text-slate-400 block text-[11px]">减暴击率</span>
-                                                        <span className="font-semibold text-amber-300">{msg.cardData.critRed}%</span>
-                                                    </div>
-                                                    <div className="p-2 rounded bg-black/40 border border-white/5">
-                                                        <span className="text-slate-400 block text-[11px]">减暴击伤害</span>
-                                                        <span className="font-semibold text-amber-300">{msg.cardData.critDmgRed}%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
+                                                    {/* 2.1 副本 BOSS 多候选切换卡片 */}
+                                                    {msg.cardType === 'boss_candidates' && msg.cardData?.candidates && (() => {
+                                                        const list: BossCandidateItem[] = msg.cardData.candidates;
+                                                        const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
+                                                        const activeBoss = list[activeIdx] || list[0];
 
-                                        {/* 3. 技能机制大卡片 (1:1 游戏原生高保真卡片) */}
-                                        {msg.cardType === 'skill' && msg.cardData && (
-                                            <div className="w-full">
-                                                {msg.cardData.skill ? (
-                                                    <SkillDetailCard
-                                                        skill={msg.cardData.skill}
-                                                        onSelectSkillName={(name) => onSendMessage(name)}
-                                                    />
-                                                ) : (
-                                                    <div className="rounded-xl bg-[#121824] border border-cyan-500/20 p-4 space-y-3">
-                                                        <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                                                            <div className="text-sm font-bold text-cyan-300">{msg.cardData.name}</div>
+                                                        return (
+                                                            <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
+                                                                <CandidateSelectorBar
+                                                                    items={list.map((b, idx) => ({
+                                                                        id: b.id || `${b.dungeonId}_${b.monsterId}_${idx}`,
+                                                                        title: b.monsterName
+                                                                    }))}
+                                                                    activeIndex={activeIdx}
+                                                                    onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
+                                                                    summaryText={msg.cardData.dungeonName
+                                                                        ? `【${msg.cardData.dungeonName}】共 ${list.length} 位 BOSS（点选切换）：`
+                                                                        : msg.cardData.seriesName
+                                                                        ? `【${msg.cardData.seriesName}】系列共 ${list.length} 位 BOSS（点选切换）：`
+                                                                        : msg.cardData.categoryLabel
+                                                                        ? `【${msg.cardData.categoryLabel}】核心副本 BOSS（点选切换）：`
+                                                                        : `全网 16 大核心副本代表 BOSS（点选切换）：`}
+                                                                />
+
+                                                                {activeBoss && (
+                                                                    <BossDetailCard
+                                                                        monster={activeBoss.monster || {
+                                                                            MonsterID: activeBoss.monsterId,
+                                                                            MonsterName: activeBoss.monsterName,
+                                                                            MonsterAttributeModifiers: {
+                                                                                MonsterDefense: activeBoss.def,
+                                                                                MonsterCriticalHitRateReduction: activeBoss.critRed,
+                                                                                MonsterCriticalDamagePercentReduction: activeBoss.critDmgRed,
+                                                                                MonsterHealth: activeBoss.hp,
+                                                                            },
+                                                                            displayAttributes: {
+                                                                                defense: activeBoss.def,
+                                                                                critRateReduction: activeBoss.critRed,
+                                                                                critDamageReduction: activeBoss.critDmgRed,
+                                                                                health: activeBoss.hp,
+                                                                            }
+                                                                        }}
+                                                                        dungeon={activeBoss.dungeon || { DungeonID: activeBoss.dungeonId, DungeonName: activeBoss.dungeonName, difficulty: activeBoss.difficulty }}
+                                                                        categoryLabel={activeBoss.categoryLabel || activeBoss.dungeonShortLabel}
+                                                                        onBringToCalculator={handleBringToCalculator}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })()}
+
+                                                    {/* 3. 技能机制大卡片 (1:1 游戏原生高保真卡片) */}
+                                                    {msg.cardType === 'skill' && msg.cardData && (
+                                                        <div className="w-full">
+                                                            {msg.cardData.skill ? (
+                                                                <SkillDetailCard
+                                                                    skill={msg.cardData.skill}
+                                                                    onSelectSkillName={(name) => onSendMessage(name)}
+                                                                />
+                                                            ) : (
+                                                                <div className="rounded-xl bg-[#121824] border border-cyan-500/20 p-4 space-y-3">
+                                                                    <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                                                                        <div className="text-sm font-bold text-cyan-300">{msg.cardData.name}</div>
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => navigate(msg.cardData.route)}
+                                                                            className="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1"
+                                                                        >
+                                                                            <span>技能库详情</span>
+                                                                            <ExternalLink className="w-3 h-3" />
+                                                                        </button>
+                                                                    </div>
+                                                                    <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
+                                                                        <span>命中段数: <strong className="text-cyan-300">{msg.cardData.hits}</strong></span>
+                                                                        <span>冷却时间: <strong className="text-cyan-300">{msg.cardData.cooldown}s</strong></span>
+                                                                        <span>施法时间: <strong className="text-cyan-300">{msg.cardData.castTime}</strong>s</span>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+
+                                                    {/* 3.1 技能多候选切换 */}
+                                                    {msg.cardType === 'skill_candidates' && msg.cardData?.candidates && (() => {
+                                                        const list: CuratedSkillItem[] = msg.cardData.candidates;
+                                                        const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
+                                                        const activeItem = list[activeIdx] || list[0];
+
+                                                        return (
+                                                            <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
+                                                                <CandidateSelectorBar
+                                                                    items={list.map((c, idx) => ({
+                                                                        id: `${c.id || 0}_${c.name}_${idx}`,
+                                                                        title: c.name
+                                                                    }))}
+                                                                    activeIndex={activeIdx}
+                                                                    onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
+                                                                    summaryText={`候选技能 (${list.length})`}
+                                                                />
+
+                                                                {activeItem && (
+                                                                    <SkillDetailCard
+                                                                        key={activeItem.id || activeItem.name}
+                                                                        skill={activeItem}
+                                                                        onSelectSkillName={(name) => onSendMessage(name)}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })()}
+
+                                                    {/* 4. 极致属性攻略卡片 */}
+                                                    {msg.cardType === 'ceiling' && msg.cardData && (
+                                                        <div className="rounded-xl bg-[#151a24] border border-amber-500/30 p-4 flex items-center justify-between gap-4">
+                                                            <div>
+                                                                <div className="text-sm font-bold text-amber-300">{msg.cardData.title}</div>
+                                                                <div className="text-xs text-slate-400 mt-0.5">理论最高基准: {msg.cardData.ceilingVal}%</div>
+                                                            </div>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => navigate(msg.cardData.route)}
-                                                                className="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1"
+                                                                className="px-3.5 py-1.5 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/40 text-amber-200 text-xs font-medium flex items-center gap-1.5"
                                                             >
-                                                                <span>技能库详情</span>
+                                                                <span>查看极致攻略拆解</span>
                                                                 <ExternalLink className="w-3 h-3" />
                                                             </button>
                                                         </div>
-                                                        <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
-                                                            <span>命中段数: <strong className="text-cyan-300">{msg.cardData.hits}</strong></span>
-                                                            <span>冷却时间: <strong className="text-cyan-300">{msg.cardData.cooldown}s</strong></span>
-                                                            <span>施法时间: <strong className="text-cyan-300">{msg.cardData.castTime}</strong>s</span>
+                                                    )}
+
+                                                    {/* 5. 轩辕策四象卡片 */}
+                                                    {msg.cardType === 'xyc_diag' && msg.cardData && (
+                                                        <div className="rounded-xl bg-[#151a24] border border-teal-500/30 p-4 flex items-center justify-between gap-4">
+                                                            <div>
+                                                                <div className="text-sm font-bold text-teal-300">{msg.cardData.title}</div>
+                                                                <div className="text-xs text-slate-400 mt-0.5">{msg.cardData.desc}</div>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    if (msg.cardData.workspaceMode && onOpenSplitWorkspace) {
+                                                                        onOpenSplitWorkspace(msg.cardData.workspaceMode);
+                                                                    } else if (onOpenSplitWorkspace) {
+                                                                        onOpenSplitWorkspace('xyc');
+                                                                    } else if (msg.cardData.route) {
+                                                                        navigate(msg.cardData.route);
+                                                                    }
+                                                                }}
+                                                                className="px-3.5 py-1.5 rounded-lg bg-teal-600/30 hover:bg-teal-600/50 border border-teal-500/40 text-teal-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shrink-0"
+                                                            >
+                                                                <span>{msg.cardData.btnText || '进入四象模拟器'}</span>
+                                                                <ExternalLink className="w-3 h-3" />
+                                                            </button>
                                                         </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-
-                                        {/* 3.1 技能多候选切换 */}
-                                        {msg.cardType === 'skill_candidates' && msg.cardData?.candidates && (() => {
-                                            const list: CuratedSkillItem[] = msg.cardData.candidates;
-                                            const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
-                                            const activeItem = list[activeIdx] || list[0];
-
-                                            return (
-                                                <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
-                                                    <CandidateSelectorBar
-                                                        items={list.map((c, idx) => ({
-                                                            id: `${c.id || 0}_${c.name}_${idx}`,
-                                                            title: c.name,
-                                                            badge: c.group_name || undefined,
-                                                            tags: c.tags
-                                                        }))}
-                                                        activeIndex={activeIdx}
-                                                        onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
-                                                        summaryText={`为你检索到 ${list.length} 个符合条件的技能，支持点选切换查看：`}
-                                                    />
-
-                                                    {activeItem && (
-                                                        <SkillDetailCard
-                                                            key={activeItem.id || activeItem.name}
-                                                            skill={activeItem}
-                                                            onSelectSkillName={(name) => onSendMessage(name)}
-                                                        />
                                                     )}
-                                                </div>
-                                            );
-                                        })()}
 
-                                        {/* 4. 极致属性攻略卡片 */}
-                                        {msg.cardType === 'ceiling' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#151a24] border border-amber-500/30 p-4 flex items-center justify-between gap-4">
-                                                <div>
-                                                    <div className="text-sm font-bold text-amber-300">{msg.cardData.title}</div>
-                                                    <div className="text-xs text-slate-400 mt-0.5">理论最高基准: {msg.cardData.ceilingVal}%</div>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => navigate(msg.cardData.route)}
-                                                    className="px-3.5 py-1.5 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/40 text-amber-200 text-xs font-medium flex items-center gap-1.5"
-                                                >
-                                                    <span>查看极致攻略拆解</span>
-                                                    <ExternalLink className="w-3 h-3" />
-                                                </button>
-                                            </div>
-                                        )}
+                                                    {/* 6. 开服雷达卡片 */}
+                                                    {msg.cardType === 'server' && msg.cardData && (
+                                                        <div className="rounded-xl bg-[#121824] border border-emerald-500/30 p-4 flex items-center justify-between gap-4">
+                                                            <div>
+                                                                <div className="text-sm font-bold text-emerald-300">{msg.cardData.title}</div>
+                                                                <div className="text-xs text-slate-400 mt-0.5">{msg.cardData.desc}</div>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    if (msg.cardData.workspaceMode && onOpenSplitWorkspace) {
+                                                                        onOpenSplitWorkspace(msg.cardData.workspaceMode);
+                                                                    } else if (onOpenSplitWorkspace) {
+                                                                        onOpenSplitWorkspace('server');
+                                                                    } else if (msg.cardData.route) {
+                                                                        navigate(msg.cardData.route);
+                                                                    }
+                                                                }}
+                                                                className="px-3.5 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shrink-0"
+                                                            >
+                                                                <span>{msg.cardData.btnText || '查看开服雷达'}</span>
+                                                                <ExternalLink className="w-3 h-3" />
+                                                            </button>
+                                                        </div>
+                                                    )}
 
-                                        {/* 5. 轩辕策四象卡片 */}
-                                        {msg.cardType === 'xyc_diag' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#151a24] border border-teal-500/30 p-4 flex items-center justify-between gap-4">
-                                                <div>
-                                                    <div className="text-sm font-bold text-teal-300">{msg.cardData.title}</div>
-                                                    <div className="text-xs text-slate-400 mt-0.5">{msg.cardData.desc}</div>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => navigate(msg.cardData.route)}
-                                                    className="px-3.5 py-1.5 rounded-lg bg-teal-600/30 hover:bg-teal-600/50 border border-teal-500/40 text-teal-200 text-xs font-medium flex items-center gap-1.5"
-                                                >
-                                                    <span>进入四象模拟器</span>
-                                                    <ExternalLink className="w-3 h-3" />
-                                                </button>
-                                            </div>
-                                        )}
+                                                    {/* 6.1 核心功能与微工具导航卡片 */}
+                                                    {msg.cardType === 'tool_card' && msg.cardData && (
+                                                        <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 flex items-center justify-between gap-4">
+                                                            <div>
+                                                                <div className="text-sm font-bold text-cyan-300">{msg.cardData.title}</div>
+                                                                <div className="text-xs text-slate-400 mt-0.5">{msg.cardData.desc}</div>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    if (msg.cardData.workspaceMode && onOpenSplitWorkspace) {
+                                                                        onOpenSplitWorkspace(msg.cardData.workspaceMode);
+                                                                    } else if (msg.cardData.route) {
+                                                                        navigate(msg.cardData.route);
+                                                                    }
+                                                                }}
+                                                                className="px-3.5 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shrink-0"
+                                                            >
+                                                                <span>{msg.cardData.btnText || '立即前往'}</span>
+                                                                <ExternalLink className="w-3 h-3" />
+                                                            </button>
+                                                        </div>
+                                                    )}
 
-                                        {/* 6. 开服雷达卡片 */}
-                                        {msg.cardType === 'server' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#121824] border border-emerald-500/30 p-4 flex items-center justify-between gap-4">
-                                                <div className="flex items-center gap-2.5">
-                                                    <Radio className="w-4 h-4 text-emerald-400" />
-                                                    <div>
-                                                        <div className="text-sm font-bold text-emerald-300">{msg.cardData.title}</div>
-                                                        <div className="text-xs text-slate-400 mt-0.5">{msg.cardData.desc}</div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => navigate(msg.cardData.route)}
-                                                    className="px-3.5 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-200 text-xs font-medium flex items-center gap-1.5"
-                                                >
-                                                    <span>查看开服雷达</span>
-                                                    <ExternalLink className="w-3 h-3" />
-                                                </button>
-                                            </div>
-                                        )}
+                                                    {/* 7. 法宝图鉴单卡 */}
+                                                    {msg.cardType === 'fabao' && msg.cardData && (
+                                                        <div className="w-full">
+                                                            <FabaoDetailCard
+                                                                fabao={msg.cardData.fabao || {
+                                                                    id: msg.cardData.id || 0,
+                                                                    名称: msg.cardData.name || '法宝',
+                                                                    等级: 135,
+                                                                    类型: msg.cardData.grade || '战斗法宝',
+                                                                    skillName: msg.cardData.skillName,
+                                                                    描述_纯文本: msg.cardData.description,
+                                                                    技能特效: {
+                                                                        普通: {
+                                                                            name: msg.cardData.skillName || '法宝特技',
+                                                                            str1: msg.cardData.skillEffect,
+                                                                            str2: msg.cardData.cooldown ? `技能冷却时间：${msg.cardData.cooldown}` : undefined
+                                                                        }
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    )}
 
-                                        {/* 7. 法宝图鉴单卡 */}
-                                        {msg.cardType === 'fabao' && msg.cardData && (
-                                            <div className="w-full">
-                                                <FabaoDetailCard
-                                                    fabao={msg.cardData.fabao || {
-                                                        id: msg.cardData.id || 0,
-                                                        名称: msg.cardData.name || '法宝',
-                                                        等级: 135,
-                                                        类型: msg.cardData.grade || '战斗法宝',
-                                                        skillName: msg.cardData.skillName,
-                                                        描述_纯文本: msg.cardData.description,
-                                                        技能特效: {
-                                                            普通: {
-                                                                name: msg.cardData.skillName || '法宝特技',
-                                                                str1: msg.cardData.skillEffect,
-                                                                str2: msg.cardData.cooldown ? `技能冷却时间：${msg.cardData.cooldown}` : undefined
+                                                    {/* 7.1 法宝多候选切换 */}
+                                                    {msg.cardType === 'fabao_candidates' && msg.cardData?.candidates && (() => {
+                                                        const list: FabaoItem[] = msg.cardData.candidates;
+                                                        const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
+                                                        const activeItem = list[activeIdx] || list[0];
+
+                                                        return (
+                                                            <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
+                                                                <CandidateSelectorBar
+                                                                    items={list.map((c, idx) => ({
+                                                                        id: c.id || idx,
+                                                                        title: c.名称
+                                                                    }))}
+                                                                    activeIndex={activeIdx}
+                                                                    onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
+                                                                    summaryText={`候选法宝 (${list.length})`}
+                                                                />
+
+                                                                {activeItem && (
+                                                                    <FabaoDetailCard fabao={activeItem} />
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })()}
+
+                                                    {/* 8. 装备单卡 (1:1 高保真卡片，支持强化 / 升降阶) */}
+                                                    {msg.cardType === 'equip' && msg.cardData && (
+                                                        <div className="w-full">
+                                                            <EquipDetailCard
+                                                                item={msg.cardData.equip || msg.cardData}
+                                                                initialRefLevel={msg.cardData.initialRefLevel}
+                                                                allEquips={msg.cardData.allEquips}
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {/* 8.1 装备多候选切换 */}
+                                                    {msg.cardType === 'equip_candidates' && msg.cardData?.candidates && (() => {
+                                                        const list: CuratedEquipItem[] = msg.cardData.candidates;
+                                                        const allEquips: CuratedEquipItem[] = msg.cardData.allEquips || list;
+
+                                                        // 按剔除（男）/（女）括号后的纯净名称去重，避免男女版生成两个重复按钮
+                                                        const uniqueCandidates: { item: CuratedEquipItem; rawIdx: number }[] = [];
+                                                        const seenNames = new Set<string>();
+                                                        list.forEach((c, idx) => {
+                                                            const clean = (c.name || '').replace(/[（(][男女][）)]/g, '').trim();
+                                                            if (!seenNames.has(clean)) {
+                                                                seenNames.add(clean);
+                                                                uniqueCandidates.push({ item: c, rawIdx: idx });
                                                             }
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                        )}
+                                                        });
 
-                                        {/* 7.1 法宝多候选切换 */}
-                                        {msg.cardType === 'fabao_candidates' && msg.cardData?.candidates && (() => {
-                                            const list: FabaoItem[] = msg.cardData.candidates;
-                                            const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
-                                            const activeItem = list[activeIdx] || list[0];
+                                                        const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
+                                                        const activeItem = list[activeIdx] || list[0];
 
-                                            return (
-                                                <div className="w-full flex flex-col gap-3">
-                                                    <CandidateSelectorBar
-                                                        items={list.map((c, idx) => ({
-                                                            id: c.id || idx,
-                                                            title: c.名称,
-                                                            badge: `${c.等级 || 135}级`
-                                                        }))}
-                                                        activeIndex={activeIdx}
-                                                        onSelect={(idx) => setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: idx }))}
-                                                        summaryText={`为你检索到 ${list.length} 件符合条件的候选法宝，支持点选切换查看：`}
-                                                    />
+                                                        return (
+                                                            <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
+                                                                <CandidateSelectorBar
+                                                                    items={uniqueCandidates.map((u, uIdx) => ({
+                                                                        id: `${u.item.id || 0}_${u.item.name}_${uIdx}`,
+                                                                        title: (u.item.name || '').replace(/[（(][男女][）)]/g, '').trim()
+                                                                    }))}
+                                                                    activeIndex={uniqueCandidates.findIndex(u => u.rawIdx === activeIdx) >= 0 ? uniqueCandidates.findIndex(u => u.rawIdx === activeIdx) : 0}
+                                                                    onSelect={(uIdx) => {
+                                                                        const targetRawIdx = uniqueCandidates[uIdx]?.rawIdx ?? 0;
+                                                                        setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: targetRawIdx }));
+                                                                    }}
+                                                                    summaryText={`候选装备 (${uniqueCandidates.length})`}
+                                                                />
 
-                                                    {activeItem && (
-                                                        <FabaoDetailCard fabao={activeItem} />
-                                                    )}
+                                                                {activeItem && (
+                                                                    <EquipDetailCard
+                                                                        key={`${activeItem.id || activeItem.name}_${activeIdx}`}
+                                                                        item={activeItem}
+                                                                        initialRefLevel={msg.cardData.initialRefLevel}
+                                                                        allEquips={allEquips}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })()}
                                                 </div>
-                                            );
-                                        })()}
-
-                                        {/* 8. 装备单卡 (1:1 高保真卡片，支持强化 / 升降阶) */}
-                                        {msg.cardType === 'equip' && msg.cardData && (
-                                            <div className="w-full">
-                                                <EquipDetailCard
-                                                    item={msg.cardData.equip || msg.cardData}
-                                                    initialRefLevel={msg.cardData.initialRefLevel}
-                                                    allEquips={msg.cardData.allEquips}
-                                                />
-                                            </div>
-                                        )}
-
-                                        {/* 8.1 装备多候选切换 */}
-                                        {msg.cardType === 'equip_candidates' && msg.cardData?.candidates && (() => {
-                                            const list: CuratedEquipItem[] = msg.cardData.candidates;
-                                            const allEquips: CuratedEquipItem[] = msg.cardData.allEquips || list;
-
-                                            // 按剔除（男）/（女）括号后的纯净名称去重，避免男女版生成两个重复按钮
-                                            const uniqueCandidates: { item: CuratedEquipItem; rawIdx: number }[] = [];
-                                            const seenNames = new Set<string>();
-                                            list.forEach((c, idx) => {
-                                                const clean = (c.name || '').replace(/[（(][男女][）)]/g, '').trim();
-                                                if (!seenNames.has(clean)) {
-                                                    seenNames.add(clean);
-                                                    uniqueCandidates.push({ item: c, rawIdx: idx });
-                                                }
-                                            });
-
-                                            const activeIdx = selectedCandidateIndex[msg.id] ?? 0;
-                                            const activeItem = list[activeIdx] || list[0];
-
-                                            return (
-                                                <div className="w-full min-w-0 max-w-full overflow-hidden flex flex-col gap-3">
-                                                    <CandidateSelectorBar
-                                                        items={uniqueCandidates.map((u, uIdx) => ({
-                                                            id: `${u.item.id || 0}_${u.item.name}_${uIdx}`,
-                                                            title: (u.item.name || '').replace(/[（(][男女][）)]/g, '').trim()
-                                                        }))}
-                                                        activeIndex={uniqueCandidates.findIndex(u => u.rawIdx === activeIdx) >= 0 ? uniqueCandidates.findIndex(u => u.rawIdx === activeIdx) : 0}
-                                                        onSelect={(uIdx) => {
-                                                            const targetRawIdx = uniqueCandidates[uIdx]?.rawIdx ?? 0;
-                                                            setSelectedCandidateIndex(prev => ({ ...prev, [msg.id]: targetRawIdx }));
-                                                        }}
-                                                        summaryText={`为你检索到 ${uniqueCandidates.length} 件候选装备，支持点选切换查看：`}
-                                                    />
-
-                                                    {activeItem && (
-                                                        <EquipDetailCard
-                                                            key={`${activeItem.id || activeItem.name}_${activeIdx}`}
-                                                            item={activeItem}
-                                                            initialRefLevel={msg.cardData.initialRefLevel}
-                                                            allEquips={allEquips}
-                                                        />
-                                                    )}
-                                                </div>
-                                            );
-                                        })()}
-                                    </div>
-                                )}
-                                        </>
-                                    );
-                                })()}
-                            </div>
+                                            )}
+                                        </div>
                         </div>
                     );
                 })}
@@ -782,7 +860,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                     <div className="mb-2 px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-500/40 flex items-center justify-between max-w-sm">
                         <div className="flex items-center gap-2">
                             <img src={selectedImage} alt="Attachment" className="w-8 h-8 rounded object-cover border border-cyan-400/30" />
-                            <span className="text-xs text-cyan-200">已附加截图（将激活视觉通道）</span>
+                            <span className="text-xs text-cyan-200">已附加截图（识图功能受限使用）</span>
                         </div>
                         <button
                             type="button"

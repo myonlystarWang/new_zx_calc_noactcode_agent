@@ -1,14 +1,11 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
 import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from 'lucide-react';
-import type { SkillTagItem } from '../../types';
-
 export interface CandidateItem {
     id: string | number;
     title: string;
     badge?: string;
     subtitle?: string;
-    tags?: SkillTagItem[];
 }
 
 
@@ -102,48 +99,27 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
         setTimeout(updateScrollState, 260);
     };
 
-    const renderTagBadge = (t: SkillTagItem, key: React.Key) => {
-        const label = t.v ? `${t.n} ${t.v}` : t.n;
-        const colorClass =
-            t.n.includes('绿点') ? 'bg-emerald-950/70 border-emerald-500/50 text-emerald-300' :
-            t.n.includes('紫点') ? 'bg-purple-950/70 border-purple-500/50 text-purple-300' :
-            t.n.includes('增伤') ? 'bg-amber-950/70 border-amber-500/50 text-amber-300' :
-            t.n.includes('破防') ? 'bg-rose-950/70 border-rose-500/50 text-rose-300' :
-            'bg-slate-800/80 border-slate-700 text-slate-300';
-        return (
-            <span
-                key={key}
-                className={clsx(
-                    'text-[10px] font-sans px-1.5 py-0.5 rounded border font-semibold tracking-tight',
-                    colorClass
-                )}
-            >
-                {label}
-            </span>
-        );
-    };
-
     if (!items || items.length === 0) return null;
 
     return (
         <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-2', className)}>
             {/* 顶栏信息与展开/收起切换 */}
-            <div className="flex items-center justify-between text-xs text-slate-400 px-0.5">
-                <span className="font-medium text-slate-300">
-                    {summaryText || `为你匹配到 ${items.length} 个候选结果，支持点选切换：`}
+            <div className="flex items-center justify-between gap-2 text-xs text-slate-400 px-0.5 min-w-0">
+                <span className="font-medium text-slate-300 truncate" title={typeof summaryText === 'string' ? summaryText : undefined}>
+                    {summaryText || `候选结果 (${items.length})`}
                 </span>
 
                 {items.length > 4 && (
                     <button
                         type="button"
                         onClick={() => setIsExpanded(prev => !prev)}
-                        className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-[11px] font-medium flex items-center gap-1 transition-all"
+                        className="shrink-0 whitespace-nowrap px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-[11px] font-medium flex items-center gap-1 transition-all"
                     >
                         <span>{isExpanded ? '收起横排' : `展开全部 (${items.length})`}</span>
                         {isExpanded ? (
-                            <ChevronUp className="w-3 h-3 text-cyan-400" />
+                            <ChevronUp className="w-3 h-3 text-cyan-400 shrink-0" />
                         ) : (
-                            <ChevronDown className="w-3 h-3 text-cyan-400" />
+                            <ChevronDown className="w-3 h-3 text-cyan-400 shrink-0" />
                         )}
                     </button>
                 )}
@@ -169,12 +145,6 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                                 )}
                             >
                                 <span className="whitespace-nowrap">{item.title}</span>
-                                {item.badge && (
-                                    <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-400 font-normal">
-                                        {item.badge}
-                                    </span>
-                                )}
-                                {item.tags && item.tags.length > 0 && item.tags.map((t, tIdx) => renderTagBadge(t, tIdx))}
                             </button>
                         );
                     })}
@@ -219,12 +189,6 @@ export const CandidateSelectorBar: React.FC<CandidateSelectorBarProps> = ({
                                 )}
                             >
                                 <span className="whitespace-nowrap">{item.title}</span>
-                                {item.badge && (
-                                    <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-slate-800 text-slate-400 font-normal">
-                                        {item.badge}
-                                    </span>
-                                )}
-                                {item.tags && item.tags.length > 0 && item.tags.map((t, tIdx) => renderTagBadge(t, tIdx))}
                             </button>
                         );
                     })}

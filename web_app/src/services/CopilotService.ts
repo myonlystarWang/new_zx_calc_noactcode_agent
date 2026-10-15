@@ -8,10 +8,15 @@
 
 import { DataService, isValidSkill } from './DataService';
 import { calculateDungeonPower } from '../utils/calculator';
-import type { CharacterAttributes, Dungeon, Skill, CuratedEquipItem, CuratedSkillItem } from '../types';
+import type { CharacterAttributes, Dungeon, Monster, Skill, CuratedEquipItem, CuratedSkillItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
-export const UNIFIED_NOT_FOUND_REPLY = '天书万象 AI 暂未收录该条目，你可以输入具体的技能全名、装备品阶、法宝或副本 BOSS 名称进行精准速查。';
+export const UNIFIED_NOT_FOUND_REPLY =
+    '天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n' +
+    '• 装备查询：【昭武 衣服】、【彰武 武器】\n' +
+    '• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n' +
+    '• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n' +
+    '• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】';
 
 
 export interface CopilotMessage {
@@ -20,7 +25,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card';
     cardData?: any;
 }
 
@@ -51,6 +56,257 @@ export interface VisionExtractionResult {
     rawExplanation: string;
     cPanelData?: ExtractedCPanel;
     xycData?: ExtractedXyc;
+}
+
+export interface DungeonCategoryConfig {
+    id: 'tben' | 'tuanben' | 'trials';
+    label: string;
+    keywords: string[];
+    dungeonIds: string[];
+}
+
+export const DUNGEON_CATEGORIES: DungeonCategoryConfig[] = [
+    {
+        id: 'tben',
+        label: 'T本（T16-T21）',
+        keywords: ['t本', 't系列', 't16-t21', '梯本', '小队本', '小队副本'],
+        dungeonIds: [
+            'HUIMENG_LINGYUN_T16',
+            'HUIMENG_LINGYUN_T17',
+            'HUIMENG_LINGYUN_T18',
+            'ZHENHAI_DUANLANG_T19',
+            'ZHENHAI_DUANLANG_T20',
+            'ZHENHAI_DUANLANG_T21',
+        ]
+    },
+    {
+        id: 'tuanben',
+        label: '团本（兽神、空桑、天帝、流波）',
+        keywords: ['团本', '团队本', '团队副本', '大型本', '大型团本', '大型副本'],
+        dungeonIds: [
+            'SHOUSHEN_JIANGLIN_HARD',
+            'JIEQI_KONGSANG_NORMAL',
+            'JIEQI_KONGSANG_HARD',
+            'TIANDI_BAOKU_NORMAL',
+            'TIANDI_BAOKU_MEDIUM',
+            'TIANDI_BAOKU_HARD',
+            'LIU_BO_JING_BIAN_CHUSHI',
+            'LIU_BO_JING_BIAN_HARD',
+        ]
+    },
+    {
+        id: 'trials',
+        label: '历练与试炼（四象七、悬夜林）',
+        keywords: ['历练', '试炼', '历练与试炼', '试炼本', '历练本'],
+        dungeonIds: [
+            'SIXIANG_QI',
+            'XUANYELIN_QIWEI_WUGONG',
+        ]
+    }
+];
+
+export interface DungeonDictionaryItem {
+    dungeonId: string;
+    shortLabel: string;
+    fullName: string;
+    categoryId: 'tben' | 'tuanben' | 'trials';
+    categoryLabel: string;
+    aliases: string[];
+}
+
+export const DUNGEON_DICTIONARY: DungeonDictionaryItem[] = [
+    {
+        dungeonId: 'HUIMENG_LINGYUN_T16',
+        shortLabel: 'T16',
+        fullName: '会盟！凌云诛众仙（T16）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T16-T21）',
+        aliases: ['t16', '绘梦灵运t16', '绘梦t16', '灵运t16', '凌云t16']
+    },
+    {
+        dungeonId: 'HUIMENG_LINGYUN_T17',
+        shortLabel: 'T17',
+        fullName: '会盟！凌云诛众仙（T17）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T16-T21）',
+        aliases: ['t17', '绘梦灵运t17', '绘梦t17', '灵运t17', '凌云t17']
+    },
+    {
+        dungeonId: 'HUIMENG_LINGYUN_T18',
+        shortLabel: 'T18',
+        fullName: '会盟！凌云诛众仙（T18）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T16-T21）',
+        aliases: ['t18', '绘梦灵运t18', '绘梦t18', '灵运t18', '凌云t18']
+    },
+    {
+        dungeonId: 'ZHENHAI_DUANLANG_T19',
+        shortLabel: 'T19',
+        fullName: '镇海！断浪碎晶宫（T19）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T16-T21）',
+        aliases: ['t19', '镇海断浪t19', '断浪t19', '镇海t19', '碎晶宫t19', '断浪碎晶宫t19']
+    },
+    {
+        dungeonId: 'ZHENHAI_DUANLANG_T20',
+        shortLabel: 'T20',
+        fullName: '镇海！断浪碎晶宫（T20）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T16-T21）',
+        aliases: ['t20', '镇海断浪t20', '断浪t20', '镇海t20', '碎晶宫t20', '断浪碎晶宫t20']
+    },
+    {
+        dungeonId: 'ZHENHAI_DUANLANG_T21',
+        shortLabel: 'T21',
+        fullName: '镇海！断浪碎晶宫（T21）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T16-T21）',
+        aliases: ['t21', '镇海断浪t21', '断浪t21', '镇海t21', '碎晶宫t21', '断浪碎晶宫t21']
+    },
+    {
+        dungeonId: 'SHOUSHEN_JIANGLIN_HARD',
+        shortLabel: '兽神困难',
+        fullName: '兽神降临（困难）',
+        categoryId: 'tuanben',
+        categoryLabel: '团本（兽神、空桑、天帝、流波）',
+        aliases: ['兽神困难', '兽神', '兽神降临', '兽神降临困难']
+    },
+    {
+        dungeonId: 'JIEQI_KONGSANG_NORMAL',
+        shortLabel: '空桑初识',
+        fullName: '劫起空桑（初识）',
+        categoryId: 'tuanben',
+        categoryLabel: '团本（兽神、空桑、天帝、流波）',
+        aliases: ['空桑初识', '空桑简单', '空桑普通', '劫起空桑初识']
+    },
+    {
+        dungeonId: 'JIEQI_KONGSANG_HARD',
+        shortLabel: '空桑困难',
+        fullName: '劫起空桑（困难）',
+        categoryId: 'tuanben',
+        categoryLabel: '团本（兽神、空桑、天帝、流波）',
+        aliases: ['空桑困难', '劫起空桑困难']
+    },
+    {
+        dungeonId: 'TIANDI_BAOKU_NORMAL',
+        shortLabel: '天帝1',
+        fullName: '天帝宝库（初入江湖）',
+        categoryId: 'tuanben',
+        categoryLabel: '团本（兽神、空桑、天帝、流波）',
+        aliases: ['天帝1', '天帝一', '天帝初识', '天帝普通', '天帝宝库普通', '宝库1', '宝库一', '天帝初入江湖']
+    },
+    {
+        dungeonId: 'TIANDI_BAOKU_MEDIUM',
+        shortLabel: '天帝2',
+        fullName: '天帝宝库（再起风云）',
+        categoryId: 'tuanben',
+        categoryLabel: '团本（兽神、空桑、天帝、流波）',
+        aliases: ['天帝2', '天帝二', '天帝中等', '天帝宝库中等', '宝库2', '宝库二', '天帝再起风云']
+    },
+    {
+        dungeonId: 'TIANDI_BAOKU_HARD',
+        shortLabel: '天帝3',
+        fullName: '天帝宝库（三生苦旅）',
+        categoryId: 'tuanben',
+        categoryLabel: '团本（兽神、空桑、天帝、流波）',
+        aliases: ['天帝3', '天帝三', '天帝困难', '天帝宝库困难', '宝库3', '宝库三', '天帝三生苦旅']
+    },
+    {
+        dungeonId: 'LIU_BO_JING_BIAN_CHUSHI',
+        shortLabel: '流波初识',
+        fullName: '流波惊变（初识）',
+        categoryId: 'tuanben',
+        categoryLabel: '团本（兽神、空桑、天帝、流波）',
+        aliases: ['流波初识', '流波普通', '流波简单', '流波惊变初识']
+    },
+    {
+        dungeonId: 'LIU_BO_JING_BIAN_HARD',
+        shortLabel: '流波困难',
+        fullName: '流波惊变（困难）',
+        categoryId: 'tuanben',
+        categoryLabel: '团本（兽神、空桑、天帝、流波）',
+        aliases: ['流波困难', '流波惊变困难']
+    },
+    {
+        dungeonId: 'SIXIANG_QI',
+        shortLabel: '四象七',
+        fullName: '试炼·四象五行（七杀罪狱）',
+        categoryId: 'trials',
+        categoryLabel: '历练与试炼（四象七、悬夜林）',
+        aliases: ['四象七', '四象7', '四象之七', '四象试炼', '七杀罪狱']
+    },
+    {
+        dungeonId: 'XUANYELIN_QIWEI_WUGONG',
+        shortLabel: '悬夜林',
+        fullName: '悬夜林（七尾蜈蚣）',
+        categoryId: 'trials',
+        categoryLabel: '历练与试炼（四象七、悬夜林）',
+        aliases: ['悬夜林', '悬夜', '七尾蜈蚣']
+    }
+];
+
+export interface DungeonSeriesConfig {
+    seriesId: string;
+    seriesName: string;
+    keywords: string[];
+    dungeonIds: string[];
+    hintText: string;
+}
+
+export const DUNGEON_SERIES: DungeonSeriesConfig[] = [
+    {
+        seriesId: 'liubo',
+        seriesName: '流波惊变',
+        keywords: ['流波', '流波惊变', '惊变'],
+        dungeonIds: ['LIU_BO_JING_BIAN_CHUSHI', 'LIU_BO_JING_BIAN_HARD'],
+        hintText: '包含【初识】与【困难】两种难度阶段。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【流波初识】/【流波困难】精准直达：'
+    },
+    {
+        seriesId: 'kongsang',
+        seriesName: '劫起空桑',
+        keywords: ['空桑', '劫起空桑'],
+        dungeonIds: ['JIEQI_KONGSANG_NORMAL', 'JIEQI_KONGSANG_HARD'],
+        hintText: '包含【初识】与【困难】两种难度阶段。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【空桑初识】/【空桑困难】精准直达：'
+    },
+    {
+        seriesId: 'tiandi',
+        seriesName: '天帝宝库',
+        keywords: ['天帝', '天帝宝库', '宝库'],
+        dungeonIds: ['TIANDI_BAOKU_NORMAL', 'TIANDI_BAOKU_MEDIUM', 'TIANDI_BAOKU_HARD'],
+        hintText: '分为【天帝1（初入江湖）】、【天帝2（再起风云）】、【天帝3（三生苦旅）】三种难度阶梯。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【天帝1】/【天帝2】/【天帝3】精准直达：'
+    },
+    {
+        seriesId: 'duanlang',
+        seriesName: '镇海！断浪碎晶宫',
+        keywords: ['断浪', '碎晶宫', '镇海断浪', '断浪碎晶宫'],
+        dungeonIds: ['ZHENHAI_DUANLANG_T19', 'ZHENHAI_DUANLANG_T20', 'ZHENHAI_DUANLANG_T21'],
+        hintText: '包含【T19】、【T20】、【T21】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【T19】/【T20】/【T21】精准直达：'
+    },
+    {
+        seriesId: 'lingyun',
+        seriesName: '会盟！凌云诛众仙',
+        keywords: ['凌云', '会盟', '绘梦', '凌云诛众仙'],
+        dungeonIds: ['HUIMENG_LINGYUN_T16', 'HUIMENG_LINGYUN_T17', 'HUIMENG_LINGYUN_T18'],
+        hintText: '包含【T16】、【T17】、【T18】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【T16】/【T17】/【T18】精准直达：'
+    }
+];
+
+export interface BossCandidateItem {
+    id: string;
+    monsterId: string;
+    monsterName: string;
+    dungeonId: string;
+    dungeonName: string;
+    dungeonShortLabel: string;
+    categoryLabel: string;
+    difficulty?: string;
+    def: number;
+    hp: number;
+    critRed: number;
+    critDmgRed: number;
+    route: string;
+    monster?: Monster;
+    dungeon?: Dungeon;
 }
 
 const CUSTOM_KEYS_STORAGE = 'zx_ai_copilot_custom_keys';
@@ -106,6 +362,248 @@ export class CopilotService {
             };
         }
 
+        // ====================================================
+        // 核心系统微工具与独立页面意图识别（高优先级，避免被实体槽位分词误伤）
+        // ====================================================
+
+        // 1. 开服雷达（全区开服与服务器心跳监测）
+        if (
+            q.includes('开服') ||
+            q.includes('服务器') ||
+            q.includes('测服') ||
+            q.includes('选服') ||
+            q.includes('开没开') ||
+            q.includes('几服') ||
+            q.includes('战区') ||
+            q.includes('雷达')
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方 9 大战区 33 个服务器毫秒级开服状态，支持开服声音即时提醒。',
+                time: timeStr,
+                cardType: 'server',
+                cardData: {
+                    title: '全区开服雷达监测',
+                    desc: '9 大战区 33 个服务器实时检测开服状态，支持声音提醒与时延速览',
+                    workspaceMode: 'server',
+                    route: '/tools/server',
+                    btnText: '进入开服雷达'
+                }
+            };
+        }
+
+        // 2. 战力与秒伤计算器
+        if (
+            q.includes('计算器') ||
+            q.includes('战力计算') ||
+            q.includes('伤害计算') ||
+            q.includes('秒伤计算') ||
+            q.includes('战力推演') ||
+            q.includes('伤害测算') ||
+            q.includes('边际贡献') ||
+            q.includes('属性加权') ||
+            q === '计算' ||
+            q === '算伤害' ||
+            q === '战力' ||
+            q === '秒伤' ||
+            q === '测算'
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【战力计算器】。独创诛仙3真实伤害与秒伤测算引擎，覆盖 T20/团本抗性防御减免、无视穿透机制，并提供暴击/爆伤/增伤边际贡献权重分析。',
+                time: timeStr,
+                cardType: 'tool_card',
+                cardData: {
+                    title: '战力计算器',
+                    desc: '属性录入 · 增益勾选 · T本/团本多技能伤害计算',
+                    workspaceMode: 'calc',
+                    route: '/calculator',
+                    btnText: '打开战力计算器'
+                }
+            };
+        }
+
+        // 3. 副本训练场
+        if (
+            q.includes('训练场') ||
+            q.includes('打桩') ||
+            q.includes('木桩') ||
+            q.includes('副本训练') ||
+            q.includes('战斗模拟') ||
+            q.includes('技能循环') ||
+            q.includes('副本模拟') ||
+            q.includes('竞技场') ||
+            q === 'arena'
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【副本训练场】。支持多角色技能循环仿真、自定义副本 BOSS 机制打桩，逐秒记录实战输出与承伤报表。',
+                time: timeStr,
+                cardType: 'tool_card',
+                cardData: {
+                    title: '副本训练场',
+                    desc: '多角色逐秒实战仿真 · 技能循环排布与伤害统计',
+                    workspaceMode: 'arena',
+                    route: '/arena',
+                    btnText: '进入副本训练场'
+                }
+            };
+        }
+
+        // 4. 轩辕策属性模拟
+        if (
+            !q.includes('四象七') &&
+            !q.includes('四象7') &&
+            !q.includes('七杀') &&
+            (
+                q.includes('轩辕策') ||
+                q.includes('四象') ||
+                q.includes('青龙书') ||
+                q.includes('白虎书') ||
+                q.includes('玄武书') ||
+                q.includes('朱雀书')
+            )
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。',
+                time: timeStr,
+                cardType: 'xyc_diag',
+                cardData: {
+                    title: '轩辕策属性模拟',
+                    desc: '支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定',
+                    workspaceMode: 'xyc',
+                    route: '/tools/xyc',
+                    btnText: '进入轩辕策属性'
+                }
+            };
+        }
+
+        // 5. 天缘属性推算
+        if (
+            q.includes('天缘') ||
+            q.includes('须弥天缘') ||
+            q.includes('神级天缘') ||
+            q.includes('天命属性')
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【天缘属性推算】。支持须弥装备天缘与天命属性洗炼推演，测算洗出满属性与心仪词条的概率与期望消耗。',
+                time: timeStr,
+                cardType: 'tool_card',
+                cardData: {
+                    title: '天缘属性推算',
+                    desc: '天命装备天缘属性洗炼模拟，展示属性词条理论值范围和概率',
+                    workspaceMode: 'newtianyuan',
+                    route: '/tools/newtianyuan',
+                    btnText: '进入天缘属性'
+                }
+            };
+        }
+
+        // 6. 凝灵契模拟
+        if (
+            q.includes('凝灵契') ||
+            q.includes('灵契') ||
+            q.includes('凝灵')
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【凝灵契模拟】。支持法宝灵契各槽位孔位洗炼概率推演与属性期望成本测算。',
+                time: timeStr,
+                cardType: 'tool_card',
+                cardData: {
+                    title: '凝灵契模拟',
+                    desc: '凝灵契洗炼模拟，支持多槽位孔位锁定与属性结果展示',
+                    workspaceMode: 'ninglingqi',
+                    route: '/tools/ninglingqi',
+                    btnText: '进入凝灵契模拟'
+                }
+            };
+        }
+
+        // 7. 仙友留言板（意见反馈）
+        if (
+            q.includes('留言') ||
+            q.includes('反馈') ||
+            q.includes('建议') ||
+            q.includes('捉虫') ||
+            q.includes('催更')
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【仙友留言板 · 意见反馈】。欢迎留下你的战术推演心得、数值机制捉虫或新功能催更，与全服仙友共同求索诛仙万象大道！',
+                time: timeStr,
+                cardType: 'tool_card',
+                cardData: {
+                    title: '仙友留言板 · 意见反馈',
+                    desc: '仙友交流、数值捉虫、新功能催更，共同打造更精准的诛仙数据库',
+                    route: '/feedback',
+                    btnText: '前往仙友留言板'
+                }
+            };
+        }
+
+        // 8. 更新动态
+        if (
+            q === '更新' ||
+            q.includes('更新动态') ||
+            q.includes('更新日志') ||
+            q.includes('更新记录') ||
+            q.includes('排期') ||
+            q.includes('版本更新') ||
+            q.includes('changelog') ||
+            q.includes('新特性')
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【更新动态】。天书万象大模型与全栈工具持续迭代，可查阅全网最新特性排期与版本演进历程。',
+                time: timeStr,
+                cardType: 'tool_card',
+                cardData: {
+                    title: '天书万象 · 更新动态',
+                    desc: '查阅全知 AI 大模型、伤害计算引擎与模拟器工具的持续迭代与排期',
+                    route: '/changelog',
+                    btnText: '查看更新动态'
+                }
+            };
+        }
+
+        // 9. 关于本站
+        if (
+            q === '关于' ||
+            q.includes('关于本站') ||
+            q.includes('关于我们') ||
+            q.includes('本站') ||
+            q.includes('初衷') ||
+            q.includes('作者') ||
+            q.includes('萝卜') ||
+            q.includes('网站介绍') ||
+            q === '天书万象'
+        ) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你定位【关于本站】。天书万象汇聚真实游戏装备与技能数据、独创伤害计算公式与属性加权边际贡献分析，搭配丰富实用的全栈模拟器，与你共探诛仙万象大道。',
+                time: timeStr,
+                cardType: 'tool_card',
+                cardData: {
+                    title: '关于天书万象',
+                    desc: '收集大量真实游戏装备技能数据与攻略，独创伤害计算公式与边际贡献分析',
+                    route: '/about',
+                    btnText: '了解关于本站'
+                }
+            };
+        }
+
         // ----------------------------------------------------
         // 0. 提取多维度实体槽位（品质、部位、门派/职业、名称词）
         // ----------------------------------------------------
@@ -117,7 +615,7 @@ export class CopilotService {
         ];
         const slotAliases: Record<string, string> = {
             '帽子': '头盔', '头': '头盔', '冠': '头盔', '盔': '头盔', '帽': '头盔',
-            '衣服': '衣服', '甲': '衣服', '铠': '衣服', '铠甲': '衣服', '袍': '衣服', '衣': '衣服', '服': '衣服',
+            '衣服': '衣服', '甲': '衣服', '铠': '衣服', '铠甲': '衣服', '袍': '衣服', '衣': '衣服',
             '鞋': '靴子', '鞋子': '靴子', '靴': '靴子', '履': '靴子',
             '护腕': '袖甲', '手环': '袖甲', '手': '袖甲', '手套': '袖甲', '钏': '袖甲', '腕': '袖甲', '袖': '袖甲',
             '带': '腰带', '腰带': '腰带',
@@ -138,7 +636,7 @@ export class CopilotService {
         if (!matchedSlot) {
             for (const [alias, realSlot] of Object.entries(slotAliases)) {
                 if (alias === '印' && isYinji) continue; // 印记属于神级项链，不作为玺绶
-                if (tokens.some(t => t === alias || (alias.length >= 2 && t.includes(alias))) || q.includes(alias)) {
+                if (tokens.some(t => t === alias || (alias.length >= 2 && t.includes(alias))) || (alias.length >= 2 && q.includes(alias))) {
                     matchedSlot = realSlot;
                     break;
                 }
@@ -175,14 +673,302 @@ export class CopilotService {
             return `为你速查到装备【${it.name}】${meta ? `（${meta}）` : ''}。${hint}`;
         };
 
-        // 1. 装备查询意图（多槽位复合搜索，优先级高于泛化文本）
+        // ----------------------------------------------------
+        // 1. 副本与 BOSS 查询意图（挂载 3 大分类、16 大核心副本、97 BOSS 多层级分类词库体系）
+        // ----------------------------------------------------
+        const allDungeons = dataService.getDungeons();
+        if (Array.isArray(allDungeons) && allDungeons.length > 0) {
+            // A. 检查是否为泛化副本查询词
+            const isBroadDungeonWord = [
+                '副本', '所有副本', '全部副本', '副本列表', '有哪些副本',
+                '副本大全', '查副本', '看副本', '刷本', '打本', 'boss', '首领'
+            ].includes(q) || q === '副本';
+
+            // B. 检查具体副本配置命中（如 T20、流波困难、天帝3 等，精确到具体单副本）
+            const matchedDungeonConf = !isBroadDungeonWord ? DUNGEON_DICTIONARY.find(d =>
+                d.aliases.some(al => q === al || q.includes(al))
+            ) : undefined;
+
+            // C. 检查多难度系列命中（如 流波惊变、劫起空桑、天帝宝库、镇海断浪、绘梦凌云 等，包含初识/困难或多梯队）
+            const matchedSeries = (!isBroadDungeonWord && !matchedDungeonConf) ? DUNGEON_SERIES.find(s =>
+                s.keywords.some(kw => q === kw || q.includes(kw))
+            ) : undefined;
+
+            // D. 检查一级大类命中（T本、团本、历练与试炼）
+            const matchedCategory = (!isBroadDungeonWord && !matchedDungeonConf && !matchedSeries) ? DUNGEON_CATEGORIES.find(cat =>
+                cat.keywords.some(kw => q === kw || q.includes(kw))
+            ) : undefined;
+
+            // E. 检查 BOSS 命中（支持多难度同名 BOSS 归集，如搜“夔牛”归集 初识·夔牛 与 困难·夔牛）
+            const matchedBosses: { d: Dungeon; m: Monster; dConf?: DungeonDictionaryItem }[] = [];
+            if (!isBroadDungeonWord && !matchedDungeonConf && !matchedSeries && !matchedCategory) {
+                for (const d of allDungeons) {
+                    const dConf = DUNGEON_DICTIONARY.find(dc => dc.dungeonId === d.DungeonID);
+                    for (const m of d.Monsters || []) {
+                        const mName = m.MonsterName.toLowerCase();
+                        if (mName === q || (q.length >= 2 && mName.includes(q)) || (mName.length >= 2 && q.includes(mName))) {
+                            matchedBosses.push({ d, m, dConf });
+                        }
+                    }
+                }
+            }
+
+            // 综合触发副本意图判定：
+            const isDungeonIntent = Boolean(
+                isBroadDungeonWord ||
+                matchedDungeonConf ||
+                matchedSeries ||
+                matchedCategory ||
+                matchedBosses.length > 0 ||
+                ((q.includes('副本') || q.includes('boss') || q.includes('首领')) && !q.includes('装备'))
+            );
+
+            if (isDungeonIntent) {
+                // 1) 仅命中 1 个具体 BOSS
+                if (matchedBosses.length === 1) {
+                    const { d, m, dConf } = matchedBosses[0];
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你找到 BOSS【${m.MonsterName}】（出自副本：${d.DungeonName}）的完整实战抗性数据：`,
+                        time: timeStr,
+                        cardType: 'boss',
+                        cardData: {
+                            name: m.MonsterName,
+                            dungeonName: d.DungeonName,
+                            dungeonId: d.DungeonID,
+                            monsterId: m.MonsterID,
+                            categoryLabel: dConf?.categoryLabel,
+                            monster: m,
+                            dungeon: d,
+                            def: m.displayAttributes?.defense ?? m.MonsterAttributeModifiers?.MonsterDefense ?? 0,
+                            critRed: m.displayAttributes?.critRateReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalHitRateReduction ?? 0,
+                            critDmgRed: m.displayAttributes?.critDamageReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalDamagePercentReduction ?? 0,
+                            hp: m.displayAttributes?.health ?? m.MonsterAttributeModifiers?.MonsterHealth ?? 0,
+                            route: `/compendium/boss?d=${d.DungeonID}&m=${m.MonsterID}`
+                        }
+                    };
+                }
+
+                // 2) 命中多个同名/相似 BOSS（跨难度展示供仙友点选切换）
+                if (matchedBosses.length > 1) {
+                    const candidates: BossCandidateItem[] = matchedBosses.map(({ d, m, dConf }) => ({
+                        id: `${d.DungeonID}_${m.MonsterID}`,
+                        monsterId: m.MonsterID,
+                        monsterName: `${dConf?.shortLabel || d.DungeonName} · ${m.MonsterName}`,
+                        dungeonId: d.DungeonID,
+                        dungeonName: d.DungeonName,
+                        dungeonShortLabel: dConf?.shortLabel || d.DungeonName,
+                        categoryLabel: dConf?.categoryLabel || '',
+                        difficulty: d.difficulty,
+                        def: m.displayAttributes?.defense ?? m.MonsterAttributeModifiers?.MonsterDefense ?? 0,
+                        hp: m.displayAttributes?.health ?? m.MonsterAttributeModifiers?.MonsterHealth ?? 0,
+                        critRed: m.displayAttributes?.critRateReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalHitRateReduction ?? 0,
+                        critDmgRed: m.displayAttributes?.critDamageReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalDamagePercentReduction ?? 0,
+                        route: `/compendium/boss?d=${d.DungeonID}&m=${m.MonsterID}`,
+                        monster: m,
+                        dungeon: d
+                    }));
+
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你找到 ${candidates.length} 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：`,
+                        time: timeStr,
+                        cardType: 'boss_candidates',
+                        cardData: {
+                            query: q,
+                            candidates
+                        }
+                    };
+                }
+
+                // 3) 命中特定二级副本（如 "T20"、"流波困难"、"天帝3" 等具体单本）
+                if (matchedDungeonConf) {
+                    const targetDungeon = allDungeons.find(d => d.DungeonID === matchedDungeonConf.dungeonId);
+                    if (targetDungeon && targetDungeon.Monsters && targetDungeon.Monsters.length > 0) {
+                        const candidates: BossCandidateItem[] = targetDungeon.Monsters.map(m => ({
+                            id: `${targetDungeon.DungeonID}_${m.MonsterID}`,
+                            monsterId: m.MonsterID,
+                            monsterName: m.MonsterName,
+                            dungeonId: targetDungeon.DungeonID,
+                            dungeonName: targetDungeon.DungeonName,
+                            dungeonShortLabel: matchedDungeonConf.shortLabel,
+                            categoryLabel: matchedDungeonConf.categoryLabel,
+                            difficulty: targetDungeon.difficulty,
+                            def: m.displayAttributes?.defense ?? m.MonsterAttributeModifiers?.MonsterDefense ?? 0,
+                            hp: m.displayAttributes?.health ?? m.MonsterAttributeModifiers?.MonsterHealth ?? 0,
+                            critRed: m.displayAttributes?.critRateReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalHitRateReduction ?? 0,
+                            critDmgRed: m.displayAttributes?.critDamageReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalDamagePercentReduction ?? 0,
+                            route: `/compendium/boss?d=${targetDungeon.DungeonID}&m=${m.MonsterID}`,
+                            monster: m,
+                            dungeon: targetDungeon
+                        }));
+
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `为你速查到【${matchedDungeonConf.fullName}】下的全部 ${candidates.length} 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：`,
+                            time: timeStr,
+                            cardType: 'boss_candidates',
+                            cardData: {
+                                query: q,
+                                dungeonName: matchedDungeonConf.fullName,
+                                candidates
+                            }
+                        };
+                    }
+                }
+
+                // 4) 命中多难度系列（如 "流波惊变"、"劫起空桑"、"天帝宝库"、"镇海断浪" 等）
+                if (matchedSeries) {
+                    const seriesDungeons = allDungeons.filter(d => matchedSeries.dungeonIds.includes(d.DungeonID));
+                    const candidates: BossCandidateItem[] = [];
+                    for (const d of seriesDungeons) {
+                        const dConf = DUNGEON_DICTIONARY.find(dc => dc.dungeonId === d.DungeonID);
+                        for (const m of d.Monsters || []) {
+                            candidates.push({
+                                id: `${d.DungeonID}_${m.MonsterID}`,
+                                monsterId: m.MonsterID,
+                                monsterName: `${dConf?.shortLabel || d.DungeonName} · ${m.MonsterName}`,
+                                dungeonId: d.DungeonID,
+                                dungeonName: d.DungeonName,
+                                dungeonShortLabel: dConf?.shortLabel || d.DungeonName,
+                                categoryLabel: dConf?.categoryLabel || '',
+                                difficulty: d.difficulty,
+                                def: m.displayAttributes?.defense ?? m.MonsterAttributeModifiers?.MonsterDefense ?? 0,
+                                hp: m.displayAttributes?.health ?? m.MonsterAttributeModifiers?.MonsterHealth ?? 0,
+                                critRed: m.displayAttributes?.critRateReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalHitRateReduction ?? 0,
+                                critDmgRed: m.displayAttributes?.critDamageReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalDamagePercentReduction ?? 0,
+                                route: `/compendium/boss?d=${d.DungeonID}&m=${m.MonsterID}`,
+                                monster: m,
+                                dungeon: d
+                            });
+                        }
+                    }
+
+                    if (candidates.length > 0) {
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `为你速查到【${matchedSeries.seriesName}】系列。${matchedSeries.hintText}`,
+                            time: timeStr,
+                            cardType: 'boss_candidates',
+                            cardData: {
+                                query: q,
+                                seriesName: matchedSeries.seriesName,
+                                candidates
+                            }
+                        };
+                    }
+                }
+
+                // 5) 命中一级大类（如 "T本"、"团本"、"历练"）
+                if (matchedCategory) {
+                    const matchedDungeons = allDungeons.filter(d => matchedCategory.dungeonIds.includes(d.DungeonID));
+                    const candidates: BossCandidateItem[] = [];
+                    for (const d of matchedDungeons) {
+                        const dConf = DUNGEON_DICTIONARY.find(dc => dc.dungeonId === d.DungeonID);
+                        const bossList = d.Monsters?.filter(m => m.role === 'boss') || [];
+                        const repBoss = bossList.length > 0 ? bossList[bossList.length - 1] : d.Monsters?.[d.Monsters.length - 1];
+                        if (repBoss) {
+                            candidates.push({
+                                id: `${d.DungeonID}_${repBoss.MonsterID}`,
+                                monsterId: repBoss.MonsterID,
+                                monsterName: `${dConf?.shortLabel || d.DungeonName} · ${repBoss.MonsterName}`,
+                                dungeonId: d.DungeonID,
+                                dungeonName: d.DungeonName,
+                                dungeonShortLabel: dConf?.shortLabel || '副本',
+                                categoryLabel: matchedCategory.label,
+                                difficulty: d.difficulty,
+                                def: repBoss.displayAttributes?.defense ?? repBoss.MonsterAttributeModifiers?.MonsterDefense ?? 0,
+                                hp: repBoss.displayAttributes?.health ?? repBoss.MonsterAttributeModifiers?.MonsterHealth ?? 0,
+                                critRed: repBoss.displayAttributes?.critRateReduction ?? repBoss.MonsterAttributeModifiers?.MonsterCriticalHitRateReduction ?? 0,
+                                critDmgRed: repBoss.displayAttributes?.critDamageReduction ?? repBoss.MonsterAttributeModifiers?.MonsterCriticalDamagePercentReduction ?? 0,
+                                route: `/compendium/boss?d=${d.DungeonID}&m=${repBoss.MonsterID}`,
+                                monster: repBoss,
+                                dungeon: d
+                            });
+                        }
+                    }
+
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: `为你速查到【${matchedCategory.label}】分类下的核心副本 BOSS。支持点选切换查看各 BOSS 完整战斗抗性，亦可输入具体副本或难度（如“流波困难”、“天帝3”、“T20”）精准定位：`,
+                        time: timeStr,
+                        cardType: 'boss_candidates',
+                        cardData: {
+                            query: q,
+                            categoryLabel: matchedCategory.label,
+                            candidates
+                        }
+                    };
+                }
+
+                // 6) 泛意图【副本】/【全部副本】/【副本列表】（用户输入“副本”）
+                // 按 DUNGEON_DICTIONARY 顺序展示全网 16 大核心副本的关底代表 BOSS
+                const candidates: BossCandidateItem[] = [];
+                for (const dConf of DUNGEON_DICTIONARY) {
+                    const d = allDungeons.find(item => item.DungeonID === dConf.dungeonId);
+                    if (!d) continue;
+                    const bossList = d.Monsters?.filter(m => m.role === 'boss') || [];
+                    const repBoss = bossList.length > 0 ? bossList[bossList.length - 1] : d.Monsters?.[d.Monsters.length - 1];
+                    if (repBoss) {
+                        candidates.push({
+                            id: `${d.DungeonID}_${repBoss.MonsterID}`,
+                            monsterId: repBoss.MonsterID,
+                            monsterName: `${dConf.shortLabel} · ${repBoss.MonsterName}`,
+                            dungeonId: d.DungeonID,
+                            dungeonName: d.DungeonName,
+                            dungeonShortLabel: dConf.shortLabel,
+                            categoryLabel: dConf.categoryLabel,
+                            difficulty: d.difficulty,
+                            def: repBoss.displayAttributes?.defense ?? repBoss.MonsterAttributeModifiers?.MonsterDefense ?? 0,
+                            hp: repBoss.displayAttributes?.health ?? repBoss.MonsterAttributeModifiers?.MonsterHealth ?? 0,
+                            critRed: repBoss.displayAttributes?.critRateReduction ?? repBoss.MonsterAttributeModifiers?.MonsterCriticalHitRateReduction ?? 0,
+                            critDmgRed: repBoss.displayAttributes?.critDamageReduction ?? repBoss.MonsterAttributeModifiers?.MonsterCriticalDamagePercentReduction ?? 0,
+                            route: `/compendium/boss?d=${d.DungeonID}&m=${repBoss.MonsterID}`,
+                            monster: repBoss,
+                            dungeon: d
+                        });
+                    }
+                }
+
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: `为你速查到诛仙核心副本群（涵盖 T本、团本与试炼共 16 大副本体系与 97 个 BOSS 实战抗性数据）。
+
+【分类与难度精准检索引导】：
+• 一级大类速查：输入【T本】、【团本】、【副本】
+• 多难度系列：输入【流波惊变】、【劫起空桑】、【天帝宝库】
+• 梯队与试炼：输入【T20】、【T21】、【兽神困难】、【四象七】、【悬夜林】
+• 核心 BOSS 快捷直达：输入【夔牛】、【饕餮】、【玄晔】、【黄鸟】等
+
+下方已为你精选各核心副本代表BOSS，可点选切换查看完整属性：`,
+                    time: timeStr,
+                    cardType: 'boss_candidates',
+                    cardData: {
+                        query: q,
+                        candidates
+                    }
+                };
+            }
+        }
+
+        // 2. 装备查询意图（多槽位复合搜索，优先级高于泛化文本）
         try {
             const rawEquips = await dataService.getEquipList();
             if (Array.isArray(rawEquips) && rawEquips.length > 0) {
-                // 仅保留通用/生肖护符，完全屏蔽各门派专属技能护符
+                // 仅保留通用/生肖护符，完全屏蔽各门派专属技能护符，并屏蔽测试/活动/副本临时装备（如“2023守卫青云困难副本内使用”）
                 const equips = rawEquips.filter(e => {
                     if (e.slot === '护符') {
-                        return !e.prof || e.prof.length === 0 || e.prof.includes('通用');
+                        if (e.prof && e.prof.length > 0 && !e.prof.includes('通用')) return false;
+                    }
+                    const n = (e.name || '').toLowerCase();
+                    if (n.includes('守卫青云') || n.includes('副本内使用') || n.includes('测试')) {
+                        return false;
                     }
                     return true;
                 });
@@ -202,12 +988,16 @@ export class CopilotService {
                     for (const pr of profs) remainder = remainder.replace(pr.toLowerCase(), ' ');
                     const parts = remainder.split(/\s+/).map(s => s.trim()).filter(s =>
                         s.length >= 2 &&
-                        !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示', '技能', '神通', '天书'].includes(s)
+                        !['装备', '品质', '部位', '的', '属性', '怎么样', '如何', '展示', '技能', '神通', '天书', '副本', 'boss', '首领', '怪', '怪物'].includes(s)
                     );
                     cleanTokens.push(...parts);
                 }
 
-                const isExplicitSkillTerm = ['技能', '技能描述', '技能机制', '神通', '天书'].includes(q) ||
+                const SKILL_CATEGORY_WORDS = [
+                    '技能', '技能描述', '技能机制', '神通', '天书',
+                    '心法', '造化', '星宿', '轩辕策', '玄烛', '赤乌', '飞升'
+                ];
+                const isExplicitSkillTerm = (SKILL_CATEGORY_WORDS.some(w => q.includes(w)) && !q.includes('装备')) ||
                     (q.includes('技能') && !matchedSlot && !matchedQ && !q.includes('装备'));
 
                 const ZODIAC_HUFU_MAP: Record<string, string> = {
@@ -243,16 +1033,28 @@ export class CopilotService {
                 const isEquipIntent = Boolean(
                     !isExplicitSkillTerm &&
                     (matchedQ ||
-                    matchedSlot ||
-                    hasEquipNameMatch ||
-                    q.includes('装备'))
+                        matchedSlot ||
+                        hasEquipNameMatch ||
+                        q.includes('装备'))
                 );
 
                 if (isEquipIntent) {
+                    // 若用户仅输入了单一单字部位（如单独输入“甲”、“衣”、“鞋”、“头”、“带”等），且未提供品质、门派或特定名称：
+                    // 单字范围过大且歧义较高，不盲目全量输出上百件装备，而是进行精准组合引导
+                    if (q.length === 1 && matchedSlot && !matchedQ && !matchedProf && cleanTokens.length === 0) {
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `天书万象 AI 识别到您正在查询【${matchedSlot}】部位。由于单字检索范围过大，建议搭配品质或门派组合检索，例如：【昭武 ${q}】、【彰武 ${matchedSlot}】、【逐霜 ${matchedSlot}】。`,
+                            time: timeStr
+                        };
+                    }
+
                     // 1) 优先精确定位名称（忽略末尾性别括号）
-                    // 若检索词仅为单一品质大阶（如 "昭武"、"修武"、"彰武"、"神隐"、"混虚"），绝不能当作单件装备名称精确直出，必须进入下方多候选流
+                    // 若检索词仅为单一品质大阶（如 "昭武"、"修武"、"彰武"、"神隐"、"混虚"）或技能类别名，绝不能当作单件装备名称精确直出
                     const isQualityOnlyQuery = qualities.some(qu => qu.toLowerCase() === q);
-                    const exactEquip = isQualityOnlyQuery ? undefined : equips.find(e => {
+                    const isSkillCategoryQuery = SKILL_CATEGORY_WORDS.some(w => w === q);
+                    const exactEquip = (isQualityOnlyQuery || isSkillCategoryQuery) ? undefined : equips.find(e => {
                         const raw = e.name.toLowerCase();
                         const base = raw.replace(/[（(][男女][）)]/g, '').trim();
                         return raw === q || base === q;
@@ -497,47 +1299,58 @@ export class CopilotService {
             console.warn('Load fabao for intent failed:', e);
         }
 
-        // 3. 副本 BOSS 查询意图
-        const allDungeons = dataService.getDungeons();
-        if (Array.isArray(allDungeons)) {
-            for (const d of allDungeons) {
-                for (const m of d.Monsters || []) {
-                    if (q.includes(m.MonsterName.toLowerCase()) || m.MonsterName.toLowerCase().includes(q)) {
-                        return {
-                            id: `msg-${Date.now()}`,
-                            sender: 'assistant',
-                            text: `为你找到首领【${m.MonsterName}】（出自副本：${d.DungeonName}）的战斗抗性属性：`,
-                            time: timeStr,
-                            cardType: 'boss',
-                            cardData: {
-                                name: m.MonsterName,
-                                dungeonName: d.DungeonName,
-                                dungeonId: d.DungeonID,
-                                monsterId: m.MonsterID,
-                                def: m.displayAttributes?.defense ?? m.MonsterAttributeModifiers?.MonsterDefense ?? 0,
-                                critRed: m.displayAttributes?.critRateReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalHitRateReduction ?? 0,
-                                critDmgRed: m.displayAttributes?.critDamageReduction ?? m.MonsterAttributeModifiers?.MonsterCriticalDamagePercentReduction ?? 0,
-                                hp: m.displayAttributes?.health ?? m.MonsterAttributeModifiers?.MonsterHealth ?? 0,
-                                route: `/compendium/boss?d=${d.DungeonID}&m=${m.MonsterID}`
-                            }
-                        };
-                    }
-                }
-            }
-        }
-
-        // 4. 技能查询意图（挂载 5,927 全量 1:1 游戏原生高保真卡片与等级推演器）
+        // 3. 技能查询意图（挂载 5,927 全量 1:1 游戏原生高保真卡片与等级推演器）
         try {
             const allCuratedSkills = await dataService.getAllCuratedSkills();
             if (Array.isArray(allCuratedSkills) && allCuratedSkills.length > 0) {
-                const isExplicitSkillQuery = q.includes('技能') || q.includes('神通') || q.includes('天书');
-                const cleanTokens = tokens.filter(t =>
-                    !['技能', '神通', '天书', '机制', '数值', '效果', '查询', '速查'].includes(t) &&
-                    !profs.includes(t) &&
-                    !/^\d+$/.test(t) // 过滤纯数字 token
-                );
+                const SKILL_CATEGORY_MAP: Record<string, { groupKeyword?: string; nameKeyword?: string; label: string }> = {
+                    '玄烛': { groupKeyword: '星宿', nameKeyword: '玄烛', label: '玄烛星宿' },
+                    '赤乌': { groupKeyword: '星宿', nameKeyword: '赤乌', label: '赤乌星宿' },
+                    '星宿': { groupKeyword: '星宿', label: '星宿' },
+                    '心法': { groupKeyword: '心法', label: '心法' },
+                    '神通': { groupKeyword: '神通', label: '神通' },
+                    '造化': { groupKeyword: '造化', label: '造化' },
+                    '天书': { groupKeyword: '天书', label: '天书' },
+                    '轩辕策': { groupKeyword: '轩辕策', label: '轩辕策' },
+                    '飞升': { groupKeyword: '飞升', label: '飞升' }
+                };
 
-                // 各主流职业代表性核心技能（当用户点击【技能描述】或输入“技能”但未指定具体技能名与门派时展示）
+                const matchedCategories: string[] = [];
+                for (const cat of Object.keys(SKILL_CATEGORY_MAP)) {
+                    if (tokens.some(t => t.includes(cat.toLowerCase())) || q.includes(cat.toLowerCase())) {
+                        matchedCategories.push(cat);
+                    }
+                }
+                const hasExplicitCategory = matchedCategories.length > 0;
+
+                const matchedCamp = ['仙', '魔', '佛'].find(c =>
+                    tokens.some(t => t === c || t === c + '阵' || t === c + '阵营') ||
+                    q.includes(c + '神通') || q.includes(c + '造化')
+                );
+                const isExplicitSkillQuery = q.includes('技能') || q.includes('神通') || q.includes('天书') || hasExplicitCategory;
+
+                const cleanTokens = tokens.filter(t => {
+                    const low = t.toLowerCase();
+                    if (['技能', '技能描述', '技能机制', '机制', '数值', '效果', '查询', '速查'].includes(low)) return false;
+                    if (profs.some(p => p.toLowerCase() === low)) return false;
+                    if (/^\d+$/.test(low)) return false;
+                    return true;
+                });
+
+                // 提取纯粹的技能原名自由关键词（剥离门派、技能类别词、阵营词等）
+                const skillNameTokens: string[] = [];
+                for (const ct of cleanTokens) {
+                    let remainder = ct;
+                    for (const pr of profs) remainder = remainder.replace(pr.toLowerCase(), '');
+                    for (const cat of Object.keys(SKILL_CATEGORY_MAP)) remainder = remainder.replace(cat.toLowerCase(), '');
+                    if (matchedCamp) remainder = remainder.replace(matchedCamp, '');
+                    remainder = remainder.replace(/技能|神通|天书|心法|造化|星宿|玄烛|赤乌/g, '').trim();
+                    if (remainder.length >= 2) skillNameTokens.push(remainder);
+                }
+
+                const qClean = q.replace(/[·\s,，+＋/、\-_\(\)（）]/g, '');
+
+                // 各主流职业代表性核心技能（当用户点击【技能描述】或输入“技能”但未指定具体技能名、门派与类别时展示）
                 const CORE_SIGNATURE_SKILL_NAMES = [
                     '苍龙啸', '神剑御雷真诀', '未名斩', '聚灵咒', '江南', '缠绵',
                     '六道轮回', '大梵般若', '无量真言', '玄阳火典', '影祭',
@@ -545,7 +1358,7 @@ export class CopilotService {
                     '溯月游', '掠天跃', '白鱼吹浪'
                 ];
 
-                if (isExplicitSkillQuery && cleanTokens.length === 0 && !matchedProf) {
+                if (isExplicitSkillQuery && cleanTokens.length === 0 && !matchedProf && !hasExplicitCategory) {
                     const repSkills: CuratedSkillItem[] = [];
                     for (const name of CORE_SIGNATURE_SKILL_NAMES) {
                         const s = allCuratedSkills.find(sk => sk.name === name && sk.group_kind === 'prof' && isValidSkill(sk))
@@ -572,29 +1385,73 @@ export class CopilotService {
                     if (!sk.name || !sk.name.trim() || !isValidSkill(sk)) continue;
                     const sName = sk.name.trim().toLowerCase();
                     const sGroup = (sk.group_name || '').toLowerCase();
+                    const sNameClean = sName.replace(/[·\s]/g, '');
 
-                    // 如果明确指定了门派（如逐霜），优先限制在其门派树下
+                    // 如果明确指定了门派（如逐霜、青云），优先限制在其门派树下
                     if (matchedProf && !sGroup.includes(matchedProf.toLowerCase())) {
                         continue;
                     }
 
-                    let score = 0;
-                    if (sName === q || (cleanTokens.length > 0 && cleanTokens.some(t => t === sName))) {
-                        score = 100;
-                    } else if (cleanTokens.length > 0 && cleanTokens.some(t => t.length >= 2 && sName.includes(t))) {
-                        score = 50;
-                    } else if (cleanTokens.length > 0 && sName.length >= 2 && cleanTokens.some(t => t.length >= 2 && t.includes(sName))) {
-                        score = 30;
-                    } else if (isExplicitSkillQuery && matchedProf && sk.group_kind === 'prof') {
-                        score = 10;
+                    // 阵营限制（若指定了仙/魔/佛且搜索神通或造化）
+                    if (matchedCamp && (matchedCategories.includes('神通') || matchedCategories.includes('造化') || q.includes('神通') || q.includes('造化'))) {
+                        const campSymbols: Record<string, string[]> = {
+                            '仙': ['仙', '<玄>'],
+                            '魔': ['魔', '<煞>'],
+                            '佛': ['佛', '<禅>']
+                        };
+                        const symbols = campSymbols[matchedCamp] || [matchedCamp];
+                        const matchesCamp = symbols.some(sym => sGroup.includes(sym) || sName.includes(sym));
+                        if (!matchesCamp) continue;
                     }
-                    if (sk.tags && sk.tags.length > 0 && cleanTokens.length > 0) {
-                        for (const t of cleanTokens) {
+
+                    let score = 0;
+
+                    // 1. 无缝连字符匹配（如用户输入 '玄烛绝圣弃智' 匹配 '玄烛·绝圣弃智·萤炬'）
+                    if (qClean.length >= 4 && sNameClean.includes(qClean)) {
+                        score = 160;
+                    }
+
+                    // 2. 复合命中：同时命中自由技能词 与 类别（如 '玄烛' + '绝圣弃智'，或 '赤乌' + '天魔舞'）
+                    const matchesAllSkillTokens = skillNameTokens.length > 0 &&
+                        skillNameTokens.every(st => sName.includes(st) || sNameClean.includes(st));
+
+                    const matchesAnyCat = matchedCategories.length > 0 && matchedCategories.some(cat => {
+                        const rule = SKILL_CATEGORY_MAP[cat];
+                        if (rule.nameKeyword && !sName.includes(rule.nameKeyword)) return false;
+                        if (rule.groupKeyword && !sGroup.includes(rule.groupKeyword)) return false;
+                        return true;
+                    });
+
+                    if (matchesAllSkillTokens && matchesAnyCat) {
+                        score = Math.max(score, 150);
+                    } else if (matchesAllSkillTokens && matchedCategories.length === 0) {
+                        score = Math.max(score, 120);
+                    } else if (sName === q || (cleanTokens.length > 0 && cleanTokens.some(t => t === sName))) {
+                        score = Math.max(score, 100);
+                    } else if (skillNameTokens.length === 0 && matchesAnyCat) {
+                        // 用户只搜类别（如 '玄烛 赤乌'、'青云 心法'、'神通'）
+                        score = Math.max(score, 80);
+                    } else if (skillNameTokens.length > 0 && skillNameTokens.some(st => sName.includes(st))) {
+                        score = Math.max(score, 50);
+                    } else if (isExplicitSkillQuery && matchedProf && sk.group_kind === 'prof') {
+                        score = Math.max(score, 10);
+                    }
+
+                    // 标签辅助匹配加分
+                    if (sk.tags && sk.tags.length > 0 && skillNameTokens.length > 0) {
+                        for (const t of skillNameTokens) {
                             if (t.length >= 2 && sk.tags.some(tag => tag.n.includes(t) || t.includes(tag.n))) {
-                                score += 40;
+                                score += 20;
                                 break;
                             }
                         }
+                    }
+
+                    // 额外高阶星宿排序提权：曦日 > 皓月 > 萤炬
+                    if (score >= 80 && (sName.includes('·星宿') || sGroup.includes('星宿'))) {
+                        if (sName.includes('曦日') || q.includes('曦日')) score += 5;
+                        else if (sName.includes('皓月') || q.includes('皓月')) score += 3;
+                        else if (sName.includes('萤炬') || q.includes('萤炬')) score += 1;
                     }
 
                     if (score > 0) {
@@ -610,8 +1467,16 @@ export class CopilotService {
                     return true;
                 });
 
+                const getProfIdx = (group: string) => {
+                    const idx = profs.findIndex(p => group.includes(p));
+                    return idx >= 0 ? idx : 999;
+                };
+
                 filtered.sort((a, b) => {
                     if (b.score !== a.score) return b.score - a.score;
+                    const pA = getProfIdx(a.sk.group_name || '');
+                    const pB = getProfIdx(b.sk.group_name || '');
+                    if (pA !== pB) return pA - pB;
                     if (a.sk.group_kind === 'prof' && b.sk.group_kind !== 'prof') return -1;
                     if (b.sk.group_kind === 'prof' && a.sk.group_kind !== 'prof') return 1;
                     return a.sk.name.length - b.sk.name.length;
@@ -633,10 +1498,20 @@ export class CopilotService {
                         }
                     };
                 } else if (matchedSkills.length > 1) {
+                    let replySummary = `为你检索到 ${matchedSkills.length} 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：`;
+                    if (hasExplicitCategory && skillNameTokens.length === 0) {
+                        const catLabels = matchedCategories.map(c => SKILL_CATEGORY_MAP[c]?.label || c).join(' / ');
+                        const profPrefix = matchedProf ? `【${matchedProf}】` : '';
+                        replySummary = `为你速查到 ${profPrefix}${catLabels}技能（共 ${filtered.length} 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：`;
+                    } else if (skillNameTokens.length > 0 && hasExplicitCategory) {
+                        const catLabels = matchedCategories.map(c => SKILL_CATEGORY_MAP[c]?.label || c).join(' / ');
+                        replySummary = `为你速查到【${skillNameTokens.join(' ')}】相关的${catLabels}技能，可在下方快速切换不同阶位与等级推演：`;
+                    }
+
                     return {
                         id: `msg-${Date.now()}`,
                         sender: 'assistant',
-                        text: `为你检索到 ${matchedSkills.length} 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：`,
+                        text: replySummary,
                         time: timeStr,
                         cardType: 'skill_candidates',
                         cardData: {
@@ -694,32 +1569,6 @@ export class CopilotService {
                     ceilingVal,
                     route: `/compendium/ceiling?attr=${attrKey}`
                 }
-            };
-        }
-
-        // 6. 轩辕策四象计算意图
-        if (q.includes('轩辕策') || q.includes('青龙书') || q.includes('白虎书') || q.includes('玄武书') || q.includes('朱雀书')) {
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: '为你打开【轩辕策四象模拟器】。填入任意等级的数值，即可推算其 1 阶初始底子、20 阶满级极限以及极品毕业百分比：',
-                time: timeStr,
-                cardType: 'xyc_diag',
-                cardData: {
-                    title: '轩辕策四象模拟器',
-                    route: '/tools/xyc',
-                    desc: '支持青龙/白虎/朱雀/玄武及英雄模式推算'
-                }
-            };
-        }
-
-        // 7. 开服状态意图
-        if (q.includes('开服') || q.includes('开没开') || q.includes('维护') || q.includes('选服') || q.includes('战区') || q.includes('几服')) {
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: '为你打开【全区开服雷达监测】服务。实时追踪 9 大战区 33 服心跳，并可开启开服三音阶声光提醒！',
-                time: timeStr
             };
         }
 
@@ -784,6 +1633,30 @@ export class CopilotService {
         // 本地智能领域知识引擎（杜绝单一死板的硬编码一句话）
         const p = prompt.trim().toLowerCase();
 
+        if (p.includes('开服') || p.includes('雷达') || p.includes('服务器') || p.includes('测服')) {
+            return `【全区开服雷达监测服务】：\n1. 覆盖战区：实时监测诛仙3官方 9 大战区共 33 组服务器在线心跳与维护状态。\n2. 智能特性：提供网络延时毫秒级测速，支持开服声光三音阶提醒，第一时间锁定新服开放与维护开机。\n3. 你可以在右侧战术工作区打开【开服雷达】或访问独立工具页体验。`;
+        }
+
+        if (p.includes('训练场') || p.includes('打桩') || p.includes('木桩') || p.includes('循环')) {
+            return `【副本与多角色模拟训练场】：\n1. 实战打桩：支持逐秒编排技能释放循环，模拟技能冷却、施法前摇与多段伤害计算。\n2. 机制仿真：内嵌 T18-T20 等主流团本 BOSS 的真实防御、减免、抗性与暴击抗性衰减。\n3. 伤害报表：输出详尽的秒伤曲线、段数分布与承伤数据，辅助优化输出手法与技能循环。`;
+        }
+
+        if (p.includes('天缘') || p.includes('须弥')) {
+            return `【天缘与天命属性推算】：\n1. 机制说明：须弥系列装备与神级首饰具备天缘词条洗炼机制，理论极值词条能够提供显著的战斗增益。\n2. 模拟测算：本站提供天缘洗炼模拟，可推演出现目标属性组合的概率分布与期望成本。\n3. 你可以通过工作台【天缘属性】工具直接进行推演。`;
+        }
+
+        if (p.includes('留言') || p.includes('反馈') || p.includes('建议') || p.includes('捉虫')) {
+            return `【仙友留言板 · 意见反馈】：\n仙友交流、数值机制捉虫、新功能催更，欢迎点击前往【仙友留言板】页面（/#/feedback）与全服仙友共同求索诛仙万象大道！`;
+        }
+
+        if (p.includes('更新') || p.includes('动态') || p.includes('排期') || p.includes('版本')) {
+            return `【天书万象 · 更新动态】：\n本站基于全知 AI 大模型与确定性数值引擎持续演进，包含装备库更新、技能多段机制拟合、秒伤算法校准等，欢迎前往【更新动态】（/#/changelog）查阅最新迭代。`;
+        }
+
+        if (p.includes('关于') || p.includes('本站') || p.includes('初衷') || p.includes('作者') || p.includes('萝卜')) {
+            return `【关于天书万象】：\n本站汇聚了诛仙3真实游戏装备、技能、BOSS与法宝数据，独创伤害计算公式与属性加权边际贡献分析，搭配全栈微工具与模拟器，致力于打造开放、专业、精准的修真战术助手。`;
+        }
+
         if (p.includes('法宝')) {
             return `关于【诛仙3法宝体系】：\n当前副本主流输出与辅助法宝梯队：\n1. 【天琊 / 噬魂】：经典核心法宝，具备高额本体攻击与附加攻击成长，传承特效提供强大的减防与破防收益。\n2. 【伤心花 / 斩龙剑】：具备极佳的爆发增伤、禁食与控场机制。\n3. 【玉净瓶】：通用型自保与解控法宝，提供技能净化与气血防护。\n你可以直接输入具体法宝名称（如：玉净瓶、天琊、噬魂）调取全阶特技数值与图鉴直达卡片。`;
         }
@@ -803,7 +1676,6 @@ export class CopilotService {
         if (p.includes('破防') || p.includes('伤害') || p.includes('计算') || p.includes('公式') || p.includes('门槛')) {
             return `【诛仙3副本实战战力与配装指南】：\n1. 属性达标：在当前高阶团队副本（如 T18-T20 断浪碎晶宫）中，对怪增伤与暴击爆伤是决定输出上限的核心三角。\n2. 破防机制：BOSS拥有极高面板防御与伤害减免，若自身基础攻击与无视穿透不足，技能伤害将受到大幅压制；当穿透达标后方可发挥完整爆发潜能。\n3. 精确测算：建议直接点击左上角【属性战力计算器】或在当前对话中【粘贴游戏 C 键面板截图】，天书万象 AI 将自动为你模拟实战秒伤与各部位提升性价比。`;
         }
-
 
         if (p.includes('配装') || p.includes('装备') || p.includes('元婴') || p.includes('轩辕策')) {
             return `【诛仙3主流副本配装梯度建议】：\n1. 武器防具：神隐 / 混虚彰武为当前毕业选择，平民进阶推荐混虚昭武 +11 蕴灵。\n2. 元婴属性：输出职业首选「双暴击 + 双爆伤」或「附带气血/真气/攻击百分比」，辅助自保职业首选「双减免百分比 + 双减暴伤」。\n3. 轩辕策：青龙书与白虎书主暴击爆伤三代技能，朱雀书与玄武书主气血真气攻击属性，推荐使用本站【轩辕策四象模拟器】推算满级毕业度。\n4. 佩章与阵灵：优先选择带怪物增伤、爆伤的组合词条。`;
@@ -974,7 +1846,7 @@ export class CopilotService {
                 return {
                     estimatedTotalDamage: `${billion} 亿`,
                     dungeonName: t20.DungeonName,
-                    bossName: t20.Monsters?.[0]?.MonsterName || '断浪首领',
+                    bossName: t20.Monsters?.[0]?.MonsterName || '断浪 BOSS',
                     breakdownText: `在无外部增益基准下，你对 ${t20.DungeonName} 测算单套爆发输出约为 ${billion} 亿伤害。`
                 };
             } catch (err) {
