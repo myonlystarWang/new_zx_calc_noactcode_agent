@@ -55,7 +55,7 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       id: 'upload',
       icon: Paperclip,
       title: '上传截图',
-      desc: '从电脑中上传 C 界面 / 轩辕策截图进行智能打桩诊断',
+      desc: '从电脑中上传角色属性界面 / 轩辕策截图进行智能诊断',
       onClick: () => {
         onSelectUpload();
         onClose();
@@ -72,21 +72,21 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       id: 'arena',
       icon: Swords,
       title: '副本训练场',
-      desc: '多角色逐秒实战仿真 · 技能循环与伤害报表',
+      desc: '多角色逐秒实战仿真 · 技能循环与伤害报表统计',
       onClick: () => handleToolClick('arena'),
     },
     {
       id: 'server',
       icon: Radio,
       title: '开服雷达',
-      desc: '9 大战区 33 服毫秒心跳探测与声光提醒',
+      desc: '9 大战区 33 服务器毫秒级心跳探测与声光提醒',
       onClick: () => handleToolClick('server'),
     },
     {
       id: 'xyc',
       icon: Compass,
       title: '轩辕策属性',
-      desc: '1~20 阶反推初始底子与极品毕业度评级',
+      desc: '1~20 阶反推初始属性与极品毕业度评级',
       disabled: true,
       onClick: undefined,
     },
@@ -94,7 +94,7 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       id: 'tianyuan',
       icon: Sparkles,
       title: '天缘属性',
-      desc: '须弥装备天缘与天命属性理论上限推演',
+      desc: '天命装备天缘属性理论上限推演',
       disabled: true,
       onClick: undefined,
     },
@@ -104,11 +104,9 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
     <div
       ref={menuRef}
       style={{ backgroundColor: '#0c1220' }}
-      className={`absolute ${
-        isDown ? 'top-full left-0 mt-1.5' : 'bottom-full left-0 mb-1.5'
-      } w-full bg-[#0c1220] border border-slate-700/80 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.95)] backdrop-blur-2xl p-1.5 z-50 animate-in fade-in ${
-        isDown ? 'slide-in-from-top-2' : 'slide-in-from-bottom-2'
-      } duration-150 select-none`}
+      className={`absolute ${isDown ? 'top-full left-0 mt-1.5' : 'bottom-full left-0 mb-1.5'
+        } w-full bg-[#0c1220] border border-slate-700/80 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.95)] backdrop-blur-2xl p-1.5 z-50 animate-in fade-in ${isDown ? 'slide-in-from-top-2' : 'slide-in-from-bottom-2'
+        } duration-150 select-none`}
     >
       {/* 滚动容器：精准限高到刚好在 footer 之上，超出时展示精致滚动条 */}
       <div className="space-y-0.5 max-h-[175px] sm:max-h-[185px] overflow-y-auto pr-1 menu-scrollbar">
@@ -121,30 +119,26 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
               type="button"
               disabled={isDisabled}
               onClick={isDisabled ? undefined : item.onClick}
-              className={`w-full flex items-center gap-2.5 px-2.5 py-1 rounded-lg text-left transition-colors select-none ${
-                isDisabled
-                  ? 'opacity-40 cursor-not-allowed bg-transparent'
-                  : 'hover:bg-white/[0.07] active:bg-white/10 group cursor-pointer'
-              }`}
+              className={`w-full flex items-center gap-2.5 px-2.5 py-1 rounded-lg text-left transition-colors select-none ${isDisabled
+                ? 'opacity-40 cursor-not-allowed bg-transparent'
+                : 'hover:bg-white/[0.07] active:bg-white/10 group cursor-pointer'
+                }`}
             >
               <Icon
-                className={`w-3.5 h-3.5 shrink-0 transition-colors ${
-                  isDisabled ? 'text-slate-500' : 'text-slate-400 group-hover:text-cyan-300'
-                }`}
+                className={`w-3.5 h-3.5 shrink-0 transition-colors ${isDisabled ? 'text-slate-500' : 'text-slate-400 group-hover:text-cyan-300'
+                  }`}
                 strokeWidth={1.75}
               />
               <div className="flex items-center gap-2 flex-1 min-w-0">
                 <span
-                  className={`text-[12.5px] font-medium transition-colors shrink-0 ${
-                    isDisabled ? 'text-slate-400' : 'text-slate-100 group-hover:text-cyan-300'
-                  }`}
+                  className={`text-[12.5px] font-medium transition-colors shrink-0 ${isDisabled ? 'text-slate-400' : 'text-slate-100 group-hover:text-cyan-300'
+                    }`}
                 >
                   {item.title}
                 </span>
                 <span
-                  className={`text-[11.5px] transition-colors truncate ${
-                    isDisabled ? 'text-slate-500' : 'text-slate-400 group-hover:text-slate-300'
-                  }`}
+                  className={`text-[11.5px] transition-colors truncate ${isDisabled ? 'text-slate-500' : 'text-slate-400 group-hover:text-slate-300'
+                    }`}
                 >
                   {item.desc}
                 </span>
