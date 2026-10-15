@@ -69,6 +69,8 @@ const formatCurrentTime = (): string => {
   return `${y}-${m}-${d} ${hh}:${mm}`;
 };
 
+const getKv = (env: any) => env?.GUESTBOOK || env?.guestbook || env?.Guestbook;
+
 async function getStoredPosts(kv?: any): Promise<{ posts: GuestbookEntry[]; isCloud: boolean }> {
   if (!kv) {
     return { posts: INITIAL_POSTS, isCloud: false };
@@ -76,8 +78,16 @@ async function getStoredPosts(kv?: any): Promise<{ posts: GuestbookEntry[]; isCl
   try {
     const raw = await kv.get(KV_STORAGE_KEY, 'json');
     if (Array.isArray(raw) && raw.length > 0) {
+      const savedPin = raw.find((p: GuestbookEntry) => p && p.id === 'pin-1');
+      const pinnedPost: GuestbookEntry = savedPin
+        ? {
+            ...INITIAL_POSTS[0],
+            likes: typeof savedPin.likes === 'number' ? Math.max(INITIAL_POSTS[0].likes, savedPin.likes) : INITIAL_POSTS[0].likes,
+            replies: Array.isArray(savedPin.replies) ? savedPin.replies : (INITIAL_POSTS[0].replies || [])
+          }
+        : INITIAL_POSTS[0];
       const userPosts = raw.filter((p: GuestbookEntry) => p && p.id !== 'pin-1');
-      return { posts: [INITIAL_POSTS[0], ...userPosts], isCloud: true };
+      return { posts: [pinnedPost, ...userPosts], isCloud: true };
     }
   } catch (err) {
     console.error('Error reading from KV:', err);
@@ -94,7 +104,7 @@ export const onRequestOptions = async () => {
 
 export const onRequestGet = async (context: { request: Request; env: Env }) => {
   try {
-    const kv = context.env.GUESTBOOK;
+    const kv = getKv(context.env);
     const { posts, isCloud } = await getStoredPosts(kv);
 
     return new Response(
@@ -119,7 +129,7 @@ export const onRequestGet = async (context: { request: Request; env: Env }) => {
 
 export const onRequestPost = async (context: { request: Request; env: Env }) => {
   try {
-    const kv = context.env.GUESTBOOK;
+    const kv = getKv(context.env);
     const body: any = await context.request.json().catch(() => ({}));
     const action = body.action || 'create';
 

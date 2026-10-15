@@ -71,6 +71,7 @@ const INITIAL_POSTS: GuestbookEntry[] = [
 ];
 
 const STORAGE_KEY = 'tianshu_guestbook_posts_v3';
+const LIKED_STORAGE_KEY = 'tianshu_guestbook_liked_v3';
 
 export const FeedbackPage: React.FC = () => {
   const [posts, setPosts] = useState<GuestbookEntry[]>(() => {
@@ -79,8 +80,16 @@ export const FeedbackPage: React.FC = () => {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const userPosts = parsed.filter((p: GuestbookEntry) => p.id !== 'pin-1');
-          return [INITIAL_POSTS[0], ...userPosts];
+          const savedPin = parsed.find((p: GuestbookEntry) => p && p.id === 'pin-1');
+          const pinnedPost: GuestbookEntry = savedPin
+            ? {
+                ...INITIAL_POSTS[0],
+                likes: typeof savedPin.likes === 'number' ? Math.max(INITIAL_POSTS[0].likes, savedPin.likes) : INITIAL_POSTS[0].likes,
+                replies: Array.isArray(savedPin.replies) ? savedPin.replies : (INITIAL_POSTS[0].replies || [])
+              }
+            : INITIAL_POSTS[0];
+          const userPosts = parsed.filter((p: GuestbookEntry) => p && p.id !== 'pin-1');
+          return [pinnedPost, ...userPosts];
         }
       }
     } catch {
@@ -99,7 +108,13 @@ export const FeedbackPage: React.FC = () => {
   });
   const [newPostCategory, setNewPostCategory] = useState<GuestbookCategory>('suggestion');
   const [postContent, setPostContent] = useState('');
-  const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
+  const [likedMap, setLikedMap] = useState<Record<string, boolean>>(() => {
+    try {
+      const saved = localStorage.getItem(LIKED_STORAGE_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return {};
+  });
 
   // 回复状态管理：当前正在回复哪条留言
   const [replyingPostId, setReplyingPostId] = useState<string | null>(null);
@@ -191,7 +206,11 @@ export const FeedbackPage: React.FC = () => {
 
   const handleLike = async (id: string) => {
     if (likedMap[id]) return;
-    setLikedMap(prev => ({ ...prev, [id]: true }));
+    const nextLiked = { ...likedMap, [id]: true };
+    setLikedMap(nextLiked);
+    try {
+      localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify(nextLiked));
+    } catch {}
     
     // 乐观更新
     setPosts(prev =>
