@@ -4,13 +4,10 @@ import {
     Star,
     RefreshCw,
     Activity,
-    CheckCircle2,
-    AlertCircle,
     Volume2,
     VolumeX,
     Play,
     Pause,
-    Wifi,
     Maximize2,
     Minimize2,
     X
@@ -179,7 +176,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
     // 记录各服务器状态与探测缓存（30分钟单次探测持久化）
     const [serverStatusMap, setServerStatusMap] = useState<Record<string, ServerStatusItem>>(() => loadStatusCache());
 
-    const [currentStatus, setCurrentStatus] = useState<'unknown' | 'online' | 'offline' | 'unstable' | 'error'>('unknown');
+    const [, setCurrentStatus] = useState<'unknown' | 'online' | 'offline' | 'unstable' | 'error'>('unknown');
     const [logs, setLogs] = useState<ProbeLog[]>([]);
 
     const timerRef = useRef<number | null>(null);
@@ -398,8 +395,6 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
     };
 
     const activeZhanQu = SERVER_CONFIG[selectedZhanQuIndex];
-    // 获取当前聚焦服务器的真实战区名称，杜绝跨战区异步错位
-    const currentServerZhanQu = SERVER_CONFIG.find(zq => zq.servers.some(s => s.serverId === selectedServer.serverId))?.zhanQu || activeZhanQu.zhanQu;
 
     return (
         <div className="flex flex-col gap-4 max-w-[1560px] mx-auto w-full">
@@ -528,14 +523,15 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                 </div>
             )}
 
-            {/* 核心等高战备仪表板：左(战区)、中(矩阵+雷达)、右(实时遥测)，严格底平齐等高 */}
+            {/* 核心战备工作台：左侧战区选择(3列) + 右侧主体(9列上下横向全宽占满) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch flex-1 min-h-[580px] lg:h-[calc(100vh-235px)] lg:max-h-[760px]">
                 {/* 左侧：战区选择导航轨 (3列，撑满等高) */}
                 <div className="lg:col-span-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 flex flex-col justify-between shadow-xl backdrop-blur-sm h-full">
                     <div className="flex flex-col gap-1.5 flex-1">
                         <div className="flex items-center justify-between px-2 pb-2 mb-1 border-b border-slate-800/80">
                             <span className="text-xs text-slate-400 font-bold tracking-wide">战区选择</span>
-                            <span className="text-[11px] text-slate-500 font-mono">共 9 大战区</span>
+                            {/* <span className="text-[11px] text-slate-500 font-mono">共 9 大战区</span> */}
+                            <span className="text-xs text-cyan-400/80 font-bold">33组服务器在线</span>
                         </div>
 
                         <div className="flex flex-col gap-1.5 flex-1 justify-between">
@@ -581,42 +577,35 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                     {/* 底部全服统计微栏 */}
                     <div className="pt-3 mt-2 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-between px-1">
                         <span className="flex items-center gap-1.5">
-                            <Activity className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>战区监控雷达</span>
+                            {/* <Activity className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>战区监控雷达</span> */}
                         </span>
-                        <span className="font-mono text-cyan-400/80 font-bold">33组服务器在线</span>
+
                     </div>
                 </div>
 
-                {/* 中间：区服选择矩阵 + 雷达中控台 (6列，整齐上下撑满) */}
-                <div className="lg:col-span-6 flex flex-col justify-between gap-4 h-full">
-                    {/* 上部：战区服务器矩阵 */}
+                {/* 右侧：主体区域 (9列，上下结构，横向全宽占满) */}
+                <div className="lg:col-span-9 flex flex-col justify-between gap-4 h-full">
+                    {/* 上部：战区服务器列表 (向右全宽占满) */}
                     <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-xl flex-1 flex flex-col backdrop-blur-sm min-h-[300px]">
                         <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80">
-                            <div className="flex items-center gap-2">
-                                <span className="text-sm font-black text-slate-200 tracking-wide">
-                                    {activeZhanQu.zhanQu} · 服务器列表
-                                </span>
-                                {isBatchProbing && (
-                                    <span className="text-[11px] text-cyan-400 flex items-center gap-1 font-mono font-bold">
-                                        <RefreshCw className="w-3 h-3 animate-spin" />
-                                        <span>全区探测中...</span>
-                                    </span>
-                                )}
-                            </div>
+                            <span className="text-sm font-black text-slate-100 tracking-wide">
+                                {activeZhanQu.zhanQu} · 服务器列表
+                            </span>
+
                             <button
                                 type="button"
                                 onClick={() => probeZoneBatch(activeZhanQu.servers, true)}
-                                className="text-xs text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1.5 cursor-pointer transition-colors px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30"
-                                title="立即手动刷新当前战区全部服务器状态"
+                                className="text-xs text-slate-300 hover:text-slate-100 font-bold flex items-center gap-1.5 cursor-pointer transition-colors px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700"
+                                title="立即批量检测当前战区全部服务器状态"
                             >
-                                <RefreshCw className={clsx("w-3.5 h-3.5", isBatchProbing && "animate-spin")} />
+                                <RefreshCw className={clsx("w-3.5 h-3.5 text-slate-400", isBatchProbing && "animate-spin")} />
                                 <span>刷新本区状态</span>
                             </button>
                         </div>
 
-                        {/* 规格化网格排版：固定规范卡片，自适应充满 */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 flex-1 content-start">
+                        {/* 规格化网格排版：自适应向右充分铺开 (3~4 列) */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 flex-1 content-start">
                             {activeZhanQu.servers.map(srv => {
                                 const isSelected = selectedServer.serverId === srv.serverId;
                                 const isFav = favorites.includes(srv.serverId);
@@ -688,137 +677,65 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                         </div>
                     </div>
 
-                    {/* 下部：聚焦雷达中枢主控台 (固定高度，极具质感) */}
-                    <div className="bg-gradient-to-r from-slate-900/95 via-slate-900 to-slate-950 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col justify-between shrink-0 h-[148px]">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <span className="text-[11px] text-slate-400 font-medium">当前锁定监测目标:</span>
-                                <div className="flex items-center gap-2.5 mt-1">
-                                    <h3 className="text-xl font-black text-slate-100 tracking-wide">
-                                        {selectedServer.name}
-                                    </h3>
-                                    <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-950/60 px-2.5 py-0.5 rounded-lg border border-cyan-800/60 shadow-sm">
-                                        {currentServerZhanQu}
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* 状态主徽章 */}
-                            <div className="flex items-center gap-2">
-                                {currentStatus === 'online' && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-bold text-xs sm:text-sm shadow-[0_0_15px_rgba(16,185,129,0.35)]">
-                                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                                        <span>已开服 (可正常登录)</span>
-                                    </div>
-                                )}
-                                {currentStatus === 'offline' && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-300 font-bold text-xs sm:text-sm">
-                                        <AlertCircle className="w-4 h-4 text-slate-400" />
-                                        <span>维护中 / 未开服</span>
-                                    </div>
-                                )}
-                                {currentStatus === 'error' && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/20 border border-rose-500/50 text-rose-300 font-bold text-xs sm:text-sm shadow-[0_0_12px_rgba(244,63,94,0.3)]">
-                                        <Activity className="w-4 h-4 text-rose-400 animate-spin" />
-                                        <span>探测超时 / 重试中</span>
-                                    </div>
-                                )}
-                                {currentStatus === 'unknown' && (
-                                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 text-slate-400 text-xs font-medium">
-                                        <span>点击开始雷达监测</span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* 控制工具条 */}
-                        <div className="pt-2.5 border-t border-slate-800/80 text-xs text-slate-400 flex items-center justify-between">
-                            <span className="flex items-center gap-1.5 font-mono text-[11px] text-slate-400">
-                                <Wifi className="w-3.5 h-3.5 text-cyan-400" />
-                                <span>完美官方网关 29000 端口心跳</span>
+                    {/* 下部：雷达探测日志 (移至下方横向向右全宽占满，纯净纯文字分色) */}
+                    <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between shadow-xl backdrop-blur-sm min-h-[220px] max-h-[280px] shrink-0">
+                        <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-slate-800/80">
+                            <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                                <Activity className="w-3.5 h-3.5 text-cyan-400" />
+                                <span>雷达探测日志</span>
                             </span>
 
-                            <div className="flex items-center gap-2">
+                            {logs.length > 0 && (
                                 <button
                                     type="button"
-                                    onClick={() => probeSelectedServer(false)}
-                                    className="text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1.5 cursor-pointer transition-colors px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30"
+                                    onClick={() => setLogs([])}
+                                    className="text-[11px] text-slate-400 hover:text-slate-200 px-2 py-0.5 rounded hover:bg-slate-800 cursor-pointer transition-colors border border-slate-700/60"
                                 >
-                                    <RefreshCw className="w-3.5 h-3.5" />
-                                    <span>立即单次检测</span>
+                                    清空日志
                                 </button>
-                            </div>
+                            )}
                         </div>
-                    </div>
-                </div>
 
-                {/* 右侧：实时日志流 (3列，撑满等高，与左/中底边绝对平齐) */}
-                <div className="lg:col-span-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between shadow-xl backdrop-blur-sm h-full">
-                    <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-slate-800/80">
-                        <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                            <Activity className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>雷达探测日志</span>
-                        </span>
-                        {logs.length > 0 && (
-                            <button
-                                type="button"
-                                onClick={() => setLogs([])}
-                                className="text-[10px] text-slate-500 hover:text-slate-300 px-2 py-0.5 rounded hover:bg-slate-800 cursor-pointer transition-colors"
-                            >
-                                清空
-                            </button>
-                        )}
-                    </div>
-
-                    {/* 滚动容器 */}
-                    <div className="flex-1 overflow-y-auto space-y-2 pr-1 no-scrollbar">
-                        {logs.length === 0 ? (
-                            <div className="h-full flex flex-col items-center justify-center py-16 text-slate-500 text-xs gap-3">
-                                <div className="relative flex items-center justify-center w-14 h-14">
-                                    <div className="absolute inset-0 rounded-full border border-cyan-500/20 animate-ping opacity-75" />
-                                    <div className="absolute inset-2 rounded-full border border-cyan-500/40" />
-                                    <Radio className="w-6 h-6 text-cyan-400 animate-pulse" />
+                        {/* 单行流式日志列表容器 */}
+                        <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 no-scrollbar">
+                            {logs.length === 0 ? (
+                                <div className="h-full flex flex-col items-center justify-center py-8 text-slate-500 text-xs gap-2">
+                                    <div className="flex items-center gap-2 text-slate-400 font-medium">
+                                        <Radio className="w-4 h-4 text-cyan-400 animate-pulse" />
+                                        <span>雷达站就绪待命</span>
+                                    </div>
+                                    <span className="text-[11px] text-slate-600">
+                                        开启监测或点击“立即单次检测”后，各服心跳结果将以纯文字日志在此实时滚屏呈现
+                                    </span>
                                 </div>
-                                <span className="text-slate-400 font-medium">雷达站就绪待命</span>
-                                <span className="text-[11px] text-slate-600 text-center max-w-[200px]">
-                                    开启监测或单次检测后，毫秒心跳结果将在此实时滚屏播报
-                                </span>
-                            </div>
-                        ) : (
-                            logs.map(log => (
-                                <div
-                                    key={log.id}
-                                    className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800/80 text-xs font-mono flex flex-col gap-1 shadow-sm"
-                                >
-                                    <div className="flex items-center justify-between text-[10px] text-slate-500">
-                                        <span className="font-mono">{log.time}</span>
-                                        <span className={clsx(
-                                            'font-bold px-1.5 py-0.2 rounded',
-                                            log.status === 'online' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' :
-                                                log.status === 'offline' ? 'bg-slate-800 text-slate-400' :
-                                                    log.status === 'unstable' ? 'bg-purple-500/20 text-purple-400' : 'bg-rose-500/20 text-rose-400'
-                                        )}>
+                            ) : (
+                                logs.map(log => (
+                                    <div
+                                        key={log.id}
+                                        className="px-2.5 py-1.5 rounded-lg bg-slate-950/40 hover:bg-slate-950/70 border border-slate-800/40 text-xs font-mono flex items-center gap-3 transition-colors select-none"
+                                    >
+                                        {/* 时间：纯灰色 */}
+                                        <span className="text-slate-500 font-mono text-xs shrink-0">
+                                            {log.time}
+                                        </span>
+
+                                        {/* 服务器：纯青蓝色文字，无边框背景胶囊 */}
+                                        <span className="text-cyan-400 font-bold text-xs shrink-0">
                                             {log.serverName}
                                         </span>
-                                    </div>
-                                    <div className={clsx(
-                                        'text-xs font-sans font-medium leading-relaxed',
-                                        log.status === 'online' ? 'text-emerald-300' : 'text-slate-300'
-                                    )}>
-                                        {log.message}
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
 
-                    {/* 底部雷达状态微指示灯 */}
-                    <div className="pt-2.5 mt-2 border-t border-slate-800/80 text-[10px] text-slate-500 flex items-center justify-between">
-                        <span className="flex items-center gap-1.5 font-mono">
-                            <span className={clsx("w-2 h-2 rounded-full", isProbing ? "bg-cyan-400 animate-ping" : "bg-slate-600")} />
-                            <span>{isProbing ? '4s 高频轮询中' : '心跳待命'}</span>
-                        </span>
-                        <span className="font-mono text-slate-500">{logs.length} 条记录</span>
+                                        {/* 状态正文：直接用颜色区分，无任何胶囊框与末尾重复延迟 */}
+                                        <span className={clsx(
+                                            'text-xs font-medium truncate flex-1',
+                                            log.status === 'online' ? 'text-emerald-400' :
+                                                log.status === 'offline' ? 'text-slate-400' : 'text-rose-400'
+                                        )}>
+                                            {log.message}
+                                        </span>
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
