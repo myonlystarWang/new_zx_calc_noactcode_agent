@@ -248,9 +248,9 @@ Functions 目录：仓库根 `functions/`（**唯一生效位置**，`web_app/fu
 
 | 层 | 职责 | 状态 |
 |---|---|---|
-| L0 归一化层 | 全半角统一、去停用词（吗/呢/吧/请问/一下）、拼音归一（`pinyin-pro`，项目已依赖）、大小写。**拼音必须双向归一**：词库侧预转（每个词条建库时算好拼音）、query 侧运行时转，两边都转成拼音再比较；只转一边等于没转。注意同音误命中（如"归云/鬼王"不同音但"画影/华影"同音），误命中词进 synonyms 黑名单或降权 | 新建 |
+| L0 归一化层 | 全半角统一、去停用词（吗/呢/吧/请问/一下）、拼音归一（`pinyin-pro`，项目已依赖）、大小写。**拼音必须双向归一**：词库侧预转（每个词条建库时算好拼音）、query 侧运行时转，两边都转成拼音再比较；只转一边等于没转。注意同音误命中（如"归云/鬼王"不同音但"画影/华影"同音），误命中词进 synonyms 黑名单或降权。体积说明：`pinyin-pro` 已被 `searchIndex.ts` / `SkillsView.tsx` / `BossCompendiumView.tsx` 引用，前端 bundle 早已包含——matchLocalIntent 运行时引入**零增量体积** | 新建 |
 | L1 词库数据层 | 触发词/别名/同义词/互斥声明全部外置为数据文件（建议 `web_app/src/data/intent_lexicon.json`） | 新建 |
-| L2 打分匹配引擎 | 每意图计分 = 关键词命中数 × 词权重（精确 > 包含）+ 槽位完整度；取最高分，低于阈值即未命中；互斥改由数据声明 | 新建 |
+| L2 打分匹配引擎 | 每意图计分 = 关键词命中数 × 词权重（精确 > 包含）+ 槽位完整度；取最高分，低于阈值即未命中；互斥改由数据声明。**返回值除卡片外必须带 `score` 与 `matchedTerms`（命中词明细）**：score 供未来 LLM 路由做决策依据（见第八章），matchedTerms 供夹具失败时定位"哪个词命中/漏命中" | 新建 |
 | L3 卡片组装层 | 现有 return 块原样迁入，只吃归一化后的槽位 | 迁移 |
 
 词库文件结构草案：
@@ -260,6 +260,12 @@ Functions 目录：仓库根 `functions/`（**唯一生效位置**，`web_app/fu
   "stopwords": ["吗", "呢", "吧", "请问", "一下"],
   "synonyms": { "大攻": ["攻击", "攻击力"], "怪增": ["对怪增伤", "对怪物增伤"] },
   "professions": { "逐霜": ["zhushuang", "zhu shuang", "逐双"] },
+  "weights": {
+    "exact_match": 10,
+    "contains_match": 3,
+    "slot_complete_bonus": 5,
+    "exclude_penalty": -100
+  },
   "intents": {
     "server_radar": { "keywords": ["开服", "服务器"], "exclude": [], "priority": 1 },
     "dungeon": { "dictionary": [], "series": [], "categories": [] }
@@ -268,6 +274,7 @@ Functions 目录：仓库根 `functions/`（**唯一生效位置**，`web_app/fu
 ```
 
 > `DUNGEON_DICTIONARY` / `DUNGEON_SERIES` / `DUNGEON_CATEGORIES`（第 68-292 行）是现成的数据化样板，其余意图词库向它看齐。
+> `weights` 块为**参数化打分权重**（2026-10-15 深评审建议采纳）：调参不改代码，且权重变化的影响可用第七章夹具直接回归验证——这是"热调"的基础设施。
 
 ### 6.4 输入变体检查单（"全面"的验收维度）
 
@@ -290,11 +297,28 @@ Functions 目录：仓库根 `functions/`（**唯一生效位置**，`web_app/fu
 
 | 期 | 内容 | 风险控制 |
 |---|---|---|
-| P0 | 回归夹具先行（第七章），冻结现状行为 | 夹具即安全网 |
-| P1 | L0 归一化层（拼音 + 停用词 + 全半角）作为 `matchLocalIntent` 前置 | 夹具对比 golden 快照 |
+| P0 | 回归夹具先行（第七章），冻结现状行为。**验收入口固化为 `npm run test:l1`**（`web_app/package.json` 新增 script：`node ../scripts/l1_intent_fixture.mjs`，P0 已落地全绿，见 7.6）；有 CI 则挂上，无 CI 则约定每次词库变动后必跑 | 夹具即安全网 |
+| P1 | L0 归一化层（拼音 + 停用词 + 全半角）作为 `matchLocalIntent` 前置。**停用词初版从 7.5 语料 + 现有词库高频虚词统计得出，不拍脑袋硬编码**，后续按真实 query 增量 | 夹具对比 golden 快照 |
 | P2 | 词库数据化，if 链改读数据文件 | 同上，输出必须零变化 |
 | P3 | L2 打分引擎影子模式：**旧函数保留为 `matchLocalIntentBaseline`，新引擎另起 `matchLocalIntentV2`，harness 同时调用两者逐条 diff**，一致后才把入口切到 V2。⚠️ 切换时同步改 HomePage 两处调用点（第 195 行首轮 `handleStartAiChat` / 第 294 行后续轮 `handleFollowUpMessage`），漏一处该路径仍走旧引擎 | 双跑 diff 全绿 + 调用点清单核对 |
 | P4 | 显式互斥表 + 多意图策略（第二意图以"你可能还想问"候选条呈现，不丢帧） | 夹具扩组合意图类 |
+
+### 6.6 每期完成定义（DoD）与改动文件清单
+
+供实施 agent 直接对照执行——**每期做完 = 下列全部勾选**：
+
+| 期 | DoD（完成定义） | 触及文件 | 验收 |
+|---|---|---|---|
+| P0 | ① `scripts/l1_intent_fixture.mjs` 可运行 ② `regression_test/l1_intent_cases.json` ≥40 条且覆盖 6.4 全部 10 类变体 ③ golden 快照生成、normalize 校验通过 ④ `web_app/package.json` 增加 `test:l1` script | 新建 `scripts/l1_intent_fixture.mjs`、`regression_test/l1_intent_cases.json`、`regression_test/l1_intent_golden.json`；改 `web_app/package.json` | `npm run test:l1` 全绿 |
+| P1 | ① 归一化层以纯函数模块落地并在 `matchLocalIntent` 入口前置 ② 全量用例对 golden 零非预期差异（预期差异逐条 approve 后更新快照） | 新建 `web_app/src/services/queryNormalizer.ts`；改 `CopilotService.ts` 入口 | `npm run test:l1` + 快照 diff 人工过目 |
+| P2 | ① `intent_lexicon.json` 落地、if 链改读词库 ② 输出对 P1 快照零变化 ③ 词库文件带结构注释或 schema | 新建 `web_app/src/data/intent_lexicon.json`；改 `CopilotService.ts` 词库相关块 | 同上 |
+| P3 | ① Baseline/V2 并存、harness 支持双跑 diff ② 双跑 diff 全绿 ③ 入口切换 + HomePage 两处调用点同步改 ④ 旧函数保留一版后删除 | 改 `CopilotService.ts`、`HomePage.tsx`、`scripts/l1_intent_fixture.mjs` | 双跑 diff 报告 |
+| P4 | ① 互斥表数据化 ② 组合意图用例期望值改为双意图 ③ 第二意图以"你可能还想问"候选条呈现 | 改 `intent_lexicon.json`、`CopilotService.ts`、`HomeAIChatStage.tsx`（候选条渲染） | `npm run test:l1` |
+
+执行规则：
+- 每期独立 commit，message 注明期号与夹具结果（如 `refactor(l1): P2 lexicon data-ization, fixture 128/128 green`）；
+- 任何一期夹具转红，先修实现或先 approve 快照差异，**禁止带红进下一期**；
+- 每期的"预期差异"须在 commit body 里逐条列出理由，供事后审计。
 
 ---
 
@@ -372,7 +396,7 @@ for (const c of cases) {
 
 ### 7.4 Golden 快照与 approve 机制
 
-- **快照落盘前必须 normalize**：每条 return 都带 `id: msg-${Date.now()}` 和 `time: HH:MM`（第 352/359-361 行等），每次运行都不同——normalize 剔除 `id` 与 `time` 后，只比对 `{ cardType, cardData, text }`；**不 normalize 则每次重跑 100% 报差异，approve 机制直接失效**；
+- **快照落盘前必须 normalize**：每条 return 都带 `id: msg-${Date.now()}` 和 `time: HH:MM`（第 352/359-361 行等），每次运行都不同——normalize 剔除 `id` 与 `time` 后，只比对 `{ cardType, cardData, text }`；**不 normalize 则每次重跑 100% 报差异，approve 机制直接失效**。另须按 JSON 语义剔除 `undefined` 值键（`cardData.difficulty` 等字段常年为 undefined）——否则内存对象与文件 round-trip 后的 golden 对拍必误报（P0 实施实测踩中，见 7.6）；
 - P2/P3 迁移前用现有实现跑全量用例生成 golden；迁移后重跑，**任何与快照的差异必须逐条人工确认**（预期变化 / 非预期回归），确认后才更新快照；
 - 快照文件：`regression_test/l1_intent_golden.json`（与计算引擎的 before/after 快照同目录同风格）。
 
@@ -381,6 +405,23 @@ for (const c of cases) {
 - **主来源：用户手动收集的真实问法**——用户收到提问时收集后交入库，入库前人工判定期望结果；
 - **次来源：按 6.4 检查单构造的变体**；
 - 明确排除：留言板内容不作为自动语料源（留言是反馈不是提问，二者分布不同）。
+
+### 7.6 P0 落地记录（2026-10-15）
+
+| 交付物 | 状态 |
+|---|---|
+| `scripts/l1_intent_fixture.mjs` | ✅ esbuild bundle + mock 单例 + 断言引擎 + golden 对拍 + `--probe` 探测模式 + `--golden` 重建模式 |
+| `scripts/l1_fixture_entry.ts` | ✅ esbuild 入口（聚合导出 DataService / CopilotService） |
+| `regression_test/l1_intent_cases.json` | ✅ 48 条，覆盖 6.4 全部 10 类变体 |
+| `regression_test/l1_intent_golden.json` | ✅ 48 条快照（normalize 后） |
+| `web_app/package.json` → `test:l1` | ✅ `npm run test:l1` 48/48 全绿，双跑稳定 |
+| 变异测试 | ✅ 错误期望 + 输入漂移均被「断言 + golden」双通道捕获 |
+
+P0 实施期实测发现并修复的 harness 级问题（后续维护者须知）：
+
+1. **undefined 键对拍误报**：`cardData` 含 `undefined` 值键（如 `difficulty`），内存对象与 golden 文件 JSON round-trip 语义不一致——已按 JSON 语义 canonicalize（7.4 已同步）；
+2. **`totalCount` 与 `candidates.length` 不是一回事**：`equip_candidates` 的 `totalCount` 是聚合**前**总数、`candidates` 是 `collapseSeriesCandidates` 聚合**后**数组（「昭武」实测 296 → 100），断言时勿混用；
+3. **期望值必须实测取证**：本轮全部 48 条期望值经 `--probe` 实跑取证，未凭代码阅读推断——推断曾出错的典型：「玉净瓶」实际被装备意图劫持返回 equip 卡（不是法宝卡，已建 `fabao-order-quirk-01` 冻结该现状）；「逐霜的苍龙啸」因「的」字断词实际返回 null（已建 `inversion-gap-01` 冻结该缺口）。
 
 ---
 
@@ -392,3 +433,4 @@ for (const c of cases) {
    > 桥接提醒：6.3 的"L3 卡片组装层原样迁入 return 块"只对本期成立。**未来"L1 命中结果喂 LLM"意味着这些 return 块（用户-facing 文案 + cardData）还要再改造成"可喂给 LLM 的结构化上下文"**——P2/P3 迁代码时把 return 块的数据部分与文案部分分离，能为未来少留债。
 2. **数据化词库是未来接口**：6.3 的词库 JSON 可直接导出为 LLM tool 的参数枚举与描述，P2 完成即天然具备接入条件。
 3. 本章只约束"不要写死阻碍未来路由的代码"，不安排任何实施。
+4. **已知维护债（范围外，记录待择期）**：AI 人设 prompt 目前四处同步（速查表已列）——长远应抽取为共享常量（前端一处、后端一处），彻底消除同步负担。

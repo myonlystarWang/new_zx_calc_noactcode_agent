@@ -1,0 +1,57 @@
+[
+  { "id": "tool-server-01", "input": "开服", "expect": { "cardType": "server", "cardData.workspaceMode": "server" }, "tags": ["standard", "tool"], "assert": "strong" },
+  { "id": "tool-calc-01", "input": "计算", "expect": { "cardType": "tool_card", "cardData.workspaceMode": "calc" }, "tags": ["standard", "tool"], "assert": "strong" },
+  { "id": "tool-arena-01", "input": "训练场", "expect": { "cardType": "tool_card", "cardData.workspaceMode": "arena" }, "tags": ["standard", "tool"], "assert": "strong" },
+  { "id": "tool-xyc-01", "input": "轩辕策", "expect": { "cardType": "xyc_diag", "cardData.workspaceMode": "xyc" }, "tags": ["standard", "tool"], "assert": "strong" },
+  { "id": "tool-tianyuan-01", "input": "天缘", "expect": { "cardType": "tool_card", "cardData.workspaceMode": "newtianyuan" }, "tags": ["standard", "tool"], "assert": "strong" },
+  { "id": "tool-nlq-01", "input": "凝灵契", "expect": { "cardType": "tool_card", "cardData.workspaceMode": "ninglingqi" }, "tags": ["standard", "tool"], "assert": "strong" },
+  { "id": "tool-feedback-01", "input": "留言", "expect": { "cardType": "tool_card", "cardData.route": "/feedback" }, "tags": ["standard", "tool"], "assert": "strong" },
+  { "id": "tool-changelog-01", "input": "更新", "expect": { "cardType": "tool_card", "cardData.route": "/changelog" }, "tags": ["standard", "tool"], "assert": "strong" },
+  { "id": "tool-about-01", "input": "关于", "expect": { "cardType": "tool_card", "cardData.route": "/about" }, "tags": ["standard", "tool"], "assert": "strong" },
+
+  { "id": "dungeon-t20-01", "input": "T20", "expect": { "cardType": "boss_candidates", "cardData.dungeonName": "镇海！断浪碎晶宫（T20）", "cardData.candidates.length": 6, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-t20-alias-01", "input": "碎晶宫t20", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20" }, "tags": ["alias", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-series-duanlang-01", "input": "断浪", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 18, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19" }, "tags": ["alias", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-series-kongsang-01", "input": "空桑", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 12, "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_CHIYAN_ZHUYAO_NORMAL" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-shoushen-hard-01", "input": "兽神困难", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 8, "cardData.candidates.0.id": "SHOUSHEN_JIANGLIN_HARD_XIULUO_NIAO_HARD" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-cat-tuanben-01", "input": "团本", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 8, "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_XIAO_HUI_NORMAL" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-cat-tben-01", "input": "T本", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-cat-trials-01", "input": "历练", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 2, "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_YE" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-broad-01", "input": "副本", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 16, "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-boss-multi-01", "input": "夔牛", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 2, "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_KUINIU_CHUSHI" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-sixiangqi-01", "input": "四象七", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_WU" }, "tags": ["standard", "dungeon"], "assert": "strong" },
+  { "id": "dungeon-tiandi3-alias-01", "input": "天帝3", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 7, "cardData.candidates.0.id": "TIANDI_BAOKU_HARD_SHI_REN_HUA_HARD" }, "tags": ["alias", "dungeon"], "assert": "strong" },
+
+  { "id": "equip-quality-slot-01", "input": "昭武 衣服", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 54, "cardData.candidates.length": 54, "cardData.candidates.0.id": 112452 }, "tags": ["standard", "equip"], "assert": "strong" },
+  { "id": "equip-slot-alias-01", "input": "彰武 甲", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 54, "cardData.candidates.0.id": 112452 }, "tags": ["synonym", "equip"], "assert": "strong" },
+  { "id": "equip-collapse-01", "input": "昭武", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 296, "cardData.candidates.length": 100, "cardData.candidates.0.id": 109832 }, "tags": ["standard", "equip"], "assert": "strong" },
+  { "id": "equip-single-01", "input": "天弈印记", "expect": { "cardType": "equip", "cardData.equip.name": "天戮印记·天弈·太昊" }, "tags": ["standard", "equip"], "assert": "strong" },
+  { "id": "equip-empty-guard-01", "input": "神隐 武器", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["standard", "equip"], "assert": "strong" },
+  { "id": "equip-negation-gap-01", "input": "不要昭武", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["negation", "equip"], "assert": "strong" },
+
+  { "id": "fabao-tianya-01", "input": "天琊", "expect": { "cardType": "fabao", "cardData.name": "天琊" }, "tags": ["standard", "fabao"], "assert": "strong" },
+  { "id": "fabao-shihun-01", "input": "噬魂", "expect": { "cardType": "fabao", "cardData.name": "噬魂" }, "tags": ["standard", "fabao"], "assert": "strong" },
+  { "id": "fabao-order-quirk-01", "input": "玉净瓶", "expect": { "cardType": "equip", "cardData.equip.name": "玉净瓶秘笈" }, "tags": ["standard", "fabao"], "assert": "strong" },
+
+  { "id": "skill-canglongxiao-01", "input": "苍龙啸", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4, "cardData.skill.name": "苍龙啸" }, "tags": ["standard", "skill"], "assert": "strong" },
+  { "id": "skill-shenjian-01", "input": "神剑御雷真诀", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4, "cardData.skill.name": "神剑御雷真诀" }, "tags": ["standard", "skill"], "assert": "strong" },
+  { "id": "skill-bare-01", "input": "技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 20 }, "tags": ["standard", "skill"], "assert": "strong" },
+  { "id": "skill-class-01", "input": "青云 神剑", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4, "cardData.skill.name": "神剑御雷真诀" }, "tags": ["standard", "skill"], "assert": "strong" },
+  { "id": "skill-class-02", "input": "逐霜技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.skill.name": "横槊" }, "tags": ["standard", "skill"], "assert": "strong" },
+
+  { "id": "ceiling-ignore-01", "input": "极致无视", "expect": { "cardType": "ceiling", "cardData.ceilingVal": 175.7 }, "tags": ["standard", "ceiling"], "assert": "strong" },
+  { "id": "ceiling-mbonus-01", "input": "怪增", "expect": { "cardType": "ceiling", "cardData.ceilingVal": 120 }, "tags": ["synonym", "ceiling"], "assert": "strong" },
+
+  { "id": "guard-num-01", "input": "200", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard"], "assert": "strong" },
+  { "id": "guard-num-02", "input": "+15", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard"], "assert": "strong" },
+  { "id": "guard-num-dirty-01", "input": "2", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard", "dirty"], "assert": "strong" },
+  { "id": "guard-num-dirty-02", "input": "111", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard", "dirty"], "assert": "strong" },
+  { "id": "guard-empty-01", "input": "", "expect": null, "tags": ["guard"], "assert": "strong" },
+  { "id": "dirty-datasao-01", "input": "大逃杀", "expect": null, "tags": ["dirty"], "assert": "strong" },
+
+  { "id": "pinyin-gap-01", "input": "zhu shuang", "expect": null, "tags": ["pinyin"], "assert": "strong" },
+  { "id": "inversion-gap-01", "input": "逐霜的苍龙啸", "expect": null, "tags": ["inversion"], "assert": "strong" },
+  { "id": "inversion-ok-01", "input": "苍龙啸 逐霜", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4 }, "tags": ["inversion", "skill"], "assert": "strong" },
+  { "id": "colloquial-01", "input": "T20 多少抗性来着", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6 }, "tags": ["colloquial", "dungeon"], "assert": "strong" },
+  { "id": "combo-single-intent-01", "input": "T20 抗性 逐霜技能", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6 }, "tags": ["combo", "dungeon"], "assert": "strong" }
+]
