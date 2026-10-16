@@ -360,8 +360,10 @@ function getPinyinAliases(): Array<[string, string]> {
 
 // ------------------------------------------------------------
 // T-16-B 项链系列词库（用户 2026-10-16 分诊口径）
-// 项链数据无品质系列，按名称模式分 5 系；系列 query（如「社稷项链」）在装备分支
+// 项链数据无品质系列，按名称模式分系列；系列 query（如「社稷项链」）在装备分支
 // 展开为 patterns 走既有包含匹配。神级首饰沿用既有「印记」卡片（太昊/太乙按升级合并显示）。
+// 注：星语项链 11 件经实证全部为 lv=1 废弃数据，用户 2026-10-16 裁决全部屏蔽——
+// 入口已移除，装备分支另有「星语」显式屏蔽兜底（防未来非 1 级星语数据漏出）。
 // ------------------------------------------------------------
 interface NecklaceSeries {
     key: string;
@@ -376,7 +378,6 @@ const NECKLACE_SERIES: NecklaceSeries[] = [
     { key: 'huangwu', label: '煌武项链', aliases: ['积分项链'], patterns: ['煌武'] },
     { key: 'zhandui', label: '战队项链', patterns: ['圣瑞', '圣谛'] },
     { key: 'sheji', label: '社稷项链', patterns: ['菩提珠', '琥珀珠', '舍利子', '血菩提', '真如子'] },
-    { key: 'xingyu', label: '星语项链', patterns: ['星语项链'] },
 ];
 
 // 纯字母输入（如 "zhu shuang"）→ 词库中文术语；有任何无法解析的字母段则整体放弃（防半归一化错配）
@@ -777,8 +778,9 @@ export class CopilotService {
         // ------------------------------------------------------------
         // 0.6 裸部位名歧义分流（slot_hub，T-16 方案A + 系列词库 B）
         // ① 品质系 6 部位（武器/头盔/衣服/靴子/腰带/袖甲，含帽子/鞋子等口语别名）
-        //    → 品质三入口 + 「其他」兜底（query=「所有+部位」走宽泛平铺）；
-        // ② 项链 → 5 系列 + 「其他项链」（用户 2026-10-16 分诊口径）；
+        //    → 品质三入口。实证：6 部位 q 字段 100% 归属修武/昭武/彰武三系、
+        //    无剩余装备（2026-10-16），故不设「其他」冗余选项（用户反馈）；
+        // ② 项链 → 5 系列 + 「其他项链」（用户 2026-10-16 分诊口径，有剩余）；
         // ③ 戒指 → 神级首饰 + 「其他戒指」（符石/血玉 72 件归神级，其余兜底）。
         // 「其他」入口的 query 以「所有」开头，装备分支按宽泛词清空关键词全量平铺。
         // ------------------------------------------------------------
@@ -825,10 +827,10 @@ export class CopilotService {
         const SLOT_HUB_QUALITIES = ['修武', '昭武', '彰武'];
         const hubStdSlot = SLOT_HUB_SLOTS.includes(q) ? q : (SLOT_HUB_ALIAS[q] || null);
         if (hubStdSlot) {
+            // 三系全覆盖实证下不设「其他」选项（2026-10-16 用户反馈：全覆盖就不必兜底）
             const hubOptions = SLOT_HUB_QUALITIES.map(qt => ({
                 key: qt, label: `${qt}系`, query: `${qt} ${hubStdSlot}`
             }));
-            hubOptions.push({ key: 'other', label: `其他${hubStdSlot}`, query: `所有${hubStdSlot}` });
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
@@ -1179,8 +1181,12 @@ export class CopilotService {
                     if (n.includes('梦入神机') || n.includes('自出洞来无敌手') || n.includes('天机指环')) {
                         return false;
                     }
-                    // 用户口径：1 级装备为废弃数据（戒指 59 件先行，其他部位同类数据待用户确认后扩展）
-                    if (e.lv === 1) {
+                    // 用户 2026-10-16 口径：星语项链全部屏蔽（原 11 件全为 lv=1 废弃数据）
+                    if (n.includes('星语')) {
+                        return false;
+                    }
+                    // 用户 2026-10-16 口径：戒指 1 级为废弃数据（59 件；仅限戒指，其他部位不动）
+                    if (e.lv === 1 && e.slot === '戒指') {
                         return false;
                     }
                     return true;
