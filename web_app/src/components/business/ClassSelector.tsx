@@ -35,14 +35,14 @@ export const ClassSelector: React.FC = () => {
                 className="glass-panel p-3.5 h-[102px] cursor-pointer transition-all duration-300 hover:border-blue-500/50 group relative overflow-hidden border-blue-500/30 bg-blue-500/5 flex items-center justify-between"
             >
                 <div className="flex items-center gap-3 relative z-10">
-                    <div className="p-2 rounded-xl bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.35)] shrink-0">
+                    <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.35)] shrink-0">
                         <User className="w-5 h-5" />
                     </div>
                     <div>
-                        <div className="text-[10px] text-blue-400 font-bold tracking-wide">当前职业</div>
-                        <div className="text-base font-black text-white flex items-center gap-1.5">
+                        <div className="text-xs text-blue-400 font-semibold tracking-wide mb-0.5">当前职业</div>
+                        <div className="text-lg font-black text-white flex items-center gap-2">
                             {currentClass?.ClassName || '未选择'}
-                            <span className="text-[9px] font-bold text-blue-300 px-1.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30">
+                            <span className="text-xs font-bold text-blue-300 px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30">
                                 {currentClass?.Race || '未知'}
                             </span>
                         </div>
@@ -50,7 +50,7 @@ export const ClassSelector: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-1 text-slate-400 group-hover:text-blue-300 text-xs font-bold transition-colors relative z-10">
                     <span>切换</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
+                    <ChevronRight className="w-4 h-4" />
                 </div>
 
                 {/* Background Glow */}

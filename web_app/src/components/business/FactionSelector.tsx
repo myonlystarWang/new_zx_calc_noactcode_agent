@@ -51,21 +51,21 @@ export const FactionSelector: React.FC = () => {
                             key={faction.id}
                             onClick={() => updateCharacterClass(userCharacter.ClassID, faction.id as any)}
                             className={clsx(
-                                'glass-panel p-2.5 h-[102px] flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all duration-300 group relative overflow-hidden',
+                                'glass-panel p-2.5 h-[102px] flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 group relative overflow-hidden',
                                 isActive ? colors.active : `border-slate-700/80 hover:bg-slate-800/50 ${colors.hover}`
                             )}
                         >
-                            <Swords className={clsx("w-4 h-4 transition-colors relative z-10", isActive ? colors.text : "text-slate-400 group-hover:text-slate-300")} />
+                            <Swords className={clsx("w-6 h-6 transition-all duration-200 group-hover:scale-110 relative z-10", isActive ? colors.text : "text-slate-400 group-hover:text-slate-300")} />
 
                             <span className={clsx(
-                                'font-black text-xs relative z-10',
+                                'font-black text-base tracking-wider relative z-10',
                                 isActive ? colors.text : 'text-slate-300'
                             )}>
                                 {faction.name}
                             </span>
 
                             {isActive && (
-                                <div className={`absolute bottom-0 left-0 w-full h-1 ${colors.bar}`} />
+                                <div className={`absolute bottom-0 left-0 w-full h-1.5 ${colors.bar}`} />
                             )}
                         </div>
                     );
