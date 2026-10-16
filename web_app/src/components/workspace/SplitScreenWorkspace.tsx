@@ -91,24 +91,22 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
       {/* 工作区主内容呈现 */}
       <div className="flex-1 overflow-y-auto min-h-0 bg-[#070a10]">
         {mode === 'calc' && (
-          <div className="p-3 sm:p-4 max-w-[1760px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-4 animate-in fade-in duration-200">
-            {/* 左栏：属性录入 */}
-            <div className="xl:col-span-4 flex flex-col">
-              <AttributePanel
-                attributes={userCharacter.BaseAttributes}
-                onChange={updateCharacterAttributes}
-              />
-            </div>
+          <div className="calc-container-root @container p-3 sm:p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
+            <div className="calc-two-col-grid grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+              {/* 左列：全部输入项（方案/职业/阵营/属性/增益）+ 综合战力评分 */}
+              <div className="calc-col-inputs md:col-span-6 flex flex-col gap-4">
+                <AttributePanel
+                  attributes={userCharacter.BaseAttributes}
+                  onChange={updateCharacterAttributes}
+                />
+                <BuffPanel onNavigateToFocus={() => {}} />
+              </div>
 
-            {/* 中栏：增益勾选 */}
-            <div className="xl:col-span-4 flex flex-col">
-              <BuffPanel onNavigateToFocus={() => {}} />
-            </div>
-
-            {/* 右栏：测算结果 */}
-            <div className="xl:col-span-4 flex flex-col">
-              <div className="xl:sticky xl:top-2 flex-1">
-                <ResultSection searchNav={null} onSearchConsumed={() => {}} />
+              {/* 右列：副本战力分析（原版 3D 轮播） */}
+              <div className="calc-col-results md:col-span-6 flex flex-col">
+                <div className="flex-1">
+                  <ResultSection searchNav={null} onSearchConsumed={() => {}} />
+                </div>
               </div>
             </div>
           </div>

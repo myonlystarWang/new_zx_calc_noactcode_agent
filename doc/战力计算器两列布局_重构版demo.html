@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>战力计算器 · 双轨饱满工作台（对标开服检测/训练场）</title>
+<script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Noto Sans SC', 'Microsoft YaHei', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      colors: {
+        bgPrimary: '#070a10',
+        cardBg: 'rgba(15, 23, 42, 0.85)',
+        themePrimary: '#5c8a75',
+        themeAccent: '#5897a8',
+      }
+    }
+  }
+}
+</script>
+<style>
+  :root {
+    --theme-primary: #5c8a75;
+    --theme-glow: rgba(92,138,117,0.18);
+    --theme-text: #e2eae6;
+    --theme-accent: #5897a8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; background-color: #070a10; color: #f8fafc; font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #070a10; }
+  ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+  /* 诛仙专属战备卡片质感（对标 ServerRadarView / SimulationArena） */
+  .arena-panel {
+    background: linear-gradient(150deg, rgba(15, 23, 42, 0.92) 0%, rgba(9, 14, 26, 0.96) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .arena-panel-sub {
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+  }
+
+  /* 3D 轮播透视空间 */
+  .carousel-stage {
+    perspective: 1100px;
+    transform-style: preserve-3d;
+  }
+  .carousel-3d-item {
+    transition: all 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-style: preserve-3d;
+  }
+
+  /* 滑条与数字 */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    background: #1e293b;
+    height: 4px;
+    border-radius: 9999px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #06b6d4;
+    border: 2px solid #070a10;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.6);
+    margin-top: -5px;
+    transition: all 0.15s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #38bdf8;
+  }
+
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none; margin: 0;
+  }
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+</style>
+</head>
+<body class="h-screen flex flex-col font-sans select-none overflow-hidden">
+
+<!-- 顶部调试控制条 -->
+<header class="shrink-0 h-10 px-4 bg-[#0c121d] border-b border-slate-800/90 flex items-center justify-between z-30 text-xs">
+  <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+      <span class="font-bold text-slate-200">战力计算器 · 对标开服/训练场全景双轨工作台</span>
+    </div>
+    <span class="text-slate-700 hidden sm:inline">|</span>
+    <div class="flex items-center gap-2 font-mono text-slate-400">
+      <span>计算器面板宽度:</span>
+      <span id="panelWidthText" class="font-bold text-cyan-300 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">1080px</span>
+      <span id="layoutStateBadge" class="text-[11px] font-sans px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">双列等高铺满</span>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="text-slate-500 hidden md:inline">分屏宽度:</span>
+    <button onclick="setSplitWidth(640)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs">窄分屏 (640px)</button>
+    <button onclick="setSplitWidth(980)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs">标准分屏 (980px)</button>
+    <button onclick="setSplitWidth(1380)" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs">宽屏 (1380px)</button>
+    <button id="toggleFullscreenBtn" class="ml-1 px-3 py-1 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 font-bold">全屏切换</button>
+  </div>
+</header>
+
+<div class="flex-1 min-h-0 flex overflow-hidden">
+
+  <!-- 左侧 AI 对话区（分屏演示） -->
+  <aside id="chatPane" class="w-[420px] shrink-0 h-full border-r border-slate-800/80 bg-[#080c14] p-4 flex flex-col justify-between">
+    <div class="flex flex-col gap-3">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800/80">
+        <span class="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          AI 对话面板（可自由拖动右侧分隔条）
+        </span>
+        <span class="text-[10px] text-slate-500 font-mono">DRAG →</span>
+      </div>
+      <div class="rounded-xl border border-slate-800 bg-slate-900/40 p-3.5 text-xs text-slate-400 space-y-2 leading-relaxed">
+        <div class="font-bold text-slate-200">🎯 本版本设计重构精髓：</div>
+        <div>1. <strong class="text-cyan-300">继承原版 3D 轮播</strong>：右侧保留完整 3D 舞台、左右残影卡透视切换，这是核心视觉体验，绝不降级。</div>
+        <div>2. <strong class="text-cyan-300">对标开服检测/训练场空间利用率</strong>：左右两列高度自然齐平（约 740px），整屏充实饱满，绝不留空洞！</div>
+        <div>3. <strong class="text-cyan-300">删除废弃的说明卡</strong>：释放空间让左列布局自然展开。</div>
+      </div>
+    </div>
+    <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-xs text-slate-500">发送关于角色配装的问题...</div>
+  </aside>
+
+  <!-- 拖动条手柄 -->
+  <div id="splitter" class="w-1.5 shrink-0 cursor-col-resize bg-slate-900 hover:bg-cyan-500/50 active:bg-cyan-400 relative transition-colors group">
+    <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-slate-700/60 group-hover:bg-cyan-300"></div>
+  </div>
+
+  <!-- ================= 右侧计算器工作区（统一顶栏 + 饱满双轨） ================= -->
+  <main id="calcMain" class="flex-1 min-w-0 h-full overflow-y-auto bg-[#070a10] flex flex-col">
+
+    <!-- 工作区顶栏（与 SplitScreenWorkspace 格式统一） -->
+    <div class="shrink-0 h-11 px-4 border-b border-slate-800/80 bg-[#0d121c]/95 backdrop-blur-md flex items-center justify-between sticky top-0 z-20">
+      <div class="flex items-center gap-2.5">
+        <div class="px-2.5 py-1 rounded-lg text-xs font-bold border bg-slate-800/50 border-slate-700/50 text-slate-300 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          <span>战力计算器</span>
+        </div>
+        <span class="text-xs text-slate-500 hidden sm:inline">全场景伤害推演</span>
+      </div>
+
+      <!-- 右侧：轻量算法说明抽屉入口 + 窗口控制占位 -->
+      <div class="flex items-center gap-2">
+        <button title="查看战力算法公式" class="text-xs text-slate-400 hover:text-cyan-300 flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-slate-800/60 transition-colors">
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span class="hidden md:inline">算法说明</span>
+        </button>
+        <button class="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-cyan-300 transition-colors">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 主工作台：@container 容器查询驱动（≥820px 双列等高铺满，<820px 单列堆叠） -->
+    <div id="containerRoot" class="@container flex-1 p-3.5 sm:p-4 max-w-[1780px] w-full mx-auto overflow-y-auto">
+
+      <!-- 双轨主栅格：左列 6 格 / 右列 6 格（或 5.5 : 6.5） -->
+      <div class="grid grid-cols-1 @4xl:grid-cols-12 gap-4 items-stretch">
+
+        <!-- ======================= 左列：角色配置与状态控制台 (@4xl:col-span-6 / col-span-5) ======================= -->
+        <div class="flex flex-col gap-3.5 @4xl:col-span-6 justify-between">
+
+          <!-- 1. 属性方案管理 -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <span class="w-1 h-4 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full"></span>
+                属性方案
+              </h2>
+              <span class="text-[11px] text-slate-500">快速存储/读取</span>
+            </div>
+            <div class="arena-panel p-2.5">
+              <div class="flex flex-col gap-2">
+                <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl border border-slate-700/80 bg-slate-950/70 text-slate-200 hover:border-slate-500 transition-colors text-xs font-medium">
+                  <span class="flex items-center gap-2 min-w-0">
+                    <svg class="w-3.5 h-3.5 text-cyan-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+                    <span class="truncate">逐霜 佛 2026-09-16 (当前主方案)</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+                  </span>
+                  <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="grid grid-cols-5 gap-1.5 pt-1.5 border-t border-slate-800/80">
+                  <button class="w-full py-1.5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 text-xs font-medium">对比</button>
+                  <button class="w-full py-1.5 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 text-xs font-medium">保存</button>
+                  <button class="w-full py-1.5 rounded-lg border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white text-xs font-medium">导入</button>
+                  <button class="w-full py-1.5 rounded-lg border border-slate-700 bg-slate-950/70 text-slate-300 hover:text-white text-xs font-medium">另存</button>
+                  <button class="w-full py-1.5 rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20 text-xs font-medium">删除</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 职业选择与阵营选择并排半行（保持原版大卡质感，压缩高度至 100px） -->
+          <div class="grid grid-cols-1 @lg:grid-cols-2 gap-3">
+            <!-- 职业选择 -->
+            <div>
+              <h2 class="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2">
+                <span class="w-1 h-4 bg-gradient-to-b from-blue-400 to-indigo-500 rounded-full"></span>
+                职业选择
+              </h2>
+              <div class="arena-panel p-3 h-[98px] cursor-pointer hover:border-blue-500/50 transition-all border-blue-500/30 bg-blue-500/5 flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="p-2.5 rounded-xl bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.35)] shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                  <div>
+                    <div class="text-[10px] text-blue-400 font-bold tracking-wide">当前职业</div>
+                    <div class="text-base font-black text-white flex items-center gap-1.5">
+                      逐霜
+                      <span class="text-[9px] font-bold text-blue-300 px-1.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30">苍祗</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1 text-slate-400 group-hover:text-blue-300 text-xs font-bold transition-colors">
+                  <span>切换</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- 阵营选择（仙 / 佛 / 魔 三张精致方卡） -->
+            <div>
+              <h2 class="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2">
+                <span class="w-1 h-4 bg-gradient-to-b from-purple-400 to-pink-500 rounded-full"></span>
+                阵营选择
+              </h2>
+              <div class="grid grid-cols-3 gap-2 h-[98px]">
+                <div class="arena-panel flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-cyan-500/40 border-slate-700/80 transition-all">
+                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/></svg>
+                  <span class="text-xs font-black text-slate-300">仙</span>
+                </div>
+                <div class="arena-panel flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-amber-500/40 border-slate-700/80 transition-all">
+                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span class="text-xs font-black text-slate-300">佛</span>
+                </div>
+                <!-- 选中的魔 -->
+                <div class="arena-panel flex flex-col items-center justify-center gap-1 cursor-pointer border-purple-500/70 bg-purple-500/10 shadow-[0_0_15px_rgba(168,85,247,0.2)] relative overflow-hidden">
+                  <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/></svg>
+                  <span class="text-xs font-black text-purple-300">魔</span>
+                  <div class="absolute bottom-0 left-0 w-full h-1 bg-purple-500"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. 角色属性网格（4列自适应，原版卡片质感，内边距微调防爆框） -->
+          <div>
+            <h2 class="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2">
+              <span class="w-1 h-4 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full"></span>
+              角色基础属性
+            </h2>
+            <div class="grid grid-cols-2 @xl:grid-cols-4 gap-2.5">
+              <!-- 最小攻击 -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between hover:border-cyan-500/50 transition-all">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+                  <span class="truncate">最小攻击</span>
+                  <span class="text-cyan-400 text-[10px]">Min</span>
+                </div>
+                <input type="number" value="33151" class="w-full bg-transparent text-base font-black text-white text-center font-mono focus:outline-none focus:text-cyan-400 py-0.5">
+                <input type="range" min="0" max="100000" value="33151" class="w-full">
+              </div>
+
+              <!-- 最大攻击 -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between hover:border-purple-500/50 transition-all">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+                  <span class="truncate">最大攻击</span>
+                  <span class="text-purple-400 text-[10px]">Max</span>
+                </div>
+                <input type="number" value="38151" class="w-full bg-transparent text-base font-black text-white text-center font-mono focus:outline-none focus:text-purple-400 py-0.5">
+                <input type="range" min="0" max="100000" value="38151" class="w-full">
+              </div>
+
+              <!-- 气血 -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between hover:border-red-500/50 transition-all">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+                  <span class="truncate">气血值</span>
+                  <span class="text-red-400 text-[10px]">HP</span>
+                </div>
+                <input type="number" value="29616" class="w-full bg-transparent text-base font-black text-white text-center font-mono focus:outline-none focus:text-red-400 py-0.5">
+                <input type="range" min="0" max="100000" value="29616" class="w-full">
+              </div>
+
+              <!-- 真气 -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between hover:border-blue-500/50 transition-all">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+                  <span class="truncate">真气值</span>
+                  <span class="text-blue-400 text-[10px]">MP</span>
+                </div>
+                <input type="number" value="39002" class="w-full bg-transparent text-base font-black text-white text-center font-mono focus:outline-none focus:text-blue-400 py-0.5">
+                <input type="range" min="0" max="100000" value="39002" class="w-full">
+              </div>
+
+              <!-- 防御 -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between hover:border-emerald-500/50 transition-all">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+                  <span class="truncate">防御</span>
+                  <span class="text-emerald-400 text-[10px]">DEF</span>
+                </div>
+                <input type="number" value="5000" class="w-full bg-transparent text-base font-black text-white text-center font-mono focus:outline-none focus:text-emerald-400 py-0.5">
+                <input type="range" min="0" max="100000" value="5000" class="w-full">
+              </div>
+
+              <!-- 暴击伤害 -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between hover:border-yellow-500/50 transition-all">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+                  <span class="truncate">暴伤%</span>
+                  <span class="text-yellow-400 text-[10px]">CRIT</span>
+                </div>
+                <input type="number" value="2065" class="w-full bg-transparent text-base font-black text-white text-center font-mono focus:outline-none focus:text-yellow-400 py-0.5">
+                <input type="range" min="0" max="4000" value="2065" class="w-full">
+              </div>
+
+              <!-- 对怪增伤 -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between hover:border-orange-500/50 transition-all">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+                  <span class="truncate">对怪增伤%</span>
+                  <span class="text-orange-400 text-[10px]">%</span>
+                </div>
+                <input type="number" value="37" class="w-full bg-transparent text-base font-black text-white text-center font-mono focus:outline-none focus:text-orange-400 py-0.5">
+                <input type="range" min="0" max="100" value="37" class="w-full">
+              </div>
+
+              <!-- 技能加权常态增益（填满第 8 格，告别黑洞） -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between border-cyan-500/30 bg-cyan-950/20">
+                <div class="flex items-center justify-between text-xs text-cyan-300 font-bold mb-1">
+                  <span class="truncate">破防加成%</span>
+                  <span class="text-cyan-400 text-[10px]">PIERCE</span>
+                </div>
+                <input type="number" value="45" class="w-full bg-transparent text-base font-black text-cyan-200 text-center font-mono focus:outline-none py-0.5">
+                <input type="range" min="0" max="100" value="45" class="w-full">
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. 战斗增益（4 卡整齐网格） -->
+          <div>
+            <h2 class="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2">
+              <span class="w-1 h-4 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full"></span>
+              战斗增益状态
+            </h2>
+            <div class="grid grid-cols-2 @xl:grid-cols-4 gap-2.5">
+              <!-- 专注 (激活) -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between border-cyan-500/60 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.12)]">
+                <div class="flex items-center justify-between text-xs font-bold text-cyan-300 mb-1">
+                  <span>专注增益</span>
+                  <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_6px_#06b6d4]"></span>
+                </div>
+                <input type="number" value="271" class="w-full bg-transparent text-center font-black text-white text-base focus:outline-none font-mono py-0.5">
+                <input type="range" min="0" max="400" value="271" class="w-full">
+              </div>
+
+              <!-- 巫咒 (激活) -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between border-cyan-500/60 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.12)]">
+                <div class="flex items-center justify-between text-xs font-bold text-cyan-300 mb-1">
+                  <span>巫咒增益</span>
+                  <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_6px_#06b6d4]"></span>
+                </div>
+                <input type="number" value="22.5" step="0.1" class="w-full bg-transparent text-center font-black text-white text-base focus:outline-none font-mono py-0.5">
+                <input type="range" min="0" max="22.5" step="0.1" value="22.5" class="w-full">
+              </div>
+
+              <!-- 绿点 (激活) -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between border-cyan-500/60 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.12)]">
+                <div class="flex items-center justify-between text-xs font-bold text-cyan-300 mb-1">
+                  <span>绿点增益</span>
+                  <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_6px_#06b6d4]"></span>
+                </div>
+                <input type="number" value="900" class="w-full bg-transparent text-center font-black text-white text-base focus:outline-none font-mono py-0.5">
+                <input type="range" min="0" max="900" value="900" class="w-full">
+              </div>
+
+              <!-- 易伤 (未激活) -->
+              <div class="arena-panel p-2.5 flex flex-col justify-between border-slate-800 opacity-60">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-400 mb-1">
+                  <span>易伤</span>
+                  <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+                </div>
+                <input type="number" value="120" disabled class="w-full bg-transparent text-center font-black text-slate-500 text-base focus:outline-none font-mono py-0.5">
+                <input type="range" min="0" max="120" value="120" disabled class="w-full">
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. 原版发光霸气【综合战力评分大卡】（坐镇左列底座，左右天然等高！） -->
+          <div class="arena-panel p-3.5 relative overflow-hidden border-cyan-500/40 shadow-xl bg-gradient-to-r from-slate-900/90 via-cyan-950/20 to-slate-900/90">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[140%] h-20 bg-[var(--theme-primary)] opacity-20 blur-[40px] rounded-full pointer-events-none"></div>
+            <div class="flex items-center justify-between relative z-10">
+              <div class="flex items-center gap-3">
+                <div class="p-2.5 rounded-xl bg-[var(--theme-glow)] border border-[var(--theme-primary)]/30 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.3)]">
+                  <svg class="w-5 h-5 text-[var(--theme-accent)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 010 5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
+                </div>
+                <div>
+                  <div class="text-xs font-black text-slate-200 tracking-wide flex items-center gap-2">
+                    综合战力评分
+                    <span class="text-[10px] text-slate-500 font-mono font-normal">TOTAL POWER</span>
+                  </div>
+                  <div class="text-2xl font-black font-mono tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-300 drop-shadow-md">
+                    322.96 <span class="text-base">亿</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full bg-yellow-500/15 border border-yellow-400/80 text-yellow-300 font-black italic text-xs shadow-[0_0_12px_rgba(234,179,8,0.35)]">
+                  SSS 级
+                </span>
+                <button onclick="copyScore()" class="px-3 py-1.5 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 text-xs font-bold transition-all flex items-center gap-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  <span>复制</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ======================= 右列：副本战力分析（原版 3D 轮播舞台完整保留！） ======================= -->
+        <div class="relative w-full flex flex-col justify-between @4xl:col-span-6 gap-3.5">
+
+          <!-- 顶栏：标题与分享 -->
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+              <span class="w-1 h-4 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full"></span>
+              副本战力分析 (实战输出)
+            </h2>
+            <div class="flex items-center gap-2">
+              <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 transition-all">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span>分享配置</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3D 轮播主舞台（保持原版 perspective 空间，分屏宽度缩窄时自动收敛偏移） -->
+          <div class="relative w-full h-[710px] flex items-start justify-center carousel-stage overflow-hidden rounded-2xl">
+            <div class="relative w-full h-full flex items-start justify-center preserve-3d">
+
+              <!-- 左侧残影卡（十方浮黎界） -->
+              <div id="cardPrev" class="absolute w-[82%] h-auto cursor-pointer origin-top carousel-3d-item"
+                   style="transform: translateX(-65%) scale(0.82) translateZ(-160px) rotateY(16deg); z-index: 40; opacity: 0.75;">
+                <div class="arena-panel p-4 shadow-xl border-white/5 bg-slate-900/90">
+                  <div class="flex items-center gap-3">
+                    <span class="text-xs font-black px-2 py-0.5 rounded border text-blue-400 border-blue-400/50 bg-blue-500/10">中等</span>
+                    <span class="font-bold text-base text-slate-200">十方浮黎界</span>
+                  </div>
+                  <div class="flex items-baseline gap-1 mt-3">
+                    <span class="font-black text-xl text-cyan-400">6</span>
+                    <span class="text-xs text-slate-500">BOSS</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 主 Active 卡片（会盟！凌云诛众仙 - 完整原版结构） -->
+              <div id="cardActive" class="absolute z-50 w-full h-auto carousel-3d-item origin-top"
+                   style="transform: translateX(0%) scale(1) translateZ(0px); opacity: 1;">
+                <div class="arena-panel overflow-hidden border-cyan-500/40 shadow-[0_10px_35px_rgba(0,0,0,0.6)]">
+                  <!-- Header -->
+                  <div class="p-4 bg-gradient-to-r from-slate-900 via-slate-800/80 to-slate-900 border-b border-slate-700/80 relative overflow-hidden">
+                    <div class="flex items-center justify-between relative z-10">
+                      <div class="flex items-center gap-2.5">
+                        <span class="text-xs font-black px-2.5 py-0.5 rounded-lg border text-emerald-400 border-emerald-400/50 bg-emerald-500/10 shadow-sm">简单</span>
+                        <h3 class="font-bold text-lg text-slate-100 tracking-wide">会盟！凌云诛众仙 (T16)</h3>
+                      </div>
+                      <span class="text-xs font-mono text-slate-400">6 BOSS</span>
+                    </div>
+                    <div class="flex items-end justify-between mt-3 relative z-10">
+                      <div class="flex items-baseline gap-1">
+                        <span class="text-xs text-slate-400 font-bold">推荐心法:</span>
+                        <span class="text-xs font-bold text-cyan-300">银鳞玄冰 / 熟练爆发</span>
+                      </div>
+                      <div class="flex items-baseline gap-2">
+                        <span class="text-xs text-slate-400 font-bold">参考战力</span>
+                        <span class="font-black text-2xl font-mono text-cyan-400 tracking-tight">422.73 亿</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- BOSS 选项卡 -->
+                  <div class="flex items-center gap-2 px-3 py-2 bg-slate-950/70 border-b border-slate-800/80 overflow-x-auto text-xs">
+                    <button class="px-3 py-1.5 rounded-lg font-bold bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 shrink-0 flex items-center gap-1 shadow-sm">
+                      <svg class="w-3 h-3 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/></svg>
+                      <span>第一关</span><span class="text-cyan-400">乾荒</span>
+                    </button>
+                    <button class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 shrink-0">
+                      <span>第二关</span><span class="text-slate-500 ml-1">时弘</span>
+                    </button>
+                    <button class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 shrink-0">
+                      <span>第三关</span><span class="text-slate-500 ml-1">玄冥</span>
+                    </button>
+                  </div>
+
+                  <!-- 技能平均伤害数据表 (三列对齐，条形对比) -->
+                  <div class="max-h-[460px] overflow-y-auto">
+                    <table class="w-full text-xs">
+                      <thead>
+                        <tr class="border-b border-slate-800/80 bg-slate-950/40 text-slate-400 font-medium">
+                          <th class="py-2.5 px-3 text-left w-1/2">技能与段数</th>
+                          <th class="py-2.5 px-3 text-right w-1/2">平均伤害比重</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-800/60 font-mono">
+                        <!-- 技能 1 -->
+                        <tr class="hover:bg-slate-800/40 transition-colors">
+                          <td class="py-2.5 px-3">
+                            <div class="flex items-center gap-1.5">
+                              <span class="font-bold text-slate-200 font-sans text-xs">苍龙啸·熟</span>
+                              <span class="text-[9px] bg-slate-800 px-1 py-0.2 rounded text-slate-400 border border-slate-700">9段</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">70.65 亿 ~ 75.85 亿</div>
+                          </td>
+                          <td class="py-2.5 px-3 text-right relative">
+                            <div class="absolute inset-y-1.5 right-2 bg-yellow-500/15 rounded" style="width: 66%;"></div>
+                            <span class="relative z-10 font-bold text-yellow-300 text-sm">73.25 亿</span>
+                          </td>
+                        </tr>
+
+                        <!-- 技能 2 (高亮爆发) -->
+                        <tr class="bg-cyan-500/10 border-l-2 border-cyan-400">
+                          <td class="py-2.5 px-3">
+                            <div class="flex items-center gap-1.5">
+                              <span class="font-bold text-cyan-300 font-sans text-xs">苍龙啸·熟·龙怒</span>
+                              <span class="text-[9px] bg-cyan-950 px-1 py-0.2 rounded text-cyan-300 border border-cyan-800 font-bold">9段</span>
+                            </div>
+                            <div class="text-[10px] text-cyan-400/80 mt-0.5">90.11 亿 ~ 98.25 亿</div>
+                          </td>
+                          <td class="py-2.5 px-3 text-right relative">
+                            <div class="absolute inset-y-1.5 right-2 bg-yellow-500/25 rounded shadow-[0_0_8px_rgba(234,179,8,0.3)]" style="width: 85%;"></div>
+                            <span class="relative z-10 font-bold text-yellow-300 text-sm">94.18 亿</span>
+                          </td>
+                        </tr>
+
+                        <!-- 技能 3 (天花板) -->
+                        <tr class="hover:bg-slate-800/40 transition-colors">
+                          <td class="py-2.5 px-3">
+                            <div class="flex items-center gap-1.5">
+                              <span class="font-bold text-slate-100 font-sans text-xs">心法·银鳞玄冰</span>
+                              <span class="text-[9px] bg-slate-800 px-1 py-0.2 rounded text-slate-400 border border-slate-700">9段</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">107.93 亿 ~ 113.13 亿</div>
+                          </td>
+                          <td class="py-2.5 px-3 text-right relative">
+                            <div class="absolute inset-y-1.5 right-2 bg-yellow-500/30 rounded" style="width: 100%;"></div>
+                            <span class="relative z-10 font-bold text-yellow-300 text-sm">110.53 亿</span>
+                          </td>
+                        </tr>
+
+                        <!-- 技能 4 -->
+                        <tr class="hover:bg-slate-800/40 transition-colors">
+                          <td class="py-2.5 px-3">
+                            <div class="flex items-center gap-1.5">
+                              <span class="font-bold text-slate-200 font-sans text-xs">山雨欲来II</span>
+                              <span class="text-[9px] bg-slate-800 px-1 py-0.2 rounded text-slate-400 border border-slate-700">6段</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">56.93 亿 ~ 61.27 亿</div>
+                          </td>
+                          <td class="py-2.5 px-3 text-right relative">
+                            <div class="absolute inset-y-1.5 right-2 bg-yellow-500/15 rounded" style="width: 53%;"></div>
+                            <span class="relative z-10 font-bold text-yellow-300 text-sm">59.10 亿</span>
+                          </td>
+                        </tr>
+
+                        <!-- 技能 5 -->
+                        <tr class="hover:bg-slate-800/40 transition-colors">
+                          <td class="py-2.5 px-3">
+                            <div class="flex items-center gap-1.5">
+                              <span class="font-bold text-slate-200 font-sans text-xs">山雨欲来III·英雄</span>
+                              <span class="text-[9px] bg-slate-800 px-1 py-0.2 rounded text-slate-400 border border-slate-700">6段</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">52.11 亿 ~ 56.97 亿</div>
+                          </td>
+                          <td class="py-2.5 px-3 text-right relative">
+                            <div class="absolute inset-y-1.5 right-2 bg-yellow-500/15 rounded" style="width: 49%;"></div>
+                            <span class="relative z-10 font-bold text-yellow-300 text-sm">54.54 亿</span>
+                          </td>
+                        </tr>
+
+                        <!-- 技能 6 -->
+                        <tr class="hover:bg-slate-800/40 transition-colors">
+                          <td class="py-2.5 px-3">
+                            <div class="flex items-center gap-1.5">
+                              <span class="font-bold text-slate-200 font-sans text-xs">苍龙啸</span>
+                              <span class="text-[9px] bg-slate-800 px-1 py-0.2 rounded text-slate-400 border border-slate-700">9段</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">51.54 亿 ~ 56.43 亿</div>
+                          </td>
+                          <td class="py-2.5 px-3 text-right relative">
+                            <div class="absolute inset-y-1.5 right-2 bg-yellow-500/15 rounded" style="width: 48%;"></div>
+                            <span class="relative z-10 font-bold text-yellow-300 text-sm">53.98 亿</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- 轮播控制条 -->
+                  <div class="p-2.5 bg-slate-950/80 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                    <button class="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center gap-1">
+                      <span>‹ 上一副本</span>
+                    </button>
+                    <span class="text-[11px] text-slate-500">1 / 12 个实战副本</span>
+                    <button class="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center gap-1">
+                      <span>下一副本 ›</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 右侧残影卡（噬魂夺魄狱） -->
+              <div id="cardNext" class="absolute w-[82%] h-auto cursor-pointer origin-top carousel-3d-item"
+                   style="transform: translateX(65%) scale(0.82) translateZ(-160px) rotateY(-16deg); z-index: 40; opacity: 0.75;">
+                <div class="arena-panel p-4 shadow-xl border-white/5 bg-slate-900/90">
+                  <div class="flex items-center gap-3">
+                    <span class="text-xs font-black px-2 py-0.5 rounded border text-orange-400 border-orange-400/50 bg-orange-500/10">难</span>
+                    <span class="font-bold text-base text-slate-200">噬魂夺魄狱</span>
+                  </div>
+                  <div class="flex items-baseline gap-1 mt-3">
+                    <span class="font-black text-xl text-cyan-400">6</span>
+                    <span class="text-xs text-slate-500">BOSS</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const chatPane = document.getElementById('chatPane');
+  const splitter = document.getElementById('splitter');
+  const calcMain = document.getElementById('calcMain');
+  const panelWidthText = document.getElementById('panelWidthText');
+  const layoutStateBadge = document.getElementById('layoutStateBadge');
+  const toggleFullscreenBtn = document.getElementById('toggleFullscreenBtn');
+
+  const cardPrev = document.getElementById('cardPrev');
+  const cardNext = document.getElementById('cardNext');
+
+  let dragging = false;
+  let startX = 0;
+  let startW = 0;
+  let isFullscreen = false;
+
+  function updateLayout() {
+    const w = Math.round(calcMain.getBoundingClientRect().width);
+    panelWidthText.textContent = w + 'px';
+
+    // 动态调整 3D 轮播透视距离，避免窄屏切边
+    if (w < 900) {
+      layoutStateBadge.textContent = '单列紧凑自适应';
+      layoutStateBadge.className = 'text-[11px] font-sans px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800';
+      // 残影卡片收拢
+      cardPrev.style.transform = 'translateX(-50%) scale(0.8) translateZ(-120px) rotateY(12deg)';
+      cardNext.style.transform = 'translateX(50%) scale(0.8) translateZ(-120px) rotateY(-12deg)';
+      cardPrev.style.opacity = '0.4';
+      cardNext.style.opacity = '0.4';
+    } else {
+      layoutStateBadge.textContent = '双列等高铺满';
+      layoutStateBadge.className = 'text-[11px] font-sans px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800';
+      cardPrev.style.transform = 'translateX(-65%) scale(0.82) translateZ(-160px) rotateY(16deg)';
+      cardNext.style.transform = 'translateX(65%) scale(0.82) translateZ(-160px) rotateY(-16deg)';
+      cardPrev.style.opacity = '0.75';
+      cardNext.style.opacity = '0.75';
+    }
+  }
+
+  // 拖动条手柄
+  splitter.addEventListener('pointerdown', e => {
+    dragging = true;
+    startX = e.clientX;
+    startW = chatPane.getBoundingClientRect().width;
+    document.body.style.cursor = 'col-resize';
+  });
+
+  window.addEventListener('pointermove', e => {
+    if (!dragging || isFullscreen) return;
+    const newChatW = Math.max(260, Math.min(window.innerWidth - 450, startW + (e.clientX - startX)));
+    chatPane.style.width = newChatW + 'px';
+    updateLayout();
+  });
+
+  window.addEventListener('pointerup', () => {
+    if (dragging) {
+      dragging = false;
+      document.body.style.cursor = '';
+    }
+  });
+
+  // 预设宽度切换
+  window.setSplitWidth = function(targetCalcW) {
+    if (isFullscreen) toggleFullscreen();
+    const totalW = window.innerWidth;
+    const chatW = Math.max(260, totalW - targetCalcW - 8);
+    chatPane.style.width = chatW + 'px';
+    setTimeout(updateLayout, 50);
+  };
+
+  function toggleFullscreen() {
+    isFullscreen = !isFullscreen;
+    if (isFullscreen) {
+      chatPane.style.display = 'none';
+      splitter.style.display = 'none';
+      toggleFullscreenBtn.textContent = '退出全屏 (还原双轨)';
+      toggleFullscreenBtn.classList.add('bg-cyan-500/40');
+    } else {
+      chatPane.style.display = 'flex';
+      splitter.style.display = 'block';
+      toggleFullscreenBtn.textContent = '全屏切换';
+      toggleFullscreenBtn.classList.remove('bg-cyan-500/40');
+    }
+    setTimeout(updateLayout, 50);
+  }
+
+  toggleFullscreenBtn.addEventListener('click', toggleFullscreen);
+  window.addEventListener('resize', updateLayout);
+
+  window.copyScore = function() {
+    navigator.clipboard?.writeText('静态战力: 322.96 亿 (SSS 级)');
+    alert('已复制战力评分: 322.96 亿 (SSS 级)');
+  };
+
+  // 初始化
+  updateLayout();
+</script>
+</body>
+</html>

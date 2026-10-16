@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金身 · 太虚归元 21-24 阶（推算预览）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0e17;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 20px 36px;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  }
+  .page-head {
+    width: 100%;
+    max-width: 1332px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .page-head h1 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #cbd5e1;
+    letter-spacing: 0.5px;
+  }
+  .page-head p {
+    font-size: 12px;
+    color: #64748b;
+    letter-spacing: 0.3px;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(300px, 1fr));
+    gap: 16px;
+    width: 100%;
+    max-width: 1332px;
+  }
+  /* ===== 复刻 EquipDetailCard 外层容器 ===== */
+  .equip-card {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(30, 41, 59, 0.9);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+  }
+  /* ===== 复刻游戏原生 Tooltip 内层 ===== */
+  .tooltip {
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 13px;
+    line-height: 22px;
+    border: 1px solid #232c3d;
+    background: rgba(7, 11, 18, 0.95);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35);
+    letter-spacing: 0.3px;
+    font-family: "SimSun", "宋体", "Microsoft YaHei", sans-serif;
+    min-width: 0;
+  }
+  .tooltip-head {
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(31, 41, 61, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .equip-name {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #ff6000;
+    white-space: nowrap;
+  }
+  .head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  .tags { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+  .tag-slot {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(30, 41, 59, 0.6);
+    color: #cbd5e1;
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    white-space: nowrap;
+  }
+  .stepper { display: flex; align-items: center; gap: 3px; margin-left: auto; white-space: nowrap; flex-shrink: 0; }
+  .lv-badge {
+    font-size: 11px;
+    color: rgba(252, 211, 77, 0.9);
+    background: rgba(69, 26, 3, 0.4);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 4px;
+    padding: 2px 5px;
+  }
+  .step-btn {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid #1e293b;
+    background: #0f172a;
+    color: #475569;
+    cursor: not-allowed;
+  }
+  .stat { color: #8080ff; }
+  .ad-list { color: #8080ff; }
+  .tooltip-foot {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(28, 36, 54, 0.6);
+    font-size: 12px;
+    line-height: 20px;
+    color: #ffffff;
+  }
+  .foot-orange { color: #ff6000; }
+  .foot-red { color: #ff0000; }
+</style>
+</head>
+<body>
+  <div class="page-head">
+    <h1>金身 · 太虚归元 21–24 阶（推算预览）</h1>
+    <p>仿网页「无常空相」Tooltip 样式 · 口径：20→21 绝对增量移植 + 21→24 无常空相段步长 · 推算稿未落库</p>
+  </div>
+  <div class="cards">
+
+    <!-- 21 太虚归元 -->
+    <div class="equip-card">
+      <div class="tooltip">
+        <div class="tooltip-head">
+          <div class="equip-name">太虚归元</div>
+          <div class="head-row">
+            <div class="tags"><span class="tag-slot">金身</span></div>
+            <div class="stepper">
+              <span class="lv-badge">21级</span>
+              <span class="step-btn">等级 -1</span>
+              <span class="step-btn">等级 +1</span>
+            </div>
+          </div>
+        </div>
+        <div class="stat">基础攻击 2246 － 2380</div>
+        <div class="stat">命中 ＋430</div>
+        <div class="stat">躲闪 ＋330</div>
+        <div class="ad-list">
+          <div>减免伤害固定值 +600</div>
+          <div>暴击伤害 +135.00%</div>
+          <div>攻击 +28.00%</div>
+          <div>对仙阵营伤害增加 +8.00%</div>
+          <div>对魔阵营伤害增加 +8.00%</div>
+          <div>对佛阵营伤害增加 +8.00%</div>
+          <div>对人物伤害增加 +9.00%</div>
+          <div>无视人物伤害减免 +6.50%</div>
+        </div>
+        <div class="tooltip-foot">
+          <div class="foot-orange">已绑定；已锁定；不会掉落；不可卖店</div>
+          <div>穿戴要求：<span class="foot-red">105级</span></div>
+          <div>无法交易</div>
+          <div>价格 1 银</div>
+          <div>金身</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 22 太虚归元★ -->
+    <div class="equip-card">
+      <div class="tooltip">
+        <div class="tooltip-head">
+          <div class="equip-name">太虚归元★</div>
+          <div class="head-row">
+            <div class="tags"><span class="tag-slot">金身</span></div>
+            <div class="stepper">
+              <span class="lv-badge">22级</span>
+              <span class="step-btn">等级 -1</span>
+              <span class="step-btn">等级 +1</span>
+            </div>
+          </div>
+        </div>
+        <div class="stat">基础攻击 2430 － 2540</div>
+        <div class="stat">命中 ＋470</div>
+        <div class="stat">躲闪 ＋370</div>
+        <div class="ad-list">
+          <div>减免伤害固定值 +640</div>
+          <div>暴击伤害 +140.00%</div>
+          <div>攻击 +29.00%</div>
+          <div>对仙阵营伤害增加 +9.00%</div>
+          <div>对魔阵营伤害增加 +9.00%</div>
+          <div>对佛阵营伤害增加 +9.00%</div>
+          <div>对人物伤害增加 +10.00%</div>
+          <div>无视人物伤害减免 +9.00%</div>
+        </div>
+        <div class="tooltip-foot">
+          <div class="foot-orange">已绑定；已锁定；不会掉落；不可卖店</div>
+          <div>穿戴要求：<span class="foot-red">105级</span></div>
+          <div>无法交易</div>
+          <div>价格 1 银</div>
+          <div>金身</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 23 太虚归元★★ -->
+    <div class="equip-card">
+      <div class="tooltip">
+        <div class="tooltip-head">
+          <div class="equip-name">太虚归元★★</div>
+          <div class="head-row">
+            <div class="tags"><span class="tag-slot">金身</span></div>
+            <div class="stepper">
+              <span class="lv-badge">23级</span>
+              <span class="step-btn">等级 -1</span>
+              <span class="step-btn">等级 +1</span>
+            </div>
+          </div>
+        </div>
+        <div class="stat">基础攻击 2580 － 2740</div>
+        <div class="stat">命中 ＋530</div>
+        <div class="stat">躲闪 ＋430</div>
+        <div class="ad-list">
+          <div>减免伤害固定值 +690</div>
+          <div>暴击伤害 +150.00%</div>
+          <div>攻击 +30.00%</div>
+          <div>对仙阵营伤害增加 +10.00%</div>
+          <div>对魔阵营伤害增加 +10.00%</div>
+          <div>对佛阵营伤害增加 +10.00%</div>
+          <div>对人物伤害增加 +11.00%</div>
+          <div>无视人物伤害减免 +9.50%</div>
+        </div>
+        <div class="tooltip-foot">
+          <div class="foot-orange">已绑定；已锁定；不会掉落；不可卖店</div>
+          <div>穿戴要求：<span class="foot-red">105级</span></div>
+          <div>无法交易</div>
+          <div>价格 1 银</div>
+          <div>金身</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 24 太虚归元★★★ -->
+    <div class="equip-card">
+      <div class="tooltip">
+        <div class="tooltip-head">
+          <div class="equip-name">太虚归元★★★</div>
+          <div class="head-row">
+            <div class="tags"><span class="tag-slot">金身</span></div>
+            <div class="stepper">
+              <span class="lv-badge">24级</span>
+              <span class="step-btn">等级 -1</span>
+              <span class="step-btn">等级 +1</span>
+            </div>
+          </div>
+        </div>
+        <div class="stat">基础攻击 3080 － 3240</div>
+        <div class="stat">命中 ＋630</div>
+        <div class="stat">躲闪 ＋530</div>
+        <div class="ad-list">
+          <div>减免伤害固定值 +740</div>
+          <div>暴击伤害 +160.00%</div>
+          <div>攻击 +32.00%</div>
+          <div>对仙阵营伤害增加 +12.00%</div>
+          <div>对魔阵营伤害增加 +12.00%</div>
+          <div>对佛阵营伤害增加 +12.00%</div>
+          <div>对人物伤害增加 +12.00%</div>
+          <div>无视人物伤害减免 +10.50%</div>
+        </div>
+        <div class="tooltip-foot">
+          <div class="foot-orange">已绑定；已锁定；不会掉落；不可卖店</div>
+          <div>穿戴要求：<span class="foot-red">105级</span></div>
+          <div>无法交易</div>
+          <div>价格 1 银</div>
+          <div>金身</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

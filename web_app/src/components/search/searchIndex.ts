@@ -222,7 +222,7 @@ export function buildSearchIndex(): CompiledSearchItem[] {
     add('极致属性攻略', '功能入口 · 全景资料库', 'page', ['极致属性', '天花板', '无视', '减免', '怪增', '躲闪', 'jz', 'jzsx', 'jizhi'], { tab: 'compendium', sub: 'ceiling' });
     add('职业技能速查', '功能入口 · 全景资料库', 'page', ['技能', '速查', '技能库', '门派技能', 'zyjn', 'jnsc'], { tab: 'compendium', sub: 'skills' });
     add('职业状态一览', '功能入口 · 全景资料库', 'page', ['职业状态', '辅助', '增益', '状态评级', 'zyzt', 'zt'], { tab: 'compendium', sub: 'support' });
-    add('副本 BOSS 速查', '功能入口 · 全景资料库', 'page', ['boss', '首领', '抗性', '副本boss', '减爆伤', 'fb', 'fbsc'], { tab: 'compendium', sub: 'boss' });
+    add('副本 BOSS 速查', '功能入口 · 全景资料库', 'page', ['boss', '首领', '属性', '副本boss', '减爆伤', 'fb', 'fbsc'], { tab: 'compendium', sub: 'boss' });
 
     // 2. 极致属性攻略 5 大核心属性子页（截图 1：极致无视、极致减免、极致减暴击、极致怪增、极致躲闪）
     const ceilingSubPages: Array<{ label: string; sub: SubTab; kw: string[] }> = [
@@ -306,7 +306,7 @@ export function buildSearchIndex(): CompiledSearchItem[] {
             `${shortName} (${d.DungeonName})`,
             '副本 BOSS 速查 · 副本',
             'dungeon',
-            [...baseDungeonKw, 'boss速查', '首领速查', '抗性'],
+            [...baseDungeonKw, 'boss速查', '首领速查', '属性'],
             { tab: 'compendium', sub: 'boss', dungeonId: d.DungeonID }
         );
 
@@ -412,58 +412,58 @@ export function buildSearchIndex(): CompiledSearchItem[] {
                 peakSkills = [];
             }
             const pfName = FACTION_LABELS[factionId] || factionId;
-                for (const pk of peakSkills) {
-                    if (!pk.Variant) continue;
-                    add(
-                        pk.SkillName,
-                        `属性战力计算器 · ${className}·${pfName} · 满状态峰值`,
-                        'skill',
-                        [className, pfName, '计算器', '测算', '龙怒', '峰值', '满配', '满状态', `${className}·${pk.SkillName}`].filter(Boolean),
-                        { tab: 'calculator', classId, faction: factionId, skillName: pk.SkillName, skillId: pk.SkillID }
-                    );
-                }
-            }
-        }
-
-        // 6. 战斗增益 Buff
-        const buffs = service.getBuffs();
-        const buffAliases: Record<string, string[]> = {
-            BUFF_FOCUS_EFFECT: ['专注', 'zhuanzhu', 'zz', '增益', '专注增益'],
-            BUFF_HOLYWRATH_EFFECT: ['巫咒', 'wuzhou', 'wz', '增益', '巫咒增益'],
-            BUFF_MON_CRITDAMAGE_EFFECT: ['绿点', 'lvdian', 'ld', '暴伤', '增益', '绿点增益'],
-            BUFF_MON_HARMED_EFFECT: ['易伤', 'yishang', 'ys', '增益', '易伤增益'],
-            BUFF_ATT_PERCENT_EFFECT: ['攻击比', 'gongjibi', 'gjb', '增益', '攻击比增益'],
-        };
-        for (const b of buffs) {
-            add(b.BuffName, '各职业状态 · 专注值与战斗增益参考', 'guide', buffAliases[b.BuffID] || [], {
-                tab: 'compendium',
-                sub: 'support',
-                item: b.BuffName,
-            });
-        }
-
-        // 7. 各职业状态评级（明确标示阵营，支持按阵营精确定位，不与顶层职业入口混淆）
-        const roles = service.getSupportRoles();
-        if (roles) {
-            const seenRole = new Set<string>();
-            for (const r of roles.roles) {
-                const key = `${r.name}-${r.faction}`;
-                if (seenRole.has(key)) continue;
-                seenRole.add(key);
-                const roleKind = r.roleType === 'dps' ? '输出' : '辅助';
+            for (const pk of peakSkills) {
+                if (!pk.Variant) continue;
                 add(
-                    `${r.name}·${r.faction} (${roleKind}评级)`,
-                    `各职业状态 · ${r.faction} · ${roleKind}`,
-                    'role',
-                    [r.name, r.faction, roleKind, `${roleKind}职业`, '评级', `${r.name}${r.faction}`, `${r.faction}${r.name}`],
-                    {
-                        tab: 'compendium',
-                        sub: 'support',
-                        item: `${r.name}-${r.faction}`,
-                    }
+                    pk.SkillName,
+                    `属性战力计算器 · ${className}·${pfName} · 满状态峰值`,
+                    'skill',
+                    [className, pfName, '计算器', '测算', '龙怒', '峰值', '满配', '满状态', `${className}·${pk.SkillName}`].filter(Boolean),
+                    { tab: 'calculator', classId, faction: factionId, skillName: pk.SkillName, skillId: pk.SkillID }
                 );
             }
         }
+    }
+
+    // 6. 战斗增益 Buff
+    const buffs = service.getBuffs();
+    const buffAliases: Record<string, string[]> = {
+        BUFF_FOCUS_EFFECT: ['专注', 'zhuanzhu', 'zz', '增益', '专注增益'],
+        BUFF_HOLYWRATH_EFFECT: ['巫咒', 'wuzhou', 'wz', '增益', '巫咒增益'],
+        BUFF_MON_CRITDAMAGE_EFFECT: ['绿点', 'lvdian', 'ld', '暴伤', '增益', '绿点增益'],
+        BUFF_MON_HARMED_EFFECT: ['易伤', 'yishang', 'ys', '增益', '易伤增益'],
+        BUFF_ATT_PERCENT_EFFECT: ['攻击比', 'gongjibi', 'gjb', '增益', '攻击比增益'],
+    };
+    for (const b of buffs) {
+        add(b.BuffName, '各职业状态 · 专注值与战斗增益参考', 'guide', buffAliases[b.BuffID] || [], {
+            tab: 'compendium',
+            sub: 'support',
+            item: b.BuffName,
+        });
+    }
+
+    // 7. 各职业状态评级（明确标示阵营，支持按阵营精确定位，不与顶层职业入口混淆）
+    const roles = service.getSupportRoles();
+    if (roles) {
+        const seenRole = new Set<string>();
+        for (const r of roles.roles) {
+            const key = `${r.name}-${r.faction}`;
+            if (seenRole.has(key)) continue;
+            seenRole.add(key);
+            const roleKind = r.roleType === 'dps' ? '输出' : '辅助';
+            add(
+                `${r.name}·${r.faction} (${roleKind}评级)`,
+                `各职业状态 · ${r.faction} · ${roleKind}`,
+                'role',
+                [r.name, r.faction, roleKind, `${roleKind}职业`, '评级', `${r.name}${r.faction}`, `${r.faction}${r.name}`],
+                {
+                    tab: 'compendium',
+                    sub: 'support',
+                    item: `${r.name}-${r.faction}`,
+                }
+            );
+        }
+    }
 
     // 8. 专注值通用参考
     const focusRef = skillMeta?.focusReference;

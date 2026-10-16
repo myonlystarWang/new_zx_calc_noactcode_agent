@@ -50,8 +50,8 @@ export const BossConfigPanel: React.FC<BossConfigPanelProps> = ({
     const filteredBosses = useMemo(() => {
         if (!searchQuery.trim()) return [];
         const query = searchQuery.toLowerCase();
-        return allBosses.filter(b => 
-            b.MonsterName.toLowerCase().includes(query) || 
+        return allBosses.filter(b =>
+            b.MonsterName.toLowerCase().includes(query) ||
             b.dungeonName.toLowerCase().includes(query)
         );
     }, [allBosses, searchQuery]);
@@ -168,7 +168,7 @@ export const BossConfigPanel: React.FC<BossConfigPanelProps> = ({
                                 return (
                                     <div className="w-full h-4 bg-red-950/80 rounded border border-red-900/60 relative overflow-hidden flex items-center justify-center">
                                         {/* HP progress filler */}
-                                        <div 
+                                        <div
                                             className="absolute inset-y-0 left-0 bg-gradient-to-r from-red-800 to-rose-600 transition-all duration-300"
                                             style={{ width: `${hpPercent}%` }}
                                         ></div>
@@ -238,7 +238,7 @@ export const BossConfigPanel: React.FC<BossConfigPanelProps> = ({
                             onClick={() => setIsDetailsExpanded(!isDetailsExpanded)}
                             className="w-full flex items-center justify-between text-[10px] font-bold text-slate-450 hover:text-slate-350 transition-colors"
                         >
-                            <span>BOSS详细免伤/抗性数据</span>
+                            <span>BOSS详细减伤/属性数据</span>
                             {isDetailsExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                         </button>
 

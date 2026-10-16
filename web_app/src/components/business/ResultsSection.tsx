@@ -103,108 +103,7 @@ const getRankConfig = (power: number) => {
     return { ...config, ...style };
 };
 
-export const TotalPowerCard: React.FC = () => {
-    const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
-    const [copied, setCopied] = useState(false);
-
-    const totalPower = useMemo(() => {
-        const service = DataService.getInstance();
-        const skillsMap = service.getSkills(userCharacter.ClassID);
-        const skills = skillsMap ? skillsMap[userCharacter.Faction] || [] : [];
-        const dungeons = service.getDungeons();
-        const activeBuffs = buffs.filter(b => activeBuffIds.includes(b.BuffID));
-
-        const dungeonPowers = dungeons.map(dungeon => {
-            const power = calculateDungeonPower(
-                userCharacter.BaseAttributes,
-                skills,
-                dungeon.Monsters,
-                activeBuffs,
-                buffValues
-            );
-            return power;
-        });
-
-        return calculateTotalPower(
-            dungeonPowers,
-            dungeonPowers.map(() => 1)
-        );
-    }, [userCharacter, activeBuffIds, buffs, buffValues]);
-
-    const currentRankConfig = getRankConfig(totalPower);
-
-    const copyData = async () => {
-        const text = `静态战力: ${formatNumber(totalPower)} (${currentRankConfig.Rank}级)`;
-        if (await copyToClipboard(text)) {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        }
-    };
-
-    return (
-        <div className="zx-card p-4 relative overflow-hidden">
-            {/* Background Decoration */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-24 bg-[var(--theme-primary)] opacity-20 blur-[40px] rounded-full pointer-events-none"></div>
-
-            <div className="relative flex flex-col items-center text-center z-10">
-                {/* Header - Compact */}
-                <div className="flex items-center gap-2 mb-2">
-                    <div className="p-1.5 rounded-lg bg-[var(--theme-glow)] border border-[var(--theme-primary)]/30 shadow-[0_0_8px_var(--theme-glow)]">
-                        <Trophy className="w-4 h-4 text-[var(--theme-accent)]" />
-                    </div>
-                    <div className="text-left">
-                        <h2 className="text-base font-black text-white tracking-wide italic" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-                            综合战力评分
-                        </h2>
-                        <p className="text-[8px] font-medium text-slate-400 tracking-widest uppercase leading-none">Total Power Score</p>
-                    </div>
-                </div>
-
-                {/* Main Power Number - Enhanced Gradient */}
-                <div className="relative mb-2">
-                    <div className="text-3xl sm:text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-[var(--theme-text)] to-[var(--theme-primary)] tracking-tighter drop-shadow-2xl"
-                        style={{ filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.5))' }}>
-                        {formatNumber(totalPower)}
-                    </div>
-                </div>
-
-                {/* Rank Badge - Dynamic Styles */}
-                <div className="mb-3">
-                    <div className={clsx(
-                        'px-4 py-0.5 rounded-full backdrop-blur-md transition-all duration-300',
-                        currentRankConfig.Color,
-                        currentRankConfig.Shadow,
-                        currentRankConfig.Border,
-                        currentRankConfig.Glow
-                    )}>
-                        <span className={clsx(
-                            'text-xs font-black italic tracking-wider',
-                            currentRankConfig.TextColor
-                        )} style={{ textShadow: '0 1px 1px rgba(0,0,0,0.3)' }}>
-                            {currentRankConfig.Rank} 级
-                        </span>
-                    </div>
-                </div>
-
-                {/* Footer Actions - Compact */}
-                <div className="flex flex-col sm:flex-row items-center gap-2 text-[10px] w-full justify-center border-t border-slate-700/50 pt-3">
-                    <button
-                        onClick={copyData}
-                        className={clsx(
-                            "flex items-center gap-1 px-3 py-1 rounded-full transition-all group border text-[10px]",
-                            copied
-                                ? "bg-green-500/20 border-green-500/30 text-green-400 font-bold"
-                                : "zx-btn"
-                        )}
-                    >
-                        {copied ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5 group-hover:scale-110 transition-transform" />}
-                        <span>{copied ? "已复制" : "复制战力数据"}</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
+export const TotalPowerCard: React.FC = () => null;
 
 export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearchConsumed?: () => void }> = ({ searchNav, onSearchConsumed }) => {
     const { userCharacter, activeBuffIds, buffs, buffValues, selectedDungeonId: contextDungeonId, selectedMonsterId: contextMonsterId } = useApp();
@@ -489,15 +388,67 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         }
     }, [shareCardData, shareSnapshot, selectedDungeonId]);
 
-    return (
-        <div className="relative w-full flex flex-col items-center gap-4">
-            <div className="w-full flex items-center justify-between gap-3">
-                <h2 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
-                    <span className="w-1 h-5 bg-gradient-to-b from-cyan-500 to-blue-500 rounded-full"></span>
-                    副本战力分析
-                </h2>
+    const totalPowerRankConfig = useMemo(() => getRankConfig(results.totalPower), [results.totalPower]);
+    const [powerCopied, setPowerCopied] = useState(false);
+    const handleCopyPowerData = useCallback(async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const text = `静态战力: ${formatNumber(results.totalPower)} (${totalPowerRankConfig.Rank}级)`;
+        if (await copyToClipboard(text)) {
+            setPowerCopied(true);
+            window.setTimeout(() => setPowerCopied(false), 2000);
+        }
+    }, [results.totalPower, totalPowerRankConfig]);
 
-                <div className="relative flex items-center gap-2">
+    return (
+        <div className="relative w-full flex flex-col">
+            {/* 顶栏：标题 + 呼吸勋章 + 分享按钮 (h-9 与左侧属性方案 100% 绝对等高平齐) */}
+            <div className="w-full h-9 flex items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2 min-w-0">
+                    <span className="w-1 h-4 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full shrink-0"></span>
+                    <h2 className="text-sm font-bold text-slate-100 truncate">
+                        副本战力分析 (实战输出)
+                    </h2>
+                </div>
+
+                <div className="relative flex items-center gap-2 shrink-0">
+                    {/* 综合战力评分 · 呼吸勋章 */}
+                    <div
+                        onClick={handleCopyPowerData}
+                        title="点击复制战力数据"
+                        className="h-8 flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 rounded-full border border-cyan-500/40 bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-cyan-950/70 shadow-[0_0_12px_rgba(6,182,212,0.25)] hover:border-cyan-400/80 hover:shadow-[0_0_16px_rgba(6,182,212,0.45)] transition-all cursor-pointer group select-none"
+                    >
+                        <Trophy className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
+                        <div className="flex items-center gap-1 font-mono">
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider hidden sm:inline">战力</span>
+                            <span className="text-xs sm:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-300">
+                                {formatNumber(results.totalPower)}
+                            </span>
+                        </div>
+
+                        {/* 等级呼吸胶囊 */}
+                        <span className={clsx(
+                            "px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] font-black italic tracking-wide border shadow-sm transition-all",
+                            totalPowerRankConfig.Color,
+                            totalPowerRankConfig.Border,
+                            totalPowerRankConfig.TextColor,
+                            totalPowerRankConfig.Shadow
+                        )}>
+                            {totalPowerRankConfig.Rank} 级
+                        </span>
+
+                        {/* 复制指示 */}
+                        <div className="text-slate-400 group-hover:text-cyan-300 transition-colors ml-0.5">
+                            {powerCopied ? (
+                                <span className="text-[10px] text-emerald-400 font-bold flex items-center gap-0.5">
+                                    <Check className="w-3 h-3" />
+                                    <span className="hidden md:inline">已复制</span>
+                                </span>
+                            ) : (
+                                <Copy className="w-3 h-3" />
+                            )}
+                        </div>
+                    </div>
+
                     {feedback && (
                         <span className="text-[10px] text-green-400 font-bold whitespace-nowrap">
                             {feedback === 'link' ? '✓ 链接已复制' : '✓ 文本已复制'}
@@ -512,7 +463,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                         onClick={handleToggleShareMenu}
                         aria-label="分享"
                         aria-expanded={shareOpen}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 hover:border-cyan-500/50 transition-all cursor-pointer"
+                        className="h-8 flex items-center gap-1.5 px-3 rounded-full text-xs font-semibold bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 hover:border-cyan-500/50 transition-all cursor-pointer"
                     >
                         {exportState === 'working' ? (
                             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -526,7 +477,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
 
             <div
                 ref={containerRef}
-                className="relative w-full h-[720px] md:h-[720px] flex items-start justify-center perspective-1000 touch-pan-y overflow-hidden"
+                className="relative w-full h-[675px] flex items-start justify-center perspective-1000 touch-pan-y overflow-hidden"
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}

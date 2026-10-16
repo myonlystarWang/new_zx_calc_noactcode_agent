@@ -23,39 +23,37 @@ export const ClassSelector: React.FC = () => {
 
     return (
         <div>
-            <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
-                <span className="w-1 h-5 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full"></span>
+            <h2 className="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2">
+                <span className="w-1 h-4 bg-gradient-to-b from-blue-400 to-indigo-500 rounded-full"></span>
                 职业选择
             </h2>
 
             {/* Selected Class Display (Trigger) */}
             <div
                 onClick={() => setIsModalOpen(true)}
-                className="glass-panel p-3 md:py-3 md:px-5 h-[108px] cursor-pointer transition-all duration-300 hover:border-blue-500/50 group relative overflow-hidden border-blue-500/30 bg-blue-500/5 flex items-center"
+                className="glass-panel p-3.5 h-[102px] cursor-pointer transition-all duration-300 hover:border-blue-500/50 group relative overflow-hidden border-blue-500/30 bg-blue-500/5 flex items-center justify-between"
             >
-                <div className="flex items-center justify-between relative z-10 w-full">
-                    <div className="flex items-center gap-3 md:gap-4">
-                        <div className="p-2 md:p-2.5 rounded-xl bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)]">
-                            <User className="w-5 h-5 md:w-6 md:h-6" />
-                        </div>
-                        <div>
-                            <div className="text-xs text-blue-400 font-bold mb-0.5 tracking-wide">当前职业</div>
-                            <div className="text-lg md:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 drop-shadow-lg tracking-wider flex items-center gap-2 md:gap-3">
-                                {currentClass?.ClassName || '未选择'}
-                                <span className="text-[10px] md:text-xs font-bold text-blue-300 px-2 md:px-2.5 py-0.5 md:py-1 rounded-full bg-blue-500/20 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.2)] tracking-normal whitespace-nowrap">
-                                    {currentClass?.Race || '未知'}
-                                </span>
-                            </div>
+                <div className="flex items-center gap-3 relative z-10">
+                    <div className="p-2 rounded-xl bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.35)] shrink-0">
+                        <User className="w-5 h-5" />
+                    </div>
+                    <div>
+                        <div className="text-[10px] text-blue-400 font-bold tracking-wide">当前职业</div>
+                        <div className="text-base font-black text-white flex items-center gap-1.5">
+                            {currentClass?.ClassName || '未选择'}
+                            <span className="text-[9px] font-bold text-blue-300 px-1.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30">
+                                {currentClass?.Race || '未知'}
+                            </span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-1 md:gap-2 text-slate-400 group-hover:text-blue-300 transition-colors">
-                        <span className="text-xs md:text-sm font-bold tracking-wide whitespace-nowrap">切换职业</span>
-                        <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
-                    </div>
+                </div>
+                <div className="flex items-center gap-1 text-slate-400 group-hover:text-blue-300 text-xs font-bold transition-colors relative z-10">
+                    <span>切换</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
                 </div>
 
                 {/* Background Glow */}
-                <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all" />
+                <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all pointer-events-none" />
             </div>
 
             {/* Modal */}

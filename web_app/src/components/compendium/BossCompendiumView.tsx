@@ -514,7 +514,7 @@ const BossCard: React.FC<{
                 </div>
             ) : (
                 <div className="px-3 py-2 rounded-lg bg-slate-950/40 border border-slate-800/40 text-center text-xs text-slate-500 font-mono">
-                    BOSS其他实战抗性数据录入中
+                    BOSS其他实战属性数据录入中
                 </div>
             )}
         </div>

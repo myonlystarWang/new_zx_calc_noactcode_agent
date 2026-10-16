@@ -142,13 +142,16 @@ export const PresetManager: React.FC = () => {
 
     return (
         <div className={clsx('relative transition-all', dropdownOpen ? 'z-40' : 'z-10')}>
-            {/* 标题（与职业/阵营选择对齐：均在卡片外） */}
-            <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
-                <span className="w-1 h-5 bg-gradient-to-b from-cyan-500 to-purple-500 rounded-full"></span>
-                属性方案
-            </h2>
+            {/* 标题（h-9 绝对等高对齐，居中对齐） */}
+            <div className="h-9 flex items-center justify-between mb-3">
+                <h2 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                    <span className="w-1 h-4 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full"></span>
+                    属性方案
+                </h2>
+                <span className="text-[11px] text-slate-500">快速存储/读取</span>
+            </div>
 
-            <div className="glass-panel p-2.5 sm:p-3 relative">
+            <div className="glass-panel p-2.5 relative">
                 <div className="flex flex-col gap-2">
                     {/* 第一行：方案下拉切换（整行展开，名称完整展示） */}
                     <div ref={dropdownRef} className="relative w-full">
