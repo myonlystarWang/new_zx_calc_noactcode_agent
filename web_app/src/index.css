@@ -1240,3 +1240,109 @@ input[type="number"] {
 .menu-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(6, 182, 212, 0.7);
 }
+
+/* ==========================================================================
+   战力计算器原生容器查询两列自适应（零插件依赖，100% 原生稳健生效）
+   ========================================================================== */
+.calc-container-root {
+  container-type: inline-size;
+  container-name: calcPanel;
+  width: 100%;
+}
+
+.calc-two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+  width: 100%;
+}
+
+/* 当计算器面板实际 DOM 宽度 >= 640px 时，立即触发两列 */
+@container calcPanel (min-width: 640px) {
+  .calc-two-col-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+  }
+  .calc-col-inputs {
+    grid-column: span 6 / span 6 !important;
+  }
+  .calc-col-results {
+    grid-column: span 6 / span 6 !important;
+  }
+  .calc-selector-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .calc-attr-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* 当计算器面板实际 DOM 宽度 >= 1200px（大屏/全屏）时，右列 3D 轮播分得更多宽度 */
+@container calcPanel (min-width: 1200px) {
+  .calc-col-inputs {
+    grid-column: span 5 / span 5 !important;
+  }
+  .calc-col-results {
+    grid-column: span 7 / span 7 !important;
+  }
+}
+
+/* 兜底媒体查询（在不支持 container query 的极少数环境下也能按视口触发两列） */
+@media (min-width: 1200px) {
+  .calc-two-col-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .calc-col-inputs {
+    grid-column: span 6 / span 6;
+  }
+  .calc-col-results {
+    grid-column: span 6 / span 6;
+  }
+  .calc-selector-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .calc-attr-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1536px) {
+  .calc-col-inputs {
+    grid-column: span 5 / span 5;
+  }
+  .calc-col-results {
+    grid-column: span 7 / span 7;
+  }
+}
+
+
+
+/* 战力计算器面板专属轻盈精修滑块样式 */
+.calc-container-root input[type="range"]::-webkit-slider-runnable-track,
+.calc-container-root input[type="range"]::-webkit-slider-track {
+  background: #1e293b !important;
+  height: 3px !important;
+  border-radius: 9999px !important;
+}
+
+.calc-container-root input[type="range"]::-webkit-slider-thumb {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  margin-top: -4.5px !important;
+  border: 2px solid #070a10 !important;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.6) !important;
+}
+
+.calc-container-root input[type="range"]::-moz-range-track {
+  background: #1e293b !important;
+  height: 3px !important;
+  border-radius: 9999px !important;
+}
+
+.calc-container-root input[type="range"]::-moz-range-thumb {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  border: 2px solid #070a10 !important;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.6) !important;
+}

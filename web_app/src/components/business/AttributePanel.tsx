@@ -4,7 +4,6 @@ import { AttributeCard } from '../ui/AttributeCard';
 import { ClassSelector } from './ClassSelector';
 import { FactionSelector } from './FactionSelector';
 import { PresetManager } from './PresetManager';
-import { Shield, Sword, Heart, Zap, Crosshair, Skull } from 'lucide-react';
 
 interface AttributePanelProps {
     attributes: CharacterAttributes;
@@ -35,81 +34,88 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
     };
 
     return (
-        <div className="flex flex-col justify-between h-full gap-3">
+        <div className="flex flex-col gap-4">
             {/* Preset Manager */}
             <PresetManager />
 
-            {/* Class Selector */}
-            <ClassSelector />
+            {/* Class & Faction Selectors - 并排半行，节约纵向空间 */}
+            <div className="calc-selector-pair grid grid-cols-1 md:grid-cols-2 gap-3">
+                <ClassSelector />
+                <FactionSelector />
+            </div>
 
-            {/* Faction Selector */}
-            <FactionSelector />
-
-            {/* Character Attributes Grid */}
+            {/* Character Attributes (第1行4项基础攻击气血，第2行3项核心防御增伤，彻底告别空洞) */}
             <div>
-                <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
-                    <span className="w-1 h-5 bg-gradient-to-b from-cyan-500 to-purple-500 rounded-full"></span>
-                    角色属性
+                <h2 className="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2">
+                    <span className="w-1 h-4 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full"></span>
+                    角色基础属性
                 </h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <AttributeCard
-                        label="最小攻击"
-                        value={attributes.CharacterMinAttack}
-                        onChange={(v) => handleChange('CharacterMinAttack', v)}
-                        max={1000000}
-                        icon={<Sword className="w-4 h-4" />}
-                        color="cyan"
-                    />
-                    <AttributeCard
-                        label="最大攻击"
-                        value={attributes.CharacterMaxAttack}
-                        onChange={(v) => handleChange('CharacterMaxAttack', v)}
-                        max={1000000}
-                        icon={<Sword className="w-4 h-4" />}
-                        color="purple"
-                    />
-                    <AttributeCard
-                        label="气血"
-                        value={attributes.CharacterHealth}
-                        onChange={(v) => handleChange('CharacterHealth', v)}
-                        max={10000000}
-                        step={100}
-                        icon={<Heart className="w-4 h-4" />}
-                        color="red"
-                    />
-                    <AttributeCard
-                        label="真气"
-                        value={attributes.CharacterMana}
-                        onChange={(v) => handleChange('CharacterMana', v)}
-                        max={10000000}
-                        step={100}
-                        icon={<Zap className="w-4 h-4" />}
-                        color="blue"
-                    />
-                    <AttributeCard
-                        label="防御"
-                        value={attributes.CharacterDefense}
-                        onChange={(v) => handleChange('CharacterDefense', v)}
-                        max={1000000}
-                        icon={<Shield className="w-4 h-4" />}
-                        color="emerald"
-                    />
-                    <AttributeCard
-                        label="暴击伤害"
-                        value={attributes.CharacterCriticalHitDamagePercent}
-                        onChange={(v) => handleChange('CharacterCriticalHitDamagePercent', v)}
-                        max={4000}
-                        icon={<Crosshair className="w-4 h-4" />}
-                        color="yellow"
-                    />
-                    <AttributeCard
-                        label="对怪增伤"
-                        value={attributes.CharacterMonsterDamageIncreasePercent}
-                        onChange={(v) => handleChange('CharacterMonsterDamageIncreasePercent', v)}
-                        max={100}
-                        icon={<Skull className="w-4 h-4" />}
-                        color="orange"
-                    />
+                <div className="flex flex-col gap-3">
+                    {/* Row 1: 4 Cards (Min/Max Atk, HP, MP) */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <AttributeCard
+                            label="最小攻击"
+                            tag="Min"
+                            value={attributes.CharacterMinAttack}
+                            onChange={(v) => handleChange('CharacterMinAttack', v)}
+                            max={1000000}
+                            color="cyan"
+                        />
+                        <AttributeCard
+                            label="最大攻击"
+                            tag="Max"
+                            value={attributes.CharacterMaxAttack}
+                            onChange={(v) => handleChange('CharacterMaxAttack', v)}
+                            max={1000000}
+                            color="purple"
+                        />
+                        <AttributeCard
+                            label="气血值"
+                            tag="HP"
+                            value={attributes.CharacterHealth}
+                            onChange={(v) => handleChange('CharacterHealth', v)}
+                            max={10000000}
+                            step={100}
+                            color="red"
+                        />
+                        <AttributeCard
+                            label="真气值"
+                            tag="MP"
+                            value={attributes.CharacterMana}
+                            onChange={(v) => handleChange('CharacterMana', v)}
+                            max={10000000}
+                            step={100}
+                            color="blue"
+                        />
+                    </div>
+
+                    {/* Row 2: 3 Cards (DEF, CRIT, M-DMG) - 与第1行小卡片同宽，末位自然留空 */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <AttributeCard
+                            label="防御"
+                            tag="DEF"
+                            value={attributes.CharacterDefense}
+                            onChange={(v) => handleChange('CharacterDefense', v)}
+                            max={1000000}
+                            color="emerald"
+                        />
+                        <AttributeCard
+                            label="暴伤%"
+                            tag="CRIT"
+                            value={attributes.CharacterCriticalHitDamagePercent}
+                            onChange={(v) => handleChange('CharacterCriticalHitDamagePercent', v)}
+                            max={4000}
+                            color="yellow"
+                        />
+                        <AttributeCard
+                            label="对怪增伤%"
+                            tag="M-DMG"
+                            value={attributes.CharacterMonsterDamageIncreasePercent}
+                            onChange={(v) => handleChange('CharacterMonsterDamageIncreasePercent', v)}
+                            max={100}
+                            color="orange"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

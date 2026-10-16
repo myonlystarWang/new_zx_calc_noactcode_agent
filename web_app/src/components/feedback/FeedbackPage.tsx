@@ -467,7 +467,7 @@ export const FeedbackPage: React.FC = () => {
               type="text"
               value={postContent}
               onChange={e => setPostContent(e.target.value)}
-              placeholder="写下你的战术心得、抗性捉虫或建议（回车发送）..."
+              placeholder="写下你的战术心得、数据捉虫或建议（回车发送）..."
               maxLength={300}
               className="flex-1 bg-black/60 border border-slate-700/80 focus:border-amber-500/70 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors"
             />

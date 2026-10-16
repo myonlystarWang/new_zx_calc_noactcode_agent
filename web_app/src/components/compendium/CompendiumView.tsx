@@ -1533,7 +1533,7 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
                         全景战斗资料库
                     </h1>
                     <div className="text-xs text-slate-400 font-mono">
-                        汇集极致属性、门派技能、职业评级与副本BOSS抗性
+                        汇集极致属性、门派技能、职业评级与副本BOSS属性
                     </div>
                 </div>
 
