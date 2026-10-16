@@ -55,11 +55,11 @@ export const AttributeCard: React.FC<AttributeCardProps> = ({
             "glass-panel h-[110px] p-3.5 flex flex-col justify-between transition-all duration-300 animate-fade-in group",
             styles.border
         )}>
-            {/* Header: Label & Tag (Compact & Refined) */}
-            <div className="flex items-center justify-between text-xs text-slate-300 font-bold mb-0.5">
-                <span className="truncate">{label}</span>
+            {/* Header: Label & Tag (Clear & Refined) */}
+            <div className="flex items-center justify-between text-xs text-slate-200 font-bold mb-0.5">
+                <span className="truncate text-[13px] tracking-wide">{label}</span>
                 {tag && (
-                    <span className={clsx("text-[10px] font-mono tracking-tight shrink-0 font-bold", styles.tagBg)}>
+                    <span className={clsx("text-[11px] font-mono font-bold tracking-tight shrink-0 px-1.5 py-0.5 rounded bg-slate-800/90 border border-slate-700/60 shadow-sm", styles.tagBg)}>
                         {tag}
                     </span>
                 )}
