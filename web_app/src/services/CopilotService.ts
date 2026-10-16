@@ -358,6 +358,27 @@ function getPinyinAliases(): Array<[string, string]> {
     return aliases;
 }
 
+// ------------------------------------------------------------
+// T-16-B 项链系列词库（用户 2026-10-16 分诊口径）
+// 项链数据无品质系列，按名称模式分 5 系；系列 query（如「社稷项链」）在装备分支
+// 展开为 patterns 走既有包含匹配。神级首饰沿用既有「印记」卡片（太昊/太乙按升级合并显示）。
+// ------------------------------------------------------------
+interface NecklaceSeries {
+    key: string;
+    label: string;
+    /** 玩家别称（如「积分项链」= 煌武） */
+    aliases?: string[];
+    /** 装备名称匹配模式（命中任一即属该系列） */
+    patterns: string[];
+}
+const NECKLACE_SERIES: NecklaceSeries[] = [
+    { key: 'shenji', label: '神级首饰', patterns: ['印记', '造化之'] },
+    { key: 'huangwu', label: '煌武项链', aliases: ['积分项链'], patterns: ['煌武'] },
+    { key: 'zhandui', label: '战队项链', patterns: ['圣瑞', '圣谛'] },
+    { key: 'sheji', label: '社稷项链', patterns: ['菩提珠', '琥珀珠', '舍利子', '血菩提', '真如子'] },
+    { key: 'xingyu', label: '星语项链', patterns: ['星语项链'] },
+];
+
 // 纯字母输入（如 "zhu shuang"）→ 词库中文术语；有任何无法解析的字母段则整体放弃（防半归一化错配）
 function normalizePinyinQuery(q: string): string | null {
     const letters = q.replace(/[^a-z]/g, '');
@@ -754,26 +775,48 @@ export class CopilotService {
         }
 
         // ------------------------------------------------------------
-        // 0.6 裸部位名歧义分流（slot_hub，T-16 方案A）
-        // 输入精确等于品质系部位名（武器/头盔/衣服/靴子/腰带/袖甲）时返回品质三入口，
-        // 替代原有 100+ 件平铺列表；项链/戒指/锦囊/佩章/罡气/勋章/护符/法身/玺绶
-        // 九个非品质系部位不在此列（数据无品质系列，维持平铺，系列分诊后排期）。
-        // 选项 query 均实测可用：18 个「品质+部位」组合全部 26~54 候选（2026-10-16 取证）。
+        // 0.6 裸部位名歧义分流（slot_hub，T-16 方案A + 系列词库 B）
+        // ① 品质系 6 部位（武器/头盔/衣服/靴子/腰带/袖甲，含帽子/鞋子等口语别名）
+        //    → 品质三入口（修武/昭武/彰武，替代 100+ 件平铺）；
+        // ② 项链 → 5 系列入口（神级首饰/煌武/战队/社稷/星语，用户 2026-10-16 分诊口径）。
+        // 选项 query 均实测可用：18 个「品质+部位」组合全部 26~54 候选；系列 query
+        // 经 NECKLACE_SERIES 展开后走装备分支包含匹配。
         // ------------------------------------------------------------
-        const SLOT_HUB_SLOTS = ['武器', '头盔', '衣服', '靴子', '腰带', '袖甲'];
-        const SLOT_HUB_QUALITIES = ['修武', '昭武', '彰武'];
-        if (SLOT_HUB_SLOTS.includes(q)) {
-            const hubOptions = SLOT_HUB_QUALITIES.map(qt => ({
-                key: qt, label: `${qt}系`, query: `${qt} ${q}`
+        const SLOT_HUB_ALIAS: Record<string, string> = {
+            '帽子': '头盔', '帽': '头盔', '盔': '头盔', '冠': '头盔',
+            '鞋子': '靴子', '鞋': '靴子', '靴': '靴子', '履': '靴子',
+        };
+        if (q === '项链') {
+            const seriesOptions = NECKLACE_SERIES.map(s => ({
+                key: s.key, label: s.label, query: s.label
             }));
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: `为你定位到装备部位【${q}】。请选择要查询的品质系列：`,
+                text: `为你定位到装备部位【项链】。请选择要查询的系列：`,
                 time: timeStr,
                 cardType: 'slot_hub',
                 cardData: {
                     slot: q,
+                    options: seriesOptions
+                }
+            };
+        }
+        const SLOT_HUB_SLOTS = ['武器', '头盔', '衣服', '靴子', '腰带', '袖甲'];
+        const SLOT_HUB_QUALITIES = ['修武', '昭武', '彰武'];
+        const hubStdSlot = SLOT_HUB_SLOTS.includes(q) ? q : (SLOT_HUB_ALIAS[q] || null);
+        if (hubStdSlot) {
+            const hubOptions = SLOT_HUB_QUALITIES.map(qt => ({
+                key: qt, label: `${qt}系`, query: `${qt} ${hubStdSlot}`
+            }));
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你定位到装备部位【${hubStdSlot}】。请选择要查询的品质系列：`,
+                time: timeStr,
+                cardType: 'slot_hub',
+                cardData: {
+                    slot: hubStdSlot,
                     options: hubOptions
                 }
             };
@@ -1109,7 +1152,7 @@ export class CopilotService {
                         if (e.prof && e.prof.length > 0 && !e.prof.includes('通用')) return false;
                     }
                     const n = (e.name || '').toLowerCase();
-                    if (n.includes('守卫青云') || n.includes('副本内使用') || n.includes('测试')) {
+                    if (n.includes('守卫青云') || n.includes('副本内使用') || n.includes('测试') || n.includes('作废') || n.startsWith('天帝宝库_')) {
                         return false;
                     }
                     return true;
@@ -1134,6 +1177,13 @@ export class CopilotService {
                     );
                     cleanTokens.push(...parts);
                 }
+
+                // T-16-B 系列检索词展开：「社稷项链」「积分项链」等系列 query →
+                // 在 matchedEquips 过滤中作为 OR 组（不能进 cleanTokens——那是 AND
+                // 语义，多 pattern 会互斥导致零候选）。seriesPatterns 供下方使用。
+                const matchedNecklaceSeries = NECKLACE_SERIES.find(s =>
+                    q.includes(s.label) || (s.aliases || []).some(a => q.includes(a))
+                );
 
                 const SKILL_CATEGORY_WORDS = [
                     '技能', '技能描述', '技能机制', '神通', '天书',
@@ -1232,8 +1282,8 @@ export class CopilotService {
                         const eSlot = (e.slot || '').toLowerCase();
                         const eProfs = (e.prof || []).map(p => p.toLowerCase());
 
-                        // 品质匹配
-                        if (matchedQ && !eQ.includes(matchedQ.toLowerCase()) && !eName.includes(matchedQ.toLowerCase())) {
+                        // 品质匹配（系列 query 跳过：系列名如「神级首饰」含品质词「神级」，属误提取）
+                        if (matchedQ && !matchedNecklaceSeries && !eQ.includes(matchedQ.toLowerCase()) && !eName.includes(matchedQ.toLowerCase())) {
                             return false;
                         }
                         // 部位匹配
@@ -1243,6 +1293,10 @@ export class CopilotService {
                         // 职业匹配
                         if (matchedProf && !eProfs.some(p => p.includes(matchedProf.toLowerCase())) && !eName.includes(matchedProf.toLowerCase())) {
                             return false;
+                        }
+                        // 系列匹配（T-16-B）：命中任一 pattern 即保留；系列 query 跳过普通关键词 AND
+                        if (matchedNecklaceSeries) {
+                            return matchedNecklaceSeries.patterns.some(p => eName.includes(p.toLowerCase()));
                         }
                         // 其余自由关键词匹配（如 "大乘战罡"、"逍遥"、"惊涛"、"天弈"、"天循"）
                         for (const ct of cleanTokens) {
