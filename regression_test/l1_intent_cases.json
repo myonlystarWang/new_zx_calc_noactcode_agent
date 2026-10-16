@@ -31,7 +31,7 @@
 
   { "id": "fabao-tianya-01", "input": "天琊", "expect": { "cardType": "fabao", "cardData.name": "天琊" }, "tags": ["standard", "fabao"], "assert": "strong" },
   { "id": "fabao-shihun-01", "input": "噬魂", "expect": { "cardType": "fabao", "cardData.name": "噬魂" }, "tags": ["standard", "fabao"], "assert": "strong" },
-  { "id": "fabao-order-quirk-01", "input": "玉净瓶", "expect": { "cardType": "equip", "cardData.equip.name": "玉净瓶秘笈" }, "tags": ["standard", "fabao"], "assert": "strong" },
+  { "id": "fabao-order-quirk-01", "input": "玉净瓶", "expect": { "cardType": "fabao", "cardData.fabao.名称": "玉净瓶" }, "tags": ["standard", "fabao"], "assert": "strong", "note": "T-14 R1 已实施：原'装备玉净瓶秘笈劫持'怪象已修复，精确法宝名优先" },
 
   { "id": "skill-canglongxiao-01", "input": "苍龙啸", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4, "cardData.skill.name": "苍龙啸" }, "tags": ["standard", "skill"], "assert": "strong" },
   { "id": "skill-shenjian-01", "input": "神剑御雷真诀", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4, "cardData.skill.name": "神剑御雷真诀" }, "tags": ["standard", "skill"], "assert": "strong" },
@@ -78,9 +78,11 @@
   { "id": "skill-tag-yishang-gap", "input": "易伤技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 10834 }, "tags": ["synonym", "skill"], "assert": "strong", "note": "T-04 已修复：易伤=增伤同义词落地（用户确认口径），与增伤技能结果完全一致（first id 都是 10834）。原查无行为作废，预期变化已 approve" },
   { "id": "fabao-effect-baosshang", "input": "爆伤法宝", "expect": { "cardType": "fabao_candidates", "cardData.candidates.length": 15, "cardData.candidates.0.id": 9 }, "tags": ["synonym", "fabao"], "assert": "strong" },
 
-  { "id": "conflict-fabao-exact-01", "input": "玉净瓶", "expect": { "cardType": "equip", "cardData.equip.name": "玉净瓶秘笈" }, "tags": ["conflict", "fabao", "equip"], "assert": "strong", "note": "T-14: 法宝精确名'玉净瓶'存在，被装备分支部分包含'玉净瓶秘笈'劫持。建议裁决R1(跨分支精确匹配优先)→应出 fabao。处置:P2" },
-  { "id": "conflict-fabao-exact-02", "input": "七星剑", "expect": { "cardType": "equip", "cardData.equip.name": "七星剑秘笈" }, "tags": ["conflict", "fabao", "equip"], "assert": "strong", "note": "T-14: 同玉净瓶模式(精确法宝名 vs 部分装备名'七星剑秘笈')。建议裁决R1。处置:P2" },
-  { "id": "conflict-dungeon-alias-01", "input": "悬夜翎", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 2, "cardData.candidates.0.id": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI" }, "tags": ["conflict", "fabao", "dungeon"], "assert": "strong", "note": "T-14: 法宝精确名存在，但'悬夜翎'包含副本别名'悬夜'→副本意图劫持。建议裁决R1。处置:P2" },
+  { "id": "conflict-fabao-exact-01", "input": "玉净瓶", "expect": { "cardType": "fabao", "cardData.fabao.名称": "玉净瓶" }, "tags": ["conflict", "fabao", "equip"], "assert": "strong", "note": "T-14 R1 已实施：法宝精确名优先于装备部分包含（原'玉净瓶秘笈'劫持已修）" },
+  { "id": "conflict-fabao-exact-02", "input": "七星剑", "expect": { "cardType": "fabao", "cardData.fabao.名称": "七星剑" }, "tags": ["conflict", "fabao", "equip"], "assert": "strong", "note": "T-14 R1 已实施：同玉净瓶模式（原'七星剑秘笈'劫持已修）" },
+  { "id": "conflict-fabao-exact-03", "input": "悬夜翎", "expect": { "cardType": "fabao", "cardData.fabao.名称": "悬夜翎" }, "tags": ["conflict", "fabao", "dungeon"], "assert": "strong", "note": "T-14 R1 已实施：原被副本别名'悬夜'劫持（boss_candidates）已修" },
+  { "id": "conflict-fabao-exact-04", "input": "七星剑秘笈", "expect": { "cardType": "equip", "cardData.equip.name": "七星剑秘笈" }, "tags": ["conflict", "fabao", "equip"], "assert": "strong", "note": "R1 边界：用户显式输装备全名（含'秘笈'后缀）仍走装备——精确名优先不误伤" },
+  { "id": "conflict-dungeon-alias-01", "input": "悬夜翎", "expect": { "cardType": "fabao", "cardData.fabao.名称": "悬夜翎" }, "tags": ["conflict", "fabao", "dungeon"], "assert": "strong", "note": "T-14 R1 已实施：原被副本别名'悬夜'劫持（boss_candidates 2 候选）已修，精确法宝名优先" },
   { "id": "conflict-skill-xyc-01", "input": "鬼王 轩辕策", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 5837 }, "tags": ["conflict", "skill", "tool"], "assert": "strong", "note": "T-12/R2 已落地：带职业前缀的轩辕策改走技能分支（原 xyc_diag 工具卡劫持）。预期变化已 approve" },
   { "id": "conflict-skill-xyc-02", "input": "逐霜 轩辕策", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 8091 }, "tags": ["conflict", "skill", "tool"], "assert": "strong", "note": "T-12/R2 已落地：同鬼王。预期变化已 approve" },
   { "id": "xyc-bare-still-tool", "input": "轩辕策", "expect": { "cardType": "xyc_diag", "cardData.workspaceMode": "xyc" }, "tags": ["conflict", "tool"], "assert": "strong", "note": "T-12 防过犹不及：裸「轩辕策」（无职业前缀）仍走工具卡，R2 只放行带职业前缀的形式" },

@@ -9506,13 +9506,14 @@
   },
   "fabao-order-quirk-01": {
     "sender": "assistant",
-    "text": "为你速查到装备【玉净瓶秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【玉净瓶】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "玉净瓶秘笈",
-        "slot": "佩章"
+      "id": 100,
+      "name": "玉净瓶",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 100
       }
     }
   },
@@ -15341,17 +15342,44 @@
   },
   "conflict-fabao-exact-01": {
     "sender": "assistant",
-    "text": "为你速查到装备【玉净瓶秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【玉净瓶】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "玉净瓶秘笈",
-        "slot": "佩章"
+      "id": 100,
+      "name": "玉净瓶",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 100
       }
     }
   },
   "conflict-fabao-exact-02": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【七星剑】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 3,
+      "name": "七星剑",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 3
+      }
+    }
+  },
+  "conflict-fabao-exact-03": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【悬夜翎】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 91,
+      "name": "悬夜翎",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 91
+      }
+    }
+  },
+  "conflict-fabao-exact-04": {
     "sender": "assistant",
     "text": "为你速查到装备【七星剑秘笈】（佩章）。装备原生属性卡如下：",
     "cardType": "equip",
@@ -15365,43 +15393,15 @@
   },
   "conflict-dungeon-alias-01": {
     "sender": "assistant",
-    "text": "为你速查到【悬夜林（七尾蜈蚣）】下的全部 2 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
-    "cardType": "boss_candidates",
+    "text": "为你速查到法宝【悬夜翎】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "query": "悬夜翎",
-      "dungeonName": "悬夜林（七尾蜈蚣）",
-      "candidates": [
-        {
-          "id": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI",
-          "monsterId": "QIWEI_WUGONG_CI",
-          "monsterName": "七尾蜈蚣·雌",
-          "dungeonId": "XUANYELIN_QIWEI_WUGONG",
-          "dungeonName": "悬夜林（七尾蜈蚣）",
-          "dungeonShortLabel": "悬夜林",
-          "categoryLabel": "历练与试炼（四象七、悬夜林）",
-          "difficulty": "极难",
-          "def": 500000,
-          "hp": 2000000000,
-          "critRed": 300,
-          "critDmgRed": 1700,
-          "route": "/compendium/boss?d=XUANYELIN_QIWEI_WUGONG&m=QIWEI_WUGONG_CI"
-        },
-        {
-          "id": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_XIONG",
-          "monsterId": "QIWEI_WUGONG_XIONG",
-          "monsterName": "七尾蜈蚣·雄",
-          "dungeonId": "XUANYELIN_QIWEI_WUGONG",
-          "dungeonName": "悬夜林（七尾蜈蚣）",
-          "dungeonShortLabel": "悬夜林",
-          "categoryLabel": "历练与试炼（四象七、悬夜林）",
-          "difficulty": "极难",
-          "def": 500000,
-          "hp": 2000000000,
-          "critRed": 300,
-          "critDmgRed": 1700,
-          "route": "/compendium/boss?d=XUANYELIN_QIWEI_WUGONG&m=QIWEI_WUGONG_XIONG"
-        }
-      ]
+      "id": 91,
+      "name": "悬夜翎",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 91
+      }
     }
   },
   "conflict-skill-xyc-01": {
@@ -21616,13 +21616,14 @@
   },
   "gen-fabao-3": {
     "sender": "assistant",
-    "text": "为你速查到装备【七星剑秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【七星剑】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "七星剑秘笈",
-        "slot": "佩章"
+      "id": 3,
+      "name": "七星剑",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 3
       }
     }
   },
@@ -21667,13 +21668,14 @@
   },
   "gen-fabao-7": {
     "sender": "assistant",
-    "text": "为你速查到装备【四灵幡秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【四灵幡】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "四灵幡秘笈",
-        "slot": "佩章"
+      "id": 7,
+      "name": "四灵幡",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 7
       }
     }
   },
@@ -21718,13 +21720,14 @@
   },
   "gen-fabao-11": {
     "sender": "assistant",
-    "text": "为你速查到装备【多情环秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【多情环】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "多情环秘笈",
-        "slot": "佩章"
+      "id": 11,
+      "name": "多情环",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 11
       }
     }
   },
@@ -21769,13 +21772,14 @@
   },
   "gen-fabao-15": {
     "sender": "assistant",
-    "text": "为你速查到装备【金刚杵秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【金刚杵】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "金刚杵秘笈",
-        "slot": "佩章"
+      "id": 15,
+      "name": "金刚杵",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 15
       }
     }
   },
@@ -22365,13 +22369,14 @@
   },
   "gen-fabao-60": {
     "sender": "assistant",
-    "text": "为你速查到装备【掠影夺锋印】（玺绶）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【掠影】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 24174,
-        "name": "掠影夺锋印",
-        "slot": "玺绶"
+      "id": 60,
+      "name": "掠影",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 60
       }
     }
   },
@@ -22403,13 +22408,14 @@
   },
   "gen-fabao-63": {
     "sender": "assistant",
-    "text": "为你速查到装备【追魂沙】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【追魂】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 6032,
-        "name": "追魂沙",
-        "slot": "佩章"
+      "id": 63,
+      "name": "追魂",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 63
       }
     }
   },
@@ -22766,14 +22772,14 @@
   },
   "gen-fabao-91": {
     "sender": "assistant",
-    "text": "为你速查到【悬夜林（七尾蜈蚣）】下的全部 2 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
-    "cardType": "boss_candidates",
+    "text": "为你速查到法宝【悬夜翎】（门派法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "query": "悬夜翎",
-      "dungeonName": "悬夜林（七尾蜈蚣）",
-      "candidates": {
-        "__count": 2,
-        "__first": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+      "id": 91,
+      "name": "悬夜翎",
+      "grade": "门派法宝",
+      "fabao": {
+        "id": 91
       }
     }
   },
@@ -22844,50 +22850,53 @@
   },
   "gen-fabao-97": {
     "sender": "assistant",
-    "text": "为你速查到装备【山河扇秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【山河扇】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "山河扇秘笈",
-        "slot": "佩章"
+      "id": 97,
+      "name": "山河扇",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 97
       }
     }
   },
   "gen-fabao-98": {
     "sender": "assistant",
-    "text": "为你速查到装备【神木骰秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【神木骰】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "神木骰秘笈",
-        "slot": "佩章"
+      "id": 98,
+      "name": "神木骰",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 98
       }
     }
   },
   "gen-fabao-99": {
     "sender": "assistant",
-    "text": "为你检索到 34 件符合【万毒鼎】的候选装备，可在下方直接切换查看详情：",
-    "cardType": "equip_candidates",
+    "text": "为你速查到法宝【万毒鼎】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "keyword": "万毒鼎",
-      "candidates": {
-        "__count": 34,
-        "__first": 109832
-      },
-      "totalCount": 34
+      "id": 99,
+      "name": "万毒鼎",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 99
+      }
     }
   },
   "gen-fabao-100": {
     "sender": "assistant",
-    "text": "为你速查到装备【玉净瓶秘笈】（佩章）。装备原生属性卡如下：",
-    "cardType": "equip",
+    "text": "为你速查到法宝【玉净瓶】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
     "cardData": {
-      "equip": {
-        "id": 4257,
-        "name": "玉净瓶秘笈",
-        "slot": "佩章"
+      "id": 100,
+      "name": "玉净瓶",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 100
       }
     }
   },

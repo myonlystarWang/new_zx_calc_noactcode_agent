@@ -9,7 +9,7 @@
 import { DataService, isValidSkill } from './DataService';
 import { pinyin } from 'pinyin-pro';
 import { calculateDungeonPower } from '../utils/calculator';
-import type { CharacterAttributes, Dungeon, Monster, Skill, CuratedEquipItem, CuratedSkillItem } from '../types';
+import type { CharacterAttributes, Dungeon, Monster, Skill, CuratedEquipItem, CuratedSkillItem, FabaoItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
 export const UNIFIED_NOT_FOUND_REPLY =
@@ -781,8 +781,18 @@ export class CopilotService {
         // ----------------------------------------------------
         // 1. 副本与 BOSS 查询意图（挂载 3 大分类、16 大核心副本、97 BOSS 多层级分类词库体系）
         // ----------------------------------------------------
+        // R1（T-14 实施）：法宝精确名全局优先——装备分支的"法宝名+秘笈"部分包含
+        // （七星剑/四灵幡等 10 对）与副本分支的别名包含（悬夜翎 vs 悬夜）均让位；
+        // 带修饰的复合词（"昭武 衣服"）不与法宝名相等，不走此路
+        let exactFabaoName: FabaoItem | null = null;
+        {
+            const fabaoListForExact = await dataService.getFabaoList();
+            if (Array.isArray(fabaoListForExact)) {
+                exactFabaoName = fabaoListForExact.find(f => f.名称 === q) || null;
+            }
+        }
         const allDungeons = dataService.getDungeons();
-        if (Array.isArray(allDungeons) && allDungeons.length > 0) {
+        if (Array.isArray(allDungeons) && allDungeons.length > 0 && !exactFabaoName) {
             // A. 检查是否为泛化副本查询词
             const isBroadDungeonWord = [
                 '副本', '所有副本', '全部副本', '副本列表', '有哪些副本',
@@ -1063,7 +1073,8 @@ export class CopilotService {
         }
 
         // 2. 装备查询意图（多槽位复合搜索，优先级高于泛化文本）
-        try {
+        // R1（T-14）：法宝精确名优先，本分支让位（"法宝名+秘笈"式部分包含不再劫持）
+        if (!exactFabaoName) try {
             const rawEquips = await dataService.getEquipList();
             if (Array.isArray(rawEquips) && rawEquips.length > 0) {
                 // 仅保留通用/生肖护符，完全屏蔽各门派专属技能护符，并屏蔽测试/活动/副本临时装备（如“2023守卫青云困难副本内使用”）

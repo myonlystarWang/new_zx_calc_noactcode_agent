@@ -6068,6 +6068,7 @@
     "input": "八卦石",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "八卦石",
       "cardData.name": "八卦石"
     },
     "tags": [
@@ -6083,6 +6084,7 @@
     "input": "六合镜",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "六合镜",
       "cardData.name": "六合镜"
     },
     "tags": [
@@ -6097,8 +6099,9 @@
     "id": "gen-fabao-3",
     "input": "七星剑",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "七星剑秘笈"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "七星剑",
+      "cardData.name": "七星剑"
     },
     "tags": [
       "generated",
@@ -6113,6 +6116,7 @@
     "input": "琥珀朱绫",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "琥珀朱绫",
       "cardData.name": "琥珀朱绫"
     },
     "tags": [
@@ -6128,6 +6132,7 @@
     "input": "若雪",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "若雪",
       "cardData.name": "若雪"
     },
     "tags": [
@@ -6143,6 +6148,7 @@
     "input": "朱雀印",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "朱雀印",
       "cardData.name": "朱雀印"
     },
     "tags": [
@@ -6157,8 +6163,9 @@
     "id": "gen-fabao-7",
     "input": "四灵幡",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "四灵幡秘笈"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "四灵幡",
+      "cardData.name": "四灵幡"
     },
     "tags": [
       "generated",
@@ -6173,6 +6180,7 @@
     "input": "乾坤青光戒",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "乾坤青光戒",
       "cardData.name": "乾坤青光戒"
     },
     "tags": [
@@ -6188,6 +6196,7 @@
     "input": "天魔指",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "天魔指",
       "cardData.name": "天魔指"
     },
     "tags": [
@@ -6203,6 +6212,7 @@
     "input": "慑心铃",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "慑心铃",
       "cardData.name": "慑心铃"
     },
     "tags": [
@@ -6217,8 +6227,9 @@
     "id": "gen-fabao-11",
     "input": "多情环",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "多情环秘笈"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "多情环",
+      "cardData.name": "多情环"
     },
     "tags": [
       "generated",
@@ -6233,6 +6244,7 @@
     "input": "千媚莲",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "千媚莲",
       "cardData.name": "千媚莲"
     },
     "tags": [
@@ -6248,6 +6260,7 @@
     "input": "八极游龙",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "八极游龙",
       "cardData.name": "八极游龙"
     },
     "tags": [
@@ -6263,6 +6276,7 @@
     "input": "轮回珠",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "轮回珠",
       "cardData.name": "轮回珠"
     },
     "tags": [
@@ -6277,8 +6291,9 @@
     "id": "gen-fabao-15",
     "input": "金刚杵",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "金刚杵秘笈"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "金刚杵",
+      "cardData.name": "金刚杵"
     },
     "tags": [
       "generated",
@@ -6293,6 +6308,7 @@
     "input": "如意乾坤袋",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "如意乾坤袋",
       "cardData.name": "如意乾坤袋"
     },
     "tags": [
@@ -6308,6 +6324,7 @@
     "input": "六道生灭",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "六道生灭",
       "cardData.name": "六道生灭"
     },
     "tags": [
@@ -6323,6 +6340,7 @@
     "input": "血玉骨片",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "血玉骨片",
       "cardData.name": "血玉骨片"
     },
     "tags": [
@@ -6338,6 +6356,7 @@
     "input": "破刹",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "破刹",
       "cardData.name": "破刹"
     },
     "tags": [
@@ -6353,6 +6372,7 @@
     "input": "千毒蛊",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "千毒蛊",
       "cardData.name": "千毒蛊"
     },
     "tags": [
@@ -6368,6 +6388,7 @@
     "input": "鬼磬",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "鬼磬",
       "cardData.name": "鬼磬"
     },
     "tags": [
@@ -6383,6 +6404,7 @@
     "input": "南明印",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "南明印",
       "cardData.name": "南明印"
     },
     "tags": [
@@ -6398,6 +6420,7 @@
     "input": "衡天尺",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "衡天尺",
       "cardData.name": "衡天尺"
     },
     "tags": [
@@ -6413,6 +6436,7 @@
     "input": "火玲珑",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "火玲珑",
       "cardData.name": "火玲珑"
     },
     "tags": [
@@ -6428,6 +6452,7 @@
     "input": "九寒凝冰刺",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "九寒凝冰刺",
       "cardData.name": "九寒凝冰刺"
     },
     "tags": [
@@ -6443,6 +6468,7 @@
     "input": "五色石",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "五色石",
       "cardData.name": "五色石"
     },
     "tags": [
@@ -6458,6 +6484,7 @@
     "input": "怒兽幡",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "怒兽幡",
       "cardData.name": "怒兽幡"
     },
     "tags": [
@@ -6473,6 +6500,7 @@
     "input": "血枫枪",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "血枫枪",
       "cardData.name": "血枫枪"
     },
     "tags": [
@@ -6488,6 +6516,7 @@
     "input": "罡岚",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "罡岚",
       "cardData.name": "罡岚"
     },
     "tags": [
@@ -6503,6 +6532,7 @@
     "input": "丧门剑",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "丧门剑",
       "cardData.name": "丧门剑"
     },
     "tags": [
@@ -6518,6 +6548,7 @@
     "input": "丹朱",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "丹朱",
       "cardData.name": "丹朱"
     },
     "tags": [
@@ -6533,6 +6564,7 @@
     "input": "返魂香",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "返魂香",
       "cardData.name": "返魂香"
     },
     "tags": [
@@ -6548,6 +6580,7 @@
     "input": "浮影古镜",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "浮影古镜",
       "cardData.name": "浮影古镜"
     },
     "tags": [
@@ -6563,6 +6596,7 @@
     "input": "洛书",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "洛书",
       "cardData.name": "洛书"
     },
     "tags": [
@@ -6578,6 +6612,7 @@
     "input": "七杀",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "七杀",
       "cardData.name": "七杀"
     },
     "tags": [
@@ -6610,6 +6645,7 @@
     "input": "贪狼",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "贪狼",
       "cardData.name": "贪狼"
     },
     "tags": [
@@ -6625,6 +6661,7 @@
     "input": "绝影",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "绝影",
       "cardData.name": "绝影"
     },
     "tags": [
@@ -6640,6 +6677,7 @@
     "input": "九音螺",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "九音螺",
       "cardData.name": "九音螺"
     },
     "tags": [
@@ -6655,6 +6693,7 @@
     "input": "亚风",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "亚风",
       "cardData.name": "亚风"
     },
     "tags": [
@@ -6670,6 +6709,7 @@
     "input": "琉璃盏",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "琉璃盏",
       "cardData.name": "琉璃盏"
     },
     "tags": [
@@ -6685,6 +6725,7 @@
     "input": "碧落飞鸿",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "碧落飞鸿",
       "cardData.name": "碧落飞鸿"
     },
     "tags": [
@@ -6700,6 +6741,7 @@
     "input": "雷公墨",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "雷公墨",
       "cardData.name": "雷公墨"
     },
     "tags": [
@@ -6715,6 +6757,7 @@
     "input": "春秋锁",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "春秋锁",
       "cardData.name": "春秋锁"
     },
     "tags": [
@@ -6730,6 +6773,7 @@
     "input": "子母阴阳扣",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "子母阴阳扣",
       "cardData.name": "子母阴阳扣"
     },
     "tags": [
@@ -6745,6 +6789,7 @@
     "input": "羲皇钟",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "羲皇钟",
       "cardData.name": "羲皇钟"
     },
     "tags": [
@@ -6760,6 +6805,7 @@
     "input": "率兜旗",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "率兜旗",
       "cardData.name": "率兜旗"
     },
     "tags": [
@@ -6775,6 +6821,7 @@
     "input": "鼍鼓",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "鼍鼓",
       "cardData.name": "鼍鼓"
     },
     "tags": [
@@ -6790,6 +6837,7 @@
     "input": "落宝金钱",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "落宝金钱",
       "cardData.name": "落宝金钱"
     },
     "tags": [
@@ -6805,6 +6853,7 @@
     "input": "皇极",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "皇极",
       "cardData.name": "皇极"
     },
     "tags": [
@@ -6820,6 +6869,7 @@
     "input": "天灵灯",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "天灵灯",
       "cardData.name": "天灵灯"
     },
     "tags": [
@@ -6835,6 +6885,7 @@
     "input": "天极木",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "天极木",
       "cardData.name": "天极木"
     },
     "tags": [
@@ -6850,6 +6901,7 @@
     "input": "罗睺玉",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "罗睺玉",
       "cardData.name": "罗睺玉"
     },
     "tags": [
@@ -6865,6 +6917,7 @@
     "input": "金羽变",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "金羽变",
       "cardData.name": "金羽变"
     },
     "tags": [
@@ -6880,6 +6933,7 @@
     "input": "赤星龙炎",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "赤星龙炎",
       "cardData.name": "赤星龙炎"
     },
     "tags": [
@@ -6895,6 +6949,7 @@
     "input": "混元令",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "混元令",
       "cardData.name": "混元令"
     },
     "tags": [
@@ -6910,6 +6965,7 @@
     "input": "七煞戈",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "七煞戈",
       "cardData.name": "七煞戈"
     },
     "tags": [
@@ -6925,6 +6981,7 @@
     "input": "天都戟",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "天都戟",
       "cardData.name": "天都戟"
     },
     "tags": [
@@ -6940,6 +6997,7 @@
     "input": "五方神钺",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "五方神钺",
       "cardData.name": "五方神钺"
     },
     "tags": [
@@ -6954,8 +7012,9 @@
     "id": "gen-fabao-60",
     "input": "掠影",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "掠影夺锋印"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "掠影",
+      "cardData.name": "掠影"
     },
     "tags": [
       "generated",
@@ -6970,6 +7029,7 @@
     "input": "破命",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "破命",
       "cardData.name": "破命"
     },
     "tags": [
@@ -6985,6 +7045,7 @@
     "input": "烁雷",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "烁雷",
       "cardData.name": "烁雷"
     },
     "tags": [
@@ -6999,8 +7060,9 @@
     "id": "gen-fabao-63",
     "input": "追魂",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "追魂沙"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "追魂",
+      "cardData.name": "追魂"
     },
     "tags": [
       "generated",
@@ -7015,6 +7077,7 @@
     "input": "玉娥灯",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "玉娥灯",
       "cardData.name": "玉娥灯"
     },
     "tags": [
@@ -7030,6 +7093,7 @@
     "input": "冰玉壶",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "冰玉壶",
       "cardData.name": "冰玉壶"
     },
     "tags": [
@@ -7045,6 +7109,7 @@
     "input": "青天皇典",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "青天皇典",
       "cardData.name": "青天皇典"
     },
     "tags": [
@@ -7060,6 +7125,7 @@
     "input": "珞珈",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "珞珈",
       "cardData.name": "珞珈"
     },
     "tags": [
@@ -7075,6 +7141,7 @@
     "input": "霁华灯",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "霁华灯",
       "cardData.name": "霁华灯"
     },
     "tags": [
@@ -7090,6 +7157,7 @@
     "input": "望晴镜",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "望晴镜",
       "cardData.name": "望晴镜"
     },
     "tags": [
@@ -7105,6 +7173,7 @@
     "input": "月琼壶",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "月琼壶",
       "cardData.name": "月琼壶"
     },
     "tags": [
@@ -7120,6 +7189,7 @@
     "input": "妙璃",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "妙璃",
       "cardData.name": "妙璃"
     },
     "tags": [
@@ -7135,6 +7205,7 @@
     "input": "惜梦笔",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "惜梦笔",
       "cardData.name": "惜梦笔"
     },
     "tags": [
@@ -7150,6 +7221,7 @@
     "input": "惊才墨",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "惊才墨",
       "cardData.name": "惊才墨"
     },
     "tags": [
@@ -7165,6 +7237,7 @@
     "input": "醉心笺",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "醉心笺",
       "cardData.name": "醉心笺"
     },
     "tags": [
@@ -7180,6 +7253,7 @@
     "input": "珠玑砚",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "珠玑砚",
       "cardData.name": "珠玑砚"
     },
     "tags": [
@@ -7195,6 +7269,7 @@
     "input": "青玉案",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "青玉案",
       "cardData.name": "青玉案"
     },
     "tags": [
@@ -7210,6 +7285,7 @@
     "input": "丹书简",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "丹书简",
       "cardData.name": "丹书简"
     },
     "tags": [
@@ -7225,6 +7301,7 @@
     "input": "惊鸿箫",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "惊鸿箫",
       "cardData.name": "惊鸿箫"
     },
     "tags": [
@@ -7240,6 +7317,7 @@
     "input": "缠霞刃",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "缠霞刃",
       "cardData.name": "缠霞刃"
     },
     "tags": [
@@ -7255,6 +7333,7 @@
     "input": "引月弓",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "引月弓",
       "cardData.name": "引月弓"
     },
     "tags": [
@@ -7270,6 +7349,7 @@
     "input": "飞虎钩",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "飞虎钩",
       "cardData.name": "飞虎钩"
     },
     "tags": [
@@ -7285,6 +7365,7 @@
     "input": "叱云扇",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "叱云扇",
       "cardData.name": "叱云扇"
     },
     "tags": [
@@ -7300,6 +7381,7 @@
     "input": "捣龙锏",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "捣龙锏",
       "cardData.name": "捣龙锏"
     },
     "tags": [
@@ -7315,6 +7397,7 @@
     "input": "九阳尺",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "九阳尺",
       "cardData.name": "九阳尺"
     },
     "tags": [
@@ -7330,6 +7413,7 @@
     "input": "垂星盘",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "垂星盘",
       "cardData.name": "垂星盘"
     },
     "tags": [
@@ -7345,6 +7429,7 @@
     "input": "夙念结",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "夙念结",
       "cardData.name": "夙念结"
     },
     "tags": [
@@ -7360,6 +7445,7 @@
     "input": "笙歌如意",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "笙歌如意",
       "cardData.name": "笙歌如意"
     },
     "tags": [
@@ -7375,6 +7461,7 @@
     "input": "筮梦晷",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "筮梦晷",
       "cardData.name": "筮梦晷"
     },
     "tags": [
@@ -7390,6 +7477,7 @@
     "input": "玄风铃",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "玄风铃",
       "cardData.name": "玄风铃"
     },
     "tags": [
@@ -7405,6 +7493,7 @@
     "input": "荡魂鼎",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "荡魂鼎",
       "cardData.name": "荡魂鼎"
     },
     "tags": [
@@ -7419,9 +7508,9 @@
     "id": "gen-fabao-91",
     "input": "悬夜翎",
     "expect": {
-      "cardType": "boss_candidates",
-      "cardData.candidates.length": 2,
-      "cardData.candidates.0.id": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "悬夜翎",
+      "cardData.name": "悬夜翎"
     },
     "tags": [
       "generated",
@@ -7436,6 +7525,7 @@
     "input": "噬魇镜",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "噬魇镜",
       "cardData.name": "噬魇镜"
     },
     "tags": [
@@ -7451,6 +7541,7 @@
     "input": "春驻",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "春驻",
       "cardData.name": "春驻"
     },
     "tags": [
@@ -7466,6 +7557,7 @@
     "input": "折玉",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "折玉",
       "cardData.name": "折玉"
     },
     "tags": [
@@ -7481,6 +7573,7 @@
     "input": "海生月",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "海生月",
       "cardData.name": "海生月"
     },
     "tags": [
@@ -7496,6 +7589,7 @@
     "input": "同归引",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "同归引",
       "cardData.name": "同归引"
     },
     "tags": [
@@ -7510,8 +7604,9 @@
     "id": "gen-fabao-97",
     "input": "山河扇",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "山河扇秘笈"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "山河扇",
+      "cardData.name": "山河扇"
     },
     "tags": [
       "generated",
@@ -7525,8 +7620,9 @@
     "id": "gen-fabao-98",
     "input": "神木骰",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "神木骰秘笈"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "神木骰",
+      "cardData.name": "神木骰"
     },
     "tags": [
       "generated",
@@ -7540,10 +7636,9 @@
     "id": "gen-fabao-99",
     "input": "万毒鼎",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 34,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 34
+      "cardType": "fabao",
+      "cardData.fabao.名称": "万毒鼎",
+      "cardData.name": "万毒鼎"
     },
     "tags": [
       "generated",
@@ -7557,8 +7652,9 @@
     "id": "gen-fabao-100",
     "input": "玉净瓶",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "玉净瓶秘笈"
+      "cardType": "fabao",
+      "cardData.fabao.名称": "玉净瓶",
+      "cardData.name": "玉净瓶"
     },
     "tags": [
       "generated",
@@ -7573,6 +7669,7 @@
     "input": "阴阳镜",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "阴阳镜",
       "cardData.name": "阴阳镜"
     },
     "tags": [
@@ -7588,6 +7685,7 @@
     "input": "蟠龙幡",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "蟠龙幡",
       "cardData.name": "蟠龙幡"
     },
     "tags": [
@@ -7603,6 +7701,7 @@
     "input": "金葫芦",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "金葫芦",
       "cardData.name": "金葫芦"
     },
     "tags": [
@@ -7618,6 +7717,7 @@
     "input": "五龙轮",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "五龙轮",
       "cardData.name": "五龙轮"
     },
     "tags": [
@@ -7633,6 +7733,7 @@
     "input": "九龙神火罩",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "九龙神火罩",
       "cardData.name": "九龙神火罩"
     },
     "tags": [
@@ -7648,6 +7749,7 @@
     "input": "摄魂",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "摄魂",
       "cardData.name": "摄魂"
     },
     "tags": [
@@ -7663,6 +7765,7 @@
     "input": "噬血珠",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "噬血珠",
       "cardData.name": "噬血珠"
     },
     "tags": [
@@ -7678,6 +7781,7 @@
     "input": "噬魂",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "噬魂",
       "cardData.name": "噬魂"
     },
     "tags": [
@@ -7693,6 +7797,7 @@
     "input": "玲珑塔",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "玲珑塔",
       "cardData.name": "玲珑塔"
     },
     "tags": [
@@ -7708,6 +7813,7 @@
     "input": "落魂灯",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "落魂灯",
       "cardData.name": "落魂灯"
     },
     "tags": [
@@ -7723,6 +7829,7 @@
     "input": "逍遥扇",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "逍遥扇",
       "cardData.name": "逍遥扇"
     },
     "tags": [
@@ -7738,6 +7845,7 @@
     "input": "混元金斗",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "混元金斗",
       "cardData.name": "混元金斗"
     },
     "tags": [
@@ -7753,6 +7861,7 @@
     "input": "錾光龙挂",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "錾光龙挂",
       "cardData.name": "錾光龙挂"
     },
     "tags": [
@@ -7768,6 +7877,7 @@
     "input": "新月宝鉴",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "新月宝鉴",
       "cardData.name": "新月宝鉴"
     },
     "tags": [
@@ -7783,6 +7893,7 @@
     "input": "浮屠",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "浮屠",
       "cardData.name": "浮屠"
     },
     "tags": [
@@ -7798,6 +7909,7 @@
     "input": "引魂幡",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "引魂幡",
       "cardData.name": "引魂幡"
     },
     "tags": [
@@ -7813,6 +7925,7 @@
     "input": "无间",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "无间",
       "cardData.name": "无间"
     },
     "tags": [
@@ -7828,6 +7941,7 @@
     "input": "天琊",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "天琊",
       "cardData.name": "天琊"
     },
     "tags": [
@@ -7843,6 +7957,7 @@
     "input": "伤心花",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "伤心花",
       "cardData.name": "伤心花"
     },
     "tags": [
@@ -7858,6 +7973,7 @@
     "input": "斩龙剑",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "斩龙剑",
       "cardData.name": "斩龙剑"
     },
     "tags": [
@@ -7873,6 +7989,7 @@
     "input": "合欢铃",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "合欢铃",
       "cardData.name": "合欢铃"
     },
     "tags": [
@@ -7888,6 +8005,7 @@
     "input": "墨雪",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "墨雪",
       "cardData.name": "墨雪"
     },
     "tags": [
@@ -7903,6 +8021,7 @@
     "input": "箴言筒",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "箴言筒",
       "cardData.name": "箴言筒"
     },
     "tags": [
@@ -7918,6 +8037,7 @@
     "input": "返魂杵",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "返魂杵",
       "cardData.name": "返魂杵"
     },
     "tags": [
@@ -7933,6 +8053,7 @@
     "input": "珠华钦木",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "珠华钦木",
       "cardData.name": "珠华钦木"
     },
     "tags": [
@@ -7948,6 +8069,7 @@
     "input": "三清帝钟",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "三清帝钟",
       "cardData.name": "三清帝钟"
     },
     "tags": [
@@ -7963,6 +8085,7 @@
     "input": "玄火鉴",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "玄火鉴",
       "cardData.name": "玄火鉴"
     },
     "tags": [
@@ -7978,6 +8101,7 @@
     "input": "云光剑",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "云光剑",
       "cardData.name": "云光剑"
     },
     "tags": [
@@ -7993,6 +8117,7 @@
     "input": "白骨剑",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "白骨剑",
       "cardData.name": "白骨剑"
     },
     "tags": [
@@ -8008,6 +8133,7 @@
     "input": "观月索",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "观月索",
       "cardData.name": "观月索"
     },
     "tags": [
@@ -8023,6 +8149,7 @@
     "input": "离人锥",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "离人锥",
       "cardData.name": "离人锥"
     },
     "tags": [
@@ -8038,6 +8165,7 @@
     "input": "灵蛛印",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "灵蛛印",
       "cardData.name": "灵蛛印"
     },
     "tags": [
@@ -8053,6 +8181,7 @@
     "input": "黑蟾散",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "黑蟾散",
       "cardData.name": "黑蟾散"
     },
     "tags": [
@@ -8068,6 +8197,7 @@
     "input": "噬毒佩",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "噬毒佩",
       "cardData.name": "噬毒佩"
     },
     "tags": [
@@ -8083,6 +8213,7 @@
     "input": "万毒归宗袋",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "万毒归宗袋",
       "cardData.name": "万毒归宗袋"
     },
     "tags": [
@@ -8098,6 +8229,7 @@
     "input": "万化珠",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "万化珠",
       "cardData.name": "万化珠"
     },
     "tags": [
@@ -8113,6 +8245,7 @@
     "input": "噬魂玉",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "噬魂玉",
       "cardData.name": "噬魂玉"
     },
     "tags": [
@@ -8128,6 +8261,7 @@
     "input": "毒血幡",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "毒血幡",
       "cardData.name": "毒血幡"
     },
     "tags": [
@@ -8143,6 +8277,7 @@
     "input": "归源血卷",
     "expect": {
       "cardType": "fabao",
+      "cardData.fabao.名称": "归源血卷",
       "cardData.name": "归源血卷"
     },
     "tags": [
