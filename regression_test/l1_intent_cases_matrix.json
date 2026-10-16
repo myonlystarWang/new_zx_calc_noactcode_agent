@@ -5438,10 +5438,10 @@
     "id": "gen-skillclass-鬼王",
     "input": "鬼王",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 37,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 37
+      "cardType": "class_hub",
+      "cardData.className": "鬼王",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "鬼王技能"
     },
     "tags": [
       "generated",
@@ -5455,10 +5455,10 @@
     "id": "gen-skillclass-合欢",
     "input": "合欢",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 37,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 37
+      "cardType": "class_hub",
+      "cardData.className": "合欢",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "合欢技能"
     },
     "tags": [
       "generated",
@@ -5472,10 +5472,10 @@
     "id": "gen-skillclass-青云",
     "input": "青云",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 37,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 37
+      "cardType": "class_hub",
+      "cardData.className": "青云",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "青云技能"
     },
     "tags": [
       "generated",
@@ -5489,10 +5489,10 @@
     "id": "gen-skillclass-天音",
     "input": "天音",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 37,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 37
+      "cardType": "class_hub",
+      "cardData.className": "天音",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "天音技能"
     },
     "tags": [
       "generated",
@@ -5506,10 +5506,10 @@
     "id": "gen-skillclass-鬼道",
     "input": "鬼道",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 37,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 37
+      "cardType": "class_hub",
+      "cardData.className": "鬼道",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "鬼道技能"
     },
     "tags": [
       "generated",
@@ -5522,7 +5522,12 @@
   {
     "id": "gen-skillclass-焚香",
     "input": "焚香",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "焚香",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "焚香技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5535,10 +5540,10 @@
     "id": "gen-skillclass-九黎",
     "input": "九黎",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 36,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 36
+      "cardType": "class_hub",
+      "cardData.className": "九黎",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "九黎技能"
     },
     "tags": [
       "generated",
@@ -5552,10 +5557,10 @@
     "id": "gen-skillclass-烈山",
     "input": "烈山",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 36,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 36
+      "cardType": "class_hub",
+      "cardData.className": "烈山",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "烈山技能"
     },
     "tags": [
       "generated",
@@ -5568,7 +5573,12 @@
   {
     "id": "gen-skillclass-怀光",
     "input": "怀光",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "怀光",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "怀光技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5581,8 +5591,10 @@
     "id": "gen-skillclass-天华",
     "input": "天华",
     "expect": {
-      "cardType": "fabao",
-      "cardData.name": "玉净瓶"
+      "cardType": "class_hub",
+      "cardData.className": "天华",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "天华技能"
     },
     "tags": [
       "generated",
@@ -5595,7 +5607,12 @@
   {
     "id": "gen-skillclass-辰皇",
     "input": "辰皇",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "辰皇",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "辰皇技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5608,8 +5625,10 @@
     "id": "gen-skillclass-太昊",
     "input": "太昊",
     "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "太昊★★★"
+      "cardType": "class_hub",
+      "cardData.className": "太昊",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "太昊技能"
     },
     "tags": [
       "generated",
@@ -5622,7 +5641,12 @@
   {
     "id": "gen-skillclass-牵机",
     "input": "牵机",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "牵机",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "牵机技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5634,7 +5658,12 @@
   {
     "id": "gen-skillclass-英招",
     "input": "英招",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "英招",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "英招技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5647,8 +5676,10 @@
     "id": "gen-skillclass-破军",
     "input": "破军",
     "expect": {
-      "cardType": "fabao",
-      "cardData.name": "破军"
+      "cardType": "class_hub",
+      "cardData.className": "破军",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "破军技能"
     },
     "tags": [
       "generated",
@@ -5661,7 +5692,12 @@
   {
     "id": "gen-skillclass-青罗",
     "input": "青罗",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "青罗",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "青罗技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5673,7 +5709,12 @@
   {
     "id": "gen-skillclass-归云",
     "input": "归云",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "归云",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "归云技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5685,7 +5726,12 @@
   {
     "id": "gen-skillclass-画影",
     "input": "画影",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "画影",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "画影技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5697,7 +5743,12 @@
   {
     "id": "gen-skillclass-逐霜",
     "input": "逐霜",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "逐霜",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "逐霜技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5709,7 +5760,12 @@
   {
     "id": "gen-skillclass-惊岚",
     "input": "惊岚",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "惊岚",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "惊岚技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5721,7 +5777,12 @@
   {
     "id": "gen-skillclass-昭冥",
     "input": "昭冥",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "昭冥",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "昭冥技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5734,8 +5795,10 @@
     "id": "gen-skillclass-涅羽",
     "input": "涅羽",
     "expect": {
-      "cardType": "skill",
-      "cardData.name": "涅羽"
+      "cardType": "class_hub",
+      "cardData.className": "涅羽",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "涅羽技能"
     },
     "tags": [
       "generated",
@@ -5748,7 +5811,12 @@
   {
     "id": "gen-skillclass-百灵",
     "input": "百灵",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "百灵",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "百灵技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5760,7 +5828,12 @@
   {
     "id": "gen-skillclass-释罗",
     "input": "释罗",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "释罗",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "释罗技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5772,7 +5845,12 @@
   {
     "id": "gen-skillclass-长生堂",
     "input": "长生堂",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "长生堂",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "长生堂技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -5785,10 +5863,10 @@
     "id": "gen-skillclass-万毒",
     "input": "万毒",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.candidates.length": 34,
-      "cardData.candidates.0.id": 109832,
-      "cardData.totalCount": 34
+      "cardType": "class_hub",
+      "cardData.className": "万毒",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "万毒技能"
     },
     "tags": [
       "generated",
@@ -5801,7 +5879,12 @@
   {
     "id": "gen-skillclass-炼血",
     "input": "炼血",
-    "expect": null,
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "炼血",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "炼血技能"
+    },
     "tags": [
       "generated",
       "skill"
@@ -6455,8 +6538,10 @@
     "id": "gen-fabao-36",
     "input": "破军",
     "expect": {
-      "cardType": "fabao",
-      "cardData.name": "破军"
+      "cardType": "class_hub",
+      "cardData.className": "破军",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "破军技能"
     },
     "tags": [
       "generated",

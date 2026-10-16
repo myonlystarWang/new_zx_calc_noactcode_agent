@@ -25,7 +25,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub';
     cardData?: any;
 }
 
@@ -647,6 +647,33 @@ export class CopilotService {
             matchedSlot = '项链';
         }
         const matchedProf = profs.find(pr => tokens.some(t => t.includes(pr.toLowerCase())) || q.includes(pr.toLowerCase()));
+
+        // ----------------------------------------------------
+        // 0.5 裸职业名歧义分流（class_hub，T-15a）
+        // 输入精确等于单个职业名时不猜测意图，返回技能/装备/法宝三入口；
+        // 点击入口 = 替用户重发「职业+后缀」查询词，走现有链路，无上下文依赖。
+        // 位置在副本分支之前：精确匹配优先，免疫 BOSS 名包含碰撞
+        //（如「炼血」vs「炼血堂教众」——修 T-11 孤儿键后后者会从 null 变 boss_candidates）。
+        // 选项 query 均实测可用（逐霜 30/33/4，天华 30/33/5）。
+        // ----------------------------------------------------
+        if (profs.includes(q)) {
+            const hubOptions = [
+                { key: 'skill', label: '技能速查', query: `${q}技能` },
+                { key: 'equip', label: '装备查询', query: `${q}装备` },
+                { key: 'fabao', label: '专属法宝', query: `${q}法宝` }
+            ];
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你定位到职业【${q}】。请选择要查询的信息类型：`,
+                time: timeStr,
+                cardType: 'class_hub',
+                cardData: {
+                    className: q,
+                    options: hubOptions
+                }
+            };
+        }
 
         // 提取用户指令中可能包含的强化/蕴灵目标等级（如 "13"、"+15"、"11阶"）
         let targetRefLevel: number | undefined = undefined;

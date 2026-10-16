@@ -276,6 +276,14 @@ function buildExpectation(r) {
     if (cd.equip?.name) expect['cardData.equip.name'] = cd.equip.name;
     if (typeof cd.name === 'string') expect['cardData.name'] = cd.name;       // fabao 单卡
     if (cd.monsterId) expect['cardData.monsterId'] = cd.monsterId;           // boss 单卡
+    // class_hub 分流卡：冻结职业名与三入口 query
+    if (typeof cd.className === 'string') {
+        expect['cardData.className'] = cd.className;
+        if (Array.isArray(cd.options)) {
+            expect['cardData.options.length'] = cd.options.length;
+            if (cd.options[0]?.query) expect['cardData.options.0.query'] = cd.options[0].query;
+        }
+    }
     return expect;
 }
 

@@ -2,11 +2,10 @@
 equip（120 输入）: equip_candidates 27 / text-only 91 / equip 2
 boss（52 输入）: boss_candidates 37 / boss 10 / null 5
   [空洞] 未命中: 缚魂触, 化生触, 潮音骨, 炼血堂教众, 炼血堂精英
-skill（231 输入）: skill_candidates 164 / xyc_diag 27 / text-only 13 / equip_candidates 8 / null 15 / fabao 2 / equip 1 / skill 1
-  [空洞] 未命中: 焚香, 怀光, 辰皇, 牵机, 英招, 青罗, 归云, 画影, 逐霜, 惊岚, 昭冥, 百灵, 释罗, 长生堂, 炼血
-  [族外] 需人工判断: 鬼王 轩辕策 → xyc_diag ; 合欢 轩辕策 → xyc_diag ; 青云 轩辕策 → xyc_diag ; 天音 轩辕策 → xyc_diag ; 鬼道 轩辕策 → xyc_diag ; 焚香 轩辕策 → xyc_diag ; 九黎 轩辕策 → xyc_diag ; 烈山 轩辕策 → xyc_diag ; 怀光 轩辕策 → xyc_diag ; 天华 轩辕策 → xyc_diag ; 辰皇 轩辕策 → xyc_diag ; 太昊 轩辕策 → xyc_diag ; 牵机 轩辕策 → xyc_diag ; 英招 轩辕策 → xyc_diag ; 破军 轩辕策 → xyc_diag ; 青罗 轩辕策 → xyc_diag ; 归云 轩辕策 → xyc_diag ; 画影 轩辕策 → xyc_diag ; 逐霜 轩辕策 → xyc_diag ; 惊岚 轩辕策 → xyc_diag ; 昭冥 轩辕策 → xyc_diag ; 涅羽 轩辕策 → xyc_diag ; 百灵 轩辕策 → xyc_diag ; 释罗 轩辕策 → xyc_diag ; 长生堂 轩辕策 → xyc_diag ; 万毒 轩辕策 → xyc_diag ; 炼血 轩辕策 → xyc_diag ; 鬼王 → equip_candidates ; 合欢 → equip_candidates ; 青云 → equip_candidates ; 天音 → equip_candidates ; 鬼道 → equip_candidates ; 九黎 → equip_candidates ; 烈山 → equip_candidates ; 天华 → fabao ; 太昊 → equip ; 破军 → fabao ; 万毒 → equip_candidates
-fabao（139 输入）: fabao 128 / equip 9 / boss_candidates 1 / equip_candidates 1
-  [族外] 需人工判断: 七星剑 → equip ; 四灵幡 → equip ; 多情环 → equip ; 金刚杵 → equip ; 掠影 → equip ; 追魂 → equip ; 悬夜翎 → boss_candidates ; 山河扇 → equip ; 神木骰 → equip ; 万毒鼎 → equip_candidates ; 玉净瓶 → equip
+skill（231 输入）: skill_candidates 164 / xyc_diag 27 / text-only 13 / class_hub 27
+  [族外] 需人工判断: 鬼王 轩辕策 → xyc_diag ; 合欢 轩辕策 → xyc_diag ; 青云 轩辕策 → xyc_diag ; 天音 轩辕策 → xyc_diag ; 鬼道 轩辕策 → xyc_diag ; 焚香 轩辕策 → xyc_diag ; 九黎 轩辕策 → xyc_diag ; 烈山 轩辕策 → xyc_diag ; 怀光 轩辕策 → xyc_diag ; 天华 轩辕策 → xyc_diag ; 辰皇 轩辕策 → xyc_diag ; 太昊 轩辕策 → xyc_diag ; 牵机 轩辕策 → xyc_diag ; 英招 轩辕策 → xyc_diag ; 破军 轩辕策 → xyc_diag ; 青罗 轩辕策 → xyc_diag ; 归云 轩辕策 → xyc_diag ; 画影 轩辕策 → xyc_diag ; 逐霜 轩辕策 → xyc_diag ; 惊岚 轩辕策 → xyc_diag ; 昭冥 轩辕策 → xyc_diag ; 涅羽 轩辕策 → xyc_diag ; 百灵 轩辕策 → xyc_diag ; 释罗 轩辕策 → xyc_diag ; 长生堂 轩辕策 → xyc_diag ; 万毒 轩辕策 → xyc_diag ; 炼血 轩辕策 → xyc_diag ; 鬼王 → class_hub ; 合欢 → class_hub ; 青云 → class_hub ; 天音 → class_hub ; 鬼道 → class_hub ; 焚香 → class_hub ; 九黎 → class_hub ; 烈山 → class_hub ; 怀光 → class_hub ; 天华 → class_hub ; 辰皇 → class_hub ; 太昊 → class_hub ; 牵机 → class_hub ; 英招 → class_hub ; 破军 → class_hub ; 青罗 → class_hub ; 归云 → class_hub ; 画影 → class_hub ; 逐霜 → class_hub ; 惊岚 → class_hub ; 昭冥 → class_hub ; 涅羽 → class_hub ; 百灵 → class_hub ; 释罗 → class_hub ; 长生堂 → class_hub ; 万毒 → class_hub ; 炼血 → class_hub
+fabao（139 输入）: fabao 127 / equip 9 / class_hub 1 / boss_candidates 1 / equip_candidates 1
+  [族外] 需人工判断: 七星剑 → equip ; 四灵幡 → equip ; 多情环 → equip ; 金刚杵 → equip ; 破军 → class_hub ; 掠影 → equip ; 追魂 → equip ; 悬夜翎 → boss_candidates ; 山河扇 → equip ; 神木骰 → equip ; 万毒鼎 → equip_candidates ; 玉净瓶 → equip
 [装备正常空] 查无且确实无数据: 91 条
 
 矩阵用例已写入: D:\工作\ww\personal_work\new_zx_calc_noactcode_agent\regression_test\l1_intent_cases_matrix.json（542 条，lean golden）
