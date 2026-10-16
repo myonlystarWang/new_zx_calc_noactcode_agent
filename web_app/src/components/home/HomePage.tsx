@@ -14,6 +14,7 @@ import type { SearchTarget } from '../GlobalSearch';
 import { Footer } from '../layout/Footer';
 import { HomeAIChatStage } from './HomeAIChatStage';
 import { SplitScreenWorkspace, type WorkspaceMode } from '../workspace/SplitScreenWorkspace';
+import { useSplitDrag } from '../workspace/useSplitDrag';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import { CopilotService, type CopilotMessage } from '../../services/CopilotService';
 import { DataService } from '../../services/DataService';
@@ -52,6 +53,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const copilot = useMemo(() => CopilotService.getInstance(), []);
+
+  // 双轨分屏：左右可拖拽分隔条
+  const { leftWidth, isResizing, onSplitterPointerDown } = useSplitDrag();
 
   // 监听全局 Ctrl+V 粘贴截图
   useEffect(() => {
@@ -355,11 +359,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
         {/* 左侧 AI 窄栏 / 居中主栏 */}
         {!workspaceState.isMaximized && (
           <div
+            style={workspaceState.isOpen ? { width: leftWidth } : undefined}
             className={clsx(
-              'flex flex-col h-full overflow-hidden transition-all duration-300',
+              'flex flex-col h-full overflow-hidden bg-[#080c14]',
               workspaceState.isOpen
-                ? 'w-[460px] xl:w-[480px] 2xl:w-[500px] shrink-0 border-r border-slate-800/80 bg-[#080c14]'
-                : 'flex-1 max-w-[960px] mx-auto w-full'
+                ? 'shrink-0 border-r border-slate-800/80'
+                : 'flex-1 max-w-[960px] mx-auto w-full',
+              !isResizing && 'transition-[width] duration-300'
             )}
           >
             <HomeAIChatStage
@@ -389,6 +395,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 })
               }
             />
+          </div>
+        )}
+
+        {/* 左右分屏拖拽分隔条 */}
+        {workspaceState.isOpen && !workspaceState.isMaximized && (
+          <div
+            onPointerDown={onSplitterPointerDown}
+            className={clsx(
+              'relative w-1.5 shrink-0 cursor-col-resize group',
+              isResizing ? 'bg-cyan-400/70' : 'bg-slate-800/80 hover:bg-cyan-500/40'
+            )}
+            title="拖动调整分屏宽度"
+            role="separator"
+            aria-orientation="vertical"
+          >
+            <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-slate-700/40 group-hover:bg-cyan-300/80 pointer-events-none" />
           </div>
         )}
 
