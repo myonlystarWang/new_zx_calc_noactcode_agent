@@ -18,6 +18,7 @@ import { SimulationArena } from '../arena/SimulationArena';
 import { ServerRadarView } from '../tools/ServerRadarView';
 import { XycSimulatorView } from '../tools/XycSimulatorView';
 import { NewTianYuanSimulatorView } from '../tools/NewTianYuanSimulatorView';
+import { ACCENT_BUTTON, ACCENT_BUTTON_ICON } from '../ui/accentButtonStyles';
 
 export type WorkspaceMode =
   | 'calc'
@@ -36,12 +37,12 @@ export interface SplitScreenWorkspaceProps {
 }
 
 const FEATURE_META: Record<WorkspaceMode, { label: string; icon: React.ReactNode }> = {
-  calc: { label: '战力计算器', icon: <Calculator className="w-3.5 h-3.5 text-slate-400" /> },
-  arena: { label: '副本训练场', icon: <Swords className="w-3.5 h-3.5 text-slate-400" /> },
-  server: { label: '开服雷达', icon: <Radio className="w-3.5 h-3.5 text-slate-400" /> },
-  xyc: { label: '轩辕策属性', icon: <Compass className="w-3.5 h-3.5 text-slate-400" /> },
-  newtianyuan: { label: '天缘属性', icon: <Sparkles className="w-3.5 h-3.5 text-slate-400" /> },
-  ninglingqi: { label: '凝灵契模拟', icon: <Layers className="w-3.5 h-3.5 text-slate-400" /> },
+  calc: { label: '战力计算器', icon: <Calculator className={ACCENT_BUTTON_ICON} /> },
+  arena: { label: '副本训练场', icon: <Swords className={ACCENT_BUTTON_ICON} /> },
+  server: { label: '开服雷达', icon: <Radio className={ACCENT_BUTTON_ICON} /> },
+  xyc: { label: '轩辕策属性', icon: <Compass className={ACCENT_BUTTON_ICON} /> },
+  newtianyuan: { label: '天缘属性', icon: <Sparkles className={ACCENT_BUTTON_ICON} /> },
+  ninglingqi: { label: '凝灵契模拟', icon: <Layers className={ACCENT_BUTTON_ICON} /> },
 };
 
 export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
@@ -57,9 +58,9 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
     <div className="relative flex flex-col h-full bg-[#080c14] border-l border-slate-800/80 shadow-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300">
       {/* 统一顶栏格式：5个功能统一保留该顶栏 */}
       <div className="py-2 px-3 sm:px-4 border-b border-slate-800/80 bg-[#0d121c]/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
-        {/* 顶栏最左侧：该功能的名字带框，非选中的样式 */}
+        {/* 顶栏最左侧：该功能的名字带框，主题色高亮（当前功能标识） */}
         <div className="flex items-center">
-          <div className="px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap border bg-slate-800/50 border-slate-700/50 text-slate-300">
+          <div className={ACCENT_BUTTON}>
             {currentMeta.icon}
             <span>{currentMeta.label}</span>
           </div>
