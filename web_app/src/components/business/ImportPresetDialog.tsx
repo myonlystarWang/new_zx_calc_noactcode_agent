@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { FileInput, X } from 'lucide-react';
 import type { Buff, CharacterAttributes, CharacterClass } from '../../types';
 import { defaultAttributes } from '../../context/AppContext';
@@ -79,8 +80,8 @@ export const ImportPresetDialog: React.FC<ImportPresetDialogProps> = ({
 
     const canConfirm = parsed.hasContent && !!name.trim();
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    return createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             <div
                 className="absolute inset-0 bg-black/70 backdrop-blur-sm"
                 onClick={onClose}
@@ -234,6 +235,7 @@ export const ImportPresetDialog: React.FC<ImportPresetDialogProps> = ({
                     </button>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };

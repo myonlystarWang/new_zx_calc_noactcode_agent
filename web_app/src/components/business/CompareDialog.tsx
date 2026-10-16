@@ -361,7 +361,7 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                 方案对比
                             </h2>
                             <p className="text-[11px] text-slate-400 mt-0.5">
-                                并排比较两套属性的面板值、增益与各副本 BOSS 的逐技能伤害。纯只读：不回写计算器，要切换当前方案请关闭本弹窗、用「属性方案」下拉。
+                                并排比较两套属性的面板数值、增益数值与各副本 BOSS 的技能伤害。要切换当前方案请关闭本弹窗、用「属性方案」下拉。
                             </p>
                         </div>
                         <button
@@ -437,9 +437,8 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                     {result && !result.identicalBuild && (
                         <p className="flex items-start gap-2 text-[11px] text-slate-400">
                             <Info className="w-3.5 h-3.5 mt-px shrink-0 text-cyan-400" />
-                            两套方案的职业或阵营不同时，技能按名字匹配（同源变体如「苍龙啸·煞 / 苍龙啸·禅」视为同一技能）：
+                            两套方案的职业或阵营不同时，技能按名字匹配（如「苍龙啸·煞 / 苍龙啸·禅」视为同一技能）：
                             同名的排在前面对齐对比；仅单侧拥有的技能按伤害降序接续排在后面，不参与差值对比。
-                            BOSS 行与副本行的差值始终是两侧总伤之差。
                         </p>
                     )}
                 </div>
@@ -455,7 +454,7 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                 <SectionTitle
                                     icon={<Target className="w-3.5 h-3.5 text-cyan-400" />}
                                     title="角色属性"
-                                    hint="数值贴着中间项目名，较高一侧的差值标绿放在最外侧"
+                                    hint="较高一侧的差值标绿放在最外侧"
                                 />
                                 <div className={clsx(PANEL, 'p-2.5 md:p-3 flex flex-col gap-1')}>
                                     {result.attributes.map((row) => (
@@ -473,7 +472,7 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                 <SectionTitle
                                     icon={<Sparkles className="w-3.5 h-3.5 text-cyan-400" />}
                                     title="生效增益"
-                                    hint="数值为主体设定值 · 未启用侧不参与计算"
+                                    hint="未启用表示不参与计算"
                                 />
                                 <div className={clsx(PANEL, 'p-2.5 md:p-3 flex flex-col gap-1')}>
                                     {result.buffs.map((row) => (
@@ -491,7 +490,7 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                 <SectionTitle
                                     icon={<Swords className="w-3.5 h-3.5 text-cyan-400" />}
                                     title="副本伤害对比"
-                                    hint="点开 BOSS → 再点开每个技能"
+                                    hint="点开副本 → 点开 BOSS → 再查看每个技能"
                                 />
                                 <div className={clsx(PANEL, 'p-2.5 md:p-3 flex flex-col gap-1')}>
                                     {DUNGEON_CATEGORY_ORDER.map((cat: DungeonCategory) => {
@@ -533,8 +532,8 @@ export const CompareDialog: React.FC<CompareDialogProps> = ({ presets, activePre
                                 </div>
                                 <div className="flex flex-col gap-1 text-[11px] text-slate-400">
                                     <p>
-                                        伤害口径：单个技能 = 该技能的单段平均伤害（多段 / 步进技能如苍龙啸只取最后一段）；
-                                        BOSS = 该 BOSS 全部输出技能之和；副本 = 本内 BOSS 的均值。与计算器页的「综合战力」（技能加权和）不是同一口径。
+                                        伤害口径：单个技能 = 该技能的单段平均伤害（多段技能如苍龙啸只取最后一段）；
+                                        BOSS = 该 BOSS 全部输出技能之和；副本 = 所有 BOSS 全部输出技能的均值。
                                     </p>
                                     <button
                                         type="button"

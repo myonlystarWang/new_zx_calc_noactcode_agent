@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
-import { Info } from 'lucide-react';
+import { Info, X } from 'lucide-react';
 import clsx from 'clsx';
 
 export const BuffSelector: React.FC<{ onNavigateToFocus?: () => void }> = ({ onNavigateToFocus }) => {
     const { buffs, activeBuffIds, toggleBuff, buffValues, updateBuffValue } = useApp();
+    const [showHelp, setShowHelp] = useState(false);
+    const helpRef = useRef<HTMLDivElement>(null);
+
+    // 点击外部区域自动关闭提示气泡
+    useEffect(() => {
+        if (!showHelp) return;
+        const handleClickOutside = (e: MouseEvent) => {
+            if (helpRef.current && !helpRef.current.contains(e.target as Node)) {
+                setShowHelp(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showHelp]);
 
     // Filter buffs: only show if IsDefaultActive or IsEditable is true (or if it's not explicitly false)
     // The requirement says: "IsDefaultActive and IsEditable为false的参数不显示"
@@ -47,16 +61,113 @@ export const BuffSelector: React.FC<{ onNavigateToFocus?: () => void }> = ({ onN
 
     return (
         <div>
-            <h2 className="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2">
+            <h2 className="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2 relative">
                 <span className="w-1 h-4 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full"></span>
                 战斗增益状态
                 <div
-                    className="ml-0.5 p-1 text-cyan-500/80 hover:text-cyan-400 cursor-pointer transition-colors hover:bg-cyan-500/10 rounded-full"
-                    title="点击跳转「资料图鉴 / 各职业状态」查看专注值参考"
-                    onClick={() => onNavigateToFocus?.()}
+                    className={clsx(
+                        "ml-0.5 p-1 cursor-pointer transition-all rounded-full flex items-center justify-center",
+                        showHelp
+                            ? "bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-500/50"
+                            : "text-cyan-500/80 hover:text-cyan-300 hover:bg-cyan-500/10"
+                    )}
+                    title="点击查看团队战斗增益极值参考"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setShowHelp((prev) => !prev);
+                    }}
                 >
                     <Info className="w-3.5 h-3.5" />
                 </div>
+
+                {/* 原地轻量参考气泡弹窗 */}
+                {showHelp && (
+                    <div
+                        ref={helpRef}
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute left-0 top-7 z-40 w-[320px] sm:w-[380px] p-3.5 rounded-xl bg-[#0b111e]/98 border border-cyan-500/40 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 text-slate-200"
+                    >
+                        <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
+                            <div className="flex items-center gap-1.5 font-bold text-xs text-cyan-300">
+                                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                                <span>团队战斗增益上限与参考基准</span>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setShowHelp(false)}
+                                className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                            >
+                                <X className="w-3.5 h-3.5" />
+                            </button>
+                        </div>
+
+                        <div className="space-y-2 text-xs">
+                            <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800/80 flex items-start justify-between gap-2">
+                                <div>
+                                    <span className="font-bold text-amber-300">易伤上限 (逆水寒等)</span>
+                                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+                                        多职业易伤叠加标准上限为 120%，团队增伤核心放大器。
+                                    </p>
+                                </div>
+                                <span className="font-mono font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20 shrink-0">
+                                    +120%
+                                </span>
+                            </div>
+
+                            <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800/80 flex items-start justify-between gap-2">
+                                <div>
+                                    <span className="font-bold text-emerald-300">绿点上限 (弱化减暴伤)</span>
+                                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+                                        鬼王/英招等弱化怪物减暴伤上限为 900，大幅恢复暴击输出。
+                                    </p>
+                                </div>
+                                <span className="font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20 shrink-0">
+                                    +900
+                                </span>
+                            </div>
+
+                            <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800/80 flex items-start justify-between gap-2">
+                                <div>
+                                    <span className="font-bold text-purple-300">巫咒神威 (天华专属)</span>
+                                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+                                        天华专属独立乘区易伤，极限满配效果可达 22.5%。
+                                    </p>
+                                </div>
+                                <span className="font-mono font-bold text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20 shrink-0">
+                                    22.5%
+                                </span>
+                            </div>
+
+                            <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800/80 flex items-start justify-between gap-2">
+                                <div>
+                                    <span className="font-bold text-cyan-300">团队专注 (增伤乘区)</span>
+                                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+                                        高难攻坚团队建议 260~320（上限 400）；酒水技能固定提供 +20。
+                                    </p>
+                                </div>
+                                <span className="font-mono font-bold text-cyan-400 bg-cyan-500/10 px-1.5 py-0.5 rounded border border-cyan-500/20 shrink-0">
+                                    260~320
+                                </span>
+                            </div>
+                        </div>
+
+                        {onNavigateToFocus && (
+                            <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+                                <span>想看各门派具体能给什么状态？</span>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setShowHelp(false);
+                                        onNavigateToFocus();
+                                    }}
+                                    className="text-cyan-400 hover:text-cyan-300 font-bold transition-colors cursor-pointer"
+                                >
+                                    去全景资料库 →
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
             </h2>
 
             <div className="calc-attr-grid grid grid-cols-2 sm:grid-cols-4 gap-3">
