@@ -732,10 +732,12 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         </div>
                                                     )}
 
-                                                    {/* 6.5 裸职业名歧义分流卡（T-15a）：点击入口=无状态重发查询词 */}
+                                                    {/* 6.5 裸职业名歧义分流卡（T-15a）：点击入口=无状态重发查询词。
+                                                        色调规矩：所有歧义分流 hub（class_hub/slot_hub）统一用全站唯一
+                                                        强调色 cyan，区分靠标题文案不靠颜色（2026-10-16 立） */}
                                                     {msg.cardType === 'class_hub' && msg.cardData && (
-                                                        <div className="rounded-xl bg-[#121824] border border-amber-500/30 p-4 space-y-3">
-                                                            <div className="text-sm font-bold text-amber-300">
+                                                        <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 space-y-3">
+                                                            <div className="text-sm font-bold text-cyan-300">
                                                                 职业【{msg.cardData.className}】· 请选择查询方向
                                                             </div>
                                                             <div className="flex flex-wrap gap-2">
@@ -744,7 +746,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                                         key={opt.key}
                                                                         type="button"
                                                                         onClick={() => onSendMessage(opt.query)}
-                                                                        className="px-3.5 py-1.5 rounded-lg bg-amber-600/25 hover:bg-amber-600/45 border border-amber-500/40 text-amber-200 text-xs font-medium cursor-pointer transition-colors"
+                                                                        className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
                                                                     >
                                                                         {opt.label}
                                                                     </button>

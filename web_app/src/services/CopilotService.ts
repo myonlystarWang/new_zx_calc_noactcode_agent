@@ -372,7 +372,7 @@ interface NecklaceSeries {
     patterns: string[];
 }
 const NECKLACE_SERIES: NecklaceSeries[] = [
-    { key: 'shenji', label: '神级首饰', patterns: ['印记', '造化之'] },
+    { key: 'shenji', label: '神级首饰', patterns: ['印记', '造化之', '符石', '血玉'] },
     { key: 'huangwu', label: '煌武项链', aliases: ['积分项链'], patterns: ['煌武'] },
     { key: 'zhandui', label: '战队项链', patterns: ['圣瑞', '圣谛'] },
     { key: 'sheji', label: '社稷项链', patterns: ['菩提珠', '琥珀珠', '舍利子', '血菩提', '真如子'] },
@@ -777,10 +777,10 @@ export class CopilotService {
         // ------------------------------------------------------------
         // 0.6 裸部位名歧义分流（slot_hub，T-16 方案A + 系列词库 B）
         // ① 品质系 6 部位（武器/头盔/衣服/靴子/腰带/袖甲，含帽子/鞋子等口语别名）
-        //    → 品质三入口（修武/昭武/彰武，替代 100+ 件平铺）；
-        // ② 项链 → 5 系列入口（神级首饰/煌武/战队/社稷/星语，用户 2026-10-16 分诊口径）。
-        // 选项 query 均实测可用：18 个「品质+部位」组合全部 26~54 候选；系列 query
-        // 经 NECKLACE_SERIES 展开后走装备分支包含匹配。
+        //    → 品质三入口 + 「其他」兜底（query=「所有+部位」走宽泛平铺）；
+        // ② 项链 → 5 系列 + 「其他项链」（用户 2026-10-16 分诊口径）；
+        // ③ 戒指 → 神级首饰 + 「其他戒指」（符石/血玉 72 件归神级，其余兜底）。
+        // 「其他」入口的 query 以「所有」开头，装备分支按宽泛词清空关键词全量平铺。
         // ------------------------------------------------------------
         const SLOT_HUB_ALIAS: Record<string, string> = {
             '帽子': '头盔', '帽': '头盔', '盔': '头盔', '冠': '头盔',
@@ -788,8 +788,10 @@ export class CopilotService {
         };
         if (q === '项链') {
             const seriesOptions = NECKLACE_SERIES.map(s => ({
-                key: s.key, label: s.label, query: s.label
+                // 神级首饰在项链 hub 下收窄为「神级项链」（label 保留玩家口语「神级首饰」）
+                key: s.key, label: s.label, query: s.key === 'shenji' ? '神级项链' : s.label
             }));
+            seriesOptions.push({ key: 'other', label: '其他项链', query: '所有项链' });
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
@@ -802,6 +804,23 @@ export class CopilotService {
                 }
             };
         }
+        if (q === '戒指') {
+            const ringOptions = [
+                { key: 'shenji', label: '神级首饰', query: '神级戒指' },
+                { key: 'other', label: '其他戒指', query: '所有戒指' }
+            ];
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你定位到装备部位【戒指】。请选择要查询的系列：`,
+                time: timeStr,
+                cardType: 'slot_hub',
+                cardData: {
+                    slot: q,
+                    options: ringOptions
+                }
+            };
+        }
         const SLOT_HUB_SLOTS = ['武器', '头盔', '衣服', '靴子', '腰带', '袖甲'];
         const SLOT_HUB_QUALITIES = ['修武', '昭武', '彰武'];
         const hubStdSlot = SLOT_HUB_SLOTS.includes(q) ? q : (SLOT_HUB_ALIAS[q] || null);
@@ -809,6 +828,7 @@ export class CopilotService {
             const hubOptions = SLOT_HUB_QUALITIES.map(qt => ({
                 key: qt, label: `${qt}系`, query: `${qt} ${hubStdSlot}`
             }));
+            hubOptions.push({ key: 'other', label: `其他${hubStdSlot}`, query: `所有${hubStdSlot}` });
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
@@ -1152,7 +1172,15 @@ export class CopilotService {
                         if (e.prof && e.prof.length > 0 && !e.prof.includes('通用')) return false;
                     }
                     const n = (e.name || '').toLowerCase();
-                    if (n.includes('守卫青云') || n.includes('副本内使用') || n.includes('测试') || n.includes('作废') || n.startsWith('天帝宝库_')) {
+                    if (n.includes('守卫青云') || n.includes('副本内使用') || n.includes('测试') || n.includes('作废') || n.includes('废弃') || n.startsWith('天帝宝库_')) {
+                        return false;
+                    }
+                    // 用户 2026-10-16 口径：书籍类饰品与天机指环系列屏蔽
+                    if (n.includes('梦入神机') || n.includes('自出洞来无敌手') || n.includes('天机指环')) {
+                        return false;
+                    }
+                    // 用户口径：1 级装备为废弃数据（戒指 59 件先行，其他部位同类数据待用户确认后扩展）
+                    if (e.lv === 1) {
                         return false;
                     }
                     return true;
@@ -1184,6 +1212,12 @@ export class CopilotService {
                 const matchedNecklaceSeries = NECKLACE_SERIES.find(s =>
                     q.includes(s.label) || (s.aliases || []).some(a => q.includes(a))
                 );
+
+                // 宽泛检索词（「所有项链」「所有戒指」）：hub「其他」入口专用——
+                // 清空自由关键词，按 matchedSlot 全量平铺（「所有」本身不是装备名词）
+                if (/^(所有|全部)/.test(q) && matchedSlot) {
+                    cleanTokens.length = 0;
+                }
 
                 const SKILL_CATEGORY_WORDS = [
                     '技能', '技能描述', '技能机制', '神通', '天书',
