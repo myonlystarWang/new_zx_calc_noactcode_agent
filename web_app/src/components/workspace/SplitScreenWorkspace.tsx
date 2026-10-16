@@ -18,7 +18,12 @@ import { SimulationArena } from '../arena/SimulationArena';
 import { ServerRadarView } from '../tools/ServerRadarView';
 import { XycSimulatorView } from '../tools/XycSimulatorView';
 import { NewTianYuanSimulatorView } from '../tools/NewTianYuanSimulatorView';
-import { WORKSPACE_TAG, WORKSPACE_TAG_ICON, WORKSPACE_ICON_BUTTON } from '../ui/accentButtonStyles';
+import {
+  WORKSPACE_TAG,
+  WORKSPACE_TAG_ICON,
+  WORKSPACE_MAXIMIZE_BUTTON,
+  WORKSPACE_CLOSE_BUTTON
+} from '../ui/accentButtonStyles';
 
 export type WorkspaceMode =
   | 'calc'
@@ -58,7 +63,7 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
     <div className="relative flex flex-col h-full bg-[#080c14] border-l border-slate-800/80 shadow-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300">
       {/* 统一顶栏格式：5个功能统一保留该顶栏 */}
       <div className="py-2 px-3 sm:px-4 border-b border-slate-800/80 bg-[#0d121c]/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
-        {/* 顶栏最左侧：该功能的名字带框，按+号hover风格 */}
+        {/* 顶栏最左侧：该功能的名字带框，精致暗调科技感风格 */}
         <div className="flex items-center">
           <div className={WORKSPACE_TAG}>
             {currentMeta.icon}
@@ -66,12 +71,12 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
           </div>
         </div>
 
-        {/* 顶栏最右侧：放大/还原 和 关闭（按+号hover统一风格） */}
+        {/* 顶栏最右侧：放大/还原 和 关闭 */}
         <div className="flex items-center gap-1.5 shrink-0">
           <button
             type="button"
             onClick={onToggleMaximize}
-            className={WORKSPACE_ICON_BUTTON}
+            className={WORKSPACE_MAXIMIZE_BUTTON}
             title={isMaximized ? '还原分屏 (双轨对照)' : '最大化工作区 (全屏模式)'}
             aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
           >
@@ -80,7 +85,7 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className={WORKSPACE_ICON_BUTTON}
+            className={WORKSPACE_CLOSE_BUTTON}
             title="关闭右侧工作区 (返回居中对话)"
             aria-label="关闭工作区"
           >
