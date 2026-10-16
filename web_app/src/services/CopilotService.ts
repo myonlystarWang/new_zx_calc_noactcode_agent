@@ -7,6 +7,7 @@
  */
 
 import { DataService, isValidSkill } from './DataService';
+import { pinyin } from 'pinyin-pro';
 import { calculateDungeonPower } from '../utils/calculator';
 import type { CharacterAttributes, Dungeon, Monster, Skill, CuratedEquipItem, CuratedSkillItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
@@ -320,6 +321,63 @@ const PROFESSIONS: string[] = [
     '涅羽', '百灵', '释罗', '万毒', '长生堂', '青罗', '炼血'
 ];
 
+// ------------------------------------------------------------
+// T-05 拼音归一词库（L0 层）：与下方 matchLocalIntent 内的品质/部位数组、
+// PROFESSIONS、SKILL_CATEGORY_MAP 同源（P2 词库数据化时统一为单一数据文件）
+// ------------------------------------------------------------
+const PINYIN_VOCAB_TERMS: string[] = [
+    ...PROFESSIONS,
+    // 装备品质
+    '修武', '昭武', '彰武', '神隐', '神级', '天命', '至尊', '混虚',
+    // 装备部位
+    '武器', '头盔', '衣服', '靴子', '袖甲', '腰带', '项链', '戒指', '法身', '罡气', '护符', '勋章', '玺绶', '锦囊', '佩章',
+    // 通用查询词
+    '技能', '装备', '法宝', '副本', '抗性', '轩辕策', '神通', '天书', '心法', '造化',
+    '易伤', '增伤', '破防', '绿点', '紫点',
+];
+
+// [拼音, 中文术语]，按拼音长度降序（贪心最长匹配）；同音歧义整键弃用防误命中
+let pinyinAliasCache: Array<[string, string]> | null = null;
+function getPinyinAliases(): Array<[string, string]> {
+    if (pinyinAliasCache) return pinyinAliasCache;
+    const byPinyin = new Map<string, string[]>();
+    for (const term of PINYIN_VOCAB_TERMS) {
+        // ü→v 规范化：pinyin-pro 返回 "lü"，而用户键盘输入用 "lv"，两边必须同构
+        const py = pinyin(term, { toneType: 'none' }).replace(/ü/g, 'v').replace(/[^a-z]/g, '');
+        if (!py) continue;
+        const list = byPinyin.get(py) || [];
+        list.push(term);
+        byPinyin.set(py, list);
+    }
+    const aliases: Array<[string, string]> = [];
+    for (const [py, terms] of byPinyin) {
+        if (terms.length === 1) aliases.push([py, terms[0]]);
+    }
+    aliases.sort((a, b) => b[0].length - a[0].length);
+    pinyinAliasCache = aliases;
+    return aliases;
+}
+
+// 纯字母输入（如 "zhu shuang"）→ 词库中文术语；有任何无法解析的字母段则整体放弃（防半归一化错配）
+function normalizePinyinQuery(q: string): string | null {
+    const letters = q.replace(/[^a-z]/g, '');
+    if (letters.length < 2) return null;
+    const aliases = getPinyinAliases();
+    const hits: string[] = [];
+    let i = 0;
+    while (i < letters.length) {
+        let hitPy: string | null = null;
+        let hitTerm: string | null = null;
+        for (const [py, term] of aliases) {
+            if (letters.startsWith(py, i)) { hitPy = py; hitTerm = term; break; }
+        }
+        if (!hitPy || !hitTerm) return null;
+        hits.push(hitTerm);
+        i += hitPy.length;
+    }
+    return hits.length > 0 ? hits.join('') : null;
+}
+
 export interface UserCustomApiKeys {
     zhipuKey?: string;
     siliconflowKey?: string;
@@ -355,6 +413,13 @@ export class CopilotService {
     public async matchLocalIntent(query: string): Promise<CopilotMessage | null> {
         let q = query.trim().toLowerCase();
         if (!q) return null;
+
+        // T-05 拼音归一（L0）：纯字母输入（"zhu shuang"/"guiwang"）→ 词库中文术语后走常规匹配；
+        // 未命中任何词库术语则保持原样（后续落 L2/查无）。含数字/中文的输入不走此路。
+        if (/^[a-z\s]+$/.test(q)) {
+            const normalized = normalizePinyinQuery(q);
+            if (normalized) q = normalized;
+        }
 
         const dataService = DataService.getInstance();
         const now = new Date();
