@@ -10628,13 +10628,315 @@
   },
   "player-bare-num-19": {
     "sender": "assistant",
-    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+    "text": "为你速查到【镇海！断浪碎晶宫（T19）】下的全部 6 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "t19",
+      "dungeonName": "镇海！断浪碎晶宫（T19）",
+      "candidates": [
+        {
+          "id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19",
+          "monsterId": "CHI_SUO_T19",
+          "monsterName": "赤梭",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 340000,
+          "hp": 2030655551,
+          "critRed": 210,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CHI_SUO_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_XUAN_KAI_T19",
+          "monsterId": "XUAN_KAI_T19",
+          "monsterName": "玄铠",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 370000,
+          "hp": 1895965465,
+          "critRed": 225,
+          "critDmgRed": 1450,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=XUAN_KAI_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_WANG_CHAO_T19",
+          "monsterId": "WANG_CHAO_T19",
+          "monsterName": "望潮",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 360000,
+          "hp": 2052199172,
+          "critRed": 220,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=WANG_CHAO_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_LIE_HUN_T19",
+          "monsterId": "LIE_HUN_T19",
+          "monsterName": "裂魂",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 355000,
+          "hp": 2070702762,
+          "critRed": 215,
+          "critDmgRed": 1350,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=LIE_HUN_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_LI_YIN_T19",
+          "monsterId": "LI_YIN_T19",
+          "monsterName": "璃音",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 345000,
+          "hp": 2029836047,
+          "critRed": 215,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=LI_YIN_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_CANG_YUAN_T19",
+          "monsterId": "CANG_YUAN_T19",
+          "monsterName": "沧渊",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 365000,
+          "hp": 2025423630,
+          "critRed": 225,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CANG_YUAN_T19"
+        }
+      ]
+    }
   },
   "player-bare-num-20": {
     "sender": "assistant",
+    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 6 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "t20",
+      "dungeonName": "镇海！断浪碎晶宫（T20）",
+      "candidates": [
+        {
+          "id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20",
+          "monsterId": "CHI_SUO_T20",
+          "monsterName": "赤梭",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 450000,
+          "hp": 2074576781,
+          "critRed": 250,
+          "critDmgRed": 1500,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CHI_SUO_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_XUAN_KAI_T20",
+          "monsterId": "XUAN_KAI_T20",
+          "monsterName": "玄铠",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 480000,
+          "hp": 1819323429,
+          "critRed": 265,
+          "critDmgRed": 1700,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=XUAN_KAI_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_WANG_CHAO_T20",
+          "monsterId": "WANG_CHAO_T20",
+          "monsterName": "望潮",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 470000,
+          "hp": 2088062917,
+          "critRed": 260,
+          "critDmgRed": 1650,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=WANG_CHAO_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_LIE_HUN_T20",
+          "monsterId": "LIE_HUN_T20",
+          "monsterName": "裂魂",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 460000,
+          "hp": 2072781515,
+          "critRed": 255,
+          "critDmgRed": 1550,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=LIE_HUN_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_LI_YIN_T20",
+          "monsterId": "LI_YIN_T20",
+          "monsterName": "璃音",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 455000,
+          "hp": 2047208614,
+          "critRed": 255,
+          "critDmgRed": 1600,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=LI_YIN_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_CANG_YUAN_T20",
+          "monsterId": "CANG_YUAN_T20",
+          "monsterName": "沧渊",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 475000,
+          "hp": 2080099212,
+          "critRed": 265,
+          "critDmgRed": 1600,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CANG_YUAN_T20"
+        }
+      ]
+    }
+  },
+  "guard-num-22": {
+    "sender": "assistant",
     "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
   },
-  "player-da19": null,
+  "guard-num-15": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "player-da19": {
+    "sender": "assistant",
+    "text": "为你速查到【镇海！断浪碎晶宫（T19）】下的全部 6 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "t19",
+      "dungeonName": "镇海！断浪碎晶宫（T19）",
+      "candidates": [
+        {
+          "id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19",
+          "monsterId": "CHI_SUO_T19",
+          "monsterName": "赤梭",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 340000,
+          "hp": 2030655551,
+          "critRed": 210,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CHI_SUO_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_XUAN_KAI_T19",
+          "monsterId": "XUAN_KAI_T19",
+          "monsterName": "玄铠",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 370000,
+          "hp": 1895965465,
+          "critRed": 225,
+          "critDmgRed": 1450,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=XUAN_KAI_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_WANG_CHAO_T19",
+          "monsterId": "WANG_CHAO_T19",
+          "monsterName": "望潮",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 360000,
+          "hp": 2052199172,
+          "critRed": 220,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=WANG_CHAO_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_LIE_HUN_T19",
+          "monsterId": "LIE_HUN_T19",
+          "monsterName": "裂魂",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 355000,
+          "hp": 2070702762,
+          "critRed": 215,
+          "critDmgRed": 1350,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=LIE_HUN_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_LI_YIN_T19",
+          "monsterId": "LI_YIN_T19",
+          "monsterName": "璃音",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 345000,
+          "hp": 2029836047,
+          "critRed": 215,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=LI_YIN_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_CANG_YUAN_T19",
+          "monsterId": "CANG_YUAN_T19",
+          "monsterName": "沧渊",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 365000,
+          "hp": 2025423630,
+          "critRed": 225,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CANG_YUAN_T19"
+        }
+      ]
+    }
+  },
   "player-20wuxun": null,
   "equip-tier-zizhuang": null,
   "server-zhanqu-haotian": {
@@ -12026,7 +12328,346 @@
   },
   "skill-tag-yishang-gap": {
     "sender": "assistant",
-    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+    "text": "为你检索到 30 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": [
+        {
+          "id": 10834,
+          "name": "银鳞悬冰",
+          "el_max": 1,
+          "el_cd": 150000,
+          "el_mp": 7500,
+          "el_req": 0,
+          "occ": 133,
+          "group_name": "逐霜·心法",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1650,
+          "name": "八荒真火：妙",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 1500,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "青云·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3017,
+          "name": "雷光遁龙诀<玄>",
+          "el_max": 20,
+          "el_cd": 4500,
+          "el_mp": 1638,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "青云·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1654,
+          "name": "龙啸：妙",
+          "el_max": 1,
+          "el_cd": 240000,
+          "el_mp": 1100,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "鬼王·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 2049,
+          "name": "旋龙幻杀II",
+          "el_max": 10,
+          "el_cd": 40000,
+          "el_mp": 216,
+          "el_req": 125,
+          "occ": 148,
+          "group_name": "鬼王·造化·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3117,
+          "name": "魔魂天咒<禅>",
+          "el_max": 20,
+          "el_cd": 9000,
+          "el_mp": 860,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "鬼王·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 781,
+          "name": "怜影",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 793,
+          "el_req": 135,
+          "occ": 17,
+          "group_name": "合欢",
+          "group_kind": "prof"
+        },
+        {
+          "id": 324,
+          "name": "山盟",
+          "el_max": 10,
+          "el_cd": 5000,
+          "el_mp": 537,
+          "el_req": 90,
+          "occ": 6,
+          "group_name": "合欢",
+          "group_kind": "prof"
+        },
+        {
+          "id": 532,
+          "name": "云雨",
+          "el_max": 10,
+          "el_cd": 5000,
+          "el_mp": 334,
+          "el_req": 115,
+          "occ": 16,
+          "group_name": "合欢",
+          "group_kind": "prof"
+        },
+        {
+          "id": 290,
+          "name": "情网",
+          "el_max": 10,
+          "el_cd": 60000,
+          "el_mp": 20,
+          "el_req": 30,
+          "occ": 4,
+          "group_name": "合欢·相关",
+          "group_kind": "sub"
+        },
+        {
+          "id": 298,
+          "name": "销魂",
+          "el_max": 10,
+          "el_cd": 5000,
+          "el_mp": 124,
+          "el_req": 60,
+          "occ": 5,
+          "group_name": "合欢·相关",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3079,
+          "name": "怜影<煞>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 793,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "合欢·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3127,
+          "name": "怜影<禅>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 793,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "合欢·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3031,
+          "name": "怜影<玄>",
+          "el_max": 20,
+          "el_cd": 6000,
+          "el_mp": 793,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "合欢·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1662,
+          "name": "几多愁：妙",
+          "el_max": 1,
+          "el_cd": 360000,
+          "el_mp": 950,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1313,
+          "name": "曾记否：玄",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1645,
+          "name": "曾记否：霸",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1665,
+          "name": "曾记否：妙",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1685,
+          "name": "曾记否：梵",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1705,
+          "name": "曾记否：暗",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3800,
+          "name": "曾记否：焚",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 11344,
+          "name": "曾记否：命",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1050,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "合欢·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 790,
+          "name": "万象生佛",
+          "el_max": 5,
+          "el_cd": 60000,
+          "el_mp": 0,
+          "el_req": 135,
+          "occ": 23,
+          "group_name": "天音",
+          "group_kind": "prof"
+        },
+        {
+          "id": 788,
+          "name": "无量真言",
+          "el_max": 3,
+          "el_cd": 15000,
+          "el_mp": 561,
+          "el_req": 139,
+          "occ": 23,
+          "group_name": "天音",
+          "group_kind": "prof"
+        },
+        {
+          "id": 1593,
+          "name": "金刚护体II",
+          "el_max": 10,
+          "el_cd": 156000,
+          "el_mp": 999,
+          "el_req": 125,
+          "occ": 150,
+          "group_name": "天音·造化·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1658,
+          "name": "破魔迦蓝：妙",
+          "el_max": 1,
+          "el_cd": 120000,
+          "el_mp": 1150,
+          "el_req": 0,
+          "occ": 146,
+          "group_name": "天音·飞升",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3074,
+          "name": "无量真言<煞>",
+          "el_max": 20,
+          "el_cd": 75000,
+          "el_mp": 1913,
+          "el_req": 120,
+          "occ": 168,
+          "group_name": "天音·神通·魔",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3122,
+          "name": "无量真言<禅>",
+          "el_max": 20,
+          "el_cd": 75000,
+          "el_mp": 1913,
+          "el_req": 120,
+          "occ": 169,
+          "group_name": "天音·神通·佛",
+          "group_kind": "sub"
+        },
+        {
+          "id": 3026,
+          "name": "无量真言<玄>",
+          "el_max": 20,
+          "el_cd": 75000,
+          "el_mp": 1913,
+          "el_req": 120,
+          "occ": 167,
+          "group_name": "天音·神通·仙",
+          "group_kind": "sub"
+        },
+        {
+          "id": 1544,
+          "name": "似水凋零",
+          "el_max": 10,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 125,
+          "occ": 148,
+          "group_name": "鬼道·造化·仙",
+          "group_kind": "sub"
+        }
+      ],
+      "skill": {
+        "id": 10834,
+        "name": "银鳞悬冰"
+      }
+    }
   },
   "fabao-effect-baosshang": {
     "sender": "assistant",
@@ -12302,17 +12943,750 @@
   },
   "conflict-skill-xyc-01": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【鬼王】轩辕策技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": [
+        {
+          "id": 5837,
+          "name": "猛火咒III 《天空》",
+          "el_max": 3,
+          "el_cd": 180000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "鬼王·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5838,
+          "name": "猛火咒III 《碧海》",
+          "el_max": 3,
+          "el_cd": 180000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "鬼王·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5840,
+          "name": "猛火咒III 《英雄》",
+          "el_max": 3,
+          "el_cd": 180000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "鬼王·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5839,
+          "name": "猛火咒III 《大地》",
+          "el_max": 3,
+          "el_cd": 180000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "鬼王·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5751,
+          "name": "聚灵咒III 《天空》",
+          "el_max": 3,
+          "el_cd": 45000,
+          "el_mp": 1,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "鬼王·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5752,
+          "name": "聚灵咒III 《碧海》",
+          "el_max": 3,
+          "el_cd": 45000,
+          "el_mp": 1,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "鬼王·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5754,
+          "name": "聚灵咒III 《英雄》",
+          "el_max": 3,
+          "el_cd": 45000,
+          "el_mp": 1,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "鬼王·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 5753,
+          "name": "聚灵咒III 《大地》",
+          "el_max": 3,
+          "el_cd": 45000,
+          "el_mp": 1,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "鬼王·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 218,
+          "name": "重击",
+          "el_max": 7,
+          "el_cd": 0,
+          "el_mp": 8,
+          "el_req": 1,
+          "occ": 0,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 219,
+          "name": "警觉",
+          "el_max": 7,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 3,
+          "occ": 0,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 462,
+          "name": "血誓",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 16,
+          "occ": 1,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 244,
+          "name": "疯魔斩",
+          "el_max": 10,
+          "el_cd": 1000,
+          "el_mp": 10,
+          "el_req": 15,
+          "occ": 1,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 243,
+          "name": "追风咒",
+          "el_max": 6,
+          "el_cd": 65000,
+          "el_mp": 34,
+          "el_req": 16,
+          "occ": 1,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 251,
+          "name": "厚土咒",
+          "el_max": 8,
+          "el_cd": 120000,
+          "el_mp": 110,
+          "el_req": 20,
+          "occ": 1,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 260,
+          "name": "锐金咒",
+          "el_max": 6,
+          "el_cd": 60000,
+          "el_mp": 176,
+          "el_req": 35,
+          "occ": 1,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 247,
+          "name": "迅雷斩",
+          "el_max": 10,
+          "el_cd": 3000,
+          "el_mp": 30,
+          "el_req": 45,
+          "occ": 2,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 393,
+          "name": "御空术",
+          "el_max": 3,
+          "el_cd": 25000,
+          "el_mp": 200,
+          "el_req": 46,
+          "occ": 2,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 253,
+          "name": "密云咒",
+          "el_max": 6,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 46,
+          "occ": 2,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 258,
+          "name": "猛火咒",
+          "el_max": 8,
+          "el_cd": 90000,
+          "el_mp": 120,
+          "el_req": 50,
+          "occ": 2,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 263,
+          "name": "夺神斩",
+          "el_max": 10,
+          "el_cd": 2000,
+          "el_mp": 164,
+          "el_req": 75,
+          "occ": 3,
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 463,
+          "name": "无常令",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 76,
+          "occ": 3,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 315,
+          "name": "绝情咒",
+          "el_max": 6,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 76,
+          "occ": 3,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 314,
+          "name": "痴情咒",
+          "el_max": 9,
+          "el_cd": 300000,
+          "el_mp": 108,
+          "el_req": 80,
+          "occ": 3,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 249,
+          "name": "枯木咒",
+          "el_max": 8,
+          "el_cd": 42000,
+          "el_mp": 73,
+          "el_req": 85,
+          "occ": 3,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 256,
+          "name": "天魔舞",
+          "el_max": 10,
+          "el_cd": 5000,
+          "el_mp": 575,
+          "el_req": 90,
+          "occ": 3,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 520,
+          "name": "虚空斩",
+          "el_max": 3,
+          "el_cd": 60000,
+          "el_mp": 150,
+          "el_req": 106,
+          "occ": 13,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 521,
+          "name": "聚灵咒",
+          "el_max": 8,
+          "el_cd": 75000,
+          "el_mp": 1,
+          "el_req": 106,
+          "occ": 13,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 523,
+          "name": "狱龙破",
+          "el_max": 10,
+          "el_cd": 9000,
+          "el_mp": 635,
+          "el_req": 115,
+          "occ": 13,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 526,
+          "name": "无间寂",
+          "el_max": 7,
+          "el_cd": 90000,
+          "el_mp": 649,
+          "el_req": 125,
+          "occ": 13,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        },
+        {
+          "id": 778,
+          "name": "未名斩",
+          "el_max": 3,
+          "el_cd": 13000,
+          "el_mp": 589,
+          "el_req": 139,
+          "occ": 14,
+          "tags": [],
+          "group_name": "鬼王",
+          "group_kind": "prof"
+        }
+      ],
+      "skill": {
+        "id": 5837,
+        "name": "猛火咒III 《天空》"
+      }
     }
   },
   "conflict-skill-xyc-02": {
+    "sender": "assistant",
+    "text": "为你速查到 【逐霜】轩辕策技能（共 44 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": [
+        {
+          "id": 8091,
+          "name": "山雨欲来III 《天空》",
+          "el_max": 3,
+          "el_cd": 6000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "逐霜·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 8092,
+          "name": "山雨欲来III 《碧海》",
+          "el_max": 3,
+          "el_cd": 6000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "逐霜·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 8089,
+          "name": "山雨欲来III 《英雄》",
+          "el_max": 3,
+          "el_cd": 6000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "逐霜·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 8090,
+          "name": "山雨欲来III 《大地》",
+          "el_max": 3,
+          "el_cd": 6000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "逐霜·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 8093,
+          "name": "霜池映月III 《英雄》",
+          "el_max": 3,
+          "el_cd": 120000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "逐霜·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 8096,
+          "name": " 霜池映月III 《天空》 ",
+          "el_max": 3,
+          "el_cd": 120000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "逐霜·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 8095,
+          "name": " 霜池映月III 《碧海》 ",
+          "el_max": 3,
+          "el_cd": 90000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "逐霜·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 8094,
+          "name": " 霜池映月III 《大地》 ",
+          "el_max": 3,
+          "el_cd": 120000,
+          "el_mp": 1000,
+          "el_req": 0,
+          "occ": 151,
+          "tags": [],
+          "group_name": "逐霜·轩辕策",
+          "group_kind": "sub"
+        },
+        {
+          "id": 7875,
+          "name": "横槊",
+          "el_max": 6,
+          "el_cd": 55000,
+          "el_mp": 50,
+          "el_req": 6,
+          "occ": 249,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7876,
+          "name": "清啸",
+          "el_max": 6,
+          "el_cd": 55000,
+          "el_mp": 50,
+          "el_req": 8,
+          "occ": 249,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7889,
+          "name": "日曜",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 65,
+          "occ": 251,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7877,
+          "name": "腾蛟",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 10,
+          "occ": 249,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7901,
+          "name": "削骨",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 125,
+          "occ": 253,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7895,
+          "name": "月华",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 95,
+          "occ": 252,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7907,
+          "name": "刺血",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 140,
+          "occ": 254,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7883,
+          "name": "嘲风",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 35,
+          "occ": 250,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7887,
+          "name": "黑龙袭",
+          "el_max": 7,
+          "el_cd": 57000,
+          "el_mp": 90,
+          "el_req": 55,
+          "occ": 251,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7902,
+          "name": "苍龙啸",
+          "el_max": 11,
+          "el_cd": 36000,
+          "el_mp": 200,
+          "el_req": 135,
+          "occ": 254,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7906,
+          "name": "点龙睛",
+          "el_max": 8,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 139,
+          "occ": 254,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7872,
+          "name": "瀚海生烟",
+          "el_max": 9,
+          "el_cd": 0,
+          "el_mp": 25,
+          "el_req": 1,
+          "occ": 249,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7873,
+          "name": "雪满群山",
+          "el_max": 9,
+          "el_cd": 0,
+          "el_mp": 25,
+          "el_req": 2,
+          "occ": 249,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7874,
+          "name": "醉月飞觞",
+          "el_max": 6,
+          "el_cd": 25000,
+          "el_mp": 30,
+          "el_req": 4,
+          "occ": 249,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7878,
+          "name": "临渊敛爪",
+          "el_max": 11,
+          "el_cd": 8000,
+          "el_mp": 47,
+          "el_req": 15,
+          "occ": 250,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7879,
+          "name": "龙战于野",
+          "el_max": 8,
+          "el_cd": 60000,
+          "el_mp": 62,
+          "el_req": 16,
+          "occ": 250,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7880,
+          "name": "踏破九霄",
+          "el_max": 9,
+          "el_cd": 120000,
+          "el_mp": 175,
+          "el_req": 20,
+          "occ": 250,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7881,
+          "name": "矫若游龙",
+          "el_max": 8,
+          "el_cd": 95000,
+          "el_mp": 90,
+          "el_req": 25,
+          "occ": 250,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7884,
+          "name": "浮影腾跃",
+          "el_max": 9,
+          "el_cd": 18000,
+          "el_mp": 47,
+          "el_req": 45,
+          "occ": 251,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7885,
+          "name": "引商刻羽",
+          "el_max": 5,
+          "el_cd": 40000,
+          "el_mp": 62,
+          "el_req": 46,
+          "occ": 251,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7886,
+          "name": "云蒸霞蔚",
+          "el_max": 6,
+          "el_cd": 60000,
+          "el_mp": 175,
+          "el_req": 50,
+          "occ": 251,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        },
+        {
+          "id": 7888,
+          "name": "披霞揽星",
+          "el_max": 8,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 60,
+          "occ": 251,
+          "tags": [],
+          "group_name": "逐霜",
+          "group_kind": "prof"
+        }
+      ],
+      "skill": {
+        "id": 8091,
+        "name": "山雨欲来III 《天空》"
+      }
+    }
+  },
+  "xyc-bare-still-tool": {
     "sender": "assistant",
     "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
     "cardType": "xyc_diag",
@@ -14251,14 +15625,17 @@
   },
   "gen-skill-鬼王 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【鬼王】轩辕策技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5837
+      },
+      "skill": {
+        "id": 5837,
+        "name": "猛火咒III 《天空》"
+      }
     }
   },
   "gen-skill-合欢 天书": {
@@ -14323,14 +15700,17 @@
   },
   "gen-skill-合欢 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【合欢】轩辕策技能（共 45 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5755
+      },
+      "skill": {
+        "id": 5755,
+        "name": "江南III 《天空》"
+      }
     }
   },
   "gen-skill-合欢 星宿": {
@@ -14455,14 +15835,17 @@
   },
   "gen-skill-青云 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【青云】轩辕策技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5747
+      },
+      "skill": {
+        "id": 5747,
+        "name": "真元华闪III 《天空》"
+      }
     }
   },
   "gen-skill-天音 天书": {
@@ -14527,14 +15910,17 @@
   },
   "gen-skill-天音 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【天音】轩辕策技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5759
+      },
+      "skill": {
+        "id": 5759,
+        "name": "六道轮回III 《天空》"
+      }
     }
   },
   "gen-skill-天音 心法": {
@@ -14659,14 +16045,17 @@
   },
   "gen-skill-鬼道 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【鬼道】轩辕策技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5763
+      },
+      "skill": {
+        "id": 5763,
+        "name": "森罗三笑III 《天空》"
+      }
     }
   },
   "gen-skill-焚香 神通": {
@@ -14761,14 +16150,17 @@
   },
   "gen-skill-焚香 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【焚香】轩辕策技能（共 42 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5767
+      },
+      "skill": {
+        "id": 5767,
+        "name": "玄阳火典III 《天空》"
+      }
     }
   },
   "gen-skill-九黎 天书": {
@@ -14833,14 +16225,17 @@
   },
   "gen-skill-九黎 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【九黎】轩辕策技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5771
+      },
+      "skill": {
+        "id": 5771,
+        "name": "八肱III 《天空》"
+      }
     }
   },
   "gen-skill-九黎 星宿": {
@@ -14950,14 +16345,17 @@
   },
   "gen-skill-烈山 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【烈山】轩辕策技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5775
+      },
+      "skill": {
+        "id": 5775,
+        "name": "三云龙III 《天空》"
+      }
     }
   },
   "gen-skill-烈山 心法": {
@@ -15067,14 +16465,17 @@
   },
   "gen-skill-怀光 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【怀光】轩辕策技能（共 48 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5779
+      },
+      "skill": {
+        "id": 5779,
+        "name": "天诛III 《天空》"
+      }
     }
   },
   "gen-skill-天华 天书": {
@@ -15154,14 +16555,17 @@
   },
   "gen-skill-天华 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【天华】轩辕策技能（共 46 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5783
+      },
+      "skill": {
+        "id": 5783,
+        "name": "升皇音刃III 《天空》"
+      }
     }
   },
   "gen-skill-天华 心法": {
@@ -15271,14 +16675,17 @@
   },
   "gen-skill-辰皇 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【辰皇】轩辕策技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5877
+      },
+      "skill": {
+        "id": 5877,
+        "name": "皇极·冥III  《天空》"
+      }
     }
   },
   "gen-skill-太昊 神通": {
@@ -15358,14 +16765,17 @@
   },
   "gen-skill-太昊 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【太昊】轩辕策技能（共 48 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5787
+      },
+      "skill": {
+        "id": 5787,
+        "name": "天地绝III 《天空》"
+      }
     }
   },
   "gen-skill-太昊 心法": {
@@ -15475,14 +16885,17 @@
   },
   "gen-skill-牵机 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【牵机】轩辕策技能（共 56 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5795
+      },
+      "skill": {
+        "id": 5795,
+        "name": "神来一笔III 《天空》"
+      }
     }
   },
   "gen-skill-英招 天书": {
@@ -15547,14 +16960,17 @@
   },
   "gen-skill-英招 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【英招】轩辕策技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5799
+      },
+      "skill": {
+        "id": 5799,
+        "name": "逆鳞断III 《天空》"
+      }
     }
   },
   "gen-skill-英招 心法": {
@@ -15679,14 +17095,17 @@
   },
   "gen-skill-破军 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【破军】轩辕策技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 5803
+      },
+      "skill": {
+        "id": 5803,
+        "name": "繁星碎III 《天空》"
+      }
     }
   },
   "gen-skill-青罗 神通": {
@@ -15781,14 +17200,17 @@
   },
   "gen-skill-青罗 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【青罗】轩辕策技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 6256
+      },
+      "skill": {
+        "id": 6256,
+        "name": "彤云扫天III  《天空》"
+      }
     }
   },
   "gen-skill-归云 天书": {
@@ -15838,14 +17260,17 @@
   },
   "gen-skill-归云 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【归云】轩辕策技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 6725
+      },
+      "skill": {
+        "id": 6725,
+        "name": "凌波梦寻III 《天空》"
+      }
     }
   },
   "gen-skill-归云 飞升": {
@@ -15970,14 +17395,17 @@
   },
   "gen-skill-画影 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【画影】轩辕策技能（共 51 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 7623
+      },
+      "skill": {
+        "id": 7623,
+        "name": "云生画影III  《天空》"
+      }
     }
   },
   "gen-skill-画影 心法": {
@@ -16087,14 +17515,17 @@
   },
   "gen-skill-逐霜 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【逐霜】轩辕策技能（共 44 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 8091
+      },
+      "skill": {
+        "id": 8091,
+        "name": "山雨欲来III 《天空》"
+      }
     }
   },
   "gen-skill-惊岚 天书": {
@@ -16159,14 +17590,17 @@
   },
   "gen-skill-惊岚 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【惊岚】轩辕策技能（共 43 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 8573
+      },
+      "skill": {
+        "id": 8573,
+        "name": "卷平岚III 《天空》"
+      }
     }
   },
   "gen-skill-惊岚 星宿": {
@@ -16276,14 +17710,17 @@
   },
   "gen-skill-昭冥 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【昭冥】轩辕策技能（共 49 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 9196
+      },
+      "skill": {
+        "id": 9196,
+        "name": "咒·卿云之兆III《大地》"
+      }
     }
   },
   "gen-skill-昭冥 心法": {
@@ -16393,14 +17830,17 @@
   },
   "gen-skill-涅羽 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【涅羽】轩辕策技能（共 47 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 9681
+      },
+      "skill": {
+        "id": 9681,
+        "name": "凤舞喋魂III 《天空》"
+      }
     }
   },
   "gen-skill-百灵 天书": {
@@ -16465,14 +17905,17 @@
   },
   "gen-skill-百灵 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【百灵】轩辕策技能（共 43 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 10216
+      },
+      "skill": {
+        "id": 10216,
+        "name": "千鸟飞燕III《天空》"
+      }
     }
   },
   "gen-skill-百灵 星宿": {
@@ -16597,14 +18040,17 @@
   },
   "gen-skill-释罗 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【释罗】轩辕策技能（共 43 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 10595
+      },
+      "skill": {
+        "id": 10595,
+        "name": "衅孽外乘《天空》"
+      }
     }
   },
   "gen-skill-长生堂 天书": {
@@ -16669,14 +18115,17 @@
   },
   "gen-skill-长生堂 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【长生堂】轩辕策技能（共 36 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 11243
+      },
+      "skill": {
+        "id": 11243,
+        "name": "心如明镜III 《天空》"
+      }
     }
   },
   "gen-skill-长生堂 星宿": {
@@ -16771,14 +18220,17 @@
   },
   "gen-skill-万毒 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【万毒】轩辕策技能（共 42 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 11992
+      },
+      "skill": {
+        "id": 11992,
+        "name": "断水刺III 《天空》"
+      }
     }
   },
   "gen-skill-万毒 心法": {
@@ -16888,14 +18340,17 @@
   },
   "gen-skill-炼血 轩辕策": {
     "sender": "assistant",
-    "text": "已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。",
-    "cardType": "xyc_diag",
+    "text": "为你速查到 【炼血】轩辕策技能（共 33 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
     "cardData": {
-      "title": "轩辕策属性模拟",
-      "desc": "支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定",
-      "workspaceMode": "xyc",
-      "route": "/tools/xyc",
-      "btnText": "进入轩辕策属性"
+      "candidates": {
+        "__count": 30,
+        "__first": 12652
+      },
+      "skill": {
+        "id": 12652,
+        "name": "枯血印III《天空》"
+      }
     }
   },
   "gen-skill-炼血 心法": {

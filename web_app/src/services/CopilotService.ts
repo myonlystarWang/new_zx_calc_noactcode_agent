@@ -311,6 +311,15 @@ export interface BossCandidateItem {
 
 const CUSTOM_KEYS_STORAGE = 'zx_ai_copilot_custom_keys';
 
+// 职业名总表（模块级单源，T-12/T-15 共用）：
+// ① 轩辕策微工具意图排除用——带职业前缀的「职业+轩辕策」应走技能分支（技能数据有 27 个「职业·轩辕策」组）；
+// ② 裸职业名精确匹配（class_hub 分流卡）用。
+const PROFESSIONS: string[] = [
+    '逐霜', '青云', '鬼王', '合欢', '天音', '鬼道', '焚香', '九黎', '烈山', '怀光',
+    '天华', '太昊', '辰皇', '破军', '牵机', '英招', '归云', '画影', '昭冥', '惊岚',
+    '涅羽', '百灵', '释罗', '万毒', '长生堂', '青罗', '炼血'
+];
+
 export interface UserCustomApiKeys {
     zhipuKey?: string;
     siliconflowKey?: string;
@@ -344,7 +353,7 @@ export class CopilotService {
      * 覆盖 法宝、装备、Boss、技能、极致攻略、开服状态、四象
      */
     public async matchLocalIntent(query: string): Promise<CopilotMessage | null> {
-        const q = query.trim().toLowerCase();
+        let q = query.trim().toLowerCase();
         if (!q) return null;
 
         const dataService = DataService.getInstance();
@@ -353,7 +362,12 @@ export class CopilotService {
 
         // 纯数值输入守卫（如输入 "200"、"1000"、"+15" 等）：
         // 杜绝被错误匹配到脏技能名（如 "2"）或任何部件，直接返回统一的“查无此条目”规范提示
-        if (/^[+-]?\d+(?:\.\d+)?$/.test(q)) {
+        // T-03 精细化：16~21（含"打19"口语形）是玩家对 T16-T21 的通行简称
+        //（完美论坛实证"0点去打19"），归一为 tNN 后走副本词典；其余纯数字维持守卫
+        const bareDungeonNum = q.match(/^(?:打)?(1[6-9]|2[01])$/);
+        if (bareDungeonNum) {
+            q = `t${bareDungeonNum[1]}`;
+        } else if (/^[+-]?\d+(?:\.\d+)?$/.test(q)) {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
@@ -454,10 +468,13 @@ export class CopilotService {
         }
 
         // 4. 轩辕策属性模拟
+        // T-12（R2 裁决）：带职业前缀的「职业+轩辕策」是技能查询（技能数据有 27 个「职业·轩辕策」组），
+        // 排除后落技能分支；仅裸「轩辕策」才走本工具卡
         if (
             !q.includes('四象七') &&
             !q.includes('四象7') &&
             !q.includes('七杀') &&
+            !PROFESSIONS.some(pr => q.includes(pr.toLowerCase())) &&
             (
                 q.includes('轩辕策') ||
                 q.includes('四象') ||
@@ -624,11 +641,7 @@ export class CopilotService {
             '戒': '戒指', '指环': '戒指',
             '链': '项链', '项圈': '项链'
         };
-        const profs = [
-            '逐霜', '青云', '鬼王', '合欢', '天音', '鬼道', '焚香', '九黎', '烈山', '怀光',
-            '天华', '太昊', '辰皇', '破军', '牵机', '英招', '归云', '画影', '昭冥', '惊岚',
-            '涅羽', '百灵', '释罗', '万毒', '长生堂', '青罗', '炼血'
-        ];
+        const profs = PROFESSIONS;
 
         const isYinji = tokens.some(t => t.includes('印记')) || q.includes('印记');
         const matchedQ = qualities.find(qu => tokens.some(t => t.includes(qu.toLowerCase())) || q.includes(qu.toLowerCase()));
@@ -1372,7 +1385,11 @@ export class CopilotService {
                     for (const cat of Object.keys(SKILL_CATEGORY_MAP)) remainder = remainder.replace(cat.toLowerCase(), '');
                     if (matchedCamp) remainder = remainder.replace(matchedCamp, '');
                     remainder = remainder.replace(/技能|神通|天书|心法|造化|星宿|玄烛|赤乌/g, '').trim();
-                    if (remainder.length >= 2) skillNameTokens.push(remainder);
+                    if (remainder.length >= 2) {
+                        skillNameTokens.push(remainder);
+                        // T-04 机制同义词（用户确认口径）：易伤=增伤——数据 tag 写"增伤"，玩家口语说"易伤"
+                        if (remainder === '易伤') skillNameTokens.push('增伤');
+                    }
                 }
 
                 const qClean = q.replace(/[·\s,，+＋/、\-_\(\)（）]/g, '');
