@@ -753,6 +753,27 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         </div>
                                                     )}
 
+                                                    {/* 6.6 裸部位名歧义分流卡（T-16 方案A）：点击入口=无状态重发「品质 部位」查询词 */}
+                                                    {msg.cardType === 'slot_hub' && msg.cardData && (
+                                                        <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 space-y-3">
+                                                            <div className="text-sm font-bold text-cyan-300">
+                                                                装备部位【{msg.cardData.slot}】· 请选择品质系列
+                                                            </div>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                {(msg.cardData.options || []).map((opt: { key: string; label: string; query: string }) => (
+                                                                    <button
+                                                                        key={opt.key}
+                                                                        type="button"
+                                                                        onClick={() => onSendMessage(opt.query)}
+                                                                        className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
+                                                                    >
+                                                                        {opt.label}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
                                                     {/* 7. 法宝图鉴单卡 */}
                                                     {msg.cardType === 'fabao' && msg.cardData && (
                                                         <div className="w-full">

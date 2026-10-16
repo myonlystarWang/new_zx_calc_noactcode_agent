@@ -26,7 +26,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub';
     cardData?: any;
 }
 
@@ -748,6 +748,32 @@ export class CopilotService {
                 cardType: 'class_hub',
                 cardData: {
                     className: q,
+                    options: hubOptions
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.6 裸部位名歧义分流（slot_hub，T-16 方案A）
+        // 输入精确等于品质系部位名（武器/头盔/衣服/靴子/腰带/袖甲）时返回品质三入口，
+        // 替代原有 100+ 件平铺列表；项链/戒指/锦囊/佩章/罡气/勋章/护符/法身/玺绶
+        // 九个非品质系部位不在此列（数据无品质系列，维持平铺，系列分诊后排期）。
+        // 选项 query 均实测可用：18 个「品质+部位」组合全部 26~54 候选（2026-10-16 取证）。
+        // ------------------------------------------------------------
+        const SLOT_HUB_SLOTS = ['武器', '头盔', '衣服', '靴子', '腰带', '袖甲'];
+        const SLOT_HUB_QUALITIES = ['修武', '昭武', '彰武'];
+        if (SLOT_HUB_SLOTS.includes(q)) {
+            const hubOptions = SLOT_HUB_QUALITIES.map(qt => ({
+                key: qt, label: `${qt}系`, query: `${qt} ${q}`
+            }));
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你定位到装备部位【${q}】。请选择要查询的品质系列：`,
+                time: timeStr,
+                cardType: 'slot_hub',
+                cardData: {
+                    slot: q,
                     options: hubOptions
                 }
             };
