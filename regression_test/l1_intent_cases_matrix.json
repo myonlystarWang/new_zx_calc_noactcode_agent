@@ -2492,7 +2492,9 @@
     "id": "gen-skill-鬼王 轩辕策",
     "input": "鬼王 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5837
     },
     "tags": [
       "generated",
@@ -2570,7 +2572,9 @@
     "id": "gen-skill-合欢 轩辕策",
     "input": "合欢 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5755
     },
     "tags": [
       "generated",
@@ -2712,7 +2716,9 @@
     "id": "gen-skill-青云 轩辕策",
     "input": "青云 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5747
     },
     "tags": [
       "generated",
@@ -2790,7 +2796,9 @@
     "id": "gen-skill-天音 轩辕策",
     "input": "天音 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5759
     },
     "tags": [
       "generated",
@@ -2932,7 +2940,9 @@
     "id": "gen-skill-鬼道 轩辕策",
     "input": "鬼道 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5763
     },
     "tags": [
       "generated",
@@ -3042,7 +3052,9 @@
     "id": "gen-skill-焚香 轩辕策",
     "input": "焚香 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5767
     },
     "tags": [
       "generated",
@@ -3120,7 +3132,9 @@
     "id": "gen-skill-九黎 轩辕策",
     "input": "九黎 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5771
     },
     "tags": [
       "generated",
@@ -3246,7 +3260,9 @@
     "id": "gen-skill-烈山 轩辕策",
     "input": "烈山 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5775
     },
     "tags": [
       "generated",
@@ -3372,7 +3388,9 @@
     "id": "gen-skill-怀光 轩辕策",
     "input": "怀光 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5779
     },
     "tags": [
       "generated",
@@ -3466,7 +3484,9 @@
     "id": "gen-skill-天华 轩辕策",
     "input": "天华 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5783
     },
     "tags": [
       "generated",
@@ -3592,7 +3612,9 @@
     "id": "gen-skill-辰皇 轩辕策",
     "input": "辰皇 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5877
     },
     "tags": [
       "generated",
@@ -3686,7 +3708,9 @@
     "id": "gen-skill-太昊 轩辕策",
     "input": "太昊 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5787
     },
     "tags": [
       "generated",
@@ -3812,7 +3836,9 @@
     "id": "gen-skill-牵机 轩辕策",
     "input": "牵机 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5795
     },
     "tags": [
       "generated",
@@ -3890,7 +3916,9 @@
     "id": "gen-skill-英招 轩辕策",
     "input": "英招 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5799
     },
     "tags": [
       "generated",
@@ -4032,7 +4060,9 @@
     "id": "gen-skill-破军 轩辕策",
     "input": "破军 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5803
     },
     "tags": [
       "generated",
@@ -4142,7 +4172,9 @@
     "id": "gen-skill-青罗 轩辕策",
     "input": "青罗 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6256
     },
     "tags": [
       "generated",
@@ -4204,7 +4236,9 @@
     "id": "gen-skill-归云 轩辕策",
     "input": "归云 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 6725
     },
     "tags": [
       "generated",
@@ -4346,7 +4380,9 @@
     "id": "gen-skill-画影 轩辕策",
     "input": "画影 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7623
     },
     "tags": [
       "generated",
@@ -4472,7 +4508,9 @@
     "id": "gen-skill-逐霜 轩辕策",
     "input": "逐霜 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8091
     },
     "tags": [
       "generated",
@@ -4550,7 +4588,9 @@
     "id": "gen-skill-惊岚 轩辕策",
     "input": "惊岚 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8573
     },
     "tags": [
       "generated",
@@ -4676,7 +4716,9 @@
     "id": "gen-skill-昭冥 轩辕策",
     "input": "昭冥 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9196
     },
     "tags": [
       "generated",
@@ -4802,7 +4844,9 @@
     "id": "gen-skill-涅羽 轩辕策",
     "input": "涅羽 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 9681
     },
     "tags": [
       "generated",
@@ -4880,7 +4924,9 @@
     "id": "gen-skill-百灵 轩辕策",
     "input": "百灵 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10216
     },
     "tags": [
       "generated",
@@ -5022,7 +5068,9 @@
     "id": "gen-skill-释罗 轩辕策",
     "input": "释罗 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10595
     },
     "tags": [
       "generated",
@@ -5100,7 +5148,9 @@
     "id": "gen-skill-长生堂 轩辕策",
     "input": "长生堂 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11243
     },
     "tags": [
       "generated",
@@ -5210,7 +5260,9 @@
     "id": "gen-skill-万毒 轩辕策",
     "input": "万毒 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 11992
     },
     "tags": [
       "generated",
@@ -5336,7 +5388,9 @@
     "id": "gen-skill-炼血 轩辕策",
     "input": "炼血 轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 12652
     },
     "tags": [
       "generated",
