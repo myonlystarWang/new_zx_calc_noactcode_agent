@@ -1334,17 +1334,14 @@
   {
     "id": "conflict-fabao-exact-04",
     "input": "七星剑秘笈",
-    "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "七星剑秘笈"
-    },
+    "expect": null,
     "tags": [
       "conflict",
       "fabao",
       "equip"
     ],
     "assert": "strong",
-    "note": "R1 边界：用户显式输装备全名（含'秘笈'后缀）仍走装备——精确名优先不误伤"
+    "note": "R1 边界：用户显式输装备全名仍走装备——但「七星剑秘笈」实证为佩章，佩章整类屏蔽（用户 2026-10-16 口径）后不可达，期望翻转 null"
   },
   {
     "id": "conflict-dungeon-alias-01",
@@ -1486,5 +1483,199 @@
     ],
     "assert": "strong",
     "note": "T-15 防过触发：分流卡仅精确等于职业名时触发，带后缀/修饰的输入必须继续走原意图"
+  },
+  {
+    "id": "slot-hub-jinnang-01",
+    "input": "锦囊",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "锦囊",
+      "cardData.options.length": 6
+    },
+    "tags": [
+      "slot-hub",
+      "series"
+    ],
+    "assert": "strong",
+    "note": "T-16 用户分诊：逍遥/太虚/神行/观心/天雨 5 系 + 其他锦囊"
+  },
+  {
+    "id": "slot-hub-gangqi-01",
+    "input": "罡气",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "罡气",
+      "cardData.options.length": 2
+    },
+    "tags": [
+      "slot-hub",
+      "series"
+    ],
+    "assert": "strong",
+    "note": "T-16 用户分诊：战罡 + 其他罡气"
+  },
+  {
+    "id": "slot-hub-fashen-01",
+    "input": "法身",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "法身",
+      "cardData.options.length": 2
+    },
+    "tags": [
+      "slot-hub",
+      "series"
+    ],
+    "assert": "strong",
+    "note": "T-16 用户分诊：法身/金身两分类实证全覆盖（27+27），无其他选项"
+  },
+  {
+    "id": "slot-hub-xishou-01",
+    "input": "玺绶",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "玺绶",
+      "cardData.options.length": 8
+    },
+    "tags": [
+      "slot-hub",
+      "series"
+    ],
+    "assert": "strong",
+    "note": "T-16 用户分诊：风云/惊天/齐天/翻天/覆天/社稷/跨服 7 类 + 其他玺绶"
+  },
+  {
+    "id": "series-xiaoyao-01",
+    "input": "逍遥锦囊",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "逍遥锦囊·万计★★★"
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "计系 42 阶聚合成单卡（卡片内升降阶）"
+  },
+  {
+    "id": "series-zhangang-01",
+    "input": "战罡",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 3
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "9 件战罡聚 3 代表（境界序列1+大乘星1+玄灵星1）；境界序列已补全 9 阶筑基→玄灵（lv 序）"
+  },
+  {
+    "id": "series-jinshen-01",
+    "input": "金身",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 9
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "金身23+无常空相4=27 件聚合 9 代表"
+  },
+  {
+    "id": "series-kuafu-01",
+    "input": "跨服印",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 152
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户给的跨服印名单（约150主名+限时变体）"
+  },
+  {
+    "id": "series-fengyun-01",
+    "input": "风云印",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 14
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "block-peizhang-01",
+    "input": "佩章",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户口径：佩章整类屏蔽（不需要分类）"
+  },
+  {
+    "id": "block-bahuang-01",
+    "input": "八皇御宝",
+    "expect": null,
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户口径：八皇御宝 8 件全屏蔽"
+  },
+  {
+    "id": "block-xishou-2024-01",
+    "input": "2024玺绶惊天命中（暂时搁置）",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户口径：2024 搁置玺绶屏蔽"
+  },
+  {
+    "id": "broad-all-jinnang-01",
+    "input": "所有锦囊",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 28
+    },
+    "tags": [
+      "broad",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "221 件屏蔽竞技场1+神恩53 后聚合 28"
+  },
+  {
+    "id": "broad-all-xishou-01",
+    "input": "所有玺绶",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 189
+    },
+    "tags": [
+      "broad",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "284 件屏蔽八皇御宝8+2024搁置1 后聚合 189"
   }
 ]
