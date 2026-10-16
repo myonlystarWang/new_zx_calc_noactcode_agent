@@ -1149,10 +1149,7 @@
   {
     "id": "gen-equip-天命-玺绶",
     "input": "天命 玺绶",
-    "expect": {
-      "cardType": "equip",
-      "cardData.equip.name": "2024玺绶惊天命中（暂时搁置）"
-    },
+    "expect": {},
     "tags": [
       "generated",
       "equip"

@@ -260,35 +260,35 @@ export const DUNGEON_SERIES: DungeonSeriesConfig[] = [
         seriesName: '流波惊变',
         keywords: ['流波', '流波惊变', '惊变'],
         dungeonIds: ['LIU_BO_JING_BIAN_CHUSHI', 'LIU_BO_JING_BIAN_HARD'],
-        hintText: '包含【初识】与【困难】两种难度阶段。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【流波初识】/【流波困难】精准直达：'
+        hintText: '包含【初识】与【困难】两种难度阶段。可在下方点选切换查看各难度 BOSS 战斗属性，或输入【流波初识】/【流波困难】精准直达：'
     },
     {
         seriesId: 'kongsang',
         seriesName: '劫起空桑',
         keywords: ['空桑', '劫起空桑'],
         dungeonIds: ['JIEQI_KONGSANG_NORMAL', 'JIEQI_KONGSANG_HARD'],
-        hintText: '包含【初识】与【困难】两种难度阶段。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【空桑初识】/【空桑困难】精准直达：'
+        hintText: '包含【初识】与【困难】两种难度阶段。可在下方点选切换查看各难度 BOSS 战斗属性，或输入【空桑初识】/【空桑困难】精准直达：'
     },
     {
         seriesId: 'tiandi',
         seriesName: '天帝宝库',
         keywords: ['天帝', '天帝宝库', '宝库'],
         dungeonIds: ['TIANDI_BAOKU_NORMAL', 'TIANDI_BAOKU_MEDIUM', 'TIANDI_BAOKU_HARD'],
-        hintText: '分为【天帝1（初入江湖）】、【天帝2（再起风云）】、【天帝3（三生苦旅）】三种难度阶梯。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【天帝1】/【天帝2】/【天帝3】精准直达：'
+        hintText: '分为【天帝1（初入江湖）】、【天帝2（再起风云）】、【天帝3（三生苦旅）】三种难度阶梯。可在下方点选切换查看各难度 BOSS 战斗属性，或输入【天帝1】/【天帝2】/【天帝3】精准直达：'
     },
     {
         seriesId: 'duanlang',
         seriesName: '镇海！断浪碎晶宫',
         keywords: ['断浪', '碎晶宫', '镇海断浪', '断浪碎晶宫'],
         dungeonIds: ['ZHENHAI_DUANLANG_T19', 'ZHENHAI_DUANLANG_T20', 'ZHENHAI_DUANLANG_T21'],
-        hintText: '包含【T19】、【T20】、【T21】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【T19】/【T20】/【T21】精准直达：'
+        hintText: '包含【T19】、【T20】、【T21】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗属性，或输入【T19】/【T20】/【T21】精准直达：'
     },
     {
         seriesId: 'lingyun',
         seriesName: '会盟！凌云诛众仙',
         keywords: ['凌云', '会盟', '绘梦', '凌云诛众仙'],
         dungeonIds: ['HUIMENG_LINGYUN_T16', 'HUIMENG_LINGYUN_T17', 'HUIMENG_LINGYUN_T18'],
-        hintText: '包含【T16】、【T17】、【T18】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗抗性，或输入【T16】/【T17】/【T18】精准直达：'
+        hintText: '包含【T16】、【T17】、【T18】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗属性，或输入【T16】/【T17】/【T18】精准直达：'
     }
 ];
 
@@ -332,7 +332,7 @@ const PINYIN_VOCAB_TERMS: string[] = [
     // 装备部位
     '武器', '头盔', '衣服', '靴子', '袖甲', '腰带', '项链', '戒指', '法身', '罡气', '护符', '勋章', '玺绶', '锦囊', '佩章',
     // 通用查询词
-    '技能', '装备', '法宝', '副本', '抗性', '轩辕策', '神通', '天书', '心法', '造化',
+    '技能', '装备', '法宝', '副本', '属性', '轩辕策', '神通', '天书', '心法', '造化',
     '易伤', '增伤', '破防', '绿点', '紫点',
 ];
 
@@ -359,26 +359,80 @@ function getPinyinAliases(): Array<[string, string]> {
 }
 
 // ------------------------------------------------------------
-// T-16-B 项链系列词库（用户 2026-10-16 分诊口径）
-// 项链数据无品质系列，按名称模式分系列；系列 query（如「社稷项链」）在装备分支
-// 展开为 patterns 走既有包含匹配。神级首饰沿用既有「印记」卡片（太昊/太乙按升级合并显示）。
-// 注：星语项链 11 件经实证全部为 lv=1 废弃数据，用户 2026-10-16 裁决全部屏蔽——
-// 入口已移除，装备分支另有「星语」显式屏蔽兜底（防未来非 1 级星语数据漏出）。
+// T-16 部件系列词库（用户 2026-10-16 逐部件分诊口径）
+// 非品质系部件按名称模式分系列；系列 query（如「社稷项链」）在装备分支展开为
+// terms 走包含/起头/结尾匹配。match: prefix=起头 / contains=包含 / suffix=结尾。
+// 神级首饰沿用既有「印记」卡片（太昊/太乙按升级合并显示）。
+// 注：星语项链 11 件经实证全部为 lv=1 废弃数据，用户裁决全部屏蔽——入口已移除，
+// 装备分支另有「星语」显式屏蔽兜底（防未来非 1 级星语数据漏出）。
 // ------------------------------------------------------------
-interface NecklaceSeries {
+interface SlotSeries {
     key: string;
     label: string;
+    match: 'prefix' | 'contains' | 'suffix';
+    /** 装备名称匹配词（按 match 模式命中任一即属该系列） */
+    terms: string[];
     /** 玩家别称（如「积分项链」= 煌武） */
     aliases?: string[];
-    /** 装备名称匹配模式（命中任一即属该系列） */
-    patterns: string[];
 }
-const NECKLACE_SERIES: NecklaceSeries[] = [
-    { key: 'shenji', label: '神级首饰', patterns: ['印记', '造化之', '符石', '血玉'] },
-    { key: 'huangwu', label: '煌武项链', aliases: ['积分项链'], patterns: ['煌武'] },
-    { key: 'zhandui', label: '战队项链', patterns: ['圣瑞', '圣谛'] },
-    { key: 'sheji', label: '社稷项链', patterns: ['菩提珠', '琥珀珠', '舍利子', '血菩提', '真如子'] },
-];
+const SLOT_SERIES: Record<string, SlotSeries[]> = {
+    '_all': [
+        // 跨部位系列：裸「神级首饰」混显项链+戒指；「神级项链」「神级戒指」按部位收窄
+        { key: 'shenji', label: '神级首饰', match: 'contains', terms: ['印记', '造化之', '符石', '血玉'] },
+    ],
+    '项链': [
+        { key: 'shenji', label: '神级首饰', match: 'contains', terms: ['印记', '造化之'], aliases: ['神级项链'] },
+        { key: 'huangwu', label: '煌武项链', match: 'contains', terms: ['煌武'], aliases: ['积分项链'] },
+        { key: 'zhandui', label: '战队项链', match: 'contains', terms: ['圣瑞', '圣谛'] },
+        { key: 'sheji', label: '社稷项链', match: 'contains', terms: ['菩提珠', '琥珀珠', '舍利子', '血菩提', '真如子'] },
+    ],
+    '戒指': [
+        { key: 'shenji', label: '神级首饰', match: 'contains', terms: ['符石', '血玉'], aliases: ['神级戒指'] },
+    ],
+    '锦囊': [
+        { key: 'xiaoyao', label: '逍遥锦囊', match: 'prefix', terms: ['逍遥'] },
+        { key: 'taixu', label: '太虚锦囊', match: 'prefix', terms: ['太虚'] },
+        { key: 'shenxing', label: '神行锦囊', match: 'prefix', terms: ['神行'] },
+        { key: 'guanxin', label: '观心锦囊', match: 'prefix', terms: ['观心'] },
+        { key: 'tianyu', label: '天雨锦囊', match: 'prefix', terms: ['天雨'] },
+    ],
+    '罡气': [
+        { key: 'zhangang', label: '战罡', match: 'contains', terms: ['战罡'] },
+    ],
+    '法身': [
+        { key: 'fashen', label: '法身', match: 'prefix', terms: ['法身'] },
+        { key: 'jinshen', label: '金身', match: 'prefix', terms: ['金身', '无常空相'] },
+    ],
+    '玺绶': [
+        { key: 'fengyun', label: '风云印', match: 'prefix', terms: ['风云印'] },
+        { key: 'jingtian', label: '惊天印', match: 'prefix', terms: ['惊天印'] },
+        { key: 'qitian', label: '齐天印', match: 'prefix', terms: ['齐天印'] },
+        { key: 'fantian', label: '翻天印', match: 'prefix', terms: ['翻天印'] },
+        { key: 'futian', label: '覆天印', match: 'prefix', terms: ['覆天印'] },
+        { key: 'sheji', label: '社稷印', match: 'prefix', terms: ['社稷印'] },
+        {
+            key: 'kuafu', label: '跨服印', match: 'contains', terms: [
+                '2013跨服冠军玺绶', '傲雪凌寒印', '霸王龙图印', '百战苍劫印', '碧峭击云印', '碧影含光印', '参商凌空印', '沧溟横云印', '苍龙翔云印', '苍穹御光印', '尘陨归墟印', '宸罡御无印', '宸月破空印', '赤砂辉月印', '赤炎流火印', '帝阙垂荫印', '繁天鸣玉印', '飞尘祈光印', '风雷掠江印', '锋纵八纮印', '浮尘穿雾印', '浮岚流光印', '冠军绶带', '龟甲玉璜', '寒冥幽绶印', '寒潭藏锋印', '寒天惊弦印', '皓月凝光印', '横扫六合印', '宏威霸者印', '虎面玉璜', '晦明百修印', '魂坠寒溟印', '混元万古印', '季军绶带', '剑芒惊夜印', '剑鸣封幽印', '剑破寒川印', '剑指天衡印', '角力惊涛印', '劫光耀泽印', '金戈铁马印', '金鼓铿锵印', '惊绝四方印', '九天煌极印', '九天天授印', '九天真武印', '九霄谒圣印', '勘妄归臻印', '魁昂九霄印', '雷部鸿钧印', '雷部混元印', '雷部使者印', '雷部天尊印', '雷部无极印', '雷部无相印', '雷部玄霄印', '雷部总兵印', '雷霆万钧印', '雷音千里印', '裂云催关印', '灵山吞海印', '灵至太墟印', '凌风斩岳印', '凌霄御尘印', '凌虚御光印', '龙城飞将印', '龙纹玉璜', '龙骧虎视印', '掠影夺锋印', '名扬十载印', '墨烬飞白印', '幕天逐寒印', '凝雨拂光印', '怒涛卷雪印', '磐岳镇流印', '破浪乘风印', '气盖山河印', '千古江山印', '青峰破阵印', '青岳御风印', '擎雷撼州印', '狮王争霸王者印', '狮王争霸威者印', '狮王争霸尊者印', '疏雨化痕印', '朔光披金印', '素云承露印', '碎星征寒印', '踏尘饮血印', '天域浮岛王者印', '万古独断印', '威扬四海印', '威震三山印', '威震十方印', '问鼎九州印', '问鼎王者印', '无上尊圣印', '无象尊者印', '武德十全印', '雾雨鎏金印', '侠骨剑心印', '袖揽苍穹印', '虚渊荡尘印', '玄璧映光印', '玄戈鸣金印', '玄谷行光印', '玄冥魁星印', '玄穹衍圣印', '玄霜古玺印', '玄羽破锋印', '璇光不染印', '雪舞回风印', '亚军绶带', '引光归澜印', '勇者绶带', '幽冥镇渊印', '御浪擎天印', '月影穿林印', '云霭隐光印', '云飞影疾印', '斩业无归印', '战神天罡印', '长风裂天印', '真武圣尊印', '振羽凛风印', '至武神威印', '逐鹿疆场王者印', '逐鹿疆场威者印', '逐鹿疆场尊者印', '紫宸神谕印'
+            ]
+        },
+    ],
+};
+
+// 系列名匹配：**精确匹配** label 或别名（防止「至尊 法身」这类「品质+部位」
+// 组合查询被 series includes 误劫持——T-16 实测踩中，见 gen-equip-至尊-法身）。
+// 先按 matchedSlot 查部位专属（含「神级项链」等部位收窄别名），
+// 再无 slot 时查 _all 跨部位（裸「神级首饰」）与其他部位。
+function findSlotSeries(slot: string | undefined, q: string): SlotSeries | undefined {
+    const hit = (list?: SlotSeries[]) => list?.find(s =>
+        q === s.label || (s.aliases || []).some(a => q === a)
+    );
+    if (slot) {
+        const own = hit(SLOT_SERIES[slot]);
+        if (own) return own;
+    }
+    return hit(SLOT_SERIES['_all']) || hit(SLOT_SERIES['项链']) || hit(SLOT_SERIES['戒指']) ||
+        hit(SLOT_SERIES['锦囊']) || hit(SLOT_SERIES['罡气']) || hit(SLOT_SERIES['法身']) || hit(SLOT_SERIES['玺绶']);
+}
 
 // 纯字母输入（如 "zhu shuang"）→ 词库中文术语；有任何无法解析的字母段则整体放弃（防半归一化错配）
 function normalizePinyinQuery(q: string): string | null {
@@ -513,7 +567,7 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '已为你定位【战力计算器】。独创诛仙3真实伤害与秒伤测算引擎，覆盖 T20/团本抗性防御减免、无视穿透机制，并提供暴击/爆伤/增伤边际贡献权重分析。',
+                text: '已为你定位【战力计算器】。独创诛仙3真实伤害与秒伤测算引擎，覆盖 T20/团本属性防御减免、无视穿透机制，并提供暴击/爆伤/增伤边际贡献权重分析。',
                 time: timeStr,
                 cardType: 'tool_card',
                 cardData: {
@@ -776,50 +830,41 @@ export class CopilotService {
         }
 
         // ------------------------------------------------------------
-        // 0.6 裸部位名歧义分流（slot_hub，T-16 方案A + 系列词库 B）
+        // 0.6 裸部位名歧义分流（slot_hub，T-16 方案A + 系列词库）
         // ① 品质系 6 部位（武器/头盔/衣服/靴子/腰带/袖甲，含帽子/鞋子等口语别名）
         //    → 品质三入口。实证：6 部位 q 字段 100% 归属修武/昭武/彰武三系、
         //    无剩余装备（2026-10-16），故不设「其他」冗余选项（用户反馈）；
-        // ② 项链 → 5 系列 + 「其他项链」（用户 2026-10-16 分诊口径，有剩余）；
-        // ③ 戒指 → 神级首饰 + 「其他戒指」（符石/血玉 72 件归神级，其余兜底）。
+        // ② 系列系 6 部件（项链/戒指/锦囊/罡气/法身/玺绶）→ 各自系列入口 +
+        //    「其他」兜底（法身两分类实证全覆盖不设；佩章/勋章/护符不分类不进 hub）。
         // 「其他」入口的 query 以「所有」开头，装备分支按宽泛词清空关键词全量平铺。
         // ------------------------------------------------------------
         const SLOT_HUB_ALIAS: Record<string, string> = {
             '帽子': '头盔', '帽': '头盔', '盔': '头盔', '冠': '头盔',
             '鞋子': '靴子', '鞋': '靴子', '靴': '靴子', '履': '靴子',
         };
-        if (q === '项链') {
-            const seriesOptions = NECKLACE_SERIES.map(s => ({
-                // 神级首饰在项链 hub 下收窄为「神级项链」（label 保留玩家口语「神级首饰」）
-                key: s.key, label: s.label, query: s.key === 'shenji' ? '神级项链' : s.label
+        const SERIES_HUB_SLOTS = ['项链', '戒指', '锦囊', '罡气', '法身', '玺绶'];
+        if (SERIES_HUB_SLOTS.includes(q)) {
+            const seriesList = SLOT_SERIES[q] || [];
+            const options = seriesList.map(s => ({
+                key: s.key,
+                label: s.label,
+                // 仅跨部位的「神级首饰」按 aliases 部位收窄（项链→神级项链 / 戒指→神级戒指）；
+                // 其余系列 query 用主 label（别名只是附加入口，不作 hub 首选 query）
+                query: (s.key === 'shenji' && s.aliases && s.aliases.length > 0) ? s.aliases[0] : s.label
             }));
-            seriesOptions.push({ key: 'other', label: '其他项链', query: '所有项链' });
+            // 法身两分类（法身27+金身27）实证全覆盖，不设「其他」；其余部件有剩余
+            if (q !== '法身') {
+                options.push({ key: 'other', label: `其他${q}`, query: `所有${q}` });
+            }
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: `为你定位到装备部位【项链】。请选择要查询的系列：`,
+                text: `为你定位到装备部位【${q}】。请选择要查询的系列：`,
                 time: timeStr,
                 cardType: 'slot_hub',
                 cardData: {
                     slot: q,
-                    options: seriesOptions
-                }
-            };
-        }
-        if (q === '戒指') {
-            const ringOptions = [
-                { key: 'shenji', label: '神级首饰', query: '神级戒指' },
-                { key: 'other', label: '其他戒指', query: '所有戒指' }
-            ];
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: `为你定位到装备部位【戒指】。请选择要查询的系列：`,
-                time: timeStr,
-                cardType: 'slot_hub',
-                cardData: {
-                    slot: q,
-                    options: ringOptions
+                    options
                 }
             };
         }
@@ -936,7 +981,7 @@ export class CopilotService {
                     return {
                         id: `msg-${Date.now()}`,
                         sender: 'assistant',
-                        text: `为你找到 BOSS【${m.MonsterName}】（出自副本：${d.DungeonName}）的完整实战抗性数据：`,
+                        text: `为你找到 BOSS【${m.MonsterName}】（出自副本：${d.DungeonName}）的完整实战属性数据：`,
                         time: timeStr,
                         cardType: 'boss',
                         cardData: {
@@ -979,7 +1024,7 @@ export class CopilotService {
                     return {
                         id: `msg-${Date.now()}`,
                         sender: 'assistant',
-                        text: `为你找到 ${candidates.length} 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整抗性矩阵：`,
+                        text: `为你找到 ${candidates.length} 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：`,
                         time: timeStr,
                         cardType: 'boss_candidates',
                         cardData: {
@@ -1014,7 +1059,7 @@ export class CopilotService {
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
-                            text: `为你速查到【${matchedDungeonConf.fullName}】下的全部 ${candidates.length} 个 BOSS 抗性数据，可在下方点选切换查看完整实战属性矩阵：`,
+                            text: `为你速查到【${matchedDungeonConf.fullName}】下的全部 ${candidates.length} 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：`,
                             time: timeStr,
                             cardType: 'boss_candidates',
                             cardData: {
@@ -1101,7 +1146,7 @@ export class CopilotService {
                     return {
                         id: `msg-${Date.now()}`,
                         sender: 'assistant',
-                        text: `为你速查到【${matchedCategory.label}】分类下的核心副本 BOSS。支持点选切换查看各 BOSS 完整战斗抗性，亦可输入具体副本或难度（如“流波困难”、“天帝3”、“T20”）精准定位：`,
+                        text: `为你速查到【${matchedCategory.label}】分类下的核心副本 BOSS。支持点选切换查看各 BOSS 完整战斗属性，亦可输入具体副本或难度（如“流波困难”、“天帝3”、“T20”）精准定位：`,
                         time: timeStr,
                         cardType: 'boss_candidates',
                         cardData: {
@@ -1144,7 +1189,7 @@ export class CopilotService {
                 return {
                     id: `msg-${Date.now()}`,
                     sender: 'assistant',
-                    text: `为你速查到诛仙核心副本群（涵盖 T本、团本与试炼共 16 大副本体系与 97 个 BOSS 实战抗性数据）。
+                    text: `为你速查到诛仙核心副本群（涵盖 T本、团本与试炼共 16 大副本体系与 97 个 BOSS 实战属性数据）。
 
 【分类与难度精准检索引导】：
 • 一级大类速查：输入【T本】、【团本】、【副本】
@@ -1185,6 +1230,18 @@ export class CopilotService {
                     if (n.includes('星语')) {
                         return false;
                     }
+                    // 用户 2026-10-16 口径：佩章整类屏蔽（不需要分类）
+                    if (e.slot === '佩章') {
+                        return false;
+                    }
+                    // 用户 2026-10-16 口径：锦囊屏蔽竞技场/神恩相关（仅限锦囊，其他部位不动）
+                    if (e.slot === '锦囊' && (n.includes('竞技场') || n.includes('神恩'))) {
+                        return false;
+                    }
+                    // 用户 2026-10-16 口径：玺绶屏蔽八皇御宝系列与 2024 搁置玺绶
+                    if (e.slot === '玺绶' && (n.startsWith('八皇御宝') || n.includes('2024玺绶'))) {
+                        return false;
+                    }
                     // 用户 2026-10-16 口径：戒指 1 级为废弃数据（59 件；仅限戒指，其他部位不动）
                     if (e.lv === 1 && e.slot === '戒指') {
                         return false;
@@ -1212,12 +1269,11 @@ export class CopilotService {
                     cleanTokens.push(...parts);
                 }
 
-                // T-16-B 系列检索词展开：「社稷项链」「积分项链」等系列 query →
+                // T-16 系列检索词展开（「社稷项链」「跨服印」「战罡」等系列 query）：
                 // 在 matchedEquips 过滤中作为 OR 组（不能进 cleanTokens——那是 AND
-                // 语义，多 pattern 会互斥导致零候选）。seriesPatterns 供下方使用。
-                const matchedNecklaceSeries = NECKLACE_SERIES.find(s =>
-                    q.includes(s.label) || (s.aliases || []).some(a => q.includes(a))
-                );
+                // 语义，多 term 会互斥导致零候选）。findSlotSeries 按 matchedSlot 优先、
+                // 再无 slot 时查 _all 跨部位（裸「神级首饰」混显项链+戒指）。
+                const matchedSeries = findSlotSeries(matchedSlot, q);
 
                 // 宽泛检索词（「所有项链」「所有戒指」）：hub「其他」入口专用——
                 // 清空自由关键词，按 matchedSlot 全量平铺（「所有」本身不是装备名词）
@@ -1323,7 +1379,7 @@ export class CopilotService {
                         const eProfs = (e.prof || []).map(p => p.toLowerCase());
 
                         // 品质匹配（系列 query 跳过：系列名如「神级首饰」含品质词「神级」，属误提取）
-                        if (matchedQ && !matchedNecklaceSeries && !eQ.includes(matchedQ.toLowerCase()) && !eName.includes(matchedQ.toLowerCase())) {
+                        if (matchedQ && !matchedSeries && !eQ.includes(matchedQ.toLowerCase()) && !eName.includes(matchedQ.toLowerCase())) {
                             return false;
                         }
                         // 部位匹配
@@ -1334,9 +1390,15 @@ export class CopilotService {
                         if (matchedProf && !eProfs.some(p => p.includes(matchedProf.toLowerCase())) && !eName.includes(matchedProf.toLowerCase())) {
                             return false;
                         }
-                        // 系列匹配（T-16-B）：命中任一 pattern 即保留；系列 query 跳过普通关键词 AND
-                        if (matchedNecklaceSeries) {
-                            return matchedNecklaceSeries.patterns.some(p => eName.includes(p.toLowerCase()));
+                        // 系列匹配（T-16）：按 match 模式（prefix/contains/suffix）命中任一
+                        // term 即保留；系列 query 跳过普通关键词 AND
+                        if (matchedSeries) {
+                            return matchedSeries.terms.some(t => {
+                                const tl = t.toLowerCase();
+                                if (matchedSeries.match === 'prefix') return eName.startsWith(tl);
+                                if (matchedSeries.match === 'suffix') return eName.endsWith(tl);
+                                return eName.includes(tl);
+                            });
                         }
                         // 其余自由关键词匹配（如 "大乘战罡"、"逍遥"、"惊涛"、"天弈"、"天循"）
                         for (const ct of cleanTokens) {
@@ -1878,7 +1940,7 @@ export class CopilotService {
         }
 
         if (p.includes('训练场') || p.includes('打桩') || p.includes('木桩') || p.includes('循环')) {
-            return `【副本与多角色模拟训练场】：\n1. 实战打桩：支持逐秒编排技能释放循环，模拟技能冷却、施法前摇与多段伤害计算。\n2. 机制仿真：内嵌 T18-T20 等主流团本 BOSS 的真实防御、减免、抗性与暴击抗性衰减。\n3. 伤害报表：输出详尽的秒伤曲线、段数分布与承伤数据，辅助优化输出手法与技能循环。`;
+            return `【副本与多角色模拟训练场】：\n1. 实战打桩：支持逐秒编排技能释放循环，模拟技能冷却、施法前摇与多段伤害计算。\n2. 机制仿真：内嵌 T18-T20 等主流团本 BOSS 的真实防御、减免、属性与暴击属性衰减。\n3. 伤害报表：输出详尽的秒伤曲线、段数分布与承伤数据，辅助优化输出手法与技能循环。`;
         }
 
         if (p.includes('天缘') || p.includes('须弥')) {
