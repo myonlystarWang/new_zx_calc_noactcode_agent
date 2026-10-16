@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
 import { User, X, ChevronRight, Lock } from 'lucide-react';
@@ -57,8 +58,8 @@ export const ClassSelector: React.FC = () => {
             </div>
 
             {/* Modal */}
-            {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4">
+            {isModalOpen && createPortal(
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 md:p-4">
                     {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
@@ -155,7 +156,8 @@ export const ClassSelector: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

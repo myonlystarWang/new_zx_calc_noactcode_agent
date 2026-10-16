@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Bookmark, ChevronDown, Save, Copy, Trash2, X, ArrowLeftRight, FileInput } from 'lucide-react';
 import clsx from 'clsx';
 import { CompareDialog } from './CompareDialog';
@@ -268,8 +269,8 @@ export const PresetManager: React.FC = () => {
             </div>
 
             {/* 命名弹窗（保存 / 另存为） */}
-            {namingDialog && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {namingDialog && createPortal(
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
                     <div
                         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
                         onClick={() => setNamingDialog(null)}
@@ -325,7 +326,8 @@ export const PresetManager: React.FC = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
 
             {/* 粘贴导入弹窗（Step 13） */}
@@ -349,8 +351,8 @@ export const PresetManager: React.FC = () => {
             )}
 
             {/* 删除确认弹窗 */}
-            {confirmDeleteTarget && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {confirmDeleteTarget && createPortal(
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
                     <div
                         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
                         onClick={() => setConfirmDeleteId(null)}
@@ -392,7 +394,8 @@ export const PresetManager: React.FC = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
