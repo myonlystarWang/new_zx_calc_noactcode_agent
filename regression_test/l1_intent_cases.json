@@ -1,121 +1,1490 @@
 [
-  { "id": "tool-server-01", "input": "开服", "expect": { "cardType": "server", "cardData.workspaceMode": "server" }, "tags": ["standard", "tool"], "assert": "strong" },
-  { "id": "tool-calc-01", "input": "计算", "expect": { "cardType": "tool_card", "cardData.workspaceMode": "calc" }, "tags": ["standard", "tool"], "assert": "strong" },
-  { "id": "tool-arena-01", "input": "训练场", "expect": { "cardType": "tool_card", "cardData.workspaceMode": "arena" }, "tags": ["standard", "tool"], "assert": "strong" },
-  { "id": "tool-xyc-01", "input": "轩辕策", "expect": { "cardType": "xyc_diag", "cardData.workspaceMode": "xyc" }, "tags": ["standard", "tool"], "assert": "strong" },
-  { "id": "tool-tianyuan-01", "input": "天缘", "expect": { "cardType": "tool_card", "cardData.workspaceMode": "newtianyuan" }, "tags": ["standard", "tool"], "assert": "strong" },
-  { "id": "tool-nlq-01", "input": "凝灵契", "expect": { "cardType": "tool_card", "cardData.workspaceMode": "ninglingqi" }, "tags": ["standard", "tool"], "assert": "strong" },
-  { "id": "tool-feedback-01", "input": "留言", "expect": { "cardType": "tool_card", "cardData.route": "/feedback" }, "tags": ["standard", "tool"], "assert": "strong" },
-  { "id": "tool-changelog-01", "input": "更新", "expect": { "cardType": "tool_card", "cardData.route": "/changelog" }, "tags": ["standard", "tool"], "assert": "strong" },
-  { "id": "tool-about-01", "input": "关于", "expect": { "cardType": "tool_card", "cardData.route": "/about" }, "tags": ["standard", "tool"], "assert": "strong" },
-
-  { "id": "dungeon-t20-01", "input": "T20", "expect": { "cardType": "boss_candidates", "cardData.dungeonName": "镇海！断浪碎晶宫（T20）", "cardData.candidates.length": 6, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-t20-alias-01", "input": "碎晶宫t20", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20" }, "tags": ["alias", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-series-duanlang-01", "input": "断浪", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 18, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19" }, "tags": ["alias", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-series-kongsang-01", "input": "空桑", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 12, "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_CHIYAN_ZHUYAO_NORMAL" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-shoushen-hard-01", "input": "兽神困难", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 8, "cardData.candidates.0.id": "SHOUSHEN_JIANGLIN_HARD_XIULUO_NIAO_HARD" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-cat-tuanben-01", "input": "团本", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 8, "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_XIAO_HUI_NORMAL" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-cat-tben-01", "input": "T本", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-cat-trials-01", "input": "历练", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 2, "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_YE" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-broad-01", "input": "副本", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 16, "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-boss-multi-01", "input": "夔牛", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 2, "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_KUINIU_CHUSHI" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-sixiangqi-01", "input": "四象七", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_WU" }, "tags": ["standard", "dungeon"], "assert": "strong" },
-  { "id": "dungeon-tiandi3-alias-01", "input": "天帝3", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 7, "cardData.candidates.0.id": "TIANDI_BAOKU_HARD_SHI_REN_HUA_HARD" }, "tags": ["alias", "dungeon"], "assert": "strong" },
-
-  { "id": "equip-quality-slot-01", "input": "昭武 衣服", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 54, "cardData.candidates.length": 54, "cardData.candidates.0.id": 112452 }, "tags": ["standard", "equip"], "assert": "strong" },
-  { "id": "equip-slot-alias-01", "input": "彰武 甲", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 54, "cardData.candidates.0.id": 112452 }, "tags": ["synonym", "equip"], "assert": "strong" },
-  { "id": "equip-collapse-01", "input": "昭武", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 296, "cardData.candidates.length": 100, "cardData.candidates.0.id": 109832 }, "tags": ["standard", "equip"], "assert": "strong" },
-  { "id": "equip-single-01", "input": "天弈印记", "expect": { "cardType": "equip", "cardData.equip.name": "天戮印记·天弈·太昊" }, "tags": ["standard", "equip"], "assert": "strong" },
-  { "id": "equip-empty-guard-01", "input": "神隐 武器", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["standard", "equip"], "assert": "strong" },
-  { "id": "equip-negation-gap-01", "input": "不要昭武", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["negation", "equip"], "assert": "strong" },
-
-  { "id": "fabao-tianya-01", "input": "天琊", "expect": { "cardType": "fabao", "cardData.name": "天琊" }, "tags": ["standard", "fabao"], "assert": "strong" },
-  { "id": "fabao-shihun-01", "input": "噬魂", "expect": { "cardType": "fabao", "cardData.name": "噬魂" }, "tags": ["standard", "fabao"], "assert": "strong" },
-  { "id": "fabao-order-quirk-01", "input": "玉净瓶", "expect": { "cardType": "fabao", "cardData.fabao.名称": "玉净瓶" }, "tags": ["standard", "fabao"], "assert": "strong", "note": "T-14 R1 已实施：原'装备玉净瓶秘笈劫持'怪象已修复，精确法宝名优先" },
-
-  { "id": "skill-canglongxiao-01", "input": "苍龙啸", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4, "cardData.skill.name": "苍龙啸" }, "tags": ["standard", "skill"], "assert": "strong" },
-  { "id": "skill-shenjian-01", "input": "神剑御雷真诀", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4, "cardData.skill.name": "神剑御雷真诀" }, "tags": ["standard", "skill"], "assert": "strong" },
-  { "id": "skill-bare-01", "input": "技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 20 }, "tags": ["standard", "skill"], "assert": "strong" },
-  { "id": "skill-class-01", "input": "青云 神剑", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4, "cardData.skill.name": "神剑御雷真诀" }, "tags": ["standard", "skill"], "assert": "strong" },
-  { "id": "skill-class-02", "input": "逐霜技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.skill.name": "横槊" }, "tags": ["standard", "skill"], "assert": "strong" },
-
-  { "id": "ceiling-ignore-01", "input": "极致无视", "expect": { "cardType": "ceiling", "cardData.ceilingVal": 175.7 }, "tags": ["standard", "ceiling"], "assert": "strong" },
-  { "id": "ceiling-mbonus-01", "input": "怪增", "expect": { "cardType": "ceiling", "cardData.ceilingVal": 120 }, "tags": ["synonym", "ceiling"], "assert": "strong" },
-
-  { "id": "guard-num-01", "input": "200", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard"], "assert": "strong" },
-  { "id": "guard-num-02", "input": "+15", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard"], "assert": "strong" },
-  { "id": "guard-num-dirty-01", "input": "2", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard", "dirty"], "assert": "strong" },
-  { "id": "guard-num-dirty-02", "input": "111", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard", "dirty"], "assert": "strong" },
-  { "id": "guard-empty-01", "input": "", "expect": null, "tags": ["guard"], "assert": "strong" },
-  { "id": "dirty-datasao-01", "input": "大逃杀", "expect": null, "tags": ["dirty"], "assert": "strong" },
-
-  { "id": "pinyin-gap-01", "input": "zhu shuang", "expect": { "cardType": "class_hub", "cardData.className": "逐霜", "cardData.options.length": 3 }, "tags": ["pinyin", "class-hub"], "assert": "strong", "note": "T-05 已实现：拼音归一后走 class_hub 分流（原缺口 null 已翻转）" },
-  { "id": "pinyin-guiwang", "input": "guiwang", "expect": { "cardType": "class_hub", "cardData.className": "鬼王", "cardData.options.length": 3 }, "tags": ["pinyin", "class-hub"], "assert": "strong" },
-  { "id": "pinyin-skill-combo", "input": "zhushuangjineng", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30 }, "tags": ["pinyin", "skill"], "assert": "strong", "note": "多术语拼接（逐霜+技能）也走通" },
-  { "id": "pinyin-skill-spaced", "input": "zhu shuang ji neng", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30 }, "tags": ["pinyin", "skill"], "assert": "strong", "note": "空格分隔同效果" },
-  { "id": "pinyin-equip", "input": "qingyun zhuangbei", "expect": { "cardType": "equip_candidates", "cardData.candidates.length": 33 }, "tags": ["pinyin", "equip"], "assert": "strong", "note": "T-16-B 屏蔽连带：37→34(天帝宝库_3件)→33(守卫青云勋章2件 lv1)" },
-  { "id": "pinyin-tag-lvdian", "input": "lvdian jineng", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30 }, "tags": ["pinyin", "skill", "tag"], "assert": "strong", "note": "ü→v 规范化（pinyin-pro 返 lü，键盘输入是 lv）" },
-  { "id": "pinyin-xyc-bare", "input": "xuanyuance", "expect": { "cardType": "xyc_diag", "cardData.workspaceMode": "xyc" }, "tags": ["pinyin", "tool"], "assert": "strong", "note": "裸轩辕策（拼音）仍走工具卡，边界与中文一致" },
-  { "id": "pinyin-neg-unknown", "input": "woshishui", "expect": null, "tags": ["pinyin", "guard"], "assert": "strong", "note": "词库外拼音整体放弃归一化（防半归一化错配），落 null" },
-  { "id": "slot-hub-wuqi-01", "input": "武器", "expect": { "cardType": "slot_hub", "cardData.slot": "武器", "cardData.options.length": 4, "cardData.options.0.query": "修武 武器" }, "tags": ["slot-hub", "equip"], "assert": "strong", "note": "T-16 方案A：品质系部位裸名→品质三入口+其他兜底（替代 164 件平铺）" },
-  { "id": "slot-hub-toujian-01", "input": "头盔", "expect": { "cardType": "slot_hub", "cardData.slot": "头盔", "cardData.options.length": 4 }, "tags": ["slot-hub", "equip"], "assert": "strong" },
-  { "id": "slot-hub-yifu-01", "input": "衣服", "expect": { "cardType": "slot_hub", "cardData.slot": "衣服", "cardData.options.length": 4 }, "tags": ["slot-hub", "equip"], "assert": "strong" },
-  { "id": "slot-hub-xuezi-01", "input": "靴子", "expect": { "cardType": "slot_hub", "cardData.slot": "靴子", "cardData.options.length": 4 }, "tags": ["slot-hub", "equip"], "assert": "strong" },
-  { "id": "slot-hub-yaodai-01", "input": "腰带", "expect": { "cardType": "slot_hub", "cardData.slot": "腰带", "cardData.options.length": 4 }, "tags": ["slot-hub", "equip"], "assert": "strong" },
-  { "id": "slot-hub-xiujia-01", "input": "袖甲", "expect": { "cardType": "slot_hub", "cardData.slot": "袖甲", "cardData.options.length": 4 }, "tags": ["slot-hub", "equip"], "assert": "strong" },
-  { "id": "slot-hub-necklace-01", "input": "项链", "expect": { "cardType": "slot_hub", "cardData.slot": "项链", "cardData.options.length": 6 }, "tags": ["slot-hub", "series"], "assert": "strong", "note": "T-16-B 用户分诊：5 系列 + 其他项链兜底（query=所有项链）" },
-  { "id": "slot-hub-ring-01", "input": "戒指", "expect": { "cardType": "slot_hub", "cardData.slot": "戒指", "cardData.options.length": 2, "cardData.options.0.query": "神级戒指" }, "tags": ["slot-hub", "series"], "assert": "strong", "note": "戒指 hub：神级首饰（query 收窄为神级戒指）+ 其他戒指（用户 2026-10-16 分诊：符石/血玉归神级）" },
-  { "id": "slot-hub-other-yifu-01", "input": "衣服", "expect": { "cardType": "slot_hub", "cardData.slot": "衣服", "cardData.options.length": 4, "cardData.options.3.query": "所有衣服" }, "tags": ["slot-hub", "equip"], "assert": "strong", "note": "品质系 hub 加「其他」兜底选项（query=所有+部位）" },
-  { "id": "broad-all-necklace-01", "input": "所有项链", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 137 }, "tags": ["broad", "equip"], "assert": "strong", "note": "宽泛词平铺：全部项链（屏蔽天帝宝库_21/一级29/作废1 后）" },
-  { "id": "broad-all-ring-01", "input": "所有戒指", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 60 }, "tags": ["broad", "equip"], "assert": "strong", "note": "宽泛词平铺：全部戒指（屏蔽一级59/天机指环12/梦入神机/自出/废弃 后）" },
-  { "id": "series-shenji-mixed-01", "input": "神级首饰", "expect": { "cardType": "equip_candidates", "cardData.candidates.length": 20 }, "tags": ["series", "equip"], "assert": "strong", "note": "裸神级首饰混显项链+戒指（印记/造化之/符石/血玉）；神级项链6/神级戒指12 按部位收窄" },
-  { "id": "slot-hub-alias-maozi-01", "input": "帽子", "expect": { "cardType": "slot_hub", "cardData.slot": "头盔", "cardData.options.0.query": "修武 头盔" }, "tags": ["slot-hub", "alias"], "assert": "strong", "note": "口语别名触发（帽子=头盔，用户 2026-10-16 要求）" },
-  { "id": "slot-hub-alias-xie-01", "input": "鞋", "expect": { "cardType": "slot_hub", "cardData.slot": "靴子", "cardData.options.0.query": "修武 靴子" }, "tags": ["slot-hub", "alias"], "assert": "strong", "note": "口语别名触发（鞋=靴子）" },
-  { "id": "series-shenji-01", "input": "神级首饰", "expect": { "cardType": "equip_candidates", "cardData.candidates.length": 20 }, "tags": ["series", "equip"], "assert": "strong", "note": "印记+造化之+符石+血玉（series OR 组，跨项链+戒指混显）" },
-  { "id": "series-huangwu-01", "input": "煌武项链", "expect": { "cardType": "equip", "cardData.equip.name": "煌武·极意天问无量珠" }, "tags": ["series", "equip"], "assert": "strong", "note": "系列聚合单卡（collapseSeriesCandidates 聚为 1 代表，卡片内升降级）" },
-  { "id": "series-jifen-01", "input": "积分项链", "expect": { "cardType": "equip", "cardData.equip.name": "煌武·极意天问无量珠" }, "tags": ["series", "equip", "synonym"], "assert": "strong", "note": "同义词：积分项链=煌武（用户口径）" },
-  { "id": "series-zhandui-01", "input": "战队项链", "expect": { "cardType": "equip_candidates", "cardData.candidates.length": 5 }, "tags": ["series", "equip"], "assert": "strong", "note": "圣瑞+圣谛双前缀（一个入口覆盖多前缀）" },
-  { "id": "series-sheji-01", "input": "社稷项链", "expect": { "cardType": "equip_candidates", "cardData.candidates.length": 6 }, "tags": ["series", "equip"], "assert": "strong", "note": "菩提珠/琥珀珠/舍利子/血菩提/真如子五模式" },
-  { "id": "series-xingyu-01", "input": "星语项链", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["series", "equip", "block"], "assert": "strong", "note": "口径冲突待用户定夺：星语项链 11 件经实证全部为 lv=1 废弃数据，已被用户屏蔽1级规则滤空——系列入口保留但点击查无。选项：a 移除星语入口 / b 星语破例保留 / c 维持现状" },
-  { "id": "block-tiandibaoku-01", "input": "抗性装项链", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["block", "equip"], "assert": "strong", "note": "天帝宝库_前缀 21 件全屏蔽（用户口径：屏蔽该前缀所有项链）后无匹配" },
-  { "id": "block-tianjizhihuan-01", "input": "天机指环", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["block", "equip"], "assert": "strong", "note": "天机指环系列 12 件全屏蔽（用户口径）后无匹配" },
-  { "id": "block-mengrushenji-01", "input": "梦入神机", "expect": null, "tags": ["block", "equip"], "assert": "strong", "note": "书籍类饰品屏蔽（用户口径）后无匹配落 null" },
-  { "id": "block-level1-01", "input": "花雨戒", "expect": null, "tags": ["block", "equip"], "assert": "strong", "note": "1 级废弃数据屏蔽（用户口径：戒指 1 级 59 件；实现按全库 lv===1，共 114 件）" },
-  { "id": "block-level1-boundary-01", "input": "如花的自画像", "expect": { "cardType": "equip", "cardData.equip.name": "如花的自画像" }, "tags": ["block", "equip"], "assert": "strong", "note": "边界：仅 lv===1 屏蔽，111 级同名风格装备不受影响" },
-  { "id": "slot-hub-no-overtrigger-02", "input": "昭武", "expect": { "cardType": "equip_candidates", "cardData.totalCount": 296 }, "tags": ["slot-hub", "guard"], "assert": "strong", "note": "边界：裸品质名不触发 hub（hub 只捕获精确部位名）" },
-  { "id": "slot-hub-no-overtrigger-03", "input": "昭武 衣服", "expect": { "cardType": "equip_candidates", "cardData.candidates.length": 54 }, "tags": ["slot-hub", "guard"], "assert": "strong", "note": "边界：带修饰的组合词不走 hub（精确匹配才触发）" },
-  { "id": "inversion-gap-01", "input": "逐霜的苍龙啸", "expect": null, "tags": ["inversion"], "assert": "strong" },
-  { "id": "inversion-ok-01", "input": "苍龙啸 逐霜", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 4 }, "tags": ["inversion", "skill"], "assert": "strong" },
-  { "id": "colloquial-01", "input": "T20 多少抗性来着", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6 }, "tags": ["colloquial", "dungeon"], "assert": "strong" },
-  { "id": "combo-single-intent-01", "input": "T20 抗性 逐霜技能", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6 }, "tags": ["combo", "dungeon"], "assert": "strong" },
-
-  { "id": "player-bare-num-19", "input": "19", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19" }, "tags": ["player-real", "guard"], "assert": "strong", "note": "T-03 已修复：裸数字 16~21 归一 tNN 直通 T 本词典（原守卫挡死，论坛实证'0点去打19'）。预期变化已 approve" },
-  { "id": "player-bare-num-20", "input": "20", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20" }, "tags": ["player-real", "guard"], "assert": "strong", "note": "T-03 已修复：同 19。预期变化已 approve" },
-  { "id": "guard-num-22", "input": "22", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard"], "assert": "strong", "note": "T-03 边界：22 超出 16~21 范围，维持守卫" },
-  { "id": "guard-num-15", "input": "15", "expect": { "@textIncludes": "暂时未能完全理解" }, "tags": ["guard"], "assert": "strong", "note": "T-03 边界：15 低于范围（且可能是+15强化数），维持守卫" },
-  { "id": "player-da19", "input": "打19", "expect": { "cardType": "boss_candidates", "cardData.candidates.length": 6, "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19" }, "tags": ["player-real", "colloquial"], "assert": "strong", "note": "T-03 已修复：'打NN'口语形一并归一（原 null）。预期变化已 approve" },
-  { "id": "player-20wuxun", "input": "20要多少无视", "expect": null, "tags": ["player-real", "colloquial"], "assert": "strong", "note": "T-03 范围外：口语长句不做数字提取（防误伤），留 P3 打分引擎或语料积累后处理" },
-  { "id": "equip-tier-zizhuang", "input": "紫装", "expect": null, "tags": ["player-real", "synonym"], "assert": "strong" },
-  { "id": "server-zhanqu-haotian", "input": "昊天战区", "expect": { "cardType": "server", "cardData.workspaceMode": "server" }, "tags": ["player-real", "server"], "assert": "strong" },
-  { "id": "server-name-chuanshi", "input": "创世绮梦", "expect": null, "tags": ["player-real", "server"], "assert": "strong" },
-  { "id": "skill-tag-pofang", "input": "破防技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 8077 }, "tags": ["standard", "skill"], "assert": "strong" },
-  { "id": "skill-tag-lvdian", "input": "绿点技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 7922 }, "tags": ["standard", "skill"], "assert": "strong" },
-  { "id": "skill-tag-zidian", "input": "紫点技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 527 }, "tags": ["standard", "skill"], "assert": "strong" },
-  { "id": "skill-tag-zengshang", "input": "增伤技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 10834 }, "tags": ["standard", "skill"], "assert": "strong" },
-  { "id": "skill-tag-yishang-gap", "input": "易伤技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 10834 }, "tags": ["synonym", "skill"], "assert": "strong", "note": "T-04 已修复：易伤=增伤同义词落地（用户确认口径），与增伤技能结果完全一致（first id 都是 10834）。原查无行为作废，预期变化已 approve" },
-  { "id": "fabao-effect-baosshang", "input": "爆伤法宝", "expect": { "cardType": "fabao_candidates", "cardData.candidates.length": 15, "cardData.candidates.0.id": 9 }, "tags": ["synonym", "fabao"], "assert": "strong" },
-
-  { "id": "conflict-fabao-exact-01", "input": "玉净瓶", "expect": { "cardType": "fabao", "cardData.fabao.名称": "玉净瓶" }, "tags": ["conflict", "fabao", "equip"], "assert": "strong", "note": "T-14 R1 已实施：法宝精确名优先于装备部分包含（原'玉净瓶秘笈'劫持已修）" },
-  { "id": "conflict-fabao-exact-02", "input": "七星剑", "expect": { "cardType": "fabao", "cardData.fabao.名称": "七星剑" }, "tags": ["conflict", "fabao", "equip"], "assert": "strong", "note": "T-14 R1 已实施：同玉净瓶模式（原'七星剑秘笈'劫持已修）" },
-  { "id": "conflict-fabao-exact-03", "input": "悬夜翎", "expect": { "cardType": "fabao", "cardData.fabao.名称": "悬夜翎" }, "tags": ["conflict", "fabao", "dungeon"], "assert": "strong", "note": "T-14 R1 已实施：原被副本别名'悬夜'劫持（boss_candidates）已修" },
-  { "id": "conflict-fabao-exact-04", "input": "七星剑秘笈", "expect": { "cardType": "equip", "cardData.equip.name": "七星剑秘笈" }, "tags": ["conflict", "fabao", "equip"], "assert": "strong", "note": "R1 边界：用户显式输装备全名（含'秘笈'后缀）仍走装备——精确名优先不误伤" },
-  { "id": "conflict-dungeon-alias-01", "input": "悬夜翎", "expect": { "cardType": "fabao", "cardData.fabao.名称": "悬夜翎" }, "tags": ["conflict", "fabao", "dungeon"], "assert": "strong", "note": "T-14 R1 已实施：原被副本别名'悬夜'劫持（boss_candidates 2 候选）已修，精确法宝名优先" },
-  { "id": "conflict-skill-xyc-01", "input": "鬼王 轩辕策", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 5837 }, "tags": ["conflict", "skill", "tool"], "assert": "strong", "note": "T-12/R2 已落地：带职业前缀的轩辕策改走技能分支（原 xyc_diag 工具卡劫持）。预期变化已 approve" },
-  { "id": "conflict-skill-xyc-02", "input": "逐霜 轩辕策", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30, "cardData.candidates.0.id": 8091 }, "tags": ["conflict", "skill", "tool"], "assert": "strong", "note": "T-12/R2 已落地：同鬼王。预期变化已 approve" },
-  { "id": "xyc-bare-still-tool", "input": "轩辕策", "expect": { "cardType": "xyc_diag", "cardData.workspaceMode": "xyc" }, "tags": ["conflict", "tool"], "assert": "strong", "note": "T-12 防过犹不及：裸「轩辕策」（无职业前缀）仍走工具卡，R2 只放行带职业前缀的形式" },
-  { "id": "conflict-bareclass-a-01", "input": "鬼王", "expect": { "cardType": "class_hub", "cardData.className": "鬼王", "cardData.options.length": 3, "cardData.options.0.query": "鬼王技能" }, "tags": ["conflict", "skill", "equip"], "assert": "strong", "note": "T-13/T-15: R3 已裁决=轻量分流卡。2026-10-16 起裸职业名统一出 class_hub（原 equip_candidates 37 件行为作废，预期变化已 approve）" },
-  { "id": "conflict-bareclass-b-01", "input": "逐霜", "expect": { "cardType": "class_hub", "cardData.className": "逐霜", "cardData.options.length": 3, "cardData.options.0.query": "逐霜技能" }, "tags": ["conflict", "skill"], "assert": "strong", "note": "T-13/T-15: 原 null（落 L2 知识引擎）行为作废，统一出 class_hub，预期变化已 approve" },
-  { "id": "conflict-bareclass-c-01", "input": "天华", "expect": { "cardType": "class_hub", "cardData.className": "天华", "cardData.options.length": 3, "cardData.options.0.query": "天华技能" }, "tags": ["conflict", "skill", "fabao"], "assert": "strong", "note": "T-13/T-15: 原误命中 fabao 玉净瓶（skillName 包含匹配）路径已被分流卡消除，预期变化已 approve" },
-  { "id": "class-hub-lianxue-01", "input": "炼血", "expect": { "cardType": "class_hub", "cardData.className": "炼血", "cardData.options.length": 3 }, "tags": ["conflict", "skill", "dungeon"], "assert": "strong", "note": "T-15: 分流卡置于副本分支之前，免疫 BOSS 名包含碰撞——修 T-11 孤儿键后「炼血堂教众」可达，裸「炼血」仍须稳定出分流卡而非 boss_candidates" },
-  { "id": "class-hub-no-overtrigger-01", "input": "逐霜技能", "expect": { "cardType": "skill_candidates", "cardData.candidates.length": 30 }, "tags": ["conflict", "skill"], "assert": "strong", "note": "T-15 防过触发：分流卡仅精确等于职业名时触发，带后缀/修饰的输入必须继续走原意图" }
+  {
+    "id": "tool-server-01",
+    "input": "开服",
+    "expect": {
+      "cardType": "server",
+      "cardData.workspaceMode": "server"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "tool-calc-01",
+    "input": "计算",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.workspaceMode": "calc"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "tool-arena-01",
+    "input": "训练场",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.workspaceMode": "arena"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "tool-xyc-01",
+    "input": "轩辕策",
+    "expect": {
+      "cardType": "xyc_diag",
+      "cardData.workspaceMode": "xyc"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "tool-tianyuan-01",
+    "input": "天缘",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.workspaceMode": "newtianyuan"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "tool-nlq-01",
+    "input": "凝灵契",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.workspaceMode": "ninglingqi"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "tool-feedback-01",
+    "input": "留言",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.route": "/feedback"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "tool-changelog-01",
+    "input": "更新",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.route": "/changelog"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "tool-about-01",
+    "input": "关于",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.route": "/about"
+    },
+    "tags": [
+      "standard",
+      "tool"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-t20-01",
+    "input": "T20",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "镇海！断浪碎晶宫（T20）",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-t20-alias-01",
+    "input": "碎晶宫t20",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20"
+    },
+    "tags": [
+      "alias",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-series-duanlang-01",
+    "input": "断浪",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 18,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
+    },
+    "tags": [
+      "alias",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-series-kongsang-01",
+    "input": "空桑",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 12,
+      "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_CHIYAN_ZHUYAO_NORMAL"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-shoushen-hard-01",
+    "input": "兽神困难",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 8,
+      "cardData.candidates.0.id": "SHOUSHEN_JIANGLIN_HARD_XIULUO_NIAO_HARD"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-cat-tuanben-01",
+    "input": "团本",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 8,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_XIAO_HUI_NORMAL"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-cat-tben-01",
+    "input": "T本",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-cat-trials-01",
+    "input": "历练",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_YE"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-broad-01",
+    "input": "副本",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 16,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-boss-multi-01",
+    "input": "夔牛",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_KUINIU_CHUSHI"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-sixiangqi-01",
+    "input": "四象七",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_WU"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-tiandi3-alias-01",
+    "input": "天帝3",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 7,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_HARD_SHI_REN_HUA_HARD"
+    },
+    "tags": [
+      "alias",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "equip-quality-slot-01",
+    "input": "昭武 衣服",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 54,
+      "cardData.candidates.length": 54,
+      "cardData.candidates.0.id": 112452
+    },
+    "tags": [
+      "standard",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "equip-slot-alias-01",
+    "input": "彰武 甲",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 54,
+      "cardData.candidates.0.id": 112452
+    },
+    "tags": [
+      "synonym",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "equip-collapse-01",
+    "input": "昭武",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 296,
+      "cardData.candidates.length": 100,
+      "cardData.candidates.0.id": 109832
+    },
+    "tags": [
+      "standard",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "equip-single-01",
+    "input": "天弈印记",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "天戮印记·天弈·太昊"
+    },
+    "tags": [
+      "standard",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "equip-empty-guard-01",
+    "input": "神隐 武器",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "standard",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "equip-negation-gap-01",
+    "input": "不要昭武",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "negation",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "fabao-tianya-01",
+    "input": "天琊",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.name": "天琊"
+    },
+    "tags": [
+      "standard",
+      "fabao"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "fabao-shihun-01",
+    "input": "噬魂",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.name": "噬魂"
+    },
+    "tags": [
+      "standard",
+      "fabao"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "fabao-order-quirk-01",
+    "input": "玉净瓶",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.fabao.名称": "玉净瓶"
+    },
+    "tags": [
+      "standard",
+      "fabao"
+    ],
+    "assert": "strong",
+    "note": "T-14 R1 已实施：原'装备玉净瓶秘笈劫持'怪象已修复，精确法宝名优先"
+  },
+  {
+    "id": "skill-canglongxiao-01",
+    "input": "苍龙啸",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 4,
+      "cardData.skill.name": "苍龙啸"
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-shenjian-01",
+    "input": "神剑御雷真诀",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 4,
+      "cardData.skill.name": "神剑御雷真诀"
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-bare-01",
+    "input": "技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 20
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-class-01",
+    "input": "青云 神剑",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 4,
+      "cardData.skill.name": "神剑御雷真诀"
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-class-02",
+    "input": "逐霜技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.skill.name": "横槊"
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-ignore-01",
+    "input": "极致无视",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.ceilingVal": 175.7
+    },
+    "tags": [
+      "standard",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-mbonus-01",
+    "input": "怪增",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.ceilingVal": 120
+    },
+    "tags": [
+      "synonym",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "guard-num-01",
+    "input": "200",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "guard"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "guard-num-02",
+    "input": "+15",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "guard"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "guard-num-dirty-01",
+    "input": "2",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "guard",
+      "dirty"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "guard-num-dirty-02",
+    "input": "111",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "guard",
+      "dirty"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "guard-empty-01",
+    "input": "",
+    "expect": null,
+    "tags": [
+      "guard"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dirty-datasao-01",
+    "input": "大逃杀",
+    "expect": null,
+    "tags": [
+      "dirty"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "pinyin-gap-01",
+    "input": "zhu shuang",
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "逐霜",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "pinyin",
+      "class-hub"
+    ],
+    "assert": "strong",
+    "note": "T-05 已实现：拼音归一后走 class_hub 分流（原缺口 null 已翻转）"
+  },
+  {
+    "id": "pinyin-guiwang",
+    "input": "guiwang",
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "鬼王",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "pinyin",
+      "class-hub"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "pinyin-skill-combo",
+    "input": "zhushuangjineng",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30
+    },
+    "tags": [
+      "pinyin",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "多术语拼接（逐霜+技能）也走通"
+  },
+  {
+    "id": "pinyin-skill-spaced",
+    "input": "zhu shuang ji neng",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30
+    },
+    "tags": [
+      "pinyin",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "空格分隔同效果"
+  },
+  {
+    "id": "pinyin-equip",
+    "input": "qingyun zhuangbei",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 34
+    },
+    "tags": [
+      "pinyin",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "屏蔽连带：37→34（天帝宝库_青云抗性装 3 件；守卫青云 lv1 勋章按用户口径仅屏蔽戒指 lv1，已恢复）"
+  },
+  {
+    "id": "pinyin-tag-lvdian",
+    "input": "lvdian jineng",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30
+    },
+    "tags": [
+      "pinyin",
+      "skill",
+      "tag"
+    ],
+    "assert": "strong",
+    "note": "ü→v 规范化（pinyin-pro 返 lü，键盘输入是 lv）"
+  },
+  {
+    "id": "pinyin-xyc-bare",
+    "input": "xuanyuance",
+    "expect": {
+      "cardType": "xyc_diag",
+      "cardData.workspaceMode": "xyc"
+    },
+    "tags": [
+      "pinyin",
+      "tool"
+    ],
+    "assert": "strong",
+    "note": "裸轩辕策（拼音）仍走工具卡，边界与中文一致"
+  },
+  {
+    "id": "pinyin-neg-unknown",
+    "input": "woshishui",
+    "expect": null,
+    "tags": [
+      "pinyin",
+      "guard"
+    ],
+    "assert": "strong",
+    "note": "词库外拼音整体放弃归一化（防半归一化错配），落 null"
+  },
+  {
+    "id": "slot-hub-wuqi-01",
+    "input": "武器",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "武器",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "修武 武器"
+    },
+    "tags": [
+      "slot-hub",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "T-16 方案A：品质系部位裸名→品质三入口+其他兜底（替代 164 件平铺）"
+  },
+  {
+    "id": "slot-hub-toujian-01",
+    "input": "头盔",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "头盔",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "slot-hub",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "slot-hub-yifu-01",
+    "input": "衣服",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "衣服",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "slot-hub",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "slot-hub-xuezi-01",
+    "input": "靴子",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "靴子",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "slot-hub",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "slot-hub-yaodai-01",
+    "input": "腰带",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "腰带",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "slot-hub",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "slot-hub-xiujia-01",
+    "input": "袖甲",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "袖甲",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "slot-hub",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "slot-hub-necklace-01",
+    "input": "项链",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "项链",
+      "cardData.options.length": 5
+    },
+    "tags": [
+      "slot-hub",
+      "series"
+    ],
+    "assert": "strong",
+    "note": "T-16-B 用户分诊：5 系列 + 其他项链兜底（query=所有项链）"
+  },
+  {
+    "id": "slot-hub-ring-01",
+    "input": "戒指",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "戒指",
+      "cardData.options.length": 2,
+      "cardData.options.0.query": "神级戒指"
+    },
+    "tags": [
+      "slot-hub",
+      "series"
+    ],
+    "assert": "strong",
+    "note": "戒指 hub：神级首饰（query 收窄为神级戒指）+ 其他戒指（用户 2026-10-16 分诊：符石/血玉归神级）"
+  },
+  {
+    "id": "broad-all-necklace-01",
+    "input": "所有项链",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 155
+    },
+    "tags": [
+      "broad",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宽泛词平铺：全部项链（屏蔽天帝宝库_21/一级29/作废1 后）"
+  },
+  {
+    "id": "broad-all-ring-01",
+    "input": "所有戒指",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 60
+    },
+    "tags": [
+      "broad",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宽泛词平铺：全部戒指（屏蔽一级59/天机指环12/梦入神机/自出/废弃 后）"
+  },
+  {
+    "id": "series-shenji-mixed-01",
+    "input": "神级首饰",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 20
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "裸神级首饰混显项链+戒指（印记/造化之/符石/血玉）；神级项链6/神级戒指12 按部位收窄"
+  },
+  {
+    "id": "slot-hub-alias-maozi-01",
+    "input": "帽子",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "头盔",
+      "cardData.options.0.query": "修武 头盔"
+    },
+    "tags": [
+      "slot-hub",
+      "alias"
+    ],
+    "assert": "strong",
+    "note": "口语别名触发（帽子=头盔，用户 2026-10-16 要求）"
+  },
+  {
+    "id": "slot-hub-alias-xie-01",
+    "input": "鞋",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "靴子",
+      "cardData.options.0.query": "修武 靴子"
+    },
+    "tags": [
+      "slot-hub",
+      "alias"
+    ],
+    "assert": "strong",
+    "note": "口语别名触发（鞋=靴子）"
+  },
+  {
+    "id": "series-shenji-01",
+    "input": "神级首饰",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 20
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "印记+造化之+符石+血玉（series OR 组，跨项链+戒指混显）"
+  },
+  {
+    "id": "series-huangwu-01",
+    "input": "煌武项链",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "煌武·极意天问无量珠"
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "系列聚合单卡（collapseSeriesCandidates 聚为 1 代表，卡片内升降级）"
+  },
+  {
+    "id": "series-jifen-01",
+    "input": "积分项链",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "煌武·极意天问无量珠"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "synonym"
+    ],
+    "assert": "strong",
+    "note": "同义词：积分项链=煌武（用户口径）"
+  },
+  {
+    "id": "series-zhandui-01",
+    "input": "战队项链",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 5
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "圣瑞+圣谛双前缀（一个入口覆盖多前缀）"
+  },
+  {
+    "id": "series-sheji-01",
+    "input": "社稷项链",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 6
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "菩提珠/琥珀珠/舍利子/血菩提/真如子五模式"
+  },
+  {
+    "id": "series-xingyu-01",
+    "input": "星语项链",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "block"
+    ],
+    "assert": "strong",
+    "note": "用户 2026-10-16 裁决：星语项链全部屏蔽（11 件实证全为 lv=1 废弃数据）——hub 入口已移除，装备分支显式屏蔽「星语」关键词兜底"
+  },
+  {
+    "id": "block-tiandibaoku-01",
+    "input": "抗性装项链",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "天帝宝库_前缀 21 件全屏蔽（用户口径：屏蔽该前缀所有项链）后无匹配"
+  },
+  {
+    "id": "block-tianjizhihuan-01",
+    "input": "天机指环",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "天机指环系列 12 件全屏蔽（用户口径）后无匹配"
+  },
+  {
+    "id": "block-mengrushenji-01",
+    "input": "梦入神机",
+    "expect": null,
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "书籍类饰品屏蔽（用户口径）后无匹配落 null"
+  },
+  {
+    "id": "block-level1-01",
+    "input": "花雨戒",
+    "expect": null,
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "1 级废弃数据屏蔽（用户口径：戒指 1 级 59 件；实现按全库 lv===1，共 114 件）"
+  },
+  {
+    "id": "block-level1-boundary-01",
+    "input": "如花的自画像",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "如花的自画像"
+    },
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "边界：仅 lv===1 屏蔽，111 级同名风格装备不受影响"
+  },
+  {
+    "id": "slot-hub-no-overtrigger-02",
+    "input": "昭武",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 296
+    },
+    "tags": [
+      "slot-hub",
+      "guard"
+    ],
+    "assert": "strong",
+    "note": "边界：裸品质名不触发 hub（hub 只捕获精确部位名）"
+  },
+  {
+    "id": "slot-hub-no-overtrigger-03",
+    "input": "昭武 衣服",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.candidates.length": 54
+    },
+    "tags": [
+      "slot-hub",
+      "guard"
+    ],
+    "assert": "strong",
+    "note": "边界：带修饰的组合词不走 hub（精确匹配才触发）"
+  },
+  {
+    "id": "inversion-gap-01",
+    "input": "逐霜的苍龙啸",
+    "expect": null,
+    "tags": [
+      "inversion"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "inversion-ok-01",
+    "input": "苍龙啸 逐霜",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 4
+    },
+    "tags": [
+      "inversion",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "colloquial-01",
+    "input": "T20 多少抗性来着",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6
+    },
+    "tags": [
+      "colloquial",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "combo-single-intent-01",
+    "input": "T20 抗性 逐霜技能",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6
+    },
+    "tags": [
+      "combo",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "player-bare-num-19",
+    "input": "19",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
+    },
+    "tags": [
+      "player-real",
+      "guard"
+    ],
+    "assert": "strong",
+    "note": "T-03 已修复：裸数字 16~21 归一 tNN 直通 T 本词典（原守卫挡死，论坛实证'0点去打19'）。预期变化已 approve"
+  },
+  {
+    "id": "player-bare-num-20",
+    "input": "20",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20"
+    },
+    "tags": [
+      "player-real",
+      "guard"
+    ],
+    "assert": "strong",
+    "note": "T-03 已修复：同 19。预期变化已 approve"
+  },
+  {
+    "id": "guard-num-22",
+    "input": "22",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "guard"
+    ],
+    "assert": "strong",
+    "note": "T-03 边界：22 超出 16~21 范围，维持守卫"
+  },
+  {
+    "id": "guard-num-15",
+    "input": "15",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "guard"
+    ],
+    "assert": "strong",
+    "note": "T-03 边界：15 低于范围（且可能是+15强化数），维持守卫"
+  },
+  {
+    "id": "player-da19",
+    "input": "打19",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
+    },
+    "tags": [
+      "player-real",
+      "colloquial"
+    ],
+    "assert": "strong",
+    "note": "T-03 已修复：'打NN'口语形一并归一（原 null）。预期变化已 approve"
+  },
+  {
+    "id": "player-20wuxun",
+    "input": "20要多少无视",
+    "expect": null,
+    "tags": [
+      "player-real",
+      "colloquial"
+    ],
+    "assert": "strong",
+    "note": "T-03 范围外：口语长句不做数字提取（防误伤），留 P3 打分引擎或语料积累后处理"
+  },
+  {
+    "id": "equip-tier-zizhuang",
+    "input": "紫装",
+    "expect": null,
+    "tags": [
+      "player-real",
+      "synonym"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "server-zhanqu-haotian",
+    "input": "昊天战区",
+    "expect": {
+      "cardType": "server",
+      "cardData.workspaceMode": "server"
+    },
+    "tags": [
+      "player-real",
+      "server"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "server-name-chuanshi",
+    "input": "创世绮梦",
+    "expect": null,
+    "tags": [
+      "player-real",
+      "server"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-tag-pofang",
+    "input": "破防技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8077
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-tag-lvdian",
+    "input": "绿点技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7922
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-tag-zidian",
+    "input": "紫点技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 527
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-tag-zengshang",
+    "input": "增伤技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10834
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-tag-yishang-gap",
+    "input": "易伤技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 10834
+    },
+    "tags": [
+      "synonym",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "T-04 已修复：易伤=增伤同义词落地（用户确认口径），与增伤技能结果完全一致（first id 都是 10834）。原查无行为作废，预期变化已 approve"
+  },
+  {
+    "id": "fabao-effect-baosshang",
+    "input": "爆伤法宝",
+    "expect": {
+      "cardType": "fabao_candidates",
+      "cardData.candidates.length": 15,
+      "cardData.candidates.0.id": 9
+    },
+    "tags": [
+      "synonym",
+      "fabao"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "conflict-fabao-exact-01",
+    "input": "玉净瓶",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.fabao.名称": "玉净瓶"
+    },
+    "tags": [
+      "conflict",
+      "fabao",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "T-14 R1 已实施：法宝精确名优先于装备部分包含（原'玉净瓶秘笈'劫持已修）"
+  },
+  {
+    "id": "conflict-fabao-exact-02",
+    "input": "七星剑",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.fabao.名称": "七星剑"
+    },
+    "tags": [
+      "conflict",
+      "fabao",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "T-14 R1 已实施：同玉净瓶模式（原'七星剑秘笈'劫持已修）"
+  },
+  {
+    "id": "conflict-fabao-exact-03",
+    "input": "悬夜翎",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.fabao.名称": "悬夜翎"
+    },
+    "tags": [
+      "conflict",
+      "fabao",
+      "dungeon"
+    ],
+    "assert": "strong",
+    "note": "T-14 R1 已实施：原被副本别名'悬夜'劫持（boss_candidates）已修"
+  },
+  {
+    "id": "conflict-fabao-exact-04",
+    "input": "七星剑秘笈",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "七星剑秘笈"
+    },
+    "tags": [
+      "conflict",
+      "fabao",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "R1 边界：用户显式输装备全名（含'秘笈'后缀）仍走装备——精确名优先不误伤"
+  },
+  {
+    "id": "conflict-dungeon-alias-01",
+    "input": "悬夜翎",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.fabao.名称": "悬夜翎"
+    },
+    "tags": [
+      "conflict",
+      "fabao",
+      "dungeon"
+    ],
+    "assert": "strong",
+    "note": "T-14 R1 已实施：原被副本别名'悬夜'劫持（boss_candidates 2 候选）已修，精确法宝名优先"
+  },
+  {
+    "id": "conflict-skill-xyc-01",
+    "input": "鬼王 轩辕策",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 5837
+    },
+    "tags": [
+      "conflict",
+      "skill",
+      "tool"
+    ],
+    "assert": "strong",
+    "note": "T-12/R2 已落地：带职业前缀的轩辕策改走技能分支（原 xyc_diag 工具卡劫持）。预期变化已 approve"
+  },
+  {
+    "id": "conflict-skill-xyc-02",
+    "input": "逐霜 轩辕策",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8091
+    },
+    "tags": [
+      "conflict",
+      "skill",
+      "tool"
+    ],
+    "assert": "strong",
+    "note": "T-12/R2 已落地：同鬼王。预期变化已 approve"
+  },
+  {
+    "id": "xyc-bare-still-tool",
+    "input": "轩辕策",
+    "expect": {
+      "cardType": "xyc_diag",
+      "cardData.workspaceMode": "xyc"
+    },
+    "tags": [
+      "conflict",
+      "tool"
+    ],
+    "assert": "strong",
+    "note": "T-12 防过犹不及：裸「轩辕策」（无职业前缀）仍走工具卡，R2 只放行带职业前缀的形式"
+  },
+  {
+    "id": "conflict-bareclass-a-01",
+    "input": "鬼王",
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "鬼王",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "鬼王技能"
+    },
+    "tags": [
+      "conflict",
+      "skill",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "T-13/T-15: R3 已裁决=轻量分流卡。2026-10-16 起裸职业名统一出 class_hub（原 equip_candidates 37 件行为作废，预期变化已 approve）"
+  },
+  {
+    "id": "conflict-bareclass-b-01",
+    "input": "逐霜",
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "逐霜",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "逐霜技能"
+    },
+    "tags": [
+      "conflict",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "T-13/T-15: 原 null（落 L2 知识引擎）行为作废，统一出 class_hub，预期变化已 approve"
+  },
+  {
+    "id": "conflict-bareclass-c-01",
+    "input": "天华",
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "天华",
+      "cardData.options.length": 3,
+      "cardData.options.0.query": "天华技能"
+    },
+    "tags": [
+      "conflict",
+      "skill",
+      "fabao"
+    ],
+    "assert": "strong",
+    "note": "T-13/T-15: 原误命中 fabao 玉净瓶（skillName 包含匹配）路径已被分流卡消除，预期变化已 approve"
+  },
+  {
+    "id": "class-hub-lianxue-01",
+    "input": "炼血",
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.className": "炼血",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "conflict",
+      "skill",
+      "dungeon"
+    ],
+    "assert": "strong",
+    "note": "T-15: 分流卡置于副本分支之前，免疫 BOSS 名包含碰撞——修 T-11 孤儿键后「炼血堂教众」可达，裸「炼血」仍须稳定出分流卡而非 boss_candidates"
+  },
+  {
+    "id": "class-hub-no-overtrigger-01",
+    "input": "逐霜技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30
+    },
+    "tags": [
+      "conflict",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "T-15 防过触发：分流卡仅精确等于职业名时触发，带后缀/修饰的输入必须继续走原意图"
+  }
 ]

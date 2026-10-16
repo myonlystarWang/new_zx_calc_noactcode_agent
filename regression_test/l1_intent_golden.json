@@ -11160,7 +11160,7 @@
   },
   "pinyin-equip": {
     "sender": "assistant",
-    "text": "为你检索到 33 件符合【qingyun zhuangbei】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 34 件符合【qingyun zhuangbei】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "qingyun zhuangbei",
@@ -12394,9 +12394,37 @@
             130000
           ],
           "q": "彰武"
+        },
+        {
+          "id": 40,
+          "name": "吃不完的馒头",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "鬼王宗",
+            "合欢派",
+            "青云门",
+            "天音寺",
+            "鬼道",
+            "焚香谷"
+          ],
+          "g": "",
+          "atk": [
+            4000,
+            5000
+          ],
+          "def": 5000,
+          "hp": 2000,
+          "mp": 2000,
+          "hit": 5000,
+          "dod": 100,
+          "price": 1,
+          "dura": 10,
+          "q": ""
         }
       ],
-      "totalCount": 33
+      "totalCount": 34
     }
   },
   "pinyin-tag-lvdian": {
@@ -12777,11 +12805,6 @@
           "key": "彰武",
           "label": "彰武系",
           "query": "彰武 武器"
-        },
-        {
-          "key": "other",
-          "label": "其他武器",
-          "query": "所有武器"
         }
       ]
     }
@@ -12807,11 +12830,6 @@
           "key": "彰武",
           "label": "彰武系",
           "query": "彰武 头盔"
-        },
-        {
-          "key": "other",
-          "label": "其他头盔",
-          "query": "所有头盔"
         }
       ]
     }
@@ -12837,11 +12855,6 @@
           "key": "彰武",
           "label": "彰武系",
           "query": "彰武 衣服"
-        },
-        {
-          "key": "other",
-          "label": "其他衣服",
-          "query": "所有衣服"
         }
       ]
     }
@@ -12867,11 +12880,6 @@
           "key": "彰武",
           "label": "彰武系",
           "query": "彰武 靴子"
-        },
-        {
-          "key": "other",
-          "label": "其他靴子",
-          "query": "所有靴子"
         }
       ]
     }
@@ -12897,11 +12905,6 @@
           "key": "彰武",
           "label": "彰武系",
           "query": "彰武 腰带"
-        },
-        {
-          "key": "other",
-          "label": "其他腰带",
-          "query": "所有腰带"
         }
       ]
     }
@@ -12927,11 +12930,6 @@
           "key": "彰武",
           "label": "彰武系",
           "query": "彰武 袖甲"
-        },
-        {
-          "key": "other",
-          "label": "其他袖甲",
-          "query": "所有袖甲"
         }
       ]
     }
@@ -12964,11 +12962,6 @@
           "query": "社稷项链"
         },
         {
-          "key": "xingyu",
-          "label": "星语项链",
-          "query": "星语项链"
-        },
-        {
           "key": "other",
           "label": "其他项链",
           "query": "所有项链"
@@ -12996,39 +12989,9 @@
       ]
     }
   },
-  "slot-hub-other-yifu-01": {
-    "sender": "assistant",
-    "text": "为你定位到装备部位【衣服】。请选择要查询的品质系列：",
-    "cardType": "slot_hub",
-    "cardData": {
-      "slot": "衣服",
-      "options": [
-        {
-          "key": "修武",
-          "label": "修武系",
-          "query": "修武 衣服"
-        },
-        {
-          "key": "昭武",
-          "label": "昭武系",
-          "query": "昭武 衣服"
-        },
-        {
-          "key": "彰武",
-          "label": "彰武系",
-          "query": "彰武 衣服"
-        },
-        {
-          "key": "other",
-          "label": "其他衣服",
-          "query": "所有衣服"
-        }
-      ]
-    }
-  },
   "broad-all-necklace-01": {
     "sender": "assistant",
-    "text": "为你检索到 137 件符合【所有项链】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 155 件符合【所有项链】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "所有项链",
@@ -13140,6 +13103,34 @@
           "hp": 6000,
           "mp": 6000,
           "price": 75000,
+          "dura": 10,
+          "q": ""
+        },
+        {
+          "id": 40,
+          "name": "吃不完的馒头",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "鬼王宗",
+            "合欢派",
+            "青云门",
+            "天音寺",
+            "鬼道",
+            "焚香谷"
+          ],
+          "g": "",
+          "atk": [
+            4000,
+            5000
+          ],
+          "def": 5000,
+          "hp": 2000,
+          "mp": 2000,
+          "hit": 5000,
+          "dod": 100,
+          "price": 1,
           "dura": 10,
           "q": ""
         },
@@ -14473,23 +14464,9 @@
           "price": 6000,
           "dura": 4,
           "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "仙心",
-          "slot": "项链",
-          "lv": 55,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 6000,
-          "dura": 4,
-          "q": ""
         }
       ],
-      "totalCount": 137
+      "totalCount": 155
     }
   },
   "broad-all-ring-01": {
@@ -15914,11 +15891,6 @@
           "key": "彰武",
           "label": "彰武系",
           "query": "彰武 头盔"
-        },
-        {
-          "key": "other",
-          "label": "其他头盔",
-          "query": "所有头盔"
         }
       ]
     }
@@ -15944,11 +15916,6 @@
           "key": "彰武",
           "label": "彰武系",
           "query": "彰武 靴子"
-        },
-        {
-          "key": "other",
-          "label": "其他靴子",
-          "query": "所有靴子"
         }
       ]
     }
