@@ -193,7 +193,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
         });
     };
 
-    // 原生 Web Audio 提示音（开服清脆三音阶）
+    // 原生 Web Audio 提示音（开服三音阶两轮：第一轮原调、第二轮升八度）
     const playSuccessChime = () => {
         if (!soundEnabled) return;
         try {
@@ -203,17 +203,19 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
             audioCtxRef.current = ctx;
 
             const now = ctx.currentTime;
-            [523.25, 659.25, 783.99].forEach((freq, idx) => {
+            // 两轮琶音：C5-E5-G5 升到 C6-E6-G6，共约 1.8s
+            [523.25, 659.25, 783.99, 1046.5, 1318.5, 1568].forEach((freq, idx) => {
+                const start = now + idx * 0.14;
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, now + idx * 0.12);
-                gain.gain.setValueAtTime(0.3, now + idx * 0.12);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.35);
+                osc.frequency.setValueAtTime(freq, start);
+                gain.gain.setValueAtTime(0.3, start);
+                gain.gain.exponentialRampToValueAtTime(0.01, start + 0.4);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-                osc.start(now + idx * 0.12);
-                osc.stop(now + idx * 0.12 + 0.4);
+                osc.start(start);
+                osc.stop(start + 0.45);
             });
         } catch (e) {
             console.warn('Audio chime error:', e);
