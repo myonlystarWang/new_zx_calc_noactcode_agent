@@ -217,7 +217,7 @@ Functions 目录：仓库根 `functions/`（**唯一生效位置**，`web_app/fu
 6. **本地 tsc 不覆盖 `functions/`**：Functions 仅 Cloudflare 构建时检查类型，本地改动需自查。
 7. **留言板**已独立为 KV 持久化链路（`functions/api/guestbook.ts`），不在本 AI 链内；其维护见当次审查记录。
 8. **极致攻略卡片的 ceilingVal 是硬编码**（第 1539-1557 行：175.7/210/180/120/230），与 `attribute_ceiling_guide.json` 理论值可能不同步，改数值时两处核对。
-9. **两套识图默认模板不一致**（2026-10-15 评审补录）：`CopilotService.diagnoseImage` 启发式兜底默认大攻 195000/防 96000/血 3800000（仅后端不可达时生效，如本地 dev）；`vision.ts` offline-preview 兜底默认大攻 185000/防 95000/血 3500000（**线上无 Key 的常见路径**）。用户实际看到的默认值以后者为准，改默认值时两处都要改。
+9. **两套识图默认模板口径已对齐**（2026-10-16 已统一）：此前 `CopilotService.diagnoseImage`（本地 dev 兜底，逐霜 19.5w攻/9.6w防/380w血）与 `vision.ts` offline-preview（线上无 Key 兜底，青云 18.5w攻/9.5w防/350w血）存在偏差。现已统一将 `vision.ts` 兜底模板同步为逐霜相同数值（大攻 195000/防 96000/血 3800000/爆伤 920%/无视 142.5%），确保本地调试与线上无 Key 表现完全一致。
 
 ---
 

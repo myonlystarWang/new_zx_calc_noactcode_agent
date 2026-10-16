@@ -216,23 +216,23 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
             }
         }
 
-        // 兜底降级响应（离线拟真识别结构）
+        // 兜底降级响应（离线拟真识别结构，与前端 CopilotService 保持统一为逐霜标准面板）
         const fallbackResult = {
             mode: 'c_panel',
             rawExplanation: '已解析截图属性特征。数值已提取至校对抽屉，可进行手动微调并一键测算副本伤害：',
             cPanelData: {
-                characterClass: '青云',
+                characterClass: '逐霜',
                 faction: 'XIAN',
-                attack: 185000,
-                defense: 95000,
-                hp: 3500000,
+                attack: 195000,
+                defense: 96000,
+                hp: 3800000,
                 mp: 1200000,
-                critRate: 145.0,
-                critDamage: 880.0,
-                ignoreReduction: 135.0,
-                damageReduction: 160.0,
-                critReduction: 130.0,
-                monsterDamageBonus: 78.0
+                critRate: 148.0,
+                critDamage: 920.0,
+                ignoreReduction: 142.5,
+                damageReduction: 165.0,
+                critReduction: 135.0,
+                monsterDamageBonus: 82.0
             }
         };
 

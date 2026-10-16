@@ -26,6 +26,7 @@ import { SkillDetailCard } from '../compendium/SkillDetailCard';
 import { BossDetailCard } from '../compendium/BossDetailCard';
 import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
+import { ACCENT_BUTTON, ACCENT_BUTTON_ICON } from '../ui/accentButtonStyles';
 import { useApp } from '../../context/AppContext';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
@@ -231,10 +232,10 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                     <button
                         type="button"
                         onClick={onBackToHome}
-                        className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer"
+                        className={ACCENT_BUTTON}
                         title="返回天书主页"
                     >
-                        <ArrowLeft className="w-3.5 h-3.5" />
+                        <ArrowLeft className={ACCENT_BUTTON_ICON} />
                         <span>返回主页</span>
                     </button>
                 </div>
