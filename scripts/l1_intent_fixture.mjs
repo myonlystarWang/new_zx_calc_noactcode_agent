@@ -273,6 +273,7 @@ function buildExpectation(r) {
     }
     if (typeof cd.totalCount === 'number') expect['cardData.totalCount'] = cd.totalCount;
     // 单卡用例必须冻结实体身份，否则"返回错了同类实体"的回归抓不到
+    if (cd.fabao?.['名称']) expect['cardData.fabao.名称'] = cd.fabao['名称']; // fabao 单卡（T-14 R1 后 11 个法宝名翻转到此）
     if (cd.equip?.name) expect['cardData.equip.name'] = cd.equip.name;
     if (typeof cd.name === 'string') expect['cardData.name'] = cd.name;       // fabao 单卡
     if (cd.monsterId) expect['cardData.monsterId'] = cd.monsterId;           // boss 单卡
