@@ -571,7 +571,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "逐霜",
-      "cardData.options.length": 3
+      "cardData.options.length": 4
     },
     "tags": [
       "pinyin",
@@ -586,7 +586,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "鬼王",
-      "cardData.options.length": 3
+      "cardData.options.length": 4
     },
     "tags": [
       "pinyin",
@@ -1410,7 +1410,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "鬼王",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "鬼王技能"
     },
     "tags": [
@@ -1427,7 +1427,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "逐霜",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "逐霜技能"
     },
     "tags": [
@@ -1443,7 +1443,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "天华",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "天华技能"
     },
     "tags": [
@@ -1460,7 +1460,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "炼血",
-      "cardData.options.length": 3
+      "cardData.options.length": 4
     },
     "tags": [
       "conflict",
@@ -1677,5 +1677,164 @@
     ],
     "assert": "strong",
     "note": "284 件屏蔽八皇御宝8+2024搁置1 后聚合 189"
+  },
+  {
+    "id": "t15b-hub-status-01",
+    "input": "逐霜",
+    "expect": {
+      "cardType": "class_hub",
+      "cardData.options.length": 4,
+      "cardData.options.3.query": "逐霜状态"
+    },
+    "tags": [
+      "class-hub",
+      "t15b"
+    ],
+    "assert": "strong",
+    "note": "T-15b：class_hub 加状态入口（攻略为独立大类 T-18，不进 hub）"
+  },
+  {
+    "id": "t15b-status-support-01",
+    "input": "焚香状态",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.className": "焚香",
+      "cardData.isDps": false,
+      "cardData.roles.length": 1,
+      "cardData.roles.0.focus": 30
+    },
+    "tags": [
+      "class-status",
+      "t15b"
+    ],
+    "assert": "strong",
+    "note": "辅助职业档案（0 值指标由渲染层过滤）"
+  },
+  {
+    "id": "t15b-status-dps-01",
+    "input": "逐霜状态",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.className": "逐霜",
+      "cardData.isDps": true,
+      "cardData.roles.length": 2,
+      "cardData.roles.0.focus": 79
+    },
+    "tags": [
+      "class-status",
+      "t15b"
+    ],
+    "assert": "strong",
+    "note": "输出职业（roleType=dps，仙/魔佛双档；四项全 0 走 dps 文案）"
+  },
+  {
+    "id": "t15b-status-zero-01",
+    "input": "天音状态",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.roles.0.damageBoost": 30,
+      "cardData.roles.0.greenPoint": 0
+    },
+    "tags": [
+      "class-status",
+      "t15b"
+    ],
+    "assert": "strong",
+    "note": "0 值过滤边界：damageBoost=30 有值、greenPoint=0 应过滤（断言冻结数据，渲染层过滤）"
+  },
+  {
+    "id": "t15b-status-bare-01",
+    "input": "状态",
+    "expect": null,
+    "tags": [
+      "class-status",
+      "guard"
+    ],
+    "assert": "strong",
+    "note": "裸「状态」无职业前缀不触发"
+  },
+  {
+    "id": "t15b-focus-zero-01",
+    "input": "鬼王状态",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.roles.0.focus": 0
+    },
+    "tags": [
+      "class-status",
+      "t15b"
+    ],
+    "assert": "strong",
+    "note": "focus=0 边界：数据含 focus 字段，0 值由渲染层过滤不显示（断言冻结数据供渲染层测试）"
+  },
+  {
+    "id": "series-other-necklace-01",
+    "input": "其他项链",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 135
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "「其他项链」= 补集：不属于神级/煌武/战队/社稷四系的剩余项链（非全量 155——2026-10-17 用户纠正口径）"
+  },
+  {
+    "id": "series-other-ring-01",
+    "input": "其他戒指",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 48
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "补集：非符石/血玉的剩余戒指"
+  },
+  {
+    "id": "series-other-jinnang-01",
+    "input": "其他锦囊",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 18
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "补集：非逍遥/太虚/神行/观心/天雨五系的剩余锦囊"
+  },
+  {
+    "id": "series-other-gangqi-01",
+    "input": "其他罡气",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 33
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "补集：非战罡的剩余罡气"
+  },
+  {
+    "id": "series-other-xishou-01",
+    "input": "其他玺绶",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 2
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "补集：非六印/跨服印的剩余玺绶（传国玉玺等）"
   }
 ]
