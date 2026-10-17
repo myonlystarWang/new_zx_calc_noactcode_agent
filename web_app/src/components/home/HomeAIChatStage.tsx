@@ -24,6 +24,7 @@ import { FabaoDetailCard } from '../compendium/FabaoDetailCard';
 import { EquipDetailCard } from '../compendium/EquipDetailCard';
 import { SkillDetailCard } from '../compendium/SkillDetailCard';
 import { BossDetailCard } from '../compendium/BossDetailCard';
+import { ClassStatusCard } from '../compendium/ClassStatusCard';
 import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
 import { ACCENT_BUTTON, ACCENT_BUTTON_ICON } from '../ui/accentButtonStyles';
@@ -35,7 +36,7 @@ import type { FabaoItem, CuratedEquipItem, CuratedSkillItem } from '../../types'
 interface HomeAIChatStageProps {
     messages: CopilotMessage[];
     isLoading: boolean;
-    onSendMessage: (text: string, image?: string) => void;
+    onSendMessage: (text: string, image?: string, displayText?: string) => void;
     onBackToHome: () => void;
     isSplitOpen?: boolean;
     onToggleSplit?: () => void;
@@ -760,13 +761,16 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                     {msg.cardType === 'slot_hub' && msg.cardData && (
                                                         <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 space-y-3">
                                                             <div className="text-sm font-bold text-cyan-300">
-                                                                装备部位【{msg.cardData.slot}】· 请选择品质系列
+                                                                {msg.cardData.slot === '项链' || msg.cardData.slot === '戒指' || msg.cardData.slot === '锦囊' || msg.cardData.slot === '罡气' || msg.cardData.slot === '法身' || msg.cardData.slot === '玺绶'
+                                                                    ? `装备部位【${msg.cardData.slot}】· 请选择系列`
+                                                                    : `装备部位【${msg.cardData.slot}】· 请选择品质系列`}
                                                             </div>
                                                             <div className="flex flex-wrap gap-2">
                                                                 {(msg.cardData.options || []).map((opt: { key: string; label: string; query: string }) => (
                                                                     <button
                                                                         key={opt.key}
                                                                         type="button"
+                                                                        // 所有按钮 query 均为自然词（含 exclude 型「其他X」补集），无需 displayText
                                                                         onClick={() => onSendMessage(opt.query)}
                                                                         className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
                                                                     >
@@ -775,6 +779,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                                 ))}
                                                             </div>
                                                         </div>
+                                                    )}
+
+                                                    {/* 6.7 职业状态摘要卡（T-15b）：标题去掉辅助/输出徽章，支持多阵营 Tab 切换、易伤规范化及全 11 项战斗增减益指标 */}
+                                                    {msg.cardType === 'class_status' && msg.cardData && (
+                                                        <ClassStatusCard cardData={msg.cardData} />
                                                     )}
 
                                                     {/* 7. 法宝图鉴单卡 */}
