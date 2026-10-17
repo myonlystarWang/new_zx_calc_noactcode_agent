@@ -5491,7 +5491,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "鬼王",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "鬼王技能"
     },
     "tags": [
@@ -5508,7 +5508,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "合欢",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "合欢技能"
     },
     "tags": [
@@ -5525,7 +5525,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "青云",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "青云技能"
     },
     "tags": [
@@ -5542,7 +5542,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "天音",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "天音技能"
     },
     "tags": [
@@ -5559,7 +5559,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "鬼道",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "鬼道技能"
     },
     "tags": [
@@ -5576,7 +5576,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "焚香",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "焚香技能"
     },
     "tags": [
@@ -5593,7 +5593,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "九黎",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "九黎技能"
     },
     "tags": [
@@ -5610,7 +5610,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "烈山",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "烈山技能"
     },
     "tags": [
@@ -5627,7 +5627,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "怀光",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "怀光技能"
     },
     "tags": [
@@ -5644,7 +5644,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "天华",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "天华技能"
     },
     "tags": [
@@ -5661,7 +5661,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "辰皇",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "辰皇技能"
     },
     "tags": [
@@ -5678,7 +5678,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "太昊",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "太昊技能"
     },
     "tags": [
@@ -5695,7 +5695,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "牵机",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "牵机技能"
     },
     "tags": [
@@ -5712,7 +5712,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "英招",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "英招技能"
     },
     "tags": [
@@ -5729,7 +5729,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "破军",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "破军技能"
     },
     "tags": [
@@ -5746,7 +5746,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "青罗",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "青罗技能"
     },
     "tags": [
@@ -5763,7 +5763,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "归云",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "归云技能"
     },
     "tags": [
@@ -5780,7 +5780,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "画影",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "画影技能"
     },
     "tags": [
@@ -5797,7 +5797,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "逐霜",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "逐霜技能"
     },
     "tags": [
@@ -5814,7 +5814,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "惊岚",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "惊岚技能"
     },
     "tags": [
@@ -5831,7 +5831,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "昭冥",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "昭冥技能"
     },
     "tags": [
@@ -5848,7 +5848,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "涅羽",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "涅羽技能"
     },
     "tags": [
@@ -5865,7 +5865,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "百灵",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "百灵技能"
     },
     "tags": [
@@ -5882,7 +5882,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "释罗",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "释罗技能"
     },
     "tags": [
@@ -5899,7 +5899,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "长生堂",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "长生堂技能"
     },
     "tags": [
@@ -5916,7 +5916,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "万毒",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "万毒技能"
     },
     "tags": [
@@ -5933,7 +5933,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "炼血",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "炼血技能"
     },
     "tags": [
@@ -6626,7 +6626,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "破军",
-      "cardData.options.length": 3,
+      "cardData.options.length": 4,
       "cardData.options.0.query": "破军技能"
     },
     "tags": [
