@@ -777,42 +777,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         </div>
                                                     )}
 
-                                                    {/* 6.7 职业状态摘要卡（T-15b）：辅助职业展示能力面板，输出职业展示定位+模板指引 */}
-                                                    {msg.cardType === 'class_status' && msg.cardData && (
-                                                        <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 space-y-3">
-                                                            <div className="text-sm font-bold text-cyan-300">
-                                                                {msg.cardData.className} · {msg.cardData.isDps ? '输出职业' : '辅助职业'}（{(msg.cardData.factions || []).join(' / ')}）
-                                                            </div>
-                                                            {(msg.cardData.roles || []).map((role: any, idx: number) => (
-                                                                <div key={idx} className="space-y-2">
-                                                                    <div className="flex flex-wrap items-center gap-2 text-xs">
-                                                                        <span className="px-2 py-0.5 rounded bg-slate-700/50 text-slate-300">{role.faction}</span>
-                                                                        {role.rating && <span className="px-2 py-0.5 rounded bg-cyan-600/25 border border-cyan-500/40 text-cyan-200">评级 {role.rating}</span>}
-                                                                        {(role.abilities || []).map((ab: string) => (
-                                                                            <span key={ab} className="px-2 py-0.5 rounded bg-slate-700/50 text-slate-300">{ab}</span>
-                                                                        ))}
-                                                                    </div>
-                                                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                                                        {[
-                                                                            { label: '增伤', value: role.damageBoost },
-                                                                            { label: '绿点', value: role.greenPoint },
-                                                                            { label: '紫点', value: role.purplePoint },
-                                                                            { label: '破防', value: role.defenseBreak },
-                                                                        ].map(m => (
-                                                                            <div key={m.label} className="rounded-lg bg-[#0d1420] border border-slate-700/50 px-2 py-1.5">
-                                                                                <div className="text-[10px] text-slate-400">{m.label}</div>
-                                                                                <div className="text-xs font-medium text-slate-200">{m.value ?? '—'}</div>
-                                                                            </div>
-                                                                        ))}
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                            {msg.cardData.isDps && (
-                                                                <div className="text-xs text-slate-400">输出职业无团队增益面板，可在模拟训练场使用 dps 默认属性模板起号。</div>
-                                                            )}
-                                                        </div>
-                                                    )}
-
                                                     {/* 7. 法宝图鉴单卡 */}
                                                     {msg.cardType === 'fabao' && msg.cardData && (
                                                         <div className="w-full">

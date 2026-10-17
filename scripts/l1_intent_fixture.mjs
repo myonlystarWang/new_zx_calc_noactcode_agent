@@ -76,8 +76,6 @@ function makeFsMock() {
     const fabaoRaw = readJson(path.join(GAME_DATA, 'fabao_curated.json'));
     const skillChunks = ['all_skills_curated_1.json', 'all_skills_curated_2.json', 'all_skills_curated_3.json']
         .map((f) => readJson(path.join(GAME_DATA, f)));
-    // T-15b：class_status 分支读 skills.json._meta.supportRoles（与真实实现同源）
-    const skillsMeta = readJson(path.join(GAME_DATA, 'skills.json'))._meta ?? null;
 
     return {
         // 返回 {...meta, Monsters:[...]} 形状（与真实实现一致，非扁平数组）；
@@ -92,8 +90,6 @@ function makeFsMock() {
         getFabaoList: async () => (Array.isArray(fabaoRaw) ? fabaoRaw : []),
         // 与真实实现相同：三分块合并后过 isValidSkill 过滤
         getAllCuratedSkills: async () => skillChunks.flat().filter(isValidSkill),
-        // T-15b：skills.json._meta（真实实现在 loadSkills 时剥离 _meta 存 skillMeta）
-        getSkillMeta: () => skillsMeta,
     };
 }
 

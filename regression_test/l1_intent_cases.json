@@ -571,7 +571,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "逐霜",
-      "cardData.options.length": 5
+      "cardData.options.length": 3
     },
     "tags": [
       "pinyin",
@@ -586,7 +586,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "鬼王",
-      "cardData.options.length": 5
+      "cardData.options.length": 3
     },
     "tags": [
       "pinyin",
@@ -1410,7 +1410,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "鬼王",
-      "cardData.options.length": 5,
+      "cardData.options.length": 3,
       "cardData.options.0.query": "鬼王技能"
     },
     "tags": [
@@ -1427,7 +1427,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "逐霜",
-      "cardData.options.length": 5,
+      "cardData.options.length": 3,
       "cardData.options.0.query": "逐霜技能"
     },
     "tags": [
@@ -1443,7 +1443,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "天华",
-      "cardData.options.length": 5,
+      "cardData.options.length": 3,
       "cardData.options.0.query": "天华技能"
     },
     "tags": [
@@ -1460,7 +1460,7 @@
     "expect": {
       "cardType": "class_hub",
       "cardData.className": "炼血",
-      "cardData.options.length": 5
+      "cardData.options.length": 3
     },
     "tags": [
       "conflict",
@@ -1677,110 +1677,5 @@
     ],
     "assert": "strong",
     "note": "284 件屏蔽八皇御宝8+2024搁置1 后聚合 189"
-  },
-  {
-    "id": "t15b-hub-5opts-01",
-    "input": "逐霜",
-    "expect": {
-      "cardType": "class_hub",
-      "cardData.options.length": 5,
-      "cardData.options.3.query": "逐霜天花板",
-      "cardData.options.4.query": "逐霜状态"
-    },
-    "tags": [
-      "class-hub",
-      "t15b"
-    ],
-    "assert": "strong",
-    "note": "T-15b：class_hub 加攻略（→ceiling）/状态（→class_status）两入口"
-  },
-  {
-    "id": "t15b-status-support-01",
-    "input": "焚香状态",
-    "expect": {
-      "cardType": "class_status",
-      "cardData.className": "焚香",
-      "cardData.isDps": false,
-      "cardData.roles.length": 1,
-      "cardData.roles.0.faction": "佛"
-    },
-    "tags": [
-      "class-status",
-      "t15b"
-    ],
-    "assert": "strong",
-    "note": "辅助职业档案（supportRoles）"
-  },
-  {
-    "id": "t15b-status-dps-01",
-    "input": "逐霜状态",
-    "expect": {
-      "cardType": "class_status",
-      "cardData.className": "逐霜",
-      "cardData.isDps": true,
-      "cardData.roles.length": 2
-    },
-    "tags": [
-      "class-status",
-      "t15b"
-    ],
-    "assert": "strong",
-    "note": "输出职业（roleType=dps，仙/魔佛双档）"
-  },
-  {
-    "id": "t15b-status-multi-01",
-    "input": "青云状态",
-    "expect": {
-      "cardType": "class_status",
-      "cardData.className": "青云",
-      "cardData.isDps": true,
-      "cardData.roles.length": 3
-    },
-    "tags": [
-      "class-status",
-      "t15b"
-    ],
-    "assert": "strong",
-    "note": "三阵营档案（仙/魔/佛）"
-  },
-  {
-    "id": "t15b-status-guiwang-01",
-    "input": "鬼王状态",
-    "expect": {
-      "cardType": "class_status",
-      "cardData.className": "鬼王",
-      "cardData.isDps": false,
-      "cardData.roles.length": 3
-    },
-    "tags": [
-      "class-status",
-      "t15b"
-    ],
-    "assert": "strong",
-    "note": "鬼王三阵营全为辅助档案"
-  },
-  {
-    "id": "t15b-guide-query-01",
-    "input": "逐霜天花板",
-    "expect": {
-      "cardType": "ceiling"
-    },
-    "tags": [
-      "class-hub",
-      "t15b"
-    ],
-    "assert": "strong",
-    "note": "攻略入口 query 复用既有 ceiling 意图"
-  },
-  {
-    "id": "t15b-status-bare-01",
-    "input": "状态",
-    "expect": null,
-    "tags": [
-      "class-status",
-      "guard"
-    ],
-    "assert": "strong",
-    "note": "裸「状态」无职业前缀不触发"
   }
 ]
