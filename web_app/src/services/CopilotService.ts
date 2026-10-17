@@ -26,7 +26,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status';
     cardData?: any;
 }
 
@@ -814,7 +814,10 @@ export class CopilotService {
             const hubOptions = [
                 { key: 'skill', label: '技能速查', query: `${q}技能` },
                 { key: 'equip', label: '装备查询', query: `${q}装备` },
-                { key: 'fabao', label: '专属法宝', query: `${q}法宝` }
+                { key: 'fabao', label: '专属法宝', query: `${q}法宝` },
+                // T-15b：攻略→既有 ceiling 意图（XX天花板）；状态→class_status 分支（职业+状态）
+                { key: 'guide', label: '攻略', query: `${q}天花板` },
+                { key: 'status', label: '状态', query: `${q}状态` },
             ];
             return {
                 id: `msg-${Date.now()}`,
@@ -827,6 +830,59 @@ export class CopilotService {
                     options: hubOptions
                 }
             };
+        }
+
+        // ------------------------------------------------------------
+        // 0.5b 职业状态摘要（class_status，T-15b）
+        // 「XX状态」→ 从 skills.json._meta.supportRoles 取该职业档案：
+        // 辅助职业展示阵营/定位/评级/能力标签/四项指标（易伤/绿点/紫点/破防）；
+        // 输出职业（roleType=dps）展示输出定位 + 训练场默认属性模板指引。
+        // 与 class_hub 同为零上下文：卡片只依赖 query 内的职业名。
+        // ------------------------------------------------------------
+        if (q.endsWith('状态')) {
+            const statusClass = q.slice(0, -2);
+            if (profs.includes(statusClass)) {
+                const supportData = dataService.getSkillMeta()?.supportRoles || null;
+                const roles = Array.isArray(supportData?.roles) ? supportData.roles : [];
+                const classRoles = roles.filter((r: any) => r?.name === statusClass);
+                if (classRoles.length > 0) {
+                    const isDps = classRoles.some((r: any) => r?.roleType === 'dps');
+                    const factions = [...new Set(classRoles.map((r: any) => r?.faction).filter(Boolean))];
+                    const metrics: string[] = Array.isArray(supportData?.metrics) ? supportData.metrics : [];
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: isDps
+                            ? `【${statusClass}】是输出职业（${factions.join('/') || '多阵营'}），核心任务是打伤害。可在下方查看其团队增益面板与训练场默认属性模板：`
+                            : `【${statusClass}】是辅助职业（${factions.join('/') || '多阵营'}），核心任务是团队增益。可在下方查看其辅助能力面板：`,
+                        time: timeStr,
+                        cardType: 'class_status',
+                        cardData: {
+                            className: statusClass,
+                            isDps,
+                            factions,
+                            metrics,
+                            roles: classRoles.map((r: any) => ({
+                                faction: r.faction,
+                                roleType: r.roleType,
+                                rating: r.rating,
+                                abilities: Array.isArray(r.abilities) ? r.abilities : [],
+                                damageBoost: r.damageBoost,
+                                greenPoint: r.greenPoint,
+                                purplePoint: r.purplePoint,
+                                defenseBreak: r.defenseBreak,
+                                focus: r.focus,
+                            })),
+                        }
+                    };
+                }
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: `【${statusClass}】暂无状态档案。可尝试查询其技能速查、装备图鉴或专属法宝：`,
+                    time: timeStr
+                };
+            }
         }
 
         // ------------------------------------------------------------

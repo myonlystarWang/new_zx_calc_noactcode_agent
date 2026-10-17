@@ -10383,6 +10383,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "逐霜法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "逐霜天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "逐霜状态"
         }
       ]
     }
@@ -10408,6 +10418,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "鬼王法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "鬼王天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "鬼王状态"
         }
       ]
     }
@@ -25630,6 +25650,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "鬼王法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "鬼王天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "鬼王状态"
         }
       ]
     }
@@ -25655,6 +25685,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "逐霜法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "逐霜天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "逐霜状态"
         }
       ]
     }
@@ -25680,6 +25720,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "天华法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "天华天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "天华状态"
         }
       ]
     }
@@ -25705,6 +25755,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "炼血法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "炼血天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "炼血状态"
         }
       ]
     }
@@ -31238,6 +31298,260 @@
       "totalCount": 189
     }
   },
+  "t15b-hub-5opts-01": {
+    "sender": "assistant",
+    "text": "为你定位到职业【逐霜】。请选择要查询的信息类型：",
+    "cardType": "class_hub",
+    "cardData": {
+      "className": "逐霜",
+      "options": [
+        {
+          "key": "skill",
+          "label": "技能速查",
+          "query": "逐霜技能"
+        },
+        {
+          "key": "equip",
+          "label": "装备查询",
+          "query": "逐霜装备"
+        },
+        {
+          "key": "fabao",
+          "label": "专属法宝",
+          "query": "逐霜法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "逐霜天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "逐霜状态"
+        }
+      ]
+    }
+  },
+  "t15b-status-support-01": {
+    "sender": "assistant",
+    "text": "【焚香】是辅助职业（佛），核心任务是团队增益。可在下方查看其辅助能力面板：",
+    "cardType": "class_status",
+    "cardData": {
+      "className": "焚香",
+      "isDps": false,
+      "factions": [
+        "佛"
+      ],
+      "metrics": [
+        "易伤",
+        "绿点",
+        "紫点",
+        "破防"
+      ],
+      "roles": [
+        {
+          "faction": "佛",
+          "roleType": "support",
+          "rating": "S+",
+          "abilities": [
+            "群神佑",
+            "技能增伤",
+            "绿点翻倍"
+          ],
+          "damageBoost": 100,
+          "greenPoint": "×2",
+          "purplePoint": 4,
+          "defenseBreak": 100,
+          "focus": 30
+        }
+      ]
+    }
+  },
+  "t15b-status-dps-01": {
+    "sender": "assistant",
+    "text": "【逐霜】是输出职业（仙/魔佛），核心任务是打伤害。可在下方查看其团队增益面板与训练场默认属性模板：",
+    "cardType": "class_status",
+    "cardData": {
+      "className": "逐霜",
+      "isDps": true,
+      "factions": [
+        "仙",
+        "魔佛"
+      ],
+      "metrics": [
+        "易伤",
+        "绿点",
+        "紫点",
+        "破防"
+      ],
+      "roles": [
+        {
+          "faction": "仙",
+          "roleType": "dps",
+          "rating": "S+",
+          "abilities": [
+            "T0输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 79
+        },
+        {
+          "faction": "魔佛",
+          "roleType": "dps",
+          "rating": "S+",
+          "abilities": [
+            "T0输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 49
+        }
+      ]
+    }
+  },
+  "t15b-status-multi-01": {
+    "sender": "assistant",
+    "text": "【青云】是输出职业（仙/魔/佛），核心任务是打伤害。可在下方查看其团队增益面板与训练场默认属性模板：",
+    "cardType": "class_status",
+    "cardData": {
+      "className": "青云",
+      "isDps": true,
+      "factions": [
+        "仙",
+        "魔",
+        "佛"
+      ],
+      "metrics": [
+        "易伤",
+        "绿点",
+        "紫点",
+        "破防"
+      ],
+      "roles": [
+        {
+          "faction": "仙",
+          "roleType": "dps",
+          "rating": "A+",
+          "abilities": [
+            "T1输出"
+          ],
+          "damageBoost": 5,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 50
+        },
+        {
+          "faction": "魔",
+          "roleType": "dps",
+          "rating": "A+",
+          "abilities": [
+            "T1输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 50,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30
+        },
+        {
+          "faction": "佛",
+          "roleType": "dps",
+          "rating": "A+",
+          "abilities": [
+            "T1输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30
+        }
+      ]
+    }
+  },
+  "t15b-status-guiwang-01": {
+    "sender": "assistant",
+    "text": "【鬼王】是辅助职业（佛/仙/魔），核心任务是团队增益。可在下方查看其辅助能力面板：",
+    "cardType": "class_status",
+    "cardData": {
+      "className": "鬼王",
+      "isDps": false,
+      "factions": [
+        "佛",
+        "仙",
+        "魔"
+      ],
+      "metrics": [
+        "易伤",
+        "绿点",
+        "紫点",
+        "破防"
+      ],
+      "roles": [
+        {
+          "faction": "佛",
+          "roleType": "support",
+          "rating": "S",
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 6,
+          "defenseBreak": 100,
+          "focus": 0
+        },
+        {
+          "faction": "仙",
+          "roleType": "support",
+          "rating": "S",
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 385,
+          "purplePoint": 16,
+          "defenseBreak": 100,
+          "focus": 0
+        },
+        {
+          "faction": "魔",
+          "roleType": "support",
+          "rating": "S",
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 21,
+          "defenseBreak": 100,
+          "focus": 0
+        }
+      ]
+    }
+  },
+  "t15b-guide-query-01": {
+    "sender": "assistant",
+    "text": "查询到【极致无视伤害减免攻略】的核心上限基准（理论最高约 175.7%）。点击卡片可直接查看全领域细分与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致无视伤害减免攻略",
+      "attrKey": "ignore",
+      "ceilingVal": 175.7,
+      "route": "/compendium/ceiling?attr=ignore"
+    }
+  },
+  "t15b-status-bare-01": null,
   "gen-equip-修武-武器": {
     "sender": "assistant",
     "text": "为你检索到 56 件符合【修武 武器】的候选装备，可在下方直接切换查看详情：",
@@ -35472,6 +35786,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "鬼王法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "鬼王天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "鬼王状态"
         }
       ]
     }
@@ -35497,6 +35821,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "合欢法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "合欢天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "合欢状态"
         }
       ]
     }
@@ -35522,6 +35856,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "青云法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "青云天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "青云状态"
         }
       ]
     }
@@ -35547,6 +35891,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "天音法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "天音天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "天音状态"
         }
       ]
     }
@@ -35572,6 +35926,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "鬼道法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "鬼道天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "鬼道状态"
         }
       ]
     }
@@ -35597,6 +35961,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "焚香法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "焚香天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "焚香状态"
         }
       ]
     }
@@ -35622,6 +35996,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "九黎法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "九黎天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "九黎状态"
         }
       ]
     }
@@ -35647,6 +36031,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "烈山法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "烈山天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "烈山状态"
         }
       ]
     }
@@ -35672,6 +36066,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "怀光法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "怀光天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "怀光状态"
         }
       ]
     }
@@ -35697,6 +36101,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "天华法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "天华天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "天华状态"
         }
       ]
     }
@@ -35722,6 +36136,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "辰皇法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "辰皇天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "辰皇状态"
         }
       ]
     }
@@ -35747,6 +36171,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "太昊法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "太昊天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "太昊状态"
         }
       ]
     }
@@ -35772,6 +36206,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "牵机法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "牵机天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "牵机状态"
         }
       ]
     }
@@ -35797,6 +36241,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "英招法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "英招天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "英招状态"
         }
       ]
     }
@@ -35822,6 +36276,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "破军法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "破军天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "破军状态"
         }
       ]
     }
@@ -35847,6 +36311,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "青罗法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "青罗天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "青罗状态"
         }
       ]
     }
@@ -35872,6 +36346,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "归云法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "归云天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "归云状态"
         }
       ]
     }
@@ -35897,6 +36381,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "画影法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "画影天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "画影状态"
         }
       ]
     }
@@ -35922,6 +36416,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "逐霜法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "逐霜天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "逐霜状态"
         }
       ]
     }
@@ -35947,6 +36451,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "惊岚法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "惊岚天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "惊岚状态"
         }
       ]
     }
@@ -35972,6 +36486,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "昭冥法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "昭冥天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "昭冥状态"
         }
       ]
     }
@@ -35997,6 +36521,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "涅羽法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "涅羽天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "涅羽状态"
         }
       ]
     }
@@ -36022,6 +36556,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "百灵法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "百灵天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "百灵状态"
         }
       ]
     }
@@ -36047,6 +36591,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "释罗法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "释罗天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "释罗状态"
         }
       ]
     }
@@ -36072,6 +36626,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "长生堂法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "长生堂天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "长生堂状态"
         }
       ]
     }
@@ -36097,6 +36661,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "万毒法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "万毒天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "万毒状态"
         }
       ]
     }
@@ -36122,6 +36696,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "炼血法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "炼血天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "炼血状态"
         }
       ]
     }
@@ -36660,6 +37244,16 @@
           "key": "fabao",
           "label": "专属法宝",
           "query": "破军法宝"
+        },
+        {
+          "key": "guide",
+          "label": "攻略",
+          "query": "破军天花板"
+        },
+        {
+          "key": "status",
+          "label": "状态",
+          "query": "破军状态"
         }
       ]
     }
