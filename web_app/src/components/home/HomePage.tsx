@@ -236,7 +236,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
   };
 
   // 后续追加对话
-  const handleFollowUpMessage = async (text: string, image?: string) => {
+  const handleFollowUpMessage = async (text: string, image?: string, displayText?: string) => {
     const trimmed = text.trim();
     if (!trimmed && !image) return;
 
@@ -246,7 +246,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     const userMsg: CopilotMessage = {
       id: `usr-${Date.now()}`,
       sender: 'user',
-      text: trimmed || (image ? '[发送了游戏截图]' : ''),
+      // displayText：hub「其他」等按钮的玩家可见文案（实际查询用 text 机器词，不外泄）
+      text: (displayText?.trim() || trimmed || (image ? '[发送了游戏截图]' : '')),
       image,
       time: timeStr,
     };

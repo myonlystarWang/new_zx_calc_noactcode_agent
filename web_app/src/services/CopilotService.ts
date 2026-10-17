@@ -26,7 +26,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status';
     cardData?: any;
 }
 
@@ -369,8 +369,9 @@ function getPinyinAliases(): Array<[string, string]> {
 interface SlotSeries {
     key: string;
     label: string;
-    match: 'prefix' | 'contains' | 'suffix';
-    /** 装备名称匹配词（按 match 模式命中任一即属该系列） */
+    /** prefix=起头 / contains=包含 / suffix=结尾 / exclude=补集（该 slot 下不属于任何其他系列） */
+    match: 'prefix' | 'contains' | 'suffix' | 'exclude';
+    /** 装备名称匹配词（按 match 模式命中任一即属该系列；exclude 时留空） */
     terms: string[];
     /** 玩家别称（如「积分项链」= 煌武） */
     aliases?: string[];
@@ -385,9 +386,11 @@ const SLOT_SERIES: Record<string, SlotSeries[]> = {
         { key: 'huangwu', label: '煌武项链', match: 'contains', terms: ['煌武'], aliases: ['积分项链'] },
         { key: 'zhandui', label: '战队项链', match: 'contains', terms: ['圣瑞', '圣谛'] },
         { key: 'sheji', label: '社稷项链', match: 'contains', terms: ['菩提珠', '琥珀珠', '舍利子', '血菩提', '真如子'] },
+        { key: 'other', label: '其他项链', match: 'exclude', terms: [] },
     ],
     '戒指': [
         { key: 'shenji', label: '神级首饰', match: 'contains', terms: ['符石', '血玉'], aliases: ['神级戒指'] },
+        { key: 'other', label: '其他戒指', match: 'exclude', terms: [] },
     ],
     '锦囊': [
         { key: 'xiaoyao', label: '逍遥锦囊', match: 'prefix', terms: ['逍遥'] },
@@ -395,9 +398,11 @@ const SLOT_SERIES: Record<string, SlotSeries[]> = {
         { key: 'shenxing', label: '神行锦囊', match: 'prefix', terms: ['神行'] },
         { key: 'guanxin', label: '观心锦囊', match: 'prefix', terms: ['观心'] },
         { key: 'tianyu', label: '天雨锦囊', match: 'prefix', terms: ['天雨'] },
+        { key: 'other', label: '其他锦囊', match: 'exclude', terms: [] },
     ],
     '罡气': [
         { key: 'zhangang', label: '战罡', match: 'contains', terms: ['战罡'] },
+        { key: 'other', label: '其他罡气', match: 'exclude', terms: [] },
     ],
     '法身': [
         { key: 'fashen', label: '法身', match: 'prefix', terms: ['法身'] },
@@ -415,6 +420,7 @@ const SLOT_SERIES: Record<string, SlotSeries[]> = {
                 '2013跨服冠军玺绶', '傲雪凌寒印', '霸王龙图印', '百战苍劫印', '碧峭击云印', '碧影含光印', '参商凌空印', '沧溟横云印', '苍龙翔云印', '苍穹御光印', '尘陨归墟印', '宸罡御无印', '宸月破空印', '赤砂辉月印', '赤炎流火印', '帝阙垂荫印', '繁天鸣玉印', '飞尘祈光印', '风雷掠江印', '锋纵八纮印', '浮尘穿雾印', '浮岚流光印', '冠军绶带', '龟甲玉璜', '寒冥幽绶印', '寒潭藏锋印', '寒天惊弦印', '皓月凝光印', '横扫六合印', '宏威霸者印', '虎面玉璜', '晦明百修印', '魂坠寒溟印', '混元万古印', '季军绶带', '剑芒惊夜印', '剑鸣封幽印', '剑破寒川印', '剑指天衡印', '角力惊涛印', '劫光耀泽印', '金戈铁马印', '金鼓铿锵印', '惊绝四方印', '九天煌极印', '九天天授印', '九天真武印', '九霄谒圣印', '勘妄归臻印', '魁昂九霄印', '雷部鸿钧印', '雷部混元印', '雷部使者印', '雷部天尊印', '雷部无极印', '雷部无相印', '雷部玄霄印', '雷部总兵印', '雷霆万钧印', '雷音千里印', '裂云催关印', '灵山吞海印', '灵至太墟印', '凌风斩岳印', '凌霄御尘印', '凌虚御光印', '龙城飞将印', '龙纹玉璜', '龙骧虎视印', '掠影夺锋印', '名扬十载印', '墨烬飞白印', '幕天逐寒印', '凝雨拂光印', '怒涛卷雪印', '磐岳镇流印', '破浪乘风印', '气盖山河印', '千古江山印', '青峰破阵印', '青岳御风印', '擎雷撼州印', '狮王争霸王者印', '狮王争霸威者印', '狮王争霸尊者印', '疏雨化痕印', '朔光披金印', '素云承露印', '碎星征寒印', '踏尘饮血印', '天域浮岛王者印', '万古独断印', '威扬四海印', '威震三山印', '威震十方印', '问鼎九州印', '问鼎王者印', '无上尊圣印', '无象尊者印', '武德十全印', '雾雨鎏金印', '侠骨剑心印', '袖揽苍穹印', '虚渊荡尘印', '玄璧映光印', '玄戈鸣金印', '玄谷行光印', '玄冥魁星印', '玄穹衍圣印', '玄霜古玺印', '玄羽破锋印', '璇光不染印', '雪舞回风印', '亚军绶带', '引光归澜印', '勇者绶带', '幽冥镇渊印', '御浪擎天印', '月影穿林印', '云霭隐光印', '云飞影疾印', '斩业无归印', '战神天罡印', '长风裂天印', '真武圣尊印', '振羽凛风印', '至武神威印', '逐鹿疆场王者印', '逐鹿疆场威者印', '逐鹿疆场尊者印', '紫宸神谕印'
             ]
         },
+        { key: 'other', label: '其他玺绶', match: 'exclude', terms: [] },
     ],
 };
 
@@ -814,7 +820,9 @@ export class CopilotService {
             const hubOptions = [
                 { key: 'skill', label: '技能速查', query: `${q}技能` },
                 { key: 'equip', label: '装备查询', query: `${q}装备` },
-                { key: 'fabao', label: '专属法宝', query: `${q}法宝` }
+                { key: 'fabao', label: '专属法宝', query: `${q}法宝` },
+                // T-15b：状态→class_status 分支（职业+状态）。攻略为独立大类（T-18），不进 hub
+                { key: 'status', label: '职业状态', query: `${q}状态` },
             ];
             return {
                 id: `msg-${Date.now()}`,
@@ -827,6 +835,76 @@ export class CopilotService {
                     options: hubOptions
                 }
             };
+        }
+
+        // ------------------------------------------------------------
+        // 0.5b 职业状态摘要（class_status，T-15b）
+        // 「XX状态」/「阵营+XX状态」→ 从 skills.json._meta.supportRoles 取该职业档案：
+        // 覆盖 4 团队减益（易伤/绿点/紫点/破防）与 7 增益（专注/加爆伤/加攻击/加血/加蓝/加防御/加怪增）
+        // ------------------------------------------------------------
+        if (q.endsWith('状态')) {
+            let statusClass = q.slice(0, -2);
+            let preferredFaction: string | undefined = undefined;
+            // 兼容前缀阵营，如「魔青罗状态」/「佛英招状态」
+            for (const f of ['仙', '魔', '佛']) {
+                if (statusClass.startsWith(f) && profs.includes(statusClass.slice(f.length))) {
+                    preferredFaction = f;
+                    statusClass = statusClass.slice(f.length);
+                    break;
+                }
+            }
+            if (profs.includes(statusClass)) {
+                const supportData = dataService.getSkillMeta()?.supportRoles || null;
+                const roles = Array.isArray(supportData?.roles) ? supportData.roles : [];
+                const classRoles = roles.filter((r: any) => r?.name === statusClass);
+                if (classRoles.length > 0) {
+                    const isDps = classRoles.some((r: any) => r?.roleType === 'dps');
+                    const factions = [...new Set(classRoles.map((r: any) => r?.faction).filter(Boolean))];
+                    const metrics: string[] = Array.isArray(supportData?.metrics) ? supportData.metrics : [];
+                    return {
+                        id: `msg-${Date.now()}`,
+                        sender: 'assistant',
+                        text: isDps
+                            ? `【${statusClass}】是输出职业（${factions.join('/') || '多阵营'}），核心任务是打伤害：`
+                            : `【${statusClass}】是辅助职业（${factions.join('/') || '多阵营'}），核心任务是团队增益：`,
+                        time: timeStr,
+                        cardType: 'class_status',
+                        cardData: {
+                            className: statusClass,
+                            isDps,
+                            factions,
+                            preferredFaction,
+                            metrics,
+                            roles: classRoles.map((r: any) => ({
+                                faction: r.faction,
+                                roleType: r.roleType,
+                                rating: r.rating,
+                                abilities: Array.isArray(r.abilities) ? r.abilities : [],
+                                // 4 减益
+                                damageBoost: r.damageBoost,
+                                greenPoint: r.greenPoint,
+                                purplePoint: r.purplePoint,
+                                defenseBreak: r.defenseBreak,
+                                // 7 增益
+                                focus: r.focus,
+                                focusType: r.focusType,
+                                critDamage: r.critDamage,
+                                atkUp: r.atkUp,
+                                healUp: r.healUp,
+                                manaUp: r.manaUp,
+                                defUp: r.defUp,
+                                monsterDmgUp: r.monsterDmgUp,
+                            })),
+                        }
+                    };
+                }
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: `【${statusClass}】暂无状态档案。可尝试查询其技能速查、装备图鉴或专属法宝：`,
+                    time: timeStr
+                };
+            }
         }
 
         // ------------------------------------------------------------
@@ -844,18 +922,15 @@ export class CopilotService {
         };
         const SERIES_HUB_SLOTS = ['项链', '戒指', '锦囊', '罡气', '法身', '玺绶'];
         if (SERIES_HUB_SLOTS.includes(q)) {
-            const seriesList = SLOT_SERIES[q] || [];
-            const options = seriesList.map(s => ({
+            // 系列入口直接取 SLOT_SERIES 条目（含 exclude 型「其他X」——补集语义，
+            // query 即自然词不外泄机器词；法身两分类全覆盖无 other 条目自动不出现）
+            const options = (SLOT_SERIES[q] || []).map(s => ({
                 key: s.key,
                 label: s.label,
                 // 仅跨部位的「神级首饰」按 aliases 部位收窄（项链→神级项链 / 戒指→神级戒指）；
                 // 其余系列 query 用主 label（别名只是附加入口，不作 hub 首选 query）
                 query: (s.key === 'shenji' && s.aliases && s.aliases.length > 0) ? s.aliases[0] : s.label
             }));
-            // 法身两分类（法身27+金身27）实证全覆盖，不设「其他」；其余部件有剩余
-            if (q !== '法身') {
-                options.push({ key: 'other', label: `其他${q}`, query: `所有${q}` });
-            }
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
@@ -1391,8 +1466,18 @@ export class CopilotService {
                             return false;
                         }
                         // 系列匹配（T-16）：按 match 模式（prefix/contains/suffix）命中任一
-                        // term 即保留；系列 query 跳过普通关键词 AND
+                        // term 即保留；exclude=补集（不属于该 slot 任何其他系列的剩余装备，
+                        // 即 hub「其他X」的真正语义——2026-10-17 用户纠正：其他≠全部）；
+                        // 系列 query 跳过普通关键词 AND
                         if (matchedSeries) {
+                            if (matchedSeries.match === 'exclude') {
+                                const siblingSeries = (SLOT_SERIES[matchedSlot || ''] || [])
+                                    .filter(s => s.key !== 'other' && s.match !== 'exclude');
+                                const isCovered = siblingSeries.some(s =>
+                                    s.terms.some(t => eName.includes(t.toLowerCase()))
+                                );
+                                return !isCovered;
+                            }
                             return matchedSeries.terms.some(t => {
                                 const tl = t.toLowerCase();
                                 if (matchedSeries.match === 'prefix') return eName.startsWith(tl);
@@ -1455,14 +1540,18 @@ export class CopilotService {
                         };
                     } else if (collapsedCandidates.length > 1) {
                         const topCandidates = collapsedCandidates.slice(0, 100);
+                        // 宽泛词 query（「所有项链」类机器词，hub「其他」入口用）不外泄：
+                        // 文本与 keyword 均玩家化为「XX的全部装备」（2026-10-17 用户截图发现）
+                        const isBroadQuery = /^(所有|全部)/.test(q);
+                        const displayKeyword = isBroadQuery && matchedSlot ? `${matchedSlot}的全部装备` : query;
                         return {
                             id: `msg-${Date.now()}`,
                             sender: 'assistant',
-                            text: `为你检索到 ${collapsedCandidates.length} 件符合【${query}】的候选装备，可在下方直接切换查看详情：`,
+                            text: `为你检索到 ${collapsedCandidates.length} 件符合【${displayKeyword}】的候选装备，可在下方直接切换查看详情：`,
                             time: timeStr,
                             cardType: 'equip_candidates',
                             cardData: {
-                                keyword: query,
+                                keyword: displayKeyword,
                                 candidates: topCandidates,
                                 totalCount: collapsedCandidates.length,
                                 initialRefLevel: targetRefLevel,
