@@ -35,6 +35,12 @@ export type WorkspaceMode =
 
 export interface SplitScreenWorkspaceProps {
   mode: WorkspaceMode;
+  params?: {
+    zhanQu?: string;
+    serverName?: string;
+    serverId?: string;
+    [key: string]: any;
+  };
   onModeChange?: (mode: WorkspaceMode) => void;
   isMaximized: boolean;
   onToggleMaximize: () => void;
@@ -52,6 +58,7 @@ const FEATURE_META: Record<WorkspaceMode, { label: string; icon: React.ReactNode
 
 export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
   mode,
+  params,
   isMaximized,
   onToggleMaximize,
   onClose,
@@ -126,7 +133,11 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
 
         {mode === 'server' && (
           <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
-            <ServerRadarView />
+            <ServerRadarView
+              initialZhanQu={params?.zhanQu}
+              initialServerName={params?.serverName}
+              initialServerId={params?.serverId}
+            />
           </div>
         )}
 

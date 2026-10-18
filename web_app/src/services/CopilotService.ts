@@ -382,7 +382,7 @@ const SLOT_SERIES: Record<string, SlotSeries[]> = {
         { key: 'shenji', label: '神级首饰', match: 'contains', terms: ['印记', '造化之', '符石', '血玉'] },
     ],
     '项链': [
-        { key: 'shenji', label: '神级首饰', match: 'contains', terms: ['印记', '造化之'], aliases: ['神级项链'] },
+        { key: 'shenji', label: '神级首饰', match: 'contains', terms: ['印记', '造化之', '太昊', '太乙'], aliases: ['神级项链'] },
         { key: 'huangwu', label: '煌武项链', match: 'contains', terms: ['煌武'], aliases: ['积分项链'] },
         { key: 'zhandui', label: '战队项链', match: 'contains', terms: ['圣瑞', '圣谛'] },
         { key: 'sheji', label: '社稷项链', match: 'contains', terms: ['菩提珠', '琥珀珠', '舍利子', '血菩提', '真如子'] },
@@ -527,7 +527,88 @@ export class CopilotService {
         // 核心系统微工具与独立页面意图识别（高优先级，避免被实体槽位分词误伤）
         // ====================================================
 
-        // 1. 开服雷达（全区开服与服务器心跳监测）
+        // 0.9 服务器按名查询（T-06）：36 服名/拼音精确命中 → single_server 卡（带所属战区）
+        {
+            const serverList = await dataService.getServerList();
+            const rawServerList = Array.isArray(serverList) ? serverList : [];
+            const flatServers = rawServerList.flatMap((z: any) =>
+                (Array.isArray(z.servers) ? z.servers : []).map((sv: any) => ({ ...sv, zhanQu: z.zhanQu }))
+            );
+            const hitServer = flatServers.find((sv: any) =>
+                q === sv.name ||
+                q === sv.server ||
+                q === String(sv.serverId) ||
+                q === `${sv.name}服` ||
+                q === `${sv.name}开服` ||
+                q === `查${sv.name}` ||
+                q === `${sv.zhanQu} ${sv.name}` ||
+                q === `${sv.zhanQu}${sv.name}` ||
+                (sv.name.includes('(') && (q === sv.name.replace(/\(.*\)/, '') || q === sv.name.replace(/\(.*\)/, '') + '服'))
+            );
+            if (hitServer) {
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: `【${hitServer.name}】隶属【${hitServer.zhanQu}】，可在下方开服雷达查看实时状态：`,
+                    time: timeStr,
+                    cardType: 'server',
+                    cardData: {
+                        subType: 'single_server',
+                        title: `${hitServer.zhanQu} · ${hitServer.name}`,
+                        serverName: hitServer.name,
+                        serverId: hitServer.serverId,
+                        serverCode: hitServer.server,
+                        zhanQu: hitServer.zhanQu,
+                        workspaceParams: {
+                            zhanQu: hitServer.zhanQu,
+                            serverName: hitServer.name,
+                            serverId: hitServer.serverId
+                        },
+                        route: `/tools/server?zhanQu=${encodeURIComponent(hitServer.zhanQu)}&server=${encodeURIComponent(hitServer.name)}`,
+                        btnText: '在右侧打开'
+                    }
+                };
+            }
+
+            // 0.95 战区按名查询：命中 9 大战区之一 → zhanqu 卡（包含该战区下全部服务器）
+            const hitZhanQu = rawServerList.find((z: any) => {
+                const zqName: string = z.zhanQu || '';
+                const zqShort: string = zqName.replace('战区', '');
+                return (
+                    q === zqName ||
+                    q === zqShort ||
+                    q === `${zqName}开服` ||
+                    q === `${zqShort}开服` ||
+                    q === `查${zqName}` ||
+                    q === `查${zqShort}` ||
+                    q === `${zqName}服务器` ||
+                    (zqShort.length >= 2 && q === `${zqShort}战区`)
+                );
+            });
+            if (hitZhanQu) {
+                const servers = Array.isArray(hitZhanQu.servers) ? hitZhanQu.servers : [];
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: `【${hitZhanQu.zhanQu}】共包含 ${servers.length} 组服务器，可在下方卡片查看服务器列表与开服状态：`,
+                    time: timeStr,
+                    cardType: 'server',
+                    cardData: {
+                        subType: 'zhanqu',
+                        title: hitZhanQu.zhanQu,
+                        zhanQu: hitZhanQu.zhanQu,
+                        servers,
+                        workspaceParams: {
+                            zhanQu: hitZhanQu.zhanQu
+                        },
+                        route: `/tools/server?zhanQu=${encodeURIComponent(hitZhanQu.zhanQu)}`,
+                        btnText: '在右侧打开'
+                    }
+                };
+            }
+        }
+
+        // 1. 开服雷达（全区开服与服务器心跳监测宏观词）
         if (
             q.includes('开服') ||
             q.includes('服务器') ||
@@ -541,13 +622,15 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方 9 大战区 33 个服务器毫秒级开服状态，支持开服声音即时提醒。',
+                text: '已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方 9 大战区 36 个服务器毫秒级开服状态，支持开服声音即时提醒。',
                 time: timeStr,
                 cardType: 'server',
                 cardData: {
+                    subType: 'radar',
                     title: '全区开服雷达监测',
-                    desc: '9 大战区 33 个服务器实时检测开服状态，支持声音提醒与时延速览',
+                    desc: '9 大战区 36 个服务器实时检测开服状态，支持声音提醒与时延速览',
                     workspaceMode: 'server',
+                    workspaceParams: {},
                     route: '/tools/server',
                     btnText: '进入开服雷达'
                 }
@@ -854,7 +937,8 @@ export class CopilotService {
                 }
             }
             if (profs.includes(statusClass)) {
-                const supportData = dataService.getSkillMeta()?.supportRoles || null;
+                const skillMeta = await dataService.getSkillMetaAsync();
+                const supportData = skillMeta?.supportRoles || null;
                 const roles = Array.isArray(supportData?.roles) ? supportData.roles : [];
                 const classRoles = roles.filter((r: any) => r?.name === statusClass);
                 if (classRoles.length > 0) {
@@ -1002,7 +1086,7 @@ export class CopilotService {
                 exactFabaoName = fabaoListForExact.find(f => f.名称 === q) || null;
             }
         }
-        const allDungeons = dataService.getDungeons();
+        const allDungeons = await dataService.getDungeonsAsync();
         if (Array.isArray(allDungeons) && allDungeons.length > 0 && !exactFabaoName) {
             // A. 检查是否为泛化副本查询词
             const isBroadDungeonWord = [
@@ -1299,6 +1383,26 @@ export class CopilotService {
                     }
                     // 用户 2026-10-16 口径：书籍类饰品与天机指环系列屏蔽
                     if (n.includes('梦入神机') || n.includes('自出洞来无敌手') || n.includes('天机指环')) {
+                        return false;
+                    }
+                    // 用户 2026-10-17 口径：ad 属性含颜色代码 11ff11 的装备全部屏蔽（实证 11 件，
+                    // 均为跨服战场/节日活动/礼包类——神佑之封印宝钻/人皇之戒/无畏指环/命运/
+                    // 福禄双全/上元金鉴/荣耀宝链/传国玉玺/牛年大牛/兔年吉祥/社稷杯金球）
+                    if (JSON.stringify(e).includes('11ff11')) {
+                        return false;
+                    }
+                    // 用户 2026-10-17 口径：跨服战场/节日纪念/礼包/宋金战场类活动装备不展示
+                    // （B 类已做 ad 清洗，此处按名单屏蔽；兔年吉祥因有有效属性经用户确认保留）
+                    const HIDDEN_EVENT_EQUIPS = ['神佑之封印宝钻', '人皇之戒', '无畏指环', '命运', '福禄双全', '上元金鉴', '荣耀宝链', '传国玉玺', '牛年大牛', '社稷杯金球'];
+                    if (HIDDEN_EVENT_EQUIPS.includes(e.name || '')) {
+                        return false;
+                    }
+                    // 用户 2026-10-17 口径：群英起头项链全屏蔽（20 件，群英龙胆坠等早期活动装）
+                    if (e.slot === '项链' && n.startsWith('群英')) {
+                        return false;
+                    }
+                    // 用户 2026-10-17 口径：三清符引系列与活动食物项链屏蔽（项链）
+                    if (n.startsWith('三清符引') || n.includes('吃不完的馒头')) {
                         return false;
                     }
                     // 用户 2026-10-16 口径：星语项链全部屏蔽（原 11 件全为 lv=1 废弃数据）
@@ -2025,7 +2129,7 @@ export class CopilotService {
         const p = prompt.trim().toLowerCase();
 
         if (p.includes('开服') || p.includes('雷达') || p.includes('服务器') || p.includes('测服')) {
-            return `【全区开服雷达监测服务】：\n1. 覆盖战区：实时监测诛仙3官方 9 大战区共 33 组服务器在线心跳与维护状态。\n2. 智能特性：提供网络延时毫秒级测速，支持开服声光三音阶提醒，第一时间锁定新服开放与维护开机。\n3. 你可以在右侧战术工作区打开【开服雷达】或访问独立工具页体验。`;
+            return `【全区开服雷达监测服务】：\n1. 覆盖战区：实时监测诛仙3官方 9 大战区共 36 组服务器在线心跳与维护状态。\n2. 智能特性：提供网络延时毫秒级测速，支持开服声光三音阶提醒，第一时间锁定新服开放与维护开机。\n3. 你可以在右侧战术工作区打开【开服雷达】或访问独立工具页体验。`;
         }
 
         if (p.includes('训练场') || p.includes('打桩') || p.includes('木桩') || p.includes('循环')) {

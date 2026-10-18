@@ -1,7 +1,6 @@
 ==== 实体矩阵覆盖报告（T-01） ====
 equip（120 输入）: equip_candidates 27 / text-only 92 / equip 1
-boss（52 输入）: boss_candidates 37 / boss 10 / null 5
-  [空洞] 未命中: 缚魂触, 化生触, 潮音骨, 炼血堂教众, 炼血堂精英
+boss（52 输入）: boss_candidates 39 / boss 13
 skill（231 输入）: skill_candidates 191 / text-only 13 / class_hub 27
   [族外] 需人工判断: 鬼王 → class_hub ; 合欢 → class_hub ; 青云 → class_hub ; 天音 → class_hub ; 鬼道 → class_hub ; 焚香 → class_hub ; 九黎 → class_hub ; 烈山 → class_hub ; 怀光 → class_hub ; 天华 → class_hub ; 辰皇 → class_hub ; 太昊 → class_hub ; 牵机 → class_hub ; 英招 → class_hub ; 破军 → class_hub ; 青罗 → class_hub ; 归云 → class_hub ; 画影 → class_hub ; 逐霜 → class_hub ; 惊岚 → class_hub ; 昭冥 → class_hub ; 涅羽 → class_hub ; 百灵 → class_hub ; 释罗 → class_hub ; 长生堂 → class_hub ; 万毒 → class_hub ; 炼血 → class_hub
 fabao（139 输入）: fabao 138 / class_hub 1

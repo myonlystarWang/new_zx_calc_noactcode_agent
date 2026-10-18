@@ -1,12 +1,14 @@
 {
   "tool-server-01": {
     "sender": "assistant",
-    "text": "已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方 9 大战区 33 个服务器毫秒级开服状态，支持开服声音即时提醒。",
+    "text": "已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方 9 大战区 36 个服务器毫秒级开服状态，支持开服声音即时提醒。",
     "cardType": "server",
     "cardData": {
+      "subType": "radar",
       "title": "全区开服雷达监测",
-      "desc": "9 大战区 33 个服务器实时检测开服状态，支持声音提醒与时延速览",
+      "desc": "9 大战区 36 个服务器实时检测开服状态，支持声音提醒与时延速览",
       "workspaceMode": "server",
+      "workspaceParams": {},
       "route": "/tools/server",
       "btnText": "进入开服雷达"
     }
@@ -106,7 +108,7 @@
   },
   "dungeon-t20-01": {
     "sender": "assistant",
-    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 6 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 9 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
     "cardType": "boss_candidates",
     "cardData": {
       "query": "t20",
@@ -201,13 +203,58 @@
           "critRed": 265,
           "critDmgRed": 1600,
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CANG_YUAN_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_FU_HUN_CHU_T20",
+          "monsterId": "FU_HUN_CHU_T20",
+          "monsterName": "缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 340000,
+          "hp": 1498568833,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=FU_HUN_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_HUA_SHENG_CHU_T20",
+          "monsterId": "HUA_SHENG_CHU_T20",
+          "monsterName": "化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 350000,
+          "hp": 460262193,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=HUA_SHENG_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_CHAO_YIN_GU_T20",
+          "monsterId": "CHAO_YIN_GU_T20",
+          "monsterName": "潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 370000,
+          "hp": 1764900062,
+          "critRed": 235,
+          "critDmgRed": 1650,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CHAO_YIN_GU_T20"
         }
       ]
     }
   },
   "dungeon-t20-alias-01": {
     "sender": "assistant",
-    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 6 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 9 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
     "cardType": "boss_candidates",
     "cardData": {
       "query": "碎晶宫t20",
@@ -302,6 +349,51 @@
           "critRed": 265,
           "critDmgRed": 1600,
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CANG_YUAN_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_FU_HUN_CHU_T20",
+          "monsterId": "FU_HUN_CHU_T20",
+          "monsterName": "缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 340000,
+          "hp": 1498568833,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=FU_HUN_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_HUA_SHENG_CHU_T20",
+          "monsterId": "HUA_SHENG_CHU_T20",
+          "monsterName": "化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 350000,
+          "hp": 460262193,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=HUA_SHENG_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_CHAO_YIN_GU_T20",
+          "monsterId": "CHAO_YIN_GU_T20",
+          "monsterName": "潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 370000,
+          "hp": 1764900062,
+          "critRed": 235,
+          "critDmgRed": 1650,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CHAO_YIN_GU_T20"
         }
       ]
     }
@@ -405,6 +497,51 @@
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CANG_YUAN_T19"
         },
         {
+          "id": "ZHENHAI_DUANLANG_T19_FU_HUN_CHU_T19",
+          "monsterId": "FU_HUN_CHU_T19",
+          "monsterName": "T19 · 缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 230000,
+          "hp": 1255409423,
+          "critRed": 150,
+          "critDmgRed": 1150,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=FU_HUN_CHU_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_HUA_SHENG_CHU_T19",
+          "monsterId": "HUA_SHENG_CHU_T19",
+          "monsterName": "T19 · 化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 240000,
+          "hp": 374546770,
+          "critRed": 150,
+          "critDmgRed": 1150,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=HUA_SHENG_CHU_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_CHAO_YIN_GU_T19",
+          "monsterId": "CHAO_YIN_GU_T19",
+          "monsterName": "T19 · 潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 260000,
+          "hp": 1196588386,
+          "critRed": 160,
+          "critDmgRed": 1350,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CHAO_YIN_GU_T19"
+        },
+        {
           "id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20",
           "monsterId": "CHI_SUO_T20",
           "monsterName": "T20 · 赤梭",
@@ -495,6 +632,51 @@
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CANG_YUAN_T20"
         },
         {
+          "id": "ZHENHAI_DUANLANG_T20_FU_HUN_CHU_T20",
+          "monsterId": "FU_HUN_CHU_T20",
+          "monsterName": "T20 · 缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 340000,
+          "hp": 1498568833,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=FU_HUN_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_HUA_SHENG_CHU_T20",
+          "monsterId": "HUA_SHENG_CHU_T20",
+          "monsterName": "T20 · 化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 350000,
+          "hp": 460262193,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=HUA_SHENG_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_CHAO_YIN_GU_T20",
+          "monsterId": "CHAO_YIN_GU_T20",
+          "monsterName": "T20 · 潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 370000,
+          "hp": 1764900062,
+          "critRed": 235,
+          "critDmgRed": 1650,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CHAO_YIN_GU_T20"
+        },
+        {
           "id": "ZHENHAI_DUANLANG_T21_CHI_SUO_T21",
           "monsterId": "CHI_SUO_T21",
           "monsterName": "T21 · 赤梭",
@@ -583,6 +765,51 @@
           "critRed": 310,
           "critDmgRed": 1700,
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T21&m=CANG_YUAN_T21"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T21_FU_HUN_CHU_T21",
+          "monsterId": "FU_HUN_CHU_T21",
+          "monsterName": "T21 · 缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T21",
+          "dungeonName": "镇海！断浪碎晶宫（T21）",
+          "dungeonShortLabel": "T21",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "极难",
+          "def": 400000,
+          "hp": 1772265045,
+          "critRed": 230,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T21&m=FU_HUN_CHU_T21"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T21_HUA_SHENG_CHU_T21",
+          "monsterId": "HUA_SHENG_CHU_T21",
+          "monsterName": "T21 · 化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T21",
+          "dungeonName": "镇海！断浪碎晶宫（T21）",
+          "dungeonShortLabel": "T21",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "极难",
+          "def": 410000,
+          "hp": 569852222,
+          "critRed": 230,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T21&m=HUA_SHENG_CHU_T21"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T21_CHAO_YIN_GU_T21",
+          "monsterId": "CHAO_YIN_GU_T21",
+          "monsterName": "T21 · 潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T21",
+          "dungeonName": "镇海！断浪碎晶宫（T21）",
+          "dungeonShortLabel": "T21",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "极难",
+          "def": 430000,
+          "hp": 1876810384,
+          "critRed": 270,
+          "critDmgRed": 1750,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T21&m=CHAO_YIN_GU_T21"
         }
       ]
     }
@@ -11170,7 +11397,7 @@
   },
   "pinyin-equip": {
     "sender": "assistant",
-    "text": "为你检索到 34 件符合【qingyun zhuangbei】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 33 件符合【qingyun zhuangbei】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "qingyun zhuangbei",
@@ -12404,37 +12631,9 @@
             130000
           ],
           "q": "彰武"
-        },
-        {
-          "id": 40,
-          "name": "吃不完的馒头",
-          "slot": "项链",
-          "lv": 1,
-          "xz": "",
-          "prof": [
-            "鬼王宗",
-            "合欢派",
-            "青云门",
-            "天音寺",
-            "鬼道",
-            "焚香谷"
-          ],
-          "g": "",
-          "atk": [
-            4000,
-            5000
-          ],
-          "def": 5000,
-          "hp": 2000,
-          "mp": 2000,
-          "hit": 5000,
-          "dod": 100,
-          "price": 1,
-          "dura": 10,
-          "q": ""
         }
       ],
-      "totalCount": 34
+      "totalCount": 33
     }
   },
   "pinyin-tag-lvdian": {
@@ -13001,7 +13200,7 @@
   },
   "broad-all-necklace-01": {
     "sender": "assistant",
-    "text": "为你检索到 155 件符合【项链的全部装备】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 125 件符合【项链的全部装备】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "项链的全部装备",
@@ -13036,35 +13235,35 @@
         },
         {
           "id": 3432,
-          "name": "太昊★★★",
+          "name": "造化之太昊",
           "slot": "项链",
-          "lv": 125,
+          "lv": 120,
           "xz": "",
           "prof": [
             "通用"
           ],
           "g": "",
           "atk": [
-            100,
-            280
+            120,
+            370
           ],
-          "hp": 600,
-          "mp": 600,
+          "hp": 800,
+          "mp": 800,
           "dura": 10,
           "q": ""
         },
         {
           "id": 3432,
-          "name": "太乙★★★",
+          "name": "造化之太乙",
           "slot": "项链",
-          "lv": 125,
+          "lv": 120,
           "xz": "",
           "prof": [
             "通用"
           ],
           "g": "",
-          "hp": 800,
-          "mp": 800,
+          "hp": 1000,
+          "mp": 1000,
           "dura": 10,
           "q": ""
         },
@@ -13113,48 +13312,6 @@
           "hp": 6000,
           "mp": 6000,
           "price": 75000,
-          "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 40,
-          "name": "吃不完的馒头",
-          "slot": "项链",
-          "lv": 1,
-          "xz": "",
-          "prof": [
-            "鬼王宗",
-            "合欢派",
-            "青云门",
-            "天音寺",
-            "鬼道",
-            "焚香谷"
-          ],
-          "g": "",
-          "atk": [
-            4000,
-            5000
-          ],
-          "def": 5000,
-          "hp": 2000,
-          "mp": 2000,
-          "hit": 5000,
-          "dod": 100,
-          "price": 1,
-          "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 5522,
-          "name": "命运",
-          "slot": "项链",
-          "lv": 146,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 99,
           "dura": 10,
           "q": ""
         },
@@ -13403,45 +13560,6 @@
         },
         {
           "id": 3432,
-          "name": "三清符引·上清",
-          "slot": "项链",
-          "lv": 135,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "三清符引·太清",
-          "slot": "项链",
-          "lv": 135,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "三清符引·玉清",
-          "slot": "项链",
-          "lv": 135,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
           "name": "天迅",
           "slot": "项链",
           "lv": 135,
@@ -13685,40 +13803,6 @@
           "hit": 149,
           "dura": 10,
           "q": "神级"
-        },
-        {
-          "id": 3432,
-          "name": "造化之太昊",
-          "slot": "项链",
-          "lv": 120,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "atk": [
-            120,
-            370
-          ],
-          "hp": 800,
-          "mp": 800,
-          "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "造化之太乙",
-          "slot": "项链",
-          "lv": 120,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "hp": 1000,
-          "mp": 1000,
-          "dura": 10,
-          "q": ""
         },
         {
           "id": 5522,
@@ -14127,62 +14211,6 @@
         },
         {
           "id": 3432,
-          "name": "群英龙胆坠",
-          "slot": "项链",
-          "lv": 85,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英血灵佩",
-          "slot": "项链",
-          "lv": 85,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英净世符",
-          "slot": "项链",
-          "lv": 85,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英狂情链",
-          "slot": "项链",
-          "lv": 85,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
           "name": "魔戮",
           "slot": "项链",
           "lv": 85,
@@ -14206,34 +14234,6 @@
           ],
           "g": "",
           "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "福禄双全",
-          "slot": "项链",
-          "lv": 75,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 10,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "上元金鉴",
-          "slot": "项链",
-          "lv": 75,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 10,
           "dura": 6,
           "q": ""
         },
@@ -14337,62 +14337,6 @@
         },
         {
           "id": 3432,
-          "name": "群英雷母坠",
-          "slot": "项链",
-          "lv": 70,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 9750,
-          "dura": 5,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英破神佩",
-          "slot": "项链",
-          "lv": 70,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 9750,
-          "dura": 5,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英尚法符",
-          "slot": "项链",
-          "lv": 70,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 9750,
-          "dura": 5,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英惊梦链",
-          "slot": "项链",
-          "lv": 70,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 9750,
-          "dura": 5,
-          "q": ""
-        },
-        {
-          "id": 3432,
           "name": "灵戮",
           "slot": "项链",
           "lv": 70,
@@ -14474,46 +14418,262 @@
           "price": 6000,
           "dura": 4,
           "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "仙心",
+          "slot": "项链",
+          "lv": 55,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 6000,
+          "dura": 4,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "佛戮",
+          "slot": "项链",
+          "lv": 55,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 6000,
+          "dura": 4,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "佛锐",
+          "slot": "项链",
+          "lv": 55,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 6000,
+          "dura": 4,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "霸者",
+          "slot": "项链",
+          "lv": 40,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 2400,
+          "dura": 3,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "王者",
+          "slot": "项链",
+          "lv": 40,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 2400,
+          "dura": 3,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "魔击",
+          "slot": "项链",
+          "lv": 40,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 2400,
+          "dura": 3,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "佛击",
+          "slot": "项链",
+          "lv": 40,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 2400,
+          "dura": 3,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "仙击",
+          "slot": "项链",
+          "lv": 40,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 2400,
+          "dura": 3,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "侠戮",
+          "slot": "项链",
+          "lv": 40,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 2400,
+          "dura": 3,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "侠锐",
+          "slot": "项链",
+          "lv": 40,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 2400,
+          "dura": 3,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "雪之星",
+          "slot": "项链",
+          "lv": 30,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 10,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "灰姑娘之记",
+          "slot": "项链",
+          "lv": 30,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 11,
+          "mp": 11,
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "流浪王子之记",
+          "slot": "项链",
+          "lv": 30,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 11,
+          "mp": 11,
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "爱情祷告之记",
+          "slot": "项链",
+          "lv": 30,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 11,
+          "mp": 11,
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "魔缘",
+          "slot": "项链",
+          "lv": 25,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1275,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "佛缘",
+          "slot": "项链",
+          "lv": 25,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1275,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "仙缘",
+          "slot": "项链",
+          "lv": 25,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1275,
+          "dura": 2,
+          "q": ""
         }
       ],
-      "totalCount": 155
+      "totalCount": 125
     }
   },
   "broad-all-ring-01": {
     "sender": "assistant",
-    "text": "为你检索到 60 件符合【戒指的全部装备】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 57 件符合【戒指的全部装备】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "戒指的全部装备",
       "candidates": [
-        {
-          "id": 5523,
-          "name": "神佑之封印宝钻",
-          "slot": "戒指",
-          "lv": 146,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 50,
-          "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 5523,
-          "name": "人皇之戒",
-          "slot": "戒指",
-          "lv": 146,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 60,
-          "dura": 10,
-          "q": ""
-        },
         {
           "id": 3433,
           "name": "帝袭",
@@ -14944,21 +15104,6 @@
           ],
           "g": "",
           "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 5523,
-          "name": "无畏指环",
-          "slot": "戒指",
-          "lv": 90,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 50,
-          "price": 100,
-          "dura": 1,
           "q": ""
         },
         {
@@ -15498,7 +15643,7 @@
           "q": ""
         }
       ],
-      "totalCount": 60
+      "totalCount": 57
     }
   },
   "series-shenji-mixed-01": {
@@ -22359,7 +22504,7 @@
   },
   "colloquial-01": {
     "sender": "assistant",
-    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 6 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 9 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
     "cardType": "boss_candidates",
     "cardData": {
       "query": "t20 多少抗性来着",
@@ -22454,13 +22599,58 @@
           "critRed": 265,
           "critDmgRed": 1600,
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CANG_YUAN_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_FU_HUN_CHU_T20",
+          "monsterId": "FU_HUN_CHU_T20",
+          "monsterName": "缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 340000,
+          "hp": 1498568833,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=FU_HUN_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_HUA_SHENG_CHU_T20",
+          "monsterId": "HUA_SHENG_CHU_T20",
+          "monsterName": "化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 350000,
+          "hp": 460262193,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=HUA_SHENG_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_CHAO_YIN_GU_T20",
+          "monsterId": "CHAO_YIN_GU_T20",
+          "monsterName": "潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 370000,
+          "hp": 1764900062,
+          "critRed": 235,
+          "critDmgRed": 1650,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CHAO_YIN_GU_T20"
         }
       ]
     }
   },
   "combo-single-intent-01": {
     "sender": "assistant",
-    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 6 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 9 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
     "cardType": "boss_candidates",
     "cardData": {
       "query": "t20 抗性 逐霜技能",
@@ -22555,13 +22745,58 @@
           "critRed": 265,
           "critDmgRed": 1600,
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CANG_YUAN_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_FU_HUN_CHU_T20",
+          "monsterId": "FU_HUN_CHU_T20",
+          "monsterName": "缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 340000,
+          "hp": 1498568833,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=FU_HUN_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_HUA_SHENG_CHU_T20",
+          "monsterId": "HUA_SHENG_CHU_T20",
+          "monsterName": "化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 350000,
+          "hp": 460262193,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=HUA_SHENG_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_CHAO_YIN_GU_T20",
+          "monsterId": "CHAO_YIN_GU_T20",
+          "monsterName": "潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 370000,
+          "hp": 1764900062,
+          "critRed": 235,
+          "critDmgRed": 1650,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CHAO_YIN_GU_T20"
         }
       ]
     }
   },
   "player-bare-num-19": {
     "sender": "assistant",
-    "text": "为你速查到【镇海！断浪碎晶宫（T19）】下的全部 6 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "text": "为你速查到【镇海！断浪碎晶宫（T19）】下的全部 9 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
     "cardType": "boss_candidates",
     "cardData": {
       "query": "t19",
@@ -22656,13 +22891,58 @@
           "critRed": 225,
           "critDmgRed": 1400,
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CANG_YUAN_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_FU_HUN_CHU_T19",
+          "monsterId": "FU_HUN_CHU_T19",
+          "monsterName": "缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 230000,
+          "hp": 1255409423,
+          "critRed": 150,
+          "critDmgRed": 1150,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=FU_HUN_CHU_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_HUA_SHENG_CHU_T19",
+          "monsterId": "HUA_SHENG_CHU_T19",
+          "monsterName": "化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 240000,
+          "hp": 374546770,
+          "critRed": 150,
+          "critDmgRed": 1150,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=HUA_SHENG_CHU_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_CHAO_YIN_GU_T19",
+          "monsterId": "CHAO_YIN_GU_T19",
+          "monsterName": "潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 260000,
+          "hp": 1196588386,
+          "critRed": 160,
+          "critDmgRed": 1350,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CHAO_YIN_GU_T19"
         }
       ]
     }
   },
   "player-bare-num-20": {
     "sender": "assistant",
-    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 6 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "text": "为你速查到【镇海！断浪碎晶宫（T20）】下的全部 9 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
     "cardType": "boss_candidates",
     "cardData": {
       "query": "t20",
@@ -22757,6 +23037,51 @@
           "critRed": 265,
           "critDmgRed": 1600,
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CANG_YUAN_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_FU_HUN_CHU_T20",
+          "monsterId": "FU_HUN_CHU_T20",
+          "monsterName": "缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 340000,
+          "hp": 1498568833,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=FU_HUN_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_HUA_SHENG_CHU_T20",
+          "monsterId": "HUA_SHENG_CHU_T20",
+          "monsterName": "化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 350000,
+          "hp": 460262193,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=HUA_SHENG_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_CHAO_YIN_GU_T20",
+          "monsterId": "CHAO_YIN_GU_T20",
+          "monsterName": "潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 370000,
+          "hp": 1764900062,
+          "critRed": 235,
+          "critDmgRed": 1650,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=CHAO_YIN_GU_T20"
         }
       ]
     }
@@ -22771,7 +23096,7 @@
   },
   "player-da19": {
     "sender": "assistant",
-    "text": "为你速查到【镇海！断浪碎晶宫（T19）】下的全部 6 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
+    "text": "为你速查到【镇海！断浪碎晶宫（T19）】下的全部 9 个 BOSS 属性数据，可在下方点选切换查看完整实战属性矩阵：",
     "cardType": "boss_candidates",
     "cardData": {
       "query": "t19",
@@ -22866,6 +23191,51 @@
           "critRed": 225,
           "critDmgRed": 1400,
           "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CANG_YUAN_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_FU_HUN_CHU_T19",
+          "monsterId": "FU_HUN_CHU_T19",
+          "monsterName": "缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 230000,
+          "hp": 1255409423,
+          "critRed": 150,
+          "critDmgRed": 1150,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=FU_HUN_CHU_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_HUA_SHENG_CHU_T19",
+          "monsterId": "HUA_SHENG_CHU_T19",
+          "monsterName": "化生触",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 240000,
+          "hp": 374546770,
+          "critRed": 150,
+          "critDmgRed": 1150,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=HUA_SHENG_CHU_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T19_CHAO_YIN_GU_T19",
+          "monsterId": "CHAO_YIN_GU_T19",
+          "monsterName": "潮音骨",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 260000,
+          "hp": 1196588386,
+          "critRed": 160,
+          "critDmgRed": 1350,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=CHAO_YIN_GU_T19"
         }
       ]
     }
@@ -22874,17 +23244,61 @@
   "equip-tier-zizhuang": null,
   "server-zhanqu-haotian": {
     "sender": "assistant",
-    "text": "已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方 9 大战区 33 个服务器毫秒级开服状态，支持开服声音即时提醒。",
+    "text": "【昊天战区】共包含 4 组服务器，可在下方卡片查看服务器列表与开服状态：",
     "cardType": "server",
     "cardData": {
-      "title": "全区开服雷达监测",
-      "desc": "9 大战区 33 个服务器实时检测开服状态，支持声音提醒与时延速览",
-      "workspaceMode": "server",
-      "route": "/tools/server",
-      "btnText": "进入开服雷达"
+      "subType": "zhanqu",
+      "title": "昊天战区",
+      "zhanQu": "昊天战区",
+      "servers": [
+        {
+          "name": "创世绮梦",
+          "server": "chuangshiqimeng",
+          "serverId": "517"
+        },
+        {
+          "name": "龙腾碧霄",
+          "server": "longtengbixiao",
+          "serverId": "519"
+        },
+        {
+          "name": "碧瑶(网通)",
+          "server": "biyaowangtong",
+          "serverId": "821"
+        },
+        {
+          "name": "雪琪(网通)",
+          "server": "xueqiwangtong",
+          "serverId": "2079"
+        }
+      ],
+      "workspaceParams": {
+        "zhanQu": "昊天战区"
+      },
+      "route": "/tools/server?zhanQu=%E6%98%8A%E5%A4%A9%E6%88%98%E5%8C%BA",
+      "btnText": "在右侧打开"
     }
   },
-  "server-name-chuanshi": null,
+  "server-name-chuanshi": {
+    "sender": "assistant",
+    "text": "【创世绮梦】隶属【昊天战区】，可在下方开服雷达查看实时状态：",
+    "cardType": "server",
+    "cardData": {
+      "subType": "single_server",
+      "title": "昊天战区 · 创世绮梦",
+      "serverName": "创世绮梦",
+      "serverId": "517",
+      "serverCode": "chuangshiqimeng",
+      "zhanQu": "昊天战区",
+      "workspaceParams": {
+        "zhanQu": "昊天战区",
+        "serverName": "创世绮梦",
+        "serverId": "517"
+      },
+      "route": "/tools/server?zhanQu=%E6%98%8A%E5%A4%A9%E6%88%98%E5%8C%BA&server=%E5%88%9B%E4%B8%96%E7%BB%AE%E6%A2%A6",
+      "btnText": "在右侧打开"
+    }
+  },
   "skill-tag-pofang": {
     "sender": "assistant",
     "text": "为你检索到 30 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
@@ -29245,24 +29659,11 @@
   },
   "broad-all-xishou-01": {
     "sender": "assistant",
-    "text": "为你检索到 189 件符合【玺绶的全部装备】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 188 件符合【玺绶的全部装备】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "玺绶的全部装备",
       "candidates": [
-        {
-          "id": 24174,
-          "name": "传国玉玺",
-          "slot": "玺绶",
-          "lv": 150,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "dura": 10,
-          "q": "至尊"
-        },
         {
           "id": 24174,
           "name": "覆天印·鸿蒙问道",
@@ -31263,9 +31664,31 @@
           "ys": 600,
           "dura": 10,
           "q": ""
+        },
+        {
+          "id": 24174,
+          "name": "怒涛卷雪印",
+          "slot": "玺绶",
+          "lv": 146,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            1200,
+            1200
+          ],
+          "def": 800,
+          "hp": 13000,
+          "mp": 13000,
+          "yl": 13000,
+          "ys": 550,
+          "dura": 10,
+          "q": ""
         }
       ],
-      "totalCount": 189
+      "totalCount": 188
     }
   },
   "t15b-hub-status-01": {
@@ -31497,87 +31920,11 @@
   },
   "series-other-necklace-01": {
     "sender": "assistant",
-    "text": "为你检索到 135 件符合【其他项链】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 105 件符合【其他项链】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "其他项链",
       "candidates": [
-        {
-          "id": 3432,
-          "name": "太昊★★★",
-          "slot": "项链",
-          "lv": 125,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "atk": [
-            100,
-            280
-          ],
-          "hp": 600,
-          "mp": 600,
-          "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "太乙★★★",
-          "slot": "项链",
-          "lv": 125,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "hp": 800,
-          "mp": 800,
-          "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 40,
-          "name": "吃不完的馒头",
-          "slot": "项链",
-          "lv": 1,
-          "xz": "",
-          "prof": [
-            "鬼王宗",
-            "合欢派",
-            "青云门",
-            "天音寺",
-            "鬼道",
-            "焚香谷"
-          ],
-          "g": "",
-          "atk": [
-            4000,
-            5000
-          ],
-          "def": 5000,
-          "hp": 2000,
-          "mp": 2000,
-          "hit": 5000,
-          "dod": 100,
-          "price": 1,
-          "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 5522,
-          "name": "命运",
-          "slot": "项链",
-          "lv": 146,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 99,
-          "dura": 10,
-          "q": ""
-        },
         {
           "id": 5522,
           "name": "狡诈",
@@ -31721,45 +32068,6 @@
           "g": "",
           "price": 75000,
           "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "三清符引·上清",
-          "slot": "项链",
-          "lv": 135,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "三清符引·太清",
-          "slot": "项链",
-          "lv": 135,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "三清符引·玉清",
-          "slot": "项链",
-          "lv": 135,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "dura": 6,
           "q": ""
         },
         {
@@ -32311,62 +32619,6 @@
         },
         {
           "id": 3432,
-          "name": "群英龙胆坠",
-          "slot": "项链",
-          "lv": 85,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英血灵佩",
-          "slot": "项链",
-          "lv": 85,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英净世符",
-          "slot": "项链",
-          "lv": 85,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英狂情链",
-          "slot": "项链",
-          "lv": 85,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
           "name": "魔戮",
           "slot": "项链",
           "lv": 85,
@@ -32390,34 +32642,6 @@
           ],
           "g": "",
           "price": 14850,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "福禄双全",
-          "slot": "项链",
-          "lv": 75,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 10,
-          "dura": 6,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "上元金鉴",
-          "slot": "项链",
-          "lv": 75,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 10,
           "dura": 6,
           "q": ""
         },
@@ -32521,62 +32745,6 @@
         },
         {
           "id": 3432,
-          "name": "群英雷母坠",
-          "slot": "项链",
-          "lv": 70,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 9750,
-          "dura": 5,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英破神佩",
-          "slot": "项链",
-          "lv": 70,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 9750,
-          "dura": 5,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英尚法符",
-          "slot": "项链",
-          "lv": 70,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 9750,
-          "dura": 5,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英惊梦链",
-          "slot": "项链",
-          "lv": 70,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 9750,
-          "dura": 5,
-          "q": ""
-        },
-        {
-          "id": 3432,
           "name": "灵戮",
           "slot": "项链",
           "lv": 70,
@@ -32675,62 +32843,6 @@
         },
         {
           "id": 3432,
-          "name": "群英九阳坠",
-          "slot": "项链",
-          "lv": 55,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 6000,
-          "dura": 4,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英幽牙佩",
-          "slot": "项链",
-          "lv": 55,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 6000,
-          "dura": 4,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英空寂符",
-          "slot": "项链",
-          "lv": 55,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 6000,
-          "dura": 4,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英失魂链",
-          "slot": "项链",
-          "lv": 55,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 6000,
-          "dura": 4,
-          "q": ""
-        },
-        {
-          "id": 3432,
           "name": "佛戮",
           "slot": "项链",
           "lv": 55,
@@ -32755,23 +32867,6 @@
           "g": "",
           "price": 6000,
           "dura": 4,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "荣耀宝链",
-          "slot": "项链",
-          "lv": 50,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "atk": [
-            20,
-            100
-          ],
-          "dura": 1,
           "q": ""
         },
         {
@@ -32846,62 +32941,6 @@
         },
         {
           "id": 3432,
-          "name": "群英冰域坠",
-          "slot": "项链",
-          "lv": 40,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 2400,
-          "dura": 3,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英豪烈佩",
-          "slot": "项链",
-          "lv": 40,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 2400,
-          "dura": 3,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英妙喻符",
-          "slot": "项链",
-          "lv": 40,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 2400,
-          "dura": 3,
-          "q": ""
-        },
-        {
-          "id": 3432,
-          "name": "群英素心链",
-          "slot": "项链",
-          "lv": 40,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "price": 2400,
-          "dura": 3,
-          "q": ""
-        },
-        {
-          "id": 3432,
           "name": "侠戮",
           "slot": "项链",
           "lv": 40,
@@ -32941,46 +32980,417 @@
           "price": 10,
           "dura": 2,
           "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "灰姑娘之记",
+          "slot": "项链",
+          "lv": 30,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 11,
+          "mp": 11,
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "流浪王子之记",
+          "slot": "项链",
+          "lv": 30,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 11,
+          "mp": 11,
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "爱情祷告之记",
+          "slot": "项链",
+          "lv": 30,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 11,
+          "mp": 11,
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "魔缘",
+          "slot": "项链",
+          "lv": 25,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1275,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "佛缘",
+          "slot": "项链",
+          "lv": 25,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1275,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "仙缘",
+          "slot": "项链",
+          "lv": 25,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1275,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "霸戮",
+          "slot": "项链",
+          "lv": 25,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1275,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "霸锐",
+          "slot": "项链",
+          "lv": 25,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1275,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "碧之星",
+          "slot": "项链",
+          "lv": 15,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 360,
+          "mp": 360,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "魔影",
+          "slot": "项链",
+          "lv": 10,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 270,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "佛影",
+          "slot": "项链",
+          "lv": 10,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 270,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "仙影",
+          "slot": "项链",
+          "lv": 10,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 270,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "虎戮",
+          "slot": "项链",
+          "lv": 10,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 270,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "虎锐",
+          "slot": "项链",
+          "lv": 10,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 270,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "降临",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            25,
+            125
+          ],
+          "price": 10,
+          "dura": 10,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "日升月恒迎新项链",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            150,
+            150
+          ],
+          "price": 10,
+          "dura": 10,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "摇树护手",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "一跟头上天入地",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "流光",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            100,
+            100
+          ],
+          "def": 100,
+          "hp": 300,
+          "mp": 300,
+          "price": 1000,
+          "dura": 10,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "琼泪",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            300,
+            300
+          ],
+          "def": 300,
+          "price": 10,
+          "dura": 10,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "大宝珍珠链",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 88,
+          "mp": 88,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "晨风之心",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 5522,
+          "name": "月芒之心",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 100,
+          "dura": 1,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "风回",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "price": 1000,
+          "dura": 2,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "降临·回归版",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            25,
+            125
+          ],
+          "price": 10,
+          "dura": 10,
+          "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "青圭·躬",
+          "slot": "项链",
+          "lv": 1,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            150,
+            150
+          ],
+          "price": 10,
+          "dura": 10,
+          "q": ""
         }
       ],
-      "totalCount": 135
+      "totalCount": 105
     }
   },
   "series-other-ring-01": {
     "sender": "assistant",
-    "text": "为你检索到 48 件符合【其他戒指】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 45 件符合【其他戒指】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "其他戒指",
       "candidates": [
-        {
-          "id": 5523,
-          "name": "神佑之封印宝钻",
-          "slot": "戒指",
-          "lv": 146,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 50,
-          "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 5523,
-          "name": "人皇之戒",
-          "slot": "戒指",
-          "lv": 146,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 60,
-          "dura": 10,
-          "q": ""
-        },
         {
           "id": 3433,
           "name": "帝袭",
@@ -33181,21 +33591,6 @@
           ],
           "g": "",
           "dura": 10,
-          "q": ""
-        },
-        {
-          "id": 5523,
-          "name": "无畏指环",
-          "slot": "戒指",
-          "lv": 90,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 50,
-          "price": 100,
-          "dura": 1,
           "q": ""
         },
         {
@@ -33735,7 +34130,7 @@
           "q": ""
         }
       ],
-      "totalCount": 48
+      "totalCount": 45
     }
   },
   "series-other-jinnang-01": {
@@ -33999,7 +34394,7 @@
   },
   "series-other-gangqi-01": {
     "sender": "assistant",
-    "text": "为你检索到 33 件符合【其他罡气】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 31 件符合【其他罡气】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "其他罡气",
@@ -34111,24 +34506,6 @@
           "hp": 1200,
           "mp": 1200,
           "dod": 30,
-          "dura": 9,
-          "q": ""
-        },
-        {
-          "id": 22112,
-          "name": "牛年大牛",
-          "slot": "罡气",
-          "lv": 135,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 150,
-          "hp": 1250,
-          "mp": 1250,
-          "dod": 30,
-          "price": 10,
           "dura": 9,
           "q": ""
         },
@@ -34442,24 +34819,6 @@
         },
         {
           "id": 22112,
-          "name": "社稷杯金球",
-          "slot": "罡气",
-          "lv": 90,
-          "xz": "",
-          "prof": [
-            "通用"
-          ],
-          "g": "",
-          "def": 135,
-          "hp": 1350,
-          "mp": 1350,
-          "hit": 35,
-          "price": 1000000,
-          "dura": 9,
-          "q": ""
-        },
-        {
-          "id": 22112,
           "name": "竞技场_罡气",
           "slot": "罡气",
           "lv": 90,
@@ -34592,44 +34951,324 @@
           "q": ""
         }
       ],
-      "totalCount": 33
+      "totalCount": 31
     }
   },
   "series-other-xishou-01": {
     "sender": "assistant",
-    "text": "为你检索到 2 件符合【其他玺绶】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你速查到装备【霸王之祝福宝印】（玺绶）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 24174,
+        "name": "霸王之祝福宝印",
+        "slot": "玺绶"
+      }
+    }
+  },
+  "series-shenji-taihao-01": {
+    "sender": "assistant",
+    "text": "为你检索到 8 件符合【神级项链】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
-      "keyword": "其他玺绶",
+      "keyword": "神级项链",
       "candidates": [
         {
-          "id": 24174,
-          "name": "传国玉玺",
-          "slot": "玺绶",
-          "lv": 150,
+          "id": 3432,
+          "name": "造化之太昊",
+          "slot": "项链",
+          "lv": 120,
           "xz": "",
           "prof": [
             "通用"
           ],
           "g": "",
+          "atk": [
+            120,
+            370
+          ],
+          "hp": 800,
+          "mp": 800,
           "dura": 10,
-          "q": "至尊"
+          "q": ""
         },
         {
-          "id": 24174,
-          "name": "霸王之祝福宝印",
-          "slot": "玺绶",
-          "lv": 135,
-          "xz": "修真第五重",
+          "id": 3432,
+          "name": "造化之太乙",
+          "slot": "项链",
+          "lv": 120,
+          "xz": "",
           "prof": [
             "通用"
           ],
           "g": "",
+          "hp": 1000,
+          "mp": 1000,
           "dura": 10,
           "q": ""
+        },
+        {
+          "id": 3432,
+          "name": "归墟印记·天戍·太乙",
+          "slot": "项链",
+          "lv": 120,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 1975,
+          "mp": 1825,
+          "dod": 100,
+          "dura": 10,
+          "q": "神级"
+        },
+        {
+          "id": 3432,
+          "name": "穹仪印记·玉虚·太乙",
+          "slot": "项链",
+          "lv": 120,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 2100,
+          "mp": 2100,
+          "dod": 72,
+          "dura": 10,
+          "q": "神级"
+        },
+        {
+          "id": 3432,
+          "name": "蚀天印记·天遁·太乙",
+          "slot": "项链",
+          "lv": 120,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 1725,
+          "mp": 1975,
+          "dod": 110,
+          "dura": 10,
+          "q": "神级"
+        },
+        {
+          "id": 3432,
+          "name": "翕忽印记·天眷·太昊",
+          "slot": "项链",
+          "lv": 120,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "hp": 1900,
+          "mp": 1500,
+          "hit": 133,
+          "dura": 10,
+          "q": "神级"
+        },
+        {
+          "id": 3432,
+          "name": "天戮印记·天弈·太昊",
+          "slot": "项链",
+          "lv": 120,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            190,
+            500
+          ],
+          "hp": 1500,
+          "mp": 2100,
+          "hit": 175,
+          "dura": 10,
+          "q": "神级"
+        },
+        {
+          "id": 3432,
+          "name": "嫘祖印记·天道·太昊",
+          "slot": "项链",
+          "lv": 120,
+          "xz": "",
+          "prof": [
+            "通用"
+          ],
+          "g": "",
+          "atk": [
+            210,
+            500
+          ],
+          "hp": 1775,
+          "mp": 1925,
+          "hit": 149,
+          "dura": 10,
+          "q": "神级"
         }
       ],
-      "totalCount": 2
+      "totalCount": 8
+    }
+  },
+  "block-sanqing-01": null,
+  "block-mantou-01": null,
+  "block-11ff11-01": {
+    "sender": "assistant",
+    "text": "天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n• 装备查询：【昭武 衣服】、【彰武 武器】\n• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】"
+  },
+  "block-11ff11-02": null,
+  "block-qunying-01": null,
+  "keep-tuzhe-01": {
+    "sender": "assistant",
+    "text": "为你速查到装备【兔年吉祥】（罡气）。装备原生属性卡如下：",
+    "cardType": "equip",
+    "cardData": {
+      "equip": {
+        "id": 22112,
+        "name": "兔年吉祥",
+        "slot": "罡气"
+      }
+    }
+  },
+  "block-event-jinian-01": null,
+  "t06-server-pinyin-01": {
+    "sender": "assistant",
+    "text": "【先知】隶属【体验服】，可在下方开服雷达查看实时状态：",
+    "cardType": "server",
+    "cardData": {
+      "subType": "single_server",
+      "title": "体验服 · 先知",
+      "serverName": "先知",
+      "serverId": "10086",
+      "serverCode": "xianzhi",
+      "zhanQu": "体验服",
+      "workspaceParams": {
+        "zhanQu": "体验服",
+        "serverName": "先知",
+        "serverId": "10086"
+      },
+      "route": "/tools/server?zhanQu=%E4%BD%93%E9%AA%8C%E6%9C%8D&server=%E5%85%88%E7%9F%A5",
+      "btnText": "在右侧打开"
+    }
+  },
+  "t06-server-name-02": {
+    "sender": "assistant",
+    "text": "【滴血洞】隶属【扶风战区】，可在下方开服雷达查看实时状态：",
+    "cardType": "server",
+    "cardData": {
+      "subType": "single_server",
+      "title": "扶风战区 · 滴血洞",
+      "serverName": "滴血洞",
+      "serverId": "2089",
+      "serverCode": "dixuedong",
+      "zhanQu": "扶风战区",
+      "workspaceParams": {
+        "zhanQu": "扶风战区",
+        "serverName": "滴血洞",
+        "serverId": "2089"
+      },
+      "route": "/tools/server?zhanQu=%E6%89%B6%E9%A3%8E%E6%88%98%E5%8C%BA&server=%E6%BB%B4%E8%A1%80%E6%B4%9E",
+      "btnText": "在右侧打开"
+    }
+  },
+  "t11-adds-t21-01": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "缚魂触",
+      "candidates": [
+        {
+          "id": "ZHENHAI_DUANLANG_T19_FU_HUN_CHU_T19",
+          "monsterId": "FU_HUN_CHU_T19",
+          "monsterName": "T19 · 缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T19",
+          "dungeonName": "镇海！断浪碎晶宫（T19）",
+          "dungeonShortLabel": "T19",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "较难",
+          "def": 230000,
+          "hp": 1255409423,
+          "critRed": 150,
+          "critDmgRed": 1150,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T19&m=FU_HUN_CHU_T19"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T20_FU_HUN_CHU_T20",
+          "monsterId": "FU_HUN_CHU_T20",
+          "monsterName": "T20 · 缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T20",
+          "dungeonName": "镇海！断浪碎晶宫（T20）",
+          "dungeonShortLabel": "T20",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "难",
+          "def": 340000,
+          "hp": 1498568833,
+          "critRed": 195,
+          "critDmgRed": 1300,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T20&m=FU_HUN_CHU_T20"
+        },
+        {
+          "id": "ZHENHAI_DUANLANG_T21_FU_HUN_CHU_T21",
+          "monsterId": "FU_HUN_CHU_T21",
+          "monsterName": "T21 · 缚魂触",
+          "dungeonId": "ZHENHAI_DUANLANG_T21",
+          "dungeonName": "镇海！断浪碎晶宫（T21）",
+          "dungeonShortLabel": "T21",
+          "categoryLabel": "T本（T16-T21）",
+          "difficulty": "极难",
+          "def": 400000,
+          "hp": 1772265045,
+          "critRed": 230,
+          "critDmgRed": 1400,
+          "route": "/compendium/boss?d=ZHENHAI_DUANLANG_T21&m=FU_HUN_CHU_T21"
+        }
+      ]
+    }
+  },
+  "t11-adds-dual-01": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "炼血堂教众",
+      "candidates": [
+        {
+          "id": "LIU_BO_JING_BIAN_CHUSHI_LIANXUETANG_JIAOZHONG_CHUSHI",
+          "monsterId": "LIANXUETANG_JIAOZHONG_CHUSHI",
+          "monsterName": "流波初识 · 炼血堂教众",
+          "dungeonId": "LIU_BO_JING_BIAN_CHUSHI",
+          "dungeonName": "流波惊变（初识）",
+          "dungeonShortLabel": "流波初识",
+          "categoryLabel": "团本（兽神、空桑、天帝、流波）",
+          "difficulty": "难",
+          "def": 0,
+          "hp": 713633247,
+          "critRed": 140,
+          "critDmgRed": 300,
+          "route": "/compendium/boss?d=LIU_BO_JING_BIAN_CHUSHI&m=LIANXUETANG_JIAOZHONG_CHUSHI"
+        },
+        {
+          "id": "LIU_BO_JING_BIAN_HARD_LIANXUETANG_JIAOZHONG_HARD",
+          "monsterId": "LIANXUETANG_JIAOZHONG_HARD",
+          "monsterName": "流波困难 · 炼血堂教众",
+          "dungeonId": "LIU_BO_JING_BIAN_HARD",
+          "dungeonName": "流波惊变（困难）",
+          "dungeonShortLabel": "流波困难",
+          "categoryLabel": "团本（兽神、空桑、天帝、流波）",
+          "difficulty": "极难",
+          "def": 0,
+          "hp": 740931401,
+          "critRed": 180,
+          "critDmgRed": 300,
+          "route": "/compendium/boss?d=LIU_BO_JING_BIAN_HARD&m=LIANXUETANG_JIAOZHONG_HARD"
+        }
+      ]
     }
   },
   "gen-equip-修武-武器": {
@@ -35239,15 +35878,15 @@
   },
   "gen-equip-至尊-玺绶": {
     "sender": "assistant",
-    "text": "为你检索到 3 件符合【至尊 玺绶】的候选装备，可在下方直接切换查看详情：",
+    "text": "为你检索到 2 件符合【至尊 玺绶】的候选装备，可在下方直接切换查看详情：",
     "cardType": "equip_candidates",
     "cardData": {
       "keyword": "至尊 玺绶",
       "candidates": {
-        "__count": 3,
-        "__first": 24174
+        "__count": 2,
+        "__first": 40104
       },
-      "totalCount": 3
+      "totalCount": 2
     }
   },
   "gen-equip-至尊-锦囊": {
@@ -35909,9 +36548,42 @@
       }
     }
   },
-  "gen-boss-缚魂触": null,
-  "gen-boss-化生触": null,
-  "gen-boss-潮音骨": null,
+  "gen-boss-缚魂触": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "缚魂触",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_FU_HUN_CHU_T19"
+      }
+    }
+  },
+  "gen-boss-化生触": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "化生触",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_HUA_SHENG_CHU_T19"
+      }
+    }
+  },
+  "gen-boss-潮音骨": {
+    "sender": "assistant",
+    "text": "为你找到 3 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "潮音骨",
+      "candidates": {
+        "__count": 3,
+        "__first": "ZHENHAI_DUANLANG_T19_CHAO_YIN_GU_T19"
+      }
+    }
+  },
   "gen-boss-年老大": {
     "sender": "assistant",
     "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：",
@@ -35984,8 +36656,30 @@
       }
     }
   },
-  "gen-boss-炼血堂教众": null,
-  "gen-boss-炼血堂精英": null,
+  "gen-boss-炼血堂教众": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "炼血堂教众",
+      "candidates": {
+        "__count": 2,
+        "__first": "LIU_BO_JING_BIAN_CHUSHI_LIANXUETANG_JIAOZHONG_CHUSHI"
+      }
+    }
+  },
+  "gen-boss-炼血堂精英": {
+    "sender": "assistant",
+    "text": "为你找到 2 个匹配的 BOSS 条目（分布于不同难度副本），可在下方点选切换查看完整属性矩阵：",
+    "cardType": "boss_candidates",
+    "cardData": {
+      "query": "炼血堂精英",
+      "candidates": {
+        "__count": 2,
+        "__first": "LIU_BO_JING_BIAN_CHUSHI_LIANXUETANG_JINGYING_CHUSHI"
+      }
+    }
+  },
   "gen-skill-鬼王 神通": {
     "sender": "assistant",
     "text": "为你速查到 【鬼王】神通技能（共 50 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：",

@@ -1336,9 +1336,9 @@
     "input": "至尊 玺绶",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.candidates.length": 3,
-      "cardData.candidates.0.id": 24174,
-      "cardData.totalCount": 3
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": 40104,
+      "cardData.totalCount": 2
     },
     "tags": [
       "generated",
@@ -2236,7 +2236,11 @@
   {
     "id": "gen-boss-缚魂触",
     "input": "缚魂触",
-    "expect": null,
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_FU_HUN_CHU_T19"
+    },
     "tags": [
       "generated",
       "boss"
@@ -2248,7 +2252,11 @@
   {
     "id": "gen-boss-化生触",
     "input": "化生触",
-    "expect": null,
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_HUA_SHENG_CHU_T19"
+    },
     "tags": [
       "generated",
       "boss"
@@ -2260,7 +2268,11 @@
   {
     "id": "gen-boss-潮音骨",
     "input": "潮音骨",
-    "expect": null,
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHAO_YIN_GU_T19"
+    },
     "tags": [
       "generated",
       "boss"
@@ -2368,7 +2380,11 @@
   {
     "id": "gen-boss-炼血堂教众",
     "input": "炼血堂教众",
-    "expect": null,
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_LIANXUETANG_JIAOZHONG_CHUSHI"
+    },
     "tags": [
       "generated",
       "boss"
@@ -2380,7 +2396,11 @@
   {
     "id": "gen-boss-炼血堂精英",
     "input": "炼血堂精英",
-    "expect": null,
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_LIANXUETANG_JINGYING_CHUSHI"
+    },
     "tags": [
       "generated",
       "boss"

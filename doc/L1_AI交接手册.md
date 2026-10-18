@@ -13,7 +13,7 @@
 
 - 项目：诛仙 3 伤害分析工具（web_app：React 19 + Vite 5 + Tailwind v3），线上 `zxarena.raddishlab.tech`（Cloudflare Pages，push 自动构建）
 - L1 = `web_app/src/services/CopilotService.ts` 的 `matchLocalIntent`（AI 问答的本地意图匹配层，零成本直出卡片）
-- 回归夹具：`scripts/l1_intent_fixture.mjs`（esbuild 打包 + mock DataService + 点路径断言 + golden 快照三层），入口 `npm run test:l1`，当前 **671 条全绿**
+- 回归夹具：`scripts/l1_intent_fixture.mjs`（esbuild 打包 + mock DataService + 点路径断言 + golden 快照三层），入口 `npm run test:l1`，当前 **688 条全绿**
 - 渲染层：`web_app/src/components/home/HomeAIChatStage.tsx`（各 cardType 的卡片分支）
 - 装备进阶关联：`web_app/src/utils/equipSeries.ts`（法身/锦囊/战罡/项链/戒指等升降阶序列）
 - 当前分支：`feat/ai-copilot-tools`（SSH origin，github.com 走 ssh.github.com:443）
@@ -33,6 +33,9 @@
 | 7 | 活文档只追加不覆盖；`doc/web_optimization_plan.md` 由用户本人维护，**AI 不得编辑** | 长期约定 |
 | 8 | **L1 回答不跳转既有单页面**（compendium 等路由页），全部内嵌卡片呈现 | 2026-10-17 攻略入口被撤 |
 | 9 | 玩家向文案（changelog）**零技术名词**，每条说清"输什么→得什么"；内部组件名（如"战术策略库"）是黑话红线 | 2026-10-16 changelog 两次被退回重写 |
+| 10 | **备选方案用数据验证再决策**：用户说"没必要分但如果硬要分可以X"时，先实证 X 的覆盖率/收益再定（如项链七前缀仅覆盖 44% → 采纳"不分类"） | 2026-10-17 T-16b |
+| 11 | **用户说"其他"时当面确认口径**："其他/剩余/全部"三个语义差一条补集线——"其他X"= 排除已归系列的剩余 | 2026-10-17 用户暴怒纠正（我将错就错一天） |
+| 12 | **分屏窄栏防挤压与极简无套框原则**：右侧分屏展开时左侧 AI 对话栏仅宽 ~420px。严禁冗余说明文字（下方已有按钮/芯片的卡片，头部严禁再用文本复述如“包含 X 个：A、B、C...”或“当前列表（点击...）”）；删除多余副标题和冗余 Tag（如“开服监测 共 6 服”），直接呈现核心芯片/实体操作，杜绝折行挤压；**禁止文字过多套框**（严禁在一个卡片内给状态文字再套深色背景+描边小框，状态一律与战区芯片统一采用呼吸绿点 `●` 呈现），保持视觉干净轻盈 | 2026-10-18 用户明确定规：“删除重复无用内容，左边栏会挤压换行，以后的设计都要考虑记录我这个要求” / “如果文字加框太多了也不好看，样式统一” |
 
 ---
 
@@ -76,6 +79,13 @@ commit message 规范：标题 `feat(l1)/fix(l1)/docs:` + 正文列改动构成 
 | mock 与真实 DataService 漂移 | class_status 在夹具里走文本兜底 | 真实 getSkillMeta 存在，mock 漏加 | 新分支用到 DataService 方法时同步补 mock |
 | render 层 0 值 | 辅助卡显示一排 0 | 数据层直接渲染 | 0/undefined/null/'' 渲染层过滤 |
 | slot_hub 标题写死 | 系列系部件显示"请选择品质系列" | 渲染层硬编码，服务端 text 是对的 | 按部件类型分流文案 |
+| 「其他X」做成全量 | 用户点"其他项链"出 155 全量而非剩余 | 误解"其他"=全部（正确=补集） | SLOT_SERIES exclude 型条目：排除同 slot 所有其他系列 terms 命中 |
+| 机器词只修一层 | displayText 修了气泡，服务端 text/keyword 仍露"所有项链" | 外泄类问题链路有多环 | 链路全覆盖排查：气泡→服务端 text→cardData 字段→前端展示 |
+| "合并升级"只做一半 | 太昊 5 档归了神级系列但卡片内不联动 | 查询层归并≠升降阶关联 | equipSeries 序列才是"升级"本体，两件都要做 |
+| 技能 11ff11 是合法色 | 按字面屏蔽会清空 78% 技能库 | el_descs 富文本用 ^色码 是 schema 用法 | 屏蔽前先实证命中字段的业务含义（装备 ad=异常/技能 el_descs=合法） |
+| boss 卡字段名 | 断言 `cardData.equip.name` 得 undefined | boss 单卡实际字段是 `cardData.name`/`dungeonName`（装备才是 equip） | 断言路径一律先 --probe 看 cardData keys |
+| node -e 改 JSON 崩了没写盘 | 4 个期望修正内存改了没落盘，白工 | writeFileSync 在脚本末尾，中途抛错即全丢 | 批量改 JSON/文档一律 .cjs 脚本文件；崩了重跑要用磁盘现状 |
+| 卡片在窄栏下挤压换行 | 战区卡文字堆砌（标题缀开服监测/Tag缀共N服/重复文字列表/提示文字），分屏窄栏下高度暴增折行混乱 | 下方已有芯片组件展示的内容，头部严禁再用文字复述；精简标题与Tag，直接呈现实体芯片 | 窄栏防挤压原则（规则 12） |
 
 ### 4.2 验证坑（夹具/构建）
 
@@ -99,6 +109,8 @@ commit message 规范：标题 `feat(l1)/fix(l1)/docs:` + 正文列改动构成 
 | 同型问题只修当前实例 | "其他按钮机器词"分两次才修全；用户提问题先 grep 全域同型 |
 | 版本合并/拆分 | 1.2.2/1.2.3 合并按用户指示执行；changelog 版本条目 = package.json version 同号 |
 | 文档重组双视图 | 1.4 与待办池重复；每节必须声明"唯一视图"归属 |
+| swap 脚本二次 indexOf | 交换两行时第二次 indexOf 命中刚插入的新行，等于没换 | 先存两行内容再按索引赋值，勿链式 findIndex |
+| 单引号字符串跨行 | node -e/.cjs 里字符串跨行直接 SyntaxError | 用数组 .join 或模板字符串 |
 
 ---
 
@@ -111,7 +123,7 @@ commit message 规范：标题 `feat(l1)/fix(l1)/docs:` + 正文列改动构成 
 | `equip_curated.json` | 品质字段是 `q`（非 quality）；15 部位；佩章整类已屏蔽；1 级戒指已屏蔽 |
 | `skills.json` | `_meta.supportRoles` = 31 条职业×阵营档案（name/faction/roleType[support\|dps]/rating/abilities/damageBoost/greenPoint/purplePoint/defenseBreak/focus）；`_meta` 经 `getSkillMeta()` 读取（loadSkills 剥离 _meta 存 skillMeta） |
 | `fabao_curated.json` | 法宝名 = `名称` 字段 |
-| `dungeons.json` / `dungeons_monsters.json` | 副本词典；`_ADDS` 孤儿键致 5 个 BOSS 名不可达（T-11 待办） |
+| `dungeons.json` / `dungeons_monsters.json` | 副本词典；T19/T20/T21 各 9 怪（6 Boss + 3 小怪），流波初识/困难各 7 怪（5 Boss + 2 小怪）；同名小怪由母副本 `_ADDS` 并入，boss_candidates 跨难度多候选切换（T-11 闭环） |
 
 ### 5.2 匹配链优先级（matchLocalIntent 内顺序）
 
@@ -130,22 +142,29 @@ exactFabaoName（法宝精确名全局优先，R1）
 - **宽泛词**：`/^(所有|全部)/` + matchedSlot → 清 cleanTokens 全量平铺（hub"其他"按钮的 query，气泡显示 label 不外泄机器词）
 - **口语别名**：帽子/盔/冠→头盔、鞋子/鞋/靴/履→靴子（仅 hub 触发用）
 - **色调规矩**：所有分流 hub（class_hub/slot_hub/class_status）统一 cyan；指标语义色（增伤玫红/绿点绿/紫点紫/破防琥珀/专注天蓝）
+- **exclude 补集**：SLOT_SERIES 的 other 条目（match:exclude）= 排除同 slot 其他系列 terms 命中；「其他X」的真语义
+- **太昊/太乙 5 阶**：equipSeries TAIHAO_TIERS/TAIYI_TIERS（0~3星+造化之），11.5 分支优先于印记阶梯
+- **11ff11 屏蔽**：装备 JSON.stringify 含 11ff11 即屏蔽（11 件跨服/节日/礼包）；**技能 el_descs 的 ^11ff11 是合法颜色码，禁屏蔽**
+- **群英屏蔽**：项链 startsWith 群英（20 件）
+- **服名与战区查询（T-06/T-08 三层差异化 UX）**：server_list.json = 9 战区 36 服。分为三层交互：① 单服名/拼音/ID命中 → single_server 卡（展示所属战区、心跳状态、端口与服ID，卡片按钮直接分屏聚焦监控该服）；② 9 大战区命中 → zhanqu 卡（卡内平铺该战区全部服务器状态，点击任意服直达，卡片按钮直接分屏定位该战区）；③ 开服/宏观词 → radar 卡（全区开服雷达卡片，卡片按钮分屏进入开服雷达）。全链路支持 workspaceParams 动态深度联动。
+- **孤儿副本键（T-11）**：dungeons_monsters.json 有 `_ADDS` 后缀键（T19_ADDS / T20_ADDS / T21_ADDS / LIU_BO_JING_BIAN_CHUSHI_ADDS / _HARD_ADDS），getDungeons 合并到母副本（母键 + 母键_ADDS）；同名小怪按难度分存→boss_candidates 多候选切换（缚魂触/化生触/潮音骨 3 候选按 T19/T20/T21 切换、炼血堂 2 候选）
 
 ---
 
-## 六、当前状态（2026-10-17 14:58，详见任务清单）
+## 六、当前状态（2026-10-18 14:30，详见任务清单）
 
-- **已发布**：v1.2.0/v1.2.1/v1.2.2（AI 对话/分屏/雷达/部位系列全部件）
-- **待核对未发布（工作区改动，671 全绿 + tsc/vite 双过）**：
-  - class_hub 加「职业状态」入口（4 按钮）
-  - class_status 卡片（标题去后缀+辅助/输出徽章/五指标语义色 0 值过滤/宽度对齐 BossDetailCard max-w-xl）
-  - slot_hub「其他」按钮气泡文案（displayText 机制，机器词不外泄）
-  - slot_hub 系列系标题文案修正
-  - **等用户核对清单全部 OK + 明确说发布**，才写 changelog + commit + push
-- **待办首位**：T-18 攻略大类（独立大类，子项清单等用户 10-17 提供；铁律：内嵌卡片不跳转）
-- 其余：等你输入 4 项（T-16a/T-16b/T-05/T-06）+ 数据维护 4 项（T-09/T-11/T-08/T-07）
-
----
+- **已发布**：v1.2.0 / v1.2.1 / v1.2.2 / v1.2.3（2026-10-18 用户确认发布，688 夹具全绿入库）
+- **v1.2.3 交付内容（688 夹具全绿 + tsc/vite 双过）**：
+  - class_hub 4 按钮（技能/装备/法宝/职业状态；攻略移出至 T-18）
+  - class_status 卡（五指标语义色 + 0 值过滤 + max-w-xl 对齐 BossDetailCard）
+  - 「其他X」= exclude 补集；太昊/太乙 5 阶升降序列
+  - 机器词链路玩家化（气泡 displayText + text/keyword）
+  - 屏蔽：活动装备名单 10 件（跨服战场/纪念/礼包/宋金，兔年吉祥保留）/ 三清符引 / 馒头 / 群英 20
+  - **T-06 服名查询**（36 服名/拼音/serverId → 战区卡）、**T-08** 服务器数 33→36、**T-11** `_ADDS` 并入母副本（真实爬取鉴别 T19/T20 机制怪入库，缚魂触/化生触/潮音骨 3 候选分难度切换，T19/T20/T21 各自 9 怪全覆盖）
+  - **战区与单服卡交互紧凑化与极简去框**：取消自动展开右栏、单服卡收敛极简单行、开服状态统一为呼吸绿点（杜绝文字套框）、窄栏防挤压
+- **已完成**：T-16 全系 / T-15b / T-16a / T-16b / T-06 / T-08 / T-11；**T-05 关闭**（无档位字段，映射无依据——勿重启）
+- **剩余待办 3 项**：T-09 新副本数据（需数据源）/ T-18 攻略大类（等用户子项清单）/ T-07 语料抓取（待拍板来源）
+- **接手第一步**：确认用户是否已给发布指令；若没有，保持工作区现状勿 push
 
 ## 七、给接手 AI 的第一周检查单
 

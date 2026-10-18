@@ -46,6 +46,10 @@ const ACCESSORY_BRANCH_GODS: Record<string, string[]> = {
 // 大乘148→玄灵148）与属性递进（减爆伤4%→110%）双重印证；原序列缺筑基/
 // 和合/大乘/玄灵 4 阶，导致这 4 件无境界关联
 const ZHAN_GANG_TIERS = ['筑基战罡', '和合战罡', '辟谷战罡', '元婴战罡', '空冥战罡', '渡劫战罡', '寂灭战罡', '大乘战罡', '玄灵战罡'];
+
+// 4.5 太昊/太乙单名 5 档进阶（用户 2026-10-17：太昊→造化之太昊合并升级，太乙同理）
+const TAIHAO_TIERS = ['太昊', '太昊★', '太昊★★', '太昊★★★', '造化之太昊'];
+const TAIYI_TIERS = ['太乙', '太乙★', '太乙★★', '太乙★★★', '造化之太乙'];
 const HERO_MEDAL_TIERS = ['铜质英雄勋章', '银质英雄勋章', '金质英雄勋章'];
 const SHOUDAI_TIERS = ['勇者绶带', '季军绶带', '亚军绶带', '冠军绶带'];
 const LEIBU_TIERS = ['雷部使者印', '雷部总兵印', '雷部天尊印', '雷部鸿钧印'];
@@ -297,6 +301,25 @@ export function getEquipSeries(
                 currentIndex: curIdx >= 0 ? curIdx : 0,
                 currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${siblings.length}阶`
             };
+        }
+    }
+
+    // 11.5 太昊 / 太乙 单名 5 档进阶（用户 2026-10-17 口径：太昊→太昊一星→
+    // 太昊二星→太昊三星→造化之太昊 合并为一条升级线，太乙同理；数据名为
+    // ★ 符号档，与造化之太昊/太乙 同归神级首饰）
+    for (const [base, tiers] of [['太昊', TAIHAO_TIERS], ['太乙', TAIYI_TIERS]] as const) {
+        if (tiers.includes(name)) {
+            const siblings = tiers.map(t => allEquips.find(e => e.slot === '项链' && e.name === t)).filter(Boolean) as CuratedEquipItem[];
+            if (siblings.length > 1) {
+                const curIdx = siblings.findIndex(e => e.name === name);
+                return {
+                    seriesKey: `项链_${base}`,
+                    seriesName: `${base}系列`,
+                    items: siblings,
+                    currentIndex: curIdx >= 0 ? curIdx : 0,
+                    currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${siblings.length}阶`
+                };
+            }
         }
     }
 

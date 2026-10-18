@@ -122,7 +122,7 @@
     "expect": {
       "cardType": "boss_candidates",
       "cardData.dungeonName": "镇海！断浪碎晶宫（T20）",
-      "cardData.candidates.length": 6,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20"
     },
     "tags": [
@@ -136,7 +136,7 @@
     "input": "碎晶宫t20",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 6,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20"
     },
     "tags": [
@@ -150,14 +150,15 @@
     "input": "断浪",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 18,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
     },
     "tags": [
       "alias",
       "dungeon"
     ],
-    "assert": "strong"
+    "assert": "strong",
+    "note": " | T-11 连带：T19/T20/T21 各并入 3 附加怪 18→27"
   },
   {
     "id": "dungeon-series-kongsang-01",
@@ -627,14 +628,14 @@
     "input": "qingyun zhuangbei",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.candidates.length": 34
+      "cardData.candidates.length": 33
     },
     "tags": [
       "pinyin",
       "equip"
     ],
     "assert": "strong",
-    "note": "屏蔽连带：37→34（天帝宝库_青云抗性装 3 件；守卫青云 lv1 勋章按用户口径仅屏蔽戒指 lv1，已恢复）"
+    "note": "屏蔽连带：37→34(天帝宝库3)→33(吃不完的馒头 prof 含青云门)"
   },
   {
     "id": "pinyin-tag-lvdian",
@@ -798,28 +799,28 @@
     "input": "所有项链",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.totalCount": 155
+      "cardData.totalCount": 125
     },
     "tags": [
       "broad",
       "equip"
     ],
     "assert": "strong",
-    "note": "宽泛词平铺：全部项链（屏蔽天帝宝库_21/一级29/作废1 后）"
+    "note": "129→125（跨服/纪念/礼包 4 件按名单重新屏蔽）"
   },
   {
     "id": "broad-all-ring-01",
     "input": "所有戒指",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.totalCount": 60
+      "cardData.totalCount": 57
     },
     "tags": [
       "broad",
       "equip"
     ],
     "assert": "strong",
-    "note": "宽泛词平铺：全部戒指（屏蔽一级59/天机指环12/梦入神机/自出/废弃 后）"
+    "note": "60→57（跨服戒指 3 件）"
   },
   {
     "id": "series-shenji-mixed-01",
@@ -877,7 +878,7 @@
       "equip"
     ],
     "assert": "strong",
-    "note": "印记+造化之+符石+血玉（series OR 组，跨项链+戒指混显）"
+    "note": "太昊/太乙 5 档并入后：项链 10 + 戒指 10 = 20（聚合代表数）"
   },
   {
     "id": "series-huangwu-01",
@@ -1067,7 +1068,7 @@
     "input": "T20 多少抗性来着",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 6
+      "cardData.candidates.length": 9
     },
     "tags": [
       "colloquial",
@@ -1080,7 +1081,7 @@
     "input": "T20 抗性 逐霜技能",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 6
+      "cardData.candidates.length": 9
     },
     "tags": [
       "combo",
@@ -1093,7 +1094,7 @@
     "input": "19",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 6,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
     },
     "tags": [
@@ -1108,7 +1109,7 @@
     "input": "20",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 6,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20"
     },
     "tags": [
@@ -1147,7 +1148,7 @@
     "input": "打19",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 6,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
     },
     "tags": [
@@ -1183,23 +1184,30 @@
     "input": "昊天战区",
     "expect": {
       "cardType": "server",
-      "cardData.workspaceMode": "server"
+      "cardData.title": "昊天战区",
+      "cardData.subType": "zhanqu",
+      "cardData.zhanQu": "昊天战区"
     },
     "tags": [
       "player-real",
       "server"
     ],
-    "assert": "strong"
+    "assert": "strong",
+    "note": "战区精准识别：昊天战区→zhanqu 卡（包含该战区下全部服务器及状态）"
   },
   {
     "id": "server-name-chuanshi",
     "input": "创世绮梦",
-    "expect": null,
+    "expect": {
+      "cardType": "server",
+      "cardData.title": "昊天战区 · 创世绮梦"
+    },
     "tags": [
       "player-real",
       "server"
     ],
-    "assert": "strong"
+    "assert": "strong",
+    "note": "T-06 完成：服名精确命中→server 卡（带所属战区）"
   },
   {
     "id": "skill-tag-pofang",
@@ -1669,7 +1677,7 @@
     "input": "所有玺绶",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.totalCount": 189
+      "cardData.totalCount": 188
     },
     "tags": [
       "broad",
@@ -1772,28 +1780,28 @@
     "input": "其他项链",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.totalCount": 135
+      "cardData.totalCount": 105
     },
     "tags": [
       "series",
       "equip"
     ],
     "assert": "strong",
-    "note": "「其他项链」= 补集：不属于神级/煌武/战队/社稷四系的剩余项链（非全量 155——2026-10-17 用户纠正口径）"
+    "note": "109→105"
   },
   {
     "id": "series-other-ring-01",
     "input": "其他戒指",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.totalCount": 48
+      "cardData.totalCount": 45
     },
     "tags": [
       "series",
       "equip"
     ],
     "assert": "strong",
-    "note": "补集：非符石/血玉的剩余戒指"
+    "note": "48→45"
   },
   {
     "id": "series-other-jinnang-01",
@@ -1814,27 +1822,179 @@
     "input": "其他罡气",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.totalCount": 33
+      "cardData.totalCount": 31
     },
     "tags": [
       "series",
       "equip"
     ],
     "assert": "strong",
-    "note": "补集：非战罡的剩余罡气"
+    "note": "30→31（兔年吉祥恢复——有 2 条有效属性，ad 清洗非整件屏蔽）"
   },
   {
     "id": "series-other-xishou-01",
     "input": "其他玺绶",
     "expect": {
-      "cardType": "equip_candidates",
-      "cardData.totalCount": 2
+      "cardType": "equip",
+      "cardData.equip.name": "霸王之祝福宝印"
     },
     "tags": [
       "series",
       "equip"
     ],
     "assert": "strong",
-    "note": "补集：非六印/跨服印的剩余玺绶（传国玉玺等）"
+    "note": "屏蔽传国玉玺后只剩霸王之祝福宝印 1 件→单卡"
+  },
+  {
+    "id": "series-shenji-taihao-01",
+    "input": "神级项链",
+    "expect": {
+      "cardType": "equip_candidates",
+      "cardData.totalCount": 8
+    },
+    "tags": [
+      "series",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "10→8：太昊/太乙 5 档合并为单系列代表（卡片内 5 阶升降）"
+  },
+  {
+    "id": "block-sanqing-01",
+    "input": "三清符引",
+    "expect": null,
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户 2026-10-17：三清符引起头 3 件屏蔽"
+  },
+  {
+    "id": "block-mantou-01",
+    "input": "吃不完的馒头",
+    "expect": null,
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户 2026-10-17：活动食物项链屏蔽"
+  },
+  {
+    "id": "block-11ff11-01",
+    "input": "传国玉玺",
+    "expect": {
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户 2026-10-17：ad 含颜色代码 11ff11 的装备全屏蔽（实证 11 件均为跨服战场/节日/礼包类）"
+  },
+  {
+    "id": "block-11ff11-02",
+    "input": "人皇之戒",
+    "expect": null,
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户 2026-10-17 二次口径：跨服战场装备不展示（ad 清洗保留数据、查询侧屏蔽）"
+  },
+  {
+    "id": "block-qunying-01",
+    "input": "群英龙胆坠",
+    "expect": null,
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户 2026-10-17：群英起头项链全屏蔽（20 件）"
+  },
+  {
+    "id": "keep-tuzhe-01",
+    "input": "兔年吉祥",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "兔年吉祥"
+    },
+    "tags": [
+      "keep",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户确认保留：有 2 条有效属性（暴击+2%/攻击+5%），ad 清洗后正常可查"
+  },
+  {
+    "id": "block-event-jinian-01",
+    "input": "福禄双全",
+    "expect": null,
+    "tags": [
+      "block",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "用户 2026-10-17：节日纪念技能类不展示"
+  },
+  {
+    "id": "t06-server-pinyin-01",
+    "input": "xianzhi",
+    "expect": {
+      "cardType": "server",
+      "cardData.title": "体验服 · 先知"
+    },
+    "tags": [
+      "server",
+      "t06"
+    ],
+    "assert": "strong",
+    "note": "T-06：拼音命中（xianzhi→先知）"
+  },
+  {
+    "id": "t06-server-name-02",
+    "input": "滴血洞",
+    "expect": {
+      "cardType": "server",
+      "cardData.title": "扶风战区 · 滴血洞"
+    },
+    "tags": [
+      "server",
+      "t06"
+    ],
+    "assert": "strong",
+    "note": "T-06：服名命中（扶风战区）"
+  },
+  {
+    "id": "t11-adds-t21-01",
+    "input": "缚魂触",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3
+    },
+    "tags": [
+      "boss",
+      "t11"
+    ],
+    "assert": "strong",
+    "note": "T-11：同名小怪按副本难度分 3 候选（T19/T20/T21，属性不同可切换）"
+  },
+  {
+    "id": "t11-adds-dual-01",
+    "input": "炼血堂教众",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2
+    },
+    "tags": [
+      "boss",
+      "t11"
+    ],
+    "assert": "strong",
+    "note": "T-11：同名小怪按副本难度分 2 候选（流波初识/困难，属性不同可切换）"
   }
 ]

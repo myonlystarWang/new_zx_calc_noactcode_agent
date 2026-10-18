@@ -129,30 +129,47 @@ export class DataService {
         this.classes = await response.json();
     }
 
+    private skillMetaPromise: Promise<any> | null = null;
+    private dungeonsPromise: Promise<Dungeon[]> | null = null;
+
     private async loadSkills(): Promise<void> {
-        const response = await fetch(`${DATA_BASE_URL}/skills.json`);
-        if (!response.ok) throw new Error(`加载 skills.json 失败: ${response.status}`);
-        const raw = await response.json();
-        this.skillMeta = (raw as any)?._meta ?? null;
-        // Strip the top-level _meta key so allSkills/getSkills expose a clean class-keyed map.
-        // (The _meta block would otherwise be iterated by consumers doing Object.entries(allSkills).)
-        if (raw && typeof raw === 'object' && '_meta' in raw) {
-            const { _meta, ...classMap } = raw as Record<string, unknown> & { _meta?: unknown };
-            this.skills = classMap as AllSkills;
-        } else {
-            this.skills = raw as AllSkills;
+        if (this.skills && this.skillMeta) return;
+        if (!this.skillMetaPromise) {
+            this.skillMetaPromise = (async () => {
+                const response = await fetch(`${DATA_BASE_URL}/skills.json`);
+                if (!response.ok) throw new Error(`加载 skills.json 失败: ${response.status}`);
+                const raw = await response.json();
+                this.skillMeta = (raw as any)?._meta ?? null;
+                // Strip the top-level _meta key so allSkills/getSkills expose a clean class-keyed map.
+                // (The _meta block would otherwise be iterated by consumers doing Object.entries(allSkills).)
+                if (raw && typeof raw === 'object' && '_meta' in raw) {
+                    const { _meta, ...classMap } = raw as Record<string, unknown> & { _meta?: unknown };
+                    this.skills = classMap as AllSkills;
+                } else {
+                    this.skills = raw as AllSkills;
+                }
+                return this.skillMeta;
+            })();
         }
+        await this.skillMetaPromise;
     }
 
     private async loadDungeons(): Promise<void> {
-        const [metaResponse, monstersResponse] = await Promise.all([
-            fetch(`${DATA_BASE_URL}/dungeons.json`),
-            fetch(`${DATA_BASE_URL}/dungeons_monsters.json`)
-        ]);
-        if (!metaResponse.ok) throw new Error(`加载 dungeons.json 失败: ${metaResponse.status}`);
-        if (!monstersResponse.ok) throw new Error(`加载 dungeons_monsters.json 失败: ${monstersResponse.status}`);
-        this.dungeonsMetadata = await metaResponse.json();
-        this.dungeonsMonsters = await monstersResponse.json();
+        if (this.dungeonsMetadata && this.dungeonsMonsters) return;
+        if (!this.dungeonsPromise) {
+            this.dungeonsPromise = (async () => {
+                const [metaResponse, monstersResponse] = await Promise.all([
+                    fetch(`${DATA_BASE_URL}/dungeons.json`),
+                    fetch(`${DATA_BASE_URL}/dungeons_monsters.json`)
+                ]);
+                if (!metaResponse.ok) throw new Error(`加载 dungeons.json 失败: ${metaResponse.status}`);
+                if (!monstersResponse.ok) throw new Error(`加载 dungeons_monsters.json 失败: ${monstersResponse.status}`);
+                this.dungeonsMetadata = await metaResponse.json();
+                this.dungeonsMonsters = await monstersResponse.json();
+                return this.getDungeons();
+            })();
+        }
+        await this.dungeonsPromise;
     }
 
     private async loadBuffs(): Promise<void> {
@@ -221,7 +238,15 @@ export class DataService {
         if (!this.dungeonsMetadata || !this.dungeonsMonsters) return [];
 
         return this.dungeonsMetadata.map((meta: any) => {
-            const monsters = (this.dungeonsMonsters![meta.DungeonID] || []).map(m => ({
+            // T-11：_ADDS 附加怪键并入母副本（缚魂触/化生触/潮音骨→T21；
+            // 炼血堂教众/精英→流波初识/困难）——数据本就是按母副本键分存的，
+            // 合并后同名小怪按副本难度各自可达（属性不同，卡片多候选切换）
+            const addsKey = `${meta.DungeonID}_ADDS`;
+            const monsterList = [
+                ...(this.dungeonsMonsters![meta.DungeonID] || []),
+                ...(this.dungeonsMonsters![addsKey] || [])
+            ];
+            const monsters = monsterList.map(m => ({
                 ...m,
                 displayAttributes: m.displayAttributes ?? this.buildDisplayAttributes(m)
             }));
@@ -230,6 +255,14 @@ export class DataService {
                 Monsters: monsters
             };
         });
+    }
+
+    public async getDungeonsAsync(): Promise<Dungeon[]> {
+        if (this.dungeonsMetadata && this.dungeonsMonsters) {
+            return this.getDungeons();
+        }
+        await this.loadDungeons();
+        return this.getDungeons();
     }
 
     public getBuffs(): Buff[] {
@@ -249,6 +282,12 @@ export class DataService {
     }
 
     public getSkillMeta(): any | null {
+        return this.skillMeta;
+    }
+
+    public async getSkillMetaAsync(): Promise<any> {
+        if (this.skillMeta) return this.skillMeta;
+        await this.loadSkills();
         return this.skillMeta;
     }
 
@@ -347,7 +386,9 @@ export class DataService {
             this.getFabaoList(),
             this.getAllCuratedSkills(),
             this.getServerList(),
-            this.getXycRules()
+            this.getXycRules(),
+            this.getDungeonsAsync(),
+            this.getSkillMetaAsync()
         ]).catch(() => {});
     }
 }
