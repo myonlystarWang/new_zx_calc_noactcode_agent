@@ -151,6 +151,9 @@ export interface ServerRadarViewProps {
     isMaximized?: boolean;
     onToggleMaximize?: () => void;
     onClose?: () => void;
+    initialZhanQu?: string;
+    initialServerName?: string;
+    initialServerId?: string;
 }
 
 export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
@@ -158,9 +161,86 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
     isMaximized = false,
     onToggleMaximize,
     onClose,
+    initialZhanQu,
+    initialServerName,
+    initialServerId,
 }) => {
-    const [selectedZhanQuIndex, setSelectedZhanQuIndex] = useState<number>(1); // 默认昊天战区
-    const [selectedServer, setSelectedServer] = useState<ServerInfo>(SERVER_CONFIG[1].servers[1]); // 默认龙腾碧霄
+    const [selectedZhanQuIndex, setSelectedZhanQuIndex] = useState<number>(() => {
+        if (initialZhanQu) {
+            const idx = SERVER_CONFIG.findIndex(z =>
+                z.zhanQu === initialZhanQu ||
+                z.zhanQu.includes(initialZhanQu) ||
+                initialZhanQu.includes(z.zhanQu.replace('战区', ''))
+            );
+            if (idx !== -1) return idx;
+        }
+        if (initialServerName || initialServerId) {
+            for (let i = 0; i < SERVER_CONFIG.length; i++) {
+                if (SERVER_CONFIG[i].servers.some(s =>
+                    (initialServerName && (s.name === initialServerName || s.server === initialServerName)) ||
+                    (initialServerId && s.serverId === String(initialServerId))
+                )) {
+                    return i;
+                }
+            }
+        }
+        return 1; // 默认昊天战区
+    });
+
+    const [selectedServer, setSelectedServer] = useState<ServerInfo>(() => {
+        if (initialServerName || initialServerId) {
+            for (const z of SERVER_CONFIG) {
+                const s = z.servers.find(sv =>
+                    (initialServerName && (sv.name === initialServerName || sv.server === initialServerName)) ||
+                    (initialServerId && sv.serverId === String(initialServerId))
+                );
+                if (s) return s;
+            }
+        }
+        if (initialZhanQu) {
+            const z = SERVER_CONFIG.find(zq =>
+                zq.zhanQu === initialZhanQu ||
+                zq.zhanQu.includes(initialZhanQu) ||
+                initialZhanQu.includes(zq.zhanQu.replace('战区', ''))
+            );
+            if (z && z.servers.length > 0) return z.servers[0];
+        }
+        return SERVER_CONFIG[1].servers[1]; // 默认龙腾碧霄
+    });
+
+    // 监听外部传入的战区/单服参数动态切换
+    useEffect(() => {
+        if (!initialZhanQu && !initialServerName && !initialServerId) return;
+
+        if (initialServerName || initialServerId) {
+            for (let zIdx = 0; zIdx < SERVER_CONFIG.length; zIdx++) {
+                const z = SERVER_CONFIG[zIdx];
+                const matchedSv = z.servers.find(s =>
+                    (initialServerName && (s.name === initialServerName || s.server === initialServerName)) ||
+                    (initialServerId && s.serverId === String(initialServerId))
+                );
+                if (matchedSv) {
+                    setSelectedZhanQuIndex(zIdx);
+                    setSelectedServer(matchedSv);
+                    return;
+                }
+            }
+        }
+
+        if (initialZhanQu) {
+            const zqIdx = SERVER_CONFIG.findIndex(z =>
+                z.zhanQu === initialZhanQu ||
+                z.zhanQu.includes(initialZhanQu) ||
+                initialZhanQu.includes(z.zhanQu.replace('战区', ''))
+            );
+            if (zqIdx !== -1) {
+                setSelectedZhanQuIndex(zqIdx);
+                if (SERVER_CONFIG[zqIdx].servers.length > 0) {
+                    setSelectedServer(SERVER_CONFIG[zqIdx].servers[0]);
+                }
+            }
+        }
+    }, [initialZhanQu, initialServerName, initialServerId]);
     const [isProbing, setIsProbing] = useState<boolean>(false);
     const [isBatchProbing, setIsBatchProbing] = useState<boolean>(false);
     const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
@@ -533,7 +613,7 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                         <div className="flex items-center justify-between px-2 pb-2 mb-1 border-b border-slate-800/80">
                             <span className="text-xs text-slate-400 font-bold tracking-wide">战区选择</span>
                             {/* <span className="text-[11px] text-slate-500 font-mono">共 9 大战区</span> */}
-                            <span className="text-xs text-cyan-400/80 font-bold">33组服务器在线</span>
+                            <span className="text-xs text-cyan-400/80 font-bold">36组服务器在线</span>
                         </div>
 
                         <div className="flex flex-col gap-1.5 flex-1 justify-between">

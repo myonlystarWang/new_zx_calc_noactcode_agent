@@ -30,6 +30,7 @@ interface WorkspaceState {
   isOpen: boolean;
   mode: WorkspaceMode;
   isMaximized: boolean;
+  params?: any;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchNavigate }) => {
@@ -204,6 +205,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               isOpen: true,
               mode: localMatch.cardData.workspaceMode,
               isMaximized: false,
+              params: localMatch.cardData.workspaceParams,
             });
           }
         } else {
@@ -304,6 +306,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               isOpen: true,
               mode: localMatch.cardData.workspaceMode,
               isMaximized: false,
+              params: localMatch.cardData.workspaceParams,
             });
           }
         } else {
@@ -388,11 +391,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                   isMaximized: false,
                 }))
               }
-              onOpenSplitWorkspace={(mode) =>
+              onOpenSplitWorkspace={(mode, params) =>
                 setWorkspaceState({
                   isOpen: true,
                   mode,
                   isMaximized: false,
+                  params,
                 })
               }
             />
@@ -420,6 +424,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           <div className="flex-1 min-w-0 h-full overflow-hidden flex flex-col">
             <SplitScreenWorkspace
               mode={workspaceState.mode}
+              params={workspaceState.params}
               onModeChange={(m) => setWorkspaceState((prev) => ({ ...prev, mode: m }))}
               isMaximized={workspaceState.isMaximized}
               onToggleMaximize={() =>

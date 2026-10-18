@@ -9,7 +9,8 @@ import {
     Sliders,
     Check,
     Copy,
-    ArrowRight
+    ArrowRight,
+    Radio
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
@@ -33,6 +34,13 @@ import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 import type { FabaoItem, CuratedEquipItem, CuratedSkillItem } from '../../types';
 
+export interface WorkspaceParams {
+    zhanQu?: string;
+    serverName?: string;
+    serverId?: string;
+    [key: string]: any;
+}
+
 interface HomeAIChatStageProps {
     messages: CopilotMessage[];
     isLoading: boolean;
@@ -40,7 +48,7 @@ interface HomeAIChatStageProps {
     onBackToHome: () => void;
     isSplitOpen?: boolean;
     onToggleSplit?: () => void;
-    onOpenSplitWorkspace?: (mode: WorkspaceMode) => void;
+    onOpenSplitWorkspace?: (mode: WorkspaceMode, params?: WorkspaceParams) => void;
 }
 
 export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
@@ -684,8 +692,108 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         </div>
                                                     )}
 
-                                                    {/* 6. 开服雷达卡片 */}
-                                                    {msg.cardType === 'server' && msg.cardData && (
+                                                    {/* 6. 开服雷达卡片 - 战区展示 */}
+                                                    {msg.cardType === 'server' && msg.cardData?.subType === 'zhanqu' && (
+                                                        <div className="rounded-xl bg-[#121824] border border-emerald-500/30 p-3.5 flex flex-col gap-2.5">
+                                                            <div className="flex items-center justify-between gap-2.5">
+                                                                <div className="flex items-center gap-2 min-w-0">
+                                                                    <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                                                                        <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                                                                    </div>
+                                                                    <div className="text-sm font-bold text-emerald-300 truncate">
+                                                                        {msg.cardData.title || msg.cardData.zhanQu}
+                                                                    </div>
+                                                                </div>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        if (onOpenSplitWorkspace) {
+                                                                            onOpenSplitWorkspace('server', { zhanQu: msg.cardData.zhanQu });
+                                                                        } else if (msg.cardData.route) {
+                                                                            navigate(msg.cardData.route);
+                                                                        }
+                                                                    }}
+                                                                    className="px-3 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shrink-0 transition-colors whitespace-nowrap"
+                                                                >
+                                                                    <span>{msg.cardData.btnText || '在右侧打开此战区'}</span>
+                                                                    <ExternalLink className="w-3 h-3" />
+                                                                </button>
+                                                            </div>
+
+                                                            {/* 战区下服务器快捷网格（去除多余说明文字，直接呈现芯片） */}
+                                                            {Array.isArray(msg.cardData.servers) && msg.cardData.servers.length > 0 && (
+                                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 pt-1">
+                                                                    {msg.cardData.servers.map((sv: any) => (
+                                                                        <button
+                                                                            key={sv.serverId || sv.server}
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                if (onOpenSplitWorkspace) {
+                                                                                    onOpenSplitWorkspace('server', {
+                                                                                        zhanQu: msg.cardData.zhanQu,
+                                                                                        serverName: sv.name,
+                                                                                        serverId: sv.serverId,
+                                                                                    });
+                                                                                } else if (msg.cardData.route) {
+                                                                                    navigate(msg.cardData.route);
+                                                                                }
+                                                                            }}
+                                                                            className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-slate-900/80 hover:bg-emerald-950/40 border border-slate-800 hover:border-emerald-500/40 text-left cursor-pointer transition-all group"
+                                                                        >
+                                                                            <span className="text-xs text-slate-200 group-hover:text-emerald-300 font-medium truncate">
+                                                                                {sv.name}
+                                                                            </span>
+                                                                            <span
+                                                                                className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse group-hover:animate-ping shrink-0 ml-1"
+                                                                                title="开服正常"
+                                                                            />
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+
+                                                    {/* 6. 开服雷达卡片 - 单服展示（统一纯呼吸绿点，无多余加框，与战区芯片一致） */}
+                                                    {msg.cardType === 'server' && msg.cardData?.subType === 'single_server' && (
+                                                        <div className="rounded-xl bg-[#121824] border border-emerald-500/30 p-3.5 flex items-center justify-between gap-3">
+                                                            <div className="flex items-center gap-2.5 min-w-0">
+                                                                <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                                                                    <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                                                                </div>
+                                                                <div className="flex items-center gap-2 min-w-0">
+                                                                    <span className="text-sm font-bold text-emerald-300 truncate">
+                                                                        {msg.cardData.title || `${msg.cardData.zhanQu} · ${msg.cardData.serverName}`}
+                                                                    </span>
+                                                                    <span
+                                                                        className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"
+                                                                        title="开服正常"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    if (onOpenSplitWorkspace) {
+                                                                        onOpenSplitWorkspace('server', {
+                                                                            zhanQu: msg.cardData.zhanQu,
+                                                                            serverName: msg.cardData.serverName,
+                                                                            serverId: msg.cardData.serverId,
+                                                                        });
+                                                                    } else if (msg.cardData.route) {
+                                                                        navigate(msg.cardData.route);
+                                                                    }
+                                                                }}
+                                                                className="px-3 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shrink-0 transition-colors whitespace-nowrap"
+                                                            >
+                                                                <span>{msg.cardData.btnText || '在右侧打开'}</span>
+                                                                <ExternalLink className="w-3 h-3" />
+                                                            </button>
+                                                        </div>
+                                                    )}
+
+                                                    {/* 6. 开服雷达卡片 - 宏观全区卡 */}
+                                                    {msg.cardType === 'server' && msg.cardData?.subType !== 'zhanqu' && msg.cardData?.subType !== 'single_server' && (
                                                         <div className="rounded-xl bg-[#121824] border border-emerald-500/30 p-4 flex items-center justify-between gap-4">
                                                             <div>
                                                                 <div className="text-sm font-bold text-emerald-300">{msg.cardData.title}</div>
@@ -694,9 +802,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                             <button
                                                                 type="button"
                                                                 onClick={() => {
-                                                                    if (msg.cardData.workspaceMode && onOpenSplitWorkspace) {
-                                                                        onOpenSplitWorkspace(msg.cardData.workspaceMode);
-                                                                    } else if (onOpenSplitWorkspace) {
+                                                                    if (onOpenSplitWorkspace) {
                                                                         onOpenSplitWorkspace('server');
                                                                     } else if (msg.cardData.route) {
                                                                         navigate(msg.cardData.route);
@@ -704,7 +810,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                                 }}
                                                                 className="px-3.5 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shrink-0"
                                                             >
-                                                                <span>{msg.cardData.btnText || '查看开服雷达'}</span>
+                                                                <span>{msg.cardData.btnText || '进入开服雷达'}</span>
                                                                 <ExternalLink className="w-3 h-3" />
                                                             </button>
                                                         </div>

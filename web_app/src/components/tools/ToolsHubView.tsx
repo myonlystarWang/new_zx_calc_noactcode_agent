@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Radio, Compass, Sparkles } from 'lucide-react';
 import clsx from 'clsx';
 import { ROUTE } from '../../routes';
@@ -40,6 +40,9 @@ interface ToolsHubViewProps {
 export const ToolsHubView: React.FC<ToolsHubViewProps> = ({ activeTool }) => {
     const navigate = useNavigate();
     const { toolSeg } = useParams<{ toolSeg: string }>();
+    const [searchParams] = useSearchParams();
+    const zhanQuParam = searchParams.get('zhanQu') || undefined;
+    const serverParam = searchParams.get('server') || undefined;
 
     const currentTab: ToolSubTab = (toolSeg as ToolSubTab) || activeTool || 'server';
 
@@ -81,7 +84,9 @@ export const ToolsHubView: React.FC<ToolsHubViewProps> = ({ activeTool }) => {
             </div>
 
             {/* 工具主体展示 */}
-            {currentTab === 'server' && <ServerRadarView />}
+            {currentTab === 'server' && (
+                <ServerRadarView initialZhanQu={zhanQuParam} initialServerName={serverParam} />
+            )}
             {currentTab === 'xyc' && <XycSimulatorView />}
             {currentTab === 'newtianyuan' && <NewTianYuanSimulatorView />}
         </div>

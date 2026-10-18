@@ -78,13 +78,26 @@ function makeFsMock() {
         .map((f) => readJson(path.join(GAME_DATA, f)));
     // T-15b：class_status 分支读 skills.json._meta.supportRoles（与真实实现同源）
     const skillsMeta = readJson(path.join(GAME_DATA, 'skills.json'))._meta ?? null;
+    // T-06：服务器按名查询（与真实 getServerList 同源）
+    const serverList = readJson(path.join(GAME_DATA, 'server_list.json'));
 
     return {
         // 返回 {...meta, Monsters:[...]} 形状（与真实实现一致，非扁平数组）；
         // 不算 displayAttributes——matchLocalIntent 所有读取均有 ?? MonsterAttributeModifiers 兜底
+        // T-11：_ADDS 附加怪并入母副本（与真实 getDungeons 一致）
         getDungeons: () => dungeonsMeta.map((meta) => ({
             ...meta,
-            Monsters: monstersByDungeon[meta.DungeonID] || [],
+            Monsters: [
+                ...(monstersByDungeon[meta.DungeonID] || []),
+                ...(monstersByDungeon[`${meta.DungeonID}_ADDS`] || [])
+            ]
+        })),
+        getDungeonsAsync: async () => dungeonsMeta.map((meta) => ({
+            ...meta,
+            Monsters: [
+                ...(monstersByDungeon[meta.DungeonID] || []),
+                ...(monstersByDungeon[`${meta.DungeonID}_ADDS`] || [])
+            ]
         })),
         // 与真实实现相同：过 isValidEquip 过滤（不过滤则候选数与线上不一致）
         getEquipList: async () => (Array.isArray(equipRaw) ? equipRaw : []).filter(isValidEquip),
@@ -94,6 +107,9 @@ function makeFsMock() {
         getAllCuratedSkills: async () => skillChunks.flat().filter(isValidSkill),
         // T-15b：skills.json._meta（真实实现在 loadSkills 时剥离 _meta 存 skillMeta）
         getSkillMeta: () => skillsMeta,
+        getSkillMetaAsync: async () => skillsMeta,
+        // T-06：server_list.json（真实实现 lazy load 缓存）
+        getServerList: async () => serverList,
     };
 }
 

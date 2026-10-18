@@ -2737,6 +2737,202 @@
       }
     }
   ],
+  "ZHENHAI_DUANLANG_T19_ADDS": [
+    {
+      "MonsterID": "FU_HUN_CHU_T19",
+      "MonsterName": "缚魂触",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1150,
+        "MonsterDefense": 230000,
+        "MonsterHealth": 2510818846,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 1255409423,
+        "healthBars": 2,
+        "zhenQi": 0,
+        "attack": 0,
+        "defense": 230000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 0,
+        "critDamage": 0,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1150,
+        "skillDodge": 180,
+        "skillHit": 999900,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "HUA_SHENG_CHU_T19",
+      "MonsterName": "化生触",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1150,
+        "MonsterDefense": 240000,
+        "MonsterHealth": 374546770,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 374546770,
+        "healthBars": 1,
+        "zhenQi": 0,
+        "attack": 230000,
+        "defense": 240000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 230,
+        "critDamage": 1350,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1150,
+        "skillDodge": 180,
+        "skillHit": 999900,
+        "ignoreReduction": 70
+      }
+    },
+    {
+      "MonsterID": "CHAO_YIN_GU_T19",
+      "MonsterName": "潮音骨",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1350,
+        "MonsterDefense": 260000,
+        "MonsterHealth": 4786353544,
+        "MonsterCriticalHitRateReduction": 160
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 1196588386,
+        "healthBars": 4,
+        "zhenQi": 0,
+        "attack": 0,
+        "defense": 260000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 0,
+        "critDamage": 0,
+        "resistance": 9999,
+        "critRateReduction": 160,
+        "critDamageReduction": 1350,
+        "skillDodge": 180,
+        "skillHit": 999900,
+        "ignoreReduction": 0
+      }
+    }
+  ],
+  "ZHENHAI_DUANLANG_T20_ADDS": [
+    {
+      "MonsterID": "FU_HUN_CHU_T20",
+      "MonsterName": "缚魂触",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1300,
+        "MonsterDefense": 340000,
+        "MonsterHealth": 2997137666,
+        "MonsterCriticalHitRateReduction": 195
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 1498568833,
+        "healthBars": 2,
+        "zhenQi": 0,
+        "attack": 0,
+        "defense": 340000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 0,
+        "critDamage": 0,
+        "resistance": 9999,
+        "critRateReduction": 195,
+        "critDamageReduction": 1300,
+        "skillDodge": 200,
+        "skillHit": 999900,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "HUA_SHENG_CHU_T20",
+      "MonsterName": "化生触",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1300,
+        "MonsterDefense": 350000,
+        "MonsterHealth": 460262193,
+        "MonsterCriticalHitRateReduction": 195
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 460262193,
+        "healthBars": 1,
+        "zhenQi": 0,
+        "attack": 320000,
+        "defense": 350000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 240,
+        "critDamage": 1450,
+        "resistance": 9999,
+        "critRateReduction": 195,
+        "critDamageReduction": 1300,
+        "skillDodge": 200,
+        "skillHit": 999900,
+        "ignoreReduction": 80
+      }
+    },
+    {
+      "MonsterID": "CHAO_YIN_GU_T20",
+      "MonsterName": "潮音骨",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1650,
+        "MonsterDefense": 370000,
+        "MonsterHealth": 15884100558,
+        "MonsterCriticalHitRateReduction": 235
+      },
+      "role": "add",
+      "displayAttributes": {
+        "level": 175,
+        "health": 1764900062,
+        "healthBars": 9,
+        "zhenQi": 0,
+        "attack": 0,
+        "defense": 370000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 5000,
+        "normalDodge": 2000,
+        "critRate": 0,
+        "critDamage": 0,
+        "resistance": 9999,
+        "critRateReduction": 235,
+        "critDamageReduction": 1650,
+        "skillDodge": 200,
+        "skillHit": 999900,
+        "ignoreReduction": 0
+      }
+    }
+  ],
   "ZHENHAI_DUANLANG_T21_ADDS": [
     {
       "MonsterID": "FU_HUN_CHU_T21",
