@@ -44,6 +44,9 @@ function formatAttrText(text: string): string {
     // 6. 【技能命中 +15.00%】修改为【增加技能命中 15.00】
     res = res.replace(/(?:增加)?技能命中\s*[+＋]\s*([\d\.]+)(?:%)?/g, '增加技能命中 $1');
 
+    // 7. 神机洗炼属性池等数值区间中的 ~ 替换为 " - "
+    res = res.replace(/~/g, ' - ');
+
     // 如果 + 或 - 前面紧挨着非空白字符，补充一个空格，对齐游戏原生规范（如 "攻击 +36.00%"）
     return res.replace(/([^\s])([+\-＋－])/g, '$1 $2');
 }
@@ -72,6 +75,9 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
     // 默认高亮 +11（主流分水岭档位），或用户指令中指定的阶位
     const [refLevel, setRefLevel] = useState<number>(initialRefLevel ?? 11);
+
+    // 是否展开未激活的「神机洗炼属性池」
+    const [showLockedPool, setShowLockedPool] = useState<boolean>(false);
 
     // 当父级传入的 item 改变时同步更新
     useEffect(() => {
@@ -205,7 +211,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                         {!hasYunling && seriesInfo && seriesInfo.items.length > 1 && (
                             <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
                                 <span className="text-[10px] sm:text-[11px] font-sans text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30 whitespace-nowrap">
-                                    {seriesInfo.currentIndex + 1}级
+                                    {seriesInfo.currentTierLabel || `${seriesInfo.currentIndex + 1}阶`}
                                 </span>
                                 <button
                                     type="button"
@@ -321,8 +327,15 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                 {/* 神机属性洗炼池：仅当装备支持蕴灵且具备神机属性时展示 */}
                 {hasYunling && currentItem.sj && Object.entries(currentItem.sj).length > 0 && (
                     <div className="mt-2 pt-1 border-t border-[#1c2436]/60 flex flex-col gap-1">
-                        <div className="text-[12px] font-bold text-amber-300">
-                            神机洗炼属性池:
+                        <div className="flex items-center justify-between text-[12px] font-bold text-amber-300">
+                            <span>神机洗炼属性池:</span>
+                            <button
+                                type="button"
+                                onClick={() => setShowLockedPool(prev => !prev)}
+                                className="text-[11px] text-cyan-400 hover:underline cursor-pointer font-sans font-normal"
+                            >
+                                {showLockedPool ? '仅显示已激活档位' : '展开未激活档位池'}
+                            </button>
                         </div>
                         {Object.entries(currentItem.sj).map(([groupKey, bonusList]) => {
                             if (!bonusList || bonusList.length === 0) return null;
@@ -332,21 +345,30 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                         const tierItems = bonusList.filter(b => b.l === tier);
                                         if (tierItems.length === 0) return null;
                                         const isUnlocked = refLevel >= tier;
+                                        const shouldShowList = isUnlocked || showLockedPool;
 
                                         return (
                                             <div
                                                 key={tier}
                                                 className="text-[12px] pl-1"
-                                                style={{
-                                                    color: isUnlocked ? '#ffd272' : GAME_COLORS.TEXT_LOCKED
-                                                }}
                                             >
-                                                <div className="font-semibold flex items-center justify-between text-[11px] mb-0.5 opacity-90">
+                                                <div
+                                                    className="font-semibold flex items-center justify-between text-[11px] mb-0.5 opacity-90"
+                                                    style={{
+                                                        color: isUnlocked ? '#ffd272' : GAME_COLORS.TEXT_LOCKED
+                                                    }}
+                                                >
                                                     <span>+{tier}档位</span>
                                                     <span>{isUnlocked ? '已激活' : '需蕴灵 +' + tier}</span>
                                                 </div>
-                                                {tierItems.map((bi, bIdx) => (
-                                                    <div key={bIdx} className="pl-2">
+                                                {shouldShowList && tierItems.map((bi, bIdx) => (
+                                                    <div
+                                                        key={bIdx}
+                                                        className="pl-2"
+                                                        style={{
+                                                            color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED
+                                                        }}
+                                                    >
                                                         · {formatAttrText(bi.d)}
                                                     </div>
                                                 ))}

@@ -66,7 +66,7 @@
   },
   {
     "id": "tool-nlq-01",
-    "input": "凝灵契",
+    "input": "凝灵契模拟",
     "expect": {
       "cardType": "tool_card",
       "cardData.workspaceMode": "ninglingqi"
@@ -439,14 +439,40 @@
     "id": "skill-bare-01",
     "input": "技能",
     "expect": {
-      "cardType": "skill_candidates",
-      "cardData.candidates.length": 20
+      "cardType": "skill_hub"
     },
     "tags": [
-      "standard",
+      "hub",
       "skill"
     ],
-    "assert": "strong"
+    "assert": "strong",
+    "note": "裸词「技能」弹出技能图鉴导航卡"
+  },
+  {
+    "id": "hub-equip-01",
+    "input": "装备",
+    "expect": {
+      "cardType": "equip_hub"
+    },
+    "tags": [
+      "hub",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "裸词「装备」弹出装备全景导航卡"
+  },
+  {
+    "id": "t18-pet-bare-01",
+    "input": "宠物",
+    "expect": {
+      "cardType": "pet_pledge"
+    },
+    "tags": [
+      "t18",
+      "pet"
+    ],
+    "assert": "strong",
+    "note": "裸词「宠物」直达宠物结誓与誓印卡片"
   },
   {
     "id": "skill-class-01",
@@ -466,9 +492,9 @@
     "id": "skill-class-02",
     "input": "逐霜技能",
     "expect": {
-      "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.skill.name": "横槊"
+      "cardType": "skill_hub",
+      "cardData.title": "逐霜技能分类导航",
+      "cardData.options.length": 5
     },
     "tags": [
       "standard",
@@ -599,22 +625,22 @@
     "id": "pinyin-skill-combo",
     "input": "zhushuangjineng",
     "expect": {
-      "cardType": "skill_candidates",
-      "cardData.candidates.length": 30
+      "cardType": "skill_hub",
+      "cardData.options.length": 5
     },
     "tags": [
       "pinyin",
       "skill"
     ],
     "assert": "strong",
-    "note": "多术语拼接（逐霜+技能）也走通"
+    "note": "多术语拼接（逐霜+技能）转译为逐霜技能并弹出技能分类 Hub"
   },
   {
     "id": "pinyin-skill-spaced",
     "input": "zhu shuang ji neng",
     "expect": {
-      "cardType": "skill_candidates",
-      "cardData.candidates.length": 30
+      "cardType": "skill_hub",
+      "cardData.options.length": 5
     },
     "tags": [
       "pinyin",
@@ -1482,15 +1508,16 @@
     "id": "class-hub-no-overtrigger-01",
     "input": "逐霜技能",
     "expect": {
-      "cardType": "skill_candidates",
-      "cardData.candidates.length": 30
+      "cardType": "skill_hub",
+      "cardData.title": "逐霜技能分类导航",
+      "cardData.options.length": 5
     },
     "tags": [
       "conflict",
       "skill"
     ],
     "assert": "strong",
-    "note": "T-15 防过触发：分流卡仅精确等于职业名时触发，带后缀/修饰的输入必须继续走原意图"
+    "note": "T-15: 职业技能弹出该门派专属技能分类 Hub"
   },
   {
     "id": "slot-hub-jinnang-01",
@@ -1543,14 +1570,14 @@
     "expect": {
       "cardType": "slot_hub",
       "cardData.slot": "玺绶",
-      "cardData.options.length": 8
+      "cardData.options.length": 9
     },
     "tags": [
       "slot-hub",
       "series"
     ],
     "assert": "strong",
-    "note": "T-16 用户分诊：风云/惊天/齐天/翻天/覆天/社稷/跨服 7 类 + 其他玺绶"
+    "note": "T-16/T-18 用户分诊：周年印/风云/惊天/齐天/翻天/覆天/社稷/跨服 8 类 + 其他玺绶"
   },
   {
     "id": "series-xiaoyao-01",
@@ -1622,17 +1649,290 @@
     "assert": "strong"
   },
   {
-    "id": "block-peizhang-01",
-    "input": "佩章",
+    "id": "yin-suffix-shifang-01",
+    "input": "十方度厄",
     "expect": {
-      "@textIncludes": "暂时未能完全理解"
+      "cardType": "equip_candidates"
     },
     "tags": [
-      "block",
-      "equip"
+      "series",
+      "equip",
+      "yin"
     ],
-    "assert": "strong",
-    "note": "用户口径：佩章整类屏蔽（不需要分类）"
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-shifang-02",
+    "input": "十方渡厄",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-hongmeng-01",
+    "input": "鸿蒙问道",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-shijue-01",
+    "input": "弑绝千军",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-xuanchi-01",
+    "input": "玄螭归墟",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-xuanchi-02",
+    "input": "玄离归墟",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-qianyuan-01",
+    "input": "乾元擎雷",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-qianyuan-02",
+    "input": "乾元晴雷",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-wuji-01",
+    "input": "无极封曜",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-wuji-02",
+    "input": "无极封耀",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-huanyu-01",
+    "input": "寰宇弄影",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-lingxiao-01",
+    "input": "凌霄点浪",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-xuanming-01",
+    "input": "玄冥卷月",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-longxiang-01",
+    "input": "龙象承脉",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-xingfu-01",
+    "input": "星浮曲岸",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-chengshui-01",
+    "input": "澄水辟寒",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-chengshui-02",
+    "input": "澄水避寒",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-huaishan-01",
+    "input": "怀山藏渊",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-ningshuang-01",
+    "input": "凝霜揽辉",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-suffix-ningshuang-02",
+    "input": "凝霜揽晖",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-futian-shifang-01",
+    "input": "覆天印 十方度厄",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "series",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "yin-futian-shifang-02",
+    "input": "覆天印·十方度厄",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "exact",
+      "equip",
+      "yin"
+    ],
+    "assert": "strong"
   },
   {
     "id": "block-bahuang-01",
@@ -1677,7 +1977,7 @@
     "input": "所有玺绶",
     "expect": {
       "cardType": "equip_candidates",
-      "cardData.totalCount": 188
+      "cardData.totalCount": 189
     },
     "tags": [
       "broad",
@@ -1760,6 +2060,49 @@
     ],
     "assert": "strong",
     "note": "裸「状态」无职业前缀不触发"
+  },
+  {
+    "id": "t15b-status-generic-01",
+    "input": "职业状态",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.className": "逐霜",
+      "cardData.isDps": true
+    },
+    "tags": [
+      "class-status",
+      "generic"
+    ],
+    "assert": "strong",
+    "note": "裸词「职业状态」默认展示热门职业并附带全职业切换"
+  },
+  {
+    "id": "t15b-status-generic-02",
+    "input": "各职业状态",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.className": "逐霜"
+    },
+    "tags": [
+      "class-status",
+      "generic"
+    ],
+    "assert": "strong",
+    "note": "裸词「各职业状态」直达全景职业状态卡"
+  },
+  {
+    "id": "t15b-status-space-01",
+    "input": "逐霜 状态",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.className": "逐霜"
+    },
+    "tags": [
+      "class-status",
+      "space"
+    ],
+    "assert": "strong",
+    "note": "关键词+空格容错「逐霜 状态」"
   },
   {
     "id": "t15b-focus-zero-01",
@@ -1996,5 +2339,2829 @@
     ],
     "assert": "strong",
     "note": "T-11：同名小怪按副本难度分 2 候选（流波初识/困难，属性不同可切换）"
+  },
+  {
+    "id": "t18-peizhang-bare",
+    "input": "佩章",
+    "expect": {
+      "cardType": "peizhang",
+      "cardData.selectedTypeId": "pixiu",
+      "cardData.refineLevel": 11
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "T-18：裸佩章输入命中圣粹佩章卡（默认貔貅+11）"
+  },
+  {
+    "id": "t18-peizhang-jiaotu-15",
+    "input": "椒图佩章+15",
+    "expect": {
+      "cardType": "peizhang",
+      "cardData.selectedTypeId": "jiaotu",
+      "cardData.refineLevel": 15
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "T-18：椒图佩章带+15等级命中"
+  },
+  {
+    "id": "t18-peizhang-pixiu-bare",
+    "input": "貔貅佩章",
+    "expect": {
+      "cardType": "peizhang",
+      "cardData.selectedTypeId": "pixiu"
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "T-18：貔貅佩章精确命中"
+  },
+  {
+    "id": "t18-peizhang-huifeng",
+    "input": "回风佩章",
+    "expect": {
+      "cardType": "peizhang",
+      "cardData.selectedTypeId": "huifeng"
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "T-18：回风佩章分类命中"
+  },
+  {
+    "id": "t18-peizhang-jiaoduan-bare",
+    "input": "角端",
+    "expect": {
+      "cardType": "peizhang",
+      "cardData.selectedTypeId": "jiaoduan"
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "T-18：角端佩章名称命中"
+  },
+  {
+    "id": "t18-peizhang-hanying",
+    "input": "含瑛佩章",
+    "expect": {
+      "cardType": "peizhang",
+      "cardData.selectedTypeId": "hanying"
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "T-18：含瑛佩章分类命中"
+  },
+  {
+    "id": "t18-ninglingqi-bare",
+    "input": "凝灵契",
+    "expect": {
+      "cardType": "ninglingqi",
+      "cardData.data.name": "宸极·凝灵契",
+      "cardData.initialHole": 12
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "T-18：裸凝灵契输入命中宸极·凝灵契信息卡（默认12孔）"
+  },
+  {
+    "id": "t18-ninglingqi-chenji",
+    "input": "宸极",
+    "expect": {
+      "cardType": "ninglingqi",
+      "cardData.data.name": "宸极·凝灵契"
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "T-18：宸极输入命中宸极·凝灵契信息卡"
+  },
+  {
+    "id": "t18-ninglingqi-fullname",
+    "input": "宸极凝灵契",
+    "expect": {
+      "cardType": "ninglingqi",
+      "cardData.data.name": "宸极·凝灵契"
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "T-18：全名宸极凝灵契命中"
+  },
+  {
+    "id": "t18-ninglingqi-lingqi",
+    "input": "灵契",
+    "expect": {
+      "cardType": "ninglingqi",
+      "cardData.data.name": "宸极·凝灵契"
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "T-18：灵契简写命中"
+  },
+  {
+    "id": "t18-ninglingqi-holes",
+    "input": "凝灵契 6孔",
+    "expect": {
+      "cardType": "ninglingqi",
+      "cardData.initialHole": 6
+    },
+    "tags": [
+      "equip",
+      "t18",
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "T-18：带孔数参数命中"
+  },
+  {
+    "id": "t18-ninglingqi-sim-tool",
+    "input": "凝灵契模拟",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.workspaceMode": "ninglingqi"
+    },
+    "tags": [
+      "tool",
+      "t18",
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "T-18：模拟关键词分流至凝灵契模拟器工具卡"
+  },
+  {
+    "id": "t18-pet-pledge-01",
+    "input": "宠物结誓",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "preview"
+    },
+    "tags": [
+      "pet_pledge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：宠物结誓标准命中"
+  },
+  {
+    "id": "t18-pet-pledge-02",
+    "input": "飞天鼠",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialPetId": "feitianshu"
+    },
+    "tags": [
+      "pet_pledge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：飞天鼠命中并定位到飞天鼠"
+  },
+  {
+    "id": "t18-pet-pledge-03",
+    "input": "波波",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialPetId": "bobo"
+    },
+    "tags": [
+      "pet_pledge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：波波命中并定位到波波"
+  },
+  {
+    "id": "t18-pet-pledge-04",
+    "input": "鹏鹏",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialPetId": "pengpeng"
+    },
+    "tags": [
+      "pet_pledge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：鹏鹏命中并定位到鹏鹏"
+  },
+  {
+    "id": "t18-pet-pledge-05",
+    "input": "御宝印",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "guide"
+    },
+    "tags": [
+      "pet_pledge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：御宝印命中并切换到誓印指南 Tab"
+  },
+  {
+    "id": "t18-pet-pledge-06",
+    "input": "通灵印",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "guide"
+    },
+    "tags": [
+      "pet_pledge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：通灵印命中并切换到誓印指南 Tab"
+  },
+  {
+    "id": "t18-pet-pledge-07",
+    "input": "结誓属性",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "table"
+    },
+    "tags": [
+      "pet_pledge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：结誓属性命中并切换到对比表 Tab"
+  },
+  {
+    "id": "t18-zhenling-upgrade-01",
+    "input": "阵灵升级",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：阵灵升级消耗对照卡"
+  },
+  {
+    "id": "t18-zhenling-upgrade-02",
+    "input": "沧浪冰珠",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：沧浪冰珠材料查询"
+  },
+  {
+    "id": "t18-zhenling-upgrade-03",
+    "input": "6金2紫",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：6金2紫主流配置总需测算"
+  },
+  {
+    "id": "t18-zhenling-upgrade-04",
+    "input": "阵灵聚灵",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：阵灵聚灵阶数消耗"
+  },
+  {
+    "id": "t18-zhenling-upgrade-05",
+    "input": "聚灵丹",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：沧热聚灵丹材料查询"
+  },
+  {
+    "id": "t18-zhenling-upgrade-06",
+    "input": "聚灵",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：聚灵单词命中"
+  },
+  {
+    "id": "t18-zhenling-upgrade-07",
+    "input": "聚灵咒",
+    "expect": {
+      "cardType": "skill_candidates"
+    },
+    "tags": [
+      "skill",
+      "ghostking"
+    ],
+    "assert": "strong",
+    "note": "T-18边界：聚灵咒为鬼王技能候选，绝不被阵灵聚灵升级劫持"
+  },
+  {
+    "id": "t18-fabao-upgrade-01",
+    "input": "法宝经验",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": [
+      "fabao_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：法宝经验等级对照卡"
+  },
+  {
+    "id": "t18-fabao-upgrade-02",
+    "input": "天龙魔血",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": [
+      "fabao_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：天龙魔血查询法宝经验"
+  },
+  {
+    "id": "t18-fabao-upgrade-03",
+    "input": "真龙圣血",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": [
+      "fabao_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：真龙圣血查询法宝经验"
+  },
+  {
+    "id": "t18-fabao-upgrade-04",
+    "input": "法宝升级",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": [
+      "fabao_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：法宝升级经验查询"
+  },
+  {
+    "id": "t18-fabao-upgrade-05",
+    "input": "法宝40级",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": [
+      "fabao_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：法宝满级40级查询"
+  },
+  {
+    "id": "t18-fabao-upgrade-06",
+    "input": "法宝",
+    "expect": {
+      "cardType": "fabao_candidates"
+    },
+    "tags": [
+      "fabao",
+      "boundary"
+    ],
+    "assert": "strong",
+    "note": "T-18边界：裸词法宝返回全量法宝候选，绝不被法宝升级经验卡劫持"
+  },
+  {
+    "id": "t18-hesui-jinyin-01",
+    "input": "贺岁金印（柒）",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "贺岁金印（柒）"
+    },
+    "tags": [
+      "equip",
+      "hesui_jinyin",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：贺岁金印（柒）精确中文数字查询"
+  },
+  {
+    "id": "t18-hesui-jinyin-02",
+    "input": "贺岁金印7",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "贺岁金印（柒）"
+    },
+    "tags": [
+      "equip",
+      "hesui_jinyin",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：贺岁金印7阿拉伯数字别名归一化"
+  },
+  {
+    "id": "t18-hesui-jinyin-03",
+    "input": "贺岁金印（壹拾玖）",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "贺岁金印（壹拾玖）"
+    },
+    "tags": [
+      "equip",
+      "hesui_jinyin",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：贺岁金印（壹拾玖）满阶查询"
+  },
+  {
+    "id": "t18-hesui-jinyin-04",
+    "input": "周年印",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "贺岁金印（壹拾玖）"
+    },
+    "tags": [
+      "equip",
+      "hesui_jinyin",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：玩家俗称周年印系列查询（聚合默认顶阶支持升降级）"
+  },
+  {
+    "id": "t18-hesui-jinyin-05",
+    "input": "贺岁金印",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "贺岁金印（壹拾玖）"
+    },
+    "tags": [
+      "equip",
+      "hesui_jinyin",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：贺岁金印全系列入口查询"
+  },
+  {
+    "id": "t18-hesui-jinyin-06",
+    "input": "周年印19",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "贺岁金印（壹拾玖）"
+    },
+    "tags": [
+      "equip",
+      "hesui_jinyin",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：周年印19阶别称查询"
+  },
+  {
+    "id": "t18-hesui-jinyin-07",
+    "input": "7周年印",
+    "expect": {
+      "cardType": "equip",
+      "cardData.equip.name": "贺岁金印（柒）"
+    },
+    "tags": [
+      "equip",
+      "hesui_jinyin",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：7周年印前置数字别称查询"
+  },
+  {
+    "id": "t18-exp-hub-01",
+    "input": "经验",
+    "expect": {
+      "cardType": "exp_hub",
+      "cardData.options.length": 2
+    },
+    "tags": [
+      "exp-hub",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：输入通用词「经验」，分流至法宝经验与阵灵经验"
+  },
+  {
+    "id": "t18-zhenling-exp-01",
+    "input": "阵灵经验",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：输入「阵灵经验」直接展示阵灵聚灵升级表"
+  },
+  {
+    "id": "jiuwenlang-01",
+    "input": "九纹琅",
+    "expect": {
+      "cardType": "jiuwenlang"
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅卡片：直接输入九纹琅"
+  },
+  {
+    "id": "jiuwenlang-02",
+    "input": "佩章九纹琅",
+    "expect": {
+      "cardType": "jiuwenlang"
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅卡片：复合词佩章九纹琅不被佩章泛化劫持"
+  },
+  {
+    "id": "jiuwenlang-03",
+    "input": "九纹属性",
+    "expect": {
+      "cardType": "jiuwenlang"
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅卡片：九纹属性查询"
+  },
+  {
+    "id": "jiuwenlang-04",
+    "input": "九纹琅升级",
+    "expect": {
+      "cardType": "jiuwenlang"
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅卡片：九纹琅升级查询"
+  },
+  {
+    "id": "jiuwenlang-05",
+    "input": "九纹琅15级",
+    "expect": {
+      "cardType": "jiuwenlang",
+      "cardData.initialLevel": 15
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅卡片：带等级查询解析 15 级"
+  },
+  {
+    "id": "tianyuan-old-01",
+    "input": "旧天缘",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "weapon"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：直接输入旧天缘默认定位天命武器"
+  },
+  {
+    "id": "tianyuan-old-02",
+    "input": "旧天缘属性",
+    "expect": {
+      "cardType": "tianyuan_old"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：旧天缘属性精确查询"
+  },
+  {
+    "id": "tianyuan-old-03",
+    "input": "天缘属性",
+    "expect": {
+      "cardType": "tianyuan_old"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：输入天缘属性命中旧天缘卡片"
+  },
+  {
+    "id": "tianyuan-old-04",
+    "input": "鞋子天缘",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "shoes"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：按部位鞋子天缘定位靴子"
+  },
+  {
+    "id": "tianyuan-old-05",
+    "input": "衣服天缘5级",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "armor",
+      "cardData.initialLevel": 5
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：带部位与等级衣服天缘5级"
+  },
+  {
+    "id": "xingsu-01",
+    "input": "星宿",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "chonghua",
+      "cardData.initialRank": 5
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：裸词星宿默认展示重华星辰满星"
+  },
+  {
+    "id": "xingsu-02",
+    "input": "星宿属性",
+    "expect": {
+      "cardType": "xingsu"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：星宿属性查询"
+  },
+  {
+    "id": "xingsu-03",
+    "input": "启明星辰",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "qiming"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：按类型启明星辰（玉衡位）定位"
+  },
+  {
+    "id": "xingsu-04",
+    "input": "荧惑星辰3星",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "yinghuo",
+      "cardData.initialRank": 3
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：带星级荧惑星辰3星查询"
+  },
+  {
+    "id": "xingsu-05",
+    "input": "重华星宿",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "chonghua"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：重华星宿别名查询"
+  },
+  {
+    "id": "baoshi-01",
+    "input": "宝石",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "hundun_jingang",
+      "cardData.initialLevel": 6,
+      "cardData.initialQuality": "perfect"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：裸词宝石默认展示混沌金刚珠Lv6完美"
+  },
+  {
+    "id": "baoshi-02",
+    "input": "宝石属性",
+    "expect": {
+      "cardType": "baoshi"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：宝石属性全局查询"
+  },
+  {
+    "id": "baoshi-03",
+    "input": "混沌金刚珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "hundun_jingang"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：按宝石名混沌金刚珠精准定位"
+  },
+  {
+    "id": "baoshi-04",
+    "input": "普通宝石",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialQuality": "normal"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：指定普通品质宝石"
+  },
+  {
+    "id": "baoshi-05",
+    "input": "10级宝石",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialLevel": 10
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：指定10级满级前瞻"
+  },
+  {
+    "id": "fashion-skill-01",
+    "input": "时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "snake_jinshe"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：裸词时装技能默认展示金蛇狂舞"
+  },
+  {
+    "id": "fashion-skill-02",
+    "input": "贺岁时装技能",
+    "expect": {
+      "cardType": "fashion_skill"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：贺岁时装技能全局查询"
+  },
+  {
+    "id": "fashion-skill-03",
+    "input": "金蛇狂舞",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "snake_jinshe"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：按技能名金蛇狂舞精准定位"
+  },
+  {
+    "id": "fashion-skill-04",
+    "input": "诸事顺利",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "boar_zhushi"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：猪年生肖联动被动诸事顺利"
+  },
+  {
+    "id": "fashion-skill-05",
+    "input": "白云苍狗",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "dog_baiyun"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：狗年破防特技白云苍狗"
+  },
+  {
+    "id": "jiuwenlang-06",
+    "input": "九纹琅 1级",
+    "expect": {
+      "cardType": "jiuwenlang",
+      "cardData.initialLevel": 1
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅：指定1级"
+  },
+  {
+    "id": "jiuwenlang-07",
+    "input": "九纹琅 5级",
+    "expect": {
+      "cardType": "jiuwenlang",
+      "cardData.initialLevel": 5
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅：指定5级初阶"
+  },
+  {
+    "id": "jiuwenlang-08",
+    "input": "九纹琅 10级",
+    "expect": {
+      "cardType": "jiuwenlang",
+      "cardData.initialLevel": 10
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅：指定10级中阶"
+  },
+  {
+    "id": "jiuwenlang-09",
+    "input": "九纹琅 15级",
+    "expect": {
+      "cardType": "jiuwenlang",
+      "cardData.initialLevel": 15
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅：指定15级高阶"
+  },
+  {
+    "id": "jiuwenlang-10",
+    "input": "九纹琅 20级",
+    "expect": {
+      "cardType": "jiuwenlang",
+      "cardData.initialLevel": 20
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅：指定20级满阶"
+  },
+  {
+    "id": "jiuwenlang-13",
+    "input": "九纹等级",
+    "expect": {
+      "cardType": "jiuwenlang"
+    },
+    "tags": [
+      "jiuwenlang",
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "九纹琅：九纹等级查询"
+  },
+  {
+    "id": "tianyuan-old-06",
+    "input": "武器天缘",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "weapon"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：武器部位"
+  },
+  {
+    "id": "tianyuan-old-07",
+    "input": "武器天缘 10级",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "weapon",
+      "cardData.initialLevel": 10
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：天命武器满级10级"
+  },
+  {
+    "id": "tianyuan-old-08",
+    "input": "武器天缘 1级",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "weapon",
+      "cardData.initialLevel": 1
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：天命武器初始1级"
+  },
+  {
+    "id": "tianyuan-old-09",
+    "input": "头盔天缘",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "helmet"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：头盔部位"
+  },
+  {
+    "id": "tianyuan-old-10",
+    "input": "头盔天缘 10级",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "helmet",
+      "cardData.initialLevel": 10
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：头盔部位10级"
+  },
+  {
+    "id": "tianyuan-old-11",
+    "input": "帽子天缘",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "helmet"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：帽子部位别名"
+  },
+  {
+    "id": "tianyuan-old-12",
+    "input": "帽子天缘 8级",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "helmet",
+      "cardData.initialLevel": 8
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：帽子部位8级"
+  },
+  {
+    "id": "tianyuan-old-13",
+    "input": "衣服天缘",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "armor"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：衣服部位"
+  },
+  {
+    "id": "tianyuan-old-14",
+    "input": "衣服天缘 10级",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "armor",
+      "cardData.initialLevel": 10
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：衣服部位10级"
+  },
+  {
+    "id": "tianyuan-old-15",
+    "input": "铠甲天缘",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "armor"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：铠甲别名"
+  },
+  {
+    "id": "tianyuan-old-16",
+    "input": "靴子天缘",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "shoes"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：靴子部位"
+  },
+  {
+    "id": "tianyuan-old-17",
+    "input": "靴子天缘 10级",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "shoes",
+      "cardData.initialLevel": 10
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：靴子部位10级"
+  },
+  {
+    "id": "tianyuan-old-18",
+    "input": "鞋子天缘 10级",
+    "expect": {
+      "cardType": "tianyuan_old",
+      "cardData.initialPartId": "shoes",
+      "cardData.initialLevel": 10
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：鞋子部位别名10级"
+  },
+  {
+    "id": "tianyuan-old-19",
+    "input": "旧天缘洗炼",
+    "expect": {
+      "cardType": "tianyuan_old"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：洗炼查询"
+  },
+  {
+    "id": "tianyuan-old-20",
+    "input": "天命天缘",
+    "expect": {
+      "cardType": "tianyuan_old"
+    },
+    "tags": [
+      "tianyuan_old",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "旧天缘：天命天缘词条池"
+  },
+  {
+    "id": "xingsu-06",
+    "input": "启明星辰 1星",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "qiming",
+      "cardData.initialRank": 1
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：启明1星"
+  },
+  {
+    "id": "xingsu-07",
+    "input": "启明星辰 5星",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "qiming",
+      "cardData.initialRank": 5
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：启明满星5星"
+  },
+  {
+    "id": "xingsu-08",
+    "input": "荧惑星辰",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "yinghuo"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：荧惑开阳位"
+  },
+  {
+    "id": "xingsu-09",
+    "input": "荧惑星辰 1星",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "yinghuo",
+      "cardData.initialRank": 1
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：荧惑1星"
+  },
+  {
+    "id": "xingsu-10",
+    "input": "荧惑星辰 5星",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "yinghuo",
+      "cardData.initialRank": 5
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：荧惑满星5星"
+  },
+  {
+    "id": "xingsu-11",
+    "input": "重华星辰",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "chonghua"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：重华瑶光位"
+  },
+  {
+    "id": "xingsu-12",
+    "input": "重华星辰 1星",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "chonghua",
+      "cardData.initialRank": 1
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：重华1星"
+  },
+  {
+    "id": "xingsu-13",
+    "input": "重华星辰 3星",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "chonghua",
+      "cardData.initialRank": 3
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：重华3星"
+  },
+  {
+    "id": "xingsu-14",
+    "input": "重华星辰 5星",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "chonghua",
+      "cardData.initialRank": 5
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：重华满星5星"
+  },
+  {
+    "id": "xingsu-15",
+    "input": "玉衡星宿",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "qiming"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：玉衡星宿定位启明"
+  },
+  {
+    "id": "xingsu-16",
+    "input": "开阳星宿",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "yinghuo"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：开阳星宿定位荧惑"
+  },
+  {
+    "id": "xingsu-17",
+    "input": "瑶光星宿",
+    "expect": {
+      "cardType": "xingsu",
+      "cardData.initialTypeId": "chonghua"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：瑶光星宿定位重华"
+  },
+  {
+    "id": "xingsu-18",
+    "input": "星宿升星",
+    "expect": {
+      "cardType": "xingsu"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：升星增益全局查询"
+  },
+  {
+    "id": "xingsu-19",
+    "input": "星宿升级",
+    "expect": {
+      "cardType": "xingsu"
+    },
+    "tags": [
+      "xingsu",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "星宿：升级全局查询"
+  },
+  {
+    "id": "baoshi-06",
+    "input": "三昧紫阳珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "sanwei_ziyang"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：三昧紫阳珠定位"
+  },
+  {
+    "id": "baoshi-07",
+    "input": "元运断金珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "yuanyun_duanjin"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：元运断金珠定位"
+  },
+  {
+    "id": "baoshi-08",
+    "input": "天心断金珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "tianxin_duanjin"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：天心断金珠定位"
+  },
+  {
+    "id": "baoshi-09",
+    "input": "煌燿金刚珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "huangyao_jingang"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：煌燿金刚珠定位"
+  },
+  {
+    "id": "baoshi-10",
+    "input": "培元断金珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "peiyuan_duanjin"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：培元断金珠定位"
+  },
+  {
+    "id": "baoshi-11",
+    "input": "醒神碧灵珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "xingshen_biling"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：醒神碧灵珠定位"
+  },
+  {
+    "id": "baoshi-12",
+    "input": "渡劫碧灵珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "dujie_biling"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：渡劫碧灵珠定位"
+  },
+  {
+    "id": "baoshi-13",
+    "input": "夺魄碧灵珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "duopo_biling"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：夺魄碧灵珠定位"
+  },
+  {
+    "id": "baoshi-14",
+    "input": "神行紫阳珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "shenxing_ziyang"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：神行紫阳珠定位"
+  },
+  {
+    "id": "baoshi-15",
+    "input": "无极紫阳珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "wuji_ziyang"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：无极紫阳珠定位"
+  },
+  {
+    "id": "baoshi-16",
+    "input": "避尘金刚珠",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "bichen_jingang"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：避尘金刚珠定位"
+  },
+  {
+    "id": "baoshi-17",
+    "input": "金刚珠",
+    "expect": {
+      "cardType": "baoshi"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：金刚珠大类"
+  },
+  {
+    "id": "baoshi-18",
+    "input": "紫阳珠",
+    "expect": {
+      "cardType": "baoshi"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：紫阳珠大类"
+  },
+  {
+    "id": "baoshi-19",
+    "input": "断金珠",
+    "expect": {
+      "cardType": "baoshi"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：断金珠大类"
+  },
+  {
+    "id": "baoshi-20",
+    "input": "碧灵珠",
+    "expect": {
+      "cardType": "baoshi"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：碧灵珠大类"
+  },
+  {
+    "id": "baoshi-21",
+    "input": "普通宝石 1级",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialQuality": "normal",
+      "cardData.initialLevel": 1
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：普通宝石1级"
+  },
+  {
+    "id": "baoshi-22",
+    "input": "普通宝石 6级",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialQuality": "normal",
+      "cardData.initialLevel": 6
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：普通宝石6级"
+  },
+  {
+    "id": "baoshi-23",
+    "input": "完美宝石 6级",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialQuality": "perfect",
+      "cardData.initialLevel": 6
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：完美宝石6级"
+  },
+  {
+    "id": "baoshi-24",
+    "input": "完美宝石 8级",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialQuality": "perfect",
+      "cardData.initialLevel": 8
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：完美宝石8级"
+  },
+  {
+    "id": "baoshi-25",
+    "input": "三昧紫阳珠 10级",
+    "expect": {
+      "cardType": "baoshi",
+      "cardData.initialGemId": "sanwei_ziyang",
+      "cardData.initialLevel": 10
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：三昧紫阳珠10级"
+  },
+  {
+    "id": "baoshi-26",
+    "input": "宝石升级",
+    "expect": {
+      "cardType": "baoshi"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：宝石升级"
+  },
+  {
+    "id": "baoshi-27",
+    "input": "宝石镶嵌",
+    "expect": {
+      "cardType": "baoshi"
+    },
+    "tags": [
+      "baoshi",
+      "equip"
+    ],
+    "assert": "strong",
+    "note": "宝石：宝石镶嵌测算"
+  },
+  {
+    "id": "fashion-skill-06",
+    "input": "虎年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "tiger_fuxing"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：虎年时装"
+  },
+  {
+    "id": "fashion-skill-07",
+    "input": "虎年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "tiger_fuxing"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：虎年时装技能"
+  },
+  {
+    "id": "fashion-skill-08",
+    "input": "福星高照",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "tiger_fuxing"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：福星高照特技"
+  },
+  {
+    "id": "fashion-skill-09",
+    "input": "兔年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "rabbit_yuque"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：兔年时装"
+  },
+  {
+    "id": "fashion-skill-10",
+    "input": "兔年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "rabbit_yuque"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：兔年时装技能"
+  },
+  {
+    "id": "fashion-skill-11",
+    "input": "玉阙玄天",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "rabbit_yuque"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：玉阙玄天特技"
+  },
+  {
+    "id": "fashion-skill-12",
+    "input": "龙年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "dragon_longteng"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：龙年时装"
+  },
+  {
+    "id": "fashion-skill-13",
+    "input": "龙年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "dragon_longteng"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：龙年时装技能"
+  },
+  {
+    "id": "fashion-skill-14",
+    "input": "龙腾四海",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "dragon_longteng"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：龙腾四海特技"
+  },
+  {
+    "id": "fashion-skill-15",
+    "input": "蛇年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "snake_jinshe"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：蛇年时装"
+  },
+  {
+    "id": "fashion-skill-16",
+    "input": "蛇年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "snake_jinshe"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：蛇年时装技能"
+  },
+  {
+    "id": "fashion-skill-17",
+    "input": "马年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "horse_tianma"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：马年时装"
+  },
+  {
+    "id": "fashion-skill-18",
+    "input": "马年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "horse_tianma"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：马年时装技能"
+  },
+  {
+    "id": "fashion-skill-19",
+    "input": "天马行空",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "horse_tianma"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：天马行空特技"
+  },
+  {
+    "id": "fashion-skill-20",
+    "input": "羊年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "goat_sanyang"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：羊年时装"
+  },
+  {
+    "id": "fashion-skill-21",
+    "input": "羊年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "goat_sanyang"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：羊年时装技能"
+  },
+  {
+    "id": "fashion-skill-22",
+    "input": "三阳开泰",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "goat_sanyang"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：三阳开泰特技"
+  },
+  {
+    "id": "fashion-skill-23",
+    "input": "猴年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "monkey_linghou"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：猴年时装"
+  },
+  {
+    "id": "fashion-skill-24",
+    "input": "猴年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "monkey_linghou"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：猴年时装技能"
+  },
+  {
+    "id": "fashion-skill-25",
+    "input": "灵猴兆瑞",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "monkey_linghou"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：灵猴兆瑞特技"
+  },
+  {
+    "id": "fashion-skill-26",
+    "input": "鸡年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "rooster_jinji"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：鸡年时装"
+  },
+  {
+    "id": "fashion-skill-27",
+    "input": "鸡年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "rooster_jinji"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：鸡年时装技能"
+  },
+  {
+    "id": "fashion-skill-28",
+    "input": "金鸡迎春",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "rooster_jinji"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：金鸡迎春特技"
+  },
+  {
+    "id": "fashion-skill-29",
+    "input": "狗年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "dog_baiyun"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：狗年时装"
+  },
+  {
+    "id": "fashion-skill-30",
+    "input": "狗年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "dog_baiyun"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：狗年时装技能"
+  },
+  {
+    "id": "fashion-skill-31",
+    "input": "猪年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "boar_zhushi"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：猪年时装"
+  },
+  {
+    "id": "fashion-skill-32",
+    "input": "猪年时装技能",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "boar_zhushi"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：猪年时装技能"
+  },
+  {
+    "id": "fashion-skill-33",
+    "input": "鼠年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "rat_lebu"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：鼠年时装"
+  },
+  {
+    "id": "fashion-skill-34",
+    "input": "乐不思鼠",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "rat_lebu"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：乐不思鼠特技"
+  },
+  {
+    "id": "fashion-skill-35",
+    "input": "牛年时装",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "ox_niuzhuan"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：牛年时装"
+  },
+  {
+    "id": "fashion-skill-36",
+    "input": "牛转乾坤",
+    "expect": {
+      "cardType": "fashion_skill",
+      "cardData.initialSkillId": "ox_niuzhuan"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：牛转乾坤特技"
+  },
+  {
+    "id": "fashion-skill-37",
+    "input": "生肖时装",
+    "expect": {
+      "cardType": "fashion_skill"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：生肖时装导航"
+  },
+  {
+    "id": "fashion-skill-38",
+    "input": "生肖技能",
+    "expect": {
+      "cardType": "fashion_skill"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：生肖技能"
+  },
+  {
+    "id": "fashion-skill-39",
+    "input": "贺岁装礼包",
+    "expect": {
+      "cardType": "fashion_skill"
+    },
+    "tags": [
+      "fashion_skill",
+      "skill"
+    ],
+    "assert": "strong",
+    "note": "贺岁时装技能：礼包查询"
+  },
+  {
+    "id": "pet-keshi-equip-01",
+    "input": "刻蚀装备",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "guide"
+    },
+    "tags": [
+      "pet_pledge",
+      "keshi"
+    ],
+    "assert": "strong",
+    "note": "刻蚀装备高频别名测试（直达指南 tab）"
+  },
+  {
+    "id": "pet-keshi-bare-02",
+    "input": "刻蚀",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "guide"
+    },
+    "tags": [
+      "pet_pledge",
+      "keshi"
+    ],
+    "assert": "strong",
+    "note": "刻蚀缩写测试"
+  },
+  {
+    "id": "pet-keshi-yubao-03",
+    "input": "御宝刻蚀",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "guide"
+    },
+    "tags": [
+      "pet_pledge",
+      "keshi"
+    ],
+    "assert": "strong",
+    "note": "御宝刻蚀（输出向）"
+  },
+  {
+    "id": "pet-keshi-tongling-04",
+    "input": "通灵刻蚀",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "guide"
+    },
+    "tags": [
+      "pet_pledge",
+      "keshi"
+    ],
+    "assert": "strong",
+    "note": "通灵刻蚀（防守向）"
+  },
+  {
+    "id": "pet-keshi-pet-05",
+    "input": "宠物刻蚀",
+    "expect": {
+      "cardType": "pet_pledge"
+    },
+    "tags": [
+      "pet_pledge",
+      "keshi"
+    ],
+    "assert": "strong",
+    "note": "宠物刻蚀复合词"
+  },
+  {
+    "id": "pet-pledge-keyin-06",
+    "input": "刻印",
+    "expect": {
+      "cardType": "pet_pledge"
+    },
+    "tags": [
+      "pet_pledge"
+    ],
+    "assert": "strong",
+    "note": "刻印"
+  },
+  {
+    "id": "pet-pledge-shanzhu-07",
+    "input": "丛林山猪",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialPetId": "common"
+    },
+    "tags": [
+      "pet_pledge"
+    ],
+    "assert": "strong",
+    "note": "丛林山猪宠物结誓"
+  },
+  {
+    "id": "pet-pledge-kunlun-08",
+    "input": "昆仑修罗",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialPetId": "special_old"
+    },
+    "tags": [
+      "pet_pledge"
+    ],
+    "assert": "strong",
+    "note": "昆仑修罗特殊老宠物结誓"
+  },
+  {
+    "id": "pet-pledge-attr-09",
+    "input": "誓印属性",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "table"
+    },
+    "tags": [
+      "pet_pledge"
+    ],
+    "assert": "strong",
+    "note": "誓印属性（直达属性表 tab）"
+  },
+  {
+    "id": "pet-pledge-keshi-attr-10",
+    "input": "刻蚀属性",
+    "expect": {
+      "cardType": "pet_pledge",
+      "cardData.initialTab": "table"
+    },
+    "tags": [
+      "pet_pledge",
+      "keshi"
+    ],
+    "assert": "strong",
+    "note": "刻蚀属性（直达属性表 tab）"
+  },
+  {
+    "id": "t18-peizhang-attr-01",
+    "input": "佩章属性",
+    "expect": {
+      "cardType": "peizhang"
+    },
+    "tags": [
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "佩章属性全景"
+  },
+  {
+    "id": "t18-peizhang-dixin-02",
+    "input": "帝心佩章",
+    "expect": {
+      "cardType": "peizhang"
+    },
+    "tags": [
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "帝心神级佩章"
+  },
+  {
+    "id": "t18-peizhang-canghai-03",
+    "input": "沧海佩章",
+    "expect": {
+      "cardType": "peizhang"
+    },
+    "tags": [
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "沧海佩章"
+  },
+  {
+    "id": "t18-peizhang-upgrade-04",
+    "input": "佩章升级",
+    "expect": {
+      "cardType": "peizhang"
+    },
+    "tags": [
+      "peizhang"
+    ],
+    "assert": "strong",
+    "note": "佩章升级强化"
+  },
+  {
+    "id": "t18-ninglingqi-attr-01",
+    "input": "凝灵契属性",
+    "expect": {
+      "cardType": "ninglingqi"
+    },
+    "tags": [
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "凝灵契属性池"
+  },
+  {
+    "id": "t18-ninglingqi-xi-02",
+    "input": "洗契",
+    "expect": {
+      "cardType": "ninglingqi"
+    },
+    "tags": [
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "洗契口语"
+  },
+  {
+    "id": "t18-ninglingqi-hole12-03",
+    "input": "凝灵契 12孔",
+    "expect": {
+      "cardType": "ninglingqi",
+      "cardData.initialHole": 12
+    },
+    "tags": [
+      "ninglingqi"
+    ],
+    "assert": "strong",
+    "note": "凝灵契第12孔属性定向"
+  },
+  {
+    "id": "t18-exp-hub-shengji-01",
+    "input": "升级",
+    "expect": {
+      "cardType": "exp_hub"
+    },
+    "tags": [
+      "exp_hub"
+    ],
+    "assert": "strong",
+    "note": "升级通用词分流"
+  },
+  {
+    "id": "t18-exp-hub-table-02",
+    "input": "经验表",
+    "expect": {
+      "cardType": "exp_hub"
+    },
+    "tags": [
+      "exp_hub"
+    ],
+    "assert": "strong",
+    "note": "经验表通用词分流"
+  },
+  {
+    "id": "t18-exp-hub-exp-shengji-03",
+    "input": "升级经验",
+    "expect": {
+      "cardType": "exp_hub"
+    },
+    "tags": [
+      "exp_hub"
+    ],
+    "assert": "strong",
+    "note": "升级经验通用词分流"
+  },
+  {
+    "id": "t18-exp-hub-shengji-table-04",
+    "input": "升级表",
+    "expect": {
+      "cardType": "exp_hub"
+    },
+    "tags": [
+      "exp_hub"
+    ],
+    "assert": "strong",
+    "note": "升级表通用词分流"
+  },
+  {
+    "id": "t18-fabao-upgrade-table-01",
+    "input": "法宝升级表",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": [
+      "fabao_upgrade"
+    ],
+    "assert": "strong",
+    "note": "法宝升级经验表"
+  },
+  {
+    "id": "t18-fabao-upgrade-shenmu-02",
+    "input": "神木宝卷",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": [
+      "fabao_upgrade"
+    ],
+    "assert": "strong",
+    "note": "神木宝卷经验道具"
+  },
+  {
+    "id": "t18-zhenling-upgrade-shengjie-01",
+    "input": "阵灵升阶",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade"
+    ],
+    "assert": "strong",
+    "note": "阵灵升阶消耗"
+  },
+  {
+    "id": "t18-zhenling-upgrade-cangre-02",
+    "input": "沧热聚灵丹",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "zhenling_upgrade"
+    ],
+    "assert": "strong",
+    "note": "沧热聚灵丹"
+  },
+  {
+    "id": "conflict-guiwang-xingsu-01",
+    "input": "鬼王 星宿",
+    "expect": {
+      "cardType": "skill_candidates"
+    },
+    "tags": [
+      "conflict",
+      "skill",
+      "xingsu"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：鬼王 星宿 属于门派三代星宿技能，不被星宿装备卡拦截"
+  },
+  {
+    "id": "conflict-qingyun-xingsu-02",
+    "input": "青云 星宿",
+    "expect": {
+      "cardType": "skill_candidates"
+    },
+    "tags": [
+      "conflict",
+      "skill",
+      "xingsu"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：青云 星宿 属于门派三代星宿技能"
+  },
+  {
+    "id": "conflict-zhushuang-xyc-03",
+    "input": "逐霜 轩辕策",
+    "expect": {
+      "cardType": "skill_candidates"
+    },
+    "tags": [
+      "conflict",
+      "skill",
+      "xyc"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：逐霜 轩辕策 属于门派三代轩辕策技能"
+  },
+  {
+    "id": "conflict-pure-xingsu-04",
+    "input": "星宿",
+    "expect": {
+      "cardType": "xingsu"
+    },
+    "tags": [
+      "conflict",
+      "xingsu"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：裸词 星宿 命中全职业通用星宿装备卡"
+  },
+  {
+    "id": "conflict-pure-xingsu-attr-05",
+    "input": "星宿属性",
+    "expect": {
+      "cardType": "xingsu"
+    },
+    "tags": [
+      "conflict",
+      "xingsu"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：星宿属性 命中通用星宿卡"
+  },
+  {
+    "id": "conflict-pure-chonghua-06",
+    "input": "重华星辰",
+    "expect": {
+      "cardType": "xingsu"
+    },
+    "tags": [
+      "conflict",
+      "xingsu"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：重华星辰 命中通用星宿卡"
+  },
+  {
+    "id": "conflict-pure-xyc-07",
+    "input": "轩辕策",
+    "expect": {
+      "cardType": "xyc_diag"
+    },
+    "tags": [
+      "conflict",
+      "xyc"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：裸词 轩辕策 命中洗炼模拟工具卡"
+  },
+  {
+    "id": "conflict-pure-tianyuan-old-08",
+    "input": "旧天缘",
+    "expect": {
+      "cardType": "tianyuan_old"
+    },
+    "tags": [
+      "conflict",
+      "tianyuan"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：旧天缘 命中四大部位旧天缘属性卡"
+  },
+  {
+    "id": "conflict-pure-tianyuan-new-09",
+    "input": "天缘",
+    "expect": {
+      "cardType": "tool_card",
+      "cardData.workspaceMode": "newtianyuan"
+    },
+    "tags": [
+      "conflict",
+      "tianyuan"
+    ],
+    "assert": "strong",
+    "note": "冲突裁决：裸词 天缘 命中新版天缘洗炼工具"
+  },
+  {
+    "id": "hub-measure-01",
+    "input": "属性测算",
+    "expect": {
+      "cardType": "measure_hub"
+    },
+    "tags": [
+      "hub",
+      "measure"
+    ],
+    "assert": "strong",
+    "note": "属性测算全景导航卡"
+  },
+  {
+    "id": "hub-guide-01",
+    "input": "玩法攻略",
+    "expect": {
+      "cardType": "guide_hub"
+    },
+    "tags": [
+      "hub",
+      "guide"
+    ],
+    "assert": "strong",
+    "note": "玩法攻略全景指南卡"
+  },
+  {
+    "id": "hub-guide-02",
+    "input": "攻略",
+    "expect": {
+      "cardType": "guide_hub"
+    },
+    "tags": [
+      "hub",
+      "guide"
+    ],
+    "assert": "strong",
+    "note": "攻略通用词导航"
+  },
+  {
+    "id": "hub-skill-class-zhushuang",
+    "input": "逐霜 技能",
+    "expect": {
+      "cardType": "skill_hub",
+      "cardData.title": "逐霜技能分类导航",
+      "cardData.options.length": 5
+    },
+    "tags": [
+      "hub",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "hub-skill-class-qingyun",
+    "input": "青云 技能",
+    "expect": {
+      "cardType": "skill_hub",
+      "cardData.title": "青云技能分类导航",
+      "cardData.options.length": 5
+    },
+    "tags": [
+      "hub",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-sandai-zhushuang",
+    "input": "逐霜 三代技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 8
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-sidai-zhushuang",
+    "input": "逐霜 四代技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 12
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-xinfa-zhushuang",
+    "input": "逐霜 心法技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 8
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-shentong-zhushuang",
+    "input": "逐霜 阵营神通",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 27
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-sandai-qingyun",
+    "input": "青云 三代技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 8
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-sidai-qingyun",
+    "input": "青云 四代技能",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 15
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "skill-shizhuang-01",
+    "input": "时装技能",
+    "expect": {
+      "cardType": "fashion_skill"
+    },
+    "tags": [
+      "standard",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-boss-prop-01",
+    "input": "副本属性",
+    "expect": {
+      "cardType": "boss_candidates"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-boss-prop-02",
+    "input": "BOSS属性",
+    "expect": {
+      "cardType": "boss_candidates"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
   }
 ]

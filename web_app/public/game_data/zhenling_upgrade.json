@@ -1,0 +1,38 @@
+{
+  "title": "阵灵聚灵升级消耗对照表",
+  "category": "阵灵",
+  "subCategory": "聚灵",
+  "description": "阵灵 1~12 阶聚灵消耗金卡与紫卡对照表（沧浪冰珠与沧热聚灵丹）",
+  "goldPerTierInc": { "bingzhu": 10000, "dan": 8 },
+  "purplePerTierInc": { "bingzhu": 5000, "dan": 4 },
+  "tiers": [
+    { "tier": 1, "gold": { "bingzhu": 10000, "dan": 8 }, "purple": { "bingzhu": 5000, "dan": 4 } },
+    { "tier": 2, "gold": { "bingzhu": 20000, "dan": 16 }, "purple": { "bingzhu": 10000, "dan": 8 } },
+    { "tier": 3, "gold": { "bingzhu": 30000, "dan": 24 }, "purple": { "bingzhu": 15000, "dan": 12 } },
+    { "tier": 4, "gold": { "bingzhu": 40000, "dan": 32 }, "purple": { "bingzhu": 20000, "dan": 16 } },
+    { "tier": 5, "gold": { "bingzhu": 50000, "dan": 40 }, "purple": { "bingzhu": 25000, "dan": 20 } },
+    { "tier": 6, "gold": { "bingzhu": 60000, "dan": 48 }, "purple": { "bingzhu": 30000, "dan": 24 } },
+    { "tier": 7, "gold": { "bingzhu": 70000, "dan": 56 }, "purple": { "bingzhu": 35000, "dan": 28 } },
+    { "tier": 8, "gold": { "bingzhu": 80000, "dan": 64 }, "purple": { "bingzhu": 40000, "dan": 32 } },
+    { "tier": 9, "gold": { "bingzhu": 90000, "dan": 72 }, "purple": { "bingzhu": 45000, "dan": 36 } },
+    { "tier": 10, "gold": { "bingzhu": 100000, "dan": 80 }, "purple": { "bingzhu": 50000, "dan": 40 } },
+    { "tier": 11, "gold": { "bingzhu": 110000, "dan": 88 }, "purple": { "bingzhu": 55000, "dan": 44 } },
+    { "tier": 12, "gold": { "bingzhu": 120000, "dan": 96 }, "purple": { "bingzhu": 60000, "dan": 48 } }
+  ],
+  "singleCardTotal": {
+    "gold": { "bingzhu": 780000, "dan": 624 },
+    "purple": { "bingzhu": 390000, "dan": 312 }
+  },
+  "presetCombos": [
+    {
+      "name": "6金2紫 12阶满聚灵",
+      "tag": "主流顶配",
+      "goldCount": 6,
+      "purpleCount": 2,
+      "targetTier": 12,
+      "bingzhu": 5460000,
+      "dan": 4368,
+      "desc": "6 张金卡满 12 阶 + 2 张紫卡满 12 阶全套聚灵总消耗"
+    }
+  ]
+}

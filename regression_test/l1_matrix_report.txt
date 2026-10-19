@@ -1,11 +1,12 @@
 ==== 实体矩阵覆盖报告（T-01） ====
-equip（120 输入）: equip_candidates 27 / text-only 92 / equip 1
-boss（52 输入）: boss_candidates 39 / boss 13
-skill（231 输入）: skill_candidates 191 / text-only 13 / class_hub 27
+equip（120 输入）: equip_candidates 27 / text-only 84 / peizhang 8 / equip 1
+  [族外] 需人工判断: 修武 佩章 → peizhang ; 昭武 佩章 → peizhang ; 彰武 佩章 → peizhang ; 神隐 佩章 → peizhang ; 神级 佩章 → peizhang ; 天命 佩章 → peizhang ; 至尊 佩章 → peizhang ; 混虚 佩章 → peizhang
+boss（52 输入）: boss_candidates 42 / boss 10
+skill（231 输入）: skill_candidates 198 / class_hub 27 / text-only 6
   [族外] 需人工判断: 鬼王 → class_hub ; 合欢 → class_hub ; 青云 → class_hub ; 天音 → class_hub ; 鬼道 → class_hub ; 焚香 → class_hub ; 九黎 → class_hub ; 烈山 → class_hub ; 怀光 → class_hub ; 天华 → class_hub ; 辰皇 → class_hub ; 太昊 → class_hub ; 牵机 → class_hub ; 英招 → class_hub ; 破军 → class_hub ; 青罗 → class_hub ; 归云 → class_hub ; 画影 → class_hub ; 逐霜 → class_hub ; 惊岚 → class_hub ; 昭冥 → class_hub ; 涅羽 → class_hub ; 百灵 → class_hub ; 释罗 → class_hub ; 长生堂 → class_hub ; 万毒 → class_hub ; 炼血 → class_hub
 fabao（139 输入）: fabao 138 / class_hub 1
   [族外] 需人工判断: 破军 → class_hub
-[装备正常空] 查无且确实无数据: 92 条
+[装备正常空] 查无且确实无数据: 84 条
 
 矩阵用例已写入: D:\工作\ww\personal_work\new_zx_calc_noactcode_agent\regression_test\l1_intent_cases_matrix.json（542 条，lean golden）
 下一步: 跑 --golden 收录快照，再跑默认模式验收

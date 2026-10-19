@@ -5,7 +5,8 @@ import {
   Radio,
   Compass,
   Sparkles,
-  Swords
+  Swords,
+  Scroll
 } from 'lucide-react';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 
@@ -14,6 +15,7 @@ export interface ChatPlusMenuProps {
   onClose: () => void;
   onSelectUpload: () => void;
   onSelectWorkspace: (mode: WorkspaceMode) => void;
+  onSendMessage?: (query: string) => void;
   placement?: 'down' | 'up';
 }
 
@@ -22,6 +24,7 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
   onClose,
   onSelectUpload,
   onSelectWorkspace,
+  onSendMessage,
   placement = 'down',
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -47,9 +50,16 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
     onClose();
   };
 
+  const handleSendMessageClick = (query: string) => {
+    if (onSendMessage) {
+      onSendMessage(query);
+    }
+    onClose();
+  };
+
   const isDown = placement === 'down';
 
-  // 精简后的 6 个核心工具项
+  // 菜单项：战力/雷达 + 旧天缘 + 宸极凝灵契，轩辕策保留为 disabled 放在最下方
   const menuItems = [
     {
       id: 'upload',
@@ -83,18 +93,24 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       onClick: () => handleToolClick('server'),
     },
     {
+      id: 'tianyuan_old',
+      icon: Sparkles,
+      title: '旧天缘属性',
+      desc: '4 大部位天缘词条池 · 1~10 级满级总属性推导',
+      onClick: () => handleSendMessageClick('旧天缘'),
+    },
+    {
+      id: 'ninglingqi',
+      icon: Scroll,
+      title: '宸极凝灵契',
+      desc: '12 孔属性池 · 官方稀有/暴伤上限规则速查',
+      onClick: () => handleSendMessageClick('凝灵契'),
+    },
+    {
       id: 'xyc',
       icon: Compass,
       title: '轩辕策属性',
       desc: '1~20 阶反推初始属性与极品毕业度评级',
-      disabled: true,
-      onClick: undefined,
-    },
-    {
-      id: 'tianyuan',
-      icon: Sparkles,
-      title: '天缘属性',
-      desc: '天命装备天缘属性理论上限推演',
       disabled: true,
       onClick: undefined,
     },

@@ -7,7 +7,8 @@ import {
   Zap,
   Shield,
   Radio,
-  Sparkles
+  BookOpen,
+  SlidersHorizontal
 } from 'lucide-react';
 import clsx from 'clsx';
 import type { SearchTarget } from '../GlobalSearch';
@@ -16,7 +17,7 @@ import { HomeAIChatStage } from './HomeAIChatStage';
 import { SplitScreenWorkspace, type WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 import { useSplitDrag } from '../workspace/useSplitDrag';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
-import { CopilotService, type CopilotMessage } from '../../services/CopilotService';
+import { CopilotService, type CopilotMessage, TOP_HUB_OPTIONS } from '../../services/CopilotService';
 import { DataService } from '../../services/DataService';
 import { CelestialStage } from './CelestialStage';
 import { CosmicStarCanvas } from './CosmicStarCanvas';
@@ -210,6 +211,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           }
         } else {
           const reply = await copilot.chatText(text);
+          const isNotFound = reply.includes('暂时未能完全理解');
           setChatMessages((prev) => [
             ...prev,
             {
@@ -217,6 +219,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               sender: 'assistant',
               text: reply,
               time: timeStr,
+              cardType: isNotFound ? 'top_hub' : undefined,
+              cardData: isNotFound
+                ? {
+                    title: '全景分类导航',
+                    options: TOP_HUB_OPTIONS,
+                  }
+                : undefined,
             },
           ]);
         }
@@ -315,6 +324,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             content: m.text,
           }));
           const reply = await copilot.chatText(trimmed, history);
+          const isNotFound = reply.includes('暂时未能完全理解');
           setChatMessages((prev) => [
             ...prev,
             {
@@ -322,6 +332,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               sender: 'assistant',
               text: reply,
               time: timeStr,
+              cardType: isNotFound ? 'top_hub' : undefined,
+              cardData: isNotFound
+                ? {
+                    title: '全景分类导航',
+                    options: TOP_HUB_OPTIONS,
+                  }
+                : undefined,
             },
           ]);
         }
@@ -478,6 +495,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               onClose={() => setIsPlusMenuOpen(false)}
               onSelectUpload={() => fileInputRef.current?.click()}
               onSelectWorkspace={(mode) => handleOpenMicroTool(mode)}
+              onSendMessage={(q) => handleStartAiChat(q)}
               placement="down"
             />
 
@@ -539,7 +557,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 placeholder={
                   attachedImage
                     ? '已粘贴截图，输入补充指令或直接回车启动推演...'
-                    : '问点什么，比如昭武、技能、法宝、计算等...'
+                    : '问点什么，比如苍龙啸，星宿升星，昭武衣服，宝石洗练，天缘测算等...'
                 }
                 className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none px-1 py-1.5"
               />
@@ -566,7 +584,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-2xl w-full pt-5 sm:pt-6">
             <button
               type="button"
-              onClick={() => handleStartAiChat('昭武')}
+              onClick={() => handleStartAiChat('装备')}
               className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-cyan-500/30 text-xs text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Shield className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
@@ -579,7 +597,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-emerald-500/30 text-xs text-slate-300 hover:text-emerald-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <Zap className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform shrink-0" />
-              <span className="font-medium whitespace-nowrap">技能描述</span>
+              <span className="font-medium whitespace-nowrap">技能图鉴</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleStartAiChat('玩法攻略')}
+              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-indigo-500/30 text-xs text-slate-300 hover:text-indigo-300 transition-all cursor-pointer shadow-sm active:scale-95"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-indigo-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-medium whitespace-nowrap">玩法攻略</span>
             </button>
 
             <button
@@ -608,12 +635,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
             <button
               type="button"
-              disabled
-              className="pill-btn flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/40 border border-slate-800/60 text-xs text-slate-500 cursor-not-allowed select-none opacity-60 shadow-none transition-none"
-              title="各类模拟器（暂未开放）"
+              onClick={() => handleStartAiChat('属性测算')}
+              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-fuchsia-500/30 text-xs text-slate-300 hover:text-fuchsia-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
-              <Sparkles className="w-3.5 h-3.5 text-slate-600 shrink-0" />
-              <span className="font-medium whitespace-nowrap">各类模拟器</span>
+              <SlidersHorizontal className="w-3.5 h-3.5 text-fuchsia-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-medium whitespace-nowrap">属性测算</span>
             </button>
           </div>
         </div>

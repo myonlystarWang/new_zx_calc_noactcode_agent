@@ -346,6 +346,155 @@ export class DataService {
         return this.tianyuanData;
     }
 
+    private peizhangData: any = null;
+    private ninglingqiData: any = null;
+
+    public async getPeizhangData(): Promise<any> {
+        if (this.peizhangData) return this.peizhangData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/peizhang_shengcui.json`);
+            if (!res.ok) throw new Error(`加载 peizhang_shengcui.json 失败: ${res.status}`);
+            this.peizhangData = await res.json();
+            return this.peizhangData;
+        } catch (e) {
+            console.error('getPeizhangData error:', e);
+            return null;
+        }
+    }
+
+    public async getNinglingqiData(): Promise<any> {
+        if (this.ninglingqiData) return this.ninglingqiData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/ninglingqi.json`);
+            if (!res.ok) throw new Error(`加载 ninglingqi.json 失败: ${res.status}`);
+            this.ninglingqiData = await res.json();
+            return this.ninglingqiData;
+        } catch (e) {
+            console.error('getNinglingqiData error:', e);
+            return null;
+        }
+    }
+
+    private petPledgeData: any = null;
+
+    public async getPetPledgeData(): Promise<any> {
+        if (this.petPledgeData) return this.petPledgeData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/pet_pledge.json`);
+            if (!res.ok) throw new Error(`加载 pet_pledge.json 失败: ${res.status}`);
+            this.petPledgeData = await res.json();
+            return this.petPledgeData;
+        } catch (e) {
+            console.error('getPetPledgeData error:', e);
+            return null;
+        }
+    }
+
+    private zhenlingUpgradeData: any = null;
+
+    public async getZhenlingUpgradeData(): Promise<any> {
+        if (this.zhenlingUpgradeData) return this.zhenlingUpgradeData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/zhenling_upgrade.json`);
+            if (!res.ok) throw new Error(`加载 zhenling_upgrade.json 失败: ${res.status}`);
+            this.zhenlingUpgradeData = await res.json();
+            return this.zhenlingUpgradeData;
+        } catch (e) {
+            console.error('getZhenlingUpgradeData error:', e);
+            return null;
+        }
+    }
+
+    private fabaoUpgradeExpData: any = null;
+
+    public async getFabaoUpgradeExpData(): Promise<any> {
+        if (this.fabaoUpgradeExpData) return this.fabaoUpgradeExpData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/fabao_upgrade_exp.json`);
+            if (!res.ok) throw new Error(`加载 fabao_upgrade_exp.json 失败: ${res.status}`);
+            this.fabaoUpgradeExpData = await res.json();
+            return this.fabaoUpgradeExpData;
+        } catch (e) {
+            console.error('getFabaoUpgradeExpData error:', e);
+            return null;
+        }
+    }
+
+    private jiuwenlangData: any = null;
+
+    public async getJiuwenlangData(): Promise<any> {
+        if (this.jiuwenlangData) return this.jiuwenlangData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/jiuwenlang.json`);
+            if (!res.ok) throw new Error(`加载 jiuwenlang.json 失败: ${res.status}`);
+            this.jiuwenlangData = await res.json();
+            return this.jiuwenlangData;
+        } catch (e) {
+            console.error('getJiuwenlangData error:', e);
+            return null;
+        }
+    }
+
+    private oldTianyuanData: any = null;
+
+    public async getOldTianyuanData(): Promise<any> {
+        if (this.oldTianyuanData) return this.oldTianyuanData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/tianyuan_old.json`);
+            if (!res.ok) throw new Error(`加载 tianyuan_old.json 失败: ${res.status}`);
+            this.oldTianyuanData = await res.json();
+            return this.oldTianyuanData;
+        } catch (e) {
+            console.error('getOldTianyuanData error:', e);
+            return null;
+        }
+    }
+
+    private xingsuData: any = null;
+
+    public async getXingsuData(): Promise<any> {
+        if (this.xingsuData) return this.xingsuData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/xingsu_upgrade.json`);
+            if (!res.ok) throw new Error(`加载 xingsu_upgrade.json 失败: ${res.status}`);
+            this.xingsuData = await res.json();
+            return this.xingsuData;
+        } catch (e) {
+            console.error('getXingsuData error:', e);
+            return null;
+        }
+    }
+
+    private baoshiData: any = null;
+
+    public async getBaoshiData(): Promise<any> {
+        if (this.baoshiData) return this.baoshiData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/baoshi.json`);
+            if (!res.ok) throw new Error(`加载 baoshi.json 失败: ${res.status}`);
+            this.baoshiData = await res.json();
+            return this.baoshiData;
+        } catch (e) {
+            console.error('getBaoshiData error:', e);
+            return null;
+        }
+    }
+
+    private fashionSkillData: any = null;
+
+    public async getFashionSkillData(): Promise<any> {
+        if (this.fashionSkillData) return this.fashionSkillData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/fashion_skills_hesui.json`);
+            if (!res.ok) throw new Error(`加载 fashion_skills_hesui.json 失败: ${res.status}`);
+            this.fashionSkillData = await res.json();
+            return this.fashionSkillData;
+        } catch (e) {
+            console.error('getFashionSkillData error:', e);
+            return null;
+        }
+    }
+
     public async getServerList(): Promise<any[]> {
         if (this.serverList) return this.serverList;
         const res = await fetch(`${DATA_BASE_URL}/server_list.json`);

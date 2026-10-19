@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export interface ClassStatusRole {
     faction: string;
@@ -29,6 +30,8 @@ export interface ClassStatusCardData {
     preferredFaction?: string;
     metrics?: string[];
     roles: ClassStatusRole[];
+    allRoles?: any[];
+    allClasses?: string[];
 }
 
 export interface ClassStatusCardProps {
@@ -66,18 +69,119 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
     cardData,
     className = '',
 }) => {
-    const roles = cardData.roles || [];
+    const [selectedClassName, setSelectedClassName] = useState<string>(cardData.className || '逐霜');
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
+    const [canScrollRight, setCanScrollRight] = useState<boolean>(false);
 
-    // 默认选中有匹配 preferredFaction 的阵营，或默认第 1 个
+    // 检查横向滚动边界
+    const updateScrollState = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const { scrollLeft, scrollWidth, clientWidth } = el;
+        setCanScrollLeft(scrollLeft > 4);
+        setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 4);
+    }, []);
+
+    // 如果传入了 allRoles，则根据当前选中的 selectedClassName 动态提取当前职业的角色列表
+    const currentRoles = React.useMemo<ClassStatusRole[]>(() => {
+        if (Array.isArray(cardData.allRoles) && cardData.allRoles.length > 0) {
+            const list = cardData.allRoles.filter((r: any) => r?.name === selectedClassName);
+            if (list.length > 0) {
+                return list.map((r: any) => ({
+                    faction: r.faction,
+                    roleType: r.roleType,
+                    rating: r.rating,
+                    abilities: Array.isArray(r.abilities) ? r.abilities : [],
+                    damageBoost: r.damageBoost,
+                    greenPoint: r.greenPoint,
+                    purplePoint: r.purplePoint,
+                    defenseBreak: r.defenseBreak,
+                    focus: r.focus,
+                    focusType: r.focusType,
+                    critDamage: r.critDamage,
+                    atkUp: r.atkUp,
+                    healUp: r.healUp,
+                    manaUp: r.manaUp,
+                    defUp: r.defUp,
+                    monsterDmgUp: r.monsterDmgUp,
+                }));
+            }
+        }
+        return cardData.roles || [];
+    }, [cardData.allRoles, cardData.roles, selectedClassName]);
+
     const [activeIdx, setActiveIdx] = useState<number>(() => {
         if (cardData.preferredFaction) {
-            const found = roles.findIndex((r) => r.faction.includes(cardData.preferredFaction!));
+            const found = currentRoles.findIndex((r) => r.faction?.includes(cardData.preferredFaction!));
             if (found >= 0) return found;
         }
         return 0;
     });
 
-    const currentRole = roles[activeIdx] || roles[0];
+    const handleSelectClass = (cls: string) => {
+        setSelectedClassName(cls);
+        setActiveIdx(0);
+    };
+
+    // 精确将活动项平滑居中滚动至横向视图中央（对齐 CandidateSelectorBar）
+    const scrollToActiveItem = useCallback((smooth = true) => {
+        const container = scrollRef.current;
+        if (!container) return;
+        const allClasses = cardData.allClasses || [];
+        const activeIdx = allClasses.indexOf(selectedClassName);
+        if (activeIdx < 0) return;
+        const activeNode = container.children[activeIdx] as HTMLElement;
+        if (!activeNode) return;
+
+        const targetLeft = activeNode.offsetLeft - (container.clientWidth / 2) + (activeNode.clientWidth / 2);
+        container.scrollTo({
+            left: Math.max(0, targetLeft),
+            behavior: smooth ? 'smooth' : 'auto'
+        });
+        setTimeout(updateScrollState, 160);
+    }, [selectedClassName, cardData.allClasses, updateScrollState]);
+
+    useEffect(() => {
+        updateScrollState();
+        window.addEventListener('resize', updateScrollState);
+        return () => window.removeEventListener('resize', updateScrollState);
+    }, [updateScrollState, cardData.allClasses]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            scrollToActiveItem(true);
+        }, 50);
+        return () => clearTimeout(timer);
+    }, [selectedClassName, scrollToActiveItem]);
+
+    // 滚轮监听：垂直滚轮实时转为横向滑动
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const handleWheel = (e: WheelEvent) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+                updateScrollState();
+            }
+        };
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+    }, [updateScrollState]);
+
+    const handleScrollStep = (direction: 'left' | 'right') => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const step = 200;
+        el.scrollBy({
+            left: direction === 'left' ? -step : step,
+            behavior: 'smooth'
+        });
+        setTimeout(updateScrollState, 220);
+    };
+
+    const currentRole = currentRoles[activeIdx] || currentRoles[0];
     if (!currentRole) return null;
 
     // 专注标签推导：直接体现自身/群体，不再在数值旁挂小字
@@ -101,7 +205,7 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
         // 增益（Buff）
         { key: 'focus', label: focusLabel, val: currentRole.focus ?? '', unit: '', color: 'text-orange-300' },
         { key: 'critDamage', label: '加爆伤', val: currentRole.critDamage ?? '', unit: '%', color: 'text-rose-300' },
-        { key: 'atkUp', label: '加攻击', val: currentRole.atkUp ?? '', unit: '%', color: 'text-red-300' },
+        { key: 'atkUp', label: '加攻击', val: currentRole.atkUp ?? '', unit: '', color: 'text-red-300' },
         { key: 'healUp', label: '加血', val: currentRole.healUp ?? '', unit: '%', color: 'text-emerald-300' },
         { key: 'manaUp', label: '加蓝', val: currentRole.manaUp ?? '', unit: '%', color: 'text-sky-300' },
         { key: 'defUp', label: '加防御', val: currentRole.defUp ?? '', unit: '%', color: 'text-blue-300' },
@@ -122,21 +226,76 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
     return (
         <div
             className={clsx(
-                'rounded-xl p-3.5 sm:p-4 transition-all duration-200 border border-cyan-500/20 bg-[#121824] flex flex-col justify-start gap-3 shadow-md w-full max-w-xl select-none',
+                'rounded-xl p-3.5 sm:p-4 transition-all duration-200 border border-cyan-500/20 bg-[#121824] flex flex-col justify-start gap-3 shadow-md w-full min-w-0 max-w-full select-none',
                 className
             )}
         >
+            {/* 0. 顶部门派全景切换栏：对齐 CandidateSelectorBar 交互规范与样式 */}
+            {Array.isArray(cardData.allClasses) && cardData.allClasses.length > 1 && (
+                <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
+                    {/* 左滚动按钮 */}
+                    {canScrollLeft && (
+                        <button
+                            type="button"
+                            onClick={() => handleScrollStep('left')}
+                            className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                            title="向左滚动"
+                        >
+                            <ChevronLeft className="w-4 h-4" />
+                        </button>
+                    )}
+
+                    {/* 可横向滚动职业标签容器 */}
+                    <div
+                        ref={scrollRef}
+                        onScroll={updateScrollState}
+                        className="flex-1 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth"
+                    >
+                        {cardData.allClasses.map((cls) => {
+                            const isSelected = cls === selectedClassName;
+                            return (
+                                <button
+                                    key={cls}
+                                    type="button"
+                                    onClick={() => handleSelectClass(cls)}
+                                    className={clsx(
+                                        'px-2.5 py-1 rounded text-xs transition-all shrink-0 cursor-pointer',
+                                        isSelected
+                                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/60 font-bold shadow-sm'
+                                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                                    )}
+                                >
+                                    {cls}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* 右滚动按钮 */}
+                    {canScrollRight && (
+                        <button
+                            type="button"
+                            onClick={() => handleScrollStep('right')}
+                            className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                            title="向右滚动"
+                        >
+                            <ChevronRight className="w-4 h-4" />
+                        </button>
+                    )}
+                </div>
+            )}
+
             {/* 1. Header 行：职业名 + 紧随右侧阵营徽章按钮 + 右侧纯净评级（完全对齐 BossDetailCard 头部比例） */}
             <div className="flex items-center justify-between gap-2 border-b border-white/5 pb-2.5">
                 <div className="flex items-center gap-2 min-w-0">
                     <span className="w-1.5 h-4 bg-cyan-400 rounded-full shrink-0"></span>
                     <h4 className="text-[15px] font-black text-slate-100 tracking-wide truncate">
-                        {cardData.className}
+                        {selectedClassName}
                     </h4>
 
                     {/* 阵营分支直接在职业名字右边：参考 BossCard 的微标风格，极简小胶囊 */}
                     <div className="flex items-center gap-1.5 shrink-0">
-                        {roles.map((r, idx) => {
+                        {currentRoles.map((r, idx) => {
                             const isActive = idx === activeIdx;
                             return (
                                 <button

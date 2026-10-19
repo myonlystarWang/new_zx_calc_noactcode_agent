@@ -110,6 +110,86 @@ function makeFsMock() {
         getSkillMetaAsync: async () => skillsMeta,
         // T-06：server_list.json（真实实现 lazy load 缓存）
         getServerList: async () => serverList,
+        // T-18：peizhang_shengcui.json 圣粹佩章数据
+        getPeizhangData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'peizhang_shengcui.json'));
+            } catch {
+                return null;
+            }
+        },
+        // T-18：ninglingqi.json 宸极·凝灵契数据
+        getNinglingqiData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'ninglingqi.json'));
+            } catch {
+                return null;
+            }
+        },
+        // T-18：pet_pledge.json 宠物结誓/誓印数据
+        getPetPledgeData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'pet_pledge.json'));
+            } catch {
+                return null;
+            }
+        },
+        // T-18：zhenling_upgrade.json 阵灵聚灵升级消耗数据
+        getZhenlingUpgradeData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'zhenling_upgrade.json'));
+            } catch {
+                return null;
+            }
+        },
+        // T-18：fabao_upgrade_exp.json 法宝经验等级数据
+        getFabaoUpgradeExpData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'fabao_upgrade_exp.json'));
+            } catch {
+                return null;
+            }
+        },
+        // jiuwenlang.json 佩章·九纹琅数据
+        getJiuwenlangData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'jiuwenlang.json'));
+            } catch {
+                return null;
+            }
+        },
+        // tianyuan_old.json 旧天缘数据
+        getOldTianyuanData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'tianyuan_old.json'));
+            } catch {
+                return null;
+            }
+        },
+        // xingsu_upgrade.json 星宿属性数据
+        getXingsuData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'xingsu_upgrade.json'));
+            } catch {
+                return null;
+            }
+        },
+        // baoshi.json 宝石属性数据
+        getBaoshiData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'baoshi.json'));
+            } catch {
+                return null;
+            }
+        },
+        // fashion_skills_hesui.json 贺岁时装技能数据
+        getFashionSkillData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'fashion_skills_hesui.json'));
+            } catch {
+                return null;
+            }
+        },
     };
 }
 
