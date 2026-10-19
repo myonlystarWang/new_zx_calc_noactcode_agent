@@ -137,10 +137,20 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
         return activeGem.levels.find((l) => l.level === level) || activeGem.levels[0];
     }, [activeGem, level]);
 
+    const nextLevelData = useMemo(() => {
+        if (!activeGem || level >= 10) return null;
+        return activeGem.levels.find((l) => l.level === level + 1) || null;
+    }, [activeGem, level]);
+
     const currentAttrs = useMemo(() => {
         if (!activeLevelData) return {};
         return quality === 'perfect' ? activeLevelData.perfect : activeLevelData.normal;
     }, [activeLevelData, quality]);
+
+    const nextAttrs = useMemo(() => {
+        if (!nextLevelData) return null;
+        return quality === 'perfect' ? nextLevelData.perfect : nextLevelData.normal;
+    }, [nextLevelData, quality]);
 
     if (!activeGem) return null;
 
@@ -295,15 +305,32 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                     {Object.entries(currentAttrs).map(([rawName, val]) => {
                         if (!val || val <= 0) return null;
                         const { name, isPercent } = formatAttrName(rawName);
+                        const unit = isPercent ? '%' : '';
+
+                        // 计算升级增益 (升级 +XX)
+                        let upgradeDiff: number | null = null;
+                        if (nextAttrs && nextAttrs[rawName] !== undefined) {
+                            const nextVal = nextAttrs[rawName];
+                            const diff = Number((nextVal - val).toFixed(2));
+                            if (diff > 0) {
+                                upgradeDiff = diff;
+                            }
+                        }
+
                         return (
                             <div
                                 key={rawName}
                                 style={{ color: GAME_COLORS.STAT_BLUE }}
-                                className="flex items-center"
+                                className="flex items-center justify-between text-[13px] leading-[22px]"
                             >
                                 <span>
-                                    {name} ＋{val}{isPercent ? '%' : ''}
+                                    {name} ＋{val}{unit}
                                 </span>
+                                {upgradeDiff !== null && (
+                                    <span className="text-emerald-400 font-sans text-[11px] font-medium ml-1.5 whitespace-nowrap">
+                                        (升级 +{upgradeDiff}{unit})
+                                    </span>
+                                )}
                             </div>
                         );
                     })}
@@ -312,11 +339,16 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                     {quality === 'perfect' && level < 6 && activeGem.extraAttr && (
                         <div
                             style={{ color: GAME_COLORS.TEXT_LOCKED }}
-                            className="flex items-center"
+                            className="flex items-center justify-between text-[13px] leading-[22px]"
                         >
                             <span>
                                 (+6) {activeGem.extraAttr}
                             </span>
+                            {level === 5 && (
+                                <span className="text-emerald-400 font-sans text-[11px] font-medium ml-1.5 whitespace-nowrap">
+                                    (升级 +6解锁)
+                                </span>
+                            )}
                         </div>
                     )}
                 </div>

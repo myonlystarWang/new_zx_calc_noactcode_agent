@@ -63,6 +63,34 @@ function getRefKey(it: CuratedEquipItem): 'atk' | 'def' | 'hp' | 'mp' | null {
     return null;
 }
 
+function parseAttrAndRate(raw: string) {
+    const match = raw.match(/^(.*?)\s*[(（]([\d\.]+%?)[)）]\s*$/);
+    if (match) {
+        return {
+            attrText: formatAttrText(match[1]),
+            rateText: match[2].endsWith('%') ? match[2] : `${match[2]}%`
+        };
+    }
+    return {
+        attrText: formatAttrText(raw),
+        rateText: null
+    };
+}
+
+function parseAdAttr(str: string): { key: string; val: number; unit: string } | null {
+    if (!str) return null;
+    const m = str.match(/^(.*?)\s*[+＋]\s*([\d\.]+)(%?)$/) || str.match(/^(.*?)\s+([\d\.]+)(%?)$/);
+    if (m) {
+        const key = m[1].replace(/^[·\s]+/, '').trim();
+        const val = parseFloat(m[2]);
+        const unit = m[3] || '';
+        if (!isNaN(val)) {
+            return { key, val, unit };
+        }
+    }
+    return null;
+}
+
 export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
     item,
     initialRefLevel,
@@ -104,6 +132,12 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
         return getEquipSeries(currentItem, equipList);
     }, [currentItem, equipList]);
 
+    // 下一阶装备对象（用于计算同系装备升级增量）
+    const nextItem = useMemo(() => {
+        if (!seriesInfo || seriesInfo.currentIndex >= seriesInfo.items.length - 1) return null;
+        return seriesInfo.items[seriesInfo.currentIndex + 1] || null;
+    }, [seriesInfo]);
+
     // 判断当前装备是否属于蕴灵炼器范畴（防具/武器且具备 ref 梯度）
     const hasYunling = useMemo(() => {
         return Boolean(currentItem.ref && currentItem.ref.length > 0 && YUNLING_SLOTS.includes(currentItem.slot || ''));
@@ -130,6 +164,13 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
         const idx = Math.min(refLevel - 1, currentItem.ref.length - 1);
         return currentItem.ref[idx] || 0;
     }, [hasYunling, currentItem.ref, refLevel]);
+
+    // 下一阶炼器加成与净增量
+    const nextRefGain = useMemo(() => {
+        if (!hasYunling || !currentItem.ref || refLevel >= 15) return null;
+        const nextBonus = currentItem.ref[refLevel] || 0;
+        return nextBonus - currentRefBonus;
+    }, [hasYunling, currentItem.ref, refLevel, currentRefBonus]);
 
     return (
         <div className={clsx(
@@ -175,9 +216,6 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                         {/* 1. 蕴灵装备：强化 -1 / 强化 +1 */}
                         {hasYunling && (
                             <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
-                                <span className="text-[10px] sm:text-[11px] font-sans text-cyan-300/90 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30 whitespace-nowrap">
-                                    +{refLevel}
-                                </span>
                                 <button
                                     type="button"
                                     onClick={() => setRefLevel(prev => Math.max(0, prev - 1))}
@@ -210,9 +248,6 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                         {/* 2. 同系装备（金身、法身、大乘战罡、锦囊、印、项链、戒指等）：等级 -1 / 等级 +1 */}
                         {!hasYunling && seriesInfo && seriesInfo.items.length > 1 && (
                             <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
-                                <span className="text-[10px] sm:text-[11px] font-sans text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30 whitespace-nowrap">
-                                    {seriesInfo.currentTierLabel || `${seriesInfo.currentIndex + 1}阶`}
-                                </span>
                                 <button
                                     type="button"
                                     onClick={() => {
@@ -242,7 +277,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                         'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
                                         seriesInfo.currentIndex >= seriesInfo.items.length - 1
                                             ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
-                                            : 'bg-amber-600/30 border-amber-500/50 text-amber-200 hover:bg-amber-600/50 hover:text-white'
+                                            : 'bg-cyan-600/30 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/50 hover:text-white'
                                     )}
                                 >
                                     等级 +1
@@ -261,41 +296,99 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
                 {/* 基础攻击（经典游戏蓝 #8080ff，炼器加成直接合并不分行、不带右侧括号） */}
                 {currentItem.atk && (
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        基础攻击 {currentItem.atk[0] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)} － {currentItem.atk[1] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)}
+                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                        <span>
+                            基础攻击 {currentItem.atk[0] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)} － {currentItem.atk[1] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)}
+                        </span>
+                        {hasYunling && targetRefKey === 'atk' && nextRefGain !== null && nextRefGain > 0 && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (强化 +{nextRefGain})
+                            </span>
+                        )}
+                        {!hasYunling && nextItem && nextItem.atk && nextItem.atk[1] > currentItem.atk[1] && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (升级 +{nextItem.atk[1] - currentItem.atk[1]})
+                            </span>
+                        )}
                     </div>
                 )}
 
-                {/* 命中与躲闪（常见于法身、金身） */}
+                {/* 命中与躲闪（常见于法身、金身、印） */}
                 {currentItem.hit !== undefined && (
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        命中 ＋{currentItem.hit}
+                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                        <span>命中 ＋{currentItem.hit}</span>
+                        {!hasYunling && nextItem && nextItem.hit !== undefined && nextItem.hit > currentItem.hit && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (升级 +{nextItem.hit - currentItem.hit})
+                            </span>
+                        )}
                     </div>
                 )}
                 {currentItem.dod !== undefined && (
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        躲闪 ＋{currentItem.dod}
+                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                        <span>躲闪 ＋{currentItem.dod}</span>
+                        {!hasYunling && nextItem && nextItem.dod !== undefined && nextItem.dod > currentItem.dod && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (升级 +{nextItem.dod - currentItem.dod})
+                            </span>
+                        )}
                     </div>
                 )}
 
                 {/* 防御力（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
                 {currentItem.def !== undefined && (
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        基础防御 ＋{currentItem.def + (hasYunling && targetRefKey === 'def' ? currentRefBonus : 0)}
+                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                        <span>
+                            基础防御 ＋{currentItem.def + (hasYunling && targetRefKey === 'def' ? currentRefBonus : 0)}
+                        </span>
+                        {hasYunling && targetRefKey === 'def' && nextRefGain !== null && nextRefGain > 0 && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (强化 +{nextRefGain})
+                            </span>
+                        )}
+                        {!hasYunling && nextItem && nextItem.def !== undefined && nextItem.def > currentItem.def && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (升级 +{nextItem.def - currentItem.def})
+                            </span>
+                        )}
                     </div>
                 )}
 
                 {/* 基础气血（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
                 {currentItem.hp !== undefined && (
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        基础气血 ＋{currentItem.hp + (hasYunling && targetRefKey === 'hp' ? currentRefBonus : 0)}
+                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                        <span>
+                            基础气血 ＋{currentItem.hp + (hasYunling && targetRefKey === 'hp' ? currentRefBonus : 0)}
+                        </span>
+                        {hasYunling && targetRefKey === 'hp' && nextRefGain !== null && nextRefGain > 0 && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (强化 +{nextRefGain})
+                            </span>
+                        )}
+                        {!hasYunling && nextItem && nextItem.hp !== undefined && nextItem.hp > currentItem.hp && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (升级 +{nextItem.hp - currentItem.hp})
+                            </span>
+                        )}
                     </div>
                 )}
 
                 {/* 基础真气（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
                 {currentItem.mp !== undefined && (
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }}>
-                        基础真气 ＋{currentItem.mp + (hasYunling && targetRefKey === 'mp' ? currentRefBonus : 0)}
+                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                        <span>
+                            基础真气 ＋{currentItem.mp + (hasYunling && targetRefKey === 'mp' ? currentRefBonus : 0)}
+                        </span>
+                        {hasYunling && targetRefKey === 'mp' && nextRefGain !== null && nextRefGain > 0 && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (强化 +{nextRefGain})
+                            </span>
+                        )}
+                        {!hasYunling && nextItem && nextItem.mp !== undefined && nextItem.mp > currentItem.mp && (
+                            <span className="text-emerald-400 font-sans text-[11px] font-medium">
+                                (升级 +{nextItem.mp - currentItem.mp})
+                            </span>
+                        )}
                     </div>
                 )}
 
@@ -308,16 +401,42 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                             const displayText = !isUnlocked && attr.l > 0
                                 ? `(+${attr.l})${formattedText}`
                                 : formattedText;
+
+                            // 同系阶位升级差值推演
+                            let upgradeDiffText: string | null = null;
+                            if (!hasYunling && nextItem && nextItem.ad) {
+                                const parsedCurr = parseAdAttr(attr.d || attr.n);
+                                if (parsedCurr) {
+                                    const matchedNext = nextItem.ad.find(na => {
+                                        const pNext = parseAdAttr(na.d || na.n);
+                                        return pNext && pNext.key === parsedCurr.key;
+                                    });
+                                    if (matchedNext) {
+                                        const pNext = parseAdAttr(matchedNext.d || matchedNext.n);
+                                        if (pNext && pNext.val > parsedCurr.val) {
+                                            const diff = +(pNext.val - parsedCurr.val).toFixed(2);
+                                            upgradeDiffText = `(升级 +${diff}${parsedCurr.unit})`;
+                                        }
+                                    }
+                                }
+                            }
+
                             return (
                                 <div
                                     key={aIdx}
                                     style={{
                                         color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED,
                                         display: 'flex',
-                                        alignItems: 'center'
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between'
                                     }}
                                 >
                                     <span>{displayText}</span>
+                                    {upgradeDiffText && (
+                                        <span className="text-emerald-400 font-sans text-[11px] font-medium ml-1.5 whitespace-nowrap">
+                                            {upgradeDiffText}
+                                        </span>
+                                    )}
                                 </div>
                             );
                         })}
@@ -361,17 +480,25 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                                     <span>+{tier}档位</span>
                                                     <span>{isUnlocked ? '已激活' : '需蕴灵 +' + tier}</span>
                                                 </div>
-                                                {shouldShowList && tierItems.map((bi, bIdx) => (
-                                                    <div
-                                                        key={bIdx}
-                                                        className="pl-2"
-                                                        style={{
-                                                            color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED
-                                                        }}
-                                                    >
-                                                        · {formatAttrText(bi.d)}
-                                                    </div>
-                                                ))}
+                                                {shouldShowList && tierItems.map((bi, bIdx) => {
+                                                    const parsed = parseAttrAndRate(bi.d);
+                                                    return (
+                                                        <div
+                                                            key={bIdx}
+                                                            className="pl-2 flex items-center justify-between text-[13px] leading-[22px]"
+                                                            style={{
+                                                                color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED
+                                                            }}
+                                                        >
+                                                            <span>· {parsed.attrText}</span>
+                                                            {parsed.rateText && (
+                                                                <span className="text-[11px] font-sans" style={{ color: isUnlocked ? '#8892b0' : GAME_COLORS.TEXT_LOCKED }}>
+                                                                    概率 {parsed.rateText}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         );
                                     })}
