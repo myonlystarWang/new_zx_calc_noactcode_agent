@@ -155,13 +155,8 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
     const titleColor = quality === 'perfect' ? '#ffd272' : '#8080ff';
 
     return (
-        <div
-            className={clsx(
-                'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left w-full min-w-0 max-w-xl select-none',
-                className
-            )}
-        >
-            {/* 0. 顶层宝石切换栏：完全对齐职业状态滚动条样式，无图标 */}
+        <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
+            {/* 0. 顶层宝石切换栏：占满 AI 对话框完整宽度 w-full，无图标 */}
             {gems.length > 1 && (
                 <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
                     {canScrollLeft && (
@@ -213,18 +208,18 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                 </div>
             )}
 
-            {/* 1:1 游戏实机与寻宝天行原生 Tooltip 视效容器（完全对齐 EquipDetailCard 装备卡样式） */}
+            {/* 1. 下方核心宝石信息卡：限制宽度 max-w-xl（显示效果与 boss 属性类似） */}
             <div
-                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
                 style={{
                     fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
                     letterSpacing: '0.3px'
                 }}
             >
-                {/* 头部两层式布局：第 1 行名称与当前品质/等级，第 2 行胶囊微标与升降级步进控制台 */}
+                {/* 头部两层式布局：第 1 行名称与等级，第 2 行品质切换微标与强化步进控制台 */}
                 <div className="pb-2 border-b border-[#1f293d]/80 flex flex-col gap-1.5 min-w-0">
-                    {/* 第 1 行：完整宝石名称（根据品阶显示高亮金/蓝颜色） */}
+                    {/* 第 1 行：完整宝石名称 */}
                     <div
                         className="font-bold text-[14px] sm:text-[15px] leading-snug break-words"
                         style={{ color: titleColor }}
@@ -296,7 +291,7 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
 
                 {/* 类似装备卡的属性逐行展示：经典游戏蓝（#8080ff）+ 宋体 */}
                 <div className="py-1 space-y-1">
-                    {/* 基础属性（过滤掉 <= 0 的属性，普通品阶不显示 0 增益项） */}
+                    {/* 基础属性与已激活特化属性（过滤掉 <= 0 的属性，普通品阶不显示 0 增益项） */}
                     {Object.entries(currentAttrs).map(([rawName, val]) => {
                         if (!val || val <= 0) return null;
                         const { name, isPercent } = formatAttrName(rawName);
@@ -313,16 +308,14 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                         );
                     })}
 
-                    {/* 隐藏属性：仅在完美品阶且存在副属性时显示；普通品阶无隐藏属性直接不显示 */}
-                    {quality === 'perfect' && activeGem.extraAttr && (
+                    {/* 完美品阶未到 6 级时：显示置灰的 (+6) 隐藏属性；满 6 级时已在上方直接显示蓝字数值，此处不重复显示 */}
+                    {quality === 'perfect' && level < 6 && activeGem.extraAttr && (
                         <div
-                            style={{
-                                color: level >= 6 ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED
-                            }}
+                            style={{ color: GAME_COLORS.TEXT_LOCKED }}
                             className="flex items-center"
                         >
                             <span>
-                                {level >= 6 ? '' : '(6级解锁)'}隐藏属性：{activeGem.extraAttr}
+                                (+6) {activeGem.extraAttr}
                             </span>
                         </div>
                     )}
