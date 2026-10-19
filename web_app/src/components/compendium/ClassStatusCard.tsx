@@ -324,15 +324,15 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
                 )}
             </div>
 
-            {/* 2. 属性矩阵网格：1:1 像素级对齐 BossDetailCard 的紧凑可读比例与结构 (max-w-xl，避免宽屏视线过度横移) */}
+            {/* 2. 属性矩阵：紧凑相邻排布（取消 justify-between，标签与数值紧邻 gap-2，彻底根除视线大幅横移） */}
             {matrixItems.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs max-w-xl">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-xs max-w-2xl">
                     {matrixItems.map((m) => (
                         <div
                             key={m.key}
-                            className="flex items-center justify-between px-2.5 py-1.5 rounded-lg border bg-black/40 border-white/5 transition-colors"
+                            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border bg-black/40 border-white/5 transition-colors"
                         >
-                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">
+                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0">
                                 {m.label}
                             </span>
                             <span className={clsx('font-mono font-bold text-xs shrink-0 whitespace-nowrap', m.color)}>
@@ -342,7 +342,7 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
                     ))}
                 </div>
             ) : (
-                <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/5 text-center text-xs text-slate-400 max-w-xl">
+                <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/5 text-center text-xs text-slate-400 max-w-2xl">
                     输出职业以个人伤害为主，团队增益面板较少，可在模拟训练场使用输出模板起号。
                 </div>
             )}
