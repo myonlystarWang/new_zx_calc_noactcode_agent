@@ -1193,7 +1193,7 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: `为你速查到【宝石属性及升级全景】。支持 12 种宝石（普通/完美品阶、1~10级属性）与多孔镶嵌总属性测算：`,
+                text: `为你速查到【宝石属性及升级全景】。支持 12 种宝石自由切换、普通/完美品阶与 1~10 级强化属性速查：`,
                 time: timeStr,
                 cardType: 'baoshi',
                 cardData: {
