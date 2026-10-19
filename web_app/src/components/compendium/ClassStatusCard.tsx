@@ -324,9 +324,9 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
                 )}
             </div>
 
-            {/* 2. 属性矩阵网格：1:1 像素级对齐 BossDetailCard 的结构 (grid-cols-2 sm:grid-cols-3, bg-black/40 border-white/5) */}
+            {/* 2. 属性矩阵网格：1:1 像素级对齐 BossDetailCard 的紧凑可读比例与结构 (max-w-xl，避免宽屏视线过度横移) */}
             {matrixItems.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs max-w-xl">
                     {matrixItems.map((m) => (
                         <div
                             key={m.key}
@@ -342,13 +342,13 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
                     ))}
                 </div>
             ) : (
-                <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/5 text-center text-xs text-slate-400">
+                <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/5 text-center text-xs text-slate-400 max-w-xl">
                     输出职业以个人伤害为主，团队增益面板较少，可在模拟训练场使用输出模板起号。
                 </div>
             )}
 
-            {/* 3. 底部战术定位行：低调内敛，不重复罗列数值 */}
-            <div className="pt-2 border-t border-white/5 flex items-start gap-1.5 text-xs leading-relaxed">
+            {/* 3. 底部战术定位行：低调内敛，紧凑布局对齐属性网格 */}
+            <div className="pt-2 border-t border-white/5 flex items-start gap-1.5 text-xs leading-relaxed max-w-xl">
                 <span className="text-cyan-400 font-semibold shrink-0">战术定位：</span>
                 <span className="text-slate-300">
                     {tacticalSummary}
