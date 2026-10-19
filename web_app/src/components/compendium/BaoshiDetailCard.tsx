@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Gem } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
 import { GAME_COLORS } from '../../constants/gameColorSystem';
 
@@ -58,8 +58,6 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
     const [quality, setQuality] = useState<'normal' | 'perfect'>(() => {
         return cardData?.initialQuality || 'perfect';
     });
-
-    const [showFullTable, setShowFullTable] = useState(false);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -163,7 +161,7 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                 className
             )}
         >
-            {/* 0. 顶层宝石切换栏：完全对齐 CandidateSelectorBar 统一规范 */}
+            {/* 0. 顶层宝石切换栏：完全对齐职业状态滚动条样式，无图标 */}
             {gems.length > 1 && (
                 <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
                     {canScrollLeft && (
@@ -179,7 +177,7 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
 
                     <div
                         ref={scrollRef}
-                        className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 px-0.5 w-full scroll-smooth"
+                        className="flex-1 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth"
                     >
                         {gems.map((g) => {
                             const isActive = g.id === activeGemId;
@@ -190,15 +188,13 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                                     data-active={isActive ? 'true' : 'false'}
                                     onClick={() => setActiveGemId(g.id)}
                                     className={clsx(
-                                        'px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-all shrink-0 cursor-pointer flex items-center gap-1.5',
+                                        'px-2.5 py-1 rounded text-xs transition-all shrink-0 cursor-pointer',
                                         isActive
-                                            ? 'bg-cyan-500/20 text-cyan-200 border border-cyan-400/50 shadow-[0_0_8px_rgba(6,182,212,0.25)] font-bold'
-                                             : 'bg-slate-800/50 text-slate-400 border border-slate-700/40 hover:bg-slate-800 hover:text-slate-200'
+                                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/60 font-bold shadow-sm'
+                                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
                                     )}
                                 >
-                                    <Gem className={clsx('w-3 h-3', isActive ? 'text-cyan-300' : 'text-slate-400')} />
-                                    <span>{g.name}</span>
-                                    <span className="text-[10px] opacity-70">({g.coreAttr.split('/')[0].trim()})</span>
+                                    {g.name}
                                 </button>
                             );
                         })}
@@ -228,17 +224,17 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
             >
                 {/* 头部两层式布局：第 1 行名称与当前品质/等级，第 2 行胶囊微标与升降级步进控制台 */}
                 <div className="pb-2 border-b border-[#1f293d]/80 flex flex-col gap-1.5 min-w-0">
-                    {/* 第 1 行：完整宝石名称（带等级与品质标签，采用装备卡原生高亮字体） */}
+                    {/* 第 1 行：完整宝石名称（根据品阶显示高亮金/蓝颜色） */}
                     <div
                         className="font-bold text-[14px] sm:text-[15px] leading-snug break-words"
                         style={{ color: titleColor }}
                     >
-                        {activeGem.name}（Lv.{level} · {quality === 'perfect' ? '完美品阶' : '普通品阶'}）
+                        {activeGem.name}（Lv.{level}）
                     </div>
 
-                    {/* 第 2 行：品质切换微标 + 装备镶嵌微标 与 右侧强化步进控制台 */}
+                    {/* 第 2 行：品质切换微标 与 右侧强化步进控制台 */}
                     <div className="flex items-center justify-between gap-2 min-w-0 flex-wrap">
-                        {/* 左侧：品阶切换与状态微标 */}
+                        {/* 左侧：品阶切换 */}
                         <div className="flex items-center gap-1.5 text-[11px] font-sans">
                             <button
                                 type="button"
@@ -262,28 +258,12 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                                         : 'bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-slate-200'
                                 )}
                             >
-                                完美品阶 ★
+                                完美品阶
                             </button>
-                            <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-300 border border-slate-700/50 whitespace-nowrap">
-                                装备镶嵌
-                            </span>
-                            <span
-                                className={clsx(
-                                    'px-1.5 py-0.5 rounded text-[10px] font-mono border whitespace-nowrap',
-                                    activeLevelData?.isOpen
-                                        ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-300'
-                                        : 'bg-slate-800/40 border-slate-700/40 text-slate-400'
-                                )}
-                            >
-                                {activeLevelData?.isOpen ? 'Lv.1~6 已开放' : '前瞻未开放'}
-                            </span>
                         </div>
 
-                        {/* 右侧：步进升级控制台（与 EquipDetailCard 的 强化-1 / 强化+1 1:1 对齐） */}
+                        {/* 右侧：步进升级控制台（与 EquipDetailCard 1:1 对齐） */}
                         <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
-                            <span className="text-[10px] sm:text-[11px] font-sans text-cyan-300/90 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30 whitespace-nowrap">
-                                Lv.{level}
-                            </span>
                             <button
                                 type="button"
                                 onClick={() => setLevel((prev) => Math.max(1, prev - 1))}
@@ -314,44 +294,11 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                     </div>
                 </div>
 
-                {/* 快捷档位跳选与连续微调滑块 */}
-                <div className="bg-[#0a0f18]/60 border border-white/5 rounded-lg px-2.5 py-1.5 flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-1 font-sans text-xs">
-                        <span className="text-slate-400 text-[11px] mr-1">快捷档位:</span>
-                        {[1, 3, 6, 8, 10].map((lvl) => (
-                            <button
-                                key={lvl}
-                                type="button"
-                                onClick={() => setLevel(lvl)}
-                                className={clsx(
-                                    'px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors cursor-pointer border',
-                                    level === lvl
-                                        ? 'bg-cyan-500/30 border-cyan-400/60 text-cyan-200 font-bold'
-                                        : 'bg-slate-800/50 border-slate-700/40 text-slate-400 hover:text-slate-200'
-                                )}
-                            >
-                                {lvl === 6 ? '6级(上限)' : `${lvl}级`}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="flex items-center gap-2 flex-1 max-w-[160px] ml-auto">
-                        <input
-                            type="range"
-                            min="1"
-                            max="10"
-                            step="1"
-                            value={level}
-                            onChange={(e) => setLevel(Number(e.target.value))}
-                            className="w-full accent-cyan-400 h-1 bg-slate-800 rounded cursor-pointer"
-                        />
-                    </div>
-                </div>
-
                 {/* 类似装备卡的属性逐行展示：经典游戏蓝（#8080ff）+ 宋体 */}
                 <div className="py-1 space-y-1">
-                    {/* 基础属性 */}
+                    {/* 基础属性（过滤掉 <= 0 的属性，普通品阶不显示 0 增益项） */}
                     {Object.entries(currentAttrs).map(([rawName, val]) => {
+                        if (!val || val <= 0) return null;
                         const { name, isPercent } = formatAttrName(rawName);
                         return (
                             <div
@@ -366,8 +313,8 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                         );
                     })}
 
-                    {/* 6级特化属性（达到6级点亮经典游戏蓝，未达6级显示灰色解锁提示，与装备卡完全同源） */}
-                    {activeGem.extraAttr && (
+                    {/* 隐藏属性：仅在完美品阶且存在副属性时显示；普通品阶无隐藏属性直接不显示 */}
+                    {quality === 'perfect' && activeGem.extraAttr && (
                         <div
                             style={{
                                 color: level >= 6 ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED
@@ -375,7 +322,7 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                             className="flex items-center"
                         >
                             <span>
-                                {level >= 6 ? '' : '(6级解锁)'}特化副属性：{activeGem.extraAttr}
+                                {level >= 6 ? '' : '(6级解锁)'}隐藏属性：{activeGem.extraAttr}
                             </span>
                         </div>
                     )}
@@ -389,13 +336,13 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                     <div style={{ color: GAME_COLORS.WHITE }}>
                         镶嵌部位：
                         <span style={{ color: GAME_COLORS.PURE_RED }}>
-                            戒指、项链、锦囊等饰品孔位
+                            戒指、项链等饰品孔位
                         </span>
                     </div>
                     <div style={{ color: GAME_COLORS.WHITE }}>
                         宝石品阶：
                         <span style={{ color: quality === 'perfect' ? '#ffd272' : GAME_COLORS.WHITE }}>
-                            {quality === 'perfect' ? '完美宝石（全属性提升）' : '普通宝石'}
+                            {quality === 'perfect' ? '完美宝石' : '普通宝石'}
                         </span>
                     </div>
                     <div style={{ color: GAME_COLORS.WHITE }}>
@@ -404,85 +351,7 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                             {activeGem.coreAttr}
                         </span>
                     </div>
-                    <div style={{ color: GAME_COLORS.TEXT_LOCKED }}>
-                        {activeGem.type} · 6级起激活特化副属性
-                    </div>
                 </div>
-            </div>
-
-            {/* 1~10 级全量对照表（折叠面板） */}
-            <div className="border-t border-white/5 pt-2">
-                <button
-                    type="button"
-                    onClick={() => setShowFullTable(!showFullTable)}
-                    className="w-full flex items-center justify-between text-slate-400 hover:text-slate-200 py-1 text-xs transition-colors cursor-pointer"
-                >
-                    <span className="font-medium">【{activeGem.name}】1~10 级（普通 vs 完美）对照表</span>
-                    {showFullTable ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                </button>
-
-                {showFullTable && (
-                    <div className="mt-2 overflow-x-auto max-h-[240px] overflow-y-auto border border-white/10 rounded-lg">
-                        <table className="w-full text-left text-[11px] min-w-[460px]">
-                            <thead className="bg-[#0a0f18] text-slate-400 sticky top-0 border-b border-white/10">
-                                <tr>
-                                    <th className="p-2 text-center w-14">等级</th>
-                                    <th className="p-2">普通属性</th>
-                                    <th className="p-2">完美属性</th>
-                                    <th className="p-2 text-center w-16">状态</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-white/5 font-mono">
-                                {activeGem.levels.map((item) => {
-                                    const isCurrent = item.level === level;
-                                    const normalStr = Object.entries(item.normal)
-                                        .map(([k, v]) => `${formatAttrName(k).name}+${v}${formatAttrName(k).isPercent ? '%' : ''}`)
-                                        .join('  ');
-                                    const perfectStr = Object.entries(item.perfect)
-                                        .map(([k, v]) => `${formatAttrName(k).name}+${v}${formatAttrName(k).isPercent ? '%' : ''}`)
-                                        .join('  ');
-
-                                    return (
-                                        <tr
-                                            key={item.level}
-                                            onClick={() => setLevel(item.level)}
-                                            className={clsx(
-                                                'cursor-pointer transition-colors',
-                                                isCurrent
-                                                    ? 'bg-cyan-500/20 text-cyan-100 font-bold border-l-2 border-cyan-400'
-                                                    : 'hover:bg-slate-800/40 text-slate-300'
-                                            )}
-                                        >
-                                            <td className="p-2 text-center font-bold">
-                                                Lv.{item.level}
-                                            </td>
-                                            <td className="p-2 text-slate-300">{normalStr}</td>
-                                            <td className="p-2 text-amber-300 font-semibold">{perfectStr}</td>
-                                            <td className="p-2 text-center">
-                                                <span
-                                                    className={clsx(
-                                                        'px-1.5 py-0.5 rounded text-[10px] font-bold border',
-                                                        item.isOpen
-                                                            ? 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30'
-                                                            : 'text-slate-400 bg-slate-800/60 border-slate-700/40'
-                                                    )}
-                                                >
-                                                    {item.isOpen ? '已开' : '未开'}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </div>
-
-            {/* 底部数据来源说明 */}
-            <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-500 font-sans">
-                <span>来源：官方/贴吧《诛仙3宝石1-10级全景图》</span>
-                <span>6级起解锁特化副属性</span>
             </div>
         </div>
     );
