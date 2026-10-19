@@ -93,7 +93,7 @@ export const JiuwenlangDetailCard: React.FC<JiuwenlangDetailCardProps> = ({ card
     }, [levels, calcStartLevel, calcTargetLevel]);
 
     return (
-        <div className={`w-full max-w-[560px] bg-[#0b0f19] border border-[#1e293b] rounded-lg p-3 text-xs font-sans shadow-xl select-none ${className || ''}`}>
+        <div className={`w-full max-w-xl bg-[#0b0f19] border border-[#1e293b] rounded-lg p-3 text-xs font-sans shadow-xl select-none ${className || ''}`}>
             {/* 头部标题与徽标 */}
             <div className="flex items-center justify-between border-b border-[#1e293b] pb-2 mb-2.5">
                 <div className="flex items-center gap-1.5">

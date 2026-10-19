@@ -173,7 +173,7 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
     );
 
     return (
-        <div className={`w-full max-w-xl mx-auto rounded-lg bg-[#0b101b] border border-[#1e293b] p-3 text-slate-200 font-sans shadow-xl text-xs space-y-3 ${className || ''}`}>
+        <div className={`w-full max-w-xl rounded-lg bg-[#0b101b] border border-[#1e293b] p-3 text-slate-200 font-sans shadow-xl text-xs space-y-3 ${className || ''}`}>
             {/* 顶部标题行与右侧按钮 */}
             <div className="flex items-center justify-between border-b border-[#1f293d]/80 pb-2">
                 <div className="flex items-center gap-2">
