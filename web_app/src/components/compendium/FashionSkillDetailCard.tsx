@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { Sparkles, Link as LinkIcon, Flame } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import clsx from 'clsx';
+import { GameColorText } from '../ui/GameColorText';
 
 export interface FashionSkillLinkage {
     sourceSkill: string;
@@ -36,10 +38,332 @@ export interface FashionSkillDetailCardProps {
         data?: FashionSkillData;
         initialSkillId?: string;
         initialZodiac?: string;
-        activeJinshe?: boolean;
-        activeZhushi?: boolean;
     };
     className?: string;
+}
+
+interface ExactFashionSkillDisplay {
+    header: React.ReactNode;
+    bodyGameColorText: string;
+}
+
+/**
+ * 1:1 游戏实机截图精细化配置（福星高照、玉阙玄天、龙腾四海、金蛇狂舞）
+ * 严格保持与未名斩<煞>完全相同的游戏原版色彩码：
+ * 紫色：^aa32ff
+ * 绿色：^11ff11
+ * 天蓝：^11aaff
+ * 金黄：^ffcb4a
+ * 纯白：^ffffff
+ */
+const EXACT_SKILL_DISPLAYS: Record<string, ExactFashionSkillDisplay> = {
+    // 1. 福星高照（虎年 · 自身祝福）
+    tiger_fuxing: {
+        header: (
+            <div className="space-y-0.5">
+                <div className="text-white font-bold text-[13.5px]">福星高照</div>
+                <div style={{ color: '#11aaff' }} className="text-[12.5px]">自身祝福</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^ffffff清除自身^ffcb4a6^ffffff个负面状态，并令自身免',
+            '^ffffff疫伤害和负面状态^ffcb4a3^ffffff次，效果最多持',
+            '^ffffff续^ffcb4a30^ffffff秒，冷却时间^ffcb4a5^ffffff分钟。',
+            '',
+            '^aa32ff『 金蛇狂舞 · 加强版 』',
+            '^11ff11追加自身免疫伤害和负面状态^ffcb4a3^11ff11次。'
+        ].join('\n')
+    },
+
+    // 2. 玉阙玄天（兔年 · 祝福 · 1秒施放）
+    rabbit_yuque: {
+        header: (
+            <div className="flex items-center justify-between text-[13px]">
+                <span style={{ color: '#11aaff' }} className="font-bold text-[13.5px]">玉阙玄天</span>
+                <span className="text-white text-[12.5px]">祝福  1秒施放</span>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^ffcb4a皎然银辉冰玉兔，沐洒天河碧婵宫。',
+            '',
+            '^ffffff消耗真气：120点',
+            '^ffffff冷却时间：300秒',
+            '^11ff11立即清除自身^ffcb4a3^11ff11个负面状态，同时^ffcb4a20^11ff11秒',
+            '^11ff11内自身所有抗性提升^ffcb4a53^11ff11点，移动速度增',
+            '^11ff11加^ffcb4a4.2^11ff11米/秒，坐骑移动速度^ffcb4a1.0^11ff11米/秒。',
+            '^11ff11施法时令你获得一个常态效果，^ffcb4a3600^11ff11秒',
+            '^11ff11内增加自身攻击力^ffcb4a118^11ff11点。',
+            '',
+            '^aa32ff『 金蛇狂舞 · 加强版 』',
+            '^11ff11消耗真气降为^ffcb4a0^11ff11。',
+            '^11ff11追加清除自身负面状态^ffcb4a3^11ff11个。',
+            '^11ff11抗性提升追加^ffcb4a17^11ff11点，持续时间延长^ffcb4a5^11ff11秒。',
+            '^11ff11追加^ffcb4a5^11ff11秒加速时间。'
+        ].join('\n')
+    },
+
+    // 3. 龙腾四海（龙年 · 祝福技能 · 1秒施放）
+    dragon_longteng: {
+        header: (
+            <div className="space-y-0.5">
+                <div className="text-white font-bold text-[13.5px]">龙腾四海</div>
+                <div style={{ color: '#11aaff' }} className="text-[12.5px]">祝福技能</div>
+                <div className="text-white text-[12.5px]">1 秒施放</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^11aaff0 真气',
+            '^ffffff1分钟内增强吃药效果^ffcb4a100%^ffffff，清除自',
+            '^ffffff身及队伍成员^ffcb4a2^ffffff个负面状态，^ffcb4a25^ffffff秒内',
+            '^ffffff增加技能命中^ffcb4a40^ffffff点，^ffcb4a900^ffffff秒内增加自',
+            '^ffffff身防御^ffcb4a70^ffffff点，^ffcb4a200^ffffff秒内持续回复真气',
+            '^ffcb4a20000^ffffff点，冷却时间^ffcb4a900^ffffff秒。',
+            '',
+            '^aa32ff『 金蛇狂舞 · 加强版 』',
+            '^11ff11追加清除自身与队伍成员负面状态^ffcb4a1^11ff11个。',
+            '^11ff11追加持续恢复真气^ffcb4a10000^11ff11点。',
+            '^11ff11冷却时间减少^ffcb4a180^11ff11秒。'
+        ].join('\n')
+    },
+
+    // 4. 金蛇狂舞（蛇年 · 自身祝福 · 联动引擎）
+    snake_jinshe: {
+        header: (
+            <div className="space-y-0.5">
+                <div className="text-white font-bold text-[13.5px]">金蛇狂舞</div>
+                <div style={{ color: '#11aaff' }} className="text-[12.5px]">自身祝福</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^ffffff自身在^ffcb4a3600^ffffff秒内增加自身攻击力^ffcb4a200^ffffff点，在^ffcb4a900^ffffff秒',
+            '^ffffff内共回复^ffcb4a72000^ffffff气血，^ffcb4a25^ffffff秒内增加自身技能躲闪',
+            '^ffcb4a20^ffffff点且缩短自身释法速度^ffcb4a20%^ffffff，冷却时间^ffcb4a15^ffffff分钟。',
+            '^aa32ff『 金蛇狂舞 』^11ff11分别被动强化^aa32ff『 龙腾四海 』^11ff11、^aa32ff『 玉',
+            '^aa32ff阙玄天 』^11ff11、^aa32ff『 福星高照 』^11ff11的部分技能效果'
+        ].join('\n')
+    },
+
+    // 5. 天马行空（马年 · 自身祝福）
+    horse_tianma: {
+        header: (
+            <div className="space-y-0.5">
+                <div className="text-white font-bold text-[13.5px]">天马行空</div>
+                <div style={{ color: '#11aaff' }} className="text-[12.5px]">自身祝福</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^ffffff自身在^ffcb4a10^ffffff秒内免疫致命一击和多种负面状态，并且',
+            '^ffffff有^ffcb4a30%^ffffff概率反弹技能效果^ffcb4a4^ffffff次，立刻回复自身最大元',
+            '^ffffff力值^ffcb4a50%^ffffff，^ffcb4a900^ffffff秒内回复自身气血^ffcb4a72000^ffffff点，^ffcb4a900^ffffff秒内回',
+            '^ffffff复自身真气^ffcb4a72000^ffffff点，冷却时间^ffcb4a15^ffffff分钟。',
+            '^ff2222技能反弹效果仅对^11ff11玩家目标生效'
+        ].join('\n')
+    },
+
+    // 6. 三阳开泰（羊年 · 自身祝福）
+    goat_sanyang: {
+        header: (
+            <div className="space-y-0.5">
+                <div style={{ color: '#11aaff' }} className="font-bold text-[13.5px]">三阳开泰</div>
+                <div style={{ color: '#ffcb4a' }} className="text-[12.5px]">三阳交泰，日新惟良。</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^ffffff自身祝福',
+            '^ffffff施法时间：1秒',
+            '^ffffff消耗真气：360点',
+            '^ffffff冷却时间：360秒',
+            '^11ff11效果一：立即回复自身30%的气血、真气、元力；',
+            '^11ff11效果二：提高所有抗性10%持续30秒，可与其他抗性增益效果叠加；',
+            '^11ff11永久生效：激活三大主角时装特技的隐藏效果，包含经典版及荣耀版。'
+        ].join('\n')
+    },
+
+    // 7. 灵猴兆瑞（猴年 · 自身祝福）
+    monkey_linghou: {
+        header: (
+            <div className="space-y-0.5">
+                <div style={{ color: '#11aaff' }} className="font-bold text-[13.5px]">灵猴兆瑞</div>
+                <div style={{ color: '#ffcb4a' }} className="text-[12.5px]">通变化，知休咎，万物皆明。</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^ffffff自身祝福',
+            '^11aaff施法时间：1秒',
+            '^11aaff消耗真气：666点',
+            '^11aaff冷却时间：360秒',
+            '^ffffff当自身受到^11ff11魅惑^ffffff及部分^11ff11移动受阻类^ffffff效果时，使用后有',
+            '^ffcb4a50%^ffffff概率缩短受控制时间^ffcb4a80%^ffffff，并反弹状态类攻击给',
+            '^ffffff施放该状态的目标，持续^ffcb4a10^ffffff秒，计算目标抗性；同时',
+            '^ffffff增加自身致命一击率，效果与自身当前致命一击率相关，',
+            '^ffcb4a60^ffffff秒内增强吃药效果^ffcb4a50%^ffffff。',
+            '^11aaff本命：^aa32ff灵明通悟——有^ffcb4a50%^aa32ff概率直接解除魅惑及部分',
+            '^aa32ff移动受阻效果。'
+        ].join('\n')
+    },
+
+    // 8. 金鸡迎春（鸡年 · 自身祝福）
+    rooster_jinji: {
+        header: (
+            <div className="space-y-0.5">
+                <div style={{ color: '#aa32ff' }} className="font-bold text-[13.5px]">金鸡迎春</div>
+                <div style={{ color: '#ffcb4a' }} className="text-[12.5px]">金鸡迎春，瑞满乾坤</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^ffffff自身祝福',
+            '^ffffff施法时间：1秒',
+            '^ffffff消耗真气：2017点',
+            '^ffffff冷却时间：360秒',
+            '^ffcb4a300^ffffff秒内增加自身致命一击伤害^ffcb4a27%^ffffff，额外增加自身攻击',
+            '^ffffff力和防御力^ffcb4a360^ffffff点。',
+            '^aa32ff彩凤 ^11aaff被动增强^11ff11天罡云体^11aaff技能，令其冷却时间下降^ffcb4a60^11aaff秒，',
+            '^11aaff并依据其技能级别提升最终祝福效果',
+            '^aa32ff扶桑 ^11aaff被动增强^11ff11天罡战意^11aaff技能，令其冷却时间降低^ffcb4a60^11aaff秒，',
+            '^11aaff并依据其技能级别提升最终祝福效果'
+        ].join('\n')
+    },
+
+    // 9. 白云苍狗（狗年 · 单体诅咒）
+    dog_baiyun: {
+        header: (
+            <div className="space-y-0.5">
+                <div className="text-white font-bold text-[13.5px]">白云苍狗</div>
+                <div style={{ color: '#11aaff' }} className="text-[12.5px]">单体诅咒</div>
+                <div className="text-white text-[12.5px]">1秒释放</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^11aaff1000真气',
+            '^ffffff降低目标技能闪躲^ffcb4a30^ffffff点，增加目标被致命一击概率，',
+            '^ffffff效果与自身致命一击率相关，最多增加目标被致命一击概率^ffcb4a40%^ffffff，',
+            '^ffffff增加目标受到的致命一击伤害，效果与自身致命一击伤害相关，',
+            '^ffffff最多增加目标受到的致命一击伤害^ffcb4a100%^ffffff，持续^ffcb4a20^ffffff秒。',
+            '',
+            '^ffffff冷却时间^ffcb4a360^ffffff秒。'
+        ].join('\n')
+    },
+
+    // 10. 诸事顺利（猪年 · 被动增强）
+    boar_zhushi: {
+        header: (
+            <div className="space-y-0.5">
+                <div style={{ color: '#aa32ff' }} className="font-bold text-[13.5px]">诸事顺利</div>
+                <div style={{ color: '#ffcb4a' }} className="text-[12.5px]">金猪护佑，诸事顺遂。</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^aa32ff被动',
+            '^11aaff被动增强^11ff11福星高照^11aaff技能，令其可额外清除自身的逆转状态。',
+            '^11aaff被动增强^11ff11玉阙玄天^11aaff技能，令自身移动速度额外增加^ffcb4a0.8^11aaff米/秒。',
+            '^11aaff被动增强^11ff11龙腾四海^11aaff技能，令自身^ffcb4a5^11aaff秒内免疫大部分不利效果。',
+            '^11aaff被动增强^11ff11金蛇狂舞^11aaff技能，令其冷却时间降低^ffcb4a180^11aaff秒。',
+            '^11aaff被动增强^11ff11天马行空^11aaff技能，令其反弹技能概率提升至^ffcb4a100%^11aaff。',
+            '^11aaff被动增强^11ff11三阳开泰^11aaff技能，令其回复效果增加^ffcb4a20%^11aaff，提抗效果增加^ffcb4a5%^11aaff。',
+            '^11aaff被动增强^11ff11灵猴兆瑞^11aaff技能，令自身额外获得免疫冰冻效果^ffcb4a5^11aaff秒。',
+            '^11aaff被动增强^11ff11金鸡迎春^11aaff技能，令自身增加爆伤、攻击和防御效果持续时间延长^ffcb4a60^11aaff秒。',
+            '^11aaff被动增强^11ff11白云苍狗^11aaff技能，令其额外降低目标技能闪躲^ffcb4a10^11aaff点，',
+            '^11aaff额外增加目标被致命一击概率^ffcb4a10%^11aaff，被致命一击伤害^ffcb4a20%^11aaff。'
+        ].join('\n')
+    },
+
+    // 11. 乐不思鼠（鼠年 · 被动增强）
+    rat_lebu: {
+        header: (
+            <div className="space-y-0.5">
+                <div style={{ color: '#aa32ff' }} className="font-bold text-[13.5px]">乐不思鼠</div>
+                <div style={{ color: '#ffcb4a' }} className="text-[12.5px]">百福临门常有余，祥云瑞气聚鼠年！</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^aa32ff被动',
+            '^11aaff被动增强^11ff11天罡步尘^11aaff技能，令其每级可额外',
+            '^11aaff提升自身技能闪躲^ffcb4a1^11aaff点，持续^ffcb4a30^11aaff秒。',
+            '^11aaff被动增强^11ff11天罡浩气^11aaff技能，令其每级可额外',
+            '^11aaff减免自身受到的致命一击伤害^ffcb4a1%^11aaff。'
+        ].join('\n')
+    },
+
+    // 12. 牛转乾坤（牛年 · 自身祝福）
+    ox_niuzhuan: {
+        header: (
+            <div className="space-y-0.5">
+                <div style={{ color: '#aa32ff' }} className="font-bold text-[13.5px]">牛转乾坤</div>
+                <div style={{ color: '#ffcb4a' }} className="text-[12.5px]">春迎鸿福人兴旺，牛转乾坤好运来。</div>
+            </div>
+        ),
+        bodyGameColorText: [
+            '',
+            '^11aaff自身祝福',
+            '^11aaff施法时间 ^ffcb4a1 ^11aaff秒',
+            '^11aaff真气消耗 ^ffffff2021 ^11aaff点',
+            '^11aaff技能冷却 ^ffcb4a600 ^11aaff秒',
+            '',
+            '^ffffff立即清除自身^11ff11神力爆发^ffffff技能的冷却。'
+        ].join('\n')
+    }
+};
+
+/**
+ * 通用数字高亮提取（数字与百分比标黄）
+ */
+function highlightNumbersInText(text: string, baseColorHex = 'ffffff'): string {
+    if (!text) return '';
+    return text.replace(/(\d+(\.\d+)?%?)/g, `^ffcb4a$1^${baseColorHex}`);
+}
+
+function buildDefaultSkillDisplay(skill: FashionSkillItem): ExactFashionSkillDisplay {
+    const header = (
+        <div className="space-y-0.5">
+            <div className="text-white font-bold text-[13.5px]">{skill.skillName}</div>
+            <div style={{ color: '#11aaff' }} className="text-[12.5px]">{skill.skillType}</div>
+            {skill.castTime && skill.castTime !== '瞬发' && (
+                <div className="text-white text-[12.5px]">{skill.castTime}施放</div>
+            )}
+        </div>
+    );
+
+    const lines: string[] = [''];
+
+    // 消耗与冷却
+    if (skill.costMp > 0 || skill.cooldown > 0) {
+        if (skill.costMp > 0) {
+            lines.push(`^ffffff消耗真气：${skill.costMp}点`);
+        }
+        if (skill.cooldownText) {
+            lines.push(`^ffffff冷却时间：${skill.cooldownText}`);
+        }
+    }
+
+    // 正文
+    if (skill.baseEffect) {
+        lines.push(`^ffffff${highlightNumbersInText(skill.baseEffect, 'ffffff')}`);
+    }
+
+    // 联动效果
+    if (skill.linkageEffects && skill.linkageEffects.length > 0) {
+        skill.linkageEffects.forEach((l) => {
+            lines.push('');
+            lines.push(`^aa32ff『 ${l.sourceSkill} 』`);
+            lines.push(`^11ff11${highlightNumbersInText(l.effect, '11ff11')}`);
+        });
+    }
+
+    return {
+        header,
+        bodyGameColorText: lines.join('\n')
+    };
 }
 
 export const FashionSkillDetailCard: React.FC<FashionSkillDetailCardProps> = ({ cardData, className }) => {
@@ -55,259 +379,159 @@ export const FashionSkillDetailCard: React.FC<FashionSkillDetailCardProps> = ({ 
         return skills[0]?.id || 'tiger_fuxing';
     });
 
-    // 联动推演开关
-    const [enableJinshe, setEnableJinshe] = useState<boolean>(() => {
-        return cardData?.activeJinshe ?? true;
-    });
-    const [enableZhushi, setEnableZhushi] = useState<boolean>(() => {
-        return cardData?.activeZhushi ?? true;
-    });
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
 
-    const [showLinkageMatrix, setShowLinkageMatrix] = useState(false);
+    const updateScrollState = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        setCanScrollLeft(el.scrollLeft > 4);
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    }, []);
+
+    const scrollToActiveItem = useCallback((smooth = true) => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const activeBtn = el.querySelector<HTMLElement>('[data-active="true"]');
+        if (activeBtn) {
+            const containerLeft = el.getBoundingClientRect().left;
+            const containerWidth = el.clientWidth;
+            const itemLeft = activeBtn.getBoundingClientRect().left;
+            const itemWidth = activeBtn.clientWidth;
+            const offset = (itemLeft - containerLeft) - (containerWidth / 2 - itemWidth / 2);
+            el.scrollBy({
+                left: offset,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+        }
+        setTimeout(updateScrollState, 220);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        updateScrollState();
+        const handleResize = () => updateScrollState();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            scrollToActiveItem(true);
+        }, 50);
+        return () => clearTimeout(timer);
+    }, [activeSkillId, scrollToActiveItem]);
+
+    // 滚轮横向滑动
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const handleWheel = (e: WheelEvent) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+                updateScrollState();
+            }
+        };
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+    }, [updateScrollState]);
+
+    const handleScrollStep = (direction: 'left' | 'right') => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const step = 200;
+        el.scrollBy({
+            left: direction === 'left' ? -step : step,
+            behavior: 'smooth'
+        });
+        setTimeout(updateScrollState, 220);
+    };
 
     const activeSkill = useMemo(() => {
         return skills.find((s) => s.id === activeSkillId) || skills[0];
     }, [skills, activeSkillId]);
 
-    if (!activeSkill) return null;
+    const displayData = useMemo(() => {
+        if (!activeSkill) return null;
+        if (EXACT_SKILL_DISPLAYS[activeSkill.id]) {
+            return EXACT_SKILL_DISPLAYS[activeSkill.id];
+        }
+        return buildDefaultSkillDisplay(activeSkill);
+    }, [activeSkill]);
 
-    // 是否有金蛇狂舞联动
-    const hasJinsheLink = activeSkill.linkageEffects.some((l) => l.sourceSkill.includes('金蛇狂舞'));
-    // 是否有诸事顺利联动
-    const hasZhushiLink = activeSkill.linkageEffects.some((l) => l.sourceSkill.includes('诸事顺利'));
+    if (!activeSkill || !displayData) return null;
 
     return (
-        <div className={`w-full max-w-xl bg-[#0b0f19] border border-[#1e293b] rounded-lg p-3 text-xs font-sans shadow-xl select-none ${className || ''}`}>
-            {/* 顶部标题栏与徽标 */}
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2 mb-2.5">
-                <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="w-2 h-2 rounded-full bg-[#f43f5e] shadow-[0_0_8px_#f43f5e]"></span>
-                    <span className="text-[13px] font-bold text-white tracking-wide">
-                        {data?.systemName || '贺岁时装技能图鉴'}
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#f43f5e]/15 border border-[#f43f5e]/30 text-[#fda4af]">
-                        十二生肖贺岁装
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#38bdf8]/15 border border-[#38bdf8]/30 text-[#7dd3fc]">
-                        {activeSkill.year}年 · {activeSkill.zodiac}
-                    </span>
-                </div>
-                <button
-                    onClick={() => setShowLinkageMatrix(!showLinkageMatrix)}
-                    className="flex items-center gap-1 px-2 py-1 rounded bg-[#1e293b]/70 hover:bg-[#334155] text-[#38bdf8] text-[11px] transition-colors border border-[#38bdf8]/20"
-                >
-                    <LinkIcon className="w-3.5 h-3.5" />
-                    <span>{showLinkageMatrix ? '收起矩阵' : '联动矩阵'}</span>
-                </button>
-            </div>
+        <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
+            {/* 0. 顶层十二生肖技能切换栏：占满 AI 对话框完整宽度 w-full */}
+            <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
+                {canScrollLeft && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('left')}
+                        className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                        title="向左滚动"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                    </button>
+                )}
 
-            {/* 十二生肖选择滑条/胶囊 */}
-            <div className="mb-2.5">
-                <div className="flex items-center justify-between mb-1.5 text-[11px]">
-                    <span className="text-[#94a3b8]">选择生肖时装技能：</span>
-                    <span className="text-[#fda4af] font-medium">
-                        {activeSkill.yearName} · 《{activeSkill.skillName}》
-                    </span>
-                </div>
-                <div className="grid grid-cols-6 sm:grid-cols-12 gap-1">
+                <div
+                    ref={scrollRef}
+                    className="flex-1 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth"
+                >
                     {skills.map((s) => {
                         const isActive = s.id === activeSkillId;
                         return (
                             <button
                                 key={s.id}
+                                type="button"
+                                data-active={isActive ? 'true' : 'false'}
                                 onClick={() => setActiveSkillId(s.id)}
-                                className={`flex flex-col items-center justify-center py-1 rounded transition-all text-center ${
+                                className={clsx(
+                                    'px-2.5 py-1 rounded text-xs transition-all shrink-0 cursor-pointer',
                                     isActive
-                                        ? 'bg-[#f43f5e] text-white font-bold shadow-[0_0_8px_rgba(244,63,94,0.4)]'
-                                        : 'bg-[#1e293b]/70 text-[#94a3b8] hover:bg-[#1e293b] hover:text-white'
-                                }`}
-                                title={`${s.yearName}：${s.skillName}`}
+                                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/60 font-bold shadow-sm'
+                                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                                )}
                             >
-                                <span className="text-[12px] leading-tight">{s.zodiac}</span>
-                                <span className="text-[9px] scale-90 opacity-80 leading-tight">'{String(s.year).slice(2)}</span>
+                                {s.skillName}
                             </button>
                         );
                     })}
                 </div>
-            </div>
 
-            {/* 技能高保真展示面板 */}
-            <div className="bg-[#0f172a]/80 rounded border border-[#1e293b] p-3 mb-2.5">
-                <div className="flex items-start justify-between border-b border-[#1e293b]/70 pb-2 mb-2">
-                    <div className="flex items-center gap-2">
-                        <div className="w-9 h-9 rounded bg-[#1e293b] border border-[#f43f5e]/40 flex items-center justify-center text-[#fda4af] shadow-inner font-bold text-sm">
-                            {activeSkill.zodiac}
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-1.5">
-                                <span className="text-sm font-bold text-[#fecdd3] tracking-wide">
-                                    {activeSkill.skillName}
-                                </span>
-                                <span className="px-1.5 py-0.2 rounded text-[10px] bg-[#f43f5e]/20 text-[#fda4af] border border-[#f43f5e]/30">
-                                    {activeSkill.skillType}
-                                </span>
-                            </div>
-                            <span className="text-[10px] text-[#64748b] block mt-0.5">
-                                来源礼包：{activeSkill.packageName}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 技能规格参数 */}
-                <div className="grid grid-cols-3 gap-2 bg-[#0b0f19]/70 rounded p-1.5 mb-2.5 text-[11px] border border-[#1e293b]/50">
-                    <div>
-                        <span className="text-[#64748b]">施法时间：</span>
-                        <span className="text-[#e2e8f0] font-medium ml-1">{activeSkill.castTime}</span>
-                    </div>
-                    <div>
-                        <span className="text-[#64748b]">消耗真气：</span>
-                        <span className="text-[#e2e8f0] font-medium ml-1">{activeSkill.costMp > 0 ? `${activeSkill.costMp}点` : '0点'}</span>
-                    </div>
-                    <div>
-                        <span className="text-[#64748b]">冷却时间：</span>
-                        <span className="text-[#38bdf8] font-medium ml-1">
-                            {enableZhushi && activeSkill.id === 'snake_jinshe'
-                                ? '12分钟 (720秒)'
-                                : enableJinshe && activeSkill.id === 'dragon_longteng'
-                                ? '12分钟 (720秒)'
-                                : activeSkill.cooldownText}
-                        </span>
-                    </div>
-                </div>
-
-                {/* 基础技能效果 */}
-                <div className="mb-2.5">
-                    <span className="text-[11px] font-semibold text-[#94a3b8] block mb-1">【基础特技效果】</span>
-                    <p className="text-[#cbd5e1] text-[11px] leading-relaxed bg-[#0b0f19]/40 p-2 rounded border border-[#1e293b]/40 whitespace-pre-line">
-                        {activeSkill.baseEffect}
-                    </p>
-                </div>
-
-                {/* 联动强化测算与预览 */}
-                {(hasJinsheLink || hasZhushiLink || activeSkill.linkageEffects.length > 0) && (
-                    <div className="bg-[#1e1e2f]/50 rounded border border-[#818cf8]/30 p-2.5 mb-2">
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-1 text-[#a5b4fc] font-semibold text-[11px]">
-                                <Sparkles className="w-3.5 h-3.5 text-[#818cf8]" />
-                                <span>生肖联动增强推演</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                {hasJinsheLink && (
-                                    <label className="flex items-center gap-1 cursor-pointer text-[10px] text-[#cbd5e1]">
-                                        <input
-                                            type="checkbox"
-                                            checked={enableJinshe}
-                                            onChange={(e) => setEnableJinshe(e.target.checked)}
-                                            className="rounded border-[#475569] text-[#818cf8] focus:ring-0 w-3 h-3 cursor-pointer"
-                                        />
-                                        <span>金蛇狂舞联动</span>
-                                    </label>
-                                )}
-                                {hasZhushiLink && (
-                                    <label className="flex items-center gap-1 cursor-pointer text-[10px] text-[#cbd5e1]">
-                                        <input
-                                            type="checkbox"
-                                            checked={enableZhushi}
-                                            onChange={(e) => setEnableZhushi(e.target.checked)}
-                                            className="rounded border-[#475569] text-[#f43f5e] focus:ring-0 w-3 h-3 cursor-pointer"
-                                        />
-                                        <span>诸事顺利联动</span>
-                                    </label>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* 强化效果列表 */}
-                        <div className="space-y-1.5">
-                            {activeSkill.linkageEffects.map((l, idx) => {
-                                const isJinshe = l.sourceSkill.includes('金蛇狂舞');
-                                const isZhushi = l.sourceSkill.includes('诸事顺利');
-                                const isActive = (isJinshe && enableJinshe) || (isZhushi && enableZhushi) || (!isJinshe && !isZhushi);
-
-                                return (
-                                    <div
-                                        key={idx}
-                                        className={`p-1.5 rounded border transition-colors ${
-                                            isActive
-                                                ? 'bg-[#312e81]/30 border-[#6366f1]/50 text-[#c7d2fe]'
-                                                : 'bg-[#18181b]/40 border-[#27272a] text-[#71717a]'
-                                        }`}
-                                    >
-                                        <div className="flex items-center justify-between mb-0.5">
-                                            <span className="font-semibold text-[10px] flex items-center gap-1">
-                                                <Flame className={`w-3 h-3 ${isActive ? 'text-[#f59e0b]' : 'text-[#71717a]'}`} />
-                                                {l.sourceSkill}
-                                            </span>
-                                            <span className={`text-[9px] px-1 rounded ${
-                                                isActive ? 'bg-[#10b981]/20 text-[#34d399]' : 'bg-[#27272a] text-[#71717a]'
-                                            }`}>
-                                                {isActive ? '已激活生效' : '未勾选激活'}
-                                            </span>
-                                        </div>
-                                        <p className="text-[10px] leading-tight">{l.effect}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
+                {canScrollRight && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('right')}
+                        className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                        title="向右滚动"
+                    >
+                        <ChevronRight className="w-4 h-4" />
+                    </button>
                 )}
-
-                {/* 技能标签 */}
-                <div className="flex items-center gap-1 flex-wrap pt-1">
-                    {activeSkill.tags.map((tag, idx) => (
-                        <span key={idx} className="px-1.5 py-0.5 rounded bg-[#1e293b]/80 text-[#94a3b8] text-[10px] border border-[#334155]">
-                            #{tag}
-                        </span>
-                    ))}
-                </div>
             </div>
 
-            {/* 联动矩阵折叠抽屉 */}
-            {showLinkageMatrix && (
-                <div className="bg-[#0f172a] rounded border border-[#1e293b] p-2.5 mb-2 text-[11px] animate-fadeIn">
-                    <div className="text-[#38bdf8] font-bold mb-1.5 flex items-center gap-1">
-                        <LinkIcon className="w-3.5 h-3.5" />
-                        <span>生肖时装技能代际联动总览</span>
-                    </div>
-                    <div className="space-y-2 text-[#94a3b8]">
-                        <div className="bg-[#0b0f19] p-2 rounded border border-[#1e293b]">
-                            <span className="text-[#f59e0b] font-semibold block mb-0.5">
-                                1. 蛇年【金蛇狂舞】联动群（强化虎/兔/龙 3大生肖技能）：
-                            </span>
-                            <ul className="list-disc list-inside space-y-0.5 pl-1 text-[10px] text-[#cbd5e1]">
-                                <li><strong>虎·福星高照</strong>：追加无敌与免负面 3 次（共 6 次）</li>
-                                <li><strong>兔·玉阙玄天</strong>：真气降为 0、解控+3、抗性+17、移速持续+5秒</li>
-                                <li><strong>龙·龙腾四海</strong>：解控+1、回蓝+10000、冷却减少 180 秒</li>
-                            </ul>
-                        </div>
-                        <div className="bg-[#0b0f19] p-2 rounded border border-[#1e293b]">
-                            <span className="text-[#f43f5e] font-semibold block mb-0.5">
-                                2. 猪年【诸事顺利】大联动群（被动大赋能虎至狗 9大生肖技能）：
-                            </span>
-                            <p className="text-[10px] text-[#cbd5e1] leading-relaxed">
-                                福星高照逆转逆转状态；玉阙玄天移速额外+0.8m/s；龙腾四海5秒免不利；金蛇狂舞CD-180秒；天马行空反弹率升至100%；三阳开泰回复+20%抗性+5%；灵猴兆瑞免冰冻5秒；金鸡迎春持续延长60秒；白云苍狗额外降躲闪10点、增暴率10%、增爆伤20%。
-                            </p>
-                        </div>
-                        <div className="bg-[#0b0f19] p-2 rounded border border-[#1e293b]">
-                            <span className="text-[#a855f7] font-semibold block mb-0.5">
-                                3. 特殊机制联动：
-                            </span>
-                            <ul className="list-disc list-inside space-y-0.5 pl-1 text-[10px] text-[#cbd5e1]">
-                                <li><strong>羊·三阳开泰</strong>：永久激活三大主角时装特技隐藏效果</li>
-                                <li><strong>鸡·金鸡迎春</strong>：彩凤/扶桑被动强化天罡云体/战意技能（CD-60s）</li>
-                                <li><strong>牛·牛转乾坤</strong>：直接重置核心爆发技能【神力爆发】的冷却时间</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* 1. 下方核心技能卡片：1:1 游戏实机原生 Tooltip 视效容器，右侧预留约6个字符余量 */}
+            <div
+                className="rounded-xl p-3.5 sm:p-4 pr-8 sm:pr-10 text-[13px] leading-[22px] border border-[#2d3a4d] bg-[#0c1420]/95 shadow-2xl min-w-0 flex flex-col gap-1 w-fit min-w-[340px] sm:min-w-[440px] max-w-[530px]"
+                style={{
+                    fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.4)',
+                    letterSpacing: '0.3px'
+                }}
+            >
+                {/* 技能头部：技能名、类型与施法时间（无多余标签） */}
+                {displayData.header}
 
-            {/* 底部元数据 */}
-            <div className="text-[10px] text-[#64748b] flex items-center justify-between pt-1">
-                <span>{data?.source || '来源：官方论坛权威数据帖（夜深篱落一灯明整理）'}</span>
-                <span>数据完整校验 · 支持联动推演</span>
+                {/* 技能正文：1:1 游戏原生色彩码（白字/鲜绿字，数字金黄，加强版紫字） */}
+                <div className="text-[13px] leading-[22px]">
+                    <GameColorText text={displayData.bodyGameColorText} />
+                </div>
             </div>
         </div>
     );
 };
+

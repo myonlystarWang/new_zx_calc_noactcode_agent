@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { Sparkles, Calculator } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import clsx from 'clsx';
+import { GAME_COLORS } from '../../constants/gameColorSystem';
 
 export interface OldTianyuanAttr {
     name: string;
@@ -50,9 +52,74 @@ export const OldTianyuanDetailCard: React.FC<OldTianyuanDetailCardProps> = ({ ca
             : 10;
     });
 
-    const [showCalc, setShowCalc] = useState(false);
-    const [calcAttrName, setCalcAttrName] = useState<string>('');
-    const [calcCustomBase, setCalcCustomBase] = useState<number>(0);
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
+
+    const updateScrollState = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        setCanScrollLeft(el.scrollLeft > 4);
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    }, []);
+
+    const scrollToActiveItem = useCallback((smooth = true) => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const activeBtn = el.querySelector<HTMLElement>('[data-active="true"]');
+        if (activeBtn) {
+            const containerLeft = el.getBoundingClientRect().left;
+            const containerWidth = el.clientWidth;
+            const itemLeft = activeBtn.getBoundingClientRect().left;
+            const itemWidth = activeBtn.clientWidth;
+            const offset = (itemLeft - containerLeft) - (containerWidth / 2 - itemWidth / 2);
+            el.scrollBy({
+                left: offset,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+        }
+        setTimeout(updateScrollState, 220);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        updateScrollState();
+        const handleResize = () => updateScrollState();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            scrollToActiveItem(true);
+        }, 50);
+        return () => clearTimeout(timer);
+    }, [activePartId, scrollToActiveItem]);
+
+    // 滚轮横向滑动
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const handleWheel = (e: WheelEvent) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+                updateScrollState();
+            }
+        };
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+    }, [updateScrollState]);
+
+    const handleScrollStep = (direction: 'left' | 'right') => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const step = 200;
+        el.scrollBy({
+            left: direction === 'left' ? -step : step,
+            behavior: 'smooth'
+        });
+        setTimeout(updateScrollState, 220);
+    };
 
     const activePart = useMemo(() => {
         return parts.find((p) => p.partId === activePartId) || parts[0];
@@ -73,208 +140,162 @@ export const OldTianyuanDetailCard: React.FC<OldTianyuanDetailCardProps> = ({ ca
         });
     }, [activePart, level]);
 
-    // 默认测算属性设置
-    const selectedAttrForCalc = useMemo(() => {
-        if (!activePart) return null;
-        return activePart.attributes.find((a) => a.name === calcAttrName) || activePart.attributes[0];
-    }, [activePart, calcAttrName]);
-
-    const calcResultAt10 = useMemo(() => {
-        if (!selectedAttrForCalc) return null;
-        const baseVal = calcCustomBase || selectedAttrForCalc.maxBase;
-        const gainTo10 = (10 - 1) * selectedAttrForCalc.perLevelGain;
-        return +(baseVal + gainTo10).toFixed(2);
-    }, [selectedAttrForCalc, calcCustomBase]);
-
     if (!activePart) return null;
 
     return (
-        <div className={`w-full max-w-xl bg-[#0b0f19] border border-[#1e293b] rounded-lg p-3 text-xs font-sans shadow-xl select-none ${className || ''}`}>
-            {/* 头部标题与徽标 */}
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2 mb-2.5">
-                <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#38bdf8] shadow-[0_0_8px_#38bdf8]"></span>
-                    <span className="text-[13px] font-bold text-white tracking-wide">
-                        {data?.systemName || '旧天缘属性全览'}
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#38bdf8]/15 border border-[#38bdf8]/30 text-[#7dd3fc]">
-                        天命词条池
-                    </span>
-                    <span className="text-[11px] text-[#94a3b8]">
-                        天命 Lv.{level}/10
-                    </span>
-                </div>
-                <button
-                    onClick={() => setShowCalc(!showCalc)}
-                    className="flex items-center gap-1 px-2 py-1 rounded bg-[#1e293b]/70 hover:bg-[#334155] text-[#38bdf8] text-[11px] transition-colors border border-[#38bdf8]/20"
+        <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
+            {/* 0. 顶层部位切换栏：占满 AI 对话框完整宽度 w-full */}
+            <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
+                {canScrollLeft && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('left')}
+                        className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                        title="向左滚动"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                    </button>
+                )}
+
+                <div
+                    ref={scrollRef}
+                    className="flex-1 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth"
                 >
-                    <Calculator className="w-3.5 h-3.5" />
-                    <span>{showCalc ? '收起测算' : '满级推演'}</span>
-                </button>
-            </div>
-
-            {/* 部位切换胶囊 */}
-            <div className="flex items-center gap-1.5 mb-2.5 overflow-x-auto pb-0.5">
-                {parts.map((p) => {
-                    const isActive = p.partId === activePartId;
-                    return (
-                        <button
-                            key={p.partId}
-                            onClick={() => {
-                                setActivePartId(p.partId);
-                                setCalcAttrName('');
-                                setCalcCustomBase(0);
-                            }}
-                            className={`px-2.5 py-1 rounded text-[11px] font-medium transition-all whitespace-nowrap ${
-                                isActive
-                                    ? 'bg-[#38bdf8] text-[#0f172a] font-bold shadow-[0_0_8px_rgba(56,189,248,0.4)]'
-                                    : 'bg-[#1e293b]/70 text-[#94a3b8] hover:bg-[#1e293b] hover:text-white'
-                            }`}
-                        >
-                            {p.partName}
-                        </button>
-                    );
-                })}
-            </div>
-
-            {/* 条数产生概率条 */}
-            <div className="bg-[#131b2e]/60 rounded border border-[#1e293b] p-2 mb-2.5">
-                <div className="flex items-center justify-between mb-1 text-[11px]">
-                    <span className="text-[#94a3b8]">天缘词条条数产生概率：</span>
-                    <span className="text-[#7dd3fc] font-mono">2~3条为最主流 (90%)</span>
+                    {parts.map((p) => {
+                        const isActive = p.partId === activePartId;
+                        return (
+                            <button
+                                key={p.partId}
+                                type="button"
+                                data-active={isActive ? 'true' : 'false'}
+                                onClick={() => setActivePartId(p.partId)}
+                                className={clsx(
+                                    'px-2.5 py-1 rounded text-xs transition-all shrink-0 cursor-pointer',
+                                    isActive
+                                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/60 font-bold shadow-sm'
+                                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                                )}
+                            >
+                                {p.partName}
+                            </button>
+                        );
+                    })}
                 </div>
-                <div className="grid grid-cols-4 gap-1 font-mono text-[10px] text-center">
-                    {activePart.countProbabilities.map((cp) => (
-                        <div key={cp.count} className="bg-[#0b0f19] border border-[#1e293b]/80 rounded py-1 px-1">
-                            <span className="text-[#94a3b8]">{cp.count}条：</span>
-                            <span className="text-[#f59e0b] font-bold ml-1">{cp.probability}</span>
+
+                {canScrollRight && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('right')}
+                        className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                        title="向右滚动"
+                    >
+                        <ChevronRight className="w-4 h-4" />
+                    </button>
+                )}
+            </div>
+
+            {/* 1. 下方核心信息卡：限制宽度 max-w-xl */}
+            <div
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
+                style={{
+                    fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
+                    letterSpacing: '0.3px'
+                }}
+            >
+                {/* 头部两层式布局 */}
+                <div className="pb-2 border-b border-[#1f293d]/80 flex flex-col gap-1.5 min-w-0">
+                    {/* 第 1 行：完整部位与天命等级 */}
+                    <div
+                        className="font-bold text-[14px] sm:text-[15px] leading-snug break-words"
+                        style={{ color: '#ffd272' }}
+                    >
+                        {activePart.partName}（天缘 +{level}）
+                    </div>
+
+                    {/* 第 2 行：微标 与 右侧天命等级步进控制台 */}
+                    <div className="flex items-center justify-between gap-2 min-w-0 flex-wrap">
+                        <div className="flex items-center gap-1.5 text-[11px] font-sans">
+                            <span className="px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/50 text-cyan-200 font-bold whitespace-nowrap">
+                                旧天命天缘
+                            </span>
+                            {/* <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-300 border border-slate-700/50 whitespace-nowrap">
+                                2~3条产生率 90%
+                            </span> */}
+                        </div>
+
+                        {/* 右侧：步进升级控制台 */}
+                        <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
+                            <button
+                                type="button"
+                                onClick={() => setLevel((prev) => Math.max(1, prev - 1))}
+                                disabled={level <= 1}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                    level <= 1
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
+                                )}
+                            >
+                                等级 -1
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setLevel((prev) => Math.min(10, prev + 1))}
+                                disabled={level >= 10}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                    level >= 10
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-cyan-600/30 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/50 hover:text-white'
+                                )}
+                            >
+                                等级 +1
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 类似装备卡的属性逐行展示：经典游戏蓝（#8080ff）+ 宋体 */}
+                <div className="py-1 space-y-1">
+                    {computedAttrs.map((attr) => (
+                        <div
+                            key={attr.name}
+                            className="flex items-center justify-between text-[13px] leading-[22px]"
+                        >
+                            <span style={{ color: GAME_COLORS.STAT_BLUE }}>
+                                · {attr.name} {attr.currentMin}{attr.unit} - {attr.currentMax}{attr.unit}
+                            </span>
+                            <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
+                                概率 {attr.probability}
+                                {level < 10 && attr.perLevelGain > 0 && (
+                                    <span className="text-emerald-400 ml-1.5 font-medium">
+                                        (升级 +{attr.perLevelGain}{attr.unit})
+                                    </span>
+                                )}
+                            </span>
                         </div>
                     ))}
                 </div>
-            </div>
 
-            {/* 等级滑块与快速档位 */}
-            <div className="bg-[#0f172a]/70 rounded border border-[#1e293b]/80 p-2 mb-2.5">
-                <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] text-[#94a3b8]">天命装备等级：</span>
-                    <div className="flex items-center gap-1">
-                        {[1, 3, 5, 8, 10].map((lvl) => (
-                            <button
-                                key={lvl}
-                                onClick={() => setLevel(lvl)}
-                                className={`px-1.5 py-0.5 rounded text-[10px] transition-colors ${
-                                    level === lvl
-                                        ? 'bg-[#38bdf8] text-[#0f172a] font-bold'
-                                        : 'bg-[#1e293b] text-[#94a3b8] hover:bg-[#334155]'
-                                }`}
-                            >
-                                {lvl === 10 ? '满级(10)' : `${lvl}级`}
-                            </button>
-                        ))}
+                {/* 底部属性与洗炼要求 */}
+                <div className="mt-2.5 pt-2 border-t border-[#1c2436]/60 text-[12px] leading-5 space-y-0.5">
+                    <div style={{ color: GAME_COLORS.OWNER_ORANGE }}>
+                        已绑定；已锁定；不会掉落；不可卖店
                     </div>
-                </div>
-                <div className="flex items-center gap-2">
-                    <input
-                        type="range"
-                        min="1"
-                        max="10"
-                        step="1"
-                        value={level}
-                        onChange={(e) => setLevel(Number(e.target.value))}
-                        className="w-full accent-[#38bdf8] h-1.5 bg-[#1e293b] rounded cursor-pointer"
-                    />
-                    <span className="w-8 text-right font-mono font-bold text-white text-[12px]">
-                        +{level}
-                    </span>
-                </div>
-            </div>
-
-            {/* 测算器面板 */}
-            {showCalc && selectedAttrForCalc && (
-                <div className="bg-[#111827] border border-[#38bdf8]/30 rounded p-2.5 mb-2.5">
-                    <div className="flex items-center gap-1.5 text-[#38bdf8] font-bold text-[11px] mb-2">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>洗炼数值满级(10级)自动推算器</span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2 mb-2 text-[11px]">
-                        <span className="text-[#94a3b8]">选择词条：</span>
-                        <select
-                            value={selectedAttrForCalc.name}
-                            onChange={(e) => {
-                                setCalcAttrName(e.target.value);
-                                const found = activePart.attributes.find((a) => a.name === e.target.value);
-                                if (found) setCalcCustomBase(found.maxBase);
-                            }}
-                            className="bg-[#1e293b] border border-[#334155] text-white rounded px-1.5 py-0.5 text-[11px]"
-                        >
-                            {activePart.attributes.map((a) => (
-                                <option key={a.name} value={a.name}>
-                                    {a.name} ({a.probability})
-                                </option>
-                            ))}
-                        </select>
-                        <span className="text-[#94a3b8]">初始值：</span>
-                        <input
-                            type="number"
-                            step="any"
-                            value={calcCustomBase || selectedAttrForCalc.maxBase}
-                            onChange={(e) => setCalcCustomBase(Number(e.target.value))}
-                            className="w-16 bg-[#1e293b] border border-[#334155] text-white font-mono rounded px-1.5 py-0.5 text-[11px]"
-                        />
-                        <span className="text-[#94a3b8]">{selectedAttrForCalc.unit}</span>
-                    </div>
-
-                    <div className="bg-[#0b0f19] p-2 rounded border border-[#1e293b] flex items-center justify-between text-[11px]">
-                        <span className="text-[#cbd5e1]">
-                            当前初始 [{calcCustomBase || selectedAttrForCalc.maxBase}{selectedAttrForCalc.unit}] 升至天命10级后最终值：
-                        </span>
-                        <span className="font-mono font-bold text-[#f59e0b] text-[13px]">
-                            {calcResultAt10}{selectedAttrForCalc.unit}
+                    <div style={{ color: GAME_COLORS.WHITE }}>
+                        洗炼部位：
+                        <span style={{ color: GAME_COLORS.PURE_RED }}>
+                            武器、防具天命属性
                         </span>
                     </div>
+                    {/* <div style={{ color: GAME_COLORS.WHITE }}>
+                        天命等级：
+                        <span style={{ color: GAME_COLORS.STAT_BLUE }}>
+                            共 10 级，每升 1 级上限提升一个基数
+                        </span>
+                    </div> */}
                 </div>
-            )}
-
-            {/* 属性池全览表 */}
-            <div className="border border-[#1e293b] rounded overflow-hidden mb-2">
-                <table className="w-full text-left text-[11px]">
-                    <thead className="bg-[#1e293b] text-[#94a3b8]">
-                        <tr>
-                            <th className="p-1.5">属性名称</th>
-                            <th className="p-1.5 font-mono">Lv.{level} 取值区间</th>
-                            <th className="p-1.5">每级增益</th>
-                            <th className="p-1.5 text-center">产生概率</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#1e293b]/60 font-mono">
-                        {computedAttrs.map((attr) => {
-                            const isRare = attr.name.includes('无视') || attr.name.includes('暴击率') || attr.name.includes('暴击伤害') || attr.name.includes('减免暴击');
-                            return (
-                                <tr key={attr.name} className="hover:bg-[#131b2e]/40 transition-colors">
-                                    <td className="p-1.5 font-sans font-medium">
-                                        <span className={isRare ? 'text-[#38bdf8] font-bold' : 'text-white'}>
-                                            {attr.name}
-                                        </span>
-                                    </td>
-                                    <td className="p-1.5 text-[#f59e0b] font-semibold">
-                                        {attr.currentMin}{attr.unit} - {attr.currentMax}{attr.unit}
-                                    </td>
-                                    <td className="p-1.5 text-[#34d399]">
-                                        +{attr.perLevelGain}{attr.unit}/级
-                                    </td>
-                                    <td className="p-1.5 text-center text-[#94a3b8]">
-                                        {attr.probability}
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
-
-            <div className="pt-1.5 border-t border-[#1e293b]/60 flex items-center justify-between text-[10px] text-[#64748b]">
-                <span>数据来源：完美世界官方游戏论坛攻略区</span>
-                <span>支持天命 1~10 级线性成长</span>
             </div>
         </div>
     );

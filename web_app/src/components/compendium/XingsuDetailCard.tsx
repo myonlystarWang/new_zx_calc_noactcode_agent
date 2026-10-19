@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { Sparkles, Calculator, Star, ShieldAlert } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import clsx from 'clsx';
+import { GAME_COLORS } from '../../constants/gameColorSystem';
 
 export interface XingsuAttr {
     name: string;
@@ -51,8 +53,74 @@ export const XingsuDetailCard: React.FC<XingsuDetailCardProps> = ({ cardData, cl
             : 5;
     });
 
-    const [showCalc, setShowCalc] = useState(false);
-    const [calcAttrName, setCalcAttrName] = useState<string>('');
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
+
+    const updateScrollState = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        setCanScrollLeft(el.scrollLeft > 4);
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    }, []);
+
+    const scrollToActiveItem = useCallback((smooth = true) => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const activeBtn = el.querySelector<HTMLElement>('[data-active="true"]');
+        if (activeBtn) {
+            const containerLeft = el.getBoundingClientRect().left;
+            const containerWidth = el.clientWidth;
+            const itemLeft = activeBtn.getBoundingClientRect().left;
+            const itemWidth = activeBtn.clientWidth;
+            const offset = (itemLeft - containerLeft) - (containerWidth / 2 - itemWidth / 2);
+            el.scrollBy({
+                left: offset,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+        }
+        setTimeout(updateScrollState, 220);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        updateScrollState();
+        const handleResize = () => updateScrollState();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            scrollToActiveItem(true);
+        }, 50);
+        return () => clearTimeout(timer);
+    }, [activeTypeId, scrollToActiveItem]);
+
+    // 滚轮横向滑动
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const handleWheel = (e: WheelEvent) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+                updateScrollState();
+            }
+        };
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+    }, [updateScrollState]);
+
+    const handleScrollStep = (direction: 'left' | 'right') => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const step = 200;
+        el.scrollBy({
+            left: direction === 'left' ? -step : step,
+            behavior: 'smooth'
+        });
+        setTimeout(updateScrollState, 220);
+    };
 
     const activeStar = useMemo(() => {
         return stars.find((s) => s.typeId === activeTypeId) || stars[0];
@@ -74,10 +142,12 @@ export const XingsuDetailCard: React.FC<XingsuDetailCardProps> = ({ cardData, cl
             const added = getAccumulatedGain(attr.gains, rank);
             const currentMin = +(attr.minBase + added).toFixed(2);
             const currentMax = +(attr.maxBase + added).toFixed(2);
+            const nextGain = rank < 5 ? attr.gains[rank - 1] : null;
             return {
                 ...attr,
                 currentMin,
                 currentMax,
+                nextGain
             };
         });
     }, [activeStar, rank]);
@@ -88,257 +158,209 @@ export const XingsuDetailCard: React.FC<XingsuDetailCardProps> = ({ cardData, cl
             const added = getAccumulatedGain(attr.gains, rank);
             const currentMin = +(attr.minBase + added).toFixed(2);
             const currentMax = +(attr.maxBase + added).toFixed(2);
+            const nextGain = rank < 5 ? attr.gains[rank - 1] : null;
             return {
                 ...attr,
                 currentMin,
                 currentMax,
+                nextGain
             };
         });
     }, [activeStar, rank]);
 
-    // 测算器属性选择
-    const allAvailableAttrs = useMemo(() => {
-        if (!activeStar) return [];
-        return [...activeStar.mainAttrs, ...activeStar.subAttrs];
-    }, [activeStar]);
-
-    const selectedAttrForCalc = useMemo(() => {
-        if (!allAvailableAttrs.length) return null;
-        return allAvailableAttrs.find((a) => a.name === calcAttrName) || allAvailableAttrs[0];
-    }, [allAvailableAttrs, calcAttrName]);
-
-    const calcGain1To5 = useMemo(() => {
-        if (!selectedAttrForCalc) return 0;
-        return +selectedAttrForCalc.gains.reduce((a, b) => a + b, 0).toFixed(2);
-    }, [selectedAttrForCalc]);
-
     if (!activeStar) return null;
 
     return (
-        <div className={`w-full max-w-xl bg-[#0b0f19] border border-[#1e293b] rounded-lg p-3 text-xs font-sans shadow-xl select-none ${className || ''}`}>
-            {/* 头部标题与徽标 */}
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2 mb-2.5">
-                <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#a855f7] shadow-[0_0_8px_#a855f7]"></span>
-                    <span className="text-[13px] font-bold text-white tracking-wide">
-                        {data?.systemName || '星辰属性及升星增益'}
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#a855f7]/15 border border-[#a855f7]/30 text-[#d8b4fe]">
-                        星宿系统
-                    </span>
-                    <span className="text-[11px] text-[#94a3b8]">
-                        {rank}星 ({activeStar.slot})
-                    </span>
-                </div>
-                <button
-                    onClick={() => setShowCalc(!showCalc)}
-                    className="flex items-center gap-1 px-2 py-1 rounded bg-[#1e293b]/70 hover:bg-[#334155] text-[#38bdf8] text-[11px] transition-colors border border-[#38bdf8]/20"
+        <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
+            {/* 0. 顶层星宿切换栏：占满 AI 对话框完整宽度 w-full */}
+            <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
+                {canScrollLeft && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('left')}
+                        className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                        title="向左滚动"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                    </button>
+                )}
+
+                <div
+                    ref={scrollRef}
+                    className="flex-1 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth"
                 >
-                    <Calculator className="w-3.5 h-3.5" />
-                    <span>{showCalc ? '收起测算' : '升星测算'}</span>
-                </button>
-            </div>
-
-            {/* 星辰类型切换胶囊 */}
-            <div className="grid grid-cols-3 gap-1.5 mb-2.5">
-                {stars.map((s) => {
-                    const isActive = s.typeId === activeTypeId;
-                    return (
-                        <button
-                            key={s.typeId}
-                            onClick={() => {
-                                setActiveTypeId(s.typeId);
-                                setCalcAttrName('');
-                            }}
-                            className={`px-2 py-1.5 rounded text-center transition-all ${
-                                isActive
-                                    ? 'bg-[#a855f7] text-white font-bold shadow-[0_0_8px_rgba(168,85,247,0.4)]'
-                                    : 'bg-[#1e293b]/70 text-[#94a3b8] hover:bg-[#1e293b] hover:text-white'
-                            }`}
-                        >
-                            <div className="text-[11px] font-semibold">{s.name}</div>
-                            <div className="text-[9px] opacity-75">{s.slot}</div>
-                        </button>
-                    );
-                })}
-            </div>
-
-            {/* 规则说明条 */}
-            <div className="bg-[#131b2e]/60 rounded border border-[#1e293b] px-2.5 py-1.5 mb-2.5 flex items-center justify-between text-[11px]">
-                <span className="text-[#cbd5e1] font-medium">{activeStar.ruleDesc}</span>
-                <span className="text-[#a855f7] font-mono text-[10px]">{activeStar.slot}</span>
-            </div>
-
-            {/* 星等步进器 (1星~5星) */}
-            <div className="bg-[#0f172a]/70 rounded border border-[#1e293b]/80 p-2 mb-2.5">
-                <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] text-[#94a3b8]">星辰星等：</span>
-                    <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4, 5].map((r) => (
+                    {stars.map((s) => {
+                        const isActive = s.typeId === activeTypeId;
+                        return (
                             <button
-                                key={r}
-                                onClick={() => setRank(r)}
-                                className={`px-2 py-0.5 rounded text-[10px] flex items-center gap-0.5 transition-colors ${
-                                    rank === r
-                                        ? 'bg-[#a855f7] text-white font-bold shadow-[0_0_6px_#a855f7]'
-                                        : 'bg-[#1e293b] text-[#94a3b8] hover:bg-[#334155]'
-                                }`}
+                                key={s.typeId}
+                                type="button"
+                                data-active={isActive ? 'true' : 'false'}
+                                onClick={() => setActiveTypeId(s.typeId)}
+                                className={clsx(
+                                    'px-2.5 py-1 rounded text-xs transition-all shrink-0 cursor-pointer',
+                                    isActive
+                                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/60 font-bold shadow-sm'
+                                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                                )}
                             >
-                                <Star className="w-2.5 h-2.5 fill-current" />
-                                <span>{r}星</span>
+                                {s.name}
                             </button>
+                        );
+                    })}
+                </div>
+
+                {canScrollRight && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('right')}
+                        className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                        title="向右滚动"
+                    >
+                        <ChevronRight className="w-4 h-4" />
+                    </button>
+                )}
+            </div>
+
+            {/* 1. 下方核心信息卡：限制宽度 max-w-xl，居左 */}
+            <div
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
+                style={{
+                    fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
+                    letterSpacing: '0.3px'
+                }}
+            >
+                {/* 头部两层式布局 */}
+                <div className="pb-2 border-b border-[#1f293d]/80 flex flex-col gap-1.5 min-w-0">
+                    {/* 第 1 行：完整星宿名称与当前等级（启明星辰白色、荧惑星辰绿色、重华星辰偏蓝色） */}
+                    <div
+                        className="font-bold text-[14px] sm:text-[15px] leading-snug break-words"
+                        style={{
+                            color:
+                                activeStar.typeId === 'qiming' || activeStar.name.includes('启明')
+                                    ? GAME_COLORS.WHITE
+                                    : activeStar.typeId === 'yinghuo' || activeStar.name.includes('荧惑')
+                                    ? GAME_COLORS.BRIGHT_GREEN
+                                    : '#5e8eff'
+                        }}
+                    >
+                        {activeStar.name}（{rank}级）
+                    </div>
+
+                    {/* 第 2 行：孔位部位徽标 与 等级步进控制台 */}
+                    <div className="flex items-center justify-between gap-2 min-w-0 flex-wrap">
+                        <div className="flex items-center gap-1.5 text-[11px] font-sans">
+                            <span className="px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/50 text-cyan-200 font-bold whitespace-nowrap">
+                                星宿
+                            </span>
+                            <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-300 border border-slate-700/50 whitespace-nowrap">
+                                {activeStar.ruleDesc}
+                            </span>
+                        </div>
+
+                        {/* 右侧：步进升级控制台 */}
+                        <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
+                            <button
+                                type="button"
+                                onClick={() => setRank((prev) => Math.max(1, prev - 1))}
+                                disabled={rank <= 1}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                    rank <= 1
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
+                                )}
+                            >
+                                等级 -1
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setRank((prev) => Math.min(5, prev + 1))}
+                                disabled={rank >= 5}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                    rank >= 5
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-cyan-600/30 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/50 hover:text-white'
+                                )}
+                            >
+                                等级 +1
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 装备属性区：主属性候选池 */}
+                <div className="flex flex-col gap-1 min-w-0">
+                    <div className="text-[12px] font-bold" style={{ color: '#ffcb4a' }}>
+                        【主属性候选池】
+                    </div>
+                    <div className="py-0.5 space-y-1">
+                        {computedMainAttrs.map((attr) => (
+                            <div
+                                key={attr.name}
+                                className="flex items-center justify-between text-[13px] leading-[22px]"
+                            >
+                                <span style={{ color: GAME_COLORS.STAT_BLUE }}>
+                                    {attr.name} {attr.currentMin}{attr.unit} - {attr.currentMax}{attr.unit}
+                                </span>
+                                <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
+                                    概率 {attr.probability}
+                                    {attr.nextGain !== null && (
+                                        <span className="text-emerald-400 ml-1.5 font-medium">
+                                            (升级 +{attr.nextGain}{attr.unit})
+                                        </span>
+                                    )}
+                                </span>
+                            </div>
                         ))}
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <input
-                        type="range"
-                        min="1"
-                        max="5"
-                        step="1"
-                        value={rank}
-                        onChange={(e) => setRank(Number(e.target.value))}
-                        className="w-full accent-[#a855f7] h-1.5 bg-[#1e293b] rounded cursor-pointer"
-                    />
-                    <span className="w-10 text-right font-mono font-bold text-white text-[12px]">
-                        {rank}星
-                    </span>
-                </div>
-            </div>
 
-            {/* 升星测算器 */}
-            {showCalc && selectedAttrForCalc && (
-                <div className="bg-[#111827] border border-[#a855f7]/30 rounded p-2.5 mb-2.5">
-                    <div className="flex items-center gap-1.5 text-[#d8b4fe] font-bold text-[11px] mb-2">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>星辰 1星升至5星 满额成长测算</span>
-                    </div>
-                    <div className="flex items-center gap-2 mb-2 text-[11px]">
-                        <span className="text-[#94a3b8]">选择词条：</span>
-                        <select
-                            value={selectedAttrForCalc.name}
-                            onChange={(e) => setCalcAttrName(e.target.value)}
-                            className="bg-[#1e293b] border border-[#334155] text-white rounded px-1.5 py-0.5 text-[11px]"
-                        >
-                            {allAvailableAttrs.map((a) => (
-                                <option key={a.name} value={a.name}>
-                                    {a.name} ({a.probability})
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="bg-[#0b0f19] p-2 rounded border border-[#1e293b] flex items-center justify-between text-[11px]">
-                        <span className="text-[#cbd5e1]">
-                            [{selectedAttrForCalc.name}] 1星升至5星累计纯增益：
-                        </span>
-                        <span className="font-mono font-bold text-[#f59e0b] text-[13px]">
-                            +{calcGain1To5}{selectedAttrForCalc.unit}
-                        </span>
-                    </div>
-                </div>
-            )}
-
-            {/* 主属性池表格 */}
-            <div className="border border-[#1e293b] rounded overflow-hidden mb-2">
-                <div className="bg-[#1e293b]/80 px-2 py-1 text-[11px] font-bold text-[#e2e8f0] flex items-center justify-between">
-                    <span>主属性候选池 ({computedMainAttrs.length} 项)</span>
-                    <span className="text-[10px] text-[#94a3b8]">当前 {rank} 星数值区间</span>
-                </div>
-                <table className="w-full text-left text-[11px]">
-                    <thead className="bg-[#0f172a] text-[#94a3b8]">
-                        <tr>
-                            <th className="p-1.5">属性名称</th>
-                            <th className="p-1.5 font-mono">{rank}星区间</th>
-                            <th className="p-1.5">下一星增益</th>
-                            <th className="p-1.5 text-center">产生概率</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#1e293b]/60 font-mono">
-                        {computedMainAttrs.map((attr) => {
-                            const nextGain = rank < 5 ? attr.gains[rank - 1] : null;
-                            const isRare = attr.name.includes('无视') || attr.name.includes('百分比') || attr.name.includes('命中') || attr.name.includes('躲闪');
-                            return (
-                                <tr key={attr.name} className="hover:bg-[#131b2e]/40 transition-colors">
-                                    <td className="p-1.5 font-sans font-medium">
-                                        <span className={isRare ? 'text-[#38bdf8] font-bold' : 'text-white'}>
-                                            {attr.name}
-                                        </span>
-                                    </td>
-                                    <td className="p-1.5 text-[#f59e0b] font-semibold">
-                                        {attr.currentMin}{attr.unit} - {attr.currentMax}{attr.unit}
-                                    </td>
-                                    <td className="p-1.5 text-[#34d399]">
-                                        {nextGain !== null ? `+${nextGain}${attr.unit}` : '已满星'}
-                                    </td>
-                                    <td className="p-1.5 text-center text-[#94a3b8]">
-                                        {attr.probability}
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
-
-            {/* 副属性池表格 (荧惑 1副，重华 2副) */}
-            {computedSubAttrs.length > 0 && (
-                <div className="border border-[#1e293b] rounded overflow-hidden mb-2">
-                    <div className="bg-[#1e293b]/80 px-2 py-1 text-[11px] font-bold text-[#e2e8f0] flex items-center justify-between">
-                        <span>副属性候选池 ({computedSubAttrs.length} 项)</span>
-                        <span className="text-[10px] text-[#94a3b8]">当前 {rank} 星数值区间</span>
-                    </div>
-                    <table className="w-full text-left text-[11px]">
-                        <thead className="bg-[#0f172a] text-[#94a3b8]">
-                            <tr>
-                                <th className="p-1.5">属性名称</th>
-                                <th className="p-1.5 font-mono">{rank}星区间</th>
-                                <th className="p-1.5">下一星增益</th>
-                                <th className="p-1.5 text-center">产生概率</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#1e293b]/60 font-mono">
-                            {computedSubAttrs.map((attr) => {
-                                const nextGain = rank < 5 ? attr.gains[rank - 1] : null;
-                                const isRare = attr.name.includes('无视') || attr.name.includes('暴击') || attr.name.includes('爆伤') || attr.name.includes('减免');
-                                return (
-                                    <tr key={attr.name} className="hover:bg-[#131b2e]/40 transition-colors">
-                                        <td className="p-1.5 font-sans font-medium">
-                                            <span className={isRare ? 'text-[#c084fc] font-bold' : 'text-white'}>
-                                                {attr.name}
+                {/* 副属性候选池 */}
+                {computedSubAttrs.length > 0 && (
+                    <div className="flex flex-col gap-1 min-w-0 pt-1.5 border-t border-[#1f293d]/60">
+                        <div className="text-[12px] font-bold" style={{ color: '#ffcb4a' }}>
+                            【副属性候选池】
+                        </div>
+                        <div className="py-0.5 space-y-1">
+                            {computedSubAttrs.map((attr) => (
+                                <div
+                                    key={attr.name}
+                                    className="flex items-center justify-between text-[13px] leading-[22px]"
+                                >
+                                    <span style={{ color: GAME_COLORS.STAT_BLUE }}>
+                                        {attr.name} {attr.currentMin}{attr.unit} - {attr.currentMax}{attr.unit}
+                                    </span>
+                                    <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
+                                        概率 {attr.probability}
+                                        {attr.nextGain !== null && (
+                                            <span className="text-emerald-400 ml-1.5 font-medium">
+                                                (升级 +{attr.nextGain}{attr.unit})
                                             </span>
-                                        </td>
-                                        <td className="p-1.5 text-[#f59e0b] font-semibold">
-                                            {attr.currentMin}{attr.unit} - {attr.currentMax}{attr.unit}
-                                        </td>
-                                        <td className="p-1.5 text-[#34d399]">
-                                            {nextGain !== null ? `+${nextGain}${attr.unit}` : '已满星'}
-                                        </td>
-                                        <td className="p-1.5 text-center text-[#94a3b8]">
-                                            {attr.probability}
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+                                        )}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
-            {/* 升星要点提示 */}
-            <div className="bg-[#131b2e]/40 border border-[#1e293b] rounded p-2 text-[10px] text-[#94a3b8] flex flex-col gap-1">
-                <div className="flex items-center gap-1 text-[#f59e0b]">
-                    <ShieldAlert className="w-3 h-3" />
-                    <span className="font-semibold">升星注意点：</span>
-                </div>
-                <div>1. 两个星辰主属性相同时进行升星，获得的经验加成更高。</div>
-                <div>2. 星辰升星会消耗包裹金币，请保留足够金币。</div>
-            </div>
-
-            <div className="mt-2 pt-1.5 border-t border-[#1e293b]/60 flex items-center justify-between text-[10px] text-[#64748b]">
-                <span>数据来源：诛仙3官方论坛攻略区·时空</span>
-                <span>支持 1~5 星属性增益递推</span>
+                {/* 底部升星规则与原生装备说明 */}
+                {/* <div
+                    className="pt-2 border-t border-[#1f293d]/80 text-[11px] leading-relaxed flex flex-col gap-0.5"
+                    style={{ color: '#a6a6a6' }}
+                >
+                    <div style={{ color: '#ffcb4a' }}>
+                        升星机制：相同主属性星辰合成经验加成更高，升级消耗包裹金币。
+                    </div>
+                    <div>
+                        星辰品阶：1星至5星属性递增，重华提供2条副属性，荧惑提供1条副属性。
+                    </div>
+                </div> */}
             </div>
         </div>
     );
 };
+

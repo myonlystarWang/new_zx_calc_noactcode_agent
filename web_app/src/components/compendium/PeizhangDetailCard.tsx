@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
 import {
     GAME_COLORS
@@ -482,6 +483,75 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
     // 是否展开未激活的「阶位隐藏属性池」
     const [showLockedPool, setShowLockedPool] = useState<boolean>(false);
 
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
+
+    const updateScrollState = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        setCanScrollLeft(el.scrollLeft > 4);
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    }, []);
+
+    const scrollToActiveItem = useCallback((smooth = true) => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const activeBtn = el.querySelector<HTMLElement>('[data-active="true"]');
+        if (activeBtn) {
+            const containerLeft = el.getBoundingClientRect().left;
+            const containerWidth = el.clientWidth;
+            const itemLeft = activeBtn.getBoundingClientRect().left;
+            const itemWidth = activeBtn.clientWidth;
+            const offset = (itemLeft - containerLeft) - (containerWidth / 2 - itemWidth / 2);
+            el.scrollBy({
+                left: offset,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+        }
+        setTimeout(updateScrollState, 220);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        updateScrollState();
+        const handleResize = () => updateScrollState();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            scrollToActiveItem(true);
+        }, 50);
+        return () => clearTimeout(timer);
+    }, [selectedId, scrollToActiveItem]);
+
+    // 滚轮横向滑动
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const handleWheel = (e: WheelEvent) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+                updateScrollState();
+            }
+        };
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+    }, [updateScrollState]);
+
+    const handleScrollStep = (direction: 'left' | 'right') => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const step = 200;
+        el.scrollBy({
+            left: direction === 'left' ? -step : step,
+            behavior: 'smooth'
+        });
+        setTimeout(updateScrollState, 220);
+    };
+
     const currentType = useMemo(() => {
         return types.find(t => t.id === selectedId) || types[0];
     }, [types, selectedId]);
@@ -490,32 +560,62 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
     const titleColor = GAME_COLORS.WHITE;
 
     return (
-        <div className={clsx(
-            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left w-full min-w-0 max-w-xl',
-            className
-        )}>
-            {/* 五大圣粹佩章分类切换 Capsule Tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-[11px] font-sans">
-                {types.map(t => (
-                    <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => setSelectedId(t.id)}
-                        className={clsx(
-                            'px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors border whitespace-nowrap',
-                            t.id === selectedId
-                                ? 'bg-cyan-500/25 text-cyan-200 border-cyan-500/50 shadow-sm'
-                                : 'bg-slate-800/60 text-slate-400 border-slate-700/60 hover:text-slate-200'
-                        )}
-                    >
-                        {t.shortName}
-                    </button>
-                ))}
-            </div>
+        <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
+            {/* 0. 顶层佩章切换栏：占满 AI 对话框完整宽度 w-full */}
+            {types.length > 1 && (
+                <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
+                    {canScrollLeft && (
+                        <button
+                            type="button"
+                            onClick={() => handleScrollStep('left')}
+                            className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                            title="向左滚动"
+                        >
+                            <ChevronLeft className="w-4 h-4" />
+                        </button>
+                    )}
 
-            {/* 1:1 游戏实机与寻宝天行原生 Tooltip 视效容器 */}
+                    <div
+                        ref={scrollRef}
+                        className="flex-1 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth"
+                    >
+                        {types.map((t) => {
+                            const isActive = t.id === selectedId;
+                            return (
+                                <button
+                                    key={t.id}
+                                    type="button"
+                                    data-active={isActive ? 'true' : 'false'}
+                                    onClick={() => setSelectedId(t.id)}
+                                    className={clsx(
+                                        'px-2.5 py-1 rounded text-xs transition-all shrink-0 cursor-pointer',
+                                        isActive
+                                            ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/60 font-bold shadow-sm'
+                                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                                    )}
+                                >
+                                    {t.shortName}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {canScrollRight && (
+                        <button
+                            type="button"
+                            onClick={() => handleScrollStep('right')}
+                            className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                            title="向右滚动"
+                        >
+                            <ChevronRight className="w-4 h-4" />
+                        </button>
+                    )}
+                </div>
+            )}
+
+            {/* 1. 下方核心佩章信息卡：限制宽度 max-w-xl（显示效果与 boss 属性类似） */}
             <div
-                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
                 style={{
                     fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
@@ -534,9 +634,6 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
 
                     {/* 步进推演控制（强化 -1 / 强化 +1，样式与昭武完全对齐） */}
                     <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto font-sans">
-                        <span className="text-[10px] sm:text-[11px] text-cyan-300/90 bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30 whitespace-nowrap">
-                            +{refLevel}
-                        </span>
                         <button
                             type="button"
                             onClick={() => setRefLevel(prev => Math.max(0, prev - 1))}
@@ -579,14 +676,28 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
                     等级 1
                 </div>
 
-                {/* 基础属性列表（白字展示，计算当前 +N 阶数值） */}
+                {/* 基础属性列表（白字展示，计算当前 +N 阶数值，支持强化增益提示） */}
                 {currentType.baseAttributes.map((attr, idx) => {
                     const baseVal = currentType.sampleRolls.base[attr.name] ?? attr.min;
                     const currentVal = baseVal + refLevel * attr.step;
                     const valStr = attr.isPercent ? `+${currentVal.toFixed(1)}%` : `+${Math.round(currentVal)}`;
+                    const hasNext = refLevel < 15 && attr.step > 0;
+                    const stepStr = attr.isPercent ? `+${attr.step.toFixed(1)}%` : `+${Math.round(attr.step)}`;
+
                     return (
-                        <div key={idx} style={{ color: GAME_COLORS.WHITE }}>
-                            {formatPeizhangAttrName(attr.name)} {valStr}
+                        <div
+                            key={idx}
+                            style={{ color: GAME_COLORS.WHITE }}
+                            className="flex items-center justify-between text-[13px] leading-[22px]"
+                        >
+                            <span>
+                                {formatPeizhangAttrName(attr.name)} {valStr}
+                            </span>
+                            {hasNext && (
+                                <span className="text-emerald-400 font-sans text-[11px] font-medium ml-1.5 whitespace-nowrap">
+                                    (强化 {stepStr})
+                                </span>
+                            )}
                         </div>
                     );
                 })}
@@ -621,20 +732,31 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
                                     }}
                                 >
                                     <span>+{tier}档位</span>
-                                    <span>{isUnlocked ? '已激活' : `需炼器 +${tier}`}</span>
+                                    <div className="flex items-center gap-1 font-sans">
+                                        <span>{isUnlocked ? '已激活' : `需炼器 +${tier}`}</span>
+                                        {!isUnlocked && refLevel + 1 === tier && (
+                                            <span className="text-emerald-400 text-[10px] font-bold">
+                                                (强化 解锁)
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                                 {shouldShowList && (
-                                    <div className="pl-2 space-y-0.5 text-[11px]">
+                                    <div className="pl-2">
                                         {poolItems.map((pi, pIdx) => {
                                             const ratePct = (pi.rate * 100).toFixed(pi.rate * 100 % 1 === 0 ? 0 : 2);
                                             return (
                                                 <div
                                                     key={pIdx}
+                                                    className="flex items-center justify-between text-[13px] leading-[22px]"
                                                     style={{
                                                         color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED
                                                     }}
                                                 >
-                                                    · {formatPeizhangAttrName(pi.attr)} ({ratePct}%)
+                                                    <span>· {formatPeizhangAttrName(pi.attr)}</span>
+                                                    <span className="text-[11px] font-sans" style={{ color: isUnlocked ? '#8892b0' : GAME_COLORS.TEXT_LOCKED }}>
+                                                        概率 {ratePct}%
+                                                    </span>
                                                 </div>
                                             );
                                         })}
@@ -651,9 +773,9 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
                         价格 5000 金
                     </div>
                     <div className="pt-1.5" style={{ color: GAME_COLORS.HUN_GREEN }}>
-                        苍龙为佩，白玉印钮。<br/>
-                        日月轮替，虹隐玄珠。<br/>
-                        阴阳正道，中和后土。<br/>
+                        苍龙为佩，白玉印钮。<br />
+                        日月轮替，虹隐玄珠。<br />
+                        阴阳正道，中和后土。<br />
                         列宿周转，名存不朽。
                     </div>
                     <div style={{ color: GAME_COLORS.SHENYIN_CYAN }}>

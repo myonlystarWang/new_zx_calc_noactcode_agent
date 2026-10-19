@@ -185,9 +185,6 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
 
                     {/* 孔数推演步进控制台 */}
                     <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto font-sans">
-                        <span className="text-[10px] sm:text-[11px] text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30 whitespace-nowrap">
-                            +{activeHoles} 孔
-                        </span>
                         <button
                             type="button"
                             onClick={() => handleHoleChange(activeHoles - 1)}
@@ -250,13 +247,12 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
                                         : 'bg-[#06080e]/60 border-slate-800/30'
                                 )}
                             >
-                                {/* 属性条目表头：与佩章档位颜色对齐（#ffd272），移除不必要的数据摘要 */}
+                                {/* 属性条目表头：与佩章档位颜色对齐（#ffd272） */}
                                 <div
                                     onClick={() => toggleLine(lineIdx)}
                                     className="px-2.5 py-1.5 flex items-center justify-between gap-1.5 select-none cursor-pointer hover:bg-white/[0.04]"
                                 >
                                     <div className="flex items-center gap-2 flex-wrap min-w-0">
-                                        {/* 孔号标识（与档位颜色统一使用 #ffd272） */}
                                         <span
                                             className="font-bold text-[12.5px] whitespace-nowrap"
                                             style={{
@@ -265,80 +261,42 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
                                         >
                                             第{lineIdx}条
                                         </span>
-
-                                        {/* 未解锁时提示 */}
                                         {!isUnlocked && (
-                                            <span
-                                                className="text-[12px]"
-                                                style={{ color: GAME_COLORS.TEXT_LOCKED }}
-                                            >
-                                                属性未解锁{lineIdx === activeHoles + 1 ? ` (需升至${lineIdx}孔)` : ''}
-                                            </span>
-                                        )}
-
-                                        {/* 稀有排他上限提示 */}
-                                        {capNote && isUnlocked && (
-                                            <span className="text-[10px] text-rose-400 bg-rose-950/40 px-1.5 py-0.2 rounded border border-rose-500/30 whitespace-nowrap font-sans">
-                                                ★ {capNote}
+                                            <span className="text-[11px] text-slate-500">
+                                                (未解锁)
                                             </span>
                                         )}
                                     </div>
-
-                                    {/* 展开/折叠控件 */}
-                                    <div className="text-slate-400 shrink-0 text-[11px] font-sans font-normal">
-                                        {isExpanded ? '收起 ▲' : '详情 ▼'}
-                                    </div>
+                                    <span className="text-[11px] text-slate-400 font-sans">
+                                        {isExpanded ? '收起 ▲' : '展开 ▼'}
+                                    </span>
                                 </div>
 
-                                {/* 展开后的完整候选池与概率表 */}
+                                {/* 展开后的完整候选池与概率表（统一星宿/天缘同款两端对齐展示，无顶部表头） */}
                                 {isExpanded && p && (
-                                    <div className="border-t border-[#1b2537] p-2 bg-black/60 overflow-x-auto font-sans">
-                                        {/* <div className="flex items-center justify-between text-[11px] text-slate-400 pb-1 px-1 mb-1 border-b border-slate-800/80">
-                                            <span>候选属性共 {p.attributes.length} 种</span>
-                                            <span>数值上下限 & 洗炼概率</span>
-                                        </div> */}
-                                        <table className="w-full text-left border-collapse text-[12px]">
-                                            <thead>
-                                                <tr className="border-b border-[#223048] text-slate-400 text-[11px]">
-                                                    <th className="py-1 px-2 font-medium">属性种类</th>
-                                                    <th className="py-1 px-2 font-medium text-right">数值下限</th>
-                                                    <th className="py-1 px-2 font-medium text-right">数值上限</th>
-                                                    <th className="py-1 px-2 font-medium text-right">出现概率</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-[#172132]/60">
-                                                {p.attributes.map((attr, aIdx) => {
-                                                    const isRare = RARE_ATTR_NAMES.has(attr.name);
-                                                    const ratePct = ((attr.weight / totalWeight) * 100).toFixed(1);
-                                                    const unit = attr.isPercent ? '%' : '';
-                                                    const displayName = formatNlqAttrName(attr.name);
+                                    <div className="border-t border-[#1b2537] p-2 bg-black/40 space-y-1">
+                                        {p.attributes.map((attr, aIdx) => {
+                                            const isRare = RARE_ATTR_NAMES.has(attr.name);
+                                            const ratePct = ((attr.weight / totalWeight) * 100).toFixed(1);
+                                            const unit = attr.isPercent ? '%' : '';
+                                            const displayName = formatNlqAttrName(attr.name);
 
-                                                    return (
-                                                        <tr
-                                                            key={aIdx}
-                                                            className="hover:bg-white/[0.03] transition-colors"
-                                                        >
-                                                            <td className="py-1 px-2 font-medium whitespace-nowrap">
-                                                                <span style={{
-                                                                    color: isRare ? '#38bdf8' : GAME_COLORS.STAT_BLUE
-                                                                }}>
-                                                                    {displayName}
-                                                                </span>
-                                                            </td>
-                                                            <td className="py-1 px-2 text-right text-slate-300 font-mono whitespace-nowrap">
-                                                                {attr.min}{unit}
-                                                            </td>
-                                                            <td className="py-1 px-2 text-right text-slate-300 font-mono whitespace-nowrap">
-                                                                {attr.max}{unit}
-                                                            </td>
-                                                            <td className="py-1 px-2 text-right font-mono font-bold whitespace-nowrap" style={{ color: '#ffd272' }}>
-                                                                {ratePct}%
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })}
-                                            </tbody>
-                                        </table>
+                                            return (
+                                                <div
+                                                    key={aIdx}
+                                                    className="flex items-center justify-between text-[13px] leading-[22px]"
+                                                >
+                                                    <span style={{
+                                                        color: isRare ? '#38bdf8' : GAME_COLORS.STAT_BLUE
+                                                    }}>
+                                                        · {displayName} {attr.min}{unit} - {attr.max}{unit}
+                                                    </span>
+                                                    <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
+                                                        概率 {ratePct}%
+                                                    </span>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </div>

@@ -132,9 +132,6 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
                             {/* 右侧：多阶技能等级步进按钮组 */}
                             {maxLevel > 1 && (
                                 <div className="flex items-center gap-1.5 font-sans ml-auto">
-                                    <span className="text-[11px] font-mono text-amber-300/90 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30 whitespace-nowrap">
-                                        {currentLevel}级
-                                    </span>
                                     <button
                                         type="button"
                                         onClick={() => handleStep(-1)}

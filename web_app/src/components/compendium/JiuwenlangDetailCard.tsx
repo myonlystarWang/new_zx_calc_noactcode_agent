@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { Calculator, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import clsx from 'clsx';
+import { GAME_COLORS } from '../../constants/gameColorSystem';
 
 export interface JiuwenlangLevelData {
     level: number;
@@ -65,273 +67,245 @@ export const JiuwenlangDetailCard: React.FC<JiuwenlangDetailCardProps> = ({ card
             : 20;
     });
 
-    const [showCalc, setShowCalc] = useState(false);
-    const [calcStartLevel, setCalcStartLevel] = useState<number>(1);
-    const [calcTargetLevel, setCalcTargetLevel] = useState<number>(20);
-    const [showFullTable, setShowFullTable] = useState(false);
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
+
+    const updateScrollState = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        setCanScrollLeft(el.scrollLeft > 4);
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    }, []);
+
+    const scrollToActiveItem = useCallback((smooth = true) => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const activeBtn = el.querySelector<HTMLElement>('[data-active="true"]');
+        if (activeBtn) {
+            const containerLeft = el.getBoundingClientRect().left;
+            const containerWidth = el.clientWidth;
+            const itemLeft = activeBtn.getBoundingClientRect().left;
+            const itemWidth = activeBtn.clientWidth;
+            const offset = (itemLeft - containerLeft) - (containerWidth / 2 - itemWidth / 2);
+            el.scrollBy({
+                left: offset,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+        }
+        setTimeout(updateScrollState, 220);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        updateScrollState();
+        const handleResize = () => updateScrollState();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [updateScrollState]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            scrollToActiveItem(true);
+        }, 50);
+        return () => clearTimeout(timer);
+    }, [currentLevel, scrollToActiveItem]);
+
+    // 滚轮横向滑动
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const handleWheel = (e: WheelEvent) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+                updateScrollState();
+            }
+        };
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+    }, [updateScrollState]);
+
+    const handleScrollStep = (direction: 'left' | 'right') => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const step = 200;
+        el.scrollBy({
+            left: direction === 'left' ? -step : step,
+            behavior: 'smooth'
+        });
+        setTimeout(updateScrollState, 220);
+    };
 
     const activeItem = useMemo(() => {
         return levels.find((l) => l.level === currentLevel) || levels[levels.length - 1];
     }, [levels, currentLevel]);
 
-    const deltaResult = useMemo(() => {
-        const startItem = levels.find((l) => l.level === calcStartLevel) || levels[0];
-        const targetItem = levels.find((l) => l.level === calcTargetLevel) || levels[levels.length - 1];
-
-        return {
-            hp: targetItem.hp - startItem.hp,
-            mp: targetItem.mp - startItem.mp,
-            skillAccuracy: +(targetItem.skillAccuracy - startItem.skillAccuracy).toFixed(1),
-            skillDodge: +(targetItem.skillDodge - startItem.skillDodge).toFixed(1),
-            critReduction: +(targetItem.critReduction - startItem.critReduction).toFixed(1),
-            critDamageReduction: +(targetItem.critDamageReduction - startItem.critDamageReduction).toFixed(1),
-            resistImmortal: +(targetItem.resistImmortal - startItem.resistImmortal).toFixed(1),
-            resistBuddha: +(targetItem.resistBuddha - startItem.resistBuddha).toFixed(1),
-            resistDemon: +(targetItem.resistDemon - startItem.resistDemon).toFixed(1),
-            damageReduction: +(targetItem.damageReduction - startItem.damageReduction).toFixed(1),
-        };
-    }, [levels, calcStartLevel, calcTargetLevel]);
-
     return (
-        <div className={`w-full max-w-xl bg-[#0b0f19] border border-[#1e293b] rounded-lg p-3 text-xs font-sans shadow-xl select-none ${className || ''}`}>
-            {/* 头部标题与徽标 */}
-            <div className="flex items-center justify-between border-b border-[#1e293b] pb-2 mb-2.5">
-                <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#f43f5e] shadow-[0_0_8px_#f43f5e]"></span>
-                    <span className="text-[13px] font-bold text-white tracking-wide">
-                        {data?.systemName || '佩章·九纹琅'}
-                    </span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#f43f5e]/15 border border-[#f43f5e]/30 text-[#fda4af]">
-                        佩章核心附魔
-                    </span>
-                    <span className="text-[11px] text-[#94a3b8]">
-                        Lv.{activeItem.level}/20
-                    </span>
-                </div>
-                <button
-                    onClick={() => setShowCalc(!showCalc)}
-                    className="flex items-center gap-1 px-2 py-1 rounded bg-[#1e293b]/70 hover:bg-[#334155] text-[#38bdf8] text-[11px] transition-colors border border-[#38bdf8]/20"
-                >
-                    <Calculator className="w-3.5 h-3.5" />
-                    <span>{showCalc ? '收起测算' : '等级测算'}</span>
-                </button>
-            </div>
-
-            {/* 等级步进与预设档位 */}
-            <div className="bg-[#0f172a]/70 rounded border border-[#1e293b]/80 p-2 mb-2.5">
-                <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] text-[#94a3b8]">等级切换：</span>
-                    <div className="flex items-center gap-1">
-                        {[1, 5, 10, 15, 20].map((lvl) => (
-                            <button
-                                key={lvl}
-                                onClick={() => setCurrentLevel(lvl)}
-                                className={`px-1.5 py-0.5 rounded text-[10px] transition-colors ${
-                                    currentLevel === lvl
-                                        ? 'bg-[#f43f5e] text-white font-semibold shadow-[0_0_6px_#f43f5e]'
-                                        : 'bg-[#1e293b] text-[#94a3b8] hover:bg-[#334155]'
-                                }`}
-                            >
-                                {lvl === 20 ? '满级(20)' : `${lvl}级`}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-                <div className="flex items-center gap-2">
-                    <input
-                        type="range"
-                        min="1"
-                        max="20"
-                        step="1"
-                        value={currentLevel}
-                        onChange={(e) => setCurrentLevel(Number(e.target.value))}
-                        className="w-full accent-[#f43f5e] h-1.5 bg-[#1e293b] rounded cursor-pointer"
-                    />
-                    <span className="w-8 text-right font-mono font-bold text-white text-[12px]">
-                        +{currentLevel}
-                    </span>
-                </div>
-            </div>
-
-            {/* 当前等级属性卡片（仿游戏高保真原生面板） */}
-            <div className="grid grid-cols-2 gap-1.5 mb-2.5">
-                <div className="bg-[#131b2e]/60 border border-[#1e293b] rounded p-2 flex flex-col justify-between">
-                    <span className="text-[11px] text-[#94a3b8]">基础气血/真气</span>
-                    <div className="mt-1 flex flex-col gap-0.5">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[#38bdf8]">气血</span>
-                            <span className="font-mono text-white font-semibold">+{activeItem.hp.toLocaleString()}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-[#38bdf8]">真气</span>
-                            <span className="font-mono text-white font-semibold">+{activeItem.mp.toLocaleString()}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-[#131b2e]/60 border border-[#1e293b] rounded p-2 flex flex-col justify-between">
-                    <span className="text-[11px] text-[#94a3b8]">战斗敏捷</span>
-                    <div className="mt-1 flex flex-col gap-0.5">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[#34d399]">技能命中</span>
-                            <span className="font-mono text-white font-semibold">+{activeItem.skillAccuracy}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-[#34d399]">技能躲闪</span>
-                            <span className="font-mono text-white font-semibold">+{activeItem.skillDodge}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-[#131b2e]/60 border border-[#1e293b] rounded p-2 flex flex-col justify-between">
-                    <span className="text-[11px] text-[#94a3b8]">防暴击特化</span>
-                    <div className="mt-1 flex flex-col gap-0.5">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[#fbbf24]">减暴击</span>
-                            <span className="font-mono text-white font-semibold">+{activeItem.critReduction}%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-[#fbbf24]">减爆伤</span>
-                            <span className="font-mono text-white font-semibold">+{activeItem.critDamageReduction}%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="bg-[#131b2e]/60 border border-[#1e293b] rounded p-2 flex flex-col justify-between">
-                    <span className="text-[11px] text-[#94a3b8]">减免与阵营御性</span>
-                    <div className="mt-1 flex flex-col gap-0.5">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[#c084fc]">减免伤害</span>
-                            <span className="font-mono text-white font-semibold">+{activeItem.damageReduction}%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-[#c084fc]">御仙/佛/魔</span>
-                            <span className="font-mono text-white font-semibold">各 +{activeItem.resistImmortal}%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* 自定义等级测算器面板 */}
-            {showCalc && (
-                <div className="bg-[#111827] border border-[#f43f5e]/30 rounded p-2.5 mb-2.5">
-                    <div className="flex items-center gap-1.5 text-[#fda4af] font-bold text-[11px] mb-2">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>等级进阶差额测算</span>
-                    </div>
-                    <div className="flex items-center gap-2 mb-2 text-[11px]">
-                        <span className="text-[#94a3b8]">起始：</span>
-                        <select
-                            value={calcStartLevel}
-                            onChange={(e) => setCalcStartLevel(Number(e.target.value))}
-                            className="bg-[#1e293b] border border-[#334155] text-white rounded px-1.5 py-0.5 text-[11px]"
-                        >
-                            {levels.map((l) => (
-                                <option key={l.level} value={l.level}>
-                                    Lv.{l.level}
-                                </option>
-                            ))}
-                        </select>
-                        <span className="text-[#94a3b8]">至 目标：</span>
-                        <select
-                            value={calcTargetLevel}
-                            onChange={(e) => setCalcTargetLevel(Number(e.target.value))}
-                            className="bg-[#1e293b] border border-[#334155] text-white rounded px-1.5 py-0.5 text-[11px]"
-                        >
-                            {levels.map((l) => (
-                                <option key={l.level} value={l.level}>
-                                    Lv.{l.level}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {calcTargetLevel > calcStartLevel ? (
-                        <div className="grid grid-cols-2 gap-x-3 gap-y-1 bg-[#0b0f19] p-2 rounded border border-[#1e293b] text-[11px]">
-                            <div className="flex justify-between">
-                                <span className="text-[#94a3b8]">净增气血/真气：</span>
-                                <span className="text-[#38bdf8] font-mono font-bold">+{deltaResult.hp.toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-[#94a3b8]">净增命中/躲闪：</span>
-                                <span className="text-[#34d399] font-mono font-bold">+{deltaResult.skillAccuracy}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-[#94a3b8]">净增减暴/减爆伤：</span>
-                                <span className="text-[#fbbf24] font-mono font-bold">+{deltaResult.critReduction}% / +{deltaResult.critDamageReduction}%</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-[#94a3b8]">净增减免/御性：</span>
-                                <span className="text-[#c084fc] font-mono font-bold">各 +{deltaResult.damageReduction}%</span>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="text-[#f43f5e] text-[11px] py-1">目标等级需高于起始等级</div>
-                    )}
-                </div>
-            )}
-
-            {/* 折叠展开 1~20 全量对照表 */}
-            <div className="border-t border-[#1e293b] pt-2">
-                <button
-                    onClick={() => setShowFullTable(!showFullTable)}
-                    className="w-full flex items-center justify-between text-[#94a3b8] hover:text-white py-1 text-[11px] transition-colors"
-                >
-                    <span>1~20 级全量对照表</span>
-                    {showFullTable ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                </button>
-
-                {showFullTable && (
-                    <div className="mt-2 overflow-x-auto max-h-[240px] overflow-y-auto border border-[#1e293b] rounded">
-                        <table className="w-full text-left text-[10px] min-w-[500px]">
-                            <thead className="bg-[#1e293b] text-[#94a3b8] sticky top-0">
-                                <tr>
-                                    <th className="p-1 text-center">等级</th>
-                                    <th className="p-1">气血/真气</th>
-                                    <th className="p-1">命中/躲闪</th>
-                                    <th className="p-1">减暴</th>
-                                    <th className="p-1">减爆伤</th>
-                                    <th className="p-1">御三阵营</th>
-                                    <th className="p-1">减免伤害</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-[#1e293b]/50 font-mono">
-                                {levels.map((item) => {
-                                    const isHighlight = item.level === 20;
-                                    const isSelected = item.level === currentLevel;
-                                    return (
-                                        <tr
-                                            key={item.level}
-                                            onClick={() => setCurrentLevel(item.level)}
-                                            className={`cursor-pointer transition-colors ${
-                                                isSelected
-                                                    ? 'bg-[#f43f5e]/20 text-white font-bold'
-                                                    : isHighlight
-                                                    ? 'bg-[#fda4af]/10 text-[#fda4af] font-semibold'
-                                                    : 'hover:bg-[#1e293b]/40 text-[#cbd5e1]'
-                                            }`}
-                                        >
-                                            <td className="p-1 text-center font-bold">
-                                                {item.level === 20 ? 'Lv.20★' : `Lv.${item.level}`}
-                                            </td>
-                                            <td className="p-1">{item.hp}</td>
-                                            <td className="p-1">{item.skillAccuracy}</td>
-                                            <td className="p-1">{item.critReduction}%</td>
-                                            <td className="p-1">{item.critDamageReduction}%</td>
-                                            <td className="p-1">各 {item.resistImmortal}%</td>
-                                            <td className="p-1">{item.damageReduction}%</td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+        <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
+            {/* 0. 顶层等级切换栏：占满 AI 对话框完整宽度 w-full */}
+            {/* <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
+                {canScrollLeft && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('left')}
+                        className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                        title="向左滚动"
+                    >
+                        <ChevronLeft className="w-4 h-4" />
+                    </button>
                 )}
-            </div>
 
-            <div className="mt-2 pt-1.5 border-t border-[#1e293b]/60 flex items-center justify-between text-[10px] text-[#64748b]">
-                <span>数据来源：完美世界官方游戏内线上实机对照</span>
-                <span>满级气血/真气 +24000</span>
+                <div
+                    ref={scrollRef}
+                    className="flex-1 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth"
+                >
+                    {levels.map((item) => {
+                        const isActive = item.level === currentLevel;
+                        return (
+                            <button
+                                key={item.level}
+                                type="button"
+                                data-active={isActive ? 'true' : 'false'}
+                                onClick={() => setCurrentLevel(item.level)}
+                                className={clsx(
+                                    'px-2.5 py-1 rounded text-xs transition-all shrink-0 cursor-pointer',
+                                    isActive
+                                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/60 font-bold shadow-sm'
+                                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                                )}
+                            >
+                                {item.level === 20 ? '满级 (Lv.20)' : `Lv.${item.level}`}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {canScrollRight && (
+                    <button
+                        type="button"
+                        onClick={() => handleScrollStep('right')}
+                        className="p-1 rounded text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors shrink-0 cursor-pointer"
+                        title="向右滚动"
+                    >
+                        <ChevronRight className="w-4 h-4" />
+                    </button>
+                )}
+            </div> */}
+
+            {/* 1. 下方核心信息卡：限制宽度 max-w-xl */}
+            <div
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
+                style={{
+                    fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
+                    letterSpacing: '0.3px'
+                }}
+            >
+                {/* 头部两层式布局 */}
+                <div className="pb-2 border-b border-[#1f293d]/80 flex flex-col gap-1.5 min-w-0">
+                    {/* 第 1 行：完整装备名称与等级 */}
+                    <div
+                        className="font-bold text-[14px] sm:text-[15px] leading-snug break-words"
+                        style={{ color: '#ffd272' }}
+                    >
+                        佩章·九纹琅（Lv.{currentLevel}）
+                    </div>
+
+                    {/* 第 2 行：微标 与 右侧等级步进控制台 */}
+                    <div className="flex items-center justify-between gap-2 min-w-0 flex-wrap">
+                        <div className="flex items-center gap-1.5 text-[11px] font-sans">
+                            <span className="px-1.5 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold whitespace-nowrap">
+                                佩章
+                            </span>
+                            <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-300 border border-slate-700/50 whitespace-nowrap">
+                                上限 40 级
+                            </span>
+                        </div>
+
+                        {/* 右侧：步进升级控制台 */}
+                        <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
+                            <button
+                                type="button"
+                                onClick={() => setCurrentLevel((prev) => Math.max(1, prev - 1))}
+                                disabled={currentLevel <= 1}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                    currentLevel <= 1
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
+                                )}
+                            >
+                                等级 -1
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setCurrentLevel((prev) => Math.min(20, prev + 1))}
+                                disabled={currentLevel >= 20}
+                                className={clsx(
+                                    'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                    currentLevel >= 20
+                                        ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                        : 'bg-cyan-600/30 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/50 hover:text-white'
+                                )}
+                            >
+                                等级 +1
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 类似装备卡的属性逐行展示：经典游戏蓝（#8080ff）+ 宋体 */}
+                <div className="py-1 space-y-1">
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 基础气血 ＋{activeItem.hp.toLocaleString()}</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 基础真气 ＋{activeItem.mp.toLocaleString()}</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 增加技能命中 {activeItem.skillAccuracy.toFixed(1)}</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 增加技能躲闪 {activeItem.skillDodge.toFixed(1)}</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 被致命一击的概率减少 {activeItem.critReduction.toFixed(1)}%</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 减免暴伤 ＋{activeItem.critDamageReduction.toFixed(1)}%</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 御仙 ＋{activeItem.resistImmortal.toFixed(1)}%</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 御佛 ＋{activeItem.resistBuddha.toFixed(1)}%</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 御魔 ＋{activeItem.resistDemon.toFixed(1)}%</span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
+                        <span>· 减免伤害 ＋{activeItem.damageReduction.toFixed(1)}%</span>
+                    </div>
+                </div>
+
+                {/* 底部属性与穿戴/附魔要求 */}
+                <div className="mt-2.5 pt-2 border-t border-[#1c2436]/60 text-[12px] leading-5 space-y-0.5">
+                    <div style={{ color: GAME_COLORS.OWNER_ORANGE }}>
+                        已绑定；已锁定；不会掉落；不可卖店
+                    </div>
+                    {/* <div style={{ color: GAME_COLORS.WHITE }}>
+                        附魔部位：
+                        <span style={{ color: GAME_COLORS.PURE_RED }}>
+                            佩章装备核心附魔
+                        </span>
+                    </div>
+                    <div style={{ color: GAME_COLORS.WHITE }}>
+                        成长特性：
+                        <span style={{ color: GAME_COLORS.STAT_BLUE }}>
+                            全项属性随等级线性提升
+                        </span>
+                    </div> */}
+                </div>
             </div>
         </div>
     );
