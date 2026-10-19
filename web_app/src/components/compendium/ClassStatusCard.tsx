@@ -224,13 +224,8 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
     })();
 
     return (
-        <div
-            className={clsx(
-                'rounded-xl p-3.5 sm:p-4 transition-all duration-200 border border-cyan-500/20 bg-[#121824] flex flex-col justify-start gap-3 shadow-md w-full max-w-xl select-none',
-                className
-            )}
-        >
-            {/* 0. 顶部门派全景切换栏：对齐 CandidateSelectorBar 交互规范与样式 */}
+        <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
+            {/* 0. 顶部门派全景切换栏：占满 AI 对话框完整宽度 w-full */}
             {Array.isArray(cardData.allClasses) && cardData.allClasses.length > 1 && (
                 <div className="relative flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full">
                     {/* 左滚动按钮 */}
@@ -285,74 +280,77 @@ export const ClassStatusCard: React.FC<ClassStatusCardProps> = ({
                 </div>
             )}
 
-            {/* 1. Header 行：职业名 + 紧随右侧阵营徽章按钮 + 右侧纯净评级（完全对齐 BossDetailCard 头部比例） */}
-            <div className="flex items-center justify-between gap-2 border-b border-white/5 pb-2.5">
-                <div className="flex items-center gap-2 min-w-0">
-                    <span className="w-1.5 h-4 bg-cyan-400 rounded-full shrink-0"></span>
-                    <h4 className="text-[15px] font-black text-slate-100 tracking-wide truncate">
-                        {selectedClassName}
-                    </h4>
+            {/* 1. 下方核心职业状态卡片：限制宽度 max-w-xl（显示效果与 boss 属性类似） */}
+            <div className="rounded-xl p-3.5 sm:p-4 transition-all duration-200 border border-cyan-500/20 bg-[#121824] flex flex-col justify-start gap-3 shadow-md w-full max-w-xl">
+                {/* Header 行：职业名 + 紧随右侧阵营徽章按钮 + 右侧纯净评级 */}
+                <div className="flex items-center justify-between gap-2 border-b border-white/5 pb-2.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                        <span className="w-1.5 h-4 bg-cyan-400 rounded-full shrink-0"></span>
+                        <h4 className="text-[15px] font-black text-slate-100 tracking-wide truncate">
+                            {selectedClassName}
+                        </h4>
 
-                    {/* 阵营分支直接在职业名字右边：参考 BossCard 的微标风格，极简小胶囊 */}
-                    <div className="flex items-center gap-1.5 shrink-0">
-                        {currentRoles.map((r, idx) => {
-                            const isActive = idx === activeIdx;
-                            return (
-                                <button
-                                    key={`${r.faction}-${idx}`}
-                                    type="button"
-                                    onClick={() => setActiveIdx(idx)}
-                                    className={clsx(
-                                        'px-2 py-0.5 rounded text-[11px] font-bold border shrink-0 transition-colors cursor-pointer',
-                                        isActive
-                                            ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300'
-                                            : 'bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-slate-200'
-                                    )}
-                                >
-                                    {r.faction}
-                                </button>
-                            );
-                        })}
+                        {/* 阵营分支直接在职业名字右边 */}
+                        <div className="flex items-center gap-1.5 shrink-0">
+                            {currentRoles.map((r, idx) => {
+                                const isActive = idx === activeIdx;
+                                return (
+                                    <button
+                                        key={`${r.faction}-${idx}`}
+                                        type="button"
+                                        onClick={() => setActiveIdx(idx)}
+                                        className={clsx(
+                                            'px-2 py-0.5 rounded text-[11px] font-bold border shrink-0 transition-colors cursor-pointer',
+                                            isActive
+                                                ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300'
+                                                : 'bg-slate-800/60 border-slate-700/50 text-slate-400 hover:text-slate-200'
+                                        )}
+                                    >
+                                        {r.faction}
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
+
+                    {/* 右侧：纯净展示评级 */}
+                    {currentRole.rating && (
+                        <div className="text-xs font-mono text-slate-400 shrink-0">
+                            评级 <span className="font-bold text-amber-300">{currentRole.rating}</span>
+                        </div>
+                    )}
                 </div>
 
-                {/* 右侧：纯净展示评级，不额外加花哨大框 */}
-                {currentRole.rating && (
-                    <div className="text-xs font-mono text-slate-400 shrink-0">
-                        评级 <span className="font-bold text-amber-300">{currentRole.rating}</span>
+                {/* 属性矩阵网格：1:1 对齐 BossDetailCard 紧凑网格结构 */}
+                {matrixItems.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+                        {matrixItems.map((m) => (
+                            <div
+                                key={m.key}
+                                className="flex items-center justify-between px-2.5 py-1.5 rounded-lg border bg-black/40 border-white/5 transition-colors"
+                            >
+                                <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">
+                                    {m.label}
+                                </span>
+                                <span className={clsx('font-mono font-bold text-xs shrink-0 whitespace-nowrap', m.color)}>
+                                    {formatMetricValue(m.val, m.unit)}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/5 text-center text-xs text-slate-400">
+                        输出职业以个人伤害为主，团队增益面板较少，可在模拟训练场使用输出模板起号。
                     </div>
                 )}
-            </div>
 
-            {/* 2. 属性矩阵网格：1:1 对齐 BossDetailCard 紧凑网格结构 (在 max-w-xl 约束下美观协调) */}
-            {matrixItems.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
-                    {matrixItems.map((m) => (
-                        <div
-                            key={m.key}
-                            className="flex items-center justify-between px-2.5 py-1.5 rounded-lg border bg-black/40 border-white/5 transition-colors"
-                        >
-                            <span className="text-slate-400 text-[11px] whitespace-nowrap shrink-0 mr-1.5">
-                                {m.label}
-                            </span>
-                            <span className={clsx('font-mono font-bold text-xs shrink-0 whitespace-nowrap', m.color)}>
-                                {formatMetricValue(m.val, m.unit)}
-                            </span>
-                        </div>
-                    ))}
+                {/* 底部战术定位行 */}
+                <div className="pt-2 border-t border-white/5 flex items-start gap-1.5 text-xs leading-relaxed">
+                    <span className="text-cyan-400 font-semibold shrink-0">战术定位：</span>
+                    <span className="text-slate-300">
+                        {tacticalSummary}
+                    </span>
                 </div>
-            ) : (
-                <div className="px-3 py-2 rounded-lg bg-black/40 border border-white/5 text-center text-xs text-slate-400">
-                    输出职业以个人伤害为主，团队增益面板较少，可在模拟训练场使用输出模板起号。
-                </div>
-            )}
-
-            {/* 3. 底部战术定位行：低调内敛，紧凑布局对齐属性网格 */}
-            <div className="pt-2 border-t border-white/5 flex items-start gap-1.5 text-xs leading-relaxed">
-                <span className="text-cyan-400 font-semibold shrink-0">战术定位：</span>
-                <span className="text-slate-300">
-                    {tacticalSummary}
-                </span>
             </div>
         </div>
     );
