@@ -53,7 +53,7 @@
   },
   {
     "id": "tool-tianyuan-01",
-    "input": "天缘",
+    "input": "须弥天缘",
     "expect": {
       "cardType": "tool_card",
       "cardData.workspaceMode": "newtianyuan"
@@ -4973,15 +4973,14 @@
     "id": "conflict-pure-tianyuan-new-09",
     "input": "天缘",
     "expect": {
-      "cardType": "tool_card",
-      "cardData.workspaceMode": "newtianyuan"
+      "cardType": "tianyuan_old"
     },
     "tags": [
       "conflict",
       "tianyuan"
     ],
     "assert": "strong",
-    "note": "冲突裁决：裸词 天缘 命中新版天缘洗炼工具"
+    "note": "冲突裁决：裸词 天缘 命中旧天缘属性卡"
   },
   {
     "id": "hub-measure-01",

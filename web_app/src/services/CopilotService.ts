@@ -746,21 +746,15 @@ export class CopilotService {
             };
         }
 
-        // 5b. 旧天缘属性全览卡（装备天缘词条池）
+        // 5b. 旧天缘属性全览卡（装备天缘词条池，优先承接所有天缘查询，默认只允许到旧天缘）
         const isOldTianyuanQuery =
-            q.includes('旧天缘') ||
-            q === '天缘属性' ||
-            q.includes('旧天缘属性') ||
-            q.includes('旧天缘洗炼') ||
-            q.includes('武器天缘') ||
-            q.includes('鞋子天缘') ||
-            q.includes('靴子天缘') ||
-            q.includes('衣服天缘') ||
-            q.includes('铠甲天缘') ||
-            q.includes('帽子天缘') ||
-            q.includes('头盔天缘') ||
-            q.includes('天命天缘') ||
-            (q.includes('天缘') && (q.includes('武器') || q.includes('鞋') || q.includes('靴') || q.includes('衣') || q.includes('甲') || q.includes('帽') || q.includes('盔')));
+            !q.includes('新天缘') &&
+            !q.includes('须弥天缘') &&
+            (
+                q.includes('天缘') ||
+                q.includes('旧天缘') ||
+                q.includes('天命天缘')
+            );
 
         if (isOldTianyuanQuery) {
             let partId = 'weapon';
@@ -789,22 +783,20 @@ export class CopilotService {
             };
         }
 
-        // 5. 天缘属性推算
+        // 5. 新天缘属性推算（仅显式指定“新天缘”或“须弥天缘”才触发，普通“天缘”均归旧天缘）
         if (
-            q.includes('天缘') ||
-            q.includes('须弥天缘') ||
-            q.includes('神级天缘') ||
-            q.includes('天命属性')
+            q.includes('新天缘') ||
+            q.includes('须弥天缘')
         ) {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '已为你定位【天缘属性推算】。支持须弥装备天缘与天命属性洗炼推演，测算洗出满属性与心仪词条的概率与期望消耗。',
+                text: '已为你定位【新版天缘属性推算】。支持须弥装备天缘与天命属性洗炼推演，测算洗出满属性与心仪词条的概率与期望消耗。',
                 time: timeStr,
                 cardType: 'tool_card',
                 cardData: {
-                    title: '天缘属性推算',
-                    desc: '天命装备天缘属性洗炼模拟，展示属性词条理论值范围和概率',
+                    title: '新版天缘属性推算',
+                    desc: '须弥装备天缘属性洗炼模拟，展示属性词条理论值范围和概率',
                     workspaceMode: 'newtianyuan',
                     route: '/tools/newtianyuan',
                     btnText: '进入天缘属性'
