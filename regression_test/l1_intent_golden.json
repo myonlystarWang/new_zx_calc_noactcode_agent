@@ -51,11 +51,11 @@
   },
   "tool-tianyuan-01": {
     "sender": "assistant",
-    "text": "已为你定位【天缘属性推算】。支持须弥装备天缘与天命属性洗炼推演，测算洗出满属性与心仪词条的概率与期望消耗。",
+    "text": "已为你定位【新版天缘属性推算】。支持须弥装备天缘与天命属性洗炼推演，测算洗出满属性与心仪词条的概率与期望消耗。",
     "cardType": "tool_card",
     "cardData": {
-      "title": "天缘属性推算",
-      "desc": "天命装备天缘属性洗炼模拟，展示属性词条理论值范围和概率",
+      "title": "新版天缘属性推算",
+      "desc": "须弥装备天缘属性洗炼模拟，展示属性词条理论值范围和概率",
       "workspaceMode": "newtianyuan",
       "route": "/tools/newtianyuan",
       "btnText": "进入天缘属性"
@@ -165000,14 +165000,353 @@
   },
   "conflict-pure-tianyuan-new-09": {
     "sender": "assistant",
-    "text": "已为你定位【天缘属性推算】。支持须弥装备天缘与天命属性洗炼推演，测算洗出满属性与心仪词条的概率与期望消耗。",
-    "cardType": "tool_card",
+    "text": "为你速查到【旧天缘属性全览】。支持天命武器、靴子、衣服、头盔4部位词条池全览与满级(10级)自动推算：",
+    "cardType": "tianyuan_old",
     "cardData": {
-      "title": "天缘属性推算",
-      "desc": "天命装备天缘属性洗炼模拟，展示属性词条理论值范围和概率",
-      "workspaceMode": "newtianyuan",
-      "route": "/tools/newtianyuan",
-      "btnText": "进入天缘属性"
+      "data": {
+        "systemName": "旧天缘属性全览",
+        "category": "装备系统 · 词条属性池",
+        "source": "完美世界官方游戏论坛攻略区权威资料表（bbs.wanmei.com）",
+        "description": "旧天缘为天命装备（武器、靴子、甲衣、头盔）专属词条属性池，每件装备生成 1~4 条天缘属性（2条占比60%，3条占比30%）。属性具备初始随机数值区间与每级固定成长增益（天命1~10级）。",
+        "parts": [
+          {
+            "partId": "weapon",
+            "partName": "天命武器",
+            "slot": "武器",
+            "countProbabilities": [
+              {
+                "count": 1,
+                "probability": "6%"
+              },
+              {
+                "count": 2,
+                "probability": "60%"
+              },
+              {
+                "count": 3,
+                "probability": "30%"
+              },
+              {
+                "count": 4,
+                "probability": "4%"
+              }
+            ],
+            "attributes": [
+              {
+                "name": "攻击",
+                "minBase": 500,
+                "maxBase": 1000,
+                "unit": "",
+                "perLevelGain": 50,
+                "probability": "22%",
+                "note": "满级(10级)增益 +500"
+              },
+              {
+                "name": "无视伤害减免",
+                "minBase": 1,
+                "maxBase": 2,
+                "unit": "%",
+                "perLevelGain": 0.1,
+                "probability": "2%",
+                "note": "极致输出稀有属性，满级(10级)增益 +1.0%"
+              },
+              {
+                "name": "暴击率",
+                "minBase": 1,
+                "maxBase": 3,
+                "unit": "%",
+                "perLevelGain": 0.4,
+                "probability": "19%",
+                "note": "常规 1%-3%（低阶 0.2%-0.5%），满级(10级)增益 +4.0%"
+              },
+              {
+                "name": "克仙",
+                "minBase": 1.5,
+                "maxBase": 3,
+                "unit": "%",
+                "perLevelGain": 0.4,
+                "probability": "19%",
+                "note": "满级(10级)增益 +4.0%"
+              },
+              {
+                "name": "克佛",
+                "minBase": 1.5,
+                "maxBase": 3,
+                "unit": "%",
+                "perLevelGain": 0.4,
+                "probability": "19%",
+                "note": "满级(10级)增益 +4.0%"
+              },
+              {
+                "name": "克魔",
+                "minBase": 1.5,
+                "maxBase": 3,
+                "unit": "%",
+                "perLevelGain": 0.4,
+                "probability": "19%",
+                "note": "满级(10级)增益 +4.0%"
+              },
+              {
+                "name": "气血百分比",
+                "minBase": 1,
+                "maxBase": 1,
+                "unit": "%",
+                "perLevelGain": 0.5,
+                "probability": "0%",
+                "note": "底库保留展示，生成概率为 0%"
+              },
+              {
+                "name": "真气百分比",
+                "minBase": 1,
+                "maxBase": 1,
+                "unit": "%",
+                "perLevelGain": 0.5,
+                "probability": "0%",
+                "note": "底库保留展示，生成概率为 0%"
+              }
+            ]
+          },
+          {
+            "partId": "shoes",
+            "partName": "天命靴",
+            "slot": "靴子",
+            "countProbabilities": [
+              {
+                "count": 1,
+                "probability": "9%"
+              },
+              {
+                "count": 2,
+                "probability": "60%"
+              },
+              {
+                "count": 3,
+                "probability": "30%"
+              },
+              {
+                "count": 4,
+                "probability": "1%"
+              }
+            ],
+            "attributes": [
+              {
+                "name": "真气",
+                "minBase": 1000,
+                "maxBase": 2000,
+                "unit": "",
+                "perLevelGain": 200,
+                "probability": "20%",
+                "note": "满级(10级)增益 +2000"
+              },
+              {
+                "name": "真气百分比",
+                "minBase": 1,
+                "maxBase": 2,
+                "unit": "%",
+                "perLevelGain": 0.2,
+                "probability": "4%",
+                "note": "满级(10级)增益 +2.0%"
+              },
+              {
+                "name": "技能命中",
+                "minBase": 0.5,
+                "maxBase": 5,
+                "unit": "",
+                "perLevelGain": 1,
+                "probability": "19%",
+                "note": "满级(10级)增益 +10.0"
+              },
+              {
+                "name": "暴击伤害",
+                "minBase": 1,
+                "maxBase": 10,
+                "unit": "%",
+                "perLevelGain": 0.8,
+                "probability": "19%",
+                "note": "满级(10级)增益 +8.0%"
+              },
+              {
+                "name": "昏睡抗性",
+                "minBase": 1,
+                "maxBase": 15,
+                "unit": "",
+                "perLevelGain": 3,
+                "probability": "19%",
+                "note": "满级(10级)增益 +30"
+              },
+              {
+                "name": "虚弱抗性",
+                "minBase": 1,
+                "maxBase": 15,
+                "unit": "",
+                "perLevelGain": 3,
+                "probability": "19%",
+                "note": "满级(10级)增益 +30"
+              }
+            ]
+          },
+          {
+            "partId": "armor",
+            "partName": "天命甲",
+            "slot": "衣服",
+            "countProbabilities": [
+              {
+                "count": 1,
+                "probability": "9%"
+              },
+              {
+                "count": 2,
+                "probability": "60%"
+              },
+              {
+                "count": 3,
+                "probability": "30%"
+              },
+              {
+                "count": 4,
+                "probability": "1%"
+              }
+            ],
+            "attributes": [
+              {
+                "name": "减免暴击率",
+                "minBase": 0.5,
+                "maxBase": 3,
+                "unit": "%",
+                "perLevelGain": 0.5,
+                "probability": "24%",
+                "note": "满级(10级)增益 +5.0%"
+              },
+              {
+                "name": "御仙",
+                "minBase": 1.5,
+                "maxBase": 3,
+                "unit": "%",
+                "perLevelGain": 0.4,
+                "probability": "19%",
+                "note": "满级(10级)增益 +4.0%"
+              },
+              {
+                "name": "御佛",
+                "minBase": 1.5,
+                "maxBase": 3,
+                "unit": "%",
+                "perLevelGain": 0.4,
+                "probability": "19%",
+                "note": "满级(10级)增益 +4.0%"
+              },
+              {
+                "name": "御魔",
+                "minBase": 1.5,
+                "maxBase": 3,
+                "unit": "%",
+                "perLevelGain": 0.4,
+                "probability": "19%",
+                "note": "满级(10级)增益 +4.0%"
+              },
+              {
+                "name": "技能躲闪",
+                "minBase": 0.5,
+                "maxBase": 5,
+                "unit": "",
+                "perLevelGain": 1,
+                "probability": "19%",
+                "note": "满级(10级)增益 +10.0"
+              }
+            ]
+          },
+          {
+            "partId": "helmet",
+            "partName": "天命盔",
+            "slot": "头盔",
+            "countProbabilities": [
+              {
+                "count": 1,
+                "probability": "9%"
+              },
+              {
+                "count": 2,
+                "probability": "60%"
+              },
+              {
+                "count": 3,
+                "probability": "30%"
+              },
+              {
+                "count": 4,
+                "probability": "1%"
+              }
+            ],
+            "attributes": [
+              {
+                "name": "气血",
+                "minBase": 1000,
+                "maxBase": 2000,
+                "unit": "",
+                "perLevelGain": 200,
+                "probability": "20%",
+                "note": "满级(10级)增益 +2000"
+              },
+              {
+                "name": "气血百分比",
+                "minBase": 1,
+                "maxBase": 2,
+                "unit": "%",
+                "perLevelGain": 0.2,
+                "probability": "4%",
+                "note": "满级(10级)增益 +2.0%"
+              },
+              {
+                "name": "减免爆伤",
+                "minBase": 1,
+                "maxBase": 10,
+                "unit": "%",
+                "perLevelGain": 0.8,
+                "probability": "19%",
+                "note": "满级(10级)增益 +8.0%"
+              },
+              {
+                "name": "元力值",
+                "minBase": 300,
+                "maxBase": 500,
+                "unit": "",
+                "perLevelGain": 100,
+                "probability": "15%",
+                "note": "满级(10级)增益 +1000"
+              },
+              {
+                "name": "魅惑抗性",
+                "minBase": 5,
+                "maxBase": 15,
+                "unit": "",
+                "perLevelGain": 2,
+                "probability": "4%",
+                "note": "满级(10级)增益 +20"
+              },
+              {
+                "name": "眩晕抗性",
+                "minBase": 1,
+                "maxBase": 15,
+                "unit": "",
+                "perLevelGain": 3,
+                "probability": "19%",
+                "note": "满级(10级)增益 +30"
+              },
+              {
+                "name": "定身抗性",
+                "minBase": 1,
+                "maxBase": 15,
+                "unit": "",
+                "perLevelGain": 3,
+                "probability": "19%",
+                "note": "满级(10级)增益 +30"
+              }
+            ]
+          }
+        ]
+      },
+      "initialPartId": "weapon",
+      "initialLevel": 10
     }
   },
   "hub-measure-01": {
