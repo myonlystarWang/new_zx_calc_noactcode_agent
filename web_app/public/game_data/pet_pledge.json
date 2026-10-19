@@ -1,0 +1,133 @@
+{
+  "system_name": "宠物结誓与誓印系统",
+  "version": "凌渊证道新版",
+  "description": "通过飞升宠物结誓产出核心属性包，并通过刻誓灌注至人物角色的【御宝印】（输出向）或【通灵印】（防守向），直接加成人物面板。",
+  "star_levels": {
+    "recommended": 20,
+    "description": "宠物结誓可获得的属性条目数量及数值范围仅与基础修炼星等有关，20星为全属性条数满额基准。"
+  },
+  "pets": [
+    {
+      "id": "common",
+      "name": "普通宠物",
+      "example": "丛林山猪 / 大黄 / 广寒玉兔",
+      "tag": "基础结誓",
+      "description": "所有常规可捕获、兑换的基础非限时飞升宠物，结誓属性满足日常底子需求。",
+      "stats": {
+        "attack": { "name": "基础攻击", "floor": 1700, "ceiling": 3000, "unit": "" },
+        "hp": { "name": "基础气血", "floor": 11000, "ceiling": 16000, "unit": "" },
+        "mp": { "name": "基础真气", "floor": 11000, "ceiling": 16000, "unit": "" },
+        "def": { "name": "基础防御", "floor": 1890, "ceiling": 2801, "unit": "" },
+        "attack_pct": { "name": "攻击百分比", "floor": 9.0, "ceiling": 20.0, "unit": "%" },
+        "hp_pct": { "name": "气血百分比", "floor": 5.0, "ceiling": 10.0, "unit": "%" },
+        "mp_pct": { "name": "真气百分比", "floor": 5.0, "ceiling": 10.0, "unit": "%" },
+        "def_pct": { "name": "防御百分比", "floor": 9.3, "ceiling": 19.0, "unit": "%" }
+      }
+    },
+    {
+      "id": "special_old",
+      "name": "旧版特殊宠物",
+      "example": "昆仑修罗 / 丛林霸王 / 守护神像",
+      "tag": "高阶上限",
+      "description": "旧版本高阶特殊宠物，下限与普通一致，但攻击/血/蓝上限均有约 20% 增幅提升。",
+      "stats": {
+        "attack": { "name": "基础攻击", "floor": 1700, "ceiling": 3600, "unit": "", "highlight": "上限+600" },
+        "hp": { "name": "基础气血", "floor": 11000, "ceiling": 19000, "unit": "", "highlight": "上限+3000" },
+        "mp": { "name": "基础真气", "floor": 11000, "ceiling": 19000, "unit": "", "highlight": "上限+3000" },
+        "def": { "name": "基础防御", "floor": 1890, "ceiling": 3360, "unit": "" },
+        "attack_pct": { "name": "攻击百分比", "floor": 9.0, "ceiling": 24.0, "unit": "%", "highlight": "上限24%" },
+        "hp_pct": { "name": "气血百分比", "floor": 5.0, "ceiling": 12.0, "unit": "%", "highlight": "上限12%" },
+        "mp_pct": { "name": "真气百分比", "floor": 5.0, "ceiling": 12.0, "unit": "%", "highlight": "上限12%" },
+        "def_pct": { "name": "防御百分比", "floor": 9.3, "ceiling": 22.8, "unit": "%" }
+      }
+    },
+    {
+      "id": "feitianshu",
+      "name": "飞天鼠",
+      "example": "奇趣副本「捉住那只飞天鼠」产出",
+      "tag": "血攻突破",
+      "description": "凌渊证道版本推出的特化宠。气血、攻击及气血百分比上下限全面突破旧宠，血牛与常规击杀极品胚子。",
+      "stats": {
+        "attack": { "name": "基础攻击", "floor": 2295, "ceiling": 4860, "unit": "", "highlight": "极高下限2295/上限4860" },
+        "hp": { "name": "基础气血", "floor": 14850, "ceiling": 25650, "unit": "", "highlight": "极品血宠，上限25650" },
+        "mp": { "name": "基础真气", "floor": 11000, "ceiling": 19000, "unit": "" },
+        "def": { "name": "基础防御", "floor": 1890, "ceiling": 3360, "unit": "" },
+        "attack_pct": { "name": "攻击百分比", "floor": 9.0, "ceiling": 20.0, "unit": "%" },
+        "hp_pct": { "name": "气血百分比", "floor": 6.8, "ceiling": 16.2, "unit": "%", "highlight": "上限16.2%" },
+        "mp_pct": { "name": "真气百分比", "floor": 5.0, "ceiling": 12.0, "unit": "%" },
+        "def_pct": { "name": "防御百分比", "floor": 9.3, "ceiling": 22.8, "unit": "%" }
+      }
+    },
+    {
+      "id": "bobo",
+      "name": "波波",
+      "example": "流波钓鱼「暗海神秘之箱」产出",
+      "tag": "蓝攻突破",
+      "description": "凌渊证道版本推出的特化宠。真气、攻击及真气百分比上下限全面突破旧宠，鬼道、青云等蓝量爆发职业首选。",
+      "stats": {
+        "attack": { "name": "基础攻击", "floor": 2295, "ceiling": 4860, "unit": "", "highlight": "极高下限2295/上限4860" },
+        "hp": { "name": "基础气血", "floor": 11000, "ceiling": 19000, "unit": "" },
+        "mp": { "name": "基础真气", "floor": 14850, "ceiling": 25650, "unit": "", "highlight": "极品蓝宠，上限25650" },
+        "def": { "name": "基础防御", "floor": 1890, "ceiling": 3360, "unit": "" },
+        "attack_pct": { "name": "攻击百分比", "floor": 9.0, "ceiling": 20.0, "unit": "%" },
+        "hp_pct": { "name": "气血百分比", "floor": 5.0, "ceiling": 12.0, "unit": "%" },
+        "mp_pct": { "name": "真气百分比", "floor": 6.8, "ceiling": 16.2, "unit": "%", "highlight": "上限16.2%" },
+        "def_pct": { "name": "防御百分比", "floor": 9.3, "ceiling": 22.8, "unit": "%" }
+      }
+    },
+    {
+      "id": "pengpeng",
+      "name": "鹏鹏",
+      "example": "仙乡·鸿蒙古地「金鹏圣物」捕获",
+      "tag": "全能天花板",
+      "description": "新版结誓终极毕业神宠。除攻击%维持20%上限外，攻击达5700、血蓝双30000、血蓝%双20%，全面碾压所有宠物。",
+      "stats": {
+        "attack": { "name": "基础攻击", "floor": 2300, "ceiling": 5700, "unit": "", "highlight": "全服最高5700" },
+        "hp": { "name": "基础气血", "floor": 15000, "ceiling": 30000, "unit": "", "highlight": "全服最高30000" },
+        "mp": { "name": "基础真气", "floor": 15000, "ceiling": 30000, "unit": "", "highlight": "全服最高30000" },
+        "def": { "name": "基础防御", "floor": 2000, "ceiling": 4000, "unit": "" },
+        "attack_pct": { "name": "攻击百分比", "floor": 9.0, "ceiling": 20.0, "unit": "%" },
+        "hp_pct": { "name": "气血百分比", "floor": 8.5, "ceiling": 20.0, "unit": "%", "highlight": "全服最高20.0%" },
+        "mp_pct": { "name": "真气百分比", "floor": 8.5, "ceiling": 20.0, "unit": "%", "highlight": "全服最高20.0%" },
+        "def_pct": { "name": "防御百分比", "floor": 10.0, "ceiling": 25.0, "unit": "%" }
+      }
+    }
+  ],
+  "comparison_keys": [
+    { "key": "attack", "label": "攻击", "type": "flat" },
+    { "key": "hp", "label": "气血", "type": "flat" },
+    { "key": "mp", "label": "真气", "type": "flat" },
+    { "key": "attack_pct", "label": "攻击百分比", "type": "pct" },
+    { "key": "hp_pct", "label": "气血百分比", "type": "pct" },
+    { "key": "mp_pct", "label": "真气百分比", "type": "pct" }
+  ],
+  "seal_guide": {
+    "yubao": {
+      "name": "御宝印",
+      "badge": "输出 · 击杀",
+      "slots": 6,
+      "description": "角色御宝状态下激活生效，偏向击杀与爆发属性加成。",
+      "core_stats": ["基础攻击", "攻击百分比", "基础真气", "真气百分比", "致命一击率", "致命一击伤害", "无视减免百分比", "技能命中"],
+      "recommended_pets": [
+        { "name": "鹏鹏", "reason": "攻击上限 5700 绝对第一，真气上限 30000，输出最强底子。" },
+        { "name": "波波", "reason": "攻击 4860，真气 25650，性价比较高，适合青云、鬼道等真气类输出门派。" }
+      ]
+    },
+    "tongling": {
+      "name": "通灵印",
+      "badge": "防御 · 保命",
+      "slots": 6,
+      "description": "角色通灵状态下激活生效，偏向保命与高额减免属性加成。",
+      "core_stats": ["基础气血", "气血百分比", "基础防御", "防御百分比", "减免百分比", "减免暴击", "减免爆伤", "技能躲闪"],
+      "recommended_pets": [
+        { "name": "鹏鹏", "reason": "气血上限 30000，气血% 20.0%，血防防守端无可匹敌。" },
+        { "name": "飞天鼠", "reason": "气血上限 25650，气血% 16.2%，极品血宠，通灵印性价比极佳。" }
+      ]
+    },
+    "rules": [
+      "基础星等决定上限：仅与宠物的基础修炼星等相关（与飞升星等无关），20星为全满条目基准。",
+      "预设属性保护：结誓前可无重复设置预设属性，系统会优先让指定属性进入最终判定池。",
+      "更高上限覆盖：通过【刻誓】将宠物属性灌注进人物誓印时，印记内若已有同名属性，将自动取更高上限替换，原有属性不会降级。"
+    ]
+  }
+}

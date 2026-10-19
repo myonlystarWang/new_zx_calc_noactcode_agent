@@ -20,7 +20,7 @@ async function extractFabao() {
     if (fs.existsSync(localBrainStepPath)) {
         htmlContent = fs.readFileSync(localBrainStepPath, 'utf8');
     } else {
-        console.log('本地缓存未命中，从 zx.res111.com 获取 fabao.html...');
+        // console.log('本地缓存未命中，从 zx.res111.com 获取 fabao.html...');
         const res = await fetch('https://zx.res111.com/fabao.html');
         htmlContent = await res.text();
     }

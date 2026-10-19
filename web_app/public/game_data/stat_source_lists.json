@@ -3,80 +3,103 @@
   "sections": {
     "monsterDamageBonus": {
       "title": "极致怪增攻略",
-      "total": 60.5,
-      "totalLabel": "完美 60.5",
+      "subtotal": 59.2,
+      "grandTotal": 61.7,
+      "totalLabel": "实战推荐 59.2% / 极限 61.7%",
       "verified": true,
       "sources": [
         {
           "category": "装备",
-          "item": "彰武武器",
+          "item": "彰武武器神机值（第3条红色高阶属性）",
           "value": 8
         },
         {
-          "category": "法宝/印",
-          "item": "天命",
+          "category": "装备",
+          "item": "武器天缘属性（天命十级）",
           "value": 6
         },
         {
+          "category": "首饰",
+          "item": "积分项链（煌武系列）",
+          "value": 1
+        },
+        {
+          "category": "法身/元婴",
+          "item": "元婴星语",
+          "value": 3
+        },
+        {
           "category": "法宝/印",
-          "item": "覆天印",
+          "item": "覆天印·弑绝千军",
           "value": 6
         },
         {
           "category": "星宿",
-          "item": "重华",
+          "item": "重华（怪增）",
           "value": 16
         },
         {
+          "category": "宠物",
+          "item": "30星宠物御宝",
+          "value": 3
+        },
+        {
           "category": "阵灵",
-          "item": "阵灵",
-          "value": 5.3
+          "item": "阵灵阵法羁绊（打本高阶组合）",
+          "value": 4.8
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵收集图鉴加成（阵灵集）",
+          "value": 0.5
+        },
+        {
+          "category": "法宝/印",
+          "item": "VIP8专属勋章",
+          "value": 1.2
         },
         {
           "category": "其他",
-          "item": "周天",
+          "item": "周天心法（打本专精路线）",
           "value": 5
         },
         {
           "category": "时装/活动",
-          "item": "贺岁2024",
+          "item": "帮派驻地4套时装收集属性",
+          "value": 1.2
+        },
+        {
+          "category": "时装/活动",
+          "item": "韵翎时装属性",
           "value": 1
         },
         {
           "category": "时装/活动",
-          "item": "不知愁",
-          "value": 3
+          "item": "2025圣诞时装衣服",
+          "value": 0.5,
+          "note": "常规穿戴（可配圣诞鞋+33%暴伤）"
         },
         {
-          "category": "装备",
-          "item": "韵翎装",
+          "category": "时装/活动",
+          "item": "2024贺岁吉服",
           "value": 1
-        },
-        {
-          "category": "宠物",
-          "item": "30星宠物",
-          "value": 3
         },
         {
           "category": "其他",
-          "item": "仙府供奉",
-          "value": 1
-        },
-        {
-          "category": "法宝/印",
-          "item": "V8印",
-          "value": 1.2
-        },
-        {
-          "category": "法身/元婴",
-          "item": "元婴曜空",
-          "value": 3
-        },
-        {
-          "category": "首饰",
-          "item": "积分项链",
+          "item": "仙府结界供奉增益",
           "value": 1
         }
+      ],
+      "conditionals": [
+        {
+          "category": "时装/活动",
+          "item": "不知愁专属时装（净增+2.5%）",
+          "value": 2.5,
+          "note": "换穿不知愁(+3%)需脱下圣诞衣服(-0.5%)与圣诞鞋(-33%暴伤)，怪增极限达 61.7%"
+        }
+      ],
+      "notes": [
+        "基准小计 59.2% 为主流实战配装（保留 2025 圣诞鞋 33% 暴伤与圣诞衣服 0.5% 怪增）；换穿不知愁时装净增 2.5% 可达极限 61.7%。"
       ]
     },
     "dodge": {
@@ -273,6 +296,479 @@
       ],
       "notes": [
         "682.05 为基础合计；+鬼厉装2 +佛阵营7 +门派被动10 = 701.05"
+      ]
+    },
+    "critRate": {
+      "title": "极致暴击攻略",
+      "subtotal": 424.39,
+      "grandTotal": 438.39,
+      "totalLabel": "通用基准 424.39% / 职业极限 438.39%",
+      "verified": true,
+      "sources": [
+        {
+          "category": "基础/通用",
+          "item": "角色基础属性",
+          "value": 2
+        },
+        {
+          "category": "造化",
+          "item": "造化通用技能",
+          "value": 10
+        },
+        {
+          "category": "元神",
+          "item": "元神神通系统加成",
+          "value": 5
+        },
+        {
+          "category": "装备",
+          "item": "混虚彰武武器",
+          "value": 36
+        },
+        {
+          "category": "装备",
+          "item": "彰武武器神机值（第2条红色属性）",
+          "value": 6
+        },
+        {
+          "category": "装备",
+          "item": "武器天缘属性（天命十级）",
+          "value": 7
+        },
+        {
+          "category": "装备",
+          "item": "混虚彰武头盔",
+          "value": 13
+        },
+        {
+          "category": "装备",
+          "item": "混虚彰武腰带",
+          "value": 7
+        },
+        {
+          "category": "装备",
+          "item": "腰带神机值（第1条红色属性）",
+          "value": 3
+        },
+        {
+          "category": "装备",
+          "item": "鞋子血祭（百级满强化）",
+          "value": 24
+        },
+        {
+          "category": "首饰",
+          "item": "首饰镶嵌宝石（3颗暴击宝石）",
+          "value": 10.8
+        },
+        {
+          "category": "法身/元婴",
+          "item": "元婴25级满级基础属性",
+          "value": 14.7
+        },
+        {
+          "category": "法身/元婴",
+          "item": "元婴星语",
+          "value": 3
+        },
+        {
+          "category": "法宝/印",
+          "item": "法宝辅件（双配件+11）",
+          "value": 2
+        },
+        {
+          "category": "首饰",
+          "item": "天雨锦囊（三星强化）",
+          "value": 5
+        },
+        {
+          "category": "其他",
+          "item": "四灵瑞灵加成",
+          "value": 6.8
+        },
+        {
+          "category": "其他",
+          "item": "四灵本元·烛龙",
+          "value": 8
+        },
+        {
+          "category": "配饰",
+          "item": "玄灵高阶战罡+灌注",
+          "value": 23
+        },
+        {
+          "category": "其他",
+          "item": "炼丹系统全属性丹药满额",
+          "value": 5
+        },
+        {
+          "category": "星宿",
+          "item": "轩辕策英雄品质（极品满属性）",
+          "value": 27.3
+        },
+        {
+          "category": "首饰",
+          "item": "护符灌注满级",
+          "value": 5
+        },
+        {
+          "category": "其他",
+          "item": "门派专精基础心法",
+          "value": 10
+        },
+        {
+          "category": "配饰",
+          "item": "椒图佩章+15（带3暴击）",
+          "value": 9.3
+        },
+        {
+          "category": "其他",
+          "item": "帮派建筑与技能被动增益",
+          "value": 3
+        },
+        {
+          "category": "星宿",
+          "item": "星魂系统+赤霄印符满强化",
+          "value": 23
+        },
+        {
+          "category": "宠物",
+          "item": "宠物刻誓系统满属性",
+          "value": 24
+        },
+        {
+          "category": "宠物",
+          "item": "30星宠物御宝",
+          "value": 5
+        },
+        {
+          "category": "宠物",
+          "item": "宠物凝灵契",
+          "value": 29
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵阵法羁绊（打本高阶组合）",
+          "value": 16.99
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵收集图鉴加成（阵灵集）",
+          "value": 4.5
+        },
+        {
+          "category": "法宝/印",
+          "item": "VIP8专属勋章",
+          "value": 2
+        },
+        {
+          "category": "其他",
+          "item": "周天心法（打本专精路线）",
+          "value": 21
+        },
+        {
+          "category": "时装/活动",
+          "item": "2026鲜花榜全服第一专属称号",
+          "value": 8
+        },
+        {
+          "category": "时装/活动",
+          "item": "2021贺岁帽子",
+          "value": 2
+        },
+        {
+          "category": "时装/活动",
+          "item": "小白专属时装属性",
+          "value": 1
+        },
+        {
+          "category": "时装/活动",
+          "item": "雨神时装（高阶强化版）",
+          "value": 30
+        },
+        {
+          "category": "其他",
+          "item": "仙府结界供奉增益",
+          "value": 6
+        },
+        {
+          "category": "其他",
+          "item": "襄助",
+          "value": 2
+        },
+        {
+          "category": "宠物",
+          "item": "坐骑血脉洗练（极品5条暴击）",
+          "value": 4
+        }
+      ],
+      "conditionals": [
+        {
+          "category": "职业/阵营",
+          "item": "各职业被动技能估算（约5~15点，中值按10点）",
+          "value": 10
+        },
+        {
+          "category": "职业/阵营",
+          "item": "仙阵营专属加成（仙4/魔2/佛0）",
+          "value": 4
+        }
+      ],
+      "notes": [
+        "装备与系统通用基础小计 424.39%；各职业被动估算约 10点，仙阵营加成 4点，极限峰值可达 438.39%。"
+      ]
+    },
+    "critDamage": {
+      "title": "极致爆伤攻略",
+      "subtotal": 2423.7,
+      "grandTotal": 2527.7,
+      "totalLabel": "通用基准 2423.7% / 极限峰值 2527.7%",
+      "verified": true,
+      "sources": [
+        {
+          "category": "基础/通用",
+          "item": "角色基础属性",
+          "value": 150
+        },
+        {
+          "category": "元神",
+          "item": "元神神通系统加成",
+          "value": 50
+        },
+        {
+          "category": "装备",
+          "item": "混虚彰武武器",
+          "value": 41
+        },
+        {
+          "category": "装备",
+          "item": "混虚武器强化属性",
+          "value": 5
+        },
+        {
+          "category": "装备",
+          "item": "彰武衣服基础属性",
+          "value": 115
+        },
+        {
+          "category": "装备",
+          "item": "衣服混虚强化属性",
+          "value": 5
+        },
+        {
+          "category": "装备",
+          "item": "衣服幽嵌宝石（崩云连）",
+          "value": 18
+        },
+        {
+          "category": "装备",
+          "item": "混虚彰武头盔血祭（百级满强化）",
+          "value": 125
+        },
+        {
+          "category": "装备",
+          "item": "鞋子天缘属性（天命十级）",
+          "value": 18
+        },
+        {
+          "category": "首饰",
+          "item": "圣谛·寂焰断空灭魂玉★（神级项链）",
+          "value": 86
+        },
+        {
+          "category": "首饰",
+          "item": "情愫项链专属技能「佳期」",
+          "value": 10
+        },
+        {
+          "category": "首饰",
+          "item": "首饰镶嵌宝石（6颗暴伤宝石）",
+          "value": 60
+        },
+        {
+          "category": "首饰",
+          "item": "金甲戒（替换1个天戮神级戒指）",
+          "value": 16
+        },
+        {
+          "category": "首饰",
+          "item": "天戮神级戒指",
+          "value": 9
+        },
+        {
+          "category": "首饰",
+          "item": "天雨锦囊（三星强化）",
+          "value": 30
+        },
+        {
+          "category": "配饰",
+          "item": "玄灵高阶战罡",
+          "value": 75
+        },
+        {
+          "category": "配饰",
+          "item": "椒图佩章+15",
+          "value": 20.5
+        },
+        {
+          "category": "法宝/印",
+          "item": "VIP8专属勋章",
+          "value": 10
+        },
+        {
+          "category": "法宝/印",
+          "item": "法宝辅件（含灌注合道）",
+          "value": 95
+        },
+        {
+          "category": "法宝/印",
+          "item": "法宝秘笈",
+          "value": 15
+        },
+        {
+          "category": "法宝/印",
+          "item": "无常空相（三星金身）",
+          "value": 120
+        },
+        {
+          "category": "法宝/印",
+          "item": "覆天印·十方渡厄",
+          "value": 100
+        },
+        {
+          "category": "法身/元婴",
+          "item": "元婴25级满级基础属性",
+          "value": 94.5
+        },
+        {
+          "category": "法身/元婴",
+          "item": "法身洗炼特化（怒魂）",
+          "value": 3
+        },
+        {
+          "category": "其他",
+          "item": "四灵瑞灵加成",
+          "value": 28
+        },
+        {
+          "category": "其他",
+          "item": "四灵本元·夔牛",
+          "value": 24
+        },
+        {
+          "category": "星宿",
+          "item": "青龙轩辕策英雄品质（极品满属性）",
+          "value": 125
+        },
+        {
+          "category": "星宿",
+          "item": "重华（爆伤）",
+          "value": 80
+        },
+        {
+          "category": "星宿",
+          "item": "元星图系统加成",
+          "value": 10
+        },
+        {
+          "category": "星宿",
+          "item": "星魂系统+赤霄印符满强化",
+          "value": 75
+        },
+        {
+          "category": "其他",
+          "item": "门派专精基础心法",
+          "value": 40
+        },
+        {
+          "category": "其他",
+          "item": "周天心法（打本专精路线）",
+          "value": 93
+        },
+        {
+          "category": "其他",
+          "item": "炼丹系统全属性丹药满额",
+          "value": 20
+        },
+        {
+          "category": "宠物",
+          "item": "宠物刻誓系统满属性",
+          "value": 78
+        },
+        {
+          "category": "宠物",
+          "item": "极品高星宠物装备",
+          "value": 12
+        },
+        {
+          "category": "宠物",
+          "item": "宠物凝灵契",
+          "value": 100
+        },
+        {
+          "category": "宠物",
+          "item": "坐骑血脉洗练（极品7条暴伤）",
+          "value": 24.5
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵阵法羁绊（打本高阶组合）",
+          "value": 185.2
+        },
+        {
+          "category": "阵灵",
+          "item": "阵灵收集图鉴加成（阵灵集）",
+          "value": 18
+        },
+        {
+          "category": "职业/阵营",
+          "item": "阵营专属加成",
+          "value": 75
+        },
+        {
+          "category": "时装/活动",
+          "item": "2026鲜花榜全服第一专属称号",
+          "value": 40
+        },
+        {
+          "category": "时装/活动",
+          "item": "2025圣诞时装鞋",
+          "value": 33
+        },
+        {
+          "category": "其他",
+          "item": "生肖鸡年纪念被动属性",
+          "value": 27
+        },
+        {
+          "category": "其他",
+          "item": "帮派建筑与技能被动增益",
+          "value": 30
+        },
+        {
+          "category": "其他",
+          "item": "仙府结界供奉增益",
+          "value": 25
+        },
+        {
+          "category": "其他",
+          "item": "襄助",
+          "value": 10
+        }
+      ],
+      "conditionals": [
+        {
+          "category": "首饰进阶",
+          "item": "项链进阶★☆版（圣谛·寂焰断空灭魂玉★☆ 90%，相较★ 86%净增+4%）",
+          "value": 4
+        },
+        {
+          "category": "职业/阵营",
+          "item": "各职业被动技能估算（约60~150点，青云0点，中值按100点）",
+          "value": 100
+        }
+      ],
+      "notes": [
+        "通用基准小计 2423.7%；若选用 90% 圣谛·寂焰断空灭魂玉★☆ 达到 2427.7%；加上各职业被动技能估算中值 100点，极限峰值可达 2527.7%。"
       ]
     }
   }

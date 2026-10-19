@@ -54,6 +54,12 @@ const HERO_MEDAL_TIERS = ['铜质英雄勋章', '银质英雄勋章', '金质英
 const SHOUDAI_TIERS = ['勇者绶带', '季军绶带', '亚军绶带', '冠军绶带'];
 const LEIBU_TIERS = ['雷部使者印', '雷部总兵印', '雷部天尊印', '雷部鸿钧印'];
 const TITLE_YIN_TIERS = ['威者印', '尊者印', '王者印'];
+const HESUI_JINYIN_TIERS = [
+    '贺岁金印（壹）', '贺岁金印（贰）', '贺岁金印（叁）', '贺岁金印（肆）', '贺岁金印（伍）',
+    '贺岁金印（陆）', '贺岁金印（柒）', '贺岁金印（捌）', '贺岁金印（玖）', '贺岁金印（拾）',
+    '贺岁金印（壹拾壹）', '贺岁金印（壹拾贰）', '贺岁金印（壹拾叁）', '贺岁金印（壹拾肆）', '贺岁金印（壹拾伍）',
+    '贺岁金印（壹拾陆）', '贺岁金印（壹拾柒）', '贺岁金印（壹拾捌）', '贺岁金印（壹拾玖）'
+];
 
 // 5. 煌武·极意天问 14 阶进阶宝珠序列 (先天珠 ~ 无量珠)
 const HUANGWU_TIERS = [
@@ -256,6 +262,21 @@ export function getEquipSeries(
                     currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${siblings.length}阶`
                 };
             }
+        }
+    }
+
+    // 9.5 贺岁金印 / 周年印（1~19周年完整序列）
+    if (HESUI_JINYIN_TIERS.includes(name) || name.startsWith('贺岁金印')) {
+        const siblings = HESUI_JINYIN_TIERS.map(n => allEquips.find(e => e.name === n)).filter(Boolean) as CuratedEquipItem[];
+        if (siblings.length > 1) {
+            const curIdx = siblings.findIndex(e => e.name === name);
+            return {
+                seriesKey: '贺岁金印',
+                seriesName: '贺岁金印（周年印）系列',
+                items: siblings,
+                currentIndex: curIdx >= 0 ? curIdx : 0,
+                currentTierLabel: `${(curIdx >= 0 ? curIdx : 0) + 1}/${siblings.length}阶`
+            };
         }
     }
 

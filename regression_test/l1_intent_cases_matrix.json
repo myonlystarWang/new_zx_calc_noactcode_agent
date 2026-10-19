@@ -200,7 +200,9 @@
   {
     "id": "gen-equip-修武-佩章",
     "input": "修武 佩章",
-    "expect": {},
+    "expect": {
+      "cardType": "peizhang"
+    },
     "tags": [
       "generated",
       "equip"
@@ -410,7 +412,9 @@
   {
     "id": "gen-equip-昭武-佩章",
     "input": "昭武 佩章",
-    "expect": {},
+    "expect": {
+      "cardType": "peizhang"
+    },
     "tags": [
       "generated",
       "equip"
@@ -620,7 +624,9 @@
   {
     "id": "gen-equip-彰武-佩章",
     "input": "彰武 佩章",
-    "expect": {},
+    "expect": {
+      "cardType": "peizhang"
+    },
     "tags": [
       "generated",
       "equip"
@@ -800,7 +806,9 @@
   {
     "id": "gen-equip-神隐-佩章",
     "input": "神隐 佩章",
-    "expect": {},
+    "expect": {
+      "cardType": "peizhang"
+    },
     "tags": [
       "generated",
       "equip"
@@ -990,7 +998,9 @@
   {
     "id": "gen-equip-神级-佩章",
     "input": "神级 佩章",
-    "expect": {},
+    "expect": {
+      "cardType": "peizhang"
+    },
     "tags": [
       "generated",
       "equip"
@@ -1173,7 +1183,9 @@
   {
     "id": "gen-equip-天命-佩章",
     "input": "天命 佩章",
-    "expect": {},
+    "expect": {
+      "cardType": "peizhang"
+    },
     "tags": [
       "generated",
       "equip"
@@ -1363,7 +1375,9 @@
   {
     "id": "gen-equip-至尊-佩章",
     "input": "至尊 佩章",
-    "expect": {},
+    "expect": {
+      "cardType": "peizhang"
+    },
     "tags": [
       "generated",
       "equip"
@@ -1568,7 +1582,9 @@
   {
     "id": "gen-equip-混虚-佩章",
     "input": "混虚 佩章",
-    "expect": {},
+    "expect": {
+      "cardType": "peizhang"
+    },
     "tags": [
       "generated",
       "equip"
@@ -2414,8 +2430,8 @@
     "input": "鬼王 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 3072
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3069
     },
     "tags": [
       "generated",
@@ -2431,7 +2447,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 618
+      "cardData.candidates.0.id": 218
     },
     "tags": [
       "generated",
@@ -2446,8 +2462,8 @@
     "input": "鬼王 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 1557
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3069
     },
     "tags": [
       "generated",
@@ -2478,7 +2494,7 @@
     "input": "鬼王 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": 10761
     },
     "tags": [
@@ -2542,7 +2558,7 @@
     "input": "合欢 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 3077
     },
     "tags": [
@@ -2558,8 +2574,8 @@
     "input": "合欢 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 1560
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3077
     },
     "tags": [
       "generated",
@@ -2622,7 +2638,7 @@
     "input": "合欢 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10928
     },
     "tags": [
@@ -2654,8 +2670,8 @@
     "input": "青云 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 3066
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3065
     },
     "tags": [
       "generated",
@@ -2670,8 +2686,8 @@
     "input": "青云 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 2044
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3065
     },
     "tags": [
       "generated",
@@ -2702,7 +2718,7 @@
     "input": "青云 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": 10785
     },
     "tags": [
@@ -2766,7 +2782,7 @@
     "input": "天音 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 3073
     },
     "tags": [
@@ -2782,8 +2798,8 @@
     "input": "天音 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 2061
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3073
     },
     "tags": [
       "generated",
@@ -2830,8 +2846,8 @@
     "input": "天音 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10912
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": 690
     },
     "tags": [
       "generated",
@@ -2863,7 +2879,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 1150
+      "cardData.candidates.0.id": 1093
     },
     "tags": [
       "generated",
@@ -2878,7 +2894,7 @@
     "input": "鬼道 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 3081
     },
     "tags": [
@@ -2894,8 +2910,8 @@
     "input": "鬼道 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 1543
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3081
     },
     "tags": [
       "generated",
@@ -2926,7 +2942,7 @@
     "input": "鬼道 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10753
     },
     "tags": [
@@ -2974,7 +2990,7 @@
     "input": "焚香 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 26,
       "cardData.candidates.0.id": 3575
     },
     "tags": [
@@ -3006,8 +3022,8 @@
     "input": "焚香 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 3751
+      "cardData.candidates.length": 26,
+      "cardData.candidates.0.id": 3575
     },
     "tags": [
       "generated",
@@ -3054,8 +3070,8 @@
     "input": "焚香 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10709
+      "cardData.candidates.length": 10,
+      "cardData.candidates.0.id": 3440
     },
     "tags": [
       "generated",
@@ -3102,7 +3118,7 @@
     "input": "九黎 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 3037
     },
     "tags": [
@@ -3118,8 +3134,8 @@
     "input": "九黎 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 2225
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3037
     },
     "tags": [
       "generated",
@@ -3182,7 +3198,7 @@
     "input": "九黎 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10809
     },
     "tags": [
@@ -3214,7 +3230,7 @@
     "input": "烈山 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 3041
     },
     "tags": [
@@ -3230,8 +3246,8 @@
     "input": "烈山 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 2220
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3041
     },
     "tags": [
       "generated",
@@ -3294,7 +3310,7 @@
     "input": "烈山 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10896
     },
     "tags": [
@@ -3310,7 +3326,7 @@
     "input": "怀光 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 3093
     },
     "tags": [
@@ -3327,7 +3343,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 2523
+      "cardData.candidates.0.id": 2411
     },
     "tags": [
       "generated",
@@ -3342,8 +3358,8 @@
     "input": "怀光 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 2699
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3093
     },
     "tags": [
       "generated",
@@ -3374,7 +3390,7 @@
     "input": "怀光 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10769
     },
     "tags": [
@@ -3423,7 +3439,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 2584
+      "cardData.candidates.0.id": 2459
     },
     "tags": [
       "generated",
@@ -3439,7 +3455,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 3050
+      "cardData.candidates.0.id": 3049
     },
     "tags": [
       "generated",
@@ -3455,7 +3471,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 2704
+      "cardData.candidates.0.id": 3049
     },
     "tags": [
       "generated",
@@ -3518,7 +3534,7 @@
     "input": "天华 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": 10736
     },
     "tags": [
@@ -3534,8 +3550,8 @@
     "input": "辰皇 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 4590
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 4589
     },
     "tags": [
       "generated",
@@ -3566,8 +3582,8 @@
     "input": "辰皇 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 4575
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 4589
     },
     "tags": [
       "generated",
@@ -3614,8 +3630,8 @@
     "input": "辰皇 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10908
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": 10904
     },
     "tags": [
       "generated",
@@ -3646,7 +3662,7 @@
     "input": "太昊 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 3573
     },
     "tags": [
@@ -3663,7 +3679,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 3503
+      "cardData.candidates.0.id": 3455
     },
     "tags": [
       "generated",
@@ -3678,8 +3694,8 @@
     "input": "太昊 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 3741
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 3573
     },
     "tags": [
       "generated",
@@ -3742,7 +3758,7 @@
     "input": "太昊 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10876
     },
     "tags": [
@@ -3759,7 +3775,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 5125
+      "cardData.candidates.0.id": 4771
     },
     "tags": [
       "generated",
@@ -3774,7 +3790,7 @@
     "input": "牵机 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 5305
     },
     "tags": [
@@ -3790,8 +3806,8 @@
     "input": "牵机 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 5295
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 5305
     },
     "tags": [
       "generated",
@@ -3838,8 +3854,8 @@
     "input": "牵机 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10797
+      "cardData.candidates.length": 10,
+      "cardData.candidates.0.id": 10793
     },
     "tags": [
       "generated",
@@ -3886,8 +3902,8 @@
     "input": "英招 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 5271
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 5270
     },
     "tags": [
       "generated",
@@ -3902,8 +3918,8 @@
     "input": "英招 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 5257
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 5270
     },
     "tags": [
       "generated",
@@ -3950,7 +3966,7 @@
     "input": "英招 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10817
     },
     "tags": [
@@ -3982,7 +3998,7 @@
     "input": "破军 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 5706
     },
     "tags": [
@@ -4014,8 +4030,8 @@
     "input": "破军 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 5694
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 5706
     },
     "tags": [
       "generated",
@@ -4062,7 +4078,7 @@
     "input": "破军 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10887
     },
     "tags": [
@@ -4111,7 +4127,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 6022
+      "cardData.candidates.0.id": 6006
     },
     "tags": [
       "generated",
@@ -4127,7 +4143,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 6227
+      "cardData.candidates.0.id": 6242
     },
     "tags": [
       "generated",
@@ -4158,7 +4174,7 @@
     "input": "青罗 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10801
     },
     "tags": [
@@ -4207,7 +4223,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 6460
+      "cardData.candidates.0.id": 6448
     },
     "tags": [
       "generated",
@@ -4222,7 +4238,7 @@
     "input": "归云 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 6649
     },
     "tags": [
@@ -4238,8 +4254,8 @@
     "input": "归云 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 6754
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 6649
     },
     "tags": [
       "generated",
@@ -4302,7 +4318,7 @@
     "input": "归云 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": 10838
     },
     "tags": [
@@ -4318,7 +4334,7 @@
     "input": "画影 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 7605
     },
     "tags": [
@@ -4335,7 +4351,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 7309
+      "cardData.candidates.0.id": 7266
     },
     "tags": [
       "generated",
@@ -4350,8 +4366,8 @@
     "input": "画影 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 7595
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 7605
     },
     "tags": [
       "generated",
@@ -4414,7 +4430,7 @@
     "input": "画影 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10777
     },
     "tags": [
@@ -4430,7 +4446,7 @@
     "input": "逐霜 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 8072
     },
     "tags": [
@@ -4447,7 +4463,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 7908
+      "cardData.candidates.0.id": 7872
     },
     "tags": [
       "generated",
@@ -4462,8 +4478,8 @@
     "input": "逐霜 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 8060
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 8072
     },
     "tags": [
       "generated",
@@ -4510,7 +4526,7 @@
     "input": "逐霜 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10830
     },
     "tags": [
@@ -4558,7 +4574,7 @@
     "input": "惊岚 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 8393
     },
     "tags": [
@@ -4574,8 +4590,8 @@
     "input": "惊岚 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 8381
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 8393
     },
     "tags": [
       "generated",
@@ -4638,8 +4654,8 @@
     "input": "惊岚 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10826
+      "cardData.candidates.length": 10,
+      "cardData.candidates.0.id": 10719
     },
     "tags": [
       "generated",
@@ -4655,7 +4671,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 8932
+      "cardData.candidates.0.id": 8832
     },
     "tags": [
       "generated",
@@ -4670,8 +4686,8 @@
     "input": "昭冥 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 9158
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 9156
     },
     "tags": [
       "generated",
@@ -4686,8 +4702,8 @@
     "input": "昭冥 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 9143
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 9156
     },
     "tags": [
       "generated",
@@ -4750,8 +4766,8 @@
     "input": "昭冥 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10924
+      "cardData.candidates.length": 8,
+      "cardData.candidates.0.id": 10920
     },
     "tags": [
       "generated",
@@ -4782,8 +4798,8 @@
     "input": "涅羽 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 9709
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 9708
     },
     "tags": [
       "generated",
@@ -4798,8 +4814,8 @@
     "input": "涅羽 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 9662
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 9708
     },
     "tags": [
       "generated",
@@ -4830,8 +4846,8 @@
     "input": "涅羽 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10749
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": 10745
     },
     "tags": [
       "generated",
@@ -4894,7 +4910,7 @@
     "input": "百灵 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 10205
     },
     "tags": [
@@ -4910,8 +4926,8 @@
     "input": "百灵 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10190
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 10205
     },
     "tags": [
       "generated",
@@ -4974,7 +4990,7 @@
     "input": "百灵 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10728
     },
     "tags": [
@@ -4990,7 +5006,7 @@
     "input": "释罗 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 27,
       "cardData.candidates.0.id": 10582
     },
     "tags": [
@@ -5006,8 +5022,8 @@
     "input": "释罗 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10574
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 10582
     },
     "tags": [
       "generated",
@@ -5023,7 +5039,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 10524
+      "cardData.candidates.0.id": 10484
     },
     "tags": [
       "generated",
@@ -5054,7 +5070,7 @@
     "input": "释罗 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 10865
     },
     "tags": [
@@ -5118,8 +5134,8 @@
     "input": "长生堂 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 11232
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 11231
     },
     "tags": [
       "generated",
@@ -5134,8 +5150,8 @@
     "input": "长生堂 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 11226
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 11231
     },
     "tags": [
       "generated",
@@ -5198,7 +5214,7 @@
     "input": "长生堂 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 11259
     },
     "tags": [
@@ -5230,8 +5246,8 @@
     "input": "万毒 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 12030
+      "cardData.candidates.length": 26,
+      "cardData.candidates.0.id": 12027
     },
     "tags": [
       "generated",
@@ -5246,8 +5262,8 @@
     "input": "万毒 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 11886
+      "cardData.candidates.length": 26,
+      "cardData.candidates.0.id": 12027
     },
     "tags": [
       "generated",
@@ -5294,7 +5310,7 @@
     "input": "万毒 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 12008
     },
     "tags": [
@@ -5327,7 +5343,7 @@
     "expect": {
       "cardType": "skill_candidates",
       "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 12527
+      "cardData.candidates.0.id": 12501
     },
     "tags": [
       "generated",
@@ -5342,8 +5358,8 @@
     "input": "炼血 神通",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 12643
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 12640
     },
     "tags": [
       "generated",
@@ -5358,8 +5374,8 @@
     "input": "炼血 造化",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
-      "cardData.candidates.0.id": 12626
+      "cardData.candidates.length": 27,
+      "cardData.candidates.0.id": 12640
     },
     "tags": [
       "generated",
@@ -5422,7 +5438,7 @@
     "input": "炼血 心法",
     "expect": {
       "cardType": "skill_candidates",
-      "cardData.candidates.length": 30,
+      "cardData.candidates.length": 8,
       "cardData.candidates.0.id": 12617
     },
     "tags": [
@@ -5436,7 +5452,11 @@
   {
     "id": "gen-skill-神通 仙(通用)",
     "input": "神通 仙(通用)",
-    "expect": {},
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8056
+    },
     "tags": [
       "generated",
       "skill"
@@ -5448,7 +5468,11 @@
   {
     "id": "gen-skill-神通 佛(通用)",
     "input": "神通 佛(通用)",
-    "expect": {},
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8063
+    },
     "tags": [
       "generated",
       "skill"
@@ -5460,7 +5484,11 @@
   {
     "id": "gen-skill-神通 魔(通用)",
     "input": "神通 魔(通用)",
-    "expect": {},
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8060
+    },
     "tags": [
       "generated",
       "skill"
@@ -5472,7 +5500,11 @@
   {
     "id": "gen-skill-造化 仙(通用)",
     "input": "造化 仙(通用)",
-    "expect": {},
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8056
+    },
     "tags": [
       "generated",
       "skill"
@@ -5484,7 +5516,11 @@
   {
     "id": "gen-skill-造化 魔(通用)",
     "input": "造化 魔(通用)",
-    "expect": {},
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8060
+    },
     "tags": [
       "generated",
       "skill"
@@ -5496,7 +5532,11 @@
   {
     "id": "gen-skill-造化 佛(通用)",
     "input": "造化 佛(通用)",
-    "expect": {},
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 8063
+    },
     "tags": [
       "generated",
       "skill"
@@ -5967,7 +6007,11 @@
   {
     "id": "gen-skillclass-通用天书",
     "input": "通用天书",
-    "expect": {},
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.candidates.length": 30,
+      "cardData.candidates.0.id": 7875
+    },
     "tags": [
       "generated",
       "skill"

@@ -14,11 +14,26 @@ import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
 export const UNIFIED_NOT_FOUND_REPLY =
     '天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n' +
-    '• 装备查询：【昭武 衣服】、【彰武 武器】\n' +
-    '• 技能速查：【逐霜 苍龙啸】、【青云 神剑】\n' +
-    '• 核心功能：【开服雷达】、【战力计算】、【轩辕策属性】\n' +
-    '• 战力诊断：直接在聊天框【粘贴游戏 C 键面板截图】';
+    '• 装备速查：【昭武 衣服】、【佩章】、【凝灵契】、【九纹琅】、【旧天缘】\n' +
+    '• 门派与技能：【逐霜 苍龙啸】、【鬼王 星宿】、【青云 神通】、【贺岁时装特技】\n' +
+    '• 进阶与数值：【星宿升星】、【宝石属性】、【宠物刻蚀】、【阵灵升级】、【法宝经验】\n' +
+    '• 工具与模拟：【天缘模拟】、【轩辕策属性】、【战力计算】、【开服雷达】\n' +
+    '• 截图识图：直接在聊天框【粘贴游戏 C 键面板截图】\n\n' +
+    '或者直接点选下方全景分类导航：';
 
+export const TOP_HUB_OPTIONS = [
+    { key: 'equip', label: '装备', query: '装备' },
+    { key: 'skill', label: '技能', query: '技能' },
+    { key: 'xingsu', label: '星宿', query: '星宿' },
+    { key: 'tianyuan', label: '天缘', query: '天缘' },
+    { key: 'exp', label: '升级经验', query: '升级经验' },
+    { key: 'zhenling', label: '阵灵', query: '阵灵' },
+    { key: 'fabao', label: '法宝', query: '法宝' },
+    { key: 'measure', label: '属性测算', query: '属性测算' },
+    { key: 'guide', label: '玩法攻略', query: '玩法攻略' },
+    { key: 'calc', label: '伤害计算', query: '计算实战战力' },
+    { key: 'server', label: '开服雷达', query: '开服雷达' },
+];
 
 export interface CopilotMessage {
     id: string;
@@ -26,7 +41,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'xingsu' | 'baoshi' | 'fashion_skill';
     cardData?: any;
 }
 
@@ -409,6 +424,7 @@ const SLOT_SERIES: Record<string, SlotSeries[]> = {
         { key: 'jinshen', label: '金身', match: 'prefix', terms: ['金身', '无常空相'] },
     ],
     '玺绶': [
+        { key: 'anniversary', label: '周年印', match: 'prefix', terms: ['贺岁金印'], aliases: ['贺岁金印', '周年印', '周年金印', '贺岁印'] },
         { key: 'fengyun', label: '风云印', match: 'prefix', terms: ['风云印'] },
         { key: 'jingtian', label: '惊天印', match: 'prefix', terms: ['惊天印'] },
         { key: 'qitian', label: '齐天印', match: 'prefix', terms: ['齐天印'] },
@@ -730,6 +746,49 @@ export class CopilotService {
             };
         }
 
+        // 5b. 旧天缘属性全览卡（装备天缘词条池）
+        const isOldTianyuanQuery =
+            q.includes('旧天缘') ||
+            q === '天缘属性' ||
+            q.includes('旧天缘属性') ||
+            q.includes('旧天缘洗炼') ||
+            q.includes('武器天缘') ||
+            q.includes('鞋子天缘') ||
+            q.includes('靴子天缘') ||
+            q.includes('衣服天缘') ||
+            q.includes('铠甲天缘') ||
+            q.includes('帽子天缘') ||
+            q.includes('头盔天缘') ||
+            q.includes('天命天缘') ||
+            (q.includes('天缘') && (q.includes('武器') || q.includes('鞋') || q.includes('靴') || q.includes('衣') || q.includes('甲') || q.includes('帽') || q.includes('盔')));
+
+        if (isOldTianyuanQuery) {
+            let partId = 'weapon';
+            if (q.includes('靴') || q.includes('鞋')) partId = 'shoes';
+            else if (q.includes('甲') || q.includes('衣')) partId = 'armor';
+            else if (q.includes('盔') || q.includes('帽')) partId = 'helmet';
+
+            let targetLvl = 10;
+            const lvlMatch = q.match(/(\d{1,2})\s*级/);
+            if (lvlMatch) {
+                targetLvl = Math.min(10, Math.max(1, parseInt(lvlMatch[1], 10)));
+            }
+
+            const oldTianyuanData = await dataService.getOldTianyuanData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到【旧天缘属性全览】。支持天命武器、靴子、衣服、头盔4部位词条池全览与满级(10级)自动推算：`,
+                time: timeStr,
+                cardType: 'tianyuan_old',
+                cardData: {
+                    data: oldTianyuanData,
+                    initialPartId: partId,
+                    initialLevel: targetLvl
+                }
+            };
+        }
+
         // 5. 天缘属性推算
         if (
             q.includes('天缘') ||
@@ -753,11 +812,11 @@ export class CopilotService {
             };
         }
 
-        // 6. 凝灵契模拟
+        // 6. 凝灵契模拟（显式带“模拟”时走工具卡，普通凝灵契查询走0.56装备信息卡）
         if (
-            q.includes('凝灵契') ||
-            q.includes('灵契') ||
-            q.includes('凝灵')
+            q.includes('凝灵契模拟') ||
+            q.includes('灵契模拟') ||
+            q.includes('模拟凝灵')
         ) {
             return {
                 id: `msg-${Date.now()}`,
@@ -922,77 +981,813 @@ export class CopilotService {
 
         // ------------------------------------------------------------
         // 0.5b 职业状态摘要（class_status，T-15b）
-        // 「XX状态」/「阵营+XX状态」→ 从 skills.json._meta.supportRoles 取该职业档案：
+        // 「XX状态」/「阵营+XX状态」/ 裸词「职业状态」/「各职业状态」等 → 从 skills.json._meta.supportRoles 取该职业档案：
         // 覆盖 4 团队减益（易伤/绿点/紫点/破防）与 7 增益（专注/加爆伤/加攻击/加血/加蓝/加防御/加怪增）
         // ------------------------------------------------------------
-        if (q.endsWith('状态')) {
-            let statusClass = q.slice(0, -2);
-            let preferredFaction: string | undefined = undefined;
+        const isGenericStatus =
+            q === '职业状态' ||
+            q === '各职业状态' ||
+            q === '全职业状态' ||
+            q === '门派状态' ||
+            q === '职业增益' ||
+            q === '团队增益' ||
+            q === '门派增益' ||
+            q === '职业状态速查';
+
+        let statusClass = '';
+        let preferredFaction: string | undefined = undefined;
+
+        if (isGenericStatus) {
+            statusClass = '逐霜';
+        } else if (q !== '状态' && (q.endsWith('状态') || ((q.includes('状态') || q.includes('增益')) && profs.some(p => q.includes(p))))) {
             // 兼容前缀阵营，如「魔青罗状态」/「佛英招状态」
             for (const f of ['仙', '魔', '佛']) {
-                if (statusClass.startsWith(f) && profs.includes(statusClass.slice(f.length))) {
+                if (q.includes(f)) {
                     preferredFaction = f;
-                    statusClass = statusClass.slice(f.length);
                     break;
                 }
             }
-            if (profs.includes(statusClass)) {
-                const skillMeta = await dataService.getSkillMetaAsync();
-                const supportData = skillMeta?.supportRoles || null;
-                const roles = Array.isArray(supportData?.roles) ? supportData.roles : [];
-                const classRoles = roles.filter((r: any) => r?.name === statusClass);
-                if (classRoles.length > 0) {
-                    const isDps = classRoles.some((r: any) => r?.roleType === 'dps');
-                    const factions = [...new Set(classRoles.map((r: any) => r?.faction).filter(Boolean))];
-                    const metrics: string[] = Array.isArray(supportData?.metrics) ? supportData.metrics : [];
-                    return {
-                        id: `msg-${Date.now()}`,
-                        sender: 'assistant',
-                        text: isDps
-                            ? `【${statusClass}】是输出职业（${factions.join('/') || '多阵营'}），核心任务是打伤害：`
-                            : `【${statusClass}】是辅助职业（${factions.join('/') || '多阵营'}），核心任务是团队增益：`,
-                        time: timeStr,
-                        cardType: 'class_status',
-                        cardData: {
-                            className: statusClass,
-                            isDps,
-                            factions,
-                            preferredFaction,
-                            metrics,
-                            roles: classRoles.map((r: any) => ({
-                                faction: r.faction,
-                                roleType: r.roleType,
-                                rating: r.rating,
-                                abilities: Array.isArray(r.abilities) ? r.abilities : [],
-                                // 4 减益
-                                damageBoost: r.damageBoost,
-                                greenPoint: r.greenPoint,
-                                purplePoint: r.purplePoint,
-                                defenseBreak: r.defenseBreak,
-                                // 7 增益
-                                focus: r.focus,
-                                focusType: r.focusType,
-                                critDamage: r.critDamage,
-                                atkUp: r.atkUp,
-                                healUp: r.healUp,
-                                manaUp: r.manaUp,
-                                defUp: r.defUp,
-                                monsterDmgUp: r.monsterDmgUp,
-                            })),
-                        }
-                    };
+            const matchedP = profs.find(p => q.includes(p));
+            if (matchedP) {
+                statusClass = matchedP;
+            } else if (q.endsWith('状态')) {
+                let raw = q.slice(0, -2).trim();
+                for (const f of ['仙', '魔', '佛']) {
+                    if (raw.startsWith(f) && profs.includes(raw.slice(f.length))) {
+                        preferredFaction = f;
+                        raw = raw.slice(f.length);
+                        break;
+                    }
                 }
-                return {
-                    id: `msg-${Date.now()}`,
-                    sender: 'assistant',
-                    text: `【${statusClass}】暂无状态档案。可尝试查询其技能速查、装备图鉴或专属法宝：`,
-                    time: timeStr
-                };
+                if (profs.includes(raw)) {
+                    statusClass = raw;
+                }
             }
         }
 
+        if (statusClass && profs.includes(statusClass)) {
+            const skillMeta = await dataService.getSkillMetaAsync();
+            const supportData = skillMeta?.supportRoles || null;
+            const roles = Array.isArray(supportData?.roles) ? supportData.roles : [];
+            const classRoles = roles.filter((r: any) => r?.name === statusClass);
+            if (classRoles.length > 0) {
+                const isDps = classRoles.some((r: any) => r?.roleType === 'dps');
+                const factions = [...new Set(classRoles.map((r: any) => r?.faction).filter(Boolean))];
+                const metrics: string[] = Array.isArray(supportData?.metrics) ? supportData.metrics : [];
+                const allClasses = [...new Set(roles.map((r: any) => r?.name).filter(Boolean))];
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: isGenericStatus
+                        ? `为你呈现全职业战斗状态档案（默认展示热门【逐霜】）。可在卡片内自由切换职业，也可直接发送【青云状态】、【天音状态】、【焚香状态】等快速查看：`
+                        : (isDps
+                            ? `【${statusClass}】是输出职业（${factions.join('/') || '多阵营'}），核心任务是打伤害：`
+                            : `【${statusClass}】是辅助职业（${factions.join('/') || '多阵营'}），核心任务是团队增益：`),
+                    time: timeStr,
+                    cardType: 'class_status',
+                    cardData: {
+                        className: statusClass,
+                        isDps,
+                        factions,
+                        preferredFaction,
+                        metrics,
+                        roles: classRoles.map((r: any) => ({
+                            faction: r.faction,
+                            roleType: r.roleType,
+                            rating: r.rating,
+                            abilities: Array.isArray(r.abilities) ? r.abilities : [],
+                            // 4 减益
+                            damageBoost: r.damageBoost,
+                            greenPoint: r.greenPoint,
+                            purplePoint: r.purplePoint,
+                            defenseBreak: r.defenseBreak,
+                            // 7 增益
+                            focus: r.focus,
+                            focusType: r.focusType,
+                            critDamage: r.critDamage,
+                            atkUp: r.atkUp,
+                            healUp: r.healUp,
+                            manaUp: r.manaUp,
+                            defUp: r.defUp,
+                            monsterDmgUp: r.monsterDmgUp,
+                        })),
+                        allRoles: roles,
+                        allClasses,
+                    }
+                };
+            }
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `【${statusClass}】暂无状态档案。可尝试查询其技能速查、装备图鉴或专属法宝：`,
+                time: timeStr
+            };
+        }
+
         // ------------------------------------------------------------
-        // 0.6 裸部位名歧义分流（slot_hub，T-16 方案A + 系列词库）
+        // 0.54a 星辰属性及升星增益卡片（星宿系统）
+        // 支持「星宿」、「星宿属性」、「星宿升级」、「星宿升星」、「启明星辰」、「荧惑星辰」、「重华星辰」、「重华星宿」、「星辰属性」等
+        // 注意：排查职业星宿技能（如「鬼王 星宿」、「青云 星宿」），带职业名的交给后续技能分支
+        // ------------------------------------------------------------
+        const hasClassPrefixForSkill = PROFESSIONS.some(cn => q.includes(cn) && q.includes('星宿'));
+        const isXingsuQuery = !hasClassPrefixForSkill && (
+            q === '星宿' ||
+            q === '星辰' ||
+            q === '星宿属性' ||
+            q === '星宿升级' ||
+            q === '星宿升星' ||
+            q === '星宿增益' ||
+            q === '星宿经验' ||
+            q.includes('启明') ||
+            q.includes('荧惑') ||
+            q.includes('重华') ||
+            q.includes('玉衡') ||
+            q.includes('开阳') ||
+            q.includes('瑶光') ||
+            q.includes('星辰属性') ||
+            q.includes('星宿系统')
+        );
+
+        if (isXingsuQuery) {
+            let typeId = 'chonghua';
+            if (q.includes('启明') || q.includes('玉衡')) typeId = 'qiming';
+            else if (q.includes('荧惑') || q.includes('开阳')) typeId = 'yinghuo';
+
+            let targetRank = 5;
+            const rankMatch = q.match(/(\d)\s*星/);
+            if (rankMatch) {
+                targetRank = Math.min(5, Math.max(1, parseInt(rankMatch[1], 10)));
+            }
+
+            const xingsuData = await dataService.getXingsuData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到【星辰属性及升星增益】。支持启明星辰（玉衡）、荧惑星辰（开阳）、重华星辰（瑶光）属性全览与1~5星升星测算：`,
+                time: timeStr,
+                cardType: 'xingsu',
+                cardData: {
+                    data: xingsuData,
+                    initialTypeId: typeId,
+                    initialRank: targetRank
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.54c 宝石属性及升级全景卡片（宝石系统）
+        // 支持「宝石」、「宝石属性」、「宝石升级」、「普通宝石」、「完美宝石」、「宝石镶嵌」、「10级宝石」以及12种具体宝石名
+        // ------------------------------------------------------------
+        const BAOSHI_GEMS = [
+            '混沌金刚珠', '三昧紫阳珠', '元运断金珠', '天心断金珠',
+            '煌燿金刚珠', '培元断金珠', '醒神碧灵珠', '渡劫碧灵珠',
+            '夺魄碧灵珠', '神行紫阳珠', '无极紫阳珠', '避尘金刚珠'
+        ];
+        const BAOSHI_GEM_MAP: Record<string, string> = {
+            '混沌金刚珠': 'hundun_jingang',
+            '三昧紫阳珠': 'sanwei_ziyang',
+            '元运断金珠': 'yuanyun_duanjin',
+            '天心断金珠': 'tianxin_duanjin',
+            '煌燿金刚珠': 'huangyao_jingang',
+            '培元断金珠': 'peiyuan_duanjin',
+            '醒神碧灵珠': 'xingshen_biling',
+            '渡劫碧灵珠': 'dujie_biling',
+            '夺魄碧灵珠': 'duopo_biling',
+            '神行紫阳珠': 'shenxing_ziyang',
+            '无极紫阳珠': 'wuji_ziyang',
+            '避尘金刚珠': 'bichen_jingang',
+        };
+        const isBaoshiQuery =
+            q === '宝石' ||
+            q.includes('宝石属性') ||
+            q.includes('宝石升级') ||
+            q.includes('普通宝石') ||
+            q.includes('完美宝石') ||
+            q.includes('宝石镶嵌') ||
+            q.includes('宝石全景') ||
+            q.includes('宝石') ||
+            q.includes('金刚珠') ||
+            q.includes('紫阳珠') ||
+            q.includes('断金珠') ||
+            q.includes('碧灵珠') ||
+            BAOSHI_GEMS.some(g => q.includes(g));
+
+        if (isBaoshiQuery) {
+            let matchedGemId = 'hundun_jingang';
+            for (const [name, id] of Object.entries(BAOSHI_GEM_MAP)) {
+                if (q.includes(name)) {
+                    matchedGemId = id;
+                    break;
+                }
+            }
+
+            let targetLevel = 6;
+            const lvlMatch = q.match(/(\d{1,2})\s*级/);
+            if (lvlMatch) {
+                targetLevel = Math.min(10, Math.max(1, parseInt(lvlMatch[1], 10)));
+            }
+
+            const initialQuality: 'normal' | 'perfect' = q.includes('普通') ? 'normal' : 'perfect';
+            const baoshiData = await dataService.getBaoshiData();
+
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到【宝石属性及升级全景】。支持 12 种宝石（普通/完美品阶、1~10级属性）与多孔镶嵌总属性测算：`,
+                time: timeStr,
+                cardType: 'baoshi',
+                cardData: {
+                    data: baoshiData,
+                    initialGemId: matchedGemId,
+                    initialLevel: targetLevel,
+                    initialQuality
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.54d 贺岁时装技能图鉴（十二生肖时装特技）
+        // 支持「贺岁时装技能」、「时装技能」、「贺岁时装」、「生肖时装」、「生肖技能」以及十二生肖时装特技名
+        // ------------------------------------------------------------
+        const FASHION_SKILLS = [
+            '福星高照', '玉阙玄天', '龙腾四海', '金蛇狂舞', '天马行空', '三阳开泰',
+            '灵猴兆瑞', '金鸡迎春', '白云苍狗', '诸事顺利', '乐不思鼠', '牛转乾坤'
+        ];
+        const FASHION_SKILL_MAP: Record<string, string> = {
+            '福星高照': 'tiger_fuxing',
+            '玉阙玄天': 'rabbit_yuque',
+            '龙腾四海': 'dragon_longteng',
+            '金蛇狂舞': 'snake_jinshe',
+            '天马行空': 'horse_tianma',
+            '三阳开泰': 'goat_sanyang',
+            '灵猴兆瑞': 'monkey_linghou',
+            '金鸡迎春': 'rooster_jinji',
+            '白云苍狗': 'dog_baiyun',
+            '诸事顺利': 'boar_zhushi',
+            '乐不思鼠': 'rat_lebu',
+            '牛转乾坤': 'ox_niuzhuan'
+        };
+        const ZODIAC_MAP: Record<string, string> = {
+            '虎': 'tiger_fuxing', '兔': 'rabbit_yuque', '龙': 'dragon_longteng', '蛇': 'snake_jinshe',
+            '马': 'horse_tianma', '羊': 'goat_sanyang', '猴': 'monkey_linghou', '鸡': 'rooster_jinji',
+            '狗': 'dog_baiyun', '猪': 'boar_zhushi', '鼠': 'rat_lebu', '牛': 'ox_niuzhuan'
+        };
+
+        const isExplicitClassTianhuaSkill = q.includes('天籁') || (q.includes('天华') && q.includes('金蛇狂舞'));
+
+        const isFashionSkillQuery = !isExplicitClassTianhuaSkill && (
+            q === '时装技能' ||
+            q === '时装特技' ||
+            q === '贺岁时装特技' ||
+            q === '贺岁时装技能' ||
+            q === '贺岁时装' ||
+            q === '贺岁技能' ||
+            q === '生肖时装' ||
+            q === '生肖技能' ||
+            q.includes('时装技能') ||
+            q.includes('时装特技') ||
+            q.includes('贺岁时装') ||
+            q.includes('生肖时装') ||
+            q.includes('贺岁礼包') ||
+            q.includes('贺岁装') ||
+            FASHION_SKILLS.some(s => q === s || q.includes(s)) ||
+            Object.keys(ZODIAC_MAP).some(z =>
+                q === `${z}年` ||
+                q === `${z}年时装` ||
+                q.includes(`${z}年时装`) ||
+                q.includes(`${z}年贺岁`) ||
+                (q.includes(`${z}年`) && (q.includes('装') || q.includes('技能') || q.includes('礼包') || q.includes('特技')))
+            )
+        );
+
+        if (isFashionSkillQuery) {
+            let matchedSkillId = 'snake_jinshe'; // 默认定位金蛇狂舞
+            if (q === '时装技能' || q === '时装特技' || q === '贺岁时装技能' || q === '贺岁时装特技' || q === '生肖时装' || q === '贺岁时装') {
+                matchedSkillId = 'snake_jinshe';
+            } else {
+                for (const [name, id] of Object.entries(FASHION_SKILL_MAP)) {
+                    if (q.includes(name)) {
+                        matchedSkillId = id;
+                        break;
+                    }
+                }
+                for (const [zodiac, id] of Object.entries(ZODIAC_MAP)) {
+                    if (q.includes(`${zodiac}年`) || q.includes(zodiac)) {
+                        matchedSkillId = id;
+                        break;
+                    }
+                }
+            }
+
+            const fashionSkillData = await dataService.getFashionSkillData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到【贺岁时装技能图鉴】。支持 12 大生肖时装专属特技、参数规格与金蛇狂舞/诸事顺利联动强化测算：`,
+                time: timeStr,
+                cardType: 'fashion_skill',
+                cardData: {
+                    data: fashionSkillData,
+                    initialSkillId: matchedSkillId
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.54b 佩章·九纹琅卡片
+        // 支持「九纹琅」、「九纹」、「佩章九纹琅」、「九纹属性」、「九纹琅属性」、「九纹升级」等
+        // ------------------------------------------------------------
+        const isJiuwenlangQuery =
+            q.includes('九纹琅') ||
+            q.includes('九纹') ||
+            q === '九纹属性' ||
+            q === '九纹琅属性' ||
+            q === '佩章九纹琅' ||
+            q === '九纹琅升级' ||
+            q === '九纹等级';
+
+        if (isJiuwenlangQuery) {
+            let targetLvl = 20;
+            const lvlMatch = q.match(/(\d{1,2})\s*级/);
+            if (lvlMatch) {
+                targetLvl = Math.min(20, Math.max(1, parseInt(lvlMatch[1], 10)));
+            }
+
+            const jiuwenlangData = await dataService.getJiuwenlangData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到【佩章·九纹琅】属性与等级对照。支持 1~20 级滑块切换及差额测算：`,
+                time: timeStr,
+                cardType: 'jiuwenlang',
+                cardData: {
+                    data: jiuwenlangData,
+                    initialLevel: targetLvl
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.55 圣粹佩章装备卡（T-18 体系）
+        // 支持「佩章」、「圣粹佩章」、「椒图佩章+15」、「貔貅佩章」等精准命中
+        // ------------------------------------------------------------
+        const PEIZHANG_TYPE_MAP: Record<string, { id: string; name: string }> = {
+            '回风': { id: 'huifeng', name: '回风' },
+            '貔貅': { id: 'pixiu', name: '貔貅' },
+            '椒图': { id: 'jiaotu', name: '椒图' },
+            '角端': { id: 'jiaoduan', name: '角端' },
+            '含瑛': { id: 'hanying', name: '含瑛' }
+        };
+
+        const isPeizhangQuery =
+            q.includes('佩章') ||
+            q.includes('圣粹') ||
+            Object.keys(PEIZHANG_TYPE_MAP).some(k =>
+                q === k ||
+                q.startsWith(k + '+') ||
+                q.startsWith(k + '＋') ||
+                q.startsWith(k + '佩章')
+            );
+
+        if (isPeizhangQuery && !q.includes('印')) {
+            let matchedTypeId = 'pixiu';
+            let matchedTypeName = '貔貅';
+            for (const [k, v] of Object.entries(PEIZHANG_TYPE_MAP)) {
+                if (q.includes(k)) {
+                    matchedTypeId = v.id;
+                    matchedTypeName = v.name;
+                    break;
+                }
+            }
+
+            let targetRefLv = 11;
+            const refMatch = q.match(/(?:\+|＋|炼器\+?|炼器＋?)(\d{1,2})/);
+            if (refMatch) {
+                targetRefLv = Math.min(15, Math.max(0, parseInt(refMatch[1], 10)));
+            }
+
+            const peizhangData = await dataService.getPeizhangData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到装备【${matchedTypeName}佩章<圣粹>】（炼器＋${targetRefLv}）。支持在卡片内切换五大分类、推演升降级属性与查询阶位隐藏属性概率池：`,
+                time: timeStr,
+                cardType: 'peizhang',
+                cardData: {
+                    selectedTypeId: matchedTypeId,
+                    refineLevel: targetRefLv,
+                    types: peizhangData?.types
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.56 宸极·凝灵契装备卡（T-18 体系）
+        // 支持「凝灵契」、「宸极凝灵契」、「宸极·凝灵契」、「宸极」、「灵契」等精准命中
+        // ------------------------------------------------------------
+        const isNinglingqiQuery =
+            q === '宸极' ||
+            q.includes('凝灵契') ||
+            q.includes('宸极凝灵契') ||
+            q.includes('宸极·凝灵契') ||
+            q.includes('灵契') ||
+            q.includes('洗契') ||
+            q.includes('凝灵石');
+
+        if (isNinglingqiQuery && !q.includes('印')) {
+            let targetHole = 12;
+            const holeMatch = q.match(/(\d{1,2})\s*孔/);
+            if (holeMatch) {
+                targetHole = Math.min(12, Math.max(1, parseInt(holeMatch[1], 10)));
+            }
+
+            const ninglingqiData = await dataService.getNinglingqiData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到装备【宸极凝灵契】。支持在卡片内查看 12 孔位全量可洗出属性池、数值范围与精确概率分布：`,
+                time: timeStr,
+                cardType: 'ninglingqi',
+                cardData: {
+                    data: ninglingqiData,
+                    initialHole: targetHole
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.57 宠物结誓与誓印卡（T-18 攻略体系）
+        // 支持「宠物结誓」、「宠物刻誓」、「结誓」、「刻誓」、「誓印」、「刻蚀」、「刻蚀装备」、
+        // 「御宝印」、「通灵印」、「御宝刻蚀」、「通灵刻蚀」、「刻印」、
+        // 以及特化宠物「飞天鼠」、「波波」、「鹏鹏」、「丛林山猪」、「昆仑修罗」等
+        // ------------------------------------------------------------
+        const isPetPledgeQuery =
+            q === '宠物' ||
+            q === '宠物攻略' ||
+            q === '宠物系统' ||
+            q === '宠物图鉴' ||
+            q.includes('结誓') ||
+            q.includes('刻誓') ||
+            q.includes('刻蚀') ||
+            q.includes('刻印') ||
+            q.includes('誓印') ||
+            q.includes('御宝印') ||
+            q.includes('通灵印') ||
+            q.includes('御宝刻蚀') ||
+            q.includes('通灵刻蚀') ||
+            q === '飞天鼠' || q.includes('飞天鼠') ||
+            q === '波波' || q.includes('波波') ||
+            q === '鹏鹏' || q.includes('鹏鹏') ||
+            q === '丛林山猪' ||
+            q === '昆仑修罗';
+
+        if (isPetPledgeQuery) {
+            let initialTab: 'preview' | 'table' | 'guide' = 'preview';
+            let initialPetId = 'pengpeng';
+
+            if (q.includes('对比') || q.includes('上限') || q.includes('全景') || q.includes('对比图') || q.includes('属性表') || q === '结誓属性' || q === '新版宠物结誓' || q === '誓印属性' || q === '刻誓属性' || q === '刻蚀属性') {
+                initialTab = 'table';
+            } else if (q.includes('御宝') || q.includes('通灵') || q.includes('印') || q.includes('指南') || q.includes('推荐') || q.includes('刻蚀') || q.includes('刻誓')) {
+                initialTab = 'guide';
+            }
+
+            if (q.includes('鹏鹏')) {
+                initialPetId = 'pengpeng';
+            } else if (q.includes('飞天鼠')) {
+                initialPetId = 'feitianshu';
+            } else if (q.includes('波波')) {
+                initialPetId = 'bobo';
+            } else if (q.includes('昆仑修罗')) {
+                initialPetId = 'special_old';
+            } else if (q.includes('丛林山猪')) {
+                initialPetId = 'common';
+            } else if (q.includes('普通')) {
+                initialPetId = 'common';
+            }
+
+            const showCompareDefault = q.includes('对比') || q.includes('上限') || q.includes('全景') || q.includes('对比图') || q === '结誓属性' || q === '新版宠物结誓';
+            const pledgeData = await dataService.getPetPledgeData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到【宠物结誓属性】。支持点选切换 5 大类宠物（普通宠物、昆仑修罗、飞天鼠、波波、鹏鹏）查看结誓属性区间：`,
+                time: timeStr,
+                cardType: 'pet_pledge',
+                cardData: {
+                    data: pledgeData,
+                    initialPetId,
+                    showCompareDefault,
+                    initialTab
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58 阵灵聚灵升级消耗卡（T-18 攻略体系）
+        // 支持「阵灵升级」、「阵灵聚灵」、「聚灵」、「沧浪冰珠」、「沧热聚灵丹」、「聚灵丹」、
+        // 「6金2紫」、「6金2紫12」、「阵灵消耗」、「阵灵升阶」等
+        // ------------------------------------------------------------
+        // ------------------------------------------------------------
+        // 0.58 升级与经验分流卡（exp_hub，T-18）
+        // 用户输入「经验」、「升级」、「升级经验」、「经验表」等通用词时，提供分流导航：
+        // 1. 法宝经验 (1~40级)  2. 阵灵升级 (1~12阶)
+        // ------------------------------------------------------------
+        // ------------------------------------------------------------
+        // 0.58a 装备全景导航卡（equip_hub）
+        // 用户输入「装备」、「装备属性」、「装备图鉴」等通用词，或点击首页「装备属性」药丸时弹出
+        // ------------------------------------------------------------
+        const isEquipHubQuery =
+            q === '装备' ||
+            q === '装备属性' ||
+            q === '装备图鉴' ||
+            q === '装备分类' ||
+            q === '装备导航' ||
+            q === '查装备';
+
+        if (isEquipHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你呈现【装备全景】导航，涵盖三大品质主装与特种首饰系统：',
+                time: timeStr,
+                cardType: 'equip_hub',
+                cardData: {
+                    title: '装备全景导航',
+                    options: [
+                        { key: 'zhaowu', label: '昭武装备', query: '昭武' },
+                        { key: 'zhangwu', label: '彰武装备', query: '彰武' },
+                        { key: 'xiuwu', label: '修武装备', query: '修武' },
+                        { key: 'peizhang', label: '圣粹佩章', query: '佩章' },
+                        { key: 'ninglingqi', label: '宸极凝灵契', query: '凝灵契' },
+                        { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
+                        { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
+                        { key: 'shenji', label: '神级首饰', query: '神级项链' },
+                    ]
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58b 技能图鉴导航卡（skill_hub）
+        // 用户输入「技能」、「技能图鉴」、「技能大全」等通用词，或点击首页「技能图鉴」药丸时弹出
+        // ------------------------------------------------------------
+        const isSkillHubQuery =
+            q === '技能' ||
+            q === '技能图鉴' ||
+            q === '技能大全' ||
+            q === '技能速查' ||
+            q === '技能导航' ||
+            q === '查技能';
+
+        if (isSkillHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你呈现【技能图鉴】全景导航。可按“逐霜 技能”等检索指定职业，或点选下方技能分类：',
+                time: timeStr,
+                cardType: 'skill_hub',
+                cardData: {
+                    title: '技能图鉴导航',
+                    options: [
+                        { key: 'menpai', label: '门派技能', query: '门派技能' },
+                        { key: 'shentong', label: '阵营神通', query: '阵营神通' },
+                        { key: 'sandai', label: '三代技能', query: '三代技能' },
+                        { key: 'sidai', label: '四代技能', query: '四代技能' },
+                        { key: 'xinfa', label: '心法技能', query: '心法技能' },
+                        { key: 'shizhuang', label: '时装技能', query: '时装技能' },
+                    ]
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58b2 指定门派技能导航卡（[职业] 技能）
+        // 用户输入「逐霜 技能」、「逐霜技能」、「青云 技能」等，弹出该门派专属技能分类 Hub
+        // ------------------------------------------------------------
+        const matchedSkillProf = profs.find(p =>
+            q === `${p}技能` ||
+            q === `${p} 技能` ||
+            q === `查${p}技能` ||
+            q === `${p}技能图鉴` ||
+            q === `${p} 技能图鉴` ||
+            q === `${p}技能大全` ||
+            q === `${p} 技能大全` ||
+            q === `${p}技能速查` ||
+            q === `${p} 技能速查`
+        );
+
+        if (matchedSkillProf) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你提供【${matchedSkillProf}】技能分类导航，请选择你想查阅的技能类型：`,
+                time: timeStr,
+                cardType: 'skill_hub',
+                cardData: {
+                    title: `${matchedSkillProf}技能分类导航`,
+                    prof: matchedSkillProf,
+                    options: [
+                        { key: 'menpai', label: '门派技能', query: `${matchedSkillProf} 门派技能` },
+                        { key: 'shentong', label: '阵营神通', query: `${matchedSkillProf} 阵营神通` },
+                        { key: 'sandai', label: '三代技能', query: `${matchedSkillProf} 三代技能` },
+                        { key: 'sidai', label: '四代技能', query: `${matchedSkillProf} 四代技能` },
+                        { key: 'xinfa', label: '心法技能', query: `${matchedSkillProf} 心法技能` },
+                    ]
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58c 升级与经验分流卡（exp_hub，T-18）
+        // 用户输入「经验」、「升级」、「升级经验」、「经验表」等通用词时，提供分流导航：
+        // 1. 法宝经验 (1~40级)  2. 阵灵升级 (1~12阶)
+        // ------------------------------------------------------------
+        const isExpHubQuery =
+            q === '经验' ||
+            q === '升级' ||
+            q === '升级经验' ||
+            q === '经验表' ||
+            q === '升级消耗' ||
+            q === '升级表';
+
+        if (isExpHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你提供【养成与升级经验对照】分类导航。请选择您想测算的经验体系：`,
+                time: timeStr,
+                cardType: 'exp_hub',
+                cardData: {
+                    title: '升级与经验对照体系',
+                    options: [
+                        { key: 'fabao_exp', label: '法宝经验', query: '法宝经验' },
+                        { key: 'zhenling_exp', label: '阵灵经验', query: '阵灵经验' },
+                    ]
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58d 属性测算全景导航卡（measure_hub）
+        // 选项简洁凝练（4~5字以内，无emoji）
+        // ------------------------------------------------------------
+        const isMeasureHubQuery =
+            q === '属性测算' ||
+            q === '数值测算' ||
+            q === '测算' ||
+            q === '测算工具' ||
+            q === '属性计算';
+
+        if (isMeasureHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你呈现【属性测算】全景导航，支持点选直达各大数值测算工具：',
+                time: timeStr,
+                cardType: 'measure_hub',
+                cardData: {
+                    title: '属性测算导航',
+                    options: [
+                        { key: 'xingsu', label: '星宿升星', query: '星宿升星' },
+                        { key: 'baoshi', label: '宝石属性', query: '宝石' },
+                        { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
+                        { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
+                        { key: 'fabao_exp', label: '法宝经验', query: '法宝经验' },
+                        { key: 'zhenling_upgrade', label: '阵灵聚灵', query: '阵灵升级' },
+                        { key: 'tianyuan_sim', label: '天缘模拟', query: '天缘' },
+                        { key: 'calc', label: '伤害计算', query: '计算实战战力' },
+                    ]
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58e 玩法攻略全景指南卡（guide_hub）
+        // 严格遵循 T-18 攻略三大域：极致属性域、核心养成域、副本机制域 + 职业状态
+        // 选项简洁凝练（4~5字以内，无emoji）
+        // ------------------------------------------------------------
+        const isGuideHubQuery =
+            q === '玩法攻略' ||
+            q === '攻略' ||
+            q === '玩法' ||
+            q === '游戏攻略' ||
+            q === '攻略体系';
+
+        if (isGuideHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你呈现【玩法攻略】全景导航，涵盖极致属性上限、核心养成阶梯与副本机制：',
+                time: timeStr,
+                cardType: 'guide_hub',
+                cardData: {
+                    title: '玩法攻略导航',
+                    options: [
+                        { key: 'ignore', label: '极致无视', query: '极致无视' },
+                        { key: 'reduction', label: '极致减免', query: '极致减免' },
+                        { key: 'crit_red', label: '极致减暴', query: '极致减暴' },
+                        { key: 'monster_dmg', label: '极致怪增', query: '怪增' },
+                        { key: 'dodge', label: '技能躲闪', query: '躲闪' },
+                        { key: 'pet_pledge', label: '宠物指南', query: '宠物结誓' },
+                        { key: 'fabao_exp', label: '法宝经验', query: '法宝经验' },
+                        { key: 'zhenling_upgrade', label: '阵灵经验', query: '阵灵经验' },
+                        { key: 'class_status', label: '职业状态', query: '职业状态' },
+                        { key: 'boss', label: 'BOSS属性', query: 'BOSS属性' },
+                    ]
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58e 全景顶层分类导航卡（top_hub）
+        // ------------------------------------------------------------
+        const isTopHubQuery =
+            q === '导航' ||
+            q === '全景导航' ||
+            q === '分类' ||
+            q === '功能列表' ||
+            q === '帮助';
+
+        if (isTopHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你呈现诛仙3全景分类导航，点击下方任意卡片直接查看：',
+                time: timeStr,
+                cardType: 'top_hub',
+                cardData: {
+                    title: '全景分类导航',
+                    options: TOP_HUB_OPTIONS,
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58b 阵灵聚灵升级消耗卡（T-18 攻略体系）
+        // 覆盖金卡/紫卡 1~12阶沧浪冰珠与沧热聚灵丹消耗及 6金2紫测算
+        // ------------------------------------------------------------
+        const isZhenlingUpgradeQuery =
+            !q.includes('聚灵咒') &&
+            (
+                q.includes('阵灵升级') ||
+                q.includes('阵灵聚灵') ||
+                q.includes('阵灵经验') ||
+                q === '聚灵' ||
+                q === '阵灵' ||
+                q === '阵灵攻略' ||
+                q === '阵灵升阶' ||
+                q.includes('沧浪冰珠') ||
+                q.includes('沧热聚灵丹') ||
+                q.includes('聚灵丹') ||
+                q.includes('6金2紫') ||
+                q.includes('阵灵消耗') ||
+                (q.includes('阵灵') && (q.includes('阶') || q.includes('升') || q.includes('冰珠') || q.includes('消耗') || q.includes('经验')))
+            );
+
+        if (isZhenlingUpgradeQuery) {
+            const zhenlingData = await dataService.getZhenlingUpgradeData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到【阵灵聚灵升级消耗对照表】。支持查看金卡与紫卡 1~12 阶沧浪冰珠与沧热聚灵丹消耗及 6金2紫主流顶配全套测算：`,
+                time: timeStr,
+                cardType: 'zhenling_upgrade',
+                cardData: {
+                    data: zhenlingData
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.59 法宝经验等级对照卡（T-18 攻略体系）
+        // 支持「法宝经验」、「法宝升级」、「法宝等级」、「法宝聚气」、「天龙魔血」、「真龙圣血」等
+        // ------------------------------------------------------------
+        const isFabaoUpgradeQuery =
+            q.includes('法宝经验') ||
+            q.includes('法宝升级') ||
+            q.includes('法宝等级') ||
+            q.includes('法宝聚气') ||
+            q.includes('天龙魔血') ||
+            q.includes('真龙圣血') ||
+            q.includes('神木宝卷') ||
+            q === '法宝经验表' ||
+            q === '法宝升级表' ||
+            (q.includes('法宝') && (q.includes('经验') || q.includes('魔血') || q.includes('圣血') || q.includes('聚气') || q.includes('升到') || q.includes('40级') || q.includes('35级') || q.includes('30级')));
+
+        if (isFabaoUpgradeQuery) {
+            const expData = await dataService.getFabaoUpgradeExpData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到【法宝经验等级对照表】（2023.9.21版）。支持查看 1~40 级各阶段当前级经验、累计经验与天龙魔血/真龙圣血消耗，并支持自定义等级测算：`,
+                time: timeStr,
+                cardType: 'fabao_upgrade',
+                cardData: {
+                    data: expData
+                }
+            };
+        }
+
         // ① 品质系 6 部位（武器/头盔/衣服/靴子/腰带/袖甲，含帽子/鞋子等口语别名）
         //    → 品质三入口。实证：6 部位 q 字段 100% 归属修武/昭武/彰武三系、
         //    无剩余装备（2026-10-16），故不设「其他」冗余选项（用户反馈）；
@@ -1090,7 +1885,7 @@ export class CopilotService {
         if (Array.isArray(allDungeons) && allDungeons.length > 0 && !exactFabaoName) {
             // A. 检查是否为泛化副本查询词
             const isBroadDungeonWord = [
-                '副本', '所有副本', '全部副本', '副本列表', '有哪些副本',
+                '副本', '副本属性', '副本机制', 'boss属性', 'boss机制', '所有副本', '全部副本', '副本列表', '有哪些副本',
                 '副本大全', '查副本', '看副本', '刷本', '打本', 'boss', '首领'
             ].includes(q) || q === '副本';
 
@@ -1475,9 +2270,74 @@ export class CopilotService {
                     '生肖护符': '丙午护符'
                 };
 
+                // 印记/玺绶别名与常见错别字容错映射（如“十方度厄”->“十方渡厄”、“澄水避寒”->“澄水辟寒”）
+                const YIN_TYPO_MAP: Record<string, string> = {
+                    '十方度厄': '十方渡厄',
+                    '度厄': '渡厄',
+                    '澄水避寒': '澄水辟寒',
+                    '避寒': '辟寒',
+                    '乾元晴雷': '乾元擎雷',
+                    '乾元青雷': '乾元擎雷',
+                    '晴雷': '擎雷',
+                    '青雷': '擎雷',
+                    '无极封耀': '无极封曜',
+                    '封耀': '封曜',
+                    '凝霜揽晖': '凝霜揽辉',
+                    '揽晖': '揽辉',
+                    '玄离归墟': '玄螭归墟',
+                    '玄赤归墟': '玄螭归墟',
+                    '玄离': '玄螭',
+                    '玄赤': '玄螭',
+                };
+
+                const mapEquipTypo = (str: string): string => {
+                    let res = str;
+                    for (const [typo, correct] of Object.entries(YIN_TYPO_MAP)) {
+                        if (res.includes(typo)) {
+                            res = res.replaceAll(typo, correct);
+                        }
+                    }
+                    return res;
+                };
+
+                const HESUI_TIER_CN_MAP: Record<string, string> = {
+                    '1': '壹', '2': '贰', '3': '叁', '4': '肆', '5': '伍',
+                    '6': '陆', '7': '柒', '8': '捌', '9': '玖', '10': '拾',
+                    '11': '壹拾壹', '12': '壹拾贰', '13': '壹拾叁', '14': '壹拾肆', '15': '壹拾伍',
+                    '16': '壹拾陆', '17': '壹拾柒', '18': '壹拾捌', '19': '壹拾玖',
+                    '一': '壹', '二': '贰', '两': '贰', '三': '叁', '四': '肆', '五': '伍',
+                    '六': '陆', '七': '柒', '八': '捌', '九': '玖', '十': '拾',
+                    '十一': '壹拾壹', '十二': '壹拾贰', '十三': '壹拾叁', '十四': '壹拾肆', '十五': '壹拾伍',
+                    '十六': '壹拾陆', '十七': '壹拾柒', '十八': '壹拾捌', '十九': '壹拾玖',
+                    '一十一': '壹拾壹', '一十二': '壹拾贰', '一十三': '壹拾叁', '一十四': '壹拾肆', '一十五': '壹拾伍',
+                    '一十六': '壹拾陆', '一十七': '壹拾柒', '一十八': '壹拾捌', '一十九': '壹拾玖',
+                    '壹': '壹', '贰': '贰', '叁': '叁', '肆': '肆', '伍': '伍',
+                    '陆': '陆', '柒': '柒', '捌': '捌', '玖': '玖', '拾': '拾',
+                    '壹拾壹': '壹拾壹', '壹拾贰': '壹拾贰', '壹拾叁': '壹拾叁', '壹拾肆': '壹拾肆', '壹拾伍': '壹拾伍',
+                    '壹拾陆': '壹拾陆', '壹拾柒': '壹拾柒', '壹拾捌': '壹拾捌', '壹拾玖': '壹拾玖',
+                };
+
+                const resolveHesuiJinyinAlias = (input: string): string | null => {
+                    const raw = input.trim().replace(/\s+/g, '');
+                    const prefixMatch = raw.match(/^(\d{1,2}|[一二两三四五六七八九十壹贰叁肆伍陆柒捌玖拾]{1,4})周年(?:印|金印)$/);
+                    if (prefixMatch) {
+                        const tier = HESUI_TIER_CN_MAP[prefixMatch[1]];
+                        if (tier) return `贺岁金印（${tier}）`;
+                    }
+                    const suffixMatch = raw.match(/^(?:贺岁金印|贺岁印|周年印|周年金印)[（(]?(\d{1,2}|[一二两三四五六七八九十壹贰叁肆伍陆柒捌玖拾]{1,4})(?:阶|级)?[）)]?$/);
+                    if (suffixMatch) {
+                        const tier = HESUI_TIER_CN_MAP[suffixMatch[1]];
+                        if (tier) return `贺岁金印（${tier}）`;
+                    }
+                    return null;
+                };
+
+                const hesuiCanonical = resolveHesuiJinyinAlias(q);
+                const normalizedQ = hesuiCanonical || mapEquipTypo(q);
+
                 const hasEquipNameMatch = !isExplicitSkillTerm && equips.some(e => {
                     const eName = e.name.toLowerCase();
-                    if (eName.includes(q)) return true;
+                    if (eName.includes(q) || eName.includes(normalizedQ)) return true;
                     if (q.includes('天奕') && eName.includes('天弈')) return true;
                     if (q.includes('天循') && eName.includes('天遁')) return true;
                     if (q.includes('天戌') && eName.includes('天戍')) return true;
@@ -1486,7 +2346,8 @@ export class CopilotService {
                     }
                     return cleanTokens.some(ct => {
                         if (ct.length < 2) return false;
-                        if (eName.includes(ct)) return true;
+                        const nct = mapEquipTypo(ct);
+                        if (eName.includes(ct) || eName.includes(nct)) return true;
                         if (ct === '天奕' && eName.includes('天弈')) return true;
                         if (ct === '天循' && eName.includes('天遁')) return true;
                         if (ct === '天戌' && eName.includes('天戍')) return true;
@@ -1501,7 +2362,9 @@ export class CopilotService {
                     !isExplicitSkillTerm &&
                     (matchedQ ||
                         matchedSlot ||
+                        matchedSeries ||
                         hasEquipNameMatch ||
+                        Boolean(hesuiCanonical) ||
                         q.includes('装备'))
                 );
 
@@ -1524,15 +2387,19 @@ export class CopilotService {
                     const exactEquip = (isQualityOnlyQuery || isSkillCategoryQuery) ? undefined : equips.find(e => {
                         const raw = e.name.toLowerCase();
                         const base = raw.replace(/[（(][男女][）)]/g, '').trim();
-                        return raw === q || base === q;
+                        return raw === q || base === q || raw === normalizedQ || base === normalizedQ;
                     });
                     if (exactEquip) {
                         // 如果命中该系列的基础装备且用户未指定具体星级/阶位，默认展示最高阶（如 ★★★），并支持卡片内降阶
                         let targetEquip = exactEquip;
                         const series = getEquipSeries(exactEquip, equips);
                         if (series && series.items.length > 1) {
-                            const hasSpecificTier = q.includes('★') || q.includes('星') || q.includes('初') || q.includes('阶');
-                            if (!hasSpecificTier) {
+                            const isBaseItem = exactEquip.id === series.items[0].id && exactEquip.name === series.items[0].name;
+                            const hasSpecificTier = q.includes('★') || q.includes('星') || q.includes('初') || q.includes('阶')
+                                || /[（(][^）)]+[）)]/.test(q)
+                                || Boolean(hesuiCanonical)
+                                || /[0-9一二两三四五六七八九十壹贰叁肆伍陆柒捌玖拾]/.test(q);
+                            if (isBaseItem && !hasSpecificTier) {
                                 targetEquip = series.items[series.items.length - 1];
                             }
                         }
@@ -1589,11 +2456,12 @@ export class CopilotService {
                                 return eName.includes(tl);
                             });
                         }
-                        // 其余自由关键词匹配（如 "大乘战罡"、"逍遥"、"惊涛"、"天弈"、"天循"）
+                        // 其余自由关键词匹配（如 "大乘战罡"、"逍遥"、"惊涛"、"天弈"、"天循"、"十方度厄"）
                         for (const ct of cleanTokens) {
-                            const term = ct === '天奕' ? '天弈' : (ct === '天循' ? '天遁' : (ct === '天戌' ? '天戍' : ct));
-                            const altTerm = ct === '天弈' ? '天奕' : (ct === '天遁' ? '天循' : (ct === '天戍' ? '天戌' : ''));
-                            const matches = eName.includes(term) || (altTerm ? eName.includes(altTerm) : false);
+                            const nct = mapEquipTypo(ct);
+                            const term = nct === '天奕' ? '天弈' : (nct === '天循' ? '天遁' : (nct === '天戌' ? '天戍' : nct));
+                            const altTerm = nct === '天弈' ? '天奕' : (nct === '天遁' ? '天循' : (nct === '天戍' ? '天戌' : ''));
+                            const matches = eName.includes(term) || (altTerm ? eName.includes(altTerm) : false) || eName.includes(ct);
                             if (!matches) return false;
                         }
                         return true;
@@ -1806,13 +2674,27 @@ export class CopilotService {
                     '飞升': { groupKeyword: '飞升', label: '飞升' }
                 };
 
+                // 技能 5 大分类器精准提取（用户口径：门派技能、阵营神通、三代技能、四代技能、心法技能）
+                let targetSubCat: 'sandai' | 'sidai' | 'xinfa' | 'shentong' | 'menpai' | null = null;
+                if (tokens.some(t => /三代|3代|iii|ⅲ/i.test(t)) || /三代|3代|iii|ⅲ/i.test(q)) {
+                    targetSubCat = 'sandai';
+                } else if (tokens.some(t => /四代|4代/i.test(t) || t.includes('玄烛') || t.includes('赤乌')) || /四代|4代|玄烛|赤乌/.test(q)) {
+                    targetSubCat = 'sidai';
+                } else if (tokens.some(t => t.includes('心法')) || q.includes('心法')) {
+                    targetSubCat = 'xinfa';
+                } else if (tokens.some(t => t.includes('神通') || t.includes('造化') || t.includes('阵营') || t === '仙' || t === '魔' || t === '佛') || q.includes('神通') || q.includes('造化') || q.includes('阵营')) {
+                    targetSubCat = 'shentong';
+                } else if (tokens.some(t => t.includes('门派') || t.includes('普通') || t.includes('天书')) || q.includes('门派技能') || q.includes('普通技能') || q.includes('天书') || (matchedProf && (q.includes('门派') || q.includes('普通')))) {
+                    targetSubCat = 'menpai';
+                }
+
                 const matchedCategories: string[] = [];
                 for (const cat of Object.keys(SKILL_CATEGORY_MAP)) {
                     if (tokens.some(t => t.includes(cat.toLowerCase())) || q.includes(cat.toLowerCase())) {
                         matchedCategories.push(cat);
                     }
                 }
-                const hasExplicitCategory = matchedCategories.length > 0;
+                const hasExplicitCategory = matchedCategories.length > 0 || targetSubCat !== null;
 
                 const matchedCamp = ['仙', '魔', '佛'].find(c =>
                     tokens.some(t => t === c || t === c + '阵' || t === c + '阵营') ||
@@ -1835,7 +2717,7 @@ export class CopilotService {
                     for (const pr of profs) remainder = remainder.replace(pr.toLowerCase(), '');
                     for (const cat of Object.keys(SKILL_CATEGORY_MAP)) remainder = remainder.replace(cat.toLowerCase(), '');
                     if (matchedCamp) remainder = remainder.replace(matchedCamp, '');
-                    remainder = remainder.replace(/技能|神通|天书|心法|造化|星宿|玄烛|赤乌/g, '').trim();
+                    remainder = remainder.replace(/技能|神通|天书|心法|造化|星宿|玄烛|赤乌|三代|3代|四代|4代|门派|普通|阵营/g, '').trim();
                     if (remainder.length >= 2) {
                         skillNameTokens.push(remainder);
                         // T-04 机制同义词（用户确认口径）：易伤=增伤——数据 tag 写"增伤"，玩家口语说"易伤"
@@ -1844,6 +2726,118 @@ export class CopilotService {
                 }
 
                 const qClean = q.replace(/[·\s,，+＋/、\-_\(\)（）]/g, '');
+
+                // 技能 5 大分类的判定闭包（严格对齐用户规则口径）
+                const isGen3Skill = (sk: CuratedSkillItem) =>
+                    (/III|Ⅲ/i.test(sk.name || '') || /三代/.test(sk.name || '')) &&
+                    !sk.name.includes('触发') &&
+                    sk.group_name !== '触发技能';
+
+                const isGen4Skill = (sk: CuratedSkillItem) =>
+                    ((sk.name || '').includes('玄烛') || (sk.name || '').includes('赤乌') || /四代/.test(sk.name || '')) &&
+                    !sk.name.includes('触发') &&
+                    sk.group_name !== '触发技能';
+
+                const isXinfaSkill = (sk: CuratedSkillItem) => {
+                    if (isGen3Skill(sk) || isGen4Skill(sk)) return false;
+                    const name = sk.name || '';
+                    const group = sk.group_name || '';
+                    const hasTag = Boolean(sk.tags && sk.tags.some(t => t.n && t.n.includes('心法')));
+                    return (hasTag || group.includes('心法') || name.includes('心法')) && !name.includes('触发');
+                };
+
+                const isShentongSkill = (sk: CuratedSkillItem) => {
+                    if (isGen3Skill(sk) || isGen4Skill(sk) || isXinfaSkill(sk)) return false;
+                    const name = sk.name || '';
+                    const group = sk.group_name || '';
+                    return (
+                        (/<玄>|<煞>|<禅>|II|Ⅱ/i.test(name) ||
+                            group.includes('神通') ||
+                            group.includes('造化') ||
+                            /<玄>|<煞>|<禅>/.test(group)) &&
+                        !name.includes('触发')
+                    );
+                };
+
+                const isMenpaiSkill = (sk: CuratedSkillItem) => {
+                    if (isGen3Skill(sk) || isGen4Skill(sk) || isXinfaSkill(sk) || isShentongSkill(sk)) return false;
+                    return !sk.name.includes('触发') && sk.group_name !== '触发技能' && sk.group_name !== '怪物技能';
+                };
+
+                // A. 若指定门派，且输入的是 5 大分类纯检索（如「逐霜 三代技能」、「青云 四代技能」等）
+                if (skillNameTokens.length === 0 && targetSubCat && matchedProf) {
+                    const profPool = allCuratedSkills.filter(sk => (sk.group_name || '').includes(matchedProf) && isValidSkill(sk));
+                    let matchedList: CuratedSkillItem[] = [];
+                    let label = '';
+                    if (targetSubCat === 'sandai') {
+                        matchedList = profPool.filter(isGen3Skill);
+                        label = '三代技能';
+                    } else if (targetSubCat === 'sidai') {
+                        matchedList = profPool.filter(isGen4Skill);
+                        label = '四代技能';
+                    } else if (targetSubCat === 'xinfa') {
+                        matchedList = profPool.filter(isXinfaSkill);
+                        label = '心法技能';
+                    } else if (targetSubCat === 'shentong') {
+                        matchedList = profPool.filter(isShentongSkill);
+                        label = '阵营神通';
+                    } else if (targetSubCat === 'menpai') {
+                        matchedList = profPool.filter(isMenpaiSkill);
+                        label = '门派技能';
+                    }
+
+                    if (matchedList.length > 0) {
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `为你速查到【${matchedProf}】${label}（共 ${matchedList.length} 个），可在下方快速点选查看 1:1 原生说明与等级推演：`,
+                            time: timeStr,
+                            cardType: 'skill_candidates',
+                            cardData: {
+                                candidates: matchedList.slice(0, 30),
+                                query: q,
+                                skill: matchedList[0]
+                            }
+                        };
+                    }
+                }
+
+                // B. 若未指定门派，但指定了 5 大分类纯检索（如「三代技能」、「四代技能」等）
+                if (skillNameTokens.length === 0 && targetSubCat && !matchedProf) {
+                    let matchedList: CuratedSkillItem[] = [];
+                    let label = '';
+                    if (targetSubCat === 'sandai') {
+                        matchedList = allCuratedSkills.filter(isGen3Skill);
+                        label = '三代技能';
+                    } else if (targetSubCat === 'sidai') {
+                        matchedList = allCuratedSkills.filter(isGen4Skill);
+                        label = '四代技能';
+                    } else if (targetSubCat === 'xinfa') {
+                        matchedList = allCuratedSkills.filter(isXinfaSkill);
+                        label = '心法技能';
+                    } else if (targetSubCat === 'shentong') {
+                        matchedList = allCuratedSkills.filter(isShentongSkill);
+                        label = '阵营神通';
+                    } else if (targetSubCat === 'menpai') {
+                        matchedList = allCuratedSkills.filter(isMenpaiSkill);
+                        label = '门派技能';
+                    }
+
+                    if (matchedList.length > 0) {
+                        return {
+                            id: `msg-${Date.now()}`,
+                            sender: 'assistant',
+                            text: `为你速查到各门派部分${label}，支持输入“逐霜 ${label}”等精准查看指定门派技能库：`,
+                            time: timeStr,
+                            cardType: 'skill_candidates',
+                            cardData: {
+                                candidates: matchedList.slice(0, 30),
+                                query: q,
+                                skill: matchedList[0]
+                            }
+                        };
+                    }
+                }
 
                 // 各主流职业代表性核心技能（当用户点击【技能描述】或输入“技能”但未指定具体技能名、门派与类别时展示）
                 const CORE_SIGNATURE_SKILL_NAMES = [
@@ -1942,6 +2936,13 @@ export class CopilotService {
                         }
                     }
 
+                    // 技能 5 大子分类匹配提权
+                    if (targetSubCat === 'sandai' && isGen3Skill(sk)) score += 60;
+                    else if (targetSubCat === 'sidai' && isGen4Skill(sk)) score += 60;
+                    else if (targetSubCat === 'xinfa' && isXinfaSkill(sk)) score += 60;
+                    else if (targetSubCat === 'shentong' && isShentongSkill(sk)) score += 60;
+                    else if (targetSubCat === 'menpai' && isMenpaiSkill(sk)) score += 60;
+
                     // 额外高阶星宿排序提权：曦日 > 皓月 > 萤炬
                     if (score >= 80 && (sName.includes('·星宿') || sGroup.includes('星宿'))) {
                         if (sName.includes('曦日') || q.includes('曦日')) score += 5;
@@ -1998,6 +2999,11 @@ export class CopilotService {
                         const catLabels = matchedCategories.map(c => SKILL_CATEGORY_MAP[c]?.label || c).join(' / ');
                         const profPrefix = matchedProf ? `【${matchedProf}】` : '';
                         replySummary = `为你速查到 ${profPrefix}${catLabels}技能（共 ${filtered.length} 个），可在下方快速点选切换查看 1:1 原生说明与等级推演：`;
+                        if (matchedCategories.includes('星宿') || q.includes('星宿')) {
+                            replySummary += `\n（若您想查看全职业通用的【星宿装备及星辰升星增益】，可直接输入「星宿」或「星辰」）`;
+                        } else if (matchedCategories.includes('轩辕策') || q.includes('轩辕策')) {
+                            replySummary += `\n（若您想进行【轩辕策洗炼模拟与词条诊断】，可直接输入「轩辕策」）`;
+                        }
                     } else if (skillNameTokens.length > 0 && hasExplicitCategory) {
                         const catLabels = matchedCategories.map(c => SKILL_CATEGORY_MAP[c]?.label || c).join(' / ');
                         replySummary = `为你速查到【${skillNameTokens.join(' ')}】相关的${catLabels}技能，可在下方快速切换不同阶位与等级推演：`;
