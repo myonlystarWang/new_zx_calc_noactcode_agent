@@ -70209,7 +70209,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -70348,7 +70348,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -70487,7 +70487,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -70626,7 +70626,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -70765,7 +70765,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -70904,7 +70904,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -71043,7 +71043,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -71182,7 +71182,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -71321,7 +71321,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -71460,7 +71460,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -71599,7 +71599,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -71738,7 +71738,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -71911,7 +71911,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -72050,7 +72050,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -72189,7 +72189,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -72328,7 +72328,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -72467,7 +72467,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -72606,7 +72606,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -72745,7 +72745,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -72884,7 +72884,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -73023,7 +73023,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -73162,7 +73162,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -73301,7 +73301,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -73440,7 +73440,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -73613,7 +73613,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -73752,7 +73752,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -73891,7 +73891,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -74030,7 +74030,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -74169,7 +74169,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -74308,7 +74308,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -74447,7 +74447,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -74586,7 +74586,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -74725,7 +74725,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -74864,7 +74864,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -75003,7 +75003,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -75142,7 +75142,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -75315,7 +75315,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -75454,7 +75454,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -75593,7 +75593,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -75732,7 +75732,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -75871,7 +75871,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -76010,7 +76010,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -76149,7 +76149,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -76288,7 +76288,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -76427,7 +76427,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -76566,7 +76566,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -76705,7 +76705,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -76844,7 +76844,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -77017,7 +77017,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -77156,7 +77156,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -77295,7 +77295,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -77434,7 +77434,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -77573,7 +77573,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -77712,7 +77712,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -77851,7 +77851,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -77990,7 +77990,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -78129,7 +78129,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -78268,7 +78268,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -78407,7 +78407,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -78546,7 +78546,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -96959,7 +96959,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -97098,7 +97098,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -97237,7 +97237,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -97376,7 +97376,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -97515,7 +97515,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -97654,7 +97654,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -97793,7 +97793,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -97932,7 +97932,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -98071,7 +98071,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -98210,7 +98210,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -98349,7 +98349,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -98488,7 +98488,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -98661,7 +98661,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -98800,7 +98800,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -98939,7 +98939,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -99078,7 +99078,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -99217,7 +99217,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -99356,7 +99356,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -99495,7 +99495,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -99634,7 +99634,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -99773,7 +99773,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -99912,7 +99912,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -100051,7 +100051,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -100190,7 +100190,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -100363,7 +100363,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -100502,7 +100502,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -100641,7 +100641,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -100780,7 +100780,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -100919,7 +100919,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -101058,7 +101058,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -101197,7 +101197,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -101336,7 +101336,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -101475,7 +101475,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -101614,7 +101614,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -101753,7 +101753,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -101892,7 +101892,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -102065,7 +102065,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -102204,7 +102204,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -102343,7 +102343,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -102482,7 +102482,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -102621,7 +102621,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -102760,7 +102760,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -102899,7 +102899,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -103038,7 +103038,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -103177,7 +103177,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -103316,7 +103316,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -103455,7 +103455,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -103594,7 +103594,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -103767,7 +103767,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -103906,7 +103906,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -104045,7 +104045,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -104184,7 +104184,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -104323,7 +104323,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -104462,7 +104462,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -104601,7 +104601,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -104740,7 +104740,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -104879,7 +104879,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -105018,7 +105018,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -105157,7 +105157,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -105296,7 +105296,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -105469,7 +105469,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -105608,7 +105608,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -105747,7 +105747,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -105886,7 +105886,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -106025,7 +106025,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -106164,7 +106164,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -106303,7 +106303,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -106442,7 +106442,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -106581,7 +106581,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -106720,7 +106720,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -106859,7 +106859,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -106998,7 +106998,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -107171,7 +107171,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -107310,7 +107310,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -107449,7 +107449,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -107588,7 +107588,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -107727,7 +107727,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -107866,7 +107866,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -108005,7 +108005,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -108144,7 +108144,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -108283,7 +108283,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -108422,7 +108422,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -108561,7 +108561,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -108700,7 +108700,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -108873,7 +108873,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -109012,7 +109012,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -109151,7 +109151,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -109290,7 +109290,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -109429,7 +109429,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -109568,7 +109568,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -109707,7 +109707,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -109846,7 +109846,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -109985,7 +109985,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -110124,7 +110124,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -110263,7 +110263,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -110402,7 +110402,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -110575,7 +110575,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -110714,7 +110714,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -110853,7 +110853,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -110992,7 +110992,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -111131,7 +111131,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -111270,7 +111270,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -111409,7 +111409,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -111548,7 +111548,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -111687,7 +111687,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -111826,7 +111826,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -111965,7 +111965,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -112104,7 +112104,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -112277,7 +112277,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -112416,7 +112416,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -112555,7 +112555,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -112694,7 +112694,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -112833,7 +112833,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -112972,7 +112972,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -113111,7 +113111,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -113250,7 +113250,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -113389,7 +113389,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -113528,7 +113528,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -113667,7 +113667,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -113806,7 +113806,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -113979,7 +113979,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -114118,7 +114118,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -114257,7 +114257,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -114396,7 +114396,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -114535,7 +114535,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -114674,7 +114674,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -114813,7 +114813,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -114952,7 +114952,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -115091,7 +115091,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -115230,7 +115230,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -115369,7 +115369,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -115508,7 +115508,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -115681,7 +115681,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -115820,7 +115820,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -115959,7 +115959,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -116098,7 +116098,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -116237,7 +116237,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -116376,7 +116376,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -116515,7 +116515,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -116654,7 +116654,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -116793,7 +116793,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -116932,7 +116932,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -117071,7 +117071,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -117210,7 +117210,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -117383,7 +117383,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -117522,7 +117522,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -117661,7 +117661,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -117800,7 +117800,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -117939,7 +117939,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -118078,7 +118078,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -118217,7 +118217,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -118356,7 +118356,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -118495,7 +118495,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -118634,7 +118634,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -118773,7 +118773,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -118912,7 +118912,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -119085,7 +119085,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -119224,7 +119224,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -119363,7 +119363,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -119502,7 +119502,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -119641,7 +119641,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -119780,7 +119780,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -119919,7 +119919,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -120058,7 +120058,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -120197,7 +120197,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -120336,7 +120336,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -120475,7 +120475,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -120614,7 +120614,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -120787,7 +120787,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -120926,7 +120926,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -121065,7 +121065,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -121204,7 +121204,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -121343,7 +121343,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -121482,7 +121482,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -121621,7 +121621,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -121760,7 +121760,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -121899,7 +121899,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -122038,7 +122038,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -122177,7 +122177,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -122316,7 +122316,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -122489,7 +122489,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -122628,7 +122628,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -122767,7 +122767,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -122906,7 +122906,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -123045,7 +123045,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -123184,7 +123184,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -123323,7 +123323,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -123462,7 +123462,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -123601,7 +123601,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -123740,7 +123740,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -123879,7 +123879,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -124018,7 +124018,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -124191,7 +124191,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -124330,7 +124330,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -124469,7 +124469,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -124608,7 +124608,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -124747,7 +124747,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -124886,7 +124886,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -125025,7 +125025,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -125164,7 +125164,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -125303,7 +125303,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -125442,7 +125442,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -125581,7 +125581,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -125720,7 +125720,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -125893,7 +125893,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -126032,7 +126032,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -126171,7 +126171,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -126310,7 +126310,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -126449,7 +126449,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -126588,7 +126588,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -126727,7 +126727,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -126866,7 +126866,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -127005,7 +127005,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -127144,7 +127144,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -127283,7 +127283,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -127422,7 +127422,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -127595,7 +127595,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -127734,7 +127734,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -127873,7 +127873,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -128012,7 +128012,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -128151,7 +128151,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -128290,7 +128290,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -128429,7 +128429,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -128568,7 +128568,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -128707,7 +128707,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -128846,7 +128846,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -128985,7 +128985,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -129124,7 +129124,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -129297,7 +129297,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -129436,7 +129436,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -129575,7 +129575,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -129714,7 +129714,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -129853,7 +129853,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -129992,7 +129992,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -130131,7 +130131,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -130270,7 +130270,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -130409,7 +130409,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -130548,7 +130548,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -130687,7 +130687,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -130826,7 +130826,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -130999,7 +130999,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -131138,7 +131138,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -131277,7 +131277,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -131416,7 +131416,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -131555,7 +131555,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -131694,7 +131694,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -131833,7 +131833,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -131972,7 +131972,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -132111,7 +132111,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -132250,7 +132250,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -132389,7 +132389,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -132528,7 +132528,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
@@ -132701,7 +132701,7 @@
             "name": "混沌金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 暴击率",
-            "extraAttr": "魅惑抗性 (6级起)",
+            "extraAttr": "魅惑抗性",
             "levels": [
               {
                 "level": 1,
@@ -132840,7 +132840,7 @@
             "name": "三昧紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击率",
-            "extraAttr": "御佛% (6级起)",
+            "extraAttr": "御佛%",
             "levels": [
               {
                 "level": 1,
@@ -132979,7 +132979,7 @@
             "name": "元运断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "虚弱抗性 (6级起)",
+            "extraAttr": "虚弱抗性",
             "levels": [
               {
                 "level": 1,
@@ -133118,7 +133118,7 @@
             "name": "天心断金珠",
             "type": "石",
             "coreAttr": "攻击 / 减爆率",
-            "extraAttr": "御魔% (6级起)",
+            "extraAttr": "御魔%",
             "levels": [
               {
                 "level": 1,
@@ -133257,7 +133257,7 @@
             "name": "煌燿金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 技能命中",
-            "extraAttr": "技能躲闪 (6级起)",
+            "extraAttr": "技能躲闪",
             "levels": [
               {
                 "level": 1,
@@ -133396,7 +133396,7 @@
             "name": "培元断金珠",
             "type": "石",
             "coreAttr": "攻击 / 技能命中",
-            "extraAttr": "减爆伤% (6级起)",
+            "extraAttr": "减爆伤%",
             "levels": [
               {
                 "level": 1,
@@ -133535,7 +133535,7 @@
             "name": "醒神碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "昏睡抗性 (6级起)",
+            "extraAttr": "昏睡抗性",
             "levels": [
               {
                 "level": 1,
@@ -133674,7 +133674,7 @@
             "name": "渡劫碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 技能躲闪",
-            "extraAttr": "减爆率% (6级起)",
+            "extraAttr": "减爆率%",
             "levels": [
               {
                 "level": 1,
@@ -133813,7 +133813,7 @@
             "name": "夺魄碧灵珠",
             "type": "晶",
             "coreAttr": "真气 / 暴击伤害",
-            "extraAttr": "减免伤害% (6级起)",
+            "extraAttr": "减免伤害%",
             "levels": [
               {
                 "level": 1,
@@ -133952,7 +133952,7 @@
             "name": "神行紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 暴击伤害",
-            "extraAttr": "眩晕抗性 (6级起)",
+            "extraAttr": "眩晕抗性",
             "levels": [
               {
                 "level": 1,
@@ -134091,7 +134091,7 @@
             "name": "无极紫阳珠",
             "type": "玉",
             "coreAttr": "气血 / 减爆伤",
-            "extraAttr": "定身抗性 (6级起)",
+            "extraAttr": "定身抗性",
             "levels": [
               {
                 "level": 1,
@@ -134230,7 +134230,7 @@
             "name": "避尘金刚珠",
             "type": "金刚珠",
             "coreAttr": "防御 / 减爆伤",
-            "extraAttr": "御仙% (6级起)",
+            "extraAttr": "御仙%",
             "levels": [
               {
                 "level": 1,
