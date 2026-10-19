@@ -38,7 +38,9 @@ const CASES_FILE = path.join(ROOT, 'regression_test', 'l1_intent_cases.json');
 const MATRIX_FILE = path.join(ROOT, 'regression_test', 'l1_intent_cases_matrix.json');
 const MATRIX_REPORT_FILE = path.join(ROOT, 'regression_test', 'l1_matrix_report.txt');
 const GOLDEN_FILE = path.join(ROOT, 'regression_test', 'l1_intent_golden.json');
-const BUNDLE = path.join(os.tmpdir(), `l1_fixture_bundle_${process.pid}.mjs`);
+const CACHE_DIR = path.join(ROOT, 'node_modules', '.cache');
+if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR, { recursive: true });
+const BUNDLE = path.join(CACHE_DIR, `l1_fixture_bundle_${process.pid}.mjs`);
 
 const argv = process.argv.slice(2);
 const MODE_GOLDEN = argv.includes('--golden');
