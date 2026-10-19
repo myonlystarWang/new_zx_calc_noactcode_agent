@@ -9908,7 +9908,7 @@
   },
   "hub-equip-01": {
     "sender": "assistant",
-    "text": "为你呈现【装备全景】导航，涵盖三大品质主装与特种首饰系统：",
+    "text": "为你呈现【装备全景】导航，涵盖三大品质主装、特种首饰与宝石镶嵌体系：",
     "cardType": "equip_hub",
     "cardData": {
       "title": "装备全景导航",
@@ -9952,6 +9952,11 @@
           "key": "shenji",
           "label": "神级首饰",
           "query": "神级项链"
+        },
+        {
+          "key": "baoshi",
+          "label": "宝石属性",
+          "query": "宝石"
         }
       ]
     }

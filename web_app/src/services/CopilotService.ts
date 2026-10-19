@@ -1508,7 +1508,7 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '为你呈现【装备全景】导航，涵盖三大品质主装与特种首饰系统：',
+                text: '为你呈现【装备全景】导航，涵盖三大品质主装、特种首饰与宝石镶嵌体系：',
                 time: timeStr,
                 cardType: 'equip_hub',
                 cardData: {
@@ -1522,6 +1522,7 @@ export class CopilotService {
                         { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
                         { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
                         { key: 'shenji', label: '神级首饰', query: '神级项链' },
+                        { key: 'baoshi', label: '宝石属性', query: '宝石' },
                     ]
                 }
             };
