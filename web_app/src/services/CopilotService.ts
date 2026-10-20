@@ -1681,7 +1681,7 @@ export class CopilotService {
                         { key: 'crit_red', label: '极致减暴', query: '极致减暴' },
                         { key: 'monster_dmg', label: '极致怪增', query: '怪增' },
                         { key: 'dodge', label: '技能躲闪', query: '躲闪' },
-                        { key: 'pet_pledge', label: '宠物指南', query: '宠物结誓' },
+                        { key: 'pet_pledge', label: '宠物刻誓', query: '宠物结誓' },
                         { key: 'fabao_exp', label: '法宝经验', query: '法宝经验' },
                         { key: 'zhenling_upgrade', label: '阵灵经验', query: '阵灵经验' },
                         { key: 'class_status', label: '职业状态', query: '职业状态' },
@@ -3027,41 +3027,34 @@ export class CopilotService {
             console.warn('Load curated skills for intent failed:', e);
         }
 
-        // 5. 极致属性攻略意图
+        // 5. 极致属性攻略意图（信息卡 inline 呈现全领域细分，不再跳转路由页）
         if (q.includes('极致无视') || q.includes('极致减免') || q.includes('极致减暴') || q.includes('怪增') || q.includes('躲闪') || q.includes('天花板') || q.includes('上限')) {
             let attrKey = 'ignore';
             let title = '极致无视伤害减免攻略';
-            let ceilingVal = 175.7;
 
             if (q.includes('减免')) {
                 attrKey = 'reduction';
                 title = '极致减免伤害攻略';
-                ceilingVal = 210.0;
             } else if (q.includes('减暴')) {
                 attrKey = 'critReduction';
                 title = '极致减暴击攻略';
-                ceilingVal = 180.0;
             } else if (q.includes('怪增')) {
                 attrKey = 'monsterDamageBonus';
                 title = '极致对怪物增伤攻略';
-                ceilingVal = 120.0;
             } else if (q.includes('躲闪')) {
                 attrKey = 'dodge';
                 title = '极致技能躲闪攻略';
-                ceilingVal = 230.0;
             }
 
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: `查询到【${title}】的核心上限基准（理论最高约 ${ceilingVal}%）。点击卡片可直接查看全领域细分与大致毕业门槛：`,
+                text: `为你速查到【${title}】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：`,
                 time: timeStr,
                 cardType: 'ceiling',
                 cardData: {
                     title,
-                    attrKey,
-                    ceilingVal,
-                    route: `/compendium/ceiling?attr=${attrKey}`
+                    attrKey
                 }
             };
         }

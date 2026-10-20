@@ -36,6 +36,7 @@ import { NinglingqiDetailCard } from '../compendium/NinglingqiDetailCard';
 import { PetPledgeDetailCard } from '../compendium/PetPledgeDetailCard';
 import { ZhenlingUpgradeCard } from '../compendium/ZhenlingUpgradeCard';
 import { FabaoUpgradeCard } from '../compendium/FabaoUpgradeCard';
+import { CeilingDetailCard } from '../compendium/CeilingDetailCard';
 import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
 import { ACCENT_BUTTON, ACCENT_BUTTON_ICON } from '../ui/accentButtonStyles';
@@ -690,22 +691,9 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             );
                                         })()}
 
-                                        {/* 4. 极致属性攻略卡片 */}
+                                        {/* 4. 极致属性攻略信息卡（全领域细分 inline 呈现，窄屏自适应，不再跳转路由页） */}
                                         {msg.cardType === 'ceiling' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#151a24] border border-amber-500/30 p-4 flex items-center justify-between gap-4">
-                                                <div>
-                                                    <div className="text-sm font-bold text-amber-300">{msg.cardData.title}</div>
-                                                    <div className="text-xs text-slate-400 mt-0.5">理论最高基准: {msg.cardData.ceilingVal}%</div>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => navigate(msg.cardData.route)}
-                                                    className="px-3.5 py-1.5 rounded-lg bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/40 text-amber-200 text-xs font-medium flex items-center gap-1.5"
-                                                >
-                                                    <span>查看极致攻略拆解</span>
-                                                    <ExternalLink className="w-3 h-3" />
-                                                </button>
-                                            </div>
+                                            <CeilingDetailCard cardData={msg.cardData} />
                                         )}
 
                                         {/* 5. 轩辕策四象卡片 */}

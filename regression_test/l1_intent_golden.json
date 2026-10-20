@@ -10474,24 +10474,20 @@
   },
   "ceiling-ignore-01": {
     "sender": "assistant",
-    "text": "查询到【极致无视伤害减免攻略】的核心上限基准（理论最高约 175.7%）。点击卡片可直接查看全领域细分与大致毕业门槛：",
+    "text": "为你速查到【极致无视伤害减免攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
     "cardType": "ceiling",
     "cardData": {
       "title": "极致无视伤害减免攻略",
-      "attrKey": "ignore",
-      "ceilingVal": 175.7,
-      "route": "/compendium/ceiling?attr=ignore"
+      "attrKey": "ignore"
     }
   },
   "ceiling-mbonus-01": {
     "sender": "assistant",
-    "text": "查询到【极致对怪物增伤攻略】的核心上限基准（理论最高约 120%）。点击卡片可直接查看全领域细分与大致毕业门槛：",
+    "text": "为你速查到【极致对怪物增伤攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
     "cardType": "ceiling",
     "cardData": {
       "title": "极致对怪物增伤攻略",
-      "attrKey": "monsterDamageBonus",
-      "ceilingVal": 120,
-      "route": "/compendium/ceiling?attr=monsterDamageBonus"
+      "attrKey": "monsterDamageBonus"
     }
   },
   "guard-num-01": {
@@ -165433,7 +165429,7 @@
         },
         {
           "key": "pet_pledge",
-          "label": "宠物指南",
+          "label": "宠物刻誓",
           "query": "宠物结誓"
         },
         {
@@ -165493,7 +165489,7 @@
         },
         {
           "key": "pet_pledge",
-          "label": "宠物指南",
+          "label": "宠物刻誓",
           "query": "宠物结誓"
         },
         {

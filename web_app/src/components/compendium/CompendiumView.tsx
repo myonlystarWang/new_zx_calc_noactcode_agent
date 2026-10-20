@@ -519,7 +519,7 @@ const AttributeTable: React.FC<{ sectionKey: string; sectionTitle: string }> = (
                 </div>
             )}
 
-            <p className="text-xs text-slate-500 mt-2 px-1">数据截至 {guide.asOf}，玩家总结仅供参考</p>
+            {/* <p className="text-xs text-slate-500 mt-2 px-1">数据截至 {guide.asOf}，玩家总结仅供参考</p> */}
         </div>
     );
 };
