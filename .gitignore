@@ -1,5 +1,7 @@
 zx_analysis_results/**/logs/
 zx_analysis_results/**/profile_test.json
+# 布局/截图验证产物，随时可删，不入库
+zx_analysis_results/_layout_check/
 
 # Dependencies and build output
 node_modules/
@@ -8,7 +10,7 @@ agent_tool/node_modules_win/
 dist/
 **/dist/
 *.tsbuildinfo
-
+films/
 # Local generated profiles and temporary analysis input
 agent_tool/profile_test_*.json
 agent_tool/temp_profile_*.json
