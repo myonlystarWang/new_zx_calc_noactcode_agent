@@ -46,6 +46,20 @@ export interface NinglingqiDetailCardProps {
     className?: string;
 }
 
+// 稀有属性出现限制提示（从第 3 条到第 12 条统一标注存在上限）
+const LINE_CAP_NOTES: Record<number, string> = {
+    3: '稀有属性存在上限',
+    4: '稀有属性存在上限',
+    5: '稀有属性存在上限',
+    6: '稀有属性存在上限',
+    7: '稀有属性存在上限',
+    8: '稀有属性存在上限',
+    9: '稀有属性存在上限',
+    10: '稀有属性存在上限',
+    11: '稀有属性存在上限',
+    12: '稀有属性存在上限',
+};
+
 // 稀有/核心高阶属性名称集合（高亮呈现）
 const RARE_ATTR_NAMES = new Set([
     '暴击', '减免暴击', '暴击伤害', '致命一击伤害', '减免爆伤',
@@ -219,6 +233,7 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
                     {Array.from({ length: 12 }, (_, i) => i + 1).map((lineIdx) => {
                         const isUnlocked = lineIdx <= activeHoles;
                         const p = pools.find(pool => pool.lineIndex === lineIdx);
+                        const capNote = LINE_CAP_NOTES[lineIdx];
                         const isExpanded = Boolean(expandedLines[lineIdx]);
                         const totalWeight = p ? p.attributes.reduce((sum, a) => sum + a.weight, 0) : 1;
 
@@ -249,6 +264,13 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
                                         {!isUnlocked && (
                                             <span className="text-[11px] text-slate-500">
                                                 (未解锁)
+                                            </span>
+                                        )}
+
+                                        {/* 稀有排他上限提示 */}
+                                        {capNote && isUnlocked && (
+                                            <span className="text-[10px] text-rose-400 bg-rose-950/40 px-1.5 py-0.2 rounded border border-rose-500/30 whitespace-nowrap font-sans">
+                                                ★ {capNote}
                                             </span>
                                         )}
                                     </div>
