@@ -15,6 +15,7 @@ export interface FabaoUpgradeExpData {
     itemConversion?: {
         tianlong?: { name: string; exp: number };
         zhenlong?: { name: string; exp: number; tianlongCount: number };
+        liyang?: { name: string; exp: number };
     };
     milestones?: Array<{
         level: number;
@@ -89,6 +90,7 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
     const [targetLevel, setTargetLevel] = useState<number>(35);
 
     // 测算逻辑
+    const LIYANG_EXP = data?.itemConversion?.liyang?.exp ?? 100;
     const calcResult = useMemo(() => {
         const startRow = levels.find((l) => l.level === startLevel);
         const targetRow = levels.find((l) => l.level === targetLevel);
@@ -99,14 +101,16 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
         const tianlongCount = Math.ceil(diffExp / 500);
         const zhenlongCount = Math.floor(diffExp / 5500);
         const remainTianlong = Math.ceil((diffExp % 5500) / 500);
+        const liyangCount = Math.ceil(diffExp / LIYANG_EXP);
 
         return {
             diffExp,
             tianlongCount,
             zhenlongCount,
-            remainTianlong
+            remainTianlong,
+            liyangCount
         };
-    }, [levels, startLevel, targetLevel]);
+    }, [levels, startLevel, targetLevel, LIYANG_EXP]);
 
     const p1Levels = levels.filter((l) => l.level >= 1 && l.level <= 20);
     const p2Levels = levels.filter((l) => l.level >= 21 && l.level <= 40);
@@ -242,24 +246,38 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between p-2 rounded bg-black/40 border border-[#1e293b] text-[11px] gap-2">
-                        <span className="text-slate-300">
+                    <div className="p-2 rounded bg-black/40 border border-[#1e293b] text-[11px] space-y-1.5">
+                        <div className="text-slate-300">
                             从 <span className="text-cyan-300 font-bold">{startLevel}级</span> 升至{' '}
                             <span className="text-cyan-300 font-bold">{targetLevel}级</span>（差额：
-                            <span className="text-amber-300 font-bold">{calcResult.diffExp.toLocaleString()}</span>）：
-                        </span>
-                        <div className="flex items-center gap-3 font-semibold text-[11px]">
-                            <span>
-                                天龙魔血：<span className="text-red-400 font-bold">{calcResult.tianlongCount.toLocaleString()}</span> 颗
+                            <span className="text-amber-300 font-bold">{calcResult.diffExp.toLocaleString()}</span>）
+                        </div>
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px]">
+                            <span className="whitespace-nowrap">
+                                <span className="text-red-400">天龙魔血</span>
+                                <span className="text-slate-500">：</span>
+                                <span className="text-red-400 font-bold tabular-nums">{calcResult.tianlongCount.toLocaleString()}</span>
+                                <span className="text-slate-400"> 个</span>
                             </span>
-                            <span className="text-slate-500">或</span>
-                            <span>
-                                真龙圣血：<span className="text-amber-400 font-bold">{calcResult.zhenlongCount}</span> 颗
+                            <span className="whitespace-nowrap">
+                                <span className="text-amber-400">真龙圣血</span>
+                                <span className="text-slate-500">：</span>
+                                <span className="text-amber-400 font-bold tabular-nums">{calcResult.zhenlongCount}</span>
+                                <span className="text-slate-400"> 个</span>
                                 {calcResult.remainTianlong > 0 && (
-                                    <span className="text-slate-400 text-[10px] font-normal">
-                                        {' '}+ {calcResult.remainTianlong} 天龙魔血
-                                    </span>
+                                    <>
+                                        <span className="text-slate-500"> + </span>
+                                        <span className="text-red-400 font-bold tabular-nums">{calcResult.remainTianlong}</span>
+                                        <span className="text-slate-400"> 个</span>
+                                        <span className="text-red-400">天龙魔血</span>
+                                    </>
                                 )}
+                            </span>
+                            <span className="whitespace-nowrap">
+                                <span className="text-orange-400">离阳火精</span>
+                                <span className="text-slate-500">：</span>
+                                <span className="text-orange-400 font-bold tabular-nums">{calcResult.liyangCount.toLocaleString()}</span>
+                                <span className="text-slate-400"> 个</span>
                             </span>
                         </div>
                     </div>
@@ -315,27 +333,75 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
 
             {/* 核心换算与三大里程碑全景卡（自适应横条排版，杜绝文字折行挤压） */}
             <div className="rounded border border-red-500/25 bg-gradient-to-r from-red-950/20 via-[#0d1422] to-amber-950/20 p-2.5 space-y-2">
-                <div className="flex flex-wrap items-center justify-between text-[11px] font-semibold border-b border-[#1f293d]/80 pb-1.5 gap-1.5">
-                    <span className="text-red-400">天龙魔血 × 1 = 500 经验</span>
-                    <span className="text-amber-300">真龙圣血 × 1 = 天龙魔血 × 11 = 5,500 经验</span>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] border-b border-[#1f293d]/80 pb-1.5">
+                    <span className="whitespace-nowrap">
+                        <span className="text-orange-400">离阳火精</span>
+                        <span className="text-slate-500"> × 1 = </span>
+                        <span className="text-orange-400 font-bold tabular-nums">100</span>
+                        <span className="text-slate-400"> 经验</span>
+                    </span>
+                    <span className="whitespace-nowrap">
+                        <span className="text-red-400">天龙魔血</span>
+                        <span className="text-slate-500"> × 1 = </span>
+                        <span className="text-red-400 font-bold tabular-nums">500</span>
+                        <span className="text-slate-400"> 经验</span>
+                    </span>
+                    <span className="whitespace-nowrap">
+                        <span className="text-amber-400">真龙圣血</span>
+                        <span className="text-slate-500"> × 1 = </span>
+                        <span className="text-red-400">天龙魔血</span>
+                        <span className="text-slate-500"> × 11 = </span>
+                        <span className="text-amber-400 font-bold tabular-nums">5,500</span>
+                        <span className="text-slate-400"> 经验</span>
+                    </span>
                 </div>
 
                 <div className="space-y-1.5 pt-0.5">
-                    <div className="flex flex-wrap sm:flex-nowrap items-center justify-between px-2.5 py-1.5 rounded bg-black/50 border border-[#1f293d] gap-1 hover:border-red-500/30 transition-colors">
+                    <div className="flex flex-wrap sm:flex-nowrap items-center justify-between px-2.5 py-1.5 rounded bg-black/50 border border-[#1f293d] gap-1 hover:border-cyan-500/30 transition-colors">
                         <div className="flex items-center gap-1.5 shrink-0">
-                            <span className="text-xs text-red-400 font-bold">30级满</span>
+                            <span className="text-xs text-cyan-400 font-bold">30级满</span>
                         </div>
-                        <div className="text-[11px] text-slate-300 text-right">
-                            约 <b className="text-red-300 font-bold text-xs">336</b> 颗天龙魔血 <span className="text-slate-400 text-[10px]">（31颗真龙）</span>
+                        <div className="grid grid-cols-[5rem_6rem_4rem] justify-end gap-x-2 text-[11px]">
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-orange-400 font-bold tabular-nums">1,679</span>
+                                <span className="text-slate-500"> 个</span>
+                                <span className="text-orange-400">离阳</span>
+                            </span>
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-slate-500">约</span>
+                                <span className="text-red-300 font-bold tabular-nums"> 336 </span>
+                                <span className="text-slate-500">个</span>
+                                <span className="text-red-300">天龙</span>
+                            </span>
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-amber-400 font-bold tabular-nums">31</span>
+                                <span className="text-slate-500"> 个</span>
+                                <span className="text-amber-400">真龙</span>
+                            </span>
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap sm:flex-nowrap items-center justify-between px-2.5 py-1.5 rounded bg-black/50 border border-[#1f293d] gap-1 hover:border-amber-500/30 transition-colors">
+                    <div className="flex flex-wrap sm:flex-nowrap items-center justify-between px-2.5 py-1.5 rounded bg-black/50 border border-[#1f293d] gap-1 hover:border-cyan-500/30 transition-colors">
                         <div className="flex items-center gap-1.5 shrink-0">
-                            <span className="text-xs text-amber-400 font-bold">35级满</span>
+                            <span className="text-xs text-cyan-400 font-bold">35级满</span>
                         </div>
-                        <div className="text-[11px] text-slate-300 text-right">
-                            约 <b className="text-amber-300 font-bold text-xs">631</b> 颗天龙魔血 <span className="text-slate-400 text-[10px]">（58颗真龙）</span>
+                        <div className="grid grid-cols-[5rem_6rem_4rem] justify-end gap-x-2 text-[11px]">
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-orange-400 font-bold tabular-nums">3,152</span>
+                                <span className="text-slate-500"> 个</span>
+                                <span className="text-orange-400">离阳</span>
+                            </span>
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-slate-500">约</span>
+                                <span className="text-red-300 font-bold tabular-nums"> 631 </span>
+                                <span className="text-slate-500">个</span>
+                                <span className="text-red-300">天龙</span>
+                            </span>
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-amber-400 font-bold tabular-nums">58</span>
+                                <span className="text-slate-500"> 个</span>
+                                <span className="text-amber-400">真龙</span>
+                            </span>
                         </div>
                     </div>
 
@@ -343,8 +409,23 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                         <div className="flex items-center gap-1.5 shrink-0">
                             <span className="text-xs text-cyan-400 font-bold">40级满</span>
                         </div>
-                        <div className="text-[11px] text-slate-300 text-right">
-                            约 <b className="text-cyan-300 font-bold text-xs">5,031</b> 颗天龙魔血 <span className="text-slate-400 text-[10px]">（458颗真龙）</span>
+                        <div className="grid grid-cols-[5rem_6rem_4rem] justify-end gap-x-2 text-[11px]">
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-orange-400 font-bold tabular-nums">25,152</span>
+                                <span className="text-slate-500"> 个</span>
+                                <span className="text-orange-400">离阳</span>
+                            </span>
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-slate-500">约</span>
+                                <span className="text-red-300 font-bold tabular-nums"> 5,031 </span>
+                                <span className="text-slate-500">个</span>
+                                <span className="text-red-300">天龙</span>
+                            </span>
+                            <span className="text-right whitespace-nowrap">
+                                <span className="text-amber-400 font-bold tabular-nums">458</span>
+                                <span className="text-slate-500"> 个</span>
+                                <span className="text-amber-400">真龙</span>
+                            </span>
                         </div>
                     </div>
                 </div>

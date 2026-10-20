@@ -4,7 +4,8 @@
   "description": "法宝 1~40 级升级经验、累计经验与天龙魔血/真龙圣血消耗对照表",
   "itemConversion": {
     "tianlong": { "name": "天龙魔血", "exp": 500 },
-    "zhenlong": { "name": "真龙圣血", "exp": 5500, "tianlongCount": 11 }
+    "zhenlong": { "name": "真龙圣血", "exp": 5500, "tianlongCount": 11 },
+    "liyang": { "name": "离阳火精", "exp": 100 }
   },
   "milestones": [
     { "level": 30, "cumulativeExp": 167810, "tianlong": 335.6, "desc": "经典法宝核心档位" },
