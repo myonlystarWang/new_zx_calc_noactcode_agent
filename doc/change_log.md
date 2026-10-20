@@ -1,5 +1,42 @@
 # Change Log
 
+## [1.2.5] - 2026-10-20
+
+### 极致攻略信息卡内联展开（废弃路由跳转），法宝详情卡顶栏重排
+
+#### Added
+
+1. **极致攻略信息卡 `CeilingDetailCard.tsx`（新增）**：
+   - 覆盖「极致无视 / 极致减免 / 极致减暴 / 极致怪增 / 极致躲闪」五篇，数据源与全景资料库 `AttributeTable` / `SourceSectionView` 完全同源：ceiling 篇读 `attribute_ceiling_guide.json`，来源篇（怪增/躲闪）读 `stat_source_lists.json`；
+   - 聊天内直接展开全量细分，不再输出 `ceilingVal` / `route`，也不再跳转 `/compendium/ceiling`；
+   - 领域分组沿用 `CompendiumView.DOMAINS` 色板：装备 amber、首饰 sky、法身 purple、星宿 teal、阵灵 blue、宠物时装称号 rose（另补 basic=slate、职业阵营=indigo），组头 = 色点 + 领域色名 + 项数 + 同色小计，行内类别小字用同色 400 档；
+   - ceiling 篇四档列（最高/夯/顶级/毕业）列头只出现一次，理论最高走 `slate-100` 粗体、后三档 `slate-400`；
+   - 来源篇条件项（换装/阵营）以琥珀描边区分，标注「不计入小计」。
+
+2. **领域筛选栏交互**：
+   - 两端 `ChevronLeft/Right` 箭头翻页，每次 200px 平滑滚动；箭头固定占位、不可滚方向置灰（`disabled` + `text-slate-600`），避免 chips 区宽度抖动；
+   - 竖向滚轮转横向滚动（与 `BaoshiDetailCard` / `ClassStatusCard` 等五张卡同一套写法）：**只要自身溢出就无条件 `preventDefault`**，不放行到聊天区，修复「左右滚动时整页跟着往下滚」。
+
+#### Changed
+
+1. **窄卡排版（左分屏）**：卡片根挂 `@container`，全部断点改用容器查询 `@sm`（24rem），不再依赖视口宽度（左分屏下视口很宽但卡片仅 371px，视口断点会失效）。<@sm 时类别内联进项目名（`·` 分隔）、项目名 `truncate` + `title` 保留全名、数值 11px、四档列宽 `2.4/2/2/2.4rem`；≥@sm 恢复独立类别列 + 12px + `3/2.25/2.25/3rem`。
+2. **配色**：行内数值统一 `slate-100` 不逐行染色；列头/项数/小计标签/脚注/备注全部提到 `slate-400`，筛选胶囊 `text-xs`(12px)。
+3. **回归基线**：`l1_intent_cases.json` / `l1_intent_golden.json` 的 ceiling 用例改断言 `cardData.attrKey`，并把入口文案「宠物指南」同步为「宠物刻誓」。
+4. **数据**：`stat_source_lists.json` 怪增条件项「不知愁专属时装（净增+2.5%）」改为「不知愁专属时装」，note 精简为「极限换不知愁(+3%)需扣除圣诞衣服(-0.5%)与圣诞鞋(-33%暴伤)」，极限 61.7% 口径不变。
+5. **资料库极致属性表**：移除表格底部与信息卡重复的「数据截至 … 玩家总结仅供参考」脚注（注释保留）。
+
+#### 法宝详情卡 `FabaoDetailCard.tsx`
+
+1. 顶栏由三行压到两行：第 1 行法宝名称 + 品质/等级标签，第 2 行传承形态与等阶按钮同排；无传承形态时等阶按钮回落到第 1 行右侧，不再留空行。
+2. 传承形态由独立按钮组改为内嵌分段控件（`inline-flex rounded-lg bg-slate-950/70 p-0.5`），与职业状态卡切换栏视觉统一。
+3. 等阶调节由「滑块 + 1~5 数字块」改为「等阶 -1 / 等阶 +1」两个步进按钮，到 1/5 边界自动禁用。
+4. 技能标题行合并「技能名 + 第 N 阶」（`titleLine` / `bodyStr1` 拆分），`GameTooltipShell` 的 `title` 类型放宽为 `React.ReactNode` 以承载带色文本。
+5. 暂时收起「获取途径与说明」区块（JSX 注释保留作参考，连带移除 `Info` 图标导入）。
+
+#### Chore
+
+- `.gitignore` 新增 `films/` 与 `zx_analysis_results/_layout_check/`。
+
 ## [1.2.4] - 2026-10-19
 
 ### 全系装备与数值卡片全景上线，攻略体系架构重构与大规模测算器升级
