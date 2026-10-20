@@ -507,7 +507,7 @@
     "input": "极致无视",
     "expect": {
       "cardType": "ceiling",
-      "cardData.ceilingVal": 175.7
+      "cardData.attrKey": "ignore"
     },
     "tags": [
       "standard",
@@ -520,7 +520,7 @@
     "input": "怪增",
     "expect": {
       "cardType": "ceiling",
-      "cardData.ceilingVal": 120
+      "cardData.attrKey": "monsterDamageBonus"
     },
     "tags": [
       "synonym",
