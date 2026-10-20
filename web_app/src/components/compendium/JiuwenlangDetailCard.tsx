@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
 import clsx from 'clsx';
 import { GAME_COLORS } from '../../constants/gameColorSystem';
 
@@ -66,75 +65,6 @@ export const JiuwenlangDetailCard: React.FC<JiuwenlangDetailCardProps> = ({ card
             ? cardData.initialLevel
             : 20;
     });
-
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
-    const [canScrollRight, setCanScrollRight] = useState(false);
-
-    const updateScrollState = useCallback(() => {
-        const el = scrollRef.current;
-        if (!el) return;
-        setCanScrollLeft(el.scrollLeft > 4);
-        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
-    }, []);
-
-    const scrollToActiveItem = useCallback((smooth = true) => {
-        const el = scrollRef.current;
-        if (!el) return;
-        const activeBtn = el.querySelector<HTMLElement>('[data-active="true"]');
-        if (activeBtn) {
-            const containerLeft = el.getBoundingClientRect().left;
-            const containerWidth = el.clientWidth;
-            const itemLeft = activeBtn.getBoundingClientRect().left;
-            const itemWidth = activeBtn.clientWidth;
-            const offset = (itemLeft - containerLeft) - (containerWidth / 2 - itemWidth / 2);
-            el.scrollBy({
-                left: offset,
-                behavior: smooth ? 'smooth' : 'auto'
-            });
-        }
-        setTimeout(updateScrollState, 220);
-    }, [updateScrollState]);
-
-    useEffect(() => {
-        updateScrollState();
-        const handleResize = () => updateScrollState();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [updateScrollState]);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            scrollToActiveItem(true);
-        }, 50);
-        return () => clearTimeout(timer);
-    }, [currentLevel, scrollToActiveItem]);
-
-    // 滚轮横向滑动
-    useEffect(() => {
-        const el = scrollRef.current;
-        if (!el) return;
-        const handleWheel = (e: WheelEvent) => {
-            if (e.deltaY !== 0) {
-                e.preventDefault();
-                el.scrollLeft += e.deltaY;
-                updateScrollState();
-            }
-        };
-        el.addEventListener('wheel', handleWheel, { passive: false });
-        return () => el.removeEventListener('wheel', handleWheel);
-    }, [updateScrollState]);
-
-    const handleScrollStep = (direction: 'left' | 'right') => {
-        const el = scrollRef.current;
-        if (!el) return;
-        const step = 200;
-        el.scrollBy({
-            left: direction === 'left' ? -step : step,
-            behavior: 'smooth'
-        });
-        setTimeout(updateScrollState, 220);
-    };
 
     const activeItem = useMemo(() => {
         return levels.find((l) => l.level === currentLevel) || levels[levels.length - 1];
