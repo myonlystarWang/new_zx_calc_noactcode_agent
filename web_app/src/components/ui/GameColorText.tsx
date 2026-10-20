@@ -83,7 +83,7 @@ export const GameColorText: React.FC<GameColorTextProps> = ({
  */
 export const GameTooltipShell: React.FC<{
     children: React.ReactNode;
-    title?: string;
+    title?: React.ReactNode;
     titleColor?: string;
     className?: string;
 }> = ({ children, title, titleColor = '#58a6ff', className = '' }) => {
