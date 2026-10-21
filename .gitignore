@@ -3,7 +3,6 @@ zx_analysis_results/**/profile_test.json
 # 布局/截图验证产物，随时可删，不入库
 zx_analysis_results/_layout_check/
 doc/四灵本元截图
-web_app/public/game_data/equip_icons
 # Dependencies and build output
 node_modules/
 **/node_modules/
