@@ -14,7 +14,7 @@ import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
 export const UNIFIED_NOT_FOUND_REPLY =
     '天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n' +
-    '• 装备速查：【昭武 衣服】、【佩章】、【凝灵契】、【九纹琅】、【旧天缘】\n' +
+    '• 装备速查：【昭武 衣服】、【佩章】、【凝灵契】、【四灵本元】、【九纹琅】、【旧天缘】\n' +
     '• 门派与技能：【逐霜 苍龙啸】、【鬼王 星宿】、【青云 神通】、【贺岁时装特技】\n' +
     '• 进阶与数值：【星宿升星】、【宝石属性】、【宠物刻蚀】、【阵灵升级】、【法宝经验】\n' +
     '• 工具与模拟：【天缘模拟】、【轩辕策属性】、【战力计算】、【开服雷达】\n' +
@@ -41,7 +41,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'xingsu' | 'baoshi' | 'fashion_skill';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan';
     cardData?: any;
 }
 
@@ -1374,6 +1374,78 @@ export class CopilotService {
         }
 
         // ------------------------------------------------------------
+        // 0.55b 四灵本元装备卡（伏龙鼎镶嵌，属装备大类）
+        // 支持「四灵本元」「本元」「伏龙鼎」「饕餮本元」「夔牛本元 五阶」「本元 钧天玄霆」
+        // 注意：阶位名（扶摇/风雷/九霄/幽明…）与技能、装备重名，故仅在与「本元/伏龙鼎」同现时才反查定位
+        // ------------------------------------------------------------
+        const SILIN_SPIRIT_MAP: Record<string, { id: string; name: string }> = {
+            '夔牛': { id: 'kuiniu', name: '夔牛' },
+            '黄鸟': { id: 'huangniao', name: '黄鸟' },
+            '烛龙': { id: 'zhulong', name: '烛龙' },
+            '饕餮': { id: 'taotie', name: '饕餮' }
+        };
+        const SILIN_TIER_CN: Record<string, number> = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5 };
+
+        const isSilinBenyuanQuery =
+            (q.includes('本元') || q.includes('伏龙鼎')) &&
+            !q.includes('瑞灵');
+
+        if (isSilinBenyuanQuery) {
+            const silinData = await dataService.getSilinBenyuanData();
+
+            let matchedSpiritId: string | undefined;
+            let matchedSpiritName: string | undefined;
+            let matchedTier: number | undefined;
+
+            for (const [k, v] of Object.entries(SILIN_SPIRIT_MAP)) {
+                if (q.includes(k)) {
+                    matchedSpiritId = v.id;
+                    matchedSpiritName = v.name;
+                    break;
+                }
+            }
+
+            const tierMatch = q.match(/([1-5一二三四五])\s*阶/);
+            if (tierMatch) {
+                matchedTier = SILIN_TIER_CN[tierMatch[1]] ?? parseInt(tierMatch[1], 10);
+            }
+
+            // 阶位名反查：输入「钧天玄霆」直接定位 夔牛·五阶
+            const allTierNames: Array<{ spiritId: string; spiritName: string; tier: number; name: string }> = [];
+            for (const sp of (silinData?.spirits || [])) {
+                const tierNames: Record<string, string | null> = sp.tierNames || {};
+                for (const [t, name] of Object.entries(tierNames)) {
+                    if (name) allTierNames.push({ spiritId: sp.id, spiritName: sp.name, tier: parseInt(t, 10), name: String(name) });
+                }
+            }
+            const hitTierName = allTierNames.find((x) => q.includes(x.name));
+            if (hitTierName) {
+                matchedSpiritId = hitTierName.spiritId;
+                matchedSpiritName = hitTierName.spiritName;
+                matchedTier = hitTierName.tier;
+            }
+
+            if (matchedTier && (matchedTier < 1 || matchedTier > 5)) matchedTier = undefined;
+
+            const scopeText = matchedSpiritName
+                ? `【${matchedSpiritName}本元${matchedTier ? '·' + ['一', '二', '三', '四', '五'][matchedTier - 1] + '阶' : ''}】`
+                : '【四灵本元】';
+
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你速查到装备${scopeText}（伏龙鼎镶嵌）。支持四灵切换与 1~5 阶切换，逐阶查看可能词条、五阶满值、本阶折算数值与精确概率：`,
+                time: timeStr,
+                cardType: 'silin_benyuan',
+                cardData: {
+                    data: silinData,
+                    initialSpiritId: matchedSpiritId,
+                    initialTier: matchedTier
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
         // 0.56 宸极·凝灵契装备卡（T-18 体系）
         // 支持「凝灵契」、「宸极凝灵契」、「宸极·凝灵契」、「宸极」、「灵契」等精准命中
         // ------------------------------------------------------------
@@ -1500,7 +1572,7 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '为你呈现【装备全景】导航，涵盖三大品质主装、特种首饰与宝石镶嵌体系：',
+                text: '为你呈现【装备全景】导航，涵盖三大品质主装、特种首饰、四灵本元与宝石镶嵌体系：',
                 time: timeStr,
                 cardType: 'equip_hub',
                 cardData: {
@@ -1510,6 +1582,7 @@ export class CopilotService {
                         { key: 'zhangwu', label: '彰武装备', query: '彰武' },
                         { key: 'xiuwu', label: '修武装备', query: '修武' },
                         { key: 'peizhang', label: '圣粹佩章', query: '佩章' },
+                        { key: 'silin_benyuan', label: '四灵本元', query: '四灵本元' },
                         { key: 'ninglingqi', label: '宸极凝灵契', query: '凝灵契' },
                         { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
                         { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
@@ -1646,6 +1719,7 @@ export class CopilotService {
                         { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
                         { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
                         { key: 'fabao_exp', label: '法宝经验', query: '法宝经验' },
+                        { key: 'shenji', label: '神机洗练', query: '神机洗练' },
                         { key: 'zhenling_upgrade', label: '阵灵聚灵', query: '阵灵升级' },
                         { key: 'tianyuan_sim', label: '天缘模拟', query: '天缘' },
                         { key: 'calc', label: '伤害计算', query: '计算实战战力' },
@@ -1780,6 +1854,33 @@ export class CopilotService {
                 cardData: {
                     data: expData
                 }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.59b 神机属性洗练模拟器（shenji_forge）
+        // 支持「神机」「神机模拟」「神机洗练」「神机锻造」「神机属性」
+        // ------------------------------------------------------------
+        const isShenjiQuery =
+            q === '神机' ||
+            q === '神机模拟' ||
+            q === '神机洗练' ||
+            q === '神机锻造' ||
+            q === '神机属性' ||
+            q.includes('神机模拟') ||
+            q.includes('神机洗练') ||
+            q.includes('神机锻造') ||
+            q.includes('神机属性') ||
+            (q.includes('神机') && (q.includes('洗') || q.includes('锻') || q.includes('模拟')));
+
+        if (isShenjiQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你打开【神机属性洗练模拟器】。选择品质、部位与蕴灵档位后即可锻造，支持单次锻造与连续锻造：',
+                time: timeStr,
+                cardType: 'shenji_forge',
+                cardData: { data: {} }
             };
         }
 

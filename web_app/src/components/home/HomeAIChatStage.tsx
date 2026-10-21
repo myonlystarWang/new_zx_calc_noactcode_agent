@@ -31,11 +31,13 @@ import { JiuwenlangDetailCard } from '../compendium/JiuwenlangDetailCard';
 import { OldTianyuanDetailCard } from '../compendium/OldTianyuanDetailCard';
 import { XingsuDetailCard } from '../compendium/XingsuDetailCard';
 import { BaoshiDetailCard } from '../compendium/BaoshiDetailCard';
+import { SilinBenyuanCard } from '../compendium/SilinBenyuanCard';
 import { FashionSkillDetailCard } from '../compendium/FashionSkillDetailCard';
 import { NinglingqiDetailCard } from '../compendium/NinglingqiDetailCard';
 import { PetPledgeDetailCard } from '../compendium/PetPledgeDetailCard';
 import { ZhenlingUpgradeCard } from '../compendium/ZhenlingUpgradeCard';
 import { FabaoUpgradeCard } from '../compendium/FabaoUpgradeCard';
+import { ShenjiForgeCard } from '../compendium/ShenjiForgeCard';
 import { CeilingDetailCard } from '../compendium/CeilingDetailCard';
 import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
@@ -968,6 +970,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             <BaoshiDetailCard cardData={msg.cardData} />
                                         )}
 
+                                        {/* 6.8e2 四灵本元卡（装备大类·伏龙鼎镶嵌）：四灵×五阶词条概率池与折算数值 */}
+                                        {msg.cardType === 'silin_benyuan' && (
+                                            <SilinBenyuanCard cardData={msg.cardData} />
+                                        )}
+
                                         {/* 6.8f 贺岁时装技能图鉴卡：12生肖特技、参数规格与代际联动推演 */}
                                         {msg.cardType === 'fashion_skill' && (
                                             <FashionSkillDetailCard cardData={msg.cardData} />
@@ -991,6 +998,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {/* 6.12 法宝经验等级对照卡（T-18 攻略体系）：1~40级经验与魔血对照及速算 */}
                                         {msg.cardType === 'fabao_upgrade' && (
                                             <FabaoUpgradeCard cardData={msg.cardData} />
+                                        )}
+
+                                        {/* 6.13 神机属性洗练模拟器：品质/部位/蕴灵选择 + 左右锻造对比 */}
+                                        {msg.cardType === 'shenji_forge' && (
+                                            <ShenjiForgeCard cardData={msg.cardData} />
                                         )}
 
                                         {/* 7. 法宝图鉴单卡 */}

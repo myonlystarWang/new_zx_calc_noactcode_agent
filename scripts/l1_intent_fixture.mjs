@@ -184,6 +184,14 @@ function makeFsMock() {
                 return null;
             }
         },
+        // silin_benyuan.json 四灵本元（伏龙鼎镶嵌）数据
+        getSilinBenyuanData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'silin_benyuan.json'));
+            } catch {
+                return null;
+            }
+        },
         // fashion_skills_hesui.json 贺岁时装技能数据
         getFashionSkillData: async () => {
             try {

@@ -5266,5 +5266,193 @@
       "dungeon"
     ],
     "assert": "strong"
+  },
+  {
+    "id": "t18-shenji-01",
+    "input": "神机洗练",
+    "expect": {
+      "cardType": "shenji_forge"
+    },
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：神机属性洗练模拟器（属性测算导航入口 query）"
+  },
+  {
+    "id": "t18-shenji-02",
+    "input": "神机",
+    "expect": {
+      "cardType": "shenji_forge"
+    },
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：裸「神机」直达模拟器"
+  },
+  {
+    "id": "t18-shenji-03",
+    "input": "神机模拟",
+    "expect": {
+      "cardType": "shenji_forge"
+    },
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：神机模拟口语"
+  },
+  {
+    "id": "t18-shenji-04",
+    "input": "神机锻造",
+    "expect": {
+      "cardType": "shenji_forge"
+    },
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：神机锻造口语"
+  },
+  {
+    "id": "t18-shenji-05",
+    "input": "神机属性",
+    "expect": {
+      "cardType": "shenji_forge"
+    },
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
+    "assert": "strong",
+    "note": "T-18：神机属性口语"
+  },
+  {
+    "id": "t18-shenji-06",
+    "input": "神机妙算",
+    "expect": null,
+    "tags": [
+      "shenji_forge",
+      "t18",
+      "负向"
+    ],
+    "assert": "strong",
+    "note": "T-18 边界：含「神机」但非洗练语义，不得命中模拟器"
+  },
+  {
+    "id": "silin-01",
+    "input": "四灵本元",
+    "expect": {
+      "cardType": "silin_benyuan"
+    },
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
+    "assert": "strong",
+    "note": "四灵本元：裸词命中本元卡（属装备大类）"
+  },
+  {
+    "id": "silin-02",
+    "input": "饕餮本元",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "taotie"
+    },
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
+    "assert": "strong",
+    "note": "四灵本元：灵名+本元定位饕餮"
+  },
+  {
+    "id": "silin-03",
+    "input": "夔牛本元 五阶",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "kuiniu",
+      "cardData.initialTier": 5
+    },
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
+    "assert": "strong",
+    "note": "四灵本元：灵名+阶位定位"
+  },
+  {
+    "id": "silin-04",
+    "input": "本元 钧天玄霆",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "kuiniu",
+      "cardData.initialTier": 5
+    },
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
+    "assert": "strong",
+    "note": "四灵本元：阶位名反查（钧天玄霆=夔牛五阶）"
+  },
+  {
+    "id": "silin-05",
+    "input": "黄鸟本元三阶",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "huangniao",
+      "cardData.initialTier": 3
+    },
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
+    "assert": "strong",
+    "note": "四灵本元：无空格中文阶位"
+  },
+  {
+    "id": "silin-06",
+    "input": "伏龙鼎",
+    "expect": {
+      "cardType": "silin_benyuan"
+    },
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
+    "assert": "strong",
+    "note": "四灵本元：按载体伏龙鼎命中"
+  },
+  {
+    "id": "silin-07",
+    "input": "四灵瑞灵",
+    "expect": null,
+    "tags": [
+      "equip",
+      "silin_benyuan",
+      "负向"
+    ],
+    "assert": "strong",
+    "note": "边界：四灵瑞灵为另一系统，不得被本元意图吞掉"
+  },
+  {
+    "id": "silin-08",
+    "input": "扶摇",
+    "expect": {
+      "cardType": "skill"
+    },
+    "tags": [
+      "equip",
+      "silin_benyuan",
+      "负向"
+    ],
+    "assert": "strong",
+    "note": "边界：阶位名裸词与技能重名，不得抢技能意图"
   }
 ]
