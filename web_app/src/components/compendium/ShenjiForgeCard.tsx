@@ -16,39 +16,35 @@ import {
 } from '../../utils/shenjiSim';
 
 export interface ShenjiForgeCardProps {
-    cardData?: { data?: unknown };
+    cardData?: {
+        data?: unknown;
+        initialQuality?: ShenjiQuality;
+    };
     className?: string;
 }
-
-/** 配色取自参考站 zx.res111.com/ninglingqi.html（深蓝青 + 金色强调） */
-const C = {
-    panelBg: 'linear-gradient(180deg,#0d1b2a 0%,#0a1522 55%,#081120 100%)',
-    panelBorder: '#2b5473',
-    headBg: 'linear-gradient(180deg,#123049,#0b1c2c)',
-    title: '#8fd8ff',
-    name: '#9adfff',
-    gold: '#ffd94d',
-    btnBg: 'linear-gradient(180deg,#2b5a7d,#173951)',
-    btnBorder: '#4d86ad',
-    btnText: '#dff3ff',
-    primaryBg: 'linear-gradient(180deg,#3f8dc0,#1d5a85)',
-    primaryBorder: '#6db7e6',
-    divider: 'rgba(28,58,82,.45)',
-    muted: '#41586c',
-};
 
 const SIM_FONT = '"SimSun", "宋体", "Microsoft YaHei", sans-serif';
 const FORGE_MS = 1000;
 const BAR_W = 216;
 
-const TIER_HEX = ['#ffffff', '#11ff11', '#aa32ff', '#ffdc50', '#ff0000'];
+/** 六类部位来自寻宝天行真实客户端图标（袖甲来自原版客户端提取） */
+const SLOT_IMAGE_MAP: Record<ShenjiSlot, string> = {
+    '武器': '/game_data/equip_icons/79821.png',   // 绝峰·昭武
+    '头盔': '/game_data/equip_icons/90812.png',   // 绝峰衔日盔·昭武（男）
+    '衣服': '/game_data/equip_icons/85782.png',   // 绝峰衔日甲·昭武（男）
+    '靴子': '/game_data/equip_icons/96240.png',   // 绝峰衔日靴·昭武（男）
+    '腰带': '/game_data/equip_icons/105681.png',  // 绝峰衔日腰带·昭武（男）
+    '袖甲': '/game_data/equip_icons/cuff_34.png',  // 绝峰衔日钏/腕
+};
+
+const TIER_HEX = ['#ffffff', '#4fbc3c', '#b446ff', '#ffd94d', '#f80000'];
 
 function renderValue(roll: ShenjiRoll): string {
     return `+${formatShenjiValue(roll.value, roll.decimal)}${roll.percent ? '%' : ''}`;
 }
 
-/** 六种部位的线条图标（stroke 绘制，无填充） */
-const SlotIcon: React.FC<{ slot: ShenjiSlot; color: string; size?: number }> = ({ slot, color, size = 30 }) => {
+/** 备用线条图标（仅在图片网络异常时优雅降级） */
+const SlotIconFallback: React.FC<{ slot: ShenjiSlot; color: string; size?: number }> = ({ slot, color, size = 26 }) => {
     const common = {
         fill: 'none',
         stroke: color,
@@ -110,7 +106,7 @@ const SlotIcon: React.FC<{ slot: ShenjiSlot; color: string; size?: number }> = (
     );
 };
 
-/** 单侧属性面板 */
+/** 单侧属性面板（1:1 游戏卡片还原） */
 const ForgePanel: React.FC<{
     side: 'left' | 'right';
     slot: ShenjiSlot;
@@ -120,54 +116,99 @@ const ForgePanel: React.FC<{
     chooseEnabled: boolean;
 }> = ({ side, slot, quality, rolls, onChoose, chooseEnabled }) => {
     const qColor = getEquipQualityColor(quality);
+    const [imgErr, setImgErr] = useState(false);
+
+    // 当切换部位时重置图片错误状态
+    useEffect(() => {
+        setImgErr(false);
+    }, [slot]);
+
     return (
         <div
-            className="relative flex flex-col rounded px-3 pt-3 pb-2.5 min-w-0"
-            style={{ background: C.panelBg, border: `1px solid ${C.panelBorder}`, fontFamily: SIM_FONT }}
+            className="relative flex flex-col rounded-[3px] px-3 pt-3 pb-2.5 min-w-0"
+            style={{
+                background: 'linear-gradient(180deg, #13202e 0%, #0d1620 100%)',
+                border: '1px solid #233547',
+                boxShadow: 'inset 0 0 16px rgba(0, 0, 0, 0.6)',
+                fontFamily: SIM_FONT,
+            }}
         >
+            {/* 装备方格：诛仙经典双层暗金金属背包格 */}
             <div className="flex justify-center">
                 <div
-                    className="flex items-center justify-center rounded-sm"
+                    className="relative flex items-center justify-center select-none"
                     style={{
-                        width: 52,
-                        height: 52,
-                        background: 'linear-gradient(160deg,#16273c 0%,#0c1826 60%,#081220 100%)',
-                        border: `1px solid ${qColor}`,
-                        boxShadow: `0 0 12px ${qColor}44, inset 0 0 10px rgba(0,0,0,.6)`,
+                        width: 44,
+                        height: 44,
+                        background: '#0a121b',
+                        border: '2px solid #8e7a4b',
+                        boxShadow: 'inset 0 0 5px rgba(0,0,0,0.9), 0 0 6px rgba(142,122,75,0.3)',
+                        borderRadius: 2,
                     }}
                 >
-                    <SlotIcon slot={slot} color={qColor} size={32} />
+                    {/* 金色四角微角装饰 */}
+                    <div className="absolute -top-[2px] -left-[2px] w-[3px] h-[3px] bg-[#d5ba75]" />
+                    <div className="absolute -top-[2px] -right-[2px] w-[3px] h-[3px] bg-[#d5ba75]" />
+                    <div className="absolute -bottom-[2px] -left-[2px] w-[3px] h-[3px] bg-[#d5ba75]" />
+                    <div className="absolute -bottom-[2px] -right-[2px] w-[3px] h-[3px] bg-[#d5ba75]" />
+
+                    {!imgErr ? (
+                        <img
+                            src={SLOT_IMAGE_MAP[slot]}
+                            alt={slot}
+                            onError={() => setImgErr(true)}
+                            className="pointer-events-none select-none"
+                            style={{ width: 34, height: 34, objectFit: 'contain' }}
+                        />
+                    ) : (
+                        <SlotIconFallback slot={slot} color={qColor} size={28} />
+                    )}
                 </div>
             </div>
 
-            <div className="flex-1 mt-3 space-y-[6px] text-[14px] leading-[22px] min-h-[66px]">
+            {/* 属性区域：高度固定并支持游戏风格细滚动条 */}
+            <div
+                className="shenji-scroll flex-1 mt-3 px-1 text-[13px] leading-[26px]"
+                style={{
+                    height: 98,
+                    minHeight: 98,
+                    maxHeight: 98,
+                    overflowY: 'auto',
+                }}
+            >
                 {rolls.length === 0 && (
-                    <div className="text-center text-[13px] pt-2" style={{ color: C.muted }}>
+                    <div className="text-center text-[13px] pt-7 select-none" style={{ color: '#4a647a' }}>
                         {side === 'left' ? '暂无神机属性' : '点击下方【锻造】生成'}
                     </div>
                 )}
                 {rolls.map((r, i) => (
-                    <div key={`${r.name}-${i}`} className="flex items-baseline justify-between gap-2">
-                        <span className="truncate" style={{ color: r.color }}>
-                            {r.isJi ? '极· ' : ''}神机 {r.name}
+                    <div key={`${r.name}-${i}`} className="flex items-center justify-between gap-2.5">
+                        <span className="truncate tracking-wide" style={{ color: r.color }}>
+                            {r.isJi ? '极·神机 ' : '神机 '}{r.name}
                         </span>
-                        <span className="tabular-nums shrink-0" style={{ color: r.color }}>
+                        <span className="tabular-nums shrink-0 font-medium" style={{ color: r.color }}>
                             {renderValue(r)}
                         </span>
                     </div>
                 ))}
             </div>
 
+            {/* 底部选择按钮：游戏经典蓝灰金属凸起小按钮 */}
             <div className="flex justify-center mt-2.5">
                 <button
                     type="button"
                     disabled={!chooseEnabled}
                     onClick={chooseEnabled ? onChoose : undefined}
-                    className="px-3.5 py-[3px] rounded-sm text-[13px] transition-colors"
+                    className="px-4 py-1 rounded-[3px] text-[13px] transition-all select-none"
                     style={{
-                        background: chooseEnabled ? C.btnBg : 'rgba(18,30,48,.7)',
-                        border: `1px solid ${chooseEnabled ? C.btnBorder : '#22384d'}`,
-                        color: chooseEnabled ? C.btnText : C.muted,
+                        background: chooseEnabled
+                            ? 'linear-gradient(180deg, #263a50 0%, #152433 100%)'
+                            : 'rgba(16, 26, 36, 0.6)',
+                        border: `1px solid ${chooseEnabled ? '#3d5d7d' : '#1e3042'}`,
+                        boxShadow: chooseEnabled
+                            ? 'inset 0 1px 0 rgba(255,255,255,0.18), 0 2px 4px rgba(0,0,0,0.5)'
+                            : 'none',
+                        color: chooseEnabled ? '#e6f1fa' : '#456077',
                         cursor: chooseEnabled ? 'pointer' : 'not-allowed',
                         fontFamily: SIM_FONT,
                     }}
@@ -181,9 +222,12 @@ const ForgePanel: React.FC<{
 
 export type YunlingTier = 11 | 13 | 15;
 
-export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) => {
+export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, className }) => {
     const [equips, setEquips] = useState<CuratedEquipItem[]>([]);
-    const [quality, setQuality] = useState<ShenjiQuality>('昭武');
+    const [quality, setQuality] = useState<ShenjiQuality>(() => {
+        const q = cardData?.initialQuality;
+        return q && SHENJI_QUALITIES.includes(q) ? q : '昭武';
+    });
     const [slot, setSlot] = useState<ShenjiSlot>('武器');
     const [yunling, setYunling] = useState<YunlingTier>(15);
     const [left, setLeft] = useState<ShenjiRoll[]>([]);
@@ -254,10 +298,8 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) =
         (onDone?: () => void) => {
             if (!poolReady) { onDone?.(); return; }
             setForging(true);
-            // 第一步：关过渡，瞬间归零（无倒退动画）
             setBarAnim(false);
             setBarFill(0);
-            // 第二步：下一拍开启过渡走到满格；读完保持满格不回退
             resetRef.current = window.setTimeout(() => {
                 setBarAnim(true);
                 setBarFill(1);
@@ -297,73 +339,127 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) =
     );
 
     const chipStyle = (active: boolean, activeColor?: string): React.CSSProperties => ({
-        background: active ? 'rgba(63,141,192,.28)' : 'rgba(12,29,46,.85)',
-        border: `1px solid ${active ? (activeColor || C.primaryBorder) : '#22384d'}`,
-        color: active ? (activeColor || '#ffffff') : C.muted,
-        boxShadow: active ? `0 0 8px ${(activeColor || C.primaryBorder)}55` : 'none',
+        background: active
+            ? 'linear-gradient(180deg, #273e54 0%, #152636 100%)'
+            : 'linear-gradient(180deg, #131c26 0%, #0d141d 100%)',
+        border: `1px solid ${active ? (activeColor || '#4b759e') : '#1e3042'}`,
+        color: active ? (activeColor || '#e8f3fc') : '#5a738c',
+        boxShadow: active ? `0 0 8px ${(activeColor || '#4b759e')}44, inset 0 1px 0 rgba(255,255,255,0.15)` : 'none',
         fontFamily: SIM_FONT,
     });
 
-    const btnBase: React.CSSProperties = {
-        flex: 1,
-        padding: '4px 0',
-        borderRadius: 2,
-        fontSize: 13,
-        fontFamily: SIM_FONT,
-        textAlign: 'center',
-        transition: 'background .15s',
-    };
-
     return (
         <div
-            className={`@container w-full max-w-xl rounded p-3 ${className || ''}`}
+            className={`@container w-full max-w-xl rounded-[4px] p-3.5 ${className || ''}`}
             style={{
-                background: '#0b0f16 radial-gradient(ellipse at top, #16202e 0%, #0b0f16 70%)',
-                border: `1px solid ${C.panelBorder}`,
+                background: 'linear-gradient(180deg, #131b24 0%, #0c1219 100%)',
+                border: '1px solid #283e54',
                 fontFamily: SIM_FONT,
-                boxShadow: '0 10px 32px rgba(0,0,0,.6)',
+                boxShadow: '0 12px 36px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)',
             }}
         >
-            {/* 标题栏 */}
+            {/* 注入细滚动条样式 */}
+            <style>{`
+                .shenji-scroll::-webkit-scrollbar {
+                    width: 5px;
+                }
+                .shenji-scroll::-webkit-scrollbar-track {
+                    background: rgba(8, 16, 24, 0.5);
+                    border-radius: 3px;
+                }
+                .shenji-scroll::-webkit-scrollbar-thumb {
+                    background: linear-gradient(180deg, #38536e 0%, #1d3346 100%);
+                    border: 1px solid #4a6c8e;
+                    border-radius: 3px;
+                }
+                .shenji-scroll::-webkit-scrollbar-thumb:hover {
+                    background: linear-gradient(180deg, #4d7196 0%, #294863 100%);
+                }
+            `}</style>
+
+            {/* 标题栏：米金字体居中 */}
             <div
-                className="flex items-center justify-between px-2 py-1.5 -mx-3 -mt-3 mb-2.5 rounded-t"
-                style={{ background: C.headBg, borderBottom: `1px solid ${C.panelBorder}` }}
+                className="relative flex items-center justify-between px-3 py-2 -mx-3.5 -mt-3.5 mb-3 rounded-t-[3px]"
+                style={{
+                    background: 'linear-gradient(180deg, #192636 0%, #101a24 100%)',
+                    borderBottom: '1px solid #283e54',
+                }}
             >
-                <span className="text-[15px] tracking-[2px]" style={{ color: C.title, textShadow: '0 0 12px rgba(80,180,255,.6)' }}>
+                <div className="w-5" />
+                <span
+                    className="text-[16px] font-bold tracking-[3px] select-none"
+                    style={{
+                        color: '#f7f4bb',
+                        textShadow: '0 0 10px rgba(247,244,187,0.35), 0 1px 2px #000000',
+                    }}
+                >
                     神机属性锻造
                 </span>
-                <button type="button" onClick={() => setShowHelp((v) => !v)} style={{ color: showHelp ? C.gold : '#5d7794' }} title="洗练规则">
-                    <HelpCircle className="w-4 h-4" />
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => setShowHelp((v) => !v)}
+                        style={{ color: showHelp ? '#ffd94d' : '#6b89a8' }}
+                        title="洗练规则"
+                        className="hover:text-[#9bc2e6] transition-colors"
+                    >
+                        <HelpCircle className="w-4 h-4" />
+                    </button>
+                </div>
             </div>
 
             {/* 品质 + 蕴灵 */}
-            <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+            <div className="flex flex-wrap items-center gap-1.5 mb-2">
                 {SHENJI_QUALITIES.map((q) => (
-                    <button key={q} type="button" onClick={() => handleQualityChange(q)} className="px-2.5 py-[2px] rounded-sm text-[13px] transition-colors" style={chipStyle(quality === q, getEquipQualityColor(q))}>
+                    <button
+                        key={q}
+                        type="button"
+                        onClick={() => handleQualityChange(q)}
+                        className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
+                        style={chipStyle(quality === q, getEquipQualityColor(q))}
+                    >
                         {q}
                     </button>
                 ))}
-                <span className="mx-1 h-3.5 w-px" style={{ background: C.divider }} />
+                <span className="mx-1 h-3.5 w-px" style={{ background: '#22384d' }} />
                 {[11, 13, 15].map((y) => (
-                    <button key={y} type="button" onClick={() => handleYunlingChange(y as YunlingTier)} className="px-2.5 py-[2px] rounded-sm text-[13px] transition-colors" style={chipStyle(yunling === y)}>
+                    <button
+                        key={y}
+                        type="button"
+                        onClick={() => handleYunlingChange(y as YunlingTier)}
+                        className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
+                        style={chipStyle(yunling === y)}
+                    >
                         +{y}
                     </button>
                 ))}
             </div>
 
-            {/* 部位（纯文字胶囊） */}
-            <div className="flex flex-wrap items-center gap-1.5 mb-2.5 pb-2" style={{ borderBottom: `1px solid ${C.divider}` }}>
+            {/* 部位 */}
+            <div className="flex flex-wrap items-center gap-1.5 mb-3 pb-2.5" style={{ borderBottom: '1px solid #1a2a3b' }}>
                 {SHENJI_SLOTS.map((s) => (
-                    <button key={s} type="button" onClick={() => handleSlotChange(s)} className="px-2.5 py-[2px] rounded-sm text-[13px] transition-colors" style={chipStyle(slot === s)}>
+                    <button
+                        key={s}
+                        type="button"
+                        onClick={() => handleSlotChange(s)}
+                        className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
+                        style={chipStyle(slot === s)}
+                    >
                         {s}
                     </button>
                 ))}
-                {!poolReady && <span className="text-[11px]" style={{ color: '#ff8080' }}>该组合暂无神机池</span>}
+                {!poolReady && <span className="text-[11px] ml-2" style={{ color: '#ff8080' }}>该组合暂无神机池</span>}
             </div>
 
             {showHelp && (
-                <div className="mb-2.5 rounded-sm px-2.5 py-2 text-[12px] leading-[20px]" style={{ background: 'rgba(20,60,95,.25)', border: `1px solid ${C.panelBorder}`, color: '#9adfff' }}>
+                <div
+                    className="mb-3 rounded-[3px] px-3 py-2 text-[12px] leading-[22px]"
+                    style={{
+                        background: 'rgba(16,32,48,.5)',
+                        border: '1px solid #2a415a',
+                        color: '#9adfff',
+                    }}
+                >
                     <div>· 每条属性独立抽取：先按属性出现概率选词条，再按档位概率选 5 档之一。</div>
                     <div>· 五档取值为固定值：第一档 = 区间下限（白），第五档 = 区间上限（红·极·）。</div>
                     <div>· 档位概率：+11 池 34/33/18/10/5，+13 池 38/33/17/8/3，+15 池 42/33/16/7/2。</div>
@@ -379,8 +475,8 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) =
                 </div>
             )}
 
-            {/* 左右面板 */}
-            <div className="grid grid-cols-1 @md:grid-cols-[1fr_auto_1fr] items-stretch gap-2">
+            {/* 左右属性卡片区 */}
+            <div className="grid grid-cols-1 @md:grid-cols-[1fr_auto_1fr] items-stretch gap-2.5">
                 <ForgePanel
                     side="left"
                     slot={slot}
@@ -389,9 +485,20 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) =
                     chooseEnabled={left.length > 0 && !forging}
                     onChoose={() => handleChoose('left')}
                 />
-                <div className="flex items-center justify-center">
-                    <span className="text-[18px] leading-none rotate-90 @md:rotate-0" style={{ color: '#6fa8d8' }}>→</span>
+
+                {/* 居中过渡箭头：游戏原版质感箭头 */}
+                <div className="flex items-center justify-center select-none pointer-events-none px-1">
+                    <img
+                        src="/game_data/equip_icons/game_arrow.png"
+                        alt="->"
+                        className="w-[46px] h-[32px] object-contain opacity-80 hidden @md:block"
+                        onError={(e) => {
+                            (e.currentTarget as HTMLElement).style.display = 'none';
+                        }}
+                    />
+                    <span className="text-[20px] leading-none rotate-90 @md:hidden text-[#4e749a]">↓</span>
                 </div>
+
                 <ForgePanel
                     side="right"
                     slot={slot}
@@ -402,20 +509,20 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) =
                 />
             </div>
 
-            {/* 读条 + 等宽按钮：整组居中，次数向右顺延不参与居中 */}
-            <div className="relative mt-3">
+            {/* 读条 + 锻造按钮 */}
+            <div className="relative mt-3.5">
                 <div className="mx-auto" style={{ width: BAR_W }}>
                     <div
                         className="relative overflow-hidden"
                         style={{
                             width: BAR_W,
-                            height: 12,
+                            height: 10,
                             borderRadius: 999,
-                            background: 'linear-gradient(180deg,#0a1a20,#061216)',
-                            border: `1px solid ${forging ? '#2ad8e0' : '#1b3742'}`,
+                            background: '#081219',
+                            border: `1px solid ${forging ? '#389bb5' : '#182b38'}`,
                             boxShadow: forging
-                                ? 'inset 0 0 10px rgba(0,220,220,.25), 0 0 10px rgba(0,220,220,.45)'
-                                : 'inset 0 1px 4px rgba(0,0,0,.9)',
+                                ? 'inset 0 0 6px rgba(0,200,220,0.3), 0 0 8px rgba(0,200,220,0.4)'
+                                : 'inset 0 1px 3px rgba(0,0,0,0.8)',
                             transition: 'border-color .15s, box-shadow .15s',
                         }}
                     >
@@ -424,24 +531,30 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) =
                                 height: '100%',
                                 width: `${Math.round(barFill * 100)}%`,
                                 borderRadius: 999,
-                                background: 'linear-gradient(90deg,#0096a8 0%,#00e8f0 45%,#6fffff 60%,#00d0da 100%)',
-                                boxShadow: barFill > 0 ? '0 0 12px rgba(0,255,255,.75), inset 0 1px 2px rgba(255,255,255,.6)' : 'none',
+                                background: 'linear-gradient(90deg, #0c7585 0%, #15b8cf 50%, #46e8fb 100%)',
+                                boxShadow: barFill > 0 ? '0 0 8px rgba(30,220,245,0.7)' : 'none',
                                 transition: barAnim ? `width ${FORGE_MS - 20}ms linear` : 'none',
                             }}
                         />
                     </div>
 
-                    <div className="flex gap-2 mt-2">
+                    <div className="flex gap-2.5 mt-2.5">
                         <button
                             type="button"
                             disabled={!poolReady || forging}
                             onClick={handleForge}
+                            className="flex-1 py-1.5 rounded-[3px] text-[14px] tracking-wider transition-all font-medium select-none"
                             style={{
-                                ...btnBase,
-                                background: poolReady && !forging ? C.btnBg : 'rgba(18,30,48,.7)',
-                                border: `1px solid ${poolReady && !forging ? C.btnBorder : '#22384d'}`,
-                                color: poolReady && !forging ? C.btnText : C.muted,
+                                background: poolReady && !forging
+                                    ? 'linear-gradient(180deg, #2b3d50 0%, #162432 100%)'
+                                    : 'rgba(16, 26, 36, 0.6)',
+                                border: `1px solid ${poolReady && !forging ? '#416282' : '#203244'}`,
+                                boxShadow: poolReady && !forging
+                                    ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.5)'
+                                    : 'none',
+                                color: poolReady && !forging ? '#edf5fc' : '#4a657c',
                                 cursor: poolReady && !forging ? 'pointer' : 'not-allowed',
+                                fontFamily: SIM_FONT,
                             }}
                         >
                             锻造
@@ -450,13 +563,22 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) =
                             type="button"
                             disabled={!poolReady}
                             onClick={handleAutoToggle}
+                            className="flex-1 py-1.5 rounded-[3px] text-[14px] tracking-wider transition-all font-medium select-none"
                             style={{
-                                ...btnBase,
-                                background: auto ? 'linear-gradient(180deg,#8a3a2b,#5c2117)' : C.primaryBg,
-                                border: `1px solid ${auto ? '#c07050' : C.primaryBorder}`,
-                                color: poolReady ? '#ffffff' : C.muted,
+                                background: auto
+                                    ? 'linear-gradient(180deg, #872e22 0%, #4f1710 100%)'
+                                    : poolReady
+                                        ? 'linear-gradient(180deg, #274563 0%, #142a3d 100%)'
+                                        : 'rgba(16, 26, 36, 0.6)',
+                                border: `1px solid ${auto ? '#b34739' : poolReady ? '#3c678f' : '#203244'}`,
+                                boxShadow: auto
+                                    ? '0 0 12px rgba(220,60,40,0.5), inset 0 1px 0 rgba(255,255,255,0.2)'
+                                    : poolReady
+                                        ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.5)'
+                                        : 'none',
+                                color: poolReady ? '#ffffff' : '#4a657c',
                                 cursor: poolReady ? 'pointer' : 'not-allowed',
-                                boxShadow: auto ? '0 0 10px rgba(200,90,60,.5)' : 'none',
+                                fontFamily: SIM_FONT,
                             }}
                         >
                             {auto ? '停止' : '自动锻造'}
@@ -465,10 +587,10 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ className }) =
                 </div>
 
                 <span
-                    className="absolute whitespace-nowrap text-[11px] tabular-nums"
-                    style={{ left: 'calc(50% + 116px)', bottom: 7, color: '#5d7794', fontFamily: SIM_FONT }}
+                    className="absolute whitespace-nowrap text-[12px] tabular-nums select-none"
+                    style={{ left: 'calc(50% + 122px)', bottom: 8, color: '#5b7894', fontFamily: SIM_FONT }}
                 >
-                    已锻造 <b style={{ color: C.gold }}>{forgeCount}</b> 次
+                    已锻造 <b style={{ color: '#ffd94d', fontWeight: 600 }}>{forgeCount}</b> 次
                 </span>
             </div>
         </div>
