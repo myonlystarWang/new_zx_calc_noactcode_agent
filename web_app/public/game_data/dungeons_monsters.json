@@ -3194,7 +3194,7 @@
     },
     {
       "MonsterID": "CANGSONG_CHUSHI",
-      "MonsterName": "苍松",
+      "MonsterName": "苍松真人",
       "DungeonLevel": 5,
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 1850,
@@ -3454,7 +3454,7 @@
     },
     {
       "MonsterID": "CANGSONG_HARD",
-      "MonsterName": "苍松",
+      "MonsterName": "苍松真人",
       "DungeonLevel": 5,
       "MonsterAttributeModifiers": {
         "MonsterCriticalDamagePercentReduction": 2600,

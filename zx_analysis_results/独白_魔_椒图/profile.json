@@ -3,13 +3,13 @@
   "className": "逐霜",
   "factionName": "魔",
   "attributes": {
-    "minAttack": 341131,
-    "maxAttack": 400239,
+    "minAttack": 347000,
+    "maxAttack": 412000,
     "defense": 378364,
-    "critDamage": 2865.9,
-    "mana": 5049716,
-    "health": 3964185,
-    "monsterDamageIncrease": 53.7
+    "critDamage": 2920,
+    "mana": 5000000,
+    "health": 6000000,
+    "monsterDamageIncrease": 52.3
   },
   "buffs": {
     "focus": 241,
@@ -25,29 +25,29 @@
   },
   "skillUsage": {
     "ZS_MO_SKILL_CLX": {
-      "damageShare": 0.2914,
+      "damageShare": 0.3297,
       "observedHitCount": 1,
-      "note": "苍龙啸实战占比29.14%"
+      "note": "苍龙啸实战占比32.97%"
     },
     "ZS_MO_SKILL_SY3": {
-      "damageShare": 0.268,
+      "damageShare": 0.2544,
       "observedHitCount": 1,
-      "note": "山雨欲来III实战占比26.80%"
+      "note": "山雨欲来III实战占比25.44%"
     },
     "ZS_MO_SKILL_CLXS": {
-      "damageShare": 0.1794,
+      "damageShare": 0.1997,
       "observedHitCount": 1,
-      "note": "苍龙啸<煞>实战占比17.94%"
+      "note": "苍龙啸<煞>实战占比19.97%"
     },
     "ZS_MO_SKILL_SY2": {
-      "damageShare": 0.1718,
+      "damageShare": 0.1378,
       "observedHitCount": 1,
-      "note": "山雨欲来II实战占比17.18%"
+      "note": "山雨欲来II实战占比13.78%"
     },
     "ZS_MO_SKILL_YLXB": {
-      "damageShare": 0.056,
+      "damageShare": 0.0507,
       "observedHitCount": 1,
-      "note": "银鳞悬冰实战占比5.60%"
+      "note": "银鳞悬冰实战占比5.07%"
     }
   }
 }
