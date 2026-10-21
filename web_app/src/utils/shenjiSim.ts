@@ -3,11 +3,11 @@
  * 神机属性洗练模拟 —— 数据解析与抽取逻辑
  *
  * 数据源：equip_curated.json 的 `sj` 字段（已是 品质 → [{l: 11|13|15, d: "属性 下限~上限 (概率%)"}]）
- * 五档规则（由用户提供的实机数据表反推并验证）：
+ * 五档规则（由官网图19-21 的神机属性全览逐格核对）：
  *   第一档 = 区间下限（白）  第五档 = 区间上限（红·极·神机）
  *   第二/三/四档 = 下限 + 差值 × 20% / 40% / 60%
- * 档位概率（实机数据，随该条属性所属蕴灵档变化）：
- *   +11 = 34/33/18/10/5   +13 = 38/33/17/8/3   +15 = 42/33/16/7/2
+ * 档位概率（实测自 elements.data 表325「神机配置」每段 +196 处的 5 个 float，Σ=100）：
+ *   按部位分三套，品质不影响；详见 SHENJI_TIER_RATE_GROUPS
  */
 import type { CuratedEquipItem } from '../types';
 import { GAME_COLORS } from '../constants/gameColorSystem';
@@ -25,14 +25,42 @@ export const SHENJI_SLOT_LEVELS: Record<number, number[]> = {
     15: [11, 13, 15],
 };
 
-/** 档位抽取概率（百分比），按该条属性所属蕴灵档区分 */
-export const SHENJI_TIER_RATES: Record<number, number[]> = {
-    11: [34, 33, 18, 10, 5],
-    13: [38, 33, 17, 8, 3],
-    15: [42, 33, 16, 7, 2],
+/**
+ * 档位概率（百分比），按部位分三套 —— 实测自 elements.data 表 325「神机配置表」
+ * （当前客户端 D:/PGP/games/诛仙/element/data/elements.data，v183，2026-10-21 逐条读取）。
+ * 每段结构：[level][属性块 × N（id/max/min/出现概率）][+196: 白/绿/紫/橙/红 五档概率 ×5 float]，各段合计 100。
+ * 修武 / 昭武 / 彰武 三品质共用同一套，仅数值区间不同。
+ */
+export const SHENJI_TIER_RATE_GROUPS: Record<'A' | 'B' | 'C', Record<number, number[]>> = {
+    /** A 组：武器、衣服 */
+    A: { 11: [34, 33, 18, 10, 5], 13: [38, 33, 17, 8, 4], 15: [42, 33, 16, 6, 3] },
+    /** B 组：头盔、靴子 */
+    B: { 11: [34, 33, 18, 10, 5], 13: [38, 33, 17, 8, 4], 15: [42, 33, 16, 7, 2] },
+    /** C 组：腰带、袖甲（游戏内「手环」） */
+    C: { 11: [28, 24, 21, 17, 10], 13: [42, 33, 18, 4, 3], 15: [42, 33, 20, 3, 2] },
 };
 
-/** 五档在区间内的取值比例 */
+/** 部位 → 档位概率分组 */
+export const SHENJI_SLOT_RATE_GROUP: Record<ShenjiSlot, 'A' | 'B' | 'C'> = {
+    武器: 'A',
+    衣服: 'A',
+    头盔: 'B',
+    靴子: 'B',
+    腰带: 'C',
+    袖甲: 'C',
+};
+
+/** 取某部位 + 某蕴灵档的五档概率（白/绿/紫/橙/红） */
+export function getShenjiTierRates(slot: ShenjiSlot, l: number): number[] {
+    const group = SHENJI_TIER_RATE_GROUPS[SHENJI_SLOT_RATE_GROUP[slot] ?? 'A'];
+    return group[l] ?? group[11];
+}
+
+/**
+ * 五档在区间内的取值比例。
+ * 客户端表 325 只存 min / max 两个端点，档位方向由官方说明确定：
+ * 「颜色根据属性值高低，由低到高分别为白、绿、紫、金、红」⇒ 第一档 = min = 白，第五档 = max = 红（极·神机）。
+ */
 export const TIER_RATIOS = [0, 0.2, 0.4, 0.6, 1];
 
 export const TIER_NAMES = ['白', '绿', '紫', '橙', '红'] as const;
@@ -148,11 +176,11 @@ export function formatShenjiValue(value: number, decimal: boolean): string {
     return value.toFixed(1);
 }
 
-/** 单条抽取：先按属性概率选属性，再按该蕴灵档的档位概率选档，最后取该档固定值 */
-export function rollShenjiAttr(pool: ShenjiAttr[], l: number): ShenjiRoll | null {
+/** 单条抽取：先按属性概率选属性，再按该部位 + 蕴灵档的档位概率选档，最后取该档固定值 */
+export function rollShenjiAttr(pool: ShenjiAttr[], l: number, slot: ShenjiSlot): ShenjiRoll | null {
     const attr = pickWeighted(pool, (a) => a.prob);
     if (!attr) return null;
-    const rates = SHENJI_TIER_RATES[l] ?? SHENJI_TIER_RATES[11];
+    const rates = getShenjiTierRates(slot, l);
     let tier = 5;
     const total = rates.reduce((a, b) => a + b, 0);
     let r = Math.random() * total;
@@ -179,11 +207,11 @@ export function rollShenjiAttr(pool: ShenjiAttr[], l: number): ShenjiRoll | null
 }
 
 /** 一次完整洗练：按槽位顺序逐条抽取（每条独立计算概率） */
-export function rollShenjiPools(pools: ShenjiAttr[][]): ShenjiRoll[] {
+export function rollShenjiPools(pools: ShenjiAttr[][], slot: ShenjiSlot): ShenjiRoll[] {
     const out: ShenjiRoll[] = [];
     pools.forEach((pool, idx) => {
         const l = pool[0]?.l ?? SHENJI_SLOT_LEVELS[11][idx] ?? 11;
-        const roll = rollShenjiAttr(pool, l);
+        const roll = rollShenjiAttr(pool, l, slot);
         if (roll) out.push(roll);
     });
     return out;
