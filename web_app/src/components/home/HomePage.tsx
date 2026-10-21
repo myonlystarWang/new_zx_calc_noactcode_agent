@@ -18,6 +18,7 @@ import { SplitScreenWorkspace, type WorkspaceMode } from '../workspace/SplitScre
 import { useSplitDrag } from '../workspace/useSplitDrag';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import { CopilotService, type CopilotMessage, TOP_HUB_OPTIONS } from '../../services/CopilotService';
+import { buildVisionMessage } from '../../services/vision/buildVisionMessage';
 import { DataService } from '../../services/DataService';
 import { CelestialStage } from './CelestialStage';
 import { CosmicStarCanvas } from './CosmicStarCanvas';
@@ -160,43 +161,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     try {
       if (img) {
         const diag = await copilot.diagnoseImage(img, text);
-        let assistantMsg: CopilotMessage;
-
-        if (diag.mode === 'c_panel' && diag.cPanelData) {
-          const dmg = copilot.calculateT20Damage(diag.cPanelData);
-          assistantMsg = {
-            id: `ast-${Date.now()}`,
-            sender: 'assistant',
-            text: `${diag.rawExplanation}\n\n已通过确定性战斗引擎测算出该面板在【${dmg.dungeonName}】的实战战力（见下方诊断报告）：`,
-            time: timeStr,
-            cardType: 'c_panel_diag',
-            cardData: {
-              cPanel: diag.cPanelData,
-              damage: dmg,
-            },
-          };
-        } else if (diag.mode === 'xyc' && diag.xycData) {
-          assistantMsg = {
-            id: `ast-${Date.now()}`,
-            sender: 'assistant',
-            text: `${diag.rawExplanation}\n\n识别到【${diag.xycData.beast}】轩辕策（当前 ${diag.xycData.level} 阶），点击卡片可直接进入四象模拟器：`,
-            time: timeStr,
-            cardType: 'xyc_diag',
-            cardData: {
-              title: `${diag.xycData.beast}轩辕策`,
-              route: `/tools/xyc?beast=${encodeURIComponent(diag.xycData.beast)}&lvl=${diag.xycData.level}`,
-              desc: '支持四象 1~20 阶成长推算与极品毕业度评级',
-            },
-          };
-        } else {
-          assistantMsg = {
-            id: `ast-${Date.now()}`,
-            sender: 'assistant',
-            text: diag.rawExplanation || '已完成图像特征解析。',
-            time: timeStr,
-          };
-        }
-        setChatMessages((prev) => [...prev, assistantMsg]);
+        setChatMessages((prev) => [...prev, buildVisionMessage(diag, img, timeStr)]);
       } else {
         const localMatch = await copilot.matchLocalIntent(text);
         if (localMatch) {
@@ -269,43 +234,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     try {
       if (image) {
         const diag = await copilot.diagnoseImage(image, trimmed);
-        let assistantMsg: CopilotMessage;
-
-        if (diag.mode === 'c_panel' && diag.cPanelData) {
-          const dmg = copilot.calculateT20Damage(diag.cPanelData);
-          assistantMsg = {
-            id: `ast-${Date.now()}`,
-            sender: 'assistant',
-            text: `${diag.rawExplanation}\n\n已测算在【${dmg.dungeonName}】的实战战力：`,
-            time: timeStr,
-            cardType: 'c_panel_diag',
-            cardData: {
-              cPanel: diag.cPanelData,
-              damage: dmg,
-            },
-          };
-        } else if (diag.mode === 'xyc' && diag.xycData) {
-          assistantMsg = {
-            id: `ast-${Date.now()}`,
-            sender: 'assistant',
-            text: `${diag.rawExplanation}\n\n识别到【${diag.xycData.beast}】轩辕策（当前 ${diag.xycData.level} 阶）：`,
-            time: timeStr,
-            cardType: 'xyc_diag',
-            cardData: {
-              title: `${diag.xycData.beast}轩辕策`,
-              route: `/tools/xyc?beast=${encodeURIComponent(diag.xycData.beast)}&lvl=${diag.xycData.level}`,
-              desc: '支持四象 1~20 阶成长推算与极品毕业度评级',
-            },
-          };
-        } else {
-          assistantMsg = {
-            id: `ast-${Date.now()}`,
-            sender: 'assistant',
-            text: diag.rawExplanation || '已完成图像特征解析。',
-            time: timeStr,
-          };
-        }
-        setChatMessages((prev) => [...prev, assistantMsg]);
+        setChatMessages((prev) => [...prev, buildVisionMessage(diag, image, timeStr)]);
       } else {
         const localMatch = await copilot.matchLocalIntent(trimmed);
         if (localMatch) {
