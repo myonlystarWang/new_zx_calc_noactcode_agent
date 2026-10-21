@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>识图校对卡 · 视觉对标预览 v2</title>
+<style>
+  :root{
+    --bg:#0a0e14; --card:#121824; --line:rgba(6,182,212,.20); --hd:rgba(255,255,255,.05);
+    --cell:rgba(0,0,0,.40); --cellbd:rgba(255,255,255,.05);
+    --t1:#f1f5f9; --t2:#cbd5e1; --t3:#94a3b8; --t4:#64748b;
+    --cyan:#22d3ee; --cyanT:#67e8f9;
+    --amber:#fcd34d; --amberD:#d97706; --rose:#fb7185;
+    --mono:"Consolas","SFMono-Regular","Menlo",monospace;
+    --sans:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--t2);font-family:var(--sans);padding:28px 24px 80px}
+  h1{font-size:15px;font-weight:900;color:var(--t1);margin:0 0 4px;letter-spacing:.5px}
+  .sub{font-size:12px;color:var(--t4);margin-bottom:24px;line-height:1.7}
+  .sub b{color:var(--t2)}
+  .band{margin:0 0 36px}
+  .band>h2{font-size:12px;font-weight:700;color:var(--cyanT);margin:0 0 10px;letter-spacing:.5px}
+  .band>h2 em{color:var(--t4);font-style:normal;font-weight:400;margin-left:8px}
+
+  /* ===== 卡语言（对齐 BossDetailCard / ClassStatusCard） ===== */
+  .card{border-radius:12px;padding:14px 16px;border:1px solid var(--line);background:var(--card);
+        box-shadow:0 4px 14px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:11px}
+  .hd{display:flex;flex-direction:column;gap:7px;border-bottom:1px solid var(--hd);padding-bottom:11px}
+  .hdRow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .hdL{display:flex;align-items:center;gap:7px;min-width:0}
+  .bar{width:6px;height:16px;border-radius:99px;background:var(--cyan);flex:none}
+  .title{font-size:15px;font-weight:900;color:var(--t1);letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pill{padding:1px 6px;border-radius:4px;font-size:11px;font-weight:700;border:1px solid;white-space:nowrap;flex:none}
+  .pill.f{background:rgba(6,182,212,.15);border-color:rgba(6,182,212,.4);color:var(--cyanT)}
+  .pill.w{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.3);color:var(--amber)}
+  .pill.g{background:rgba(100,116,139,.3);border-color:rgba(71,85,105,.5);color:var(--t3)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;padding-left:13px;font-size:11px}
+  .chip{padding:1px 6px;border-radius:4px;background:rgba(30,41,59,.8);color:rgba(103,232,249,.9);
+        border:1px solid rgba(6,182,212,.3);white-space:nowrap}
+  .chip.n{background:rgba(30,41,59,.6);color:var(--t2);border-color:rgba(51,65,85,.5)}
+  .chip.m{font-family:var(--mono);color:var(--t3);border-color:rgba(51,65,85,.5);background:rgba(30,41,59,.6);font-size:10px}
+
+  .grid{display:grid;gap:6px}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g1{grid-template-columns:minmax(0,1fr)}
+  .cell{display:flex;align-items:center;justify-content:space-between;gap:6px;
+        padding:6px 10px;border-radius:8px;background:var(--cell);border:1px solid var(--cellbd);min-width:0}
+  .lbl{font-size:11px;color:var(--t3);white-space:nowrap;flex:none}
+  .val{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--t2);white-space:nowrap}
+  .val.hi{color:var(--amber)}
+  .cell.absent{background:rgba(0,0,0,.22);border:1px dashed rgba(51,65,85,1)}
+  .cell.absent .val{color:var(--amberD);font-weight:400;font-size:11px}
+
+  .sub2{display:flex;align-items:center;justify-content:space-between;gap:8px;
+        font-size:11px;color:var(--t4);padding-left:2px}
+  .link{color:var(--cyanT);cursor:pointer}
+
+  .target{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+  .sel{font-size:11px;color:var(--t3);background:rgba(0,0,0,.4);border:1px solid var(--cellbd);
+       border-radius:8px;padding:5px 9px;font-family:var(--sans)}
+  .result{display:flex;gap:20px;flex-wrap:wrap;padding:8px 10px;border-radius:8px;
+          background:rgba(0,0,0,.28);border:1px solid var(--hd)}
+  .result>div{display:flex;align-items:baseline;gap:6px}
+  .result .k{font-size:10px;color:var(--t4)}
+  .result .v{font-family:var(--mono);font-size:13px;font-weight:900;color:var(--t4)}
+  .warn{font-size:11px;color:var(--amberD);line-height:1.5;display:flex;gap:5px;align-items:flex-start}
+
+  .acts{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
+        border-top:1px solid var(--hd);padding-top:10px}
+  .actsR{display:flex;gap:7px;flex-wrap:wrap}
+  button{font-family:var(--sans);font-size:12px;border-radius:8px;padding:6px 13px;cursor:pointer;
+         display:inline-flex;align-items:center;gap:5px;transition:.15s}
+  .btn-p{background:rgba(8,145,178,.30);border:1px solid rgba(6,182,212,.40);color:#a5f3fc;font-weight:500}
+  .btn-p:hover{background:rgba(8,145,178,.5)}
+  .btn-s{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);color:var(--t2)}
+  .btn-s:hover{background:rgba(255,255,255,.10);color:#fff}
+  .btn-g{background:transparent;border:1px solid transparent;color:var(--t3);padding:6px 8px}
+  .btn-g:hover{background:rgba(255,255,255,.05);color:var(--t2)}
+  .btn-d{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--t4);cursor:not-allowed}
+
+  .ruler{font-family:var(--mono);font-size:10px;color:var(--t4);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .ruler i{display:block;height:1px;background:rgba(51,65,85,.9);flex:1}
+
+  /* 旧版对照 */
+  .old{border-radius:12px;padding:20px;border:1px solid rgba(6,182,212,.3);background:linear-gradient(135deg,#121927,#0d121c)}
+  .oldHd{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:16px;margin-bottom:16px}
+  .oldTitle{font-size:14px;font-weight:700;color:var(--t1)}
+  .oldK{font-size:11px;color:var(--amber);font-weight:500}
+  .oldKpi{font-size:26px;font-weight:900;background:linear-gradient(90deg,#fcd34d,#fdba74,#fef3c7);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .oldGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+  @media(max-width:560px){.oldGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .oldCell{padding:10px;border-radius:8px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.05)}
+  .oldLbl{font-size:11px;color:var(--t3)}
+  .oldVal{font-size:14px;font-weight:600;color:var(--t2);margin-top:2px}
+  .oldVal.a{color:var(--amber);font-weight:700}
+  .oldVal.e{color:#6ee7b7;font-weight:700}
+  .oldVal.r{color:var(--rose);font-weight:700}
+  .bad{color:var(--rose);font-size:11px;margin-top:10px;font-family:var(--mono);line-height:1.6}
+  .tag{display:inline-block;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px;border:1px solid}
+  .tag.good{color:#6ee7b7;border-color:rgba(110,231,183,.35)}
+  .tag.bad{color:var(--rose);border-color:rgba(251,113,133,.35)}
+</style>
+</head>
+<body>
+
+<h1>识图校对卡 · 视觉对标 v2</h1>
+<div class="sub">
+  口径变更：<b>只显示下一步功能真正消费的字段</b>（角色属性面板 7 格 / 轩辕策 3 格 / 天缘 2+N 格），其余折叠为一行「另有 N 项已记录」。<br>
+  视觉对齐 <b>BossDetailCard</b> / <b>ClassStatusCard</b>：无渐变、无大数字 KPI、无四色染值；行式单元格 label 左 / mono 值右。
+</div>
+
+<!-- ① 角色属性面板 500 -->
+<div class="band">
+  <h2>① 角色属性面板<em>左分屏 500px · 7 格</em><span class="tag good">新版</span></h2>
+  <div class="ruler"><i></i>500px<i></i></div>
+  <div class="card" style="max-width:500px">
+    <div class="hd">
+      <div class="hdRow">
+        <div class="hdL">
+          <span class="bar"></span>
+          <span class="title">昭冥</span>
+          <span class="pill f">仙</span>
+          <span class="pill g">角色属性面板</span>
+        </div>
+        <button class="btn-g">只看原图</button>
+      </div>
+      <div class="chips">
+        <span class="chip n">175 级</span>
+        <span class="chip m">识别 6/7</span>
+        <span class="chip m">glm-4v-flash</span>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="cell"><span class="lbl">最小攻</span><span class="val">26,918</span></div>
+      <div class="cell"><span class="lbl">最大攻</span><span class="val hi">151,478</span></div>
+      <div class="cell"><span class="lbl">防御</span><span class="val">30,545</span></div>
+      <div class="cell"><span class="lbl">气血上限</span><span class="val hi">1,604,910</span></div>
+      <div class="cell"><span class="lbl">真气上限</span><span class="val">2,983,930</span></div>
+      <div class="cell"><span class="lbl">暴伤</span><span class="val hi">1889.6%</span></div>
+      <div class="cell absent" style="grid-column:1 / -1"><span class="lbl">对怪增伤</span><span class="val">未识别 · 点此填写</span></div>
+    </div>
+
+    <div class="sub2"><span>另有 22 项已记录（御克 / 抗性 / 减免 / 命中躲闪）</span><span class="link">只读展开</span></div>
+
+    <div class="target">
+      <select class="sel"><option>副本：请选择</option><option>T20 镇海断浪</option></select>
+      <select class="sel"><option>BOSS：请先选副本</option></select>
+    </div>
+    <div class="result">
+      <div><span class="k">单套总伤</span><span class="v">—</span></div>
+      <div><span class="k">平均秒伤</span><span class="v">—</span></div>
+    </div>
+    <div class="warn"><span>⚠</span><span>昭冥 · 仙 技能数据未收录（当前仅佛阵营 4 个技能），暂不能推演秒伤。</span></div>
+
+    <div class="acts">
+      <button class="btn-g">另有 22 项</button>
+      <div class="actsR">
+        <button class="btn-d" title="技能数据未收录">算副本秒伤</button>
+        <button class="btn-p">带入计算器</button>
+        <button class="btn-s">存为档案</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ② 380 -->
+<div class="band">
+  <h2>② 角色属性面板 · 窄卡<em>容器 &lt; 480px · 同类合并</em></h2>
+  <div class="ruler"><i></i>380px<i></i></div>
+  <div class="card" style="max-width:380px">
+    <div class="hd">
+      <div class="hdRow">
+        <div class="hdL">
+          <span class="bar"></span>
+          <span class="title">昭冥</span>
+          <span class="pill f">仙</span>
+        </div>
+      </div>
+      <div class="chips" style="padding-left:0">
+        <span class="chip m">识别 6/7</span>
+        <span class="chip m">93%</span>
+      </div>
+    </div>
+    <div class="grid g1">
+      <div class="cell"><span class="lbl">最小攻 / 最大攻</span><span class="val hi">26,918 – 151,478</span></div>
+      <div class="cell"><span class="lbl">防御</span><span class="val">30,545</span></div>
+      <div class="cell"><span class="lbl">气血上限</span><span class="val hi">1,604,910</span></div>
+      <div class="cell"><span class="lbl">真气上限</span><span class="val">2,983,930</span></div>
+      <div class="cell"><span class="lbl">暴伤</span><span class="val hi">1889.6%</span></div>
+      <div class="cell absent"><span class="lbl">对怪增伤</span><span class="val">未识别 · 点此填</span></div>
+    </div>
+    <div class="sub2"><span>另有 22 项已记录</span></div>
+    <div class="warn"><span>⚠</span><span>昭冥 · 仙 技能数据未收录</span></div>
+    <div class="acts" style="flex-direction:column;align-items:stretch">
+      <button class="btn-p" style="justify-content:center">带入计算器</button>
+      <button class="btn-d" style="justify-content:center">算副本秒伤</button>
+      <button class="btn-g" style="justify-content:center">存为档案 · 复制</button>
+    </div>
+  </div>
+</div>
+
+<!-- ③ 轩辕策 -->
+<div class="band">
+  <h2>③ 轩辕策<em>500px · 3 格 + 词条计数</em></h2>
+  <div class="ruler"><i></i>500px<i></i></div>
+  <div class="card" style="max-width:500px">
+    <div class="hd">
+      <div class="hdRow">
+        <div class="hdL">
+          <span class="bar"></span>
+          <span class="title">轩辕策</span>
+          <span class="pill w">英雄策</span>
+          <span class="pill g">轩辕策</span>
+        </div>
+        <button class="btn-g">只看原图</button>
+      </div>
+      <div class="chips">
+        <span class="chip m">识别 3/3</span>
+        <span class="chip m">glm-4v-flash</span>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="cell"><span class="lbl">四象</span><span class="val hi">青龙</span></div>
+      <div class="cell"><span class="lbl">品阶</span><span class="val">15</span></div>
+      <div class="cell" style="grid-column:1 / -1"><span class="lbl">词条</span><span class="val">共 6 条</span></div>
+    </div>
+    <div class="sub2"><span>词条明细由模拟器生成，不在卡上铺开</span></div>
+    <div class="acts">
+      <button class="btn-g">复制</button>
+      <div class="actsR">
+        <button class="btn-p">打开轩辕策模拟</button>
+        <button class="btn-s">词条带入计算器</button>
+        <button class="btn-s">存为档案</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ 天缘 -->
+<div class="band">
+  <h2>④ 天缘属性<em>500px · 部位 + 等级 + 可映射词条</em></h2>
+  <div class="ruler"><i></i>500px<i></i></div>
+  <div class="card" style="max-width:500px">
+    <div class="hd">
+      <div class="hdRow">
+        <div class="hdL">
+          <span class="bar"></span>
+          <span class="title">天缘属性</span>
+          <span class="pill f">须弥刃</span>
+          <span class="pill g">天缘</span>
+        </div>
+        <button class="btn-g">只看原图</button>
+      </div>
+      <div class="chips">
+        <span class="chip m">识别 4/4</span>
+        <span class="chip m">glm-4v-flash</span>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="cell"><span class="lbl">部位</span><span class="val">上玄佑万辰须弥刃</span></div>
+      <div class="cell"><span class="lbl">天命等级</span><span class="val hi">8</span></div>
+      <div class="cell"><span class="lbl">攻击</span><span class="val hi">+4,200</span></div>
+      <div class="cell"><span class="lbl">对怪增伤</span><span class="val">+1.6%</span></div>
+    </div>
+    <div class="sub2"><span>另有 4 条词条已记录（克系 / 抗性）</span><span class="link">只读展开</span></div>
+    <div class="acts">
+      <button class="btn-g">复制</button>
+      <div class="actsR">
+        <button class="btn-p">查该部位词条池</button>
+        <button class="btn-s">词条带入计算器</button>
+        <button class="btn-s">存为档案</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ 旧版 -->
+<div class="band">
+  <h2>⑤ 当前线上（对照）<span class="tag bad">问题标注</span></h2>
+  <div class="ruler"><i></i>500px 左分屏<i></i></div>
+  <div class="old" style="max-width:500px">
+    <div class="oldHd">
+      <div>
+        <div class="oldTitle">逐霜 属性推演报告 <span class="pill f">仙阵营</span></div>
+        <div style="font-size:12px;color:var(--t3);margin-top:2px">测算BOSS: T20 · 逆戟鲸神</div>
+      </div>
+      <div style="text-align:right">
+        <div class="oldK">T20 实战爆发秒伤推演</div>
+        <div class="oldKpi">1.47 亿</div>
+      </div>
+    </div>
+    <div class="oldGrid">
+      <div class="oldCell"><div class="oldLbl">大攻攻击力</div><div class="oldVal">195,000</div></div>
+      <div class="oldCell"><div class="oldLbl">防御力</div><div class="oldVal">96,000</div></div>
+      <div class="oldCell"><div class="oldLbl a">无视伤害减免</div><div class="oldVal a">142.5%</div></div>
+      <div class="oldCell"><div class="oldLbl e">减免伤害</div><div class="oldVal e">165%</div></div>
+      <div class="oldCell"><div class="oldLbl r">对怪物增伤</div><div class="oldVal r">82%</div></div>
+      <div class="oldCell"><div class="oldLbl">暴击率 / 暴伤</div><div class="oldVal">148% / 920%</div></div>
+      <div class="oldCell"><div class="oldLbl">减暴击率</div><div class="oldVal">135%</div></div>
+      <div class="oldCell"><div class="oldLbl">气血总量 (HP)</div><div class="oldVal">3,800,000</div></div>
+    </div>
+    <div class="bad">↑ 全部来自后端写死的逐霜模板；真实面板是昭冥·仙，气血 1,604,910，且面板上没有「对怪增伤」这一行。</div>
+  </div>
+</div>
+
+</body>
+</html>
