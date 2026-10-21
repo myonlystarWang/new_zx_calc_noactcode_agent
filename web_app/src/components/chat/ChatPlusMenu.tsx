@@ -60,8 +60,17 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
 
   const isDown = placement === 'down';
 
-  // 菜单项：战力/雷达 + 旧天缘 + 宸极凝灵契，轩辕策保留为 disabled 放在最下方
-  const menuItems = [
+interface MenuItem {
+  id: string;
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  title: string;
+  desc: string;
+  disabled?: boolean;
+  onClick?: () => void;
+}
+
+// 菜单项：根据用户需求调整为 8 项纯速查与分屏工具
+const menuItems: MenuItem[] = [
     {
       id: 'upload',
       icon: Paperclip,
@@ -94,18 +103,11 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       onClick: () => handleToolClick('server'),
     },
     {
-      id: 'tianyuan_old',
-      icon: Sparkles,
-      title: '旧天缘属性',
-      desc: '4 大部位天缘词条池 · 1~10 级满级总属性推导',
-      onClick: () => handleSendMessageClick('旧天缘'),
-    },
-    {
-      id: 'ninglingqi',
-      icon: Scroll,
-      title: '宸极凝灵契',
-      desc: '12 孔属性池 · 官方稀有/暴伤上限规则速查',
-      onClick: () => handleSendMessageClick('凝灵契'),
+      id: 'silin_benyuan',
+      icon: Compass,
+      title: '四灵本元',
+      desc: '伏龙鼎四灵 × 1~5阶全词条与满级折算速查',
+      onClick: () => handleSendMessageClick('四灵本元'),
     },
     {
       id: 'shenji',
@@ -115,12 +117,18 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       onClick: () => handleSendMessageClick('神机洗练'),
     },
     {
-      id: 'xyc',
-      icon: Compass,
-      title: '轩辕策属性',
-      desc: '1~20 阶反推初始属性与极品毕业度评级',
-      disabled: true,
-      onClick: undefined,
+      id: 'tianyuan',
+      icon: Sparkles,
+      title: '天缘属性',
+      desc: '旧天缘天命四大部位与新天缘须弥系列分类卡',
+      onClick: () => handleSendMessageClick('天缘属性'),
+    },
+    {
+      id: 'ninglingqi',
+      icon: Scroll,
+      title: '宸极凝灵契',
+      desc: '12 孔属性池 · 官方稀有/暴伤上限规则速查',
+      onClick: () => handleSendMessageClick('凝灵契'),
     },
   ];
 

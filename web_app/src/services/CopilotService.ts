@@ -41,7 +41,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub';
     cardData?: any;
 }
 
@@ -742,6 +742,30 @@ export class CopilotService {
                     workspaceMode: 'xyc',
                     route: '/tools/xyc',
                     btnText: '进入轩辕策属性'
+                }
+            };
+        }
+
+        // 5a. 天缘属性分类卡（tianyuan_hub）：精准呈现新旧天缘两大分支
+        const isTianyuanHubQuery =
+            q === '天缘属性' ||
+            q === '天缘分类' ||
+            q === '天缘系统' ||
+            q === '天缘选择';
+
+        if (isTianyuanHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你呈现【天缘属性】分类导航。诛仙3天缘分为天命四件套（旧天缘）与上玄佑万辰须弥系列（新天缘），请点选对应卡片查看：',
+                time: timeStr,
+                cardType: 'tianyuan_hub',
+                cardData: {
+                    title: '天缘属性分类导航',
+                    options: [
+                        { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
+                        { key: 'tianyuan_new', label: '新天缘', query: '新天缘' },
+                    ]
                 }
             };
         }
@@ -1815,6 +1839,37 @@ export class CopilotService {
                 cardData: {
                     title: '全景分类导航',
                     options: TOP_HUB_OPTIONS,
+                }
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.58f 各类模拟器全景导航卡（sim_hub）
+        // 覆盖本站当前所有模拟器：神机洗练、新天缘模拟、轩辕策模拟、凝灵契模拟、战力计算、副本打桩
+        // ------------------------------------------------------------
+        const isSimHubQuery =
+            q === '模拟器' ||
+            q === '各类模拟器' ||
+            q === '模拟' ||
+            q === '模拟工具' ||
+            q === '全部模拟器' ||
+            q === '微工具' ||
+            q === '实用工具';
+
+        if (isSimHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你呈现【各类模拟器】全景导航。汇集天书万象当前所有实战推演与装备洗炼模拟工具，点击直接进入：',
+                time: timeStr,
+                cardType: 'sim_hub',
+                cardData: {
+                    title: '各类模拟器导航',
+                    options: [
+                        { key: 'shenji', label: '神机洗练', query: '神机洗练' },
+                        // { key: 'tianyuan', label: '天缘洗练', query: '天缘洗练' },
+                        // { key: 'xyc', label: '轩辕策洗练', query: '轩辕策洗练' },
+                    ]
                 }
             };
         }

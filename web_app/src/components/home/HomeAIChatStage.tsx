@@ -920,8 +920,8 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             </div>
                                         )}
 
-                                        {/* 6.6b 装备/技能/经验/升级/属性测算/玩法攻略/全景导航分流卡（T-18） */}
-                                        {(msg.cardType === 'exp_hub' || msg.cardType === 'measure_hub' || msg.cardType === 'guide_hub' || msg.cardType === 'top_hub' || msg.cardType === 'equip_hub' || msg.cardType === 'skill_hub') && msg.cardData && (
+                                        {/* 6.6b 装备/技能/经验/升级/属性测算/玩法攻略/全景导航/模拟器/天缘分流卡（T-18） */}
+                                        {(msg.cardType === 'exp_hub' || msg.cardType === 'measure_hub' || msg.cardType === 'guide_hub' || msg.cardType === 'top_hub' || msg.cardType === 'equip_hub' || msg.cardType === 'skill_hub' || msg.cardType === 'tianyuan_hub' || msg.cardType === 'sim_hub') && msg.cardData && (
                                             <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 space-y-3">
                                                 <div className="text-sm font-bold text-cyan-300">
                                                     {msg.cardData.title || '分类导航'} · 点选直达对应功能
