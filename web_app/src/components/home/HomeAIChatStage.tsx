@@ -278,7 +278,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                 'flex flex-col h-full bg-[#0b0e14]/95 overflow-hidden transition-all duration-300',
                 isSplitOpen
                     ? 'w-full rounded-none border-none'
-                    : 'w-full max-w-[960px] mx-auto rounded-2xl border border-white/10 shadow-2xl my-1'
+                    : 'w-full max-w-[1020px] mx-auto rounded-2xl border border-white/10 shadow-2xl my-1'
             )}
         >
             {/* 顶部控制栏：固定顶部不滚动 */}

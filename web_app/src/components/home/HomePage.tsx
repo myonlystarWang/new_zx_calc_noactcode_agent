@@ -385,7 +385,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               'flex flex-col h-full overflow-hidden bg-[#080c14]',
               workspaceState.isOpen
                 ? 'shrink-0 border-r border-slate-800/80'
-                : 'flex-1 max-w-[960px] mx-auto w-full',
+                : 'flex-1 max-w-[1020px] mx-auto w-full',
               !isResizing && 'transition-[width] duration-300'
             )}
           >

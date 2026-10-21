@@ -188,3 +188,73 @@ export function rollShenjiPools(pools: ShenjiAttr[][]): ShenjiRoll[] {
     });
     return out;
 }
+
+/** 自动锻造单条目标配置 */
+export interface AutoForgeTarget {
+    /** 目标词条名称，"无" 表示任意 */
+    attrName: string;
+    /** 最低品质要求，0: 无基础品质, 1: 白, 2: 绿, 3: 紫, 4: 橙, 5: 红 */
+    minTier: number;
+}
+
+/** 检查是否存在至少一个有效预设目标（非“无”或有基础品质要求） */
+export function hasActiveAutoForgeTarget(targets: AutoForgeTarget[], activeCount: number): boolean {
+    for (let i = 0; i < activeCount; i++) {
+        const t = targets[i];
+        if (!t) continue;
+        if (t.attrName && t.attrName !== '无' && t.attrName.trim() !== '') {
+            return true;
+        }
+        if (t.minTier > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/** 属性友好显示名：将带百分比的 攻击/气血/真气/防御 映射为 攻击百分比/气血百分比 等，避免与固定攻击等混淆 */
+export function getShenjiAttrDisplayName(attr: { name: string; percent?: boolean }): string {
+    if (attr.percent) {
+        if (attr.name === '攻击') return '攻击百分比';
+        if (attr.name === '气血') return '气血百分比';
+        if (attr.name === '真气') return '真气百分比';
+        if (attr.name === '防御') return '防御百分比';
+    }
+    return attr.name;
+}
+
+/** 检查洗练产出是否满足自动锻造预设目标 */
+export function matchAutoForgeTarget(
+    rolls: ShenjiRoll[],
+    targets: AutoForgeTarget[],
+    activeCount: number
+): boolean {
+    if (!rolls || rolls.length < activeCount) return false;
+    // 若未设置任何一项有效目标（词条全为“无”且无基础品质门槛），则不触发目标匹配停止
+    if (!hasActiveAutoForgeTarget(targets, activeCount)) {
+        return false;
+    }
+
+    for (let i = 0; i < activeCount; i++) {
+        const roll = rolls[i];
+        const target = targets[i];
+        if (!roll || !target) return false;
+
+        // 1. 词条名称检查（同时兼容原名与百分比别名，例如“攻击百分比”可精准匹配到带%的“攻击”词条）
+        if (target.attrName && target.attrName !== '无' && target.attrName.trim() !== '') {
+            const rollDisplay = getShenjiAttrDisplayName(roll);
+            const isNameMatched = roll.name === target.attrName || rollDisplay === target.attrName;
+            if (!isNameMatched) {
+                return false;
+            }
+        }
+
+        // 2. 最低品质门槛检查
+        if (target.minTier > 0) {
+            if (roll.tier < target.minTier) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
