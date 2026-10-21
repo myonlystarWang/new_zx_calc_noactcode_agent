@@ -10481,6 +10481,78 @@
       "attrKey": "ignore"
     }
   },
+  "ceiling-critrate-01": {
+    "sender": "assistant",
+    "text": "为你速查到【极致暴击攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致暴击攻略",
+      "attrKey": "critRate"
+    }
+  },
+  "ceiling-critrate-02": {
+    "sender": "assistant",
+    "text": "为你速查到【极致暴击攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致暴击攻略",
+      "attrKey": "critRate"
+    }
+  },
+  "ceiling-critdmg-01": {
+    "sender": "assistant",
+    "text": "为你速查到【极致爆伤攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致爆伤攻略",
+      "attrKey": "critDamage"
+    }
+  },
+  "ceiling-critdmg-02": {
+    "sender": "assistant",
+    "text": "为你速查到【极致爆伤攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致爆伤攻略",
+      "attrKey": "critDamage"
+    }
+  },
+  "ceiling-critdmg-03": {
+    "sender": "assistant",
+    "text": "为你速查到【极致爆伤攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致爆伤攻略",
+      "attrKey": "critDamage"
+    }
+  },
+  "ceiling-critdmg-04": {
+    "sender": "assistant",
+    "text": "为你速查到【极致爆伤攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致爆伤攻略",
+      "attrKey": "critDamage"
+    }
+  },
+  "ceiling-critred-01": {
+    "sender": "assistant",
+    "text": "为你速查到【极致减暴击攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致减暴击攻略",
+      "attrKey": "critReduction"
+    }
+  },
+  "ceiling-critred-02": {
+    "sender": "assistant",
+    "text": "为你速查到【极致减暴击攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
+    "cardType": "ceiling",
+    "cardData": {
+      "title": "极致减暴击攻略",
+      "attrKey": "critReduction"
+    }
+  },
   "ceiling-mbonus-01": {
     "sender": "assistant",
     "text": "为你速查到【极致对怪物增伤攻略】全景信息卡，涵盖全领域细分来源、理论最高与大致毕业门槛：",
@@ -59991,6 +60063,10 @@
             "name": "真龙圣血",
             "exp": 5500,
             "tianlongCount": 11
+          },
+          "liyang": {
+            "name": "离阳火精",
+            "exp": 100
           }
         },
         "milestones": [
@@ -60276,6 +60352,10 @@
             "name": "真龙圣血",
             "exp": 5500,
             "tianlongCount": 11
+          },
+          "liyang": {
+            "name": "离阳火精",
+            "exp": 100
           }
         },
         "milestones": [
@@ -60561,6 +60641,10 @@
             "name": "真龙圣血",
             "exp": 5500,
             "tianlongCount": 11
+          },
+          "liyang": {
+            "name": "离阳火精",
+            "exp": 100
           }
         },
         "milestones": [
@@ -60846,6 +60930,10 @@
             "name": "真龙圣血",
             "exp": 5500,
             "tianlongCount": 11
+          },
+          "liyang": {
+            "name": "离阳火精",
+            "exp": 100
           }
         },
         "milestones": [
@@ -61131,6 +61219,10 @@
             "name": "真龙圣血",
             "exp": 5500,
             "tianlongCount": 11
+          },
+          "liyang": {
+            "name": "离阳火精",
+            "exp": 100
           }
         },
         "milestones": [
@@ -160618,6 +160710,10 @@
             "name": "真龙圣血",
             "exp": 5500,
             "tianlongCount": 11
+          },
+          "liyang": {
+            "name": "离阳火精",
+            "exp": 100
           }
         },
         "milestones": [
@@ -160903,6 +160999,10 @@
             "name": "真龙圣血",
             "exp": 5500,
             "tianlongCount": 11
+          },
+          "liyang": {
+            "name": "离阳火精",
+            "exp": 100
           }
         },
         "milestones": [
@@ -165418,6 +165518,16 @@
           "query": "极致减暴"
         },
         {
+          "key": "crit_rate",
+          "label": "极致暴击",
+          "query": "极致暴击"
+        },
+        {
+          "key": "crit_dmg",
+          "label": "极致爆伤",
+          "query": "极致爆伤"
+        },
+        {
           "key": "monster_dmg",
           "label": "极致怪增",
           "query": "怪增"
@@ -165476,6 +165586,16 @@
           "key": "crit_red",
           "label": "极致减暴",
           "query": "极致减暴"
+        },
+        {
+          "key": "crit_rate",
+          "label": "极致暴击",
+          "query": "极致暴击"
+        },
+        {
+          "key": "crit_dmg",
+          "label": "极致爆伤",
+          "query": "极致爆伤"
         },
         {
           "key": "monster_dmg",

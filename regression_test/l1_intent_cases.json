@@ -516,6 +516,110 @@
     "assert": "strong"
   },
   {
+    "id": "ceiling-critrate-01",
+    "input": "极致暴击",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critRate"
+    },
+    "tags": [
+      "standard",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-critrate-02",
+    "input": "暴击",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critRate"
+    },
+    "tags": [
+      "synonym",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-critdmg-01",
+    "input": "极致爆伤",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critDamage"
+    },
+    "tags": [
+      "standard",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-critdmg-02",
+    "input": "爆伤",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critDamage"
+    },
+    "tags": [
+      "synonym",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-critdmg-03",
+    "input": "机制爆伤",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critDamage"
+    },
+    "tags": [
+      "variant",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-critdmg-04",
+    "input": "爆伤攻略",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critDamage"
+    },
+    "tags": [
+      "variant",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-critred-01",
+    "input": "极致减暴击",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critReduction"
+    },
+    "tags": [
+      "standard",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "ceiling-critred-02",
+    "input": "减爆伤",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critReduction"
+    },
+    "tags": [
+      "variant",
+      "ceiling"
+    ],
+    "assert": "strong"
+  },
+  {
     "id": "ceiling-mbonus-01",
     "input": "怪增",
     "expect": {

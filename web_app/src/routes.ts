@@ -40,7 +40,7 @@ export type PrimaryTab = 'home' | 'calculator' | 'arena' | 'compendium' | 'tools
 export const COMPENDIUM_SEGMENTS = ['ceiling', 'skills', 'support', 'boss', 'fabao', 'equip'] as const;
 
 /** 极致属性攻略下的二级属性分类（真相来源为 CompendiumView 的 ATTRIBUTE_SUB_TABS） */
-const ATTRIBUTE_SUB_TAB_IDS = ['ignore', 'reduction', 'critReduction', 'monsterDamageBonus', 'dodge'] as const;
+const ATTRIBUTE_SUB_TAB_IDS = ['ignore', 'reduction', 'critReduction', 'critRate', 'critDamage', 'monsterDamageBonus', 'dodge'] as const;
 
 const FACTION_IDS = ['XIAN', 'FO', 'MO'] as const;
 

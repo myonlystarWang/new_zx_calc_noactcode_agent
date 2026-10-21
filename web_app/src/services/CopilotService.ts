@@ -1679,6 +1679,8 @@ export class CopilotService {
                         { key: 'ignore', label: '极致无视', query: '极致无视' },
                         { key: 'reduction', label: '极致减免', query: '极致减免' },
                         { key: 'crit_red', label: '极致减暴', query: '极致减暴' },
+                        { key: 'crit_rate', label: '极致暴击', query: '极致暴击' },
+                        { key: 'crit_dmg', label: '极致爆伤', query: '极致爆伤' },
                         { key: 'monster_dmg', label: '极致怪增', query: '怪增' },
                         { key: 'dodge', label: '技能躲闪', query: '躲闪' },
                         { key: 'pet_pledge', label: '宠物刻誓', query: '宠物结誓' },
@@ -3028,22 +3030,30 @@ export class CopilotService {
         }
 
         // 5. 极致属性攻略意图（信息卡 inline 呈现全领域细分，不再跳转路由页）
-        if (q.includes('极致无视') || q.includes('极致减免') || q.includes('极致减暴') || q.includes('怪增') || q.includes('躲闪') || q.includes('天花板') || q.includes('上限')) {
+        // 覆盖 7 大属性：无视 / 减免 / 减暴击 / 暴击 / 爆伤 / 怪增 / 躲闪
+        // 判序要点：「减暴/减爆」先于「爆伤/暴击」，否则「极致减暴击」会被误判为暴击攻略
+        if (q.includes('极致无视') || q.includes('极致减免') || q.includes('极致减暴') || q.includes('怪增') || q.includes('躲闪') || q.includes('爆伤') || q.includes('暴伤') || q.includes('暴击') || q.includes('爆击') || q.includes('天花板') || q.includes('上限')) {
             let attrKey = 'ignore';
             let title = '极致无视伤害减免攻略';
 
-            if (q.includes('减免')) {
-                attrKey = 'reduction';
-                title = '极致减免伤害攻略';
-            } else if (q.includes('减暴')) {
+            if (q.includes('减暴') || q.includes('减爆')) {
                 attrKey = 'critReduction';
                 title = '极致减暴击攻略';
+            } else if (q.includes('爆伤') || q.includes('暴伤') || q.includes('暴击伤害')) {
+                attrKey = 'critDamage';
+                title = '极致爆伤攻略';
+            } else if (q.includes('减免')) {
+                attrKey = 'reduction';
+                title = '极致减免伤害攻略';
             } else if (q.includes('怪增')) {
                 attrKey = 'monsterDamageBonus';
                 title = '极致对怪物增伤攻略';
             } else if (q.includes('躲闪')) {
                 attrKey = 'dodge';
                 title = '极致技能躲闪攻略';
+            } else if (q.includes('暴击') || q.includes('爆击')) {
+                attrKey = 'critRate';
+                title = '极致暴击攻略';
             }
 
             return {

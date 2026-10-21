@@ -16,7 +16,8 @@ import {
     Compass,
     Layers,
     Award,
-    Crosshair
+    Crosshair,
+    Flame
 } from 'lucide-react';
 import { SkillsView } from '../skills/SkillsView';
 import { BossCompendiumView } from './BossCompendiumView';
@@ -28,7 +29,14 @@ import type { AttributeCeilingRow, SupportRole, StatSourceSection } from '../../
 import type { SearchTarget } from '../GlobalSearch';
 
 export type CompendiumPrimaryTab = 'ceiling' | 'fabao' | 'equip' | 'skills' | 'support' | 'boss';
-export type AttributeSubTab = 'ignore' | 'reduction' | 'critReduction' | 'monsterDamageBonus' | 'dodge';
+export type AttributeSubTab =
+    | 'ignore'
+    | 'reduction'
+    | 'critReduction'
+    | 'critRate'
+    | 'critDamage'
+    | 'monsterDamageBonus'
+    | 'dodge';
 export type SubTab = CompendiumPrimaryTab | AttributeSubTab;
 
 export const PRIMARY_TABS: { id: CompendiumPrimaryTab; label: string; icon: React.ReactNode }[] = [
@@ -44,6 +52,8 @@ export const ATTRIBUTE_SUB_TABS: { id: AttributeSubTab; label: string; icon: Rea
     { id: 'ignore', label: '极致无视', icon: <Target className="w-3.5 h-3.5" /> },
     { id: 'reduction', label: '极致减免', icon: <Shield className="w-3.5 h-3.5" /> },
     { id: 'critReduction', label: '极致减暴击', icon: <Swords className="w-3.5 h-3.5" /> },
+    { id: 'critRate', label: '极致暴击', icon: <Crosshair className="w-3.5 h-3.5" /> },
+    { id: 'critDamage', label: '极致爆伤', icon: <Flame className="w-3.5 h-3.5" /> },
     { id: 'monsterDamageBonus', label: '极致怪增', icon: <BookOpen className="w-3.5 h-3.5" /> },
     { id: 'dodge', label: '极致躲闪', icon: <Sparkles className="w-3.5 h-3.5" /> },
 ];
@@ -1508,6 +1518,18 @@ export const CompendiumView: React.FC<CompendiumViewProps> = ({
             case 'ignore': return <AttributeTable sectionKey="ignore" sectionTitle="极致无视攻略" />;
             case 'reduction': return <AttributeTable sectionKey="reduction" sectionTitle="极致减免伤害攻略" />;
             case 'critReduction': return <AttributeTable sectionKey="critReduction" sectionTitle="极致减暴击攻略" />;
+            case 'critRate': {
+                const lists = DataService.getInstance().getStatSourceLists();
+                const section = lists?.sections.critRate;
+                if (!section) return <div className="text-slate-400 text-base">数据加载中...</div>;
+                return <SourceSectionView section={section} showConditional />;
+            }
+            case 'critDamage': {
+                const lists = DataService.getInstance().getStatSourceLists();
+                const section = lists?.sections.critDamage;
+                if (!section) return <div className="text-slate-400 text-base">数据加载中...</div>;
+                return <SourceSectionView section={section} showConditional />;
+            }
             case 'monsterDamageBonus': {
                 const lists = DataService.getInstance().getStatSourceLists();
                 const section = lists?.sections.monsterDamageBonus;
