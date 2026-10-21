@@ -5454,5 +5454,326 @@
     ],
     "assert": "strong",
     "note": "边界：阶位名裸词与技能重名，不得抢技能意图"
+  },
+  {
+    "id": "silin-zhulong",
+    "input": "烛龙本元",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "zhulong"
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：灵名+本元定位烛龙"
+  },
+  {
+    "id": "silin-huangniao",
+    "input": "黄鸟本元",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "huangniao"
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：灵名+本元定位黄鸟"
+  },
+  {
+    "id": "silin-kuiniu",
+    "input": "夔牛本元",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "kuiniu"
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：灵名+本元定位夔牛"
+  },
+  {
+    "id": "silin-tier-huangniao-4",
+    "input": "黄鸟本元四阶",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "huangniao",
+      "cardData.initialTier": 4
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：黄鸟+四阶"
+  },
+  {
+    "id": "silin-tier-zhulong-3",
+    "input": "烛龙本元三阶",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "zhulong",
+      "cardData.initialTier": 3
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：烛龙+三阶"
+  },
+  {
+    "id": "silin-tier-taotie-5",
+    "input": "饕餮本元五阶",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "taotie",
+      "cardData.initialTier": 5
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：饕餮+五阶"
+  },
+  {
+    "id": "silin-reverse-xuanhuang",
+    "input": "本元 玄黄天音",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "huangniao",
+      "cardData.initialTier": 5
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：反查黄鸟五阶（玄黄天音）"
+  },
+  {
+    "id": "silin-reverse-zhuzhao",
+    "input": "本元 烛照太初",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "zhulong",
+      "cardData.initialTier": 5
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：反查烛龙五阶（烛照太初）"
+  },
+  {
+    "id": "silin-reverse-guixu",
+    "input": "本元 归墟无厌",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "taotie",
+      "cardData.initialTier": 5
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：反查饕餮五阶（归墟无厌）"
+  },
+  {
+    "id": "silin-reverse-fuyao",
+    "input": "本元 扶摇",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "huangniao",
+      "cardData.initialTier": 3
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：反查黄鸟三阶（扶摇）"
+  },
+  {
+    "id": "silin-reverse-jiuxiao",
+    "input": "本元 九霄",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "huangniao",
+      "cardData.initialTier": 4
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：反查黄鸟四阶（九霄）"
+  },
+  {
+    "id": "silin-reverse-youming",
+    "input": "本元 幽明",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "zhulong",
+      "cardData.initialTier": 3
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：反查烛龙三阶（幽明）"
+  },
+  {
+    "id": "silin-reverse-fenglei",
+    "input": "本元 风雷",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "kuiniu",
+      "cardData.initialTier": 4
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：反查夔牛四阶（风雷）"
+  },
+  {
+    "id": "silin-reverse-zhengu",
+    "input": "本元 震鼓",
+    "expect": {
+      "cardType": "silin_benyuan",
+      "cardData.initialSpiritId": "kuiniu",
+      "cardData.initialTier": 3
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：反查夔牛三阶（震鼓）"
+  },
+  {
+    "id": "silin-fulongding-embed",
+    "input": "伏龙鼎镶嵌",
+    "expect": {
+      "cardType": "silin_benyuan"
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：按伏龙鼎镶嵌命中"
+  },
+  {
+    "id": "silin-fulongding-benyuan",
+    "input": "伏龙鼎本元",
+    "expect": {
+      "cardType": "silin_benyuan"
+    },
+    "tags": ["equip", "silin_benyuan"],
+    "assert": "strong",
+    "note": "四灵本元：按伏龙鼎本元命中"
+  },
+  {
+    "id": "silin-hub-bare",
+    "input": "四灵",
+    "expect": {
+      "cardType": "top_hub"
+    },
+    "tags": ["equip", "silin_benyuan", "hub"],
+    "assert": "strong",
+    "note": "四灵体系分流：裸词「四灵」返回本元 vs 瑞灵分流卡"
+  },
+  {
+    "id": "silin-hub-system",
+    "input": "四灵系统",
+    "expect": {
+      "cardType": "top_hub"
+    },
+    "tags": ["equip", "silin_benyuan", "hub"],
+    "assert": "strong",
+    "note": "四灵体系分流：「四灵系统」返回分流卡"
+  },
+  {
+    "id": "t18-shenji-xiuwu",
+    "input": "修武神机",
+    "expect": {
+      "cardType": "shenji_forge",
+      "cardData.initialQuality": "修武"
+    },
+    "tags": ["shenji_forge", "t18"],
+    "assert": "strong",
+    "note": "神机洗练：修武神机预选修武"
+  },
+  {
+    "id": "t18-shenji-zhaowu",
+    "input": "昭武神机",
+    "expect": {
+      "cardType": "shenji_forge",
+      "cardData.initialQuality": "昭武"
+    },
+    "tags": ["shenji_forge", "t18"],
+    "assert": "strong",
+    "note": "神机洗练：昭武神机预选昭武"
+  },
+  {
+    "id": "t18-shenji-zhangwu",
+    "input": "彰武神机",
+    "expect": {
+      "cardType": "shenji_forge",
+      "cardData.initialQuality": "彰武"
+    },
+    "tags": ["shenji_forge", "t18"],
+    "assert": "strong",
+    "note": "神机洗练：彰武神机预选彰武"
+  },
+  {
+    "id": "t18-shenji-sim-xilian",
+    "input": "神机洗练模拟",
+    "expect": {
+      "cardType": "shenji_forge"
+    },
+    "tags": ["shenji_forge", "t18"],
+    "assert": "strong",
+    "note": "神机洗练：复合口语神机洗练模拟"
+  },
+  {
+    "id": "t18-shenji-sim-duanzao",
+    "input": "神机锻造模拟",
+    "expect": {
+      "cardType": "shenji_forge"
+    },
+    "tags": ["shenji_forge", "t18"],
+    "assert": "strong",
+    "note": "神机洗练：复合口语神机锻造模拟"
+  },
+  {
+    "id": "t18-shenji-sim-attr-xilian",
+    "input": "神机属性洗练",
+    "expect": {
+      "cardType": "shenji_forge"
+    },
+    "tags": ["shenji_forge", "t18"],
+    "assert": "strong",
+    "note": "神机洗练：神机属性洗练"
+  },
+  {
+    "id": "t18-fabao-liyang-01",
+    "input": "离阳火精",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": ["fabao_upgrade", "t18"],
+    "assert": "strong",
+    "note": "法宝升级：离阳火精直达升级经验表"
+  },
+  {
+    "id": "t18-fabao-liyang-02",
+    "input": "法宝离阳火精",
+    "expect": {
+      "cardType": "fabao_upgrade"
+    },
+    "tags": ["fabao_upgrade", "t18"],
+    "assert": "strong",
+    "note": "法宝升级：法宝离阳火精组合词"
+  },
+  {
+    "id": "ceiling-critrate-extra",
+    "input": "极致暴击",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critRate"
+    },
+    "tags": ["ceiling", "t18"],
+    "assert": "strong",
+    "note": "极致攻略：极致暴击直达暴击率天花板"
+  },
+  {
+    "id": "ceiling-critdmg-extra",
+    "input": "极致爆伤",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critDamage"
+    },
+    "tags": ["ceiling", "t18"],
+    "assert": "strong",
+    "note": "极致攻略：极致爆伤直达暴击伤害天花板"
+  },
+  {
+    "id": "ceiling-critdmg-extra-02",
+    "input": "极致暴击伤害",
+    "expect": {
+      "cardType": "ceiling",
+      "cardData.attrKey": "critDamage"
+    },
+    "tags": ["ceiling", "t18"],
+    "assert": "strong",
+    "note": "极致攻略：极致暴击伤害直达暴击伤害天花板"
   }
 ]

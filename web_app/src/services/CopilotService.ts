@@ -1386,6 +1386,24 @@ export class CopilotService {
         };
         const SILIN_TIER_CN: Record<string, number> = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5 };
 
+        // 0.55a 四灵体系歧义分流（top_hub，四灵本元 vs 四灵瑞灵）
+        if (q === '四灵' || q === '四灵系统') {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '检测到【四灵】包含伏龙鼎镶嵌与瑞灵呈祥两大体系，请选择你想查阅的方向：',
+                time: timeStr,
+                cardType: 'top_hub',
+                cardData: {
+                    title: '四灵体系导航',
+                    options: [
+                        { key: 'silin_benyuan', label: '四灵本元（伏龙鼎镶嵌）', query: '四灵本元' },
+                        { key: 'silin_ruiling', label: '四灵瑞灵（瑞灵呈祥）', query: '四灵瑞灵' },
+                    ]
+                }
+            };
+        }
+
         const isSilinBenyuanQuery =
             (q.includes('本元') || q.includes('伏龙鼎')) &&
             !q.includes('瑞灵');
@@ -1838,17 +1856,19 @@ export class CopilotService {
             q.includes('法宝聚气') ||
             q.includes('天龙魔血') ||
             q.includes('真龙圣血') ||
+            q.includes('离阳火精') ||
             q.includes('神木宝卷') ||
             q === '法宝经验表' ||
             q === '法宝升级表' ||
-            (q.includes('法宝') && (q.includes('经验') || q.includes('魔血') || q.includes('圣血') || q.includes('聚气') || q.includes('升到') || q.includes('40级') || q.includes('35级') || q.includes('30级')));
+            q === '离阳火精' ||
+            (q.includes('法宝') && (q.includes('经验') || q.includes('魔血') || q.includes('圣血') || q.includes('火精') || q.includes('聚气') || q.includes('升到') || q.includes('40级') || q.includes('35级') || q.includes('30级')));
 
         if (isFabaoUpgradeQuery) {
             const expData = await dataService.getFabaoUpgradeExpData();
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: `为你速查到【法宝经验等级对照表】（2023.9.21版）。支持查看 1~40 级各阶段当前级经验、累计经验与天龙魔血/真龙圣血消耗，并支持自定义等级测算：`,
+                text: `为你速查到【法宝经验等级对照表】（2023.9.21版）。支持查看 1~40 级各阶段当前级经验、累计经验与天龙魔血/真龙圣血/离阳火精消耗，并支持自定义等级测算：`,
                 time: timeStr,
                 cardType: 'fabao_upgrade',
                 cardData: {
@@ -1859,7 +1879,7 @@ export class CopilotService {
 
         // ------------------------------------------------------------
         // 0.59b 神机属性洗练模拟器（shenji_forge）
-        // 支持「神机」「神机模拟」「神机洗练」「神机锻造」「神机属性」
+        // 支持「神机」「神机模拟」「神机洗练」「神机锻造」「神机属性」「修武神机」「昭武神机」「彰武神机」
         // ------------------------------------------------------------
         const isShenjiQuery =
             q === '神机' ||
@@ -1867,20 +1887,35 @@ export class CopilotService {
             q === '神机洗练' ||
             q === '神机锻造' ||
             q === '神机属性' ||
+            q === '修武神机' ||
+            q === '昭武神机' ||
+            q === '彰武神机' ||
             q.includes('神机模拟') ||
             q.includes('神机洗练') ||
             q.includes('神机锻造') ||
             q.includes('神机属性') ||
-            (q.includes('神机') && (q.includes('洗') || q.includes('锻') || q.includes('模拟')));
+            q.includes('修武神机') ||
+            q.includes('昭武神机') ||
+            q.includes('彰武神机') ||
+            (q.includes('神机') && (q.includes('洗') || q.includes('锻') || q.includes('模拟') || q.includes('修武') || q.includes('昭武') || q.includes('彰武')));
 
         if (isShenjiQuery) {
+            let initialQuality: string | undefined;
+            if (q.includes('修武')) initialQuality = '修武';
+            else if (q.includes('彰武')) initialQuality = '彰武';
+            else if (q.includes('昭武')) initialQuality = '昭武';
+
+            const qualityHint = initialQuality ? `（已默认选定【${initialQuality}】）` : '';
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '为你打开【神机属性洗练模拟器】。选择品质、部位与蕴灵档位后即可锻造，支持单次锻造与连续锻造：',
+                text: `为你打开【神机属性洗练模拟器】${qualityHint}。选择品质、部位与蕴灵档位后即可锻造，支持单次锻造与连续锻造：`,
                 time: timeStr,
                 cardType: 'shenji_forge',
-                cardData: { data: {} }
+                cardData: {
+                    data: {},
+                    initialQuality
+                }
             };
         }
 
