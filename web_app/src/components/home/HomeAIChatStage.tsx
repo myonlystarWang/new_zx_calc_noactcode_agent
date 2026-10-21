@@ -961,7 +961,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             <OldTianyuanDetailCard cardData={msg.cardData} />
                                         )}
 
-                                        {/* 6.8c2 新天缘属性信息卡：须弥刃/甲/冠履3大部位词条池与天命增益推算 */}
+                                        {/* 6.8c2 新天缘属性信息卡：须弥刃/甲/冠3大部位词条池与天命增益推算 */}
                                         {msg.cardType === 'tianyuan_new' && (
                                             <NewTianyuanDetailCard cardData={msg.cardData} />
                                         )}

@@ -152,7 +152,7 @@ export const NewTianYuanSimulatorView: React.FC = () => {
                             </span>
                         </div>
                         <p className="text-xs text-slate-400 mt-0.5">
-                            支持须弥刃、须弥甲、须弥冠履 天缘0~10级数值成长、天命增益系数与理论极限范围对照
+                            支持须弥刃、须弥甲、须弥冠 天缘0~10级数值成长、天命增益系数与理论极限范围对照
                         </p>
                     </div>
                 </div>

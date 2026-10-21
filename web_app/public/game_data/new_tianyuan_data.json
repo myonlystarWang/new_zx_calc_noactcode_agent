@@ -23,7 +23,7 @@
           "perLevelGain": 100
         },
         {
-          "name": "攻击（%）",
+          "name": "攻击百分比",
           "probability": "5%",
           "initMin": 1,
           "initMax": 2,
@@ -272,7 +272,7 @@
           "perLevelGain": 50
         },
         {
-          "name": "攻击（%）",
+          "name": "攻击百分比",
           "probability": "2%",
           "initMin": 0.5,
           "initMax": 2.5,
@@ -287,7 +287,7 @@
           "perLevelGain": 100
         },
         {
-          "name": "气血（%）",
+          "name": "气血百分比",
           "probability": "1%",
           "initMin": 1.5,
           "initMax": 2.5,
@@ -302,7 +302,7 @@
           "perLevelGain": 100
         },
         {
-          "name": "真气（%）",
+          "name": "真气百分比",
           "probability": "1%",
           "initMin": 1.5,
           "initMax": 2.5,

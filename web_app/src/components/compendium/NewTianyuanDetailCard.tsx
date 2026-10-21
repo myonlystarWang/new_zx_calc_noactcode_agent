@@ -250,10 +250,7 @@ export const NewTianyuanDetailCard: React.FC<NewTianyuanDetailCardProps> = ({ ca
                     <div className="flex items-center justify-between gap-2 min-w-0 flex-wrap">
                         <div className="flex items-center gap-1.5 text-[11px] font-sans">
                             <span className="px-1.5 py-0.5 rounded bg-amber-950/60 border border-amber-500/50 text-amber-200 font-bold whitespace-nowrap">
-                                新版须弥天缘
-                            </span>
-                            <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-300 border border-slate-700/50 whitespace-nowrap">
-                                天命增益阶数: +{maxExtraLevel}
+                                新天缘
                             </span>
                         </div>
 
@@ -319,7 +316,7 @@ export const NewTianyuanDetailCard: React.FC<NewTianyuanDetailCardProps> = ({ ca
                     <div style={{ color: GAME_COLORS.WHITE }}>
                         洗炼部位：
                         <span style={{ color: GAME_COLORS.PURE_RED }}>
-                            {shortGroupName} · 须弥天缘属性
+                            {shortGroupName} · 上玄佑万辰天缘属性
                         </span>
                     </div>
                     <div style={{ color: GAME_COLORS.WHITE }}>
