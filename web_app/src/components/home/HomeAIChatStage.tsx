@@ -39,11 +39,14 @@ import { PetPledgeDetailCard } from '../compendium/PetPledgeDetailCard';
 import { ZhenlingUpgradeCard } from '../compendium/ZhenlingUpgradeCard';
 import { FabaoUpgradeCard } from '../compendium/FabaoUpgradeCard';
 import { ShenjiForgeCard } from '../compendium/ShenjiForgeCard';
+import { YunlingForgeCard } from '../compendium/YunlingForgeCard';
 import { CeilingDetailCard } from '../compendium/CeilingDetailCard';
 import { CandidateSelectorBar } from './CandidateSelectorBar';
 import { GameColorText } from '../ui/GameColorText';
 import { ACCENT_BUTTON, ACCENT_BUTTON_ICON } from '../ui/accentButtonStyles';
 import { useApp } from '../../context/AppContext';
+import { VisionReviewCard } from '../vision/VisionReviewCard';
+import type { RecognizedPanel } from '../../services/vision/types';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 import type { FabaoItem, CuratedEquipItem, CuratedSkillItem } from '../../types';
@@ -75,7 +78,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     onOpenSplitWorkspace,
 }) => {
     const navigate = useNavigate();
-    const { updateCharacterAttributes, updateCharacterClass, selectDungeon } = useApp();
+    const { updateCharacterAttributes, updateCharacterClass, selectDungeon, userCharacter } = useApp();
 
     const handleBringToCalculator = useCallback((dungeonId: string, monsterId: string) => {
         selectDungeon(dungeonId, monsterId);
@@ -272,6 +275,41 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         setTimeout(() => setCopiedId(null), 2000);
     };
 
+    /** 校对新卡：只写识别到的键，缺项保留计算器当前值（绝不补默认数） */
+    const handleImportReviewPanel = (panel: RecognizedPanel) => {
+        const dataService = DataService.getInstance();
+        const classes = dataService.getClasses() || [];
+        const clsRaw = panel.character?.classRaw;
+        const classObj = clsRaw ? classes.find(c => c.ClassName === clsRaw || c.ClassID === clsRaw) : undefined;
+        const f = panel.character?.factionRaw;
+        const faction = f === '佛' ? 'FO' : f === '魔' ? 'MO' : f === '仙' ? 'XIAN' : undefined;
+        if (classObj) updateCharacterClass(classObj.ClassID, faction || 'XIAN');
+
+        const attrs = panel.engine.attrs as Record<string, number>;
+        if (Object.keys(attrs).length > 0) {
+            // 只覆盖识别到的键，其余保留计算器当前值
+            updateCharacterAttributes({ ...userCharacter.BaseAttributes, ...attrs });
+        }
+
+        if (onOpenSplitWorkspace) {
+            onOpenSplitWorkspace('calc');
+        } else {
+            navigate('/calculator');
+        }
+    };
+
+    const handleArchivePanel = (panel: RecognizedPanel) => {
+        try {
+            const key = 'zx_panel_archive_v1';
+            const list = JSON.parse(localStorage.getItem(key) || '[]');
+            const label = [panel.character?.classRaw, panel.character?.factionRaw].filter(Boolean).join('·') || '面板';
+            list.push({ at: new Date().toISOString(), name: `${label} ${new Date().toLocaleString()}`, panel });
+            localStorage.setItem(key, JSON.stringify(list.slice(-50)));
+        } catch {
+            /* 配额满时静默，不打断对话 */
+        }
+    };
+
     return (
         <div
             className={clsx(
@@ -362,6 +400,15 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                 {/* 宽幅富交互大卡片体系 */}
                                 {msg.cardType && (
                                     <div className={clsx('space-y-3', msg.text && 'mt-3.5 pt-3.5 border-t border-white/10')}>
+                                        {/* 0. 识图校对卡（新协议）：只显示参与计算的字段，未识别项可手填 */}
+                                        {msg.cardType === 'c_panel_review' && msg.cardData?.panel && (
+                                            <VisionReviewCard
+                                                panel={msg.cardData.panel as RecognizedPanel}
+                                                onImport={handleImportReviewPanel}
+                                                onArchive={handleArchivePanel}
+                                            />
+                                        )}
+
                                         {/* 1. C 界面识图测伤与实战伤害报告 */}
                                         {msg.cardType === 'c_panel_diag' && msg.cardData && (() => {
                                             const basePanel: ExtractedCPanel = msg.cardData.cPanel;
@@ -1009,6 +1056,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {/* 6.13 神机属性洗练模拟器：品质/部位/蕴灵选择 + 左右锻造对比 */}
                                         {msg.cardType === 'shenji_forge' && (
                                             <ShenjiForgeCard cardData={msg.cardData} />
+                                        )}
+
+                                        {/* 6.14 装备蕴灵轻量卡：装备本体 + 蕴灵按钮 + 右侧逐级手数/月德符 */}
+                                        {msg.cardType === 'yunling_forge' && (
+                                            <YunlingForgeCard cardData={msg.cardData} />
                                         )}
 
                                         {/* 7. 法宝图鉴单卡 */}

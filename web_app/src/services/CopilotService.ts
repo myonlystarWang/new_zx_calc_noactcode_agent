@@ -7,6 +7,7 @@
  */
 
 import { DataService, isValidSkill } from './DataService';
+import { getVisionFixture } from './vision/devFixture';
 import { pinyin } from 'pinyin-pro';
 import { calculateDungeonPower } from '../utils/calculator';
 import type { CharacterAttributes, Dungeon, Monster, Skill, CuratedEquipItem, CuratedSkillItem, FabaoItem } from '../types';
@@ -41,7 +42,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge';
     cardData?: any;
 }
 
@@ -72,6 +73,15 @@ export interface VisionExtractionResult {
     rawExplanation: string;
     cPanelData?: ExtractedCPanel;
     xycData?: ExtractedXyc;
+    /** 新协议：识别到的原始结构化面板（存在时前端走 c_panel_review 校对新卡） */
+    panel?: any;
+    /** 新协议：通道与降级信息 */
+    provider?: string | null;
+    degraded?: boolean;
+    degradedReason?: string;
+    lastError?: string;
+    quality?: 'full' | 'partial';
+    issues?: string[];
 }
 
 export interface DungeonCategoryConfig {
@@ -1984,6 +1994,81 @@ export class CopilotService {
             };
         }
 
+        // ------------------------------------------------------------
+        // 0.60 装备蕴灵 · 数据实验室（yunling）→ 右侧分屏
+        // 支持「蕴灵进阶」「蕴灵 进阶」「蕴灵模拟进阶」「装备蕴灵进阶」「蕴灵推演」
+        // 注意：必须先于「蕴灵模拟」轻量卡分支判断（含「进阶」优先走实验室）
+        // ------------------------------------------------------------
+        const isYunlingAdvancedQuery =
+            (q.includes('蕴灵') || q.includes('装备蕴灵')) &&
+            (q.includes('进阶') || q.includes('推演') || q.includes('实验室') || q.includes('数据') || q.includes('概率表'));
+
+        if (isYunlingAdvancedQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你打开【装备蕴灵 · 数据实验室】。左侧选神隐装备、调幸运值与概率口径，右侧逐手蕴灵并查看期望手数、月德符消耗与蒙特卡洛分布：',
+                time: timeStr,
+                cardType: 'tool_card',
+                cardData: {
+                    title: '装备蕴灵 · 数据实验室',
+                    desc: '基础概率口径 · 幸运值阶梯 · 月德符三套曲线 · 期望与分布',
+                    workspaceMode: 'yunling',
+                    route: '/tools/yunling',
+                    btnText: '打开蕴灵实验室',
+                },
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 0.61 装备蕴灵 · 形态选择（hub）与轻量卡
+        // 裸词「蕴灵 / 装备蕴灵 / 蕴灵模拟」→ 让玩家自选：轻量模拟 / 数据实验室
+        // 「蕴灵 轻量」→ 对话内嵌轻量卡（仿神机锻造）
+        // ------------------------------------------------------------
+        const isYunlingHubQuery =
+            q === '蕴灵' ||
+            q === '装备蕴灵' ||
+            q === '蕴灵模拟' ||
+            q === '装备蕴灵模拟' ||
+            q === '神隐蕴灵' ||
+            q === '蕴灵系统';
+
+        if (isYunlingHubQuery) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '【装备蕴灵】有两种看法，点选你需要的形态：',
+                time: timeStr,
+                cardType: 'sim_hub',
+                cardData: {
+                    title: '装备蕴灵 · 形态选择',
+                    options: [
+                        { key: 'yunling_lite', label: '轻量模拟（逐手蕴灵 + 逐级消耗）', query: '蕴灵 轻量' },
+                        { key: 'yunling_lab', label: '数据实验室（概率/期望/蒙特卡洛）', query: '蕴灵 进阶' },
+                    ],
+                },
+            };
+        }
+
+        const isYunlingLiteQuery = q.includes('蕴灵') && (q.includes('轻量') || q.includes('来一手'));
+        if (isYunlingLiteQuery) {
+            let initialQuality: string | undefined;
+            if (q.includes('修武')) initialQuality = '修武';
+            else if (q.includes('彰武')) initialQuality = '彰武';
+            else if (q.includes('昭武')) initialQuality = '昭武';
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `为你打开【装备蕴灵】${initialQuality ? `（已默认选定【${initialQuality}】）` : ''}。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：`,
+                time: timeStr,
+                cardType: 'yunling_forge',
+                cardData: {
+                    data: {},
+                    initialQuality,
+                },
+            };
+        }
+
         // ① 品质系 6 部位（武器/头盔/衣服/靴子/腰带/袖甲，含帽子/鞋子等口语别名）
         //    → 品质三入口。实证：6 部位 q 字段 100% 归属修武/昭武/彰武三系、
         //    无剩余装备（2026-10-16），故不设「其他」冗余选项（用户反馈）；
@@ -3389,6 +3474,10 @@ export class CopilotService {
         base64Image: string,
         userPrompt: string = ''
     ): Promise<VisionExtractionResult> {
+        // DEV-only：本地 fixture 注入（生产构建自动剔除）
+        const fx = getVisionFixture();
+        if (fx) return fx;
+
         const keys = this.getUserKeys();
 
         // 1. 优先调用后端视觉网关
@@ -3405,7 +3494,18 @@ export class CopilotService {
 
             if (res.ok) {
                 const json = await res.json();
-                if (json.result) return json.result;
+                if (json && (json.result || json.panel)) {
+                    return {
+                        ...(json.result || { mode: 'general' as const, rawExplanation: '' }),
+                        panel: json.panel,
+                        provider: json.provider ?? null,
+                        degraded: Boolean(json.degraded),
+                        degradedReason: json.degradedReason,
+                        lastError: json.lastError,
+                        quality: json.quality,
+                        issues: json.issues
+                    };
+                }
             }
         } catch (e) {
             console.warn('Backend /api/copilot/vision not reachable, attempting direct client / fallback:', e);
@@ -3454,47 +3554,13 @@ export class CopilotService {
             }
         }
 
-        // 3. 智能启发式多维提取（根据用户输入词条或默认实战天花板模板）
-        const p = (userPrompt || '').toLowerCase();
-        const profs = ['逐霜', '青云', '鬼王', '合欢', '天音', '鬼道', '焚香', '九黎', '烈山', '怀光', '天华', '太昊', '辰皇', '破军', '牵机', '英招', '归云', '画影', '昭冥', '惊岚', '涅羽', '百灵', '释罗', '万毒', '长生堂', '青罗', '炼血'];
-        const matchedClass = profs.find(pr => p.includes(pr)) || '逐霜';
-        let faction: 'XIAN' | 'FO' | 'MO' = 'XIAN';
-        if (p.includes('佛')) faction = 'FO';
-        else if (p.includes('魔')) faction = 'MO';
-
-        const parseNum = (regex: RegExp, def: number): number => {
-            const m = p.match(regex);
-            return m ? parseFloat(m[1]) : def;
-        };
-
-        const atk = parseNum(/(?:攻击|大攻|攻)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 195000);
-        const def = parseNum(/(?:防御|防)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 96000);
-        const hp = parseNum(/(?:气血|血量|hp)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 3800000);
-        const mp = parseNum(/(?:真气|蓝量|mp)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 1200000);
-        const ignore = parseNum(/(?:无视|无视减免)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 142.5);
-        const dmgRed = parseNum(/(?:减免|伤害减免)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 165.0);
-        const mBonus = parseNum(/(?:怪增|对怪增伤)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 82.0);
-        const cDmg = parseNum(/(?:爆伤|暴击伤害)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 890.0);
-        const cRate = parseNum(/(?:暴击|暴击率)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 155.0);
-        const cRed = parseNum(/(?:减暴|减暴击)\s*[:：=]?\s*(\d+(?:\.\d+)?)/, 115.0);
-
+        // 3. 所有通道失败：明确降级，不产生任何数值（旧「启发式抠数 + 默认模板」已删除）
         return {
-            mode: 'c_panel',
-            rawExplanation: `已智能提取角色面板核心战斗属性（职业：【${matchedClass}】 · ${faction === 'FO' ? '佛' : faction === 'MO' ? '魔' : '仙'}阵营）。下方已自动联动战力仿真引擎测算出对 T20 副本【断浪碎晶宫】的实战秒伤。你可在下方【数值微调工作台】校对任意数值，或一键带入计算器/训练场：`,
-            cPanelData: {
-                characterClass: matchedClass,
-                faction,
-                attack: atk,
-                defense: def,
-                hp,
-                mp,
-                critRate: cRate,
-                critDamage: cDmg,
-                ignoreReduction: ignore,
-                damageReduction: dmgRed,
-                critReduction: cRed,
-                monsterDamageBonus: mBonus
-            }
+            mode: 'general',
+            rawExplanation: '识图功能受限：当前没有可用的视觉模型，未能识别出任何数值。请手动填写，或稍后重试。',
+            degraded: true,
+            degradedReason: 'provider_error',
+            provider: null
         };
     }
 
