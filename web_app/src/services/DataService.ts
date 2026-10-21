@@ -348,6 +348,7 @@ export class DataService {
 
     private peizhangData: any = null;
     private ninglingqiData: any = null;
+    private silinBenyuanData: any = null;
 
     public async getPeizhangData(): Promise<any> {
         if (this.peizhangData) return this.peizhangData;
@@ -371,6 +372,20 @@ export class DataService {
             return this.ninglingqiData;
         } catch (e) {
             console.error('getNinglingqiData error:', e);
+            return null;
+        }
+    }
+
+    /** 四灵本元（伏龙鼎镶嵌）：四灵 × 五阶 词条概率池 */
+    public async getSilinBenyuanData(): Promise<any> {
+        if (this.silinBenyuanData) return this.silinBenyuanData;
+        try {
+            const res = await fetch(`${DATA_BASE_URL}/silin_benyuan.json`);
+            if (!res.ok) throw new Error(`加载 silin_benyuan.json 失败: ${res.status}`);
+            this.silinBenyuanData = await res.json();
+            return this.silinBenyuanData;
+        } catch (e) {
+            console.error('getSilinBenyuanData error:', e);
             return null;
         }
     }
