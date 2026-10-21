@@ -29,6 +29,7 @@ import { ClassStatusCard } from '../compendium/ClassStatusCard';
 import { PeizhangDetailCard } from '../compendium/PeizhangDetailCard';
 import { JiuwenlangDetailCard } from '../compendium/JiuwenlangDetailCard';
 import { OldTianyuanDetailCard } from '../compendium/OldTianyuanDetailCard';
+import { NewTianyuanDetailCard } from '../compendium/NewTianyuanDetailCard';
 import { XingsuDetailCard } from '../compendium/XingsuDetailCard';
 import { BaoshiDetailCard } from '../compendium/BaoshiDetailCard';
 import { SilinBenyuanCard } from '../compendium/SilinBenyuanCard';
@@ -958,6 +959,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {/* 6.8c 旧天缘属性信息卡：4大部位词条池与满级(10级)自动推算 */}
                                         {msg.cardType === 'tianyuan_old' && (
                                             <OldTianyuanDetailCard cardData={msg.cardData} />
+                                        )}
+
+                                        {/* 6.8c2 新天缘属性信息卡：须弥刃/甲/冠履3大部位词条池与天命增益推算 */}
+                                        {msg.cardType === 'tianyuan_new' && (
+                                            <NewTianyuanDetailCard cardData={msg.cardData} />
                                         )}
 
                                         {/* 6.8d 星宿属性及升星增益卡：启明/荧惑/重华3大星辰与1~5星测算 */}
