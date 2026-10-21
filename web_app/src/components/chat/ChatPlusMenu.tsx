@@ -6,7 +6,8 @@ import {
   Compass,
   Sparkles,
   Swords,
-  Scroll
+  Scroll,
+  Hammer
 } from 'lucide-react';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 
@@ -105,6 +106,13 @@ export const ChatPlusMenu: React.FC<ChatPlusMenuProps> = ({
       title: '宸极凝灵契',
       desc: '12 孔属性池 · 官方稀有/暴伤上限规则速查',
       onClick: () => handleSendMessageClick('凝灵契'),
+    },
+    {
+      id: 'shenji',
+      icon: Hammer,
+      title: '神机洗练',
+      desc: '修武/昭武/彰武 × 6 部位 · 蕴灵档位概率锻造模拟',
+      onClick: () => handleSendMessageClick('神机洗练'),
     },
     {
       id: 'xyc',

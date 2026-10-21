@@ -1,0 +1,190 @@
+/**
+ * shenjiSim.ts
+ * 神机属性洗练模拟 —— 数据解析与抽取逻辑
+ *
+ * 数据源：equip_curated.json 的 `sj` 字段（已是 品质 → [{l: 11|13|15, d: "属性 下限~上限 (概率%)"}]）
+ * 五档规则（由用户提供的实机数据表反推并验证）：
+ *   第一档 = 区间下限（白）  第五档 = 区间上限（红·极·神机）
+ *   第二/三/四档 = 下限 + 差值 × 20% / 40% / 60%
+ * 档位概率（实机数据，随该条属性所属蕴灵档变化）：
+ *   +11 = 34/33/18/10/5   +13 = 38/33/17/8/3   +15 = 42/33/16/7/2
+ */
+import type { CuratedEquipItem } from '../types';
+import { GAME_COLORS } from '../constants/gameColorSystem';
+
+export const SHENJI_QUALITIES = ['修武', '昭武', '彰武'] as const;
+export type ShenjiQuality = (typeof SHENJI_QUALITIES)[number];
+
+export const SHENJI_SLOTS = ['武器', '头盔', '衣服', '靴子', '腰带', '袖甲'] as const;
+export type ShenjiSlot = (typeof SHENJI_SLOTS)[number];
+
+/** 蕴灵档位 → 该档位下神机属性条数（第 1 条取 +11 池、第 2 条取 +13 池、第 3 条取 +15 池） */
+export const SHENJI_SLOT_LEVELS: Record<number, number[]> = {
+    11: [11],
+    13: [11, 13],
+    15: [11, 13, 15],
+};
+
+/** 档位抽取概率（百分比），按该条属性所属蕴灵档区分 */
+export const SHENJI_TIER_RATES: Record<number, number[]> = {
+    11: [34, 33, 18, 10, 5],
+    13: [38, 33, 17, 8, 3],
+    15: [42, 33, 16, 7, 2],
+};
+
+/** 五档在区间内的取值比例 */
+export const TIER_RATIOS = [0, 0.2, 0.4, 0.6, 1];
+
+export const TIER_NAMES = ['白', '绿', '紫', '橙', '红'] as const;
+
+/** 五档配色：全部取自项目 GAME_COLORS，不新造色 */
+export const TIER_COLORS = [
+    GAME_COLORS.WHITE,
+    GAME_COLORS.MINT_GREEN,
+    GAME_COLORS.VIOLET_PURPLE,
+    GAME_COLORS.GOLD_AMBER,
+    GAME_COLORS.PURE_RED,
+];
+
+/** 单条属性池条目（由 `d` 字符串解析而来） */
+export interface ShenjiAttr {
+    /** 该条来自哪个蕴灵档位的池子 */
+    l: number;
+    name: string;
+    min: number;
+    max: number;
+    /** 生成概率（百分比，池内合计 100） */
+    prob: number;
+    /** 是否为百分比属性 */
+    percent: boolean;
+    /** 数值放大倍数：技能命中在数据里是 0.02~0.08，实机显示 2.0~8.0 */
+    scale: number;
+}
+
+/** 一次抽取结果 */
+export interface ShenjiRoll {
+    /** 来自哪个蕴灵池 */
+    l: number;
+    name: string;
+    raw: number;
+    /** 已按 scale 换算、可直接展示的数值 */
+    value: number;
+    /** 1~5 */
+    tier: number;
+    /** 是否为「极·神机」 */
+    isJi: boolean;
+    color: string;
+    percent: boolean;
+    /** 是否按 1 位小数展示（百分比属性与技能命中） */
+    decimal: boolean;
+}
+
+const D_RE = /^(.+?)\s+([\d.]+)(%?)\s*[~～]\s*([\d.]+)(%?)\s*[(（]\s*(\d+)%\s*[)）]$/;
+
+/** 解析 "固定攻击 480~1200 (42%)" / "致命一击率 0.4%~2.4% (8%)" */
+export function parseShenjiDesc(l: number, d: string): ShenjiAttr | null {
+    const m = D_RE.exec(d.trim());
+    if (!m) return null;
+    const name = m[1].trim();
+    const min = Number(m[2]);
+    const max = Number(m[4]);
+    const prob = Number(m[6]);
+    if (!Number.isFinite(min) || !Number.isFinite(max) || !Number.isFinite(prob)) return null;
+    // 只有「数值区间」自带 % 才算百分比属性（不能看末尾的生成概率 %）
+    const percent = Boolean(m[3]) || Boolean(m[5]);
+    // 无百分号且上限 ≤ 1 的属性（技能命中 0.02~0.08）按 100 倍换算展示
+    const scale = !percent && max <= 1 ? 100 : 1;
+    return { l, name, min, max, prob, percent, scale };
+}
+
+/** 从一件装备的 sj 字段中取出指定品质、指定蕴灵档位的属性池 */
+export function getShenjiPool(equip: CuratedEquipItem | undefined, quality: ShenjiQuality, l: number): ShenjiAttr[] {
+    const arr = (equip as any)?.sj?.[quality];
+    if (!Array.isArray(arr)) return [];
+    const out: ShenjiAttr[] = [];
+    for (const item of arr) {
+        if (Number(item?.l) !== l) continue;
+        const parsed = parseShenjiDesc(l, String(item.d ?? ''));
+        if (parsed) out.push(parsed);
+    }
+    return out;
+}
+
+/** 在装备列表中找到某部位 + 某品质的神机池载体（同一部位同品质的 sj 内容一致，取首个即可） */
+export function findShenjiEquip(
+    equips: CuratedEquipItem[],
+    slot: ShenjiSlot,
+    quality: ShenjiQuality
+): CuratedEquipItem | undefined {
+    return equips.find((e) => e.slot === slot && Array.isArray((e as any)?.sj?.[quality]) && (e as any).sj[quality].length > 0);
+}
+
+/** 该部位 + 品质 + 蕴灵档位下，每个槽位的候选属性池 */
+export function buildShenjiPools(
+    equips: CuratedEquipItem[],
+    slot: ShenjiSlot,
+    quality: ShenjiQuality,
+    yunling: number
+): ShenjiAttr[][] {
+    const equip = findShenjiEquip(equips, slot, quality);
+    const levels = SHENJI_SLOT_LEVELS[yunling] ?? [11];
+    return levels.map((l) => getShenjiPool(equip, quality, l));
+}
+
+function pickWeighted<T>(items: T[], weight: (t: T) => number): T | null {
+    const total = items.reduce((s, it) => s + weight(it), 0);
+    if (total <= 0) return null;
+    let r = Math.random() * total;
+    for (const it of items) {
+        r -= weight(it);
+        if (r <= 0) return it;
+    }
+    return items[items.length - 1] ?? null;
+}
+
+/** 数值格式化：百分比与技能命中固定 1 位小数（对齐实机 "+4.0%" / "+4.4"），其余取整 */
+export function formatShenjiValue(value: number, decimal: boolean): string {
+    if (!decimal) return String(Math.round(value));
+    return value.toFixed(1);
+}
+
+/** 单条抽取：先按属性概率选属性，再按该蕴灵档的档位概率选档，最后取该档固定值 */
+export function rollShenjiAttr(pool: ShenjiAttr[], l: number): ShenjiRoll | null {
+    const attr = pickWeighted(pool, (a) => a.prob);
+    if (!attr) return null;
+    const rates = SHENJI_TIER_RATES[l] ?? SHENJI_TIER_RATES[11];
+    let tier = 5;
+    const total = rates.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < rates.length; i++) {
+        r -= rates[i];
+        if (r <= 0) {
+            tier = i + 1;
+            break;
+        }
+    }
+    const ratio = TIER_RATIOS[tier - 1];
+    const raw = attr.min + (attr.max - attr.min) * ratio;
+    return {
+        l,
+        name: attr.name,
+        raw,
+        value: raw * attr.scale,
+        tier,
+        isJi: tier === 5,
+        color: TIER_COLORS[tier - 1],
+        percent: attr.percent,
+        decimal: attr.percent || attr.scale === 100,
+    };
+}
+
+/** 一次完整洗练：按槽位顺序逐条抽取（每条独立计算概率） */
+export function rollShenjiPools(pools: ShenjiAttr[][]): ShenjiRoll[] {
+    const out: ShenjiRoll[] = [];
+    pools.forEach((pool, idx) => {
+        const l = pool[0]?.l ?? SHENJI_SLOT_LEVELS[11][idx] ?? 11;
+        const roll = rollShenjiAttr(pool, l);
+        if (roll) out.push(roll);
+    });
+    return out;
+}
