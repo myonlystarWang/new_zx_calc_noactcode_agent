@@ -3122,14 +3122,14 @@
     "id": "tianyuan-old-03",
     "input": "天缘属性",
     "expect": {
-      "cardType": "tianyuan_old"
+      "cardType": "tianyuan_hub"
     },
     "tags": [
-      "tianyuan_old",
-      "equip"
+      "hub",
+      "tianyuan"
     ],
     "assert": "strong",
-    "note": "旧天缘：输入天缘属性命中旧天缘卡片"
+    "note": "天缘分类：输入天缘属性给出新天缘和旧天缘分类卡"
   },
   {
     "id": "tianyuan-old-04",
@@ -5988,5 +5988,57 @@
     ],
     "assert": "strong",
     "note": "新天缘：须弥盔直达头冠天缘"
+  },
+  {
+    "id": "hub-tianyuan-category-01",
+    "input": "天缘分类",
+    "expect": {
+      "cardType": "tianyuan_hub"
+    },
+    "tags": [
+      "hub",
+      "tianyuan"
+    ],
+    "assert": "strong",
+    "note": "天缘分类：输入天缘分类命中新旧天缘分流卡"
+  },
+  {
+    "id": "hub-sim-01",
+    "input": "模拟器",
+    "expect": {
+      "cardType": "sim_hub"
+    },
+    "tags": [
+      "hub",
+      "simulator"
+    ],
+    "assert": "strong",
+    "note": "模拟器导航：裸词「模拟器」直达各类模拟器全景导航卡"
+  },
+  {
+    "id": "hub-sim-02",
+    "input": "各类模拟器",
+    "expect": {
+      "cardType": "sim_hub"
+    },
+    "tags": [
+      "hub",
+      "simulator"
+    ],
+    "assert": "strong",
+    "note": "模拟器导航：「各类模拟器」直达全景模拟器导航卡"
+  },
+  {
+    "id": "hub-sim-03",
+    "input": "模拟工具",
+    "expect": {
+      "cardType": "sim_hub"
+    },
+    "tags": [
+      "hub",
+      "simulator"
+    ],
+    "assert": "strong",
+    "note": "模拟器导航：「模拟工具」直达全景模拟器导航卡"
   }
 ]

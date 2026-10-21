@@ -6,9 +6,9 @@ import {
   Calculator,
   Zap,
   Shield,
-  Radio,
   BookOpen,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Cpu
 } from 'lucide-react';
 import clsx from 'clsx';
 import type { SearchTarget } from '../GlobalSearch';
@@ -222,9 +222,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               cardType: isNotFound ? 'top_hub' : undefined,
               cardData: isNotFound
                 ? {
-                    title: '全景分类导航',
-                    options: TOP_HUB_OPTIONS,
-                  }
+                  title: '全景分类导航',
+                  options: TOP_HUB_OPTIONS,
+                }
                 : undefined,
             },
           ]);
@@ -335,9 +335,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               cardType: isNotFound ? 'top_hub' : undefined,
               cardData: isNotFound
                 ? {
-                    title: '全景分类导航',
-                    options: TOP_HUB_OPTIONS,
-                  }
+                  title: '全景分类导航',
+                  options: TOP_HUB_OPTIONS,
+                }
                 : undefined,
             },
           ]);
@@ -623,23 +623,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
             <button
               type="button"
-              onClick={() => {
-                setWorkspaceState({ isOpen: true, mode: 'server', isMaximized: false });
-                handleStartAiChat('开服雷达');
-              }}
-              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-sky-500/30 text-xs text-slate-300 hover:text-sky-300 transition-all cursor-pointer shadow-sm active:scale-95"
-            >
-              <Radio className="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform shrink-0" />
-              <span className="font-medium whitespace-nowrap">开服雷达</span>
-            </button>
-
-            <button
-              type="button"
               onClick={() => handleStartAiChat('属性测算')}
               className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-fuchsia-500/30 text-xs text-slate-300 hover:text-fuchsia-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-fuchsia-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="font-medium whitespace-nowrap">属性测算</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleStartAiChat('各类模拟器')}
+              className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-sky-500/30 text-xs text-slate-300 hover:text-sky-300 transition-all cursor-pointer shadow-sm active:scale-95"
+            >
+              <Cpu className="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-medium whitespace-nowrap">各类模拟器</span>
             </button>
           </div>
         </div>
