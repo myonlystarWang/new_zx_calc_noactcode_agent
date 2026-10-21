@@ -1386,27 +1386,12 @@ export class CopilotService {
         };
         const SILIN_TIER_CN: Record<string, number> = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5 };
 
-        // 0.55a 四灵体系歧义分流（top_hub，四灵本元 vs 四灵瑞灵）
-        if (q === '四灵' || q === '四灵系统') {
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: '检测到【四灵】包含伏龙鼎镶嵌与瑞灵呈祥两大体系，请选择你想查阅的方向：',
-                time: timeStr,
-                cardType: 'top_hub',
-                cardData: {
-                    title: '四灵体系导航',
-                    options: [
-                        { key: 'silin_benyuan', label: '四灵本元（伏龙鼎镶嵌）', query: '四灵本元' },
-                        { key: 'silin_ruiling', label: '四灵瑞灵（瑞灵呈祥）', query: '四灵瑞灵' },
-                    ]
-                }
-            };
-        }
-
         const isSilinBenyuanQuery =
-            (q.includes('本元') || q.includes('伏龙鼎')) &&
-            !q.includes('瑞灵');
+            q === '四灵' ||
+            q === '四灵系统' ||
+            q === '四灵本元' ||
+            q.includes('本元') ||
+            q.includes('伏龙鼎');
 
         if (isSilinBenyuanQuery) {
             const silinData = await dataService.getSilinBenyuanData();
