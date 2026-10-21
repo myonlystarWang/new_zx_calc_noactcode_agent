@@ -40,10 +40,25 @@ const TEXT_CANDIDATES = [
     '@cf/meta/llama-3.1-8b-instruct' // 已知下线，留作对照，证明候选表生效
 ];
 
+/** 2026-10-21 REST 实测：以下三条在 Workers Free 计划均可用 */
 const VISION_CANDIDATES = [
     '@cf/meta/llama-3.2-11b-vision-instruct',
-    '@cf/llava-hf/llava-1.5-7b-hf'
+    '@cf/mistralai/mistral-small-3.1-24b-instruct',
+    '@cf/meta/llama-4-scout-17b-16e-instruct'
 ];
+
+/** 返回结构不统一：response / result.response / choices[0].message.content */
+const pickText = (payload: any): string => {
+    if (!payload) return '';
+    if (typeof payload === 'string') return payload;
+    if (typeof payload.response === 'string') return payload.response;
+    if (typeof payload.result?.response === 'string') return payload.result.response;
+    const c = payload.choices?.[0]?.message?.content ?? payload.result?.choices?.[0]?.message?.content;
+    if (typeof c === 'string') return c;
+    if (Array.isArray(c)) return c.map((x: any) => x?.text ?? '').join('');
+    if (typeof payload.result?.description === 'string') return payload.result.description;
+    return '';
+};
 
 const trunc = (v: unknown, n = 180): string => {
     const s = typeof v === 'string' ? v : JSON.stringify(v);
@@ -84,15 +99,14 @@ async function probeText(ai: any): Promise<ProbeResult[]> {
                 max_tokens: 16
             })
         );
+        const text = r.ok ? pickText(r.value) : '';
         out.push({
             id,
             shape: 'messages',
-            ok: r.ok && Boolean((r.value as any)?.response),
+            ok: Boolean(text),
             ms: r.ms,
-            sample: r.ok ? trunc((r.value as any)?.response, 60) : undefined,
-            error: r.ok
-                ? ((r.value as any)?.response ? undefined : 'empty response')
-                : r.error
+            sample: text ? trunc(text, 60) : undefined,
+            error: r.ok ? (text ? undefined : 'empty response') : r.error
         });
     }
     return out;
@@ -105,7 +119,7 @@ async function probeVision(ai: any, id: string): Promise<ProbeResult[]> {
     const bytes = bytesFromBase64(TINY_PNG_B64);
     const ask = 'What color is this image? Answer in one word.';
 
-    // 形状 A：OpenAI 兼容多模态 messages（文档推荐形态）
+    // 形状 A：OpenAI 兼容多模态 messages（文档推荐形态，实测可用）
     {
         const r = await timed(() =>
             ai.run(id, {
@@ -121,28 +135,30 @@ async function probeVision(ai: any, id: string): Promise<ProbeResult[]> {
                 max_tokens: 24
             })
         );
+        const text = r.ok ? pickText(r.value) : '';
         out.push({
             id,
             shape: 'messages+image_url(dataURL)',
-            ok: r.ok && Boolean((r.value as any)?.response),
+            ok: Boolean(text),
             ms: r.ms,
-            sample: r.ok ? trunc((r.value as any)?.response, 60) : undefined,
-            error: r.ok ? ((r.value as any)?.response ? undefined : 'empty response') : r.error
+            sample: text ? trunc(text, 60) : undefined,
+            error: r.ok ? (text ? undefined : 'empty response') : r.error
         });
     }
 
-    // 形状 B：prompt + image 字节数组（旧形态，文档标注 deprecated 但仍可用）
+    // 形状 B：prompt + image 字节数组（旧形态）
     {
         const r = await timed(() =>
             ai.run(id, { prompt: ask, image: bytes, max_tokens: 24 })
         );
+        const text = r.ok ? pickText(r.value) : '';
         out.push({
             id,
             shape: 'prompt+image(bytes[])',
-            ok: r.ok && Boolean((r.value as any)?.response ?? (r.value as any)?.description),
+            ok: Boolean(text),
             ms: r.ms,
-            sample: r.ok ? trunc((r.value as any)?.response ?? (r.value as any)?.description, 60) : undefined,
-            error: r.ok ? 'empty response' : r.error
+            sample: text ? trunc(text, 60) : undefined,
+            error: r.ok ? (text ? undefined : 'empty response') : r.error
         });
     }
 
@@ -151,13 +167,14 @@ async function probeVision(ai: any, id: string): Promise<ProbeResult[]> {
         const r = await timed(() =>
             ai.run(id, { prompt: ask, image: TINY_PNG_B64, max_tokens: 24 })
         );
+        const text = r.ok ? pickText(r.value) : '';
         out.push({
             id,
             shape: 'prompt+image(base64)',
-            ok: r.ok && Boolean((r.value as any)?.response ?? (r.value as any)?.description),
+            ok: Boolean(text),
             ms: r.ms,
-            sample: r.ok ? trunc((r.value as any)?.response ?? (r.value as any)?.description, 60) : undefined,
-            error: r.ok ? 'empty response' : r.error
+            sample: text ? trunc(text, 60) : undefined,
+            error: r.ok ? (text ? undefined : 'empty response') : r.error
         });
     }
 

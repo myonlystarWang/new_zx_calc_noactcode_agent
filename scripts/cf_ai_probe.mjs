@@ -102,7 +102,17 @@ const taskOf = (m) => {
     const t = m?.task ?? m?.properties?.task ?? m?.task_name ?? '';
     return typeof t === 'string' ? t : (t?.name || t?.id || '');
 };
-const propsOf = (m) => m?.properties || {};
+/** model search 的 id 字段是内部 UUID，真正可调用的 model id 在 name 里（形如 @cf/xxx/yyy） */
+const modelIdOf = (m) => m?.name || m?.id || '';
+/** properties 是 [{property_id, value}] 数组，不是对象 */
+const propMap = (m) => {
+    const out = {};
+    const arr = Array.isArray(m?.properties) ? m.properties : [];
+    for (const p of arr) {
+        if (p && p.property_id) out[p.property_id] = p.value;
+    }
+    return out;
+};
 
 /* ---------- 2. 视觉探测 ---------- */
 function visionShapes(dataUrl, bytes) {
@@ -196,23 +206,38 @@ if (doList || doVision || doText) {
         }
         report.models.byTask = byTask;
 
-        // 视觉候选：task 含 image 相关，或 properties 里标注支持图片
+        // 视觉候选：优先 Image-to-Text（图片进、文字出），再补 Text Generation 里带 vision 属性的
         const vision = listed.models.filter(m => {
             const t = taskOf(m).toLowerCase();
-            const p = JSON.stringify(propsOf(m)).toLowerCase();
-            return t.includes('image') || t.includes('vision') || t.includes('to-text')
-                || p.includes('"vision":true') || p.includes('image_url');
+            const p = propMap(m);
+            const visionProp = p['vision'] === true || p['vision'] === 'true'
+                || p['multimodal'] === true || p['multimodal'] === 'true';
+            const isI2T = t.includes('image-to-text') || t.includes('image to text');
+            return isI2T || (t.includes('text generation') && visionProp);
         });
         const text = listed.models.filter(m => {
             const t = taskOf(m).toLowerCase();
-            return t.includes('text generation') || t.includes('text-generation');
+            return (t.includes('text generation') || t.includes('text-generation'))
+                && !(propMap(m)['vision'] === true);
         });
 
-        report.models.visionCandidates = vision.map(m => ({ id: m.id || m.name, task: taskOf(m) }));
-        report.models.textCandidates = text.map(m => ({ id: m.id || m.name, task: taskOf(m) }));
+        report.models.visionCandidates = vision.map(m => ({ id: modelIdOf(m), task: taskOf(m) }));
+        report.models.textCandidates = text.map(m => ({ id: modelIdOf(m), task: taskOf(m) }));
 
         if (doVision) {
-            const ids = report.models.visionCandidates.map(v => v.id).filter(Boolean).slice(0, 6);
+            // 优先测「真·视觉」组合：Image-to-Text 全测 + 已知带 vision 属性的文本模型
+            const preferred = [
+                '@cf/meta/llama-3.2-11b-vision-instruct',
+                '@cf/llava-hf/llava-1.5-7b-hf',
+                '@cf/moondream/moondream3.1-9B-A2B',
+                '@cf/mistralai/mistral-small-3.1-24b-instruct',
+                '@cf/meta/llama-4-scout-17b-16e-instruct'
+            ];
+            const all = report.models.visionCandidates.map(v => v.id).filter(Boolean);
+            const ids = [...new Set([
+                ...preferred.filter(p => all.includes(p)),
+                ...all
+            ])].slice(0, 8);
             const bytes = Array.from(Buffer.from(TINY_PNG_B64, 'base64'));
             const dataUrl = `data:image/png;base64,${TINY_PNG_B64}`;
             for (const id of ids) {
