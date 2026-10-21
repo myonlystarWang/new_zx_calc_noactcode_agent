@@ -14,6 +14,7 @@ import {
     rollShenjiPools,
     matchAutoForgeTarget,
     getShenjiAttrDisplayName,
+    getShenjiTierRates,
     type AutoForgeTarget,
     type ShenjiQuality,
     type ShenjiRoll,
@@ -292,6 +293,12 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
     const pools = useMemo(() => buildShenjiPools(equips, slot, quality, yunling), [equips, slot, quality, yunling]);
     const poolReady = pools.length > 0 && pools.every((p) => p.length > 0);
 
+    /** 当前部位的 +11/+13/+15 五档概率文案（实测自客户端表 325，随部位变化） */
+    const tierRateText = useMemo(
+        () => [11, 13, 15].map((l) => `+${l} 池 ${getShenjiTierRates(slot, l).join('/')}`).join('，'),
+        [slot]
+    );
+
     // 装备载体与三个档位池的备选词条名
     const equip = useMemo(() => findShenjiEquip(equips, slot, quality), [equips, slot, quality]);
     const pool11 = useMemo(() => getShenjiPool(equip, quality, 11), [equip, quality]);
@@ -366,7 +373,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                 resetRef.current = null;
             }, 20);
             timerRef.current = window.setTimeout(() => {
-                const rolled = rollShenjiPools(pools);
+                const rolled = rollShenjiPools(pools, slot);
                 setRight(rolled);
                 setForgeCount((c) => c + 1);
                 setForging(false);
@@ -374,7 +381,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                 onDone?.(rolled);
             }, FORGE_MS);
         },
-        [pools, poolReady]
+        [pools, poolReady, slot]
     );
 
     const handleForge = useCallback(() => {
@@ -609,7 +616,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                     >
                         <div>· 每条属性独立抽取：先按属性出现概率选词条，再按档位概率选 5 档之一。</div>
                         <div>· 五档取值为固定值：第一档 = 区间下限（白），第五档 = 区间上限（红·极·）。</div>
-                        <div>· 档位概率：+11 池 34/33/18/10/5，+13 池 38/33/17/8/3，+15 池 42/33/16/7/2。</div>
+                        <div>· 档位概率（{slot}，实测自客户端）：{tierRateText}。</div>
                         <div>· 条数由蕴灵决定：+11 一条、+13 两条、+15 三条，依次取 +11 / +13 / +15 池。</div>
                         <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]">
                             {TIER_NAMES.map((n, i) => (
