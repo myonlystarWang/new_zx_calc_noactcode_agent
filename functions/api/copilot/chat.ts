@@ -117,19 +117,40 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
         }
 
         // 优先级 3: Cloudflare Workers AI 本地绑定（如果配置了 Workers AI）
+        // 注意：@cf/meta/llama-3.1-8b-instruct 已于官方下线（现存 -fp8 版本），
+        // 写死单个 model id 会导致调用必失败且错误被 catch 吞掉 → 落 local-fallback 且无从排查。
+        // 因此改为候选表逐个尝试，并把失败原因放进响应（G14 / G15）。
         if (context.env.AI) {
-            try {
-                const aiRes = await context.env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
-                    messages
-                });
-                if (aiRes?.response) {
-                    return new Response(JSON.stringify({ reply: aiRes.response, provider: 'cloudflare-workers-ai' }), {
-                        headers: { 'Content-Type': 'application/json' }
+            const aiCandidates = [
+                '@cf/meta/llama-3.1-8b-instruct-fp8',
+                '@cf/meta/llama-3.2-3b-instruct'
+            ];
+            const aiErrors: string[] = [];
+            for (const modelId of aiCandidates) {
+                try {
+                    const aiRes = await context.env.AI.run(modelId, {
+                        messages,
+                        max_tokens: 512
                     });
+                    if (aiRes?.response) {
+                        return new Response(JSON.stringify({ reply: aiRes.response, provider: `cloudflare-workers-ai:${modelId}` }), {
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                    }
+                    aiErrors.push(`${modelId}: empty response`);
+                } catch (err: any) {
+                    aiErrors.push(`${modelId}: ${(err?.message || String(err)).slice(0, 160)}`);
+                    console.warn('Workers AI chat error:', modelId, err);
                 }
-            } catch (err) {
-                console.warn('Workers AI chat error:', err);
             }
+            // 全部候选失败：把原因带回前端（截断），便于定位是模型下线还是配额问题
+            return new Response(JSON.stringify({
+                reply: `【模型通道异常】Workers AI 候选模型均调用失败，已回退到本地知识库答复。\n${aiErrors.join('\n')}\n\n` + `针对你的咨询「${prompt}」：\n本地知识库暂未覆盖该问题，可换一种说法（例如「逐霜 打桩」「T20 逆戟鲸神 属性」），或稍后重试。`,
+                provider: 'local-fallback',
+                lastError: aiErrors.join(' | ').slice(0, 300)
+            }), {
+                headers: { 'Content-Type': 'application/json' }
+            });
         }
 
         // 兜底智能策略回复（若服务端未配置远程 Key）
