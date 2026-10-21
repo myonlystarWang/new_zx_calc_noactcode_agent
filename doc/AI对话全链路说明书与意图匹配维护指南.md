@@ -118,7 +118,16 @@ flowchart TD
 | `skill` / `skill_candidates` | `SkillDetailCard` |
 | `fabao` / `fabao_candidates` | `FabaoDetailCard` |
 | `equip` / `equip_candidates` | `EquipDetailCard`（男女版按纯名去重，第 800-808 行） |
-| `ceiling` / `server` / `xyc_diag` / `tool_card` | 轻量导航卡（点击开分屏工作区或跳路由） |
+| `silin_benyuan` | `SilinBenyuanCard`（四灵本元卡，四灵 × 1~5 阶词条概率与真实数值） |
+| `shenji_forge` | `ShenjiForgeCard`（神机属性洗练模拟器，品质/部位/蕴灵档位概率锻造） |
+| `peizhang` / `jiuwenlang` | `PeizhangDetailCard` / `JiuwenlangDetailCard`（圣粹佩章与九纹琅） |
+| `ninglingqi` / `pet_pledge` | `NinglingqiDetailCard` / `PetPledgeDetailCard`（宸极凝灵契与宠物结誓） |
+| `zhenling_upgrade` / `fabao_upgrade` | `ZhenlingUpgradeCard` / `FabaoUpgradeCard`（阵灵聚灵与法宝升级经验对照） |
+| `xingsu` / `baoshi` / `tianyuan_old` | `XingsuDetailCard` / `BaoshiDetailCard` / `OldTianyuanDetailCard`（星宿/宝石/旧天缘） |
+| `fashion_skill` | `FashionSkillDetailCard`（贺岁生肖时装技能图鉴） |
+| `class_status` | `ClassStatusCard`（27 职业团队辅助与输出状态摘要） |
+| `class_hub` / `slot_hub` / `equip_hub` / `skill_hub` / `measure_hub` / `guide_hub` / `exp_hub` | 各域全景分流与导航 Hub 卡片 |
+| `ceiling` / `server` / `xyc_diag` / `tool_card` | 极致攻略卡 / 开服雷达卡 / 轩辕策 / 基础工具卡 |
 
 `workspaceMode` 命中即自动展开右侧分屏工作区（HomePage 第 198-204 行）。
 
