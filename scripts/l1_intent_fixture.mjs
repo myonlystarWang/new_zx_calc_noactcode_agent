@@ -200,6 +200,14 @@ function makeFsMock() {
                 return null;
             }
         },
+        // new_tianyuan_data.json 新版须弥天缘数据
+        getNewTianYuanData: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'new_tianyuan_data.json'));
+            } catch {
+                return null;
+            }
+        },
     };
 }
 

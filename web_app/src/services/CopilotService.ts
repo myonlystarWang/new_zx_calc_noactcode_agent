@@ -41,7 +41,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan';
     cardData?: any;
 }
 
@@ -783,23 +783,34 @@ export class CopilotService {
             };
         }
 
-        // 5. 新天缘属性推算（仅显式指定“新天缘”或“须弥天缘”才触发，普通“天缘”均归旧天缘）
+        // 5. 新天缘属性信息卡（仅显式指定“新天缘”或“须弥天缘”触发，普通“天缘”归旧天缘）
         if (
             q.includes('新天缘') ||
             q.includes('须弥天缘')
         ) {
+            let initialGroupName = '上玄佑万辰须弥刃';
+            if (q.includes('甲') || q.includes('衣')) initialGroupName = '上玄佑万辰须弥甲';
+            else if (q.includes('盔') || q.includes('冠') || q.includes('帽') || q.includes('履') || q.includes('鞋') || q.includes('靴')) {
+                initialGroupName = '上玄佑万辰须弥盔';
+            }
+
+            let targetLvl = 10;
+            const lvlMatch = q.match(/(\d{1,2})\s*级/);
+            if (lvlMatch) {
+                targetLvl = Math.min(10, Math.max(0, parseInt(lvlMatch[1], 10)));
+            }
+
+            const newTianyuanData = await dataService.getNewTianYuanData();
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '已为你定位【新版天缘属性推算】。支持须弥装备天缘与天命属性洗炼推演，测算洗出满属性与心仪词条的概率与期望消耗。',
+                text: '为你速查到【新版须弥天缘属性全览】。支持须弥刃、须弥甲、须弥冠履3大部位词条池与 0~10 级天命阶跃自动推算：',
                 time: timeStr,
-                cardType: 'tool_card',
+                cardType: 'tianyuan_new',
                 cardData: {
-                    title: '新版天缘属性推算',
-                    desc: '须弥装备天缘属性洗炼模拟，展示属性词条理论值范围和概率',
-                    workspaceMode: 'newtianyuan',
-                    route: '/tools/newtianyuan',
-                    btnText: '进入天缘属性'
+                    data: newTianyuanData,
+                    initialGroupName,
+                    initialLevel: targetLvl
                 }
             };
         }
@@ -1589,6 +1600,7 @@ export class CopilotService {
                         { key: 'ninglingqi', label: '宸极凝灵契', query: '凝灵契' },
                         { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
                         { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
+                        { key: 'tianyuan_new', label: '新天缘', query: '新天缘' },
                         { key: 'shenji', label: '神级首饰', query: '神级项链' },
                         { key: 'baoshi', label: '宝石属性', query: '宝石' },
                     ]
@@ -1720,6 +1732,7 @@ export class CopilotService {
                         { key: 'xingsu', label: '星宿升星', query: '星宿升星' },
                         { key: 'baoshi', label: '宝石属性', query: '宝石' },
                         { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
+                        { key: 'tianyuan_new', label: '新天缘', query: '新天缘' },
                         { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
                         { key: 'fabao_exp', label: '法宝经验', query: '法宝经验' },
                         { key: 'shenji', label: '神机洗练', query: '神机洗练' },

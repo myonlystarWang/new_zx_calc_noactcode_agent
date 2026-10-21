@@ -55,12 +55,11 @@
     "id": "tool-tianyuan-01",
     "input": "须弥天缘",
     "expect": {
-      "cardType": "tool_card",
-      "cardData.workspaceMode": "newtianyuan"
+      "cardType": "tianyuan_new"
     },
     "tags": [
-      "standard",
-      "tool"
+      "equip",
+      "tianyuan_new"
     ],
     "assert": "strong"
   },
@@ -5775,5 +5774,50 @@
     "tags": ["ceiling", "t18"],
     "assert": "strong",
     "note": "极致攻略：极致暴击伤害直达暴击伤害天花板"
+  },
+  {
+    "id": "tianyuan-new-01",
+    "input": "新天缘",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialGroupName": "上玄佑万辰须弥刃",
+      "cardData.initialLevel": 10
+    },
+    "tags": ["equip", "tianyuan_new"],
+    "assert": "strong",
+    "note": "新天缘：裸词「新天缘」直达须弥天缘卡"
+  },
+  {
+    "id": "tianyuan-new-armor",
+    "input": "新天缘 须弥甲",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialGroupName": "上玄佑万辰须弥甲"
+    },
+    "tags": ["equip", "tianyuan_new"],
+    "assert": "strong",
+    "note": "新天缘：指定部位须弥甲"
+  },
+  {
+    "id": "tianyuan-new-helmet",
+    "input": "新天缘 须弥冠履",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialGroupName": "上玄佑万辰须弥盔"
+    },
+    "tags": ["equip", "tianyuan_new"],
+    "assert": "strong",
+    "note": "新天缘：指定部位须弥冠履"
+  },
+  {
+    "id": "tianyuan-new-level",
+    "input": "新天缘 6级",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialLevel": 6
+    },
+    "tags": ["equip", "tianyuan_new"],
+    "assert": "strong",
+    "note": "新天缘：带等级参数"
   }
 ]
