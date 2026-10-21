@@ -5644,21 +5644,21 @@
     "id": "silin-hub-bare",
     "input": "四灵",
     "expect": {
-      "cardType": "top_hub"
+      "cardType": "silin_benyuan"
     },
-    "tags": ["equip", "silin_benyuan", "hub"],
+    "tags": ["equip", "silin_benyuan"],
     "assert": "strong",
-    "note": "四灵体系分流：裸词「四灵」返回本元 vs 瑞灵分流卡"
+    "note": "四灵本元：裸词「四灵」直达四灵本元卡"
   },
   {
     "id": "silin-hub-system",
     "input": "四灵系统",
     "expect": {
-      "cardType": "top_hub"
+      "cardType": "silin_benyuan"
     },
-    "tags": ["equip", "silin_benyuan", "hub"],
+    "tags": ["equip", "silin_benyuan"],
     "assert": "strong",
-    "note": "四灵体系分流：「四灵系统」返回分流卡"
+    "note": "四灵本元：「四灵系统」直达四灵本元卡"
   },
   {
     "id": "t18-shenji-xiuwu",
