@@ -746,10 +746,12 @@ export class CopilotService {
             };
         }
 
-        // 5b. 旧天缘属性全览卡（装备天缘词条池，优先承接所有天缘查询，默认只允许到旧天缘）
+        // 5b. 旧天缘属性全览卡（装备天缘词条池，优先承接所有普通天缘查询，新天缘系列除外）
         const isOldTianyuanQuery =
             !q.includes('新天缘') &&
-            !q.includes('须弥天缘') &&
+            !q.includes('须弥') &&
+            !q.includes('上玄') &&
+            !q.includes('佑万') &&
             (
                 q.includes('天缘') ||
                 q.includes('旧天缘') ||
@@ -783,11 +785,21 @@ export class CopilotService {
             };
         }
 
-        // 5. 新天缘属性信息卡（仅显式指定“新天缘”或“须弥天缘”触发，普通“天缘”归旧天缘）
-        if (
+        // 5. 新天缘属性信息卡（涵盖 上玄 / 佑万 / 须弥 / 新天缘 等现代天缘体系）
+        const isNewTianyuanQuery =
             q.includes('新天缘') ||
-            q.includes('须弥天缘')
-        ) {
+            q.includes('须弥天缘') ||
+            q.includes('上玄天缘') ||
+            q.includes('佑万天缘') ||
+            q.includes('须弥刃') ||
+            q.includes('须弥甲') ||
+            q.includes('须弥盔') ||
+            q.includes('须弥冠') ||
+            q.includes('上玄佑万辰') ||
+            (q.includes('天缘') && (q.includes('上玄') || q.includes('佑万') || q.includes('须弥'))) ||
+            ((q.includes('上玄') || q.includes('佑万')) && (q.includes('刃') || q.includes('甲') || q.includes('盔') || q.includes('属性')));
+
+        if (isNewTianyuanQuery) {
             let initialGroupName = '上玄佑万辰须弥刃';
             if (q.includes('甲') || q.includes('衣')) initialGroupName = '上玄佑万辰须弥甲';
             else if (q.includes('盔') || q.includes('冠') || q.includes('帽') || q.includes('履') || q.includes('鞋') || q.includes('靴')) {
@@ -804,7 +816,7 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '为你速查到【新版须弥天缘属性全览】。支持须弥刃、须弥甲、须弥冠履3大部位词条池与 0~10 级天命阶跃自动推算：',
+                text: '为你速查到【新版天缘属性全览】（上玄佑万辰须弥系列）。支持须弥刃、须弥甲、须弥冠3大部位词条池与 0~10 级天命阶跃自动推算：',
                 time: timeStr,
                 cardType: 'tianyuan_new',
                 cardData: {

@@ -5461,7 +5461,10 @@
       "cardType": "silin_benyuan",
       "cardData.initialSpiritId": "zhulong"
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：灵名+本元定位烛龙"
   },
@@ -5472,7 +5475,10 @@
       "cardType": "silin_benyuan",
       "cardData.initialSpiritId": "huangniao"
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：灵名+本元定位黄鸟"
   },
@@ -5483,7 +5489,10 @@
       "cardType": "silin_benyuan",
       "cardData.initialSpiritId": "kuiniu"
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：灵名+本元定位夔牛"
   },
@@ -5495,7 +5504,10 @@
       "cardData.initialSpiritId": "huangniao",
       "cardData.initialTier": 4
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：黄鸟+四阶"
   },
@@ -5507,7 +5519,10 @@
       "cardData.initialSpiritId": "zhulong",
       "cardData.initialTier": 3
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：烛龙+三阶"
   },
@@ -5519,7 +5534,10 @@
       "cardData.initialSpiritId": "taotie",
       "cardData.initialTier": 5
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：饕餮+五阶"
   },
@@ -5531,7 +5549,10 @@
       "cardData.initialSpiritId": "huangniao",
       "cardData.initialTier": 5
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：反查黄鸟五阶（玄黄天音）"
   },
@@ -5543,7 +5564,10 @@
       "cardData.initialSpiritId": "zhulong",
       "cardData.initialTier": 5
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：反查烛龙五阶（烛照太初）"
   },
@@ -5555,7 +5579,10 @@
       "cardData.initialSpiritId": "taotie",
       "cardData.initialTier": 5
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：反查饕餮五阶（归墟无厌）"
   },
@@ -5567,7 +5594,10 @@
       "cardData.initialSpiritId": "huangniao",
       "cardData.initialTier": 3
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：反查黄鸟三阶（扶摇）"
   },
@@ -5579,7 +5609,10 @@
       "cardData.initialSpiritId": "huangniao",
       "cardData.initialTier": 4
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：反查黄鸟四阶（九霄）"
   },
@@ -5591,7 +5624,10 @@
       "cardData.initialSpiritId": "zhulong",
       "cardData.initialTier": 3
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：反查烛龙三阶（幽明）"
   },
@@ -5603,7 +5639,10 @@
       "cardData.initialSpiritId": "kuiniu",
       "cardData.initialTier": 4
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：反查夔牛四阶（风雷）"
   },
@@ -5615,7 +5654,10 @@
       "cardData.initialSpiritId": "kuiniu",
       "cardData.initialTier": 3
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：反查夔牛三阶（震鼓）"
   },
@@ -5625,7 +5667,10 @@
     "expect": {
       "cardType": "silin_benyuan"
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：按伏龙鼎镶嵌命中"
   },
@@ -5635,7 +5680,10 @@
     "expect": {
       "cardType": "silin_benyuan"
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：按伏龙鼎本元命中"
   },
@@ -5645,7 +5693,10 @@
     "expect": {
       "cardType": "silin_benyuan"
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：裸词「四灵」直达四灵本元卡"
   },
@@ -5655,7 +5706,10 @@
     "expect": {
       "cardType": "silin_benyuan"
     },
-    "tags": ["equip", "silin_benyuan"],
+    "tags": [
+      "equip",
+      "silin_benyuan"
+    ],
     "assert": "strong",
     "note": "四灵本元：「四灵系统」直达四灵本元卡"
   },
@@ -5666,7 +5720,10 @@
       "cardType": "shenji_forge",
       "cardData.initialQuality": "修武"
     },
-    "tags": ["shenji_forge", "t18"],
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
     "assert": "strong",
     "note": "神机洗练：修武神机预选修武"
   },
@@ -5677,7 +5734,10 @@
       "cardType": "shenji_forge",
       "cardData.initialQuality": "昭武"
     },
-    "tags": ["shenji_forge", "t18"],
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
     "assert": "strong",
     "note": "神机洗练：昭武神机预选昭武"
   },
@@ -5688,7 +5748,10 @@
       "cardType": "shenji_forge",
       "cardData.initialQuality": "彰武"
     },
-    "tags": ["shenji_forge", "t18"],
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
     "assert": "strong",
     "note": "神机洗练：彰武神机预选彰武"
   },
@@ -5698,7 +5761,10 @@
     "expect": {
       "cardType": "shenji_forge"
     },
-    "tags": ["shenji_forge", "t18"],
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
     "assert": "strong",
     "note": "神机洗练：复合口语神机洗练模拟"
   },
@@ -5708,7 +5774,10 @@
     "expect": {
       "cardType": "shenji_forge"
     },
-    "tags": ["shenji_forge", "t18"],
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
     "assert": "strong",
     "note": "神机洗练：复合口语神机锻造模拟"
   },
@@ -5718,7 +5787,10 @@
     "expect": {
       "cardType": "shenji_forge"
     },
-    "tags": ["shenji_forge", "t18"],
+    "tags": [
+      "shenji_forge",
+      "t18"
+    ],
     "assert": "strong",
     "note": "神机洗练：神机属性洗练"
   },
@@ -5728,7 +5800,10 @@
     "expect": {
       "cardType": "fabao_upgrade"
     },
-    "tags": ["fabao_upgrade", "t18"],
+    "tags": [
+      "fabao_upgrade",
+      "t18"
+    ],
     "assert": "strong",
     "note": "法宝升级：离阳火精直达升级经验表"
   },
@@ -5738,7 +5813,10 @@
     "expect": {
       "cardType": "fabao_upgrade"
     },
-    "tags": ["fabao_upgrade", "t18"],
+    "tags": [
+      "fabao_upgrade",
+      "t18"
+    ],
     "assert": "strong",
     "note": "法宝升级：法宝离阳火精组合词"
   },
@@ -5749,7 +5827,10 @@
       "cardType": "ceiling",
       "cardData.attrKey": "critRate"
     },
-    "tags": ["ceiling", "t18"],
+    "tags": [
+      "ceiling",
+      "t18"
+    ],
     "assert": "strong",
     "note": "极致攻略：极致暴击直达暴击率天花板"
   },
@@ -5760,7 +5841,10 @@
       "cardType": "ceiling",
       "cardData.attrKey": "critDamage"
     },
-    "tags": ["ceiling", "t18"],
+    "tags": [
+      "ceiling",
+      "t18"
+    ],
     "assert": "strong",
     "note": "极致攻略：极致爆伤直达暴击伤害天花板"
   },
@@ -5771,7 +5855,10 @@
       "cardType": "ceiling",
       "cardData.attrKey": "critDamage"
     },
-    "tags": ["ceiling", "t18"],
+    "tags": [
+      "ceiling",
+      "t18"
+    ],
     "assert": "strong",
     "note": "极致攻略：极致暴击伤害直达暴击伤害天花板"
   },
@@ -5783,7 +5870,10 @@
       "cardData.initialGroupName": "上玄佑万辰须弥刃",
       "cardData.initialLevel": 10
     },
-    "tags": ["equip", "tianyuan_new"],
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
     "assert": "strong",
     "note": "新天缘：裸词「新天缘」直达须弥天缘卡"
   },
@@ -5794,20 +5884,26 @@
       "cardType": "tianyuan_new",
       "cardData.initialGroupName": "上玄佑万辰须弥甲"
     },
-    "tags": ["equip", "tianyuan_new"],
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
     "assert": "strong",
     "note": "新天缘：指定部位须弥甲"
   },
   {
     "id": "tianyuan-new-helmet",
-    "input": "新天缘 须弥冠履",
+    "input": "新天缘 须弥冠",
     "expect": {
       "cardType": "tianyuan_new",
       "cardData.initialGroupName": "上玄佑万辰须弥盔"
     },
-    "tags": ["equip", "tianyuan_new"],
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
     "assert": "strong",
-    "note": "新天缘：指定部位须弥冠履"
+    "note": "新天缘：指定部位须弥冠"
   },
   {
     "id": "tianyuan-new-level",
@@ -5816,8 +5912,81 @@
       "cardType": "tianyuan_new",
       "cardData.initialLevel": 6
     },
-    "tags": ["equip", "tianyuan_new"],
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
     "assert": "strong",
     "note": "新天缘：带等级参数"
+  },
+  {
+    "id": "tianyuan-new-shangxuan",
+    "input": "上玄天缘",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialGroupName": "上玄佑万辰须弥刃"
+    },
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
+    "assert": "strong",
+    "note": "新天缘：上玄天缘"
+  },
+  {
+    "id": "tianyuan-new-youwan",
+    "input": "佑万天缘",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialGroupName": "上玄佑万辰须弥刃"
+    },
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
+    "assert": "strong",
+    "note": "新天缘：佑万天缘"
+  },
+  {
+    "id": "tianyuan-new-xumiren",
+    "input": "须弥刃",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialGroupName": "上玄佑万辰须弥刃"
+    },
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
+    "assert": "strong",
+    "note": "新天缘：须弥刃直达武器天缘"
+  },
+  {
+    "id": "tianyuan-new-xumijia",
+    "input": "须弥甲",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialGroupName": "上玄佑万辰须弥甲"
+    },
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
+    "assert": "strong",
+    "note": "新天缘：须弥甲直达衣服天缘"
+  },
+  {
+    "id": "tianyuan-new-xumikui",
+    "input": "须弥盔",
+    "expect": {
+      "cardType": "tianyuan_new",
+      "cardData.initialGroupName": "上玄佑万辰须弥盔"
+    },
+    "tags": [
+      "equip",
+      "tianyuan_new"
+    ],
+    "assert": "strong",
+    "note": "新天缘：须弥盔直达头冠天缘"
   }
 ]
