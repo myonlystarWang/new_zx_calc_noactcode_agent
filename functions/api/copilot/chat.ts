@@ -128,12 +128,16 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
             const aiErrors: string[] = [];
             for (const modelId of aiCandidates) {
                 try {
-                    const aiRes = await context.env.AI.run(modelId, {
+                    const aiRes: any = await context.env.AI.run(modelId, {
                         messages,
                         max_tokens: 512
                     });
-                    if (aiRes?.response) {
-                        return new Response(JSON.stringify({ reply: aiRes.response, provider: `cloudflare-workers-ai:${modelId}` }), {
+                    // 返回结构不统一：部分模型给 response，部分给 OpenAI 兼容的 choices[0].message.content
+                    const aiText = typeof aiRes?.response === 'string'
+                        ? aiRes.response
+                        : (typeof aiRes?.choices?.[0]?.message?.content === 'string' ? aiRes.choices[0].message.content : '');
+                    if (aiText) {
+                        return new Response(JSON.stringify({ reply: aiText, provider: `cloudflare-workers-ai:${modelId}` }), {
                             headers: { 'Content-Type': 'application/json' }
                         });
                     }
