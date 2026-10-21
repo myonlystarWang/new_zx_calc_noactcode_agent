@@ -219,12 +219,12 @@ export function buildSearchIndex(): CompiledSearchItem[] {
     add('属性战力计算器', '功能入口', 'page', ['战力', '计算器', '属性计算', 'jsq', 'zljsq'], { tab: 'calculator' });
     add('副本模拟训练场', '功能入口', 'page', ['模拟', '训练场', '战斗模拟', 'arena', 'fbmx'], { tab: 'arena' });
     add('全景战斗资料库', '功能入口', 'page', ['资料库', '图鉴', '资料图鉴', '攻略', '资料', '专注值', '增益', 'qjzd'], { tab: 'compendium', sub: 'ceiling' });
-    add('极致属性攻略', '功能入口 · 全景资料库', 'page', ['极致属性', '天花板', '无视', '减免', '怪增', '躲闪', 'jz', 'jzsx', 'jizhi'], { tab: 'compendium', sub: 'ceiling' });
+    add('极致属性攻略', '功能入口 · 全景资料库', 'page', ['极致属性', '天花板', '无视', '减免', '怪增', '躲闪', '暴击', '爆伤', 'jz', 'jzsx', 'jizhi'], { tab: 'compendium', sub: 'ceiling' });
     add('职业技能速查', '功能入口 · 全景资料库', 'page', ['技能', '速查', '技能库', '门派技能', 'zyjn', 'jnsc'], { tab: 'compendium', sub: 'skills' });
     add('职业状态一览', '功能入口 · 全景资料库', 'page', ['职业状态', '辅助', '增益', '状态评级', 'zyzt', 'zt'], { tab: 'compendium', sub: 'support' });
     add('副本 BOSS 速查', '功能入口 · 全景资料库', 'page', ['boss', '首领', '属性', '副本boss', '减爆伤', 'fb', 'fbsc'], { tab: 'compendium', sub: 'boss' });
 
-    // 2. 极致属性攻略 5 大核心属性子页（截图 1：极致无视、极致减免、极致减暴击、极致怪增、极致躲闪）
+    // 2. 极致属性攻略 7 大核心属性子页（截图 1：极致无视、极致减免、极致减暴击、极致暴击、极致爆伤、极致怪增、极致躲闪）
     const ceilingSubPages: Array<{ label: string; sub: SubTab; kw: string[] }> = [
         {
             label: '极致无视攻略',
@@ -240,6 +240,16 @@ export function buildSearchIndex(): CompiledSearchItem[] {
             label: '极致减暴击攻略',
             sub: 'critReduction',
             kw: ['极致减暴击', '减暴击', '减暴', '极致', '暴击减免', 'jzjbj', 'jz', 'jbj', 'jianbaoji'],
+        },
+        {
+            label: '极致暴击攻略',
+            sub: 'critRate',
+            kw: ['极致暴击', '暴击', '暴击率', '暴击率上限', 'jzbj', 'jz', 'bj', 'baoji', 'jizhibaoji'],
+        },
+        {
+            label: '极致爆伤攻略',
+            sub: 'critDamage',
+            kw: ['极致爆伤', '爆伤', '暴击伤害', '暴伤', '爆伤上限', 'jzbs', 'jz', 'bs', 'baoshang', 'jizhibaoshang'],
         },
         {
             label: '极致怪增攻略',
@@ -500,6 +510,8 @@ export function buildSearchIndex(): CompiledSearchItem[] {
         const lMap: Record<string, { name: string; sub: SubTab }> = {
             monsterDamageBonus: { name: '极致怪增攻略', sub: 'monsterDamageBonus' },
             dodge: { name: '极致躲闪攻略', sub: 'dodge' },
+            critRate: { name: '极致暴击攻略', sub: 'critRate' },
+            critDamage: { name: '极致爆伤攻略', sub: 'critDamage' },
         };
         for (const [k, sec] of Object.entries(lists.sections)) {
             const info = lMap[k];
