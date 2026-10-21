@@ -11,7 +11,7 @@
 
 ## 一、项目上下文（30 秒版）
 
-- 项目：诛仙 3 伤害分析工具（web_app：React 19 + Vite 5 + Tailwind v3），线上 `zxarena.raddishlab.tech`（Cloudflare Pages，push 自动构建）
+- 项目：诛仙 3 伤害分析工具（web_app：React 19 + Vite 5 + Tailwind v3），线上 `zxai.raddishlab.com`（Cloudflare Pages，push 自动构建）
 - L1 = `web_app/src/services/CopilotService.ts` 的 `matchLocalIntent`（AI 问答的本地意图匹配层，零成本直出卡片）
 - 回归夹具：`scripts/l1_intent_fixture.mjs`（esbuild 打包 + mock DataService + 点路径断言 + golden 快照三层），入口 `npm run test:l1`，当前 **979 条全绿**
 - 渲染层：`web_app/src/components/home/HomeAIChatStage.tsx`（各 cardType 的卡片分支）
