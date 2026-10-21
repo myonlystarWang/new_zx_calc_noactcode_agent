@@ -557,7 +557,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 placeholder={
                   attachedImage
                     ? '已粘贴截图，输入补充指令或直接回车启动推演...'
-                    : '问点什么，比如苍龙啸，星宿升星，昭武衣服，宝石洗练，天缘测算等...'
+                    : '问点什么，比如四灵本元，神机洗练，昭武衣服，苍龙啸，新天缘等...'
                 }
                 className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-sm focus:outline-none px-1 py-1.5"
               />

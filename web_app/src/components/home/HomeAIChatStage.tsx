@@ -1190,7 +1190,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         onKeyDown={e => {
                             if (e.key === 'Enter') handleSend();
                         }}
-                        placeholder="问点什么，比如苍龙啸，星宿升星，昭武衣服，宝石洗练，天缘测算等..."
+                        placeholder="问点什么，比如四灵本元，神机洗练，昭武衣服，苍龙啸，新天缘等..."
                         className="flex-1 px-1 py-2 bg-transparent text-slate-100 placeholder-slate-400 text-sm focus:outline-none"
                     />
 

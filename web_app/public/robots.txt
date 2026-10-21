@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zxarena.raddishlab.tech/sitemap.xml
+Sitemap: https://zxai.raddishlab.com/sitemap.xml
