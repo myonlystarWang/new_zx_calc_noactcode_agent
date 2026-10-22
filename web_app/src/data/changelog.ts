@@ -29,6 +29,17 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.2.8',
+        date: '2026-10-22',
+        title: '蕴灵可从当前等级起推，腰带属性修正',
+        changes: [
+            { type: 'feat', text: '【装备蕴灵】支持预设当前装备等级（如武器已经 +13 就从 +13 开始模拟），装备幸运值可以自己填' },
+            { type: 'fix', text: '【装备蕴灵】修正选腰带时不显示蕴灵等级、属性也不随等级上涨的问题，现在能看到 +9/+10/+11 各阶解锁什么' },
+            { type: 'feat', text: '【神隐装备】六个部位的图标按修武/昭武/彰武分套显示，不再共用一张图' },
+            { type: 'perf', text: '【AI 问答】没听懂或查不到时，下面会补一排可点的导航卡，不再只回一句话' },
+        ],
+    },
+    {
         version: '1.2.7',
         date: '2026-10-22',
         title: '装备蕴灵模拟上线，神机概率修正',
