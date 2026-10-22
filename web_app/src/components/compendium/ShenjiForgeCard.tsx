@@ -33,14 +33,41 @@ const SIM_FONT = '"SimSun", "宋体", "Microsoft YaHei", sans-serif';
 const FORGE_MS = 500;
 const BAR_W = 216;
 
-/** 六类部位来自寻宝天行真实客户端图标（袖甲来自原版客户端提取） */
-const SLOT_IMAGE_MAP: Record<ShenjiSlot, string> = {
-    '武器': '/game_data/equip_icons/79821.png',   // 绝峰·昭武
-    '头盔': '/game_data/equip_icons/90812.png',   // 绝峰衔日盔·昭武（男）
-    '衣服': '/game_data/equip_icons/85782.png',   // 绝峰衔日甲·昭武（男）
-    '靴子': '/game_data/equip_icons/96240.png',   // 绝峰衔日靴·昭武（男）
-    '腰带': '/game_data/equip_icons/105681.png',  // 绝峰衔日腰带·昭武（男）
-    '袖甲': '/game_data/equip_icons/cuff_34.png',  // 绝峰衔日钏/腕
+/**
+ * 六部位 × 三品质图标，36×36 原始像素。
+ *
+ * 来源：寻宝天行 `zx/png/<id>.png`（青云·男·修武 5 张、鬼王·男·彰武头盔 1 张）。
+ * 品质差异只在外框：修武 = 暗金框 + 白角；昭武 = 青白框 + 青角；彰武 = 橙金框 + 青宝石角。
+ *
+ * 合成（非原图）说明：
+ * - 袖甲：昭武/修武两版以腰带同品质图为框模板，中央 24×24 内圈贴 cuff_34 物品。
+ * - 彰武全 6 张：以彰武头盔 115828 整图为框模板，中央内圈贴各部位昭武物品。
+ */
+const SLOT_IMAGE_MAP: Record<ShenjiQuality, Record<ShenjiSlot, string>> = {
+    修武: {
+        武器: '/game_data/equip_icons/shenji/xiuwu_weapon.png',
+        头盔: '/game_data/equip_icons/shenji/xiuwu_helmet.png',
+        衣服: '/game_data/equip_icons/shenji/xiuwu_armor.png',
+        靴子: '/game_data/equip_icons/shenji/xiuwu_boots.png',
+        腰带: '/game_data/equip_icons/shenji/xiuwu_belt.png',
+        袖甲: '/game_data/equip_icons/shenji/xiuwu_cuff.png',
+    },
+    昭武: {
+        武器: '/game_data/equip_icons/shenji/zhaowu_weapon.png',
+        头盔: '/game_data/equip_icons/shenji/zhaowu_helmet.png',
+        衣服: '/game_data/equip_icons/shenji/zhaowu_armor.png',
+        靴子: '/game_data/equip_icons/shenji/zhaowu_boots.png',
+        腰带: '/game_data/equip_icons/shenji/zhaowu_belt.png',
+        袖甲: '/game_data/equip_icons/shenji/zhaowu_cuff.png',
+    },
+    彰武: {
+        武器: '/game_data/equip_icons/shenji/zhangwu_weapon.png',
+        头盔: '/game_data/equip_icons/shenji/zhangwu_helmet.png',
+        衣服: '/game_data/equip_icons/shenji/zhangwu_armor.png',
+        靴子: '/game_data/equip_icons/shenji/zhangwu_boots.png',
+        腰带: '/game_data/equip_icons/shenji/zhangwu_belt.png',
+        袖甲: '/game_data/equip_icons/shenji/zhangwu_cuff.png',
+    },
 };
 
 const TIER_HEX = ['#ffffff', '#4fbc3c', '#b446ff', '#ffd94d', '#f80000'];
@@ -160,7 +187,7 @@ const ForgePanel: React.FC<{
 
                     {!imgErr ? (
                         <img
-                            src={SLOT_IMAGE_MAP[slot]}
+                            src={SLOT_IMAGE_MAP[quality][slot]}
                             alt={slot}
                             onError={() => setImgErr(true)}
                             className="pointer-events-none select-none"
