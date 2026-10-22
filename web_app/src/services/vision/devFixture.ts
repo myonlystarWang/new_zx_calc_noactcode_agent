@@ -57,6 +57,30 @@ const PANEL_XYC = {
     character: null
 };
 
+const PANEL_TIANYUAN = {
+    panelKind: 'tianyuan',
+    kindEvidence: ['天缘+10', '天命+2'],
+    kindConfidence: 0.95,
+    textLines: [
+        { label: '天缘', raw: '天缘+10' },
+        { label: '天命', raw: '天命+2 真气 +5.8%' }
+    ],
+    fields: [
+        { key: 'name', label: '名称', raw: '上玄佑万辰须弥盔（+2真气）', value: '上玄佑万辰须弥盔', status: 'ok' },
+        { key: 'part', label: '部位', raw: '上玄佑万辰须弥盔（+2真气）', value: '盔', status: 'ok' },
+        { key: 'suffix', label: '后缀', raw: '上玄佑万辰须弥盔（+2真气）', value: '+2真气', status: 'ok' },
+        { key: 'tianyuanLevel', label: '天缘等级', raw: '天缘+10', value: 10, status: 'ok' }
+    ],
+    attrs: [
+        { tianming: 2, name: '真气', value: '+5.8%' },
+        { tianming: 1, name: '固定攻击', value: '+2057' },
+        { tianming: 3, name: '固定真气', value: '+4468' },
+        { tianming: 2, name: '固定气血', value: '+3427' }
+    ],
+    character: null,
+    rawExplanation: '识别到上玄佑万辰须弥盔，天缘 +10，4 条天命词条。'
+};
+
 const FIXTURES: Record<string, any> = {
     zhaoming_xian_full: {
         ok: true,
@@ -73,6 +97,14 @@ const FIXTURES: Record<string, any> = {
         quality: 'full',
         panel: PANEL_XYC,
         result: { mode: 'xyc', rawExplanation: '识别到青龙<青囊玉书>·英雄版。' }
+    },
+    tianyuan_xumikui: {
+        ok: true,
+        provider: 'cf-workers-ai:@cf/mistralai/mistral-small-3.1-24b-instruct',
+        degraded: false,
+        quality: 'full',
+        panel: PANEL_TIANYUAN,
+        result: { mode: 'general', rawExplanation: '识别到上玄佑万辰须弥盔，天缘 +10，4 条天命词条。' }
     },
     degraded_no_key: {
         ok: false,

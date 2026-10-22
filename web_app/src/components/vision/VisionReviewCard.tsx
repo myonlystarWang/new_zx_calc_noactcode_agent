@@ -1,9 +1,12 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import clsx from 'clsx';
-import { Copy, Check, ArrowRight, Sliders, Info } from 'lucide-react';
+import { Copy, Check, ArrowRight, Sliders, Info, Loader2 } from 'lucide-react';
 import type { FieldCell, RecognizedPanel } from '../../services/vision/types';
 import { kindLabel } from '../../services/vision/fieldRegistry';
 import { mapToEngine } from '../../services/vision/mapToEngine';
+import { classCoverage } from '../../services/vision/classCoverage';
+import { runPanelSimulation, type CalculationTrace, type SimTarget } from '../../services/vision/runPanelSimulation';
+import { DungeonBossPicker } from './DungeonBossPicker';
 
 export interface VisionReviewCardProps {
     panel: RecognizedPanel;
@@ -117,23 +120,53 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
         setEditingKey(null);
     }, []);
 
-    const simulateBlocked = useMemo(() => {
+    // 职业覆盖：技能池为空（如昭冥·仙）直接禁用，绝不借其它职业技能
+    const coverage = useMemo(
+        () => (live.kind === 'character_panel'
+            ? classCoverage(live.character?.classRaw, live.character?.factionRaw)
+            : null),
+        [live.kind, live.character?.classRaw, live.character?.factionRaw]
+    );
+
+    const [target, setTarget] = useState<SimTarget | null>(null);
+    const [sim, setSim] = useState<{ running: boolean; trace?: CalculationTrace; error?: string }>({ running: false });
+
+    const missingZh: Record<string, string> = {
+        CharacterMinAttack: '最小攻',
+        CharacterMaxAttack: '最大攻',
+        CharacterCriticalHitDamagePercent: '致命伤害',
+        CharacterMonsterDamageIncreasePercent: '对怪增伤'
+    };
+
+    /** 禁用理由（按优先级）：降级 → 体系 → 职业覆盖 → 缺字段 → 未选副本 */
+    const blockedReason = useMemo(() => {
         if (live.degraded) return '识图功能受限，请先手填关键属性';
-        if (live.kind === 'character_panel') {
-            const missing = live.engine.missingRequired;
-            if (missing.length > 0) {
-                const zh: Record<string, string> = {
-                    CharacterMinAttack: '最小攻',
-                    CharacterMaxAttack: '最大攻',
-                    CharacterCriticalHitDamagePercent: '致命伤害',
-                    CharacterMonsterDamageIncreasePercent: '对怪增伤'
-                };
-                return `先补齐：${missing.map(m => zh[m] || m).join('、')}`;
-            }
-            return '算副本秒伤将在下一阶段接入（需选副本 + BOSS）';
+        if (live.kind !== 'character_panel') return '该体系暂不支持秒伤推演';
+        if (coverage && !coverage.ok) return coverage.reason || '职业 / 阵营不可用';
+        const missing = live.engine.missingRequired;
+        if (missing.length > 0) return `先补齐：${missing.map(m => missingZh[m] || m).join('、')}`;
+        if (!target) return '先选副本与 BOSS';
+        return null;
+    }, [live, coverage, target]);
+
+    const doSimulate = useCallback(() => {
+        if (blockedReason || !target) return;
+        setSim({ running: true });
+        try {
+            const out = runPanelSimulation(live, target);
+            if (out.ok) setSim({ running: false, trace: out.trace });
+            else setSim({ running: false, error: out.message });
+        } catch (e: any) {
+            setSim({ running: false, error: e?.message || '引擎计算失败' });
         }
-        return '该体系暂不支持秒伤推演';
-    }, [live]);
+    }, [blockedReason, target, live]);
+
+    const fmtBig = (n: number): string => {
+        if (!Number.isFinite(n)) return '—';
+        if (n >= 1e8) return `${(n / 1e8).toFixed(2)} 亿`;
+        if (n >= 1e4) return `${(n / 1e4).toFixed(1)} 万`;
+        return n.toLocaleString();
+    };
 
     const copyJson = async () => {
         try {
@@ -146,7 +179,7 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
     const headerTitle = live.kind === 'xyc'
         ? [live.xyc?.beast ? `${live.xyc.beast}<${live.xyc.bookName || '策'}>` : '轩辕策', live.xyc?.heroVersion ? '·英雄版' : ''].join('')
         : live.kind === 'tianyuan'
-            ? '天缘属性'
+            ? (live.tianyuan?.name || '天缘属性')
             : (live.character?.classRaw || '角色属性面板');
 
     const factionText = live.character?.factionRaw;
@@ -171,6 +204,11 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                         {factionText && (
                             <span className="px-1.5 py-0.5 rounded text-[11px] font-bold border bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shrink-0">
                                 {factionText}
+                            </span>
+                        )}
+                        {live.tianyuan?.suffix && (
+                            <span className="px-1.5 py-0.5 rounded text-[11px] font-bold border bg-emerald-500/10 border-emerald-500/30 text-emerald-300 shrink-0">
+                                {live.tianyuan.suffix}
                             </span>
                         )}
                         <span className="px-1.5 py-0.5 rounded text-[11px] font-bold border bg-slate-700/40 border-slate-600/40 text-slate-300 shrink-0">
@@ -205,6 +243,11 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                     {typeof live.xyc?.washUsed === 'number' && (
                         <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-300 border border-slate-700/50 whitespace-nowrap font-mono">
                             洗炼 {live.xyc.washUsed}/10
+                        </span>
+                    )}
+                    {live.kind === 'tianyuan' && typeof live.tianyuan?.tianyuanLevel === 'number' && (
+                        <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-lime-300 border border-lime-700/40 whitespace-nowrap font-mono">
+                            天缘 +{live.tianyuan.tianyuanLevel}
                         </span>
                     )}
                     {!live.degraded && (
@@ -275,13 +318,19 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </div>
             )}
 
-            {/* 词条（若有） */}
+            {/* 词条（轩辕策洗炼 / 天缘天命） */}
             {Array.isArray(live.attrs) && live.attrs.length > 0 && (
-                <div className="mt-2 flex flex-col gap-0.5">
+                <div className="mt-2.5 flex flex-col gap-1">
                     {live.attrs.map((a, i) => (
                         <div key={i} className="flex items-baseline gap-1.5 text-xs">
-                            <span className="text-slate-500 text-[10px]">⊙</span>
-                            <span className="text-slate-300 min-w-[76px]">{a.name}</span>
+                            {typeof a.tianming === 'number' ? (
+                                <span className="px-1 rounded text-[10px] font-mono text-slate-300 bg-slate-800/70 border border-slate-700/50 shrink-0">
+                                    天命+{a.tianming}
+                                </span>
+                            ) : (
+                                <span className="text-slate-500 text-[10px]">⊙</span>
+                            )}
+                            <span className="text-slate-300 min-w-[64px]">{a.name}</span>
                             <span className="font-mono font-bold text-slate-100">{a.value}</span>
                             {a.wash && <span className="font-mono text-[11px] text-emerald-400">({a.wash})</span>}
                             {a.extra && <span className="font-mono text-[11px] text-rose-400">({a.extra})</span>}
@@ -308,6 +357,51 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
             {/* 隐藏 JSON：给本地 e2e 断言用，不占视觉 */}
             <pre data-testid="panel-json" className="hidden">{JSON.stringify({ kind: live.kind, fields: live.fields.map(f => ({ k: f.key, v: f.value, s: f.status })), engine: live.engine })}</pre>
 
+            {/* 副本 / BOSS 选择 + 结果（仅角色属性面板） */}
+            {live.kind === 'character_panel' && (
+                <div className="mt-2.5 pt-2.5 border-t border-white/5 flex flex-col gap-2">
+                    <DungeonBossPicker value={target} onChange={setTarget} disabled={!coverage?.ok} />
+
+                    {sim.trace && (
+                        <div data-testid="sim-result" className="rounded-lg bg-black/30 border border-white/5 p-2.5 flex flex-col gap-1.5">
+                            <div className="flex items-center gap-4 flex-wrap">
+                                <div className="flex items-baseline gap-1.5">
+                                    <span className="text-[10px] text-slate-500">单套总伤</span>
+                                    <span className="font-mono text-sm font-black text-amber-300">{fmtBig(sim.trace.result.totalDamage)}</span>
+                                </div>
+                                <div className="flex items-baseline gap-1.5">
+                                    <span className="text-[10px] text-slate-500">平均秒伤</span>
+                                    <span className="font-mono text-sm font-black text-amber-300">{fmtBig(sim.trace.result.averageDps)}</span>
+                                </div>
+                                <div className="flex items-baseline gap-1.5">
+                                    <span className="text-[10px] text-slate-500">击杀</span>
+                                    <span className={clsx('font-mono text-xs', sim.trace.result.bossKilled ? 'text-emerald-400' : 'text-slate-400')}>
+                                        {sim.trace.result.bossKilled ? `${(sim.trace.result.killTimeMs! / 1000).toFixed(1)}s` : `未击杀 / ${(sim.trace.result.durationMs / 1000).toFixed(0)}s`}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2 flex-wrap text-[10px] text-slate-500 font-mono">
+                                <span>{target?.dungeonName} · {target?.bossName}</span>
+                                <span>trace {sim.trace.attrsHash}</span>
+                                <span>{sim.trace.engineFn}</span>
+                            </div>
+                            {(sim.trace.filledWithZero.length > 0 || sim.trace.buffNote) && (
+                                <div className="text-[10px] text-amber-600/80 leading-relaxed">
+                                    {sim.trace.filledWithZero.length > 0 && <>未识别按 0 计入：{sim.trace.filledWithZero.map(k => k.replace('Character', '')).join('、')}；</>}
+                                    {sim.trace.buffNote}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {sim.error && (
+                        <div data-testid="sim-error" className="text-[11px] text-rose-400/90 leading-relaxed">
+                            计算未完成：{sim.error}
+                        </div>
+                    )}
+                </div>
+            )}
+
             {/* 操作区 */}
             <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between gap-2 flex-wrap">
                 <button
@@ -323,18 +417,19 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                     <button
                         type="button"
                         data-action="simulate"
-                        data-disabled-reason={onSimulate ? undefined : simulateBlocked}
-                        disabled={!onSimulate}
-                        onClick={() => onSimulate?.(live)}
-                        title={onSimulate ? '按当前面板与所选副本来算' : simulateBlocked}
+                        data-disabled-reason={blockedReason || undefined}
+                        disabled={Boolean(blockedReason) || sim.running}
+                        onClick={() => (onSimulate ? onSimulate(live) : doSimulate())}
+                        title={blockedReason || '按当前面板与所选副本来算'}
                         className={clsx(
-                            'px-3 py-1.5 rounded-lg text-xs border transition-colors',
-                            onSimulate
-                                ? 'bg-cyan-600/20 hover:bg-cyan-600/40 border-cyan-500/30 text-cyan-200'
-                                : 'bg-white/3 border-white/6 text-slate-500 cursor-not-allowed'
+                            'px-3 py-1.5 rounded-lg text-xs border transition-colors flex items-center gap-1.5',
+                            blockedReason
+                                ? 'bg-white/3 border-white/6 text-slate-500 cursor-not-allowed'
+                                : 'bg-cyan-600/20 hover:bg-cyan-600/40 border-cyan-500/30 text-cyan-200'
                         )}
                     >
-                        算副本秒伤
+                        {sim.running && <Loader2 className="w-3 h-3 animate-spin" />}
+                        <span>{blockedReason && blockedReason.startsWith('先选') ? '先选副本与 BOSS' : '算副本秒伤'}</span>
                     </button>
                     <button
                         type="button"

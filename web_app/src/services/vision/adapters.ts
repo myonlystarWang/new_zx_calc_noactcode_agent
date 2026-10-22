@@ -46,6 +46,22 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
 
     const issues: string[] = [...(meta?.issues || [])];
 
+    // attrs 兜底：部分模型（实测 llama-4-scout）会把词条数组塞进 fields，key 写成 attrs
+    const rawAttrs: any[] = (() => {
+        if (Array.isArray(serverPanel?.attrs)) return serverPanel.attrs;
+        const fromFields = serverFields.find((f: any) => f && f.key === 'attrs' && Array.isArray(f.value));
+        return fromFields ? fromFields.value : [];
+    })();
+    const attrs = rawAttrs
+        .filter(a => a && typeof a === 'object' && (a.name || a.value))
+        .map(a => ({
+            name: String(a.name ?? ''),
+            value: String(a.value ?? ''),
+            tianming: typeof a.tianming === 'number' ? a.tianming : (typeof a.tianming === 'string' && a.tianming.trim() !== '' ? Number(a.tianming) : undefined),
+            wash: a.wash ? String(a.wash) : undefined,
+            extra: a.extra ? String(a.extra) : undefined
+        }));
+
     const cells: FieldCell[] = fieldsFor(kind).map(def => {
         const raw = byKey.get(def.key);
         const value = raw?.value ?? null;
@@ -61,8 +77,8 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
             }
         }
         // 校验二：raw 必须能在转录文本里找到（只对「数值型面板行」生效；
-        // 轩辕策/天缘的书名、品阶等来自标题，不在 textLines 里）
-        if (status !== 'absent' && value !== null && raw?.raw && def.expectedLabels.length > 0 && textLines.length > 0) {
+        // 轩辕策/天缘的书名、品阶等来自标题，不在 textLines 里；手填项本就没有 raw）
+        if (status !== 'absent' && value !== null && !def.manual && raw?.raw && def.expectedLabels.length > 0 && textLines.length > 0) {
             const hit = textLines.some(l => norm(l.raw).includes(norm(raw.raw)) || norm(raw.raw).includes(norm(l.raw)));
             if (!hit && textLines.length > 0) {
                 status = 'invalid';
@@ -91,7 +107,10 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
         };
     });
 
-    const extraCount = Math.max(0, textLines.length - cells.filter(c => c.status === 'ok').length);
+    // 只有角色面板需要「另有 N 项」计数；轩辕策/天缘的词条已经单独渲染
+    const extraCount = kind === 'character_panel'
+        ? Math.max(0, textLines.length - cells.filter(c => c.status === 'ok').length)
+        : 0;
 
     const base: RecognizedPanel = {
         kind,
@@ -104,7 +123,7 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
         character: serverPanel?.character || undefined,
         bars: parseBars(textLines, cells),
         fields: cells,
-        attrs: Array.isArray(serverPanel?.attrs) ? serverPanel.attrs : undefined,
+        attrs: attrs.length > 0 ? attrs : undefined,
         xyc: kind === 'xyc' ? {
             beast: byKey.get('beast')?.value ?? undefined,
             bookName: byKey.get('bookName')?.value ?? undefined,
@@ -118,6 +137,12 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
             name: byKey.get('advSkillName')?.value ?? undefined,
             variant: byKey.get('advSkillVariant')?.value ?? undefined,
             level: typeof byKey.get('advSkillLevel')?.value === 'number' ? byKey.get('advSkillLevel').value : undefined
+        } : undefined,
+        tianyuan: kind === 'tianyuan' ? {
+            name: (byKey.get('name')?.value ?? undefined) as string | undefined,
+            part: (byKey.get('part')?.value ?? undefined) as string | undefined,
+            suffix: (byKey.get('suffix')?.value ?? undefined) as string | undefined,
+            tianyuanLevel: typeof byKey.get('tianyuanLevel')?.value === 'number' ? byKey.get('tianyuanLevel').value : undefined
         } : undefined,
         textLines,
         issues,
