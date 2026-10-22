@@ -14,6 +14,7 @@ import {
   Loader2
 } from 'lucide-react';
 import clsx from 'clsx';
+import { computeGuestbookStamp, markGuestbookSeen } from '../../utils/guestbookSeen';
 
 export type GuestbookCategory = 'all' | 'suggestion' | 'bug' | 'build' | 'feature';
 
@@ -126,6 +127,11 @@ export const FeedbackPage: React.FC = () => {
     } catch (e) {
       console.error('Failed to save guestbook posts', e);
     }
+  }, [posts]);
+
+  // 停留在本页即视为已读（与更新动态规则一致），同步收起 Header 的 NEW 角标
+  useEffect(() => {
+    markGuestbookSeen(computeGuestbookStamp(posts));
   }, [posts]);
 
   // 从服务端拉取全量留言

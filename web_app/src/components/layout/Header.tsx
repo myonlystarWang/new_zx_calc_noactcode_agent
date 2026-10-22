@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { ROUTE } from '../../routes';
 import { TianShuLogo } from '../ui/TianShuLogo';
 import { hasUnseenChangelog } from '../../utils/changelogSeen';
+import { useGuestbookUnread } from '../../hooks/useGuestbookUnread';
 
 export const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ export const Header: React.FC = () => {
     const onFeedbackPage = pathname.startsWith(ROUTE.feedback);
 
     const [unseen, setUnseen] = useState<boolean>(() => hasUnseenChangelog());
+    const guestbookUnseen = useGuestbookUnread(onFeedbackPage);
 
     useEffect(() => {
         if (onChangelogPage) {
@@ -78,10 +80,19 @@ export const Header: React.FC = () => {
                         // title="查看诛仙全知大模型更新动态与排期"
                         aria-label="更新动态"
                     >
-                        <span>更新动态</span>
+                        <span className="relative">
+                            更新动态
+                            {unseen && (
+                                /* 窄屏圆点绝对定位：与意见反馈同款，不占布局宽度 */
+                                <span
+                                    className="sm:hidden absolute -top-0.5 -right-2 block w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"
+                                    aria-hidden="true"
+                                />
+                            )}
+                        </span>
                         {unseen && (
                             <span
-                                className="px-1.5 py-0.5 rounded-full bg-rose-500/90 text-white text-[9px] font-black leading-none shadow-sm shadow-rose-500/40 animate-pulse"
+                                className="hidden sm:inline-block px-1.5 py-0.5 rounded-full bg-rose-500/90 text-white text-[9px] font-black leading-none shadow-sm shadow-rose-500/40 animate-pulse"
                                 aria-label="有新更新"
                             >
                                 NEW
@@ -93,13 +104,30 @@ export const Header: React.FC = () => {
                         type="button"
                         onClick={() => navigate(ROUTE.feedback)}
                         className={clsx(
-                            'transition-colors cursor-pointer select-none py-1',
+                            'flex items-center gap-1.5 transition-colors cursor-pointer select-none py-1',
                             onFeedbackPage ? 'text-cyan-300 font-bold' : 'text-slate-300 hover:text-cyan-300'
                         )}
                         // title="仙友留言板与意见反馈"
-                        aria-label="意见反馈"
+                        aria-label={guestbookUnseen ? '意见反馈（有新留言）' : '意见反馈'}
                     >
-                        <span>意见反馈</span>
+                        <span className="relative">
+                            意见反馈
+                            {guestbookUnseen && (
+                                /* 窄屏圆点绝对定位：不占布局宽度，390px 下不会把导航再撑高 */
+                                <span
+                                    className="sm:hidden absolute -top-0.5 -right-2 block w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"
+                                    aria-hidden="true"
+                                />
+                            )}
+                        </span>
+                        {guestbookUnseen && (
+                            <span
+                                className="hidden sm:inline-block px-1.5 py-0.5 rounded-full bg-rose-500/90 text-white text-[9px] font-black leading-none shadow-sm shadow-rose-500/40 animate-pulse"
+                                aria-label="有新留言"
+                            >
+                                NEW
+                            </span>
+                        )}
                     </button>
 
                     <button
