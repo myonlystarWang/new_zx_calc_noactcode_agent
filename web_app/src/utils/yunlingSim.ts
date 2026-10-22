@@ -18,8 +18,9 @@
  *    依据：按「区间内均匀随机」模拟 +11 平均不到 2 手（社区实测 1.8 手），
  *    +13 的手数长尾能拖到 500 手以上，与实际体感、论坛晒的消耗量级都不符。
  * 2) 幸运值按客户端阶梯表查档：个人 / 装备分别查表后**相加**，再乘到基础概率上。
- * 3) 累积幸运：每次失败 +N 点（计入个人幸运值口径），成功后归零 ——
- *    即游戏内「蕴灵失败幸运值 +1」的软保底，跨越阈值时才抬升加成。
+ * 3) 累积幸运：每次失败 +N 点，成功后归零 —— 即游戏内「蕴灵失败幸运值 +1」的软保底，
+ *    跨越阈值时才抬升加成。默认计入**装备幸运值**档（封顶 1200 → +40%，与游戏内/信息卡表现一致），
+ *    可用 `luckGainTarget: 'person'` 改为计入个人档（封顶 2000 → +15%）。
  * 4) 可选强化收敛（默认关闭，供对照）：
  *    converge > 0 按连续失败手数追加补偿，把几何分布长尾削平；
  *    pity > 0 连续失败达到 N 手必成（硬保底）。
@@ -123,6 +124,12 @@ export const EQUIP_LUCK_TIERS: LuckTier[] = [
     { threshold: 1200, bonus: 0.4 },
 ];
 
+/** 装备幸运值封顶档：≥1200 点加成恒为 +40%（游戏内该档已满） */
+export const EQUIP_LUCK_CAP = 1200;
+
+/** 失败累积的幸运值计入哪一档 */
+export type LuckGainTarget = 'equip' | 'person';
+
 /** 按阶梯表查当前幸运值对应的加成（未达首档为 0） */
 export function luckBonus(tiers: LuckTier[], points: number): number {
     let bonus = 0;
@@ -203,8 +210,14 @@ export interface YunlingConfig {
     equipLuck: number;
     /** 个人幸运值（面板固定值，< 2000） */
     personLuck: number;
-    /** 每次失败累积的幸运值（计入个人幸运值口径，成功归零） */
+    /** 每次失败累积的幸运值（成功归零） */
     luckGainPerFail: number;
+    /**
+     * 失败累积的幸运值计入哪一档：
+     * 'equip' = 装备幸运值（封顶 1200 → +40%，与信息卡/游戏内表现一致，默认）
+     * 'person' = 个人幸运值（封顶 2000 → +15%）
+     */
+    luckGainTarget?: LuckGainTarget;
     /** 长尾收敛强度（0 = 关闭） */
     converge: number;
     /** 硬保底：连续失败 N 手必成（0 = 关闭） */
@@ -218,6 +231,7 @@ export const DEFAULT_CONFIG: YunlingConfig = {
     equipLuck: 0,
     personLuck: 100,
     luckGainPerFail: 1,
+    luckGainTarget: 'equip',
     converge: 0,
     pity: 0,
     costCurve: 'general',
@@ -257,11 +271,15 @@ export interface LuckBreakdown {
 }
 
 export function luckBreakdown(cfg: YunlingConfig, failStreak: number): LuckBreakdown {
-    const equipBonus = luckBonus(EQUIP_LUCK_TIERS, cfg.equipLuck);
-    const personPoints = cfg.personLuck + failStreak * cfg.luckGainPerFail;
+    const gain = failStreak * cfg.luckGainPerFail;
+    // 累积幸运按 cfg.luckGainTarget 计入装备档或个人档，各自封顶（装备 1200→+40%、个人 2000→+15%）
+    const target = cfg.luckGainTarget ?? 'equip';
+    const equipPoints = Math.min(EQUIP_LUCK_CAP, cfg.equipLuck + (target === 'equip' ? gain : 0));
+    const personPoints = Math.min(PERSON_LUCK_CAP, cfg.personLuck + (target === 'person' ? gain : 0));
+    const equipBonus = luckBonus(EQUIP_LUCK_TIERS, equipPoints);
     const personBonus = luckBonus(PERSON_LUCK_TIERS, personPoints);
     return {
-        equipPoints: cfg.equipLuck,
+        equipPoints,
         personPoints,
         equipBonus,
         personBonus,

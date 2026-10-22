@@ -488,7 +488,7 @@ export const YunlingSimulatorView: React.FC = () => {
                                 min={0}
                                 max={10}
                                 onChange={(v) => updateCfg({ luckGainPerFail: v })}
-                                title="每次失败累积的幸运值（计入个人幸运值），成功后归零（软保底）"
+                                title="每次失败累积的幸运值，计入装备幸运值（封顶 1200 → +40%），成功后归零（软保底）"
                             />
                             <NumField
                                 label="长尾收敛"
@@ -600,7 +600,7 @@ export const YunlingSimulatorView: React.FC = () => {
                                 <div>· 装备幸运值：{EQUIP_LUCK_TIERS.map((t) => `${t.threshold}→${Math.round(t.bonus * 100)}%`).join(' / ')}</div>
                                 <div>· 个人幸运值：{PERSON_LUCK_TIERS.map((t) => `${t.threshold}→${Math.round(t.bonus * 100)}%`).join(' / ')}（<b>2000 点封顶</b>，再往上如 4000 仍是 +15%，输入框允许填到 4000 只为便于验证）</div>
                                 <div>· 幸运值不是线性换算，跨过阈值才拿到该档加成；两档加成<b>相加</b>后乘到基础概率上。</div>
-                                <div>· 累积幸运：每失败一手 +N（计入个人幸运值口径），成功归零 —— 即「蕴灵失败幸运值 +1」的软保底，也是长尾收敛的主来源。</div>
+                                <div>· 累积幸运：每失败一手 +N，成功归零 —— 即「蕴灵失败幸运值 +1」的软保底。默认计入<b>装备幸运值</b>档（封顶 1200 → +40%，与信息卡/游戏内表现一致），跨过阈值才抬升加成。</div>
                                 <div className="mt-1.5 font-bold text-[#ffd94d]">月德符消耗（客户端表 280）</div>
                                 <div>· 通用 {COST_CURVES.general.join('/')}（合计 {totalCurveCost('general')}）</div>
                                 <div>· 腰带 {COST_CURVES.belt.join('/')}（合计 {totalCurveCost('belt')}）</div>

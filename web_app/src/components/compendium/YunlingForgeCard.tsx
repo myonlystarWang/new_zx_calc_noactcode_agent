@@ -439,8 +439,6 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                         style={{ background: 'rgba(16,32,48,.5)', border: '1px solid #2a415a', color: '#c7e6f7' }}
                     >
                         <div>蕴灵最终成功率 = 基础概率 ×（1 + 装备幸运值增益系数 + 个人幸运值增益系数）</div>
-                        <div>装备幸运值增益系数：5→3%、10→5%、25→8%、50→10%、100→12%（失败 +1）</div>
-                        <div>个人幸运值增益系数：25→2%、100→5%、550→10%、1000→12%、2000→15%</div>
                     </div>
                 )}
 
