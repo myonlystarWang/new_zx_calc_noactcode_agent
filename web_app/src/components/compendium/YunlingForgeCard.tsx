@@ -123,7 +123,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
         return q && QUALITIES.includes(q) ? q : '昭武';
     });
     const [slot, setSlot] = useState<ShenjiSlot>('武器');
-    const [equipId, setEquipId] = useState<number | null>(null);
+    const [equipName, setEquipName] = useState<string | null>(null);
 
     const [level, setLevel] = useState(0);
     const [equipLuck, setEquipLuck] = useState(0);
@@ -167,9 +167,14 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
         [equips]
     );
     const candidates = useMemo(() => pool.filter((e) => e.slot === slot && e.q === quality), [pool, slot, quality]);
-    const equip = useMemo(() => candidates.find((e) => e.id === equipId) ?? candidates[0], [candidates, equipId]);
+    // 装备用 name 作选择键：equip_curated 里大量装备共用同一个 id（武器·昭武 54 件只落在 2 个 id 上），
+    // 用 id 比较永远命中第一件，表现为「下拉选了不切换」。同一 slot + 品质内 name 唯一，可作稳定键。
+    const equip = useMemo(
+        () => candidates.find((e) => e.name === equipName) ?? candidates[0],
+        [candidates, equipName]
+    );
 
-    useEffect(() => { setEquipId(null); }, [slot, quality]);
+    useEffect(() => { setEquipName(null); }, [slot, quality]);
 
     const cfg: YunlingConfig = useMemo(
         () => ({
@@ -417,13 +422,13 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                         ))}
                     </div>
                     <select
-                        value={equip?.id ?? ''}
-                        onChange={(e) => setEquipId(Number(e.target.value))}
+                        value={equip?.name ?? ''}
+                        onChange={(e) => setEquipName(e.target.value)}
                         className="ylf-equip-select flex-1 min-w-[170px] h-[26px] px-1.5 text-[12.5px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0]"
                     >
                         {candidates.length === 0 && <option value="">该组合暂无蕴灵装备</option>}
                         {candidates.map((e) => (
-                            <option key={e.id} value={e.id}>{e.name}</option>
+                            <option key={e.name} value={e.name}>{e.name}</option>
                         ))}
                     </select>
                 </div>
