@@ -59,9 +59,11 @@ export interface RecognizedPanel {
     /** 按展示顺序排列的字段（注册表顺序） */
     fields: FieldCell[];
     /** 轩辕策 / 天缘的词条行（仅展示，不参与计算） */
-    attrs?: { name: string; value: string; wash?: string; extra?: string }[];
+    attrs?: { name: string; value: string; wash?: string; extra?: string; tianming?: number }[];
     /** 轩辕策标题信息 */
     xyc?: { beast?: string; bookName?: string; heroVersion?: boolean; tier?: string; stars?: number; washUsed?: number; level?: number };
+    /** 天缘标题信息：仅部位 / 天缘等级 / 括号后缀 */
+    tianyuan?: { name?: string; part?: string; suffix?: string; tianyuanLevel?: number };
     advSkill?: { name?: string; variant?: string; level?: number };
     textLines: { label: string; raw: string }[];
     issues: string[];

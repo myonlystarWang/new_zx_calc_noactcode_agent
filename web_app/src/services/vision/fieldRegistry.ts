@@ -61,10 +61,11 @@ export const XYC_FIELDS: FieldDef[] = [
     { key: 'level', label: '等级', unit: 'point', engine: false, expectedLabels: [] }
 ];
 
-/** 天缘属性 */
+/** 天缘属性：标题三要素 + 若干「天命+N 属性 +值」词条行 */
 export const TIANYUAN_FIELDS: FieldDef[] = [
+    { key: 'name', label: '名称', unit: 'text', engine: false, expectedLabels: [] },
     { key: 'part', label: '部位', unit: 'text', engine: false, expectedLabels: [] },
-    { key: 'level', label: '天命等级', unit: 'point', engine: false, expectedLabels: [] }
+    { key: 'tianyuanLevel', label: '天缘等级', unit: 'point', engine: false, expectedLabels: [] }
 ];
 
 export function fieldsFor(kind: PanelKind): FieldDef[] {
