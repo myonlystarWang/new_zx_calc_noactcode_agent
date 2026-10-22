@@ -55,12 +55,35 @@ export const YUNLING_RATES: YunlingRate[] = [
 export const YUNLING_MAX = 15;
 
 /** 基础概率取值口径 */
-export type BaseMode = 'floor' | 'random' | 'ceil';
+export type BaseMode = 'floor' | 'random' | 'ceil' | 'calibrated';
 
 export const BASE_MODE_LABEL: Record<BaseMode, string> = {
     floor: '实测口径（取下限）',
     random: '区间均匀随机',
     ceil: '乐观口径（取上限）',
+    calibrated: '实测校准（手数反推）',
+};
+
+/**
+ * 实测校准倍率（2026-10-22）：官方下限 × k。
+ * 依据玩家实测手数反推：+13 基本 80~120、+14 120~150、+15 150~190 手。
+ * 反推脚本 scripts/yunling_calibrate.ts，结论见 doc/蕴灵概率校准_实测反推_20261022.md。
+ */
+export const CALIBRATED_K: Record<number, number> = {
+    13: 0.43,
+    14: 0.61,
+    15: 0.59,
+};
+
+/**
+ * 校准口径的软保底窗口 [S, C]：S 手起成功率向 100% 抬升、C 手必成。
+ * 窗口由实测手数上沿反推（+13 100~150、+14 135~203、+15 170~255），
+ * 其余等级沿用 250 / 300。
+ */
+export const CALIBRATED_CAPS: Record<number, [number, number]> = {
+    13: [100, 150],
+    14: [135, 203],
+    15: [170, 255],
 };
 
 // ── 幸运值阶梯表（客户端 表 281 实证）────────────────────────
@@ -82,6 +105,9 @@ export const PERSON_LUCK_TIERS: LuckTier[] = [
     { threshold: 1000, bonus: 0.12 },
     { threshold: 2000, bonus: 0.15 },
 ];
+
+/** 个人幸运值封顶档：≥2000 点加成恒为 +15%，再往上加无任何增益（UI 上限给到 4000 只为便于验证这一点） */
+export const PERSON_LUCK_CAP = 2000;
 
 /** 装备幸运值（配置 1988）：5/10/25/50/100/200/350/550/800/1200 → 3% ~ 40% */
 export const EQUIP_LUCK_TIERS: LuckTier[] = [
@@ -188,7 +214,7 @@ export interface YunlingConfig {
 }
 
 export const DEFAULT_CONFIG: YunlingConfig = {
-    baseMode: 'floor',
+    baseMode: 'calibrated',
     equipLuck: 0,
     personLuck: 100,
     luckGainPerFail: 1,
@@ -207,6 +233,7 @@ export function baseProbPct(level: number, mode: BaseMode): number {
     const r = rateOf(level);
     if (mode === 'floor') return r.min;
     if (mode === 'ceil') return r.max;
+    if (mode === 'calibrated') return r.min * (CALIBRATED_K[level] ?? 1);
     return (r.min + r.max) / 2;
 }
 
@@ -215,6 +242,7 @@ function drawBasePct(level: number, mode: BaseMode, rnd: () => number): number {
     const r = rateOf(level);
     if (mode === 'floor') return r.min;
     if (mode === 'ceil') return r.max;
+    if (mode === 'calibrated') return r.min * (CALIBRATED_K[level] ?? 1);
     return r.min + rnd() * (r.max - r.min);
 }
 
@@ -241,7 +269,15 @@ export function luckBreakdown(cfg: YunlingConfig, failStreak: number): LuckBreak
     };
 }
 
-/** 由基础概率（0~1）+ 幸运增益推导最终成功率（0~1），随机重掷不参与 */
+/**
+ * 由基础概率（0~1）+ 幸运增益推导最终成功率（0~1），随机重掷不参与。
+ *
+ * 实际成功率 = 基础概率 × (1 + 装备档加成 + 个人档加成)。
+ * 公式来源为官方原文，非本工具假设：「神隐蕴灵实际成功率 = 基础概率 ×（1 + 装备幸运值增益 +
+ * 个人幸运值增益）；装备幸运值与个人幸运值为动态叠加」。两档**相加**，不是各自乘算。
+ * 详见 doc/神隐蕴灵_概率消耗全口径整合_20261021.md §4.3、doc/神隐蕴灵_月德符消耗与幸运值实证_20261021.md §4.4。
+ * converge / pity 默认 0（关闭），默认行为严格等于该公式。
+ */
 function probFromBase(base: number, gain: number, failStreak: number, cfg: YunlingConfig): number {
     if (cfg.pity > 0 && failStreak >= cfg.pity) return 1;
     let p = base * (1 + gain);
@@ -261,13 +297,26 @@ export const LEVEL_SOFT_START = 250;
 export const LEVEL_ATTEMPT_CAP = 300;
 
 /**
- * 软保底：同一级打到 250 手后，成功率按「距 300 的剩余比例」向 100% 收敛，
- * 第 300 手必成。中间是渐变随机，不是硬截断。
+ * 软保底：同一级打到 S 手后，成功率按「距 C 的剩余比例」向 100% 收敛，第 C 手必成。
+ * 默认窗口 250~300；校准口径下 +13/+14/+15 使用 CALIBRATED_CAPS 的更紧窗口。
  */
-export function softCapProb(p: number, attemptsInLevel: number): number {
-    if (attemptsInLevel >= LEVEL_ATTEMPT_CAP) return 1;
-    if (attemptsInLevel < LEVEL_SOFT_START) return p;
-    const t = (attemptsInLevel - LEVEL_SOFT_START) / (LEVEL_ATTEMPT_CAP - LEVEL_SOFT_START);
+export function capWindow(level: number, mode: BaseMode): [number, number] {
+    if (mode === 'calibrated') {
+        const w = CALIBRATED_CAPS[Math.round(level)];
+        if (w) return w;
+    }
+    return [LEVEL_SOFT_START, LEVEL_ATTEMPT_CAP];
+}
+
+export function softCapProb(
+    p: number,
+    attemptsInLevel: number,
+    window: [number, number] = [LEVEL_SOFT_START, LEVEL_ATTEMPT_CAP]
+): number {
+    const [S, C] = window;
+    if (attemptsInLevel >= C) return 1;
+    if (attemptsInLevel < S) return p;
+    const t = (attemptsInLevel - S) / (C - S);
     return Math.min(1, p + (1 - p) * t);
 }
 
@@ -279,16 +328,21 @@ export function successProb(
     attemptsInLevel = 0
 ): number {
     if (cfg.pity > 0 && failStreak >= cfg.pity) return 1;
-    if (attemptsInLevel >= LEVEL_ATTEMPT_CAP) return 1;
+    const window = capWindow(level, cfg.baseMode);
+    if (attemptsInLevel >= window[1]) return 1;
     const base = drawBasePct(level, cfg.baseMode, rnd) / 100;
-    return softCapProb(probFromBase(base, luckBreakdown(cfg, failStreak).total, failStreak, cfg), attemptsInLevel);
+    return softCapProb(
+        probFromBase(base, luckBreakdown(cfg, failStreak).total, failStreak, cfg),
+        attemptsInLevel,
+        window
+    );
 }
 
 /** 面板读数用：不考虑随机重掷的当前实际成功率（%）；随机口径取区间中值 */
 export function displayProbPct(level: number, cfg: YunlingConfig, failStreak: number, attemptsInLevel = 0): number {
     const base = baseProbPct(level, cfg.baseMode) / 100;
     const p = probFromBase(base, luckBreakdown(cfg, failStreak).total, failStreak, cfg);
-    return softCapProb(p, attemptsInLevel) * 100;
+    return softCapProb(p, attemptsInLevel, capWindow(level, cfg.baseMode)) * 100;
 }
 
 const MAX_DP = 20000;

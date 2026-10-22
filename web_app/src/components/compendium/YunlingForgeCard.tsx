@@ -179,7 +179,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
     const cfg: YunlingConfig = useMemo(
         () => ({
             ...DEFAULT_CONFIG,
-            baseMode: 'floor',
+            baseMode: 'calibrated',
             equipLuck,
             personLuck,
             // 累积幸运直接体现在装备幸运值上（失败 +1），不再走 streak
@@ -441,7 +441,6 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                         <div>蕴灵最终成功率 = 基础概率 ×（1 + 装备幸运值增益系数 + 个人幸运值增益系数）</div>
                         <div>装备幸运值增益系数：5→3%、10→5%、25→8%、50→10%、100→12%（失败 +1）</div>
                         <div>个人幸运值增益系数：25→2%、100→5%、550→10%、1000→12%、2000→15%</div>
-                        <div>单级最多 300 手：超过 250 手后每多失败一手成功率递增，第 300 手必成</div>
                     </div>
                 )}
 
@@ -505,8 +504,9 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                                     type="number"
                                     value={personLuck}
                                     min={0}
-                                    max={2000}
-                                    onChange={(e) => setPersonLuck(Math.max(0, Math.min(2000, Number(e.target.value) || 0)))}
+                                    max={4000}
+                                    onChange={(e) => setPersonLuck(Math.max(0, Math.min(4000, Number(e.target.value) || 0)))}
+                                    title="个人幸运值 2000 点封顶（+15%），再往上无增益"
                                     className="w-[54px] h-[22px] px-1 text-[12.5px] text-right tabular-nums rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#e6f1fa] outline-none focus:border-[#4d82b0]"
                                 />
                                 <b className="tabular-nums w-[40px] text-right" style={{ color: '#4ce0f0' }}>
