@@ -8,6 +8,7 @@
 
 import { DataService, isValidSkill } from './DataService';
 import { getVisionFixture } from './vision/devFixture';
+import { downscaleDataUrl } from '../utils/imageDownscale';
 import { pinyin } from 'pinyin-pro';
 import { calculateDungeonPower } from '../utils/calculator';
 import type { CharacterAttributes, Dungeon, Monster, Skill, CuratedEquipItem, CuratedSkillItem, FabaoItem } from '../types';
@@ -1877,6 +1878,7 @@ export class CopilotService {
                     title: '各类模拟器导航',
                     options: [
                         { key: 'shenji', label: '神机洗练', query: '神机洗练' },
+                        { key: 'yunling', label: '蕴灵模拟', query: '蕴灵模拟' },
                         // { key: 'tianyuan', label: '天缘洗练', query: '天缘洗练' },
                         // { key: 'xyc', label: '轩辕策洗练', query: '轩辕策洗练' },
                     ]
@@ -1995,10 +1997,14 @@ export class CopilotService {
         }
 
         // ------------------------------------------------------------
-        // 0.60 装备蕴灵 · 数据实验室（yunling）→ 右侧分屏
+        // ⛔ 已关闭（2026-10-22 用户要求）装备蕴灵 · 数据实验室（右侧分屏）
         // 支持「蕴灵进阶」「蕴灵 进阶」「蕴灵模拟进阶」「装备蕴灵进阶」「蕴灵推演」
-        // 注意：必须先于「蕴灵模拟」轻量卡分支判断（含「进阶」优先走实验室）
+        // 保留代码以备恢复：取消下面整段注释，并同步恢复
+        //   ① ChatPlusMenu 的「装备蕴灵」分屏项（handleToolClick('yunling')）
+        //   ② SplitScreenWorkspace 的 mode === 'yunling' 渲染块
+        //   ③ ToolsHubView 的「装备蕴灵」tab 与 routes 的 /tools/yunling
         // ------------------------------------------------------------
+        /*
         const isYunlingAdvancedQuery =
             (q.includes('蕴灵') || q.includes('装备蕴灵')) &&
             (q.includes('进阶') || q.includes('推演') || q.includes('实验室') || q.includes('数据') || q.includes('概率表'));
@@ -2019,38 +2025,23 @@ export class CopilotService {
                 },
             };
         }
+        */
 
         // ------------------------------------------------------------
-        // 0.61 装备蕴灵 · 形态选择（hub）与轻量卡
-        // 裸词「蕴灵 / 装备蕴灵 / 蕴灵模拟」→ 让玩家自选：轻量模拟 / 数据实验室
-        // 「蕴灵 轻量」→ 对话内嵌轻量卡（仿神机锻造）
+        // 0.62 装备蕴灵 · 轻量卡（yunling_forge，仿神机锻造）—— 当前唯一形态
+        // 词表：蕴灵 / 装备蕴灵 / 蕴灵模拟 / 炼器模拟 / 装备炼器 / 神隐蕴灵 …
+        // 注意：必须在装备查询分支之前；「炼器+N」只命中佩章阶位查询，与此不冲突
         // ------------------------------------------------------------
-        const isYunlingHubQuery =
+        const YUNLING_KEYWORDS = ['蕴灵', '装备炼器', '炼器模拟'];
+        const isYunlingLiteQuery =
             q === '蕴灵' ||
             q === '装备蕴灵' ||
             q === '蕴灵模拟' ||
             q === '装备蕴灵模拟' ||
             q === '神隐蕴灵' ||
-            q === '蕴灵系统';
+            q === '蕴灵系统' ||
+            YUNLING_KEYWORDS.some((k) => q.includes(k));
 
-        if (isYunlingHubQuery) {
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: '【装备蕴灵】有两种看法，点选你需要的形态：',
-                time: timeStr,
-                cardType: 'sim_hub',
-                cardData: {
-                    title: '装备蕴灵 · 形态选择',
-                    options: [
-                        { key: 'yunling_lite', label: '轻量模拟（逐手蕴灵 + 逐级消耗）', query: '蕴灵 轻量' },
-                        { key: 'yunling_lab', label: '数据实验室（概率/期望/蒙特卡洛）', query: '蕴灵 进阶' },
-                    ],
-                },
-            };
-        }
-
-        const isYunlingLiteQuery = q.includes('蕴灵') && (q.includes('轻量') || q.includes('来一手'));
         if (isYunlingLiteQuery) {
             let initialQuality: string | undefined;
             if (q.includes('修武')) initialQuality = '修武';
@@ -3480,13 +3471,16 @@ export class CopilotService {
 
         const keys = this.getUserKeys();
 
+        // 上传前降采样：长边 ≤1600（省 input token，也避免模型缩放后小字更糊）
+        const imageForModel = await downscaleDataUrl(base64Image, { maxEdge: 1600 });
+
         // 1. 优先调用后端视觉网关
         try {
             const res = await fetch('/api/copilot/vision', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    imageBase64: base64Image,
+                    imageBase64: imageForModel,
                     prompt: userPrompt,
                     customKeys: keys
                 })
