@@ -8,7 +8,8 @@ import {
   Maximize2,
   Minimize2,
   X,
-  Layers
+  Layers,
+  Hammer
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { AttributePanel } from '../business/AttributePanel';
@@ -18,6 +19,7 @@ import { SimulationArena } from '../arena/SimulationArena';
 import { ServerRadarView } from '../tools/ServerRadarView';
 import { XycSimulatorView } from '../tools/XycSimulatorView';
 import { NewTianYuanSimulatorView } from '../tools/NewTianYuanSimulatorView';
+import { YunlingSimulatorView } from '../tools/YunlingSimulatorView';
 import {
   WORKSPACE_TAG,
   WORKSPACE_TAG_ICON,
@@ -31,7 +33,8 @@ export type WorkspaceMode =
   | 'server'
   | 'xyc'
   | 'newtianyuan'
-  | 'ninglingqi';
+  | 'ninglingqi'
+  | 'yunling';
 
 export interface SplitScreenWorkspaceProps {
   mode: WorkspaceMode;
@@ -54,6 +57,7 @@ const FEATURE_META: Record<WorkspaceMode, { label: string; icon: React.ReactNode
   xyc: { label: '轩辕策属性', icon: <Compass className={WORKSPACE_TAG_ICON} /> },
   newtianyuan: { label: '天缘属性', icon: <Sparkles className={WORKSPACE_TAG_ICON} /> },
   ninglingqi: { label: '凝灵契模拟', icon: <Layers className={WORKSPACE_TAG_ICON} /> },
+  yunling: { label: '装备蕴灵', icon: <Hammer className={WORKSPACE_TAG_ICON} /> },
 };
 
 export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
@@ -143,7 +147,14 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
 
         {mode === 'xyc' && (
           <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
-            <XycSimulatorView />
+            <XycSimulatorView
+              seed={{
+                beast: params?.xycBeast,
+                isHero: params?.xycIsHero,
+                level: params?.xycLevel,
+                advSkill: params?.xycAdvSkill
+              }}
+            />
           </div>
         )}
 
@@ -165,6 +176,12 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
             <div className="flex items-center gap-2 text-xs text-cyan-400 font-mono bg-cyan-950/60 px-3 py-1.5 rounded-full border border-cyan-800/40">
               <span>状态：数值模型已就绪 · 即将接入</span>
             </div>
+          </div>
+        )}
+
+        {mode === 'yunling' && (
+          <div className="p-3 sm:p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
+            <YunlingSimulatorView />
           </div>
         )}
       </div>

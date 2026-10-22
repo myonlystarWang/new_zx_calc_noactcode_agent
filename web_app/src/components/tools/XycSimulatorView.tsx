@@ -120,10 +120,26 @@ interface SlotEntry {
     val: number | string;
 }
 
-export const XycSimulatorView: React.FC = () => {
-    const [selectedBeast, setSelectedBeast] = useState<'青龙' | '白虎' | '朱雀' | '玄武'>('玄武');
-    const [isHero, setIsHero] = useState<boolean>(false);
-    const [bookLevel, setBookLevel] = useState<number>(1);
+/** 识图带入的初始值：系别 + 普通/英雄 + 品阶（进阶技能仅供卡上展示） */
+export interface XycSeed {
+    /** 系别：青龙 / 白虎 / 朱雀 / 玄武 */
+    beast?: '青龙' | '白虎' | '朱雀' | '玄武';
+    /** 是否英雄版 */
+    isHero?: boolean;
+    /** 品阶 1–20 */
+    level?: number;
+    /** 截图里识别到的进阶技能（青龙/白虎 系才有） */
+    advSkill?: { name?: string; variant?: string; level?: number };
+}
+
+export const XycSimulatorView: React.FC<{ seed?: XycSeed | null }> = ({ seed }) => {
+    const [selectedBeast, setSelectedBeast] = useState<'青龙' | '白虎' | '朱雀' | '玄武'>(
+        seed?.beast && BEASTS[seed.beast] ? seed.beast : '玄武'
+    );
+    const [isHero, setIsHero] = useState<boolean>(Boolean(seed?.isHero));
+    const [bookLevel, setBookLevel] = useState<number>(
+        typeof seed?.level === 'number' ? Math.min(20, Math.max(1, seed.level)) : 1
+    );
 
     // 当前配置的属性条目（最多5条）
     const [slots, setSlots] = useState<SlotEntry[]>([
