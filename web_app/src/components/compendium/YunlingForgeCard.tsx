@@ -309,6 +309,8 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
     }, [draw, stopAll]);
 
     // ── 读数 ──
+    /** 已开始蕴灵（打过至少一手）后锁定等级与幸运值；重置 / 换部位 / 换品质 / 换装备都会清零并解锁 */
+    const locked = totalTries > 0;
     const target = Math.min(YUNLING_MAX, level + 1);
     const luck = luckBreakdown(cfg, 0);
     /** 本级已失败手数：驱动软保底与读数 */
@@ -423,7 +425,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                     </div>
                     <select
                         value={equip?.name ?? ''}
-                        onChange={(e) => setEquipName(e.target.value)}
+                        onChange={(e) => { setEquipName(e.target.value); resetAll(); }}
                         className="ylf-equip-select flex-1 min-w-[170px] h-[26px] px-1.5 text-[12.5px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0]"
                     >
                         {candidates.length === 0 && <option value="">该组合暂无蕴灵装备</option>}
@@ -439,6 +441,9 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                         style={{ background: 'rgba(16,32,48,.5)', border: '1px solid #2a415a', color: '#c7e6f7' }}
                     >
                         <div>蕴灵最终成功率 = 基础概率 ×（1 + 装备幸运值增益系数 + 个人幸运值增益系数）</div>
+                        <div className="mt-1" style={{ color: '#9bb8d4' }}>
+                            支持设定当前装备等级（如 +13），推演从该等级起算；装备幸运值与个人幸运值请按游戏内实际数值填入。
+                        </div>
                     </div>
                 )}
 
@@ -469,12 +474,55 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                             boxShadow: 'inset 0 0 16px rgba(0, 0, 0, 0.6)',
                         }}
                     >
+                        {/* 当前等级：开始蕴灵前可随意调，打过一手即锁定 */}
+                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                            <span className="text-[12.5px] text-[#9bb8d4]">当前装备等级</span>
+                            <span className="flex items-center gap-1">
+                                <button
+                                    type="button"
+                                    onClick={() => setLevel((v) => Math.max(0, v - 1))}
+                                    disabled={locked || level <= 0}
+                                    className="w-[20px] h-[20px] flex items-center justify-center rounded-[2px] text-[13px] leading-none transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
+                                    style={{ background: '#14212c', border: '1px solid #2a415a', color: '#cfe8fa' }}
+                                    title={locked ? '已开始蕴灵，需重置或切换装备后才能修改' : '当前蕴灵等级 -1'}
+                                >
+                                    −
+                                </button>
+                                <b
+                                    className="w-[40px] text-center text-[12.5px] tabular-nums"
+                                    style={{ color: level >= 11 ? getYunlingColor(level) : '#e6f1fa' }}
+                                >
+                                    +{level}
+                                </b>
+                                <button
+                                    type="button"
+                                    onClick={() => setLevel((v) => Math.min(YUNLING_MAX, v + 1))}
+                                    disabled={locked || level >= YUNLING_MAX}
+                                    className="w-[20px] h-[20px] flex items-center justify-center rounded-[2px] text-[13px] leading-none transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
+                                    style={{ background: '#14212c', border: '1px solid #2a415a', color: '#cfe8fa' }}
+                                    title={locked ? '已开始蕴灵，需重置或切换装备后才能修改' : '当前蕴灵等级 +1'}
+                                >
+                                    +
+                                </button>
+                            </span>
+                        </div>
+
                         {/* 装备幸运值 */}
                         <div className="flex items-baseline justify-between gap-2">
                             <span className="text-[12.5px] text-[#9bb8d4]">装备幸运值</span>
-                            <span className="text-[13px] tabular-nums" style={{ color: '#4ce0f0' }}>
-                                <b className="text-[14.5px]">{equipLuck}</b>
-                                <span className="text-[#7a92a9]">/{luckRange.hi || LUCK_CAP}</span>
+                            <span className="flex items-center gap-0.5 text-[12.5px] tabular-nums">
+                                <input
+                                    type="number"
+                                    value={equipLuck}
+                                    min={0}
+                                    max={LUCK_CAP}
+                                    disabled={locked}
+                                    onChange={(e) => setEquipLuck(Math.max(0, Math.min(LUCK_CAP, Math.round(Number(e.target.value) || 0))))}
+                                    title={locked ? '已开始蕴灵，需重置或切换装备后才能修改' : '填你游戏里查到的装备幸运值；之后每次失败仍会 +1 累积'}
+                                    className="w-[48px] h-[22px] px-1 text-[12.5px] text-right tabular-nums rounded-[2px] bg-[#08121c] border border-[#2a415a] outline-none focus:border-[#4d82b0] disabled:opacity-40 disabled:cursor-not-allowed"
+                                    style={{ color: '#4ce0f0' }}
+                                />
+                                <span className="text-[12.5px] text-[#7a92a9]">/{luckRange.hi || LUCK_CAP}</span>
                             </span>
                         </div>
                         <div
@@ -503,9 +551,10 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                                     value={personLuck}
                                     min={0}
                                     max={4000}
+                                    disabled={locked}
                                     onChange={(e) => setPersonLuck(Math.max(0, Math.min(4000, Number(e.target.value) || 0)))}
-                                    title="个人幸运值 2000 点封顶（+15%），再往上无增益"
-                                    className="w-[54px] h-[22px] px-1 text-[12.5px] text-right tabular-nums rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#e6f1fa] outline-none focus:border-[#4d82b0]"
+                                    title={locked ? '已开始蕴灵，需重置或切换装备后才能修改' : '个人幸运值 2000 点封顶（+15%），再往上无增益'}
+                                    className="w-[54px] h-[22px] px-1 text-[12.5px] text-right tabular-nums rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#e6f1fa] outline-none focus:border-[#4d82b0] disabled:opacity-40 disabled:cursor-not-allowed"
                                 />
                                 <b className="tabular-nums w-[40px] text-right" style={{ color: '#4ce0f0' }}>
                                     +{fmtPct(luck.personBonus * 100)}%
