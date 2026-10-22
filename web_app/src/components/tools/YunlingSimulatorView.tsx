@@ -12,6 +12,7 @@ import {
     DEFAULT_CONFIG,
     EQUIP_LUCK_PRESETS,
     LEVEL_ANNOUNCE,
+    PERSON_LUCK_CAP,
     PERSON_LUCK_PRESETS,
     YUNLING_MAX,
     baseProbPct,
@@ -449,15 +450,16 @@ export const YunlingSimulatorView: React.FC = () => {
                         <div className="mb-2.5">
                             <div className="text-[12px] text-[#7ea0bd] mb-1">基础概率口径</div>
                             <div className="flex flex-wrap gap-1.5">
-                                {(['floor', 'random', 'ceil'] as BaseMode[]).map((m) => (
+                                {(['calibrated', 'floor', 'random', 'ceil'] as BaseMode[]).map((m) => (
                                     <button
                                         key={m}
                                         type="button"
                                         onClick={() => updateCfg({ baseMode: m })}
                                         className="px-2.5 py-[3px] rounded-[2px] text-[12.5px]"
                                         style={chipStyle(cfg.baseMode === m)}
+                                        title={m === 'calibrated' ? '按玩家实测手数反推：+13 80~120、+14 120~150、+15 150~190 手' : undefined}
                                     >
-                                        {m === 'floor' ? '实测·取下限' : m === 'random' ? '区间随机' : '上限'}
+                                        {m === 'calibrated' ? '实测校准' : m === 'floor' ? '官方下限' : m === 'random' ? '区间随机' : '官方上限'}
                                     </button>
                                 ))}
                             </div>
@@ -474,11 +476,11 @@ export const YunlingSimulatorView: React.FC = () => {
                             />
                             <NumField
                                 label="个人幸运值"
-                                hint={`+${fmtPct(luck.personBonus * 100)}%`}
+                                hint={`+${fmtPct(luck.personBonus * 100)}%${cfg.personLuck >= PERSON_LUCK_CAP ? '·已封顶' : ''}`}
                                 value={cfg.personLuck}
-                                max={2000}
+                                max={4000}
                                 onChange={(v) => updateCfg({ personLuck: v })}
-                                title="客户端表 281 个人幸运值：25/50/100/200/550/1000/2000 → +2%~+15%"
+                                title="客户端表 281 个人幸运值：25/50/100/200/550/1000/2000 → +2%~+15%。2000 点即封顶，再往上（如 4000）加成恒为 +15%，无额外增益"
                             />
                             <NumField
                                 label="失败累积幸运"
@@ -591,10 +593,12 @@ export const YunlingSimulatorView: React.FC = () => {
                                 <div className="mt-1.5 font-bold text-[#ffd94d]">基础概率取哪个值？</div>
                                 <div>· 官方只给区间，如 +11 为 6.67% ~ 100%、+13 为 1.52% ~ 32%。</div>
                                 <div>· 若按「区间均匀随机」模拟，+11 的平均手数不到 2 手（社区实测 1.8 手左右），+13 的手数长尾能拖到 500 手以上。这与实际体感、论坛晒的消耗量级都不符。</div>
-                                <div>· 结论：实际基础概率基本贴着<b>区间下限</b>走。本模拟器据此把「实测·取下限」设为默认口径，随机/上限两种口径保留作对照实验。</div>
+                                <div>· 结论：实际基础概率贴着<b>区间下限</b>走，但玩家实测手数比「下限」还要更长一截（+13 基本 80~120、+14 120~150、+15 150~190 手）。</div>
+                                <div>· 本模拟器据此新增「<b>实测校准</b>」口径并设为默认：+13/+14/+15 的基础概率 = 官方下限 × 0.43 / 0.61 / 0.59，软保底窗口改为 +13 100~150、+14 135~203、+15 170~255（其余等级仍 250/300）。</div>
+                                <div>· 官方下限 / 区间随机 / 官方上限 三档保留作对照实验。</div>
                                 <div className="mt-1.5 font-bold text-[#ffd94d]">幸运值（客户端表 281 阶梯表）</div>
                                 <div>· 装备幸运值：{EQUIP_LUCK_TIERS.map((t) => `${t.threshold}→${Math.round(t.bonus * 100)}%`).join(' / ')}</div>
-                                <div>· 个人幸运值：{PERSON_LUCK_TIERS.map((t) => `${t.threshold}→${Math.round(t.bonus * 100)}%`).join(' / ')}</div>
+                                <div>· 个人幸运值：{PERSON_LUCK_TIERS.map((t) => `${t.threshold}→${Math.round(t.bonus * 100)}%`).join(' / ')}（<b>2000 点封顶</b>，再往上如 4000 仍是 +15%，输入框允许填到 4000 只为便于验证）</div>
                                 <div>· 幸运值不是线性换算，跨过阈值才拿到该档加成；两档加成<b>相加</b>后乘到基础概率上。</div>
                                 <div>· 累积幸运：每失败一手 +N（计入个人幸运值口径），成功归零 —— 即「蕴灵失败幸运值 +1」的软保底，也是长尾收敛的主来源。</div>
                                 <div className="mt-1.5 font-bold text-[#ffd94d]">月德符消耗（客户端表 280）</div>
