@@ -2121,7 +2121,7 @@ export class CopilotService {
             targetRefLevel = parseInt(refMatch[1], 10);
         }
 
-        const YUNLING_SLOTS = ['武器', '头盔', '衣服', '靴子', '袖甲'];
+        const YUNLING_SLOTS = ['武器', '头盔', '衣服', '靴子', '腰带', '袖甲'];
         const isYunling = (it: CuratedEquipItem) =>
             Boolean(it.ref && it.ref.length > 0 && YUNLING_SLOTS.includes(it.slot || ''));
 
