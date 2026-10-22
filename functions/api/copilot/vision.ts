@@ -17,6 +17,8 @@
  *   · 失败原因必须回传 lastError（G14）；model 走候选表（G15）
  */
 
+import { normalizePanel, assessStandardness } from './visionNormalize';
+
 interface Env {
     AI?: any;
     ZHIPU_API_KEY?: string;
@@ -50,7 +52,10 @@ const VISION_SYSTEM_PROMPT = `你是《诛仙3》截图录入员。你只做转�
   第5行：技能命中        | 技能躲闪        → 不取
   顶部资源条：气血 cur/max、真气 cur/max、第三槽 cur/max → health / mana 取斜杠后的上限
 轩辕策的取值：标题里的 青龙/白虎/朱雀/玄武 → beast，尖括号里的书名 → bookName，末尾「·英雄版」→ heroVersion；「六品」→ tier；★ 个数 → stars；「洗炼次数 4/10」→ washUsed=4；「等级 20」→ level；「（进阶技能）霜池映月III 《碧海》 3级」→ advSkillName / advSkillVariant / advSkillLevel。
-天缘的取值：标题「上玄佑万辰须弥盔（+2真气）」→ name=上玄佑万辰须弥盔、part=盔、suffix=+2真气；「天缘+10」→ tianyuanLevel=10；随后每一行「天命+2 真气 +5.8%」都进 attrs 数组：tianming=2、name=真气、value=+5.8%。**天缘有几行输出几行，不许合并、不许省略。**
+阵营的取值：标题形如「175级 昭冥五重 飞升仙」→ classRaw=昭冥、factionRaw=仙（取"仙/魔/佛"这一个字，**不要写"飞升"**，也不要带"五重"）。
+轩辕策英雄版：标题末尾「·英雄版」→ heroVersion=true（布尔 true/false，不要写"英雄版"这个字符串）。
+进阶技能保留罗马数字后缀：「山雨欲来III」就写 山雨欲来III，不要截成 山雨欲来。
+天缘的取值：标题「上玄佑万辰须弥盔（+2真气）」→ name=上玄佑万辰须弥盔、part=盔、suffix=+2真气（去掉空格）；「天缘+10」→ tianyuanLevel=10；随后每一行「天命+2 真气 +5.8%」都进 attrs 数组：tianming=2、name=真气、value=+5.8%。**天缘有几行输出几行，不许合并、不许省略。**
 
 【四、取字段】每个字段必须同时给 label（图上该行左侧的中文标签），label 必须来自上面的行序地图；没看到就 status="absent"、value=null，并且 raw、label 都为 null。
 
@@ -62,7 +67,9 @@ tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attr
 [{"tianming":2,"name":"真气","value":"+5.8%"},{"tianming":1,"name":"固定攻击","value":"+2057"}]
 - name 取属性名（保留「固定」前缀，如 固定攻击 / 固定真气 / 固定气血）
 - value 保留原文的正负号与百分号，不要换算成数字
-- tianming 只有天缘有（天命+N 的 N）；轩辕策洗炼词条可省略 tianming，改用 "wash" 放括号增量、"extra" 放第二个括号
+- tianming 只有天缘有（天命+N 的 N）；轩辕策词条用 wash / extra 装括号增量：
+  「固定防御 +215（+14.0）（+42.3）」→ name=固定防御、value=+215、wash="+14.0"、extra="+42.3"
+  **「洗炼次数 14/10+4」里的 14 只写进 washUsed，绝对不能填进任何词条的 wash**（这是最常见的错）
 - 天缘一张图有几行词条就输出几条，漏行等于丢数据
 
 【五、反例铁律（最常见的错，逐条避开）】
@@ -72,6 +79,7 @@ tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attr
 - 气血 814972/1604910 → health 取上限 1604910，不取当前值。
 - 青龙/白虎/朱雀/玄武 只是轩辕策书名的前缀（写进 beast），不要另立字段。
 - 天缘标题括号里的「+2真气」是后缀（suffix），不是一条词条，不要放进 attrs。
+- 图里没有「攻击 x-y / 致命伤害 / 书名<…> / 天缘+N」这类面板特征（例如攻略表格、属性清单截图）时，panelKind 必须是 unknown，fields 全部 absent。**表格里某一行的文字看起来像"天命+10"也不算天缘面板**。
 
 【六、输出】只输出一个 JSON，不要 markdown 代码块，不要任何解释文字。**必须按示例把所有 8 个 key 都列出来**（没有的就写 absent），不要省略：
 {"panelKind":"character_panel","kindEvidence":["致命一击","血炼值"],"kindConfidence":0.9,
@@ -302,7 +310,11 @@ function validateParsed(parsed: any): { issues: string[]; parsed: any } {
         }
         if (f.raw) {
             const hit = lines.some(l => normStr(l.raw).includes(normStr(f.raw)) || normStr(f.raw).includes(normStr(l.raw)));
-            if (!hit) {
+            // 宽恕：raw 没抄全，但数值本身能在某一行找到（实测 health/mana 的 raw 常被模型写残）
+            const valHit = f.value != null && lines.some(l => normStr(l.raw).replace(/[,%（）()]/g, '').includes(normStr(f.value)));
+            // 气血/真气来自画面顶部的资源条，模型本来就不会把它们抄进行序地图，不该按转录校验
+            const fromTopBar = f.key === 'health' || f.key === 'mana';
+            if (!fromTopBar && !hit && !valHit) {
                 f.status = 'invalid';
                 f.reason = 'raw 未在转录文本中出现';
                 issues.push(`RAW_NOT_IN_TRANSCRIPT:${f.key}`);
@@ -402,11 +414,18 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
                 return null;
             }
             const { parsed, issues } = validateParsed(raw);
-            const kind = parsed?.panelKind;
+            // 归一化（只统一格式，不补值）→ 标准化闸门（不是标准面板图就不算一次有效结果）
+            const norm = normalizePanel(parsed);
+            const std = assessStandardness(norm.panel);
+            if (!std.standard) {
+                attempts.push({ provider: r.provider, error: `非标准面板[${std.code}]: ${std.detail}` });
+                return null;
+            }
+            const kind = norm.panel?.panelKind;
             const score = kind === 'character_panel'
-                ? completeness(parsed)
-                : (Array.isArray(parsed?.fields) ? parsed.fields.filter((f: any) => f?.status === 'ok').length : 0);
-            if (!best || score > best.score) best = { parsed, issues, provider: r.provider, score };
+                ? completeness(norm.panel)
+                : (Array.isArray(norm.panel?.fields) ? norm.panel.fields.filter((f: any) => f?.status === 'ok').length : 0);
+            if (!best || score > best.score) best = { parsed: norm.panel, issues, provider: r.provider, score };
 
             const need = kind === 'character_panel' ? 4 : 1;
             if (score >= need) {
@@ -416,8 +435,8 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
                     degraded: false,
                     quality: kind === 'character_panel' && score < 6 ? 'partial' : 'full',
                     issues,
-                    panel: parsed,
-                    result: toLegacyShape(parsed)
+                    panel: norm.panel,
+                    result: toLegacyShape(norm.panel)
                 });
             }
             attempts.push({ provider: r.provider, error: `字段不完整（${score} 项）` });
@@ -481,7 +500,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
             attempts,
             result: {
                 mode: 'general',
-                rawExplanation: '识图功能受限：当前没有可用的视觉模型（详见 /api/copilot/diag）。请手动填写属性，或稍后重试。'
+                rawExplanation: attempts.some(a => /非标准面板/.test(a.error || ''))
+                    ? '这张图不是标准面板截图。请截「角色属性面板（C 键）」「轩辕策详情」或「天缘详情」的完整面板再试。'
+                    : '识图功能受限：当前没有可用的视觉模型（详见 /api/copilot/diag）。请手动填写属性，或稍后重试。'
             }
         });
     } catch (error: any) {
