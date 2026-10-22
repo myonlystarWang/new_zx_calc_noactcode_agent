@@ -6040,5 +6040,136 @@
     ],
     "assert": "strong",
     "note": "模拟器导航：「模拟工具」直达全景模拟器导航卡"
+  },
+  {
+    "id": "yunling-lab-01",
+    "input": "蕴灵 进阶",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "tool",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "数据实验室入口已于 2026-10-22 关闭，含「进阶」的蕴灵词统一落轻量卡"
+  },
+  {
+    "id": "yunling-lab-02",
+    "input": "蕴灵 模拟 进阶",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "tool",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "数据实验室入口关闭后，进阶词不再分流，落轻量卡"
+  },
+  {
+    "id": "yunling-lab-03",
+    "input": "蕴灵推演",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "tool",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "推演/实验室等词同样落轻量卡（数据实验室已关）"
+  },
+  {
+    "id": "yunling-lite-01",
+    "input": "蕴灵 轻量",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "tool",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "对话内嵌轻量卡（仿神机锻造）"
+  },
+  {
+    "id": "yunling-hub-01",
+    "input": "装备蕴灵",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "hub",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "形态选择卡已下架，裸词「装备蕴灵」直达轻量卡"
+  },
+  {
+    "id": "yunling-hub-02",
+    "input": "蕴灵模拟",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "hub",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "形态选择卡下架后直达轻量卡"
+  },
+  {
+    "id": "yunling-hub-03",
+    "input": "蕴灵",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "hub",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "裸「蕴灵」直达轻量卡"
+  },
+  {
+    "id": "yunling-simhub-01",
+    "input": "各类模拟器",
+    "expect": {
+      "cardType": "sim_hub",
+      "cardData.options.length": 2
+    },
+    "tags": [
+      "hub",
+      "simulator"
+    ],
+    "assert": "strong",
+    "note": "全景导航追加「装备蕴灵」入口（与神机洗练并列）"
+  },
+  {
+    "id": "yunling-lite-02",
+    "input": "炼器模拟",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "tool",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "炼器模拟 = 蕴灵（客户端表 280 名为「炼器配置表」），统一落轻量卡"
+  },
+  {
+    "id": "yunling-lite-03",
+    "input": "装备炼器",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "tool",
+      "yunling"
+    ],
+    "assert": "strong",
+    "note": "装备炼器口语，与「炼器+N」佩章阶位查询不冲突"
   }
 ]

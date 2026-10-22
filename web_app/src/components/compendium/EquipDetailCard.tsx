@@ -14,6 +14,17 @@ export interface EquipDetailCardProps {
     initialRefLevel?: number;
     className?: string;
     allEquips?: CuratedEquipItem[];
+    /**
+     * 受控蕴灵等级（0~15）。传入后卡片不再自管等级，由父级驱动
+     * —— 供蕴灵模拟器实时联动使用。
+     */
+    refLevel?: number;
+    /** 受控模式下等级变化的回调 */
+    onRefLevelChange?: (level: number) => void;
+    /** 隐藏内置「强化 ±1」步进按钮（父级自带控件时使用） */
+    hideStepper?: boolean;
+    /** 隐藏「神机洗炼属性池」整块（蕴灵模拟等场景只看装备本体） */
+    hideShenjiPool?: boolean;
 }
 
 const YUNLING_SLOTS = ['武器', '头盔', '帽子', '衣服', '靴子', '鞋', '袖甲', '护腕'];
@@ -95,14 +106,28 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
     item,
     initialRefLevel,
     className,
-    allEquips
+    allEquips,
+    refLevel: controlledRefLevel,
+    onRefLevelChange,
+    hideStepper = false,
+    hideShenjiPool = false
 }) => {
     // 当前呈现的装备对象（支持在同系升降阶时切换）
     const [currentItem, setCurrentItem] = useState<CuratedEquipItem>(item);
     const [equipList, setEquipList] = useState<CuratedEquipItem[]>(allEquips || []);
 
     // 默认高亮 +11（主流分水岭档位），或用户指令中指定的阶位
-    const [refLevel, setRefLevel] = useState<number>(initialRefLevel ?? 11);
+    const [innerRefLevel, setInnerRefLevel] = useState<number>(initialRefLevel ?? 11);
+
+    // 受控 / 非受控双模式：父级传入 refLevel 时以父级为准
+    const isRefControlled = typeof controlledRefLevel === 'number';
+    const refLevel = Math.max(0, Math.min(15, isRefControlled ? (controlledRefLevel as number) : innerRefLevel));
+    const setRefLevel = (next: number | ((prev: number) => number)) => {
+        const raw = typeof next === 'function' ? next(refLevel) : next;
+        const clamped = Math.max(0, Math.min(15, raw));
+        if (!isRefControlled) setInnerRefLevel(clamped);
+        onRefLevelChange?.(clamped);
+    };
 
     // 是否展开未激活的「神机洗炼属性池」
     const [showLockedPool, setShowLockedPool] = useState<boolean>(false);
@@ -214,7 +239,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
                         {/* 右侧：步进推演控制（右侧并排，强制不换行） */}
                         {/* 1. 蕴灵装备：强化 -1 / 强化 +1 */}
-                        {hasYunling && (
+                        {hasYunling && !hideStepper && (
                             <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
                                 <button
                                     type="button"
@@ -444,7 +469,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                 )}
 
                 {/* 神机属性洗炼池：仅当装备支持蕴灵且具备神机属性时展示 */}
-                {hasYunling && currentItem.sj && Object.entries(currentItem.sj).length > 0 && (
+                {!hideShenjiPool && hasYunling && currentItem.sj && Object.entries(currentItem.sj).length > 0 && (
                     <div className="mt-2 pt-1 border-t border-[#1c2436]/60 flex flex-col gap-1">
                         <div className="flex items-center justify-between text-[12px] font-bold text-amber-300">
                             <span>神机洗炼属性池:</span>

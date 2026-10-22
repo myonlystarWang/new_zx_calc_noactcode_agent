@@ -1,13 +1,14 @@
 import React from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Radio, Compass, Sparkles } from 'lucide-react';
+import { Radio, Compass, Sparkles, Dices } from 'lucide-react';
 import clsx from 'clsx';
 import { ROUTE } from '../../routes';
 import { ServerRadarView } from './ServerRadarView';
 import { XycSimulatorView } from './XycSimulatorView';
 import { NewTianYuanSimulatorView } from './NewTianYuanSimulatorView';
+import { YunlingSimulatorView } from './YunlingSimulatorView';
 
-export type ToolSubTab = 'server' | 'xyc' | 'newtianyuan';
+export type ToolSubTab = 'server' | 'xyc' | 'newtianyuan' | 'yunling';
 
 export const TOOLS_CONFIG: { id: ToolSubTab; label: string; path: string; icon: React.ReactNode; desc: string }[] = [
     {
@@ -30,6 +31,13 @@ export const TOOLS_CONFIG: { id: ToolSubTab; label: string; path: string; icon: 
         path: ROUTE.newTianYuan,
         icon: <Sparkles className="w-4 h-4 text-amber-400" />,
         desc: '须弥装备天缘与天命理论上限'
+    },
+    {
+        id: 'yunling',
+        label: '装备蕴灵模拟器',
+        path: ROUTE.yunlingSimulator,
+        icon: <Dices className="w-4 h-4 text-rose-400" />,
+        desc: '神隐蕴灵概率与月德符消耗推演'
     },
 ];
 
@@ -56,7 +64,7 @@ export const ToolsHubView: React.FC<ToolsHubViewProps> = ({ activeTool }) => {
                         微工具实验室
                     </h1>
                     <div className="text-xs text-slate-400 font-mono">
-                        三大高保真微工具 · 毫秒级探测 · 1:1 数值还原
+                        四大高保真微工具 · 毫秒级探测 · 1:1 数值还原
                     </div>
                 </div>
 
@@ -89,6 +97,7 @@ export const ToolsHubView: React.FC<ToolsHubViewProps> = ({ activeTool }) => {
             )}
             {currentTab === 'xyc' && <XycSimulatorView />}
             {currentTab === 'newtianyuan' && <NewTianYuanSimulatorView />}
+            {currentTab === 'yunling' && <YunlingSimulatorView />}
         </div>
     );
 };

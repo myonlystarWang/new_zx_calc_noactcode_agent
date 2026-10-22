@@ -195154,6 +195154,11 @@
           "key": "shenji",
           "label": "神机洗练",
           "query": "神机洗练"
+        },
+        {
+          "key": "yunling",
+          "label": "蕴灵模拟",
+          "query": "蕴灵模拟"
         }
       ]
     }
@@ -195169,6 +195174,11 @@
           "key": "shenji",
           "label": "神机洗练",
           "query": "神机洗练"
+        },
+        {
+          "key": "yunling",
+          "label": "蕴灵模拟",
+          "query": "蕴灵模拟"
         }
       ]
     }
@@ -195184,8 +195194,105 @@
           "key": "shenji",
           "label": "神机洗练",
           "query": "神机洗练"
+        },
+        {
+          "key": "yunling",
+          "label": "蕴灵模拟",
+          "query": "蕴灵模拟"
         }
       ]
+    }
+  },
+  "yunling-lab-01": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "yunling-lab-02": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "yunling-lab-03": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "yunling-lite-01": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "yunling-hub-01": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "yunling-hub-02": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "yunling-hub-03": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "yunling-simhub-01": {
+    "sender": "assistant",
+    "text": "为你呈现【各类模拟器】全景导航。汇集天书万象当前所有实战推演与装备洗炼模拟工具，点击直接进入：",
+    "cardType": "sim_hub",
+    "cardData": {
+      "title": "各类模拟器导航",
+      "options": [
+        {
+          "key": "shenji",
+          "label": "神机洗练",
+          "query": "神机洗练"
+        },
+        {
+          "key": "yunling",
+          "label": "蕴灵模拟",
+          "query": "蕴灵模拟"
+        }
+      ]
+    }
+  },
+  "yunling-lite-02": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "yunling-lite-03": {
+    "sender": "assistant",
+    "text": "为你打开【装备蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
     }
   },
   "gen-equip-修武-武器": {
