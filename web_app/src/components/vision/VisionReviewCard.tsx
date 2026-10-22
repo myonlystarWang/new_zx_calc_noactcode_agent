@@ -25,8 +25,8 @@ export interface VisionReviewCardProps {
     onArchive?: (panel: RecognizedPanel) => void;
     /** 轩辕策：带 seed 打开模拟器（系别 / 普通·英雄 / 品阶 / 进阶技能） */
     onOpenXyc?: (seed: { beast?: string; isHero?: boolean; level?: number; advSkill?: RecognizedPanel['advSkill'] }) => void;
-    /** 天缘：带 seed 打开天缘词条池（部位全名 / 天命等级） */
-    onOpenTianyuan?: (seed: { groupName?: string; level?: number }) => void;
+    /** 天缘：新天缘（上玄佑万…）带 seed 打开词条池；旧天缘交给旧天缘图鉴 */
+    onOpenTianyuan?: (seed: { groupName?: string; level?: number; name?: string; isNew: boolean }) => void;
     onPeek?: (image: string) => void;
     className?: string;
 }
@@ -42,6 +42,14 @@ const withUnit = (cell: FieldCell): string => {
     if (cell.unit === 'percent') return `${cell.value}%`;
     if (cell.unit === 'text') return String(cell.value);
     return fmtNum(cell.value);
+};
+
+/** 通道名太长会把 360px 卡撑出横向滚动：只留「厂商/模型」并截断 */
+const shortProvider = (p: string): string => {
+    const s = p.replace(/^cf-workers-ai:/, '').replace(/^@/, '');
+    const parts = s.split('/');
+    const tail = parts[parts.length - 1] || s;
+    return tail.length > 20 ? tail.slice(0, 20) + '…' : tail;
 };
 
 /** 单元格：行式（label 左 / 值右），保证窄栏也不会把标签折成竖排 */
@@ -198,6 +206,12 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
 
     const factionText = live.character?.factionRaw;
 
+    /** 新天缘判定（用户口径）：识别成「上玄佑万」就是新天缘，其余走旧天缘 */
+    const tianyuanName = live.tianyuan?.name || String(live.fields.find(f => f.key === 'name')?.value ?? '');
+    const tianyuanPart = live.tianyuan?.part || String(live.fields.find(f => f.key === 'part')?.value ?? '');
+    const isNewTianyuan = live.kind === 'tianyuan'
+        && (/上玄佑万/.test(tianyuanName) || /上玄佑万/.test(tianyuanPart));
+
     return (
         <div
             data-testid="vision-review-card"
@@ -270,8 +284,11 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                         </span>
                     )}
                     {live.provider && (
-                        <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50 whitespace-nowrap font-mono text-[10px]">
-                            {live.provider.replace('cf-workers-ai:', 'cf/')}
+                        <span
+                            className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50 whitespace-nowrap font-mono text-[10px] max-w-[132px] truncate"
+                            title={live.provider}
+                        >
+                            {shortProvider(live.provider)}
                         </span>
                     )}
                 </div>
@@ -310,7 +327,7 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
             )}
 
             {/* 字段区：行式，容器查询换列 */}
-            <div className={clsx('mt-3 grid gap-x-3.5 gap-y-1', live.kind === 'character_panel' ? 'grid-cols-1 @[480px]:grid-cols-2' : 'grid-cols-1 @[480px]:grid-cols-2')}>
+            <div className={clsx('mt-3 grid gap-x-3.5 gap-y-1', live.kind === 'character_panel' ? 'grid-cols-1 @[420px]:grid-cols-2' : 'grid-cols-1 @[420px]:grid-cols-2')}>
                 {live.fields.map(cell => (
                     <FieldRow
                         key={cell.key}
@@ -460,18 +477,21 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                         <button
                             type="button"
                             data-action="open-tianyuan"
+                            data-tianyuan-kind={isNewTianyuan ? 'new' : 'old'}
                             onClick={() => {
-                                const partRaw = String(live.fields.find(f => f.key === 'part')?.value ?? '');
-                                const part = partRaw.replace(/^上玄佑万辰须弥/, '');
-                                const level = live.fields.find(f => f.key === 'tianyuanLevel')?.value;
+                                const part = tianyuanPart.replace(/^上玄佑万辰须弥/, '');
+                                const level = live.tianyuan?.tianyuanLevel
+                                    ?? live.fields.find(f => f.key === 'tianyuanLevel')?.value;
                                 onOpenTianyuan({
-                                    groupName: part ? `上玄佑万辰须弥${part}` : undefined,
+                                    isNew: isNewTianyuan,
+                                    name: tianyuanName || tianyuanPart,
+                                    groupName: isNewTianyuan && part ? `上玄佑万辰须弥${part}` : undefined,
                                     level: typeof level === 'number' ? level : Number(level)
                                 });
                             }}
                             className="px-3.5 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium transition-all"
                         >
-                            查该部位词条池
+                            {isNewTianyuan ? '查新天缘词条池' : '查旧天缘图鉴'}
                         </button>
                     )}
                     {live.kind === 'xyc' && onOpenXyc && (
