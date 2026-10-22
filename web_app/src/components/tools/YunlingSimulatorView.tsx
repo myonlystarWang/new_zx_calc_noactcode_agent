@@ -163,7 +163,7 @@ export const YunlingSimulatorView: React.FC = () => {
     const [equips, setEquips] = useState<CuratedEquipItem[]>([]);
     const [slot, setSlot] = useState<ShenjiSlot>('武器');
     const [quality, setQuality] = useState<ShenjiQuality>('昭武');
-    const [equipId, setEquipId] = useState<number | null>(null);
+    const [equipName, setEquipName] = useState<string | null>(null);
 
     // ── 概率参数 ─────────────────────────────────────────────
     const [cfg, setCfg] = useState<YunlingConfig>({ ...DEFAULT_CONFIG, personLuck: 100 });
@@ -209,11 +209,11 @@ export const YunlingSimulatorView: React.FC = () => {
     );
     const candidates = useMemo(() => pool.filter((e) => e.slot === slot && e.q === quality), [pool, slot, quality]);
     const equip = useMemo(
-        () => candidates.find((e) => e.id === equipId) ?? candidates[0],
-        [candidates, equipId]
+        () => candidates.find((e) => e.name === equipName) ?? candidates[0],
+        [candidates, equipName]
     );
 
-    useEffect(() => { setEquipId(null); }, [slot, quality]);
+    useEffect(() => { setEquipName(null); }, [slot, quality]);
 
     /** 部位 / 品质决定月德符消耗曲线（腰带、袖甲的修武昭武吃折扣表） */
     useEffect(() => {
@@ -414,13 +414,13 @@ export const YunlingSimulatorView: React.FC = () => {
                                 ))}
                             </div>
                             <select
-                                value={equip?.id ?? ''}
-                                onChange={(e) => setEquipId(Number(e.target.value))}
+                                value={equip?.name ?? ''}
+                                onChange={(e) => setEquipName(e.target.value)}
                                 className="w-full h-[28px] px-1.5 text-[12.5px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0]"
                             >
                                 {candidates.length === 0 && <option value="">该组合暂无蕴灵装备</option>}
                                 {candidates.map((e) => (
-                                    <option key={e.id} value={e.id}>
+                                    <option key={e.name} value={e.name}>
                                         {e.name}
                                     </option>
                                 ))}
