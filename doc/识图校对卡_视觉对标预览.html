@@ -75,6 +75,21 @@
   .pline .v{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--t2);white-space:nowrap}
   .pline .v.hi{color:var(--amber)}
   .pline.dim .v{color:var(--t4);font-weight:400;font-size:11px}
+  .pline.absent{border-bottom:none}
+  .pline.absent .v{color:var(--amberD);font-weight:400;font-size:11px;
+                   border:1px dashed rgba(51,65,85,1);border-radius:8px;padding:3px 8px;
+                   background:rgba(0,0,0,.22)}
+
+  /* 四项战斗增益 */
+  .buffHd{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;
+          color:var(--t3);padding:8px 0 5px;border-top:1px solid var(--hd);margin-top:6px}
+  .buffHd em{font-style:normal;color:var(--t4);font-size:10px}
+  .buffGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  @media(max-width:520px){.buffGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .buffCell{display:flex;align-items:center;justify-content:space-between;gap:4px;
+            background:var(--cell);border:1px solid var(--cellbd);border-radius:8px;padding:4px 8px}
+  .buffCell .k{font-size:11px;color:var(--t3)}
+  .buffCell .v{font-family:var(--mono);font-size:12px;color:var(--t1)}
 
   /* 轩辕策 tooltip 1:1 */
   .xycName{font-size:13px;font-weight:900;color:#fef3c7;letter-spacing:.3px}
@@ -90,6 +105,8 @@
   .attrRow .av{font-family:var(--mono);font-weight:700;color:#e2e8f0}
   .attrRow .aw{font-family:var(--mono);color:#34d399;font-size:11px}
   .attrRow .ae{font-family:var(--mono);color:#fb7185;font-size:11px}
+  .attrRow .tm{padding:0 4px;border-radius:3px;font-family:var(--mono);font-size:10px;color:#cbd5e1;
+               background:rgba(30,41,59,.7);border:1px solid rgba(51,65,85,.5);flex:none}
   .advSkill{font-size:11px;color:#c4b5fd;padding-top:7px;border-top:1px solid var(--hd)}
   .advSkill b{color:#ddd6fe}
   .flavor{font-size:10px;color:var(--t4);line-height:1.6}
@@ -189,8 +206,16 @@
       <div class="pline dim"><span class="k">技能躲闪</span><span class="v">77.5</span></div>
     </div>
 
-    <div class="grid g1">
-      <div class="cell absent"><span class="lbl">对怪增伤</span><span class="val">面板无此项 · 点此填写</span></div>
+    <div class="panel2">
+      <div class="pline absent"><span class="k">对怪增伤</span><span class="v">面板无此项 · 点此填写</span></div>
+    </div>
+
+    <div class="buffHd"><span>战斗增益（团队，已给默认值）</span><em>与战力计算器同口径</em></div>
+    <div class="buffGrid">
+      <div class="buffCell"><span class="k">专注</span><span class="v">261</span></div>
+      <div class="buffCell"><span class="k">巫咒</span><span class="v">22.5%</span></div>
+      <div class="buffCell"><span class="k">绿点</span><span class="v">900%</span></div>
+      <div class="buffCell"><span class="k">易伤</span><span class="v">120%</span></div>
     </div>
 
     <div class="sub2"><span>已按游戏顺序 1:1 排列 · 灰字项不参与计算</span><span class="link">只看计算项</span></div>
@@ -278,7 +303,7 @@
     </div>
 
     <div class="advSkill">（进阶技能）<b>山雨欲来III</b> 《天空》 1 级</div>
-    <div class="sub2"><span>四象 = 策名前缀 · 词条池取自 xyc_rules.json</span><span class="link">同技能四策对比</span></div>
+    <div class="sub2"><span>青龙 / 白虎 有进阶技能 · 朱雀 / 玄武 只有属性词条</span><span class="link">同系四版对比</span></div>
 
     <div class="acts">
       <button class="btn-g">复制</button>
@@ -293,35 +318,39 @@
 
 <!-- ④ 天缘 -->
 <div class="band">
-  <h2>④ 天缘属性<em>500px · 部位 + 等级 + 可映射词条</em></h2>
+  <h2>④ 新天缘<em>500px · 名称+后缀 / 天缘等级 / 全部天命词条</em></h2>
   <div class="ruler"><i></i>500px<i></i></div>
   <div class="card" style="max-width:500px">
     <div class="hd">
       <div class="hdRow">
         <div class="hdL">
           <span class="bar"></span>
-          <span class="title">天缘属性</span>
-          <span class="pill f">须弥刃</span>
+          <span class="title">上玄佑万辰须弥盔</span>
+          <span class="pill f" style="background:rgba(16,185,129,.10);border-color:rgba(16,185,129,.30);color:#6ee7b7">+2真气</span>
           <span class="pill g">天缘</span>
         </div>
         <button class="btn-g">只看原图</button>
       </div>
       <div class="chips">
+        <span class="chip m" style="color:#bef264;border-color:rgba(132,204,22,.4)">天缘 +10</span>
         <span class="chip m">识别 4/4</span>
-        <span class="chip m">glm-4v-flash</span>
+        <span class="chip m">cf/mistral-small</span>
       </div>
     </div>
-    <div class="grid g2">
-      <div class="cell"><span class="lbl">部位</span><span class="val">上玄佑万辰须弥刃</span></div>
-      <div class="cell"><span class="lbl">天命等级</span><span class="val hi">8</span></div>
-      <div class="cell"><span class="lbl">攻击</span><span class="val hi">+4,200</span></div>
-      <div class="cell"><span class="lbl">对怪增伤</span><span class="val">+1.6%</span></div>
+
+    <div class="attrList">
+      <div class="attrRow"><span class="tm">天命+2</span><span class="an">真气</span><span class="av">+5.8%</span></div>
+      <div class="attrRow"><span class="tm">天命+1</span><span class="an">固定攻击</span><span class="av">+2,057</span></div>
+      <div class="attrRow"><span class="tm">天命+3</span><span class="an">固定真气</span><span class="av">+4,468</span></div>
+      <div class="attrRow"><span class="tm">天命+2</span><span class="an">固定气血</span><span class="av">+3,427</span></div>
     </div>
-    <div class="sub2"><span>另有 4 条词条已记录（克系 / 抗性）</span><span class="link">只读展开</span></div>
+
+    <div class="sub2"><span>词条按原文本逐行呈现，不合并、不换算</span><span class="link">校对时可直接点改</span></div>
+
     <div class="acts">
       <button class="btn-g">复制</button>
       <div class="actsR">
-        <button class="btn-p">查该部位词条池</button>
+        <button class="btn-p">看该部位词条池</button>
         <button class="btn-s">词条带入计算器</button>
         <button class="btn-s">存为档案</button>
       </div>
