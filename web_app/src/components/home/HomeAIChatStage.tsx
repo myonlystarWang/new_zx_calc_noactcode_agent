@@ -630,6 +630,33 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             </div>
                                         )}
 
+                                        {/* 6.0 轩辕策文本意图：轻量入口卡（只打开模拟器，不再跳路由页） */}
+                                        {msg.cardType === 'xyc_diag' && msg.cardData && (
+                                            <div
+                                                data-testid="xyc-entry-card"
+                                                className="rounded-xl bg-[#121824] border border-cyan-500/20 p-3.5 flex items-center justify-between gap-3"
+                                            >
+                                                <div className="min-w-0">
+                                                    <div className="text-sm font-bold text-slate-100 truncate">
+                                                        {msg.cardData.title || '轩辕策'}
+                                                    </div>
+                                                    <div className="text-[11px] text-slate-400 mt-0.5 truncate">
+                                                        {msg.cardData.desc || '按系别 / 普通·英雄 / 品阶查词条池'}
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        if (onOpenSplitWorkspace) onOpenSplitWorkspace('xyc');
+                                                        else navigate('/tools/xyc');
+                                                    }}
+                                                    className="px-3.5 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium shrink-0 transition-all"
+                                                >
+                                                    打开轩辕策模拟
+                                                </button>
+                                            </div>
+                                        )}
+
                                         {/* 6.1 核心功能与微工具导航卡片 */}
                                         {msg.cardType === 'tool_card' && msg.cardData && (
                                             <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 flex items-center justify-between gap-4">

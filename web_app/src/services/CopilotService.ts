@@ -42,7 +42,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge';
     cardData?: any;
 }
 
@@ -721,7 +721,7 @@ export class CopilotService {
                 sender: 'assistant',
                 text: '已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。',
                 time: timeStr,
-                cardType: 'tool_card',
+                cardType: 'xyc_diag',
                 cardData: {
                     title: '轩辕策属性模拟',
                     desc: '支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定',
