@@ -266,7 +266,12 @@ try {
     if (doCard) await runCardChecks();
     if (doEngine) await runEngineChecks();
 } finally {
-    fs.rmSync(TMP, { recursive: true, force: true });
+    // 清理失败（磁盘满 / 文件被占用）不应让自检失败
+    try {
+        fs.rmSync(TMP, { recursive: true, force: true });
+    } catch {
+        /* 忽略 */
+    }
 }
 
 console.log('');
