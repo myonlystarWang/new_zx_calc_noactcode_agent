@@ -7,7 +7,8 @@ import {
   Sparkles,
   Swords,
   Scroll,
-  Hammer
+  Hammer,
+  Gem
 } from 'lucide-react';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 
@@ -115,6 +116,14 @@ const menuItems: MenuItem[] = [
       title: '神机洗练',
       desc: '修武/昭武/彰武 × 6 部位 · 蕴灵档位概率锻造模拟',
       onClick: () => handleSendMessageClick('神机洗练'),
+    },
+    {
+      id: 'yunling',
+      icon: Gem,
+      title: '装备蕴灵',
+      desc: '神隐蕴灵 +1~+15 · 幸运值与月德符消耗逐手模拟',
+      // ⛔ 数据实验室（右侧分屏）入口已关闭（2026-10-22）：恢复时改回 handleToolClick('yunling')
+      onClick: () => handleSendMessageClick('装备蕴灵'),
     },
     {
       id: 'tianyuan',

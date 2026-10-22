@@ -29,6 +29,7 @@ export const ROUTE = {
     serverRadar: '/tools/server',
     xycSimulator: '/tools/xyc',
     newTianYuan: '/tools/newtianyuan',
+    yunlingSimulator: '/tools/yunling',
     changelog: '/changelog',
     about: '/about',
     feedback: '/feedback',
@@ -111,6 +112,7 @@ export function titleForPath(pathname: string): string {
             server: '开服雷达监测',
             xyc: '轩辕策四象模拟器',
             newtianyuan: '新版天缘模拟器',
+            yunling: '装备蕴灵模拟器',
         };
         return `${map[parts[1]] || '微工具实验室'} · ${SITE_NAME}`;
     }
