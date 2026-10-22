@@ -19,10 +19,12 @@ export interface VisionReviewCardProps {
     panel: RecognizedPanel;
     /** 带入计算器：只写有值的项，缺项不覆盖 */
     onImport?: (panel: RecognizedPanel) => void;
-    /** 算副本秒伤（本期禁用，Phase C 接引擎） */
+    /** 算副本秒伤（战力指数） */
     onSimulate?: (panel: RecognizedPanel) => void;
     /** 存为档案（localStorage） */
     onArchive?: (panel: RecognizedPanel) => void;
+    /** 轩辕策：带 seed 打开模拟器（系别 / 普通·英雄 / 品阶 / 进阶技能） */
+    onOpenXyc?: (seed: { beast?: string; isHero?: boolean; level?: number; advSkill?: RecognizedPanel['advSkill'] }) => void;
     onPeek?: (image: string) => void;
     className?: string;
 }
@@ -95,6 +97,7 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
     onImport,
     onSimulate,
     onArchive,
+    onOpenXyc,
     onPeek,
     className
 }) => {
@@ -450,6 +453,21 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </button>
 
                 <div className="flex items-center gap-2 flex-wrap">
+                    {live.kind === 'xyc' && onOpenXyc && (
+                        <button
+                            type="button"
+                            data-action="open-xyc"
+                            onClick={() => onOpenXyc({
+                                beast: live.xyc?.beast,
+                                isHero: live.xyc?.heroVersion,
+                                level: live.xyc?.level,
+                                advSkill: live.advSkill
+                            })}
+                            className="px-3.5 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium transition-all"
+                        >
+                            打开轩辕策模拟
+                        </button>
+                    )}
                     <button
                         type="button"
                         data-action="simulate"

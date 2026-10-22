@@ -298,6 +298,20 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         }
     };
 
+    /** 轩辕策：把「系 / 普通·英雄 / 品阶 / 进阶技能」带进模拟器 */
+    const handleOpenXyc = (seed: { beast?: string; isHero?: boolean; level?: number; advSkill?: any }) => {
+        if (onOpenSplitWorkspace) {
+            onOpenSplitWorkspace('xyc', {
+                xycBeast: seed.beast,
+                xycIsHero: seed.isHero,
+                xycLevel: seed.level,
+                xycAdvSkill: seed.advSkill
+            });
+        } else {
+            navigate('/tools/xyc');
+        }
+    };
+
     const handleArchivePanel = (panel: RecognizedPanel) => {
         try {
             const key = 'zx_panel_archive_v1';
@@ -406,6 +420,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                 panel={msg.cardData.panel as RecognizedPanel}
                                                 onImport={handleImportReviewPanel}
                                                 onArchive={handleArchivePanel}
+                                                onOpenXyc={handleOpenXyc}
                                             />
                                         )}
 
