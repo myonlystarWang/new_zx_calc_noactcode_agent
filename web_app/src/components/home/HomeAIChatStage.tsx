@@ -6,18 +6,12 @@ import {
     X,
     ExternalLink,
     RefreshCw,
-    Sliders,
-    Check,
-    Copy,
-    ArrowRight,
     Radio
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import {
-    CopilotService,
     type CopilotMessage,
-    type ExtractedCPanel,
     type BossCandidateItem
 } from '../../services/CopilotService';
 import { DataService } from '../../services/DataService';
@@ -96,10 +90,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     // 候选列表选中的索引状态（按消息 ID 索引）
     const [selectedCandidateIndex, setSelectedCandidateIndex] = useState<Record<string, number>>({});
 
-    // 活跃的微调面板状态（按消息 ID 索引）
-    const [expandedTunerMsgId, setExpandedTunerMsgId] = useState<string | null>(null);
-    const [tuningCPanels, setTuningCPanels] = useState<Record<string, ExtractedCPanel>>({});
-    const [copiedId, setCopiedId] = useState<string | null>(null);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -209,72 +199,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         }
     };
 
-    const getTunedPanel = (msgId: string, initialPanel: ExtractedCPanel): ExtractedCPanel => {
-        return tuningCPanels[msgId] || initialPanel;
-    };
-
-    const updateTunedField = (msgId: string, base: ExtractedCPanel, field: keyof ExtractedCPanel, val: number) => {
-        const current = getTunedPanel(msgId, base);
-        setTuningCPanels(prev => ({
-            ...prev,
-            [msgId]: {
-                ...current,
-                [field]: isNaN(val) ? 0 : val
-            }
-        }));
-    };
-
-    const stepTunedField = (msgId: string, base: ExtractedCPanel, field: keyof ExtractedCPanel, delta: number) => {
-        const current = getTunedPanel(msgId, base);
-        const nextVal = Math.max(0, Number(((Number(current[field] || 0)) + delta).toFixed(2)));
-        setTuningCPanels(prev => ({
-            ...prev,
-            [msgId]: {
-                ...current,
-                [field]: nextVal
-            }
-        }));
-    };
-
-    const handleImportToSimulator = (panel: ExtractedCPanel, target: 'calc' | 'arena' = 'calc') => {
-        const dataService = DataService.getInstance();
-        const classes = dataService.getClasses() || [];
-        const classObj = classes.find(c => c.ClassName === panel.characterClass || c.ClassID === panel.characterClass);
-        const classId = classObj ? classObj.ClassID : (panel.characterClass || 'ZHU_SHUANG');
-
-        updateCharacterClass(classId, panel.faction || 'XIAN');
-        updateCharacterAttributes({
-            CharacterMaxAttack: panel.attack || 180000,
-            CharacterMinAttack: Math.round((panel.attack || 180000) * 0.9),
-            CharacterDefense: panel.defense || 90000,
-            CharacterHealth: panel.hp || 3000000,
-            CharacterMana: panel.mp || 1000000,
-            CharacterCriticalHitRatePercent: panel.critRate || 140,
-            CharacterCriticalHitDamagePercent: panel.critDamage || 850,
-            CharacterMonsterDamageIncreasePercent: panel.monsterDamageBonus || 70,
-        });
-
-        if (target === 'arena') {
-            if (onOpenSplitWorkspace) {
-                onOpenSplitWorkspace('arena');
-            } else {
-                navigate('/arena');
-            }
-        } else {
-            if (onOpenSplitWorkspace) {
-                onOpenSplitWorkspace('calc');
-            } else {
-                navigate('/calculator');
-            }
-        }
-    };
-
-    const handleCopyJson = (msgId: string, panel: ExtractedCPanel) => {
-        navigator.clipboard.writeText(JSON.stringify(panel, null, 2));
-        setCopiedId(msgId);
-        setTimeout(() => setCopiedId(null), 2000);
-    };
-
     /** 校对新卡：只写识别到的键，缺项保留计算器当前值（绝不补默认数） */
     const handleImportReviewPanel = (panel: RecognizedPanel) => {
         const dataService = DataService.getInstance();
@@ -312,13 +236,18 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         }
     };
 
-    /** 天缘：把「部位全名 / 天命等级」带进天缘词条池 */
-    const handleOpenTianyuan = (seed: { groupName?: string; level?: number }) => {
-        if (onOpenSplitWorkspace) {
-            onOpenSplitWorkspace('newtianyuan', { tyGroupName: seed.groupName, tyLevel: seed.level });
-        } else {
-            navigate('/tools/tianyuan');
+    /** 天缘分流（用户口径）：上玄佑万 → 新天缘词条池（带 seed）；其它 → 旧天缘图鉴（走 L1 意图） */
+    const handleOpenTianyuan = (seed: { groupName?: string; level?: number; name?: string; isNew: boolean }) => {
+        if (seed.isNew) {
+            if (onOpenSplitWorkspace) {
+                onOpenSplitWorkspace('newtianyuan', { tyGroupName: seed.groupName, tyLevel: seed.level });
+            } else {
+                navigate('/tools/newtianyuan');
+            }
+            return;
         }
+        // 旧天缘没有模拟器，只有图鉴卡：用正常意图链路取卡
+        onSendMessage(`旧天缘 ${seed.name || ''}`.trim());
     };
 
     const handleArchivePanel = (panel: RecognizedPanel) => {
@@ -433,200 +362,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                 onOpenTianyuan={handleOpenTianyuan}
                                             />
                                         )}
-
-                                        {/* 1. C 界面识图测伤与实战伤害报告 */}
-                                        {msg.cardType === 'c_panel_diag' && msg.cardData && (() => {
-                                            const basePanel: ExtractedCPanel = msg.cardData.cPanel;
-                                            const activePanel = getTunedPanel(msg.id, basePanel);
-                                            const liveDamage = CopilotService.getInstance().calculateT20Damage(activePanel);
-                                            const isTunerOpen = expandedTunerMsgId === msg.id;
-
-                                            return (
-                                                <div className="rounded-xl bg-gradient-to-br from-[#121927] to-[#0d121c] border border-cyan-500/30 p-5 space-y-4 shadow-xl">
-                                                    {/* 报告标头与秒伤 KPI */}
-                                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
-                                                        <div>
-                                                            <div className="flex items-center gap-2">
-                                                                <span className="text-sm font-bold text-slate-100">
-                                                                    {activePanel.characterClass || '角色'} 属性推演报告
-                                                                </span>
-                                                                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-300 border border-cyan-800/60">
-                                                                    {activePanel.faction === 'FO' ? '佛' : activePanel.faction === 'MO' ? '魔' : '仙'}阵营
-                                                                </span>
-                                                            </div>
-                                                            <p className="text-xs text-slate-400 mt-0.5">
-                                                                测算BOSS: {liveDamage.dungeonName} · {liveDamage.bossName}
-                                                            </p>
-                                                        </div>
-
-                                                        {/* 秒伤大字 KPI */}
-                                                        <div className="sm:text-right">
-                                                            <div className="text-[11px] text-amber-300 font-medium">T20 实战爆发秒伤推演</div>
-                                                            <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-100 tracking-tight">
-                                                                {liveDamage.estimatedTotalDamage}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* 核心面板攻防 8 项数值矩阵 */}
-                                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">大攻攻击力</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {(activePanel.attack || 0).toLocaleString()}
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">防御力</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {(activePanel.defense || 0).toLocaleString()}
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-amber-300 font-medium">无视伤害减免</div>
-                                                            <div className="text-sm font-bold text-amber-300 mt-0.5">
-                                                                {activePanel.ignoreReduction || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-emerald-300 font-medium">减免伤害</div>
-                                                            <div className="text-sm font-bold text-emerald-300 mt-0.5">
-                                                                {activePanel.damageReduction || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-rose-300 font-medium">对怪物增伤</div>
-                                                            <div className="text-sm font-bold text-rose-300 mt-0.5">
-                                                                {activePanel.monsterDamageBonus || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">暴击率 / 暴伤</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {activePanel.critRate || 0}% / {activePanel.critDamage || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">减暴击率</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {activePanel.critReduction || 0}%
-                                                            </div>
-                                                        </div>
-                                                        <div className="p-2.5 rounded-lg bg-black/40 border border-white/5">
-                                                            <div className="text-[11px] text-slate-400">气血总量 (HP)</div>
-                                                            <div className="text-sm font-semibold text-slate-200 mt-0.5">
-                                                                {(activePanel.hp || 0).toLocaleString()}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* 内嵌横向数值微调面板 (无需弹窗，在画布内直接改) */}
-                                                    <div className="pt-2">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setExpandedTunerMsgId(isTunerOpen ? null : msg.id)}
-                                                            className="text-xs font-semibold text-cyan-300 hover:text-cyan-200 flex items-center gap-1.5 transition-colors"
-                                                        >
-                                                            <Sliders className="w-3.5 h-3.5" />
-                                                            <span>{isTunerOpen ? '收起属性微调工作台' : '展开数值微调工作台（可单点校对 OCR 数值并即时重测）'}</span>
-                                                        </button>
-
-                                                        {isTunerOpen && (
-                                                            <div className="mt-3 p-4 rounded-xl bg-black/40 border border-white/10 space-y-3 animate-in slide-in-from-top-2 duration-200">
-                                                                <div className="text-xs font-medium text-slate-300">
-                                                                    微调数值实时联动刷新上方 T20 伤害推演：
-                                                                </div>
-                                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                                                                    <InlineNumberRow
-                                                                        label="大攻攻击力"
-                                                                        value={activePanel.attack || 0}
-                                                                        unit="点"
-                                                                        step={5000}
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'attack', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'attack', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="防御力"
-                                                                        value={activePanel.defense || 0}
-                                                                        unit="点"
-                                                                        step={2000}
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'defense', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'defense', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="无视伤害减免"
-                                                                        value={activePanel.ignoreReduction || 0}
-                                                                        unit="%"
-                                                                        step={0.5}
-                                                                        highlight="text-amber-300 font-semibold"
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'ignoreReduction', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'ignoreReduction', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="减免伤害"
-                                                                        value={activePanel.damageReduction || 0}
-                                                                        unit="%"
-                                                                        step={0.5}
-                                                                        highlight="text-emerald-300 font-semibold"
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'damageReduction', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'damageReduction', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="对怪伤害增加"
-                                                                        value={activePanel.monsterDamageBonus || 0}
-                                                                        unit="%"
-                                                                        step={1.0}
-                                                                        highlight="text-rose-300 font-semibold"
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'monsterDamageBonus', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'monsterDamageBonus', d)}
-                                                                    />
-                                                                    <InlineNumberRow
-                                                                        label="暴击伤害"
-                                                                        value={activePanel.critDamage || 0}
-                                                                        unit="%"
-                                                                        step={5.0}
-                                                                        onChange={v => updateTunedField(msg.id, basePanel, 'critDamage', v)}
-                                                                        onStep={d => stepTunedField(msg.id, basePanel, 'critDamage', d)}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-
-                                                    {/* 操作底栏 */}
-                                                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleCopyJson(msg.id, activePanel)}
-                                                            className="px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 text-slate-300 text-xs flex items-center gap-1.5 transition-colors"
-                                                        >
-                                                            {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                                                            <span>{copiedId === msg.id ? '已复制' : '复制属性 JSON'}</span>
-                                                        </button>
-
-                                                        <div className="flex items-center gap-2.5 flex-wrap">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleImportToSimulator(activePanel, 'arena')}
-                                                                className="px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 hover:text-white font-medium text-xs flex items-center gap-1.5 transition-all"
-                                                            >
-                                                                <span>前往副本模拟训练场</span>
-                                                                <ExternalLink className="w-3.5 h-3.5" />
-                                                            </button>
-
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleImportToSimulator(activePanel, 'calc')}
-                                                                className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-950/40 transition-all cursor-pointer"
-                                                            >
-                                                                <span>带入推演 (分屏计算器)</span>
-                                                                <ArrowRight className="w-3.5 h-3.5" />
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })()}
 
                                         {/* 2. BOSS 抗性大卡片 (1:1 游戏原生高保真全维度矩阵) */}
                                         {msg.cardType === 'boss' && msg.cardData && (
@@ -769,32 +504,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {/* 4. 极致属性攻略信息卡（全领域细分 inline 呈现，窄屏自适应，不再跳转路由页） */}
                                         {msg.cardType === 'ceiling' && msg.cardData && (
                                             <CeilingDetailCard cardData={msg.cardData} />
-                                        )}
-
-                                        {/* 5. 轩辕策四象卡片 */}
-                                        {msg.cardType === 'xyc_diag' && msg.cardData && (
-                                            <div className="rounded-xl bg-[#151a24] border border-teal-500/30 p-4 flex items-center justify-between gap-4">
-                                                <div>
-                                                    <div className="text-sm font-bold text-teal-300">{msg.cardData.title}</div>
-                                                    <div className="text-xs text-slate-400 mt-0.5">{msg.cardData.desc}</div>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        if (msg.cardData.workspaceMode && onOpenSplitWorkspace) {
-                                                            onOpenSplitWorkspace(msg.cardData.workspaceMode);
-                                                        } else if (onOpenSplitWorkspace) {
-                                                            onOpenSplitWorkspace('xyc');
-                                                        } else if (msg.cardData.route) {
-                                                            navigate(msg.cardData.route);
-                                                        }
-                                                    }}
-                                                    className="px-3.5 py-1.5 rounded-lg bg-teal-600/30 hover:bg-teal-600/50 border border-teal-500/40 text-teal-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer shrink-0"
-                                                >
-                                                    <span>{msg.cardData.btnText || '进入四象模拟器'}</span>
-                                                    <ExternalLink className="w-3 h-3" />
-                                                </button>
-                                            </div>
                                         )}
 
                                         {/* 6. 开服雷达卡片 - 战区展示 */}
@@ -1285,59 +994,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                 <p className="text-[11px] text-slate-500 tracking-wide text-center pt-2 select-none">
                     天书万象 AI 诛仙全知大模型 · 规则与数据源于实测
                 </p>
-            </div>
-        </div>
-    );
-};
-
-interface InlineNumberRowProps {
-    label: string;
-    value: number;
-    unit: string;
-    step: number;
-    highlight?: string;
-    onChange: (val: number) => void;
-    onStep: (delta: number) => void;
-}
-
-const InlineNumberRow: React.FC<InlineNumberRowProps> = ({
-    label,
-    value,
-    unit,
-    step,
-    highlight,
-    onChange,
-    onStep
-}) => {
-    return (
-        <div className="flex items-center justify-between gap-1.5 p-2 rounded-lg bg-black/30 border border-white/5">
-            <span className={clsx('text-[11px]', highlight || 'text-slate-300')}>{label}</span>
-            <div className="flex items-center gap-1">
-                <button
-                    type="button"
-                    onClick={() => onStep(-step)}
-                    className="w-5 h-5 flex items-center justify-center rounded bg-white/5 hover:bg-white/10 text-slate-300 text-[10px]"
-                >
-                    -
-                </button>
-                <div className="relative">
-                    <input
-                        type="number"
-                        value={value}
-                        onChange={e => onChange(parseFloat(e.target.value))}
-                        className="w-20 px-1.5 py-0.5 text-xs text-right bg-black/60 border border-white/10 rounded text-cyan-200 focus:outline-none focus:border-cyan-400 pr-4"
-                    />
-                    <span className="absolute right-1 top-0.5 text-[9px] text-slate-500 pointer-events-none">
-                        {unit}
-                    </span>
-                </div>
-                <button
-                    type="button"
-                    onClick={() => onStep(step)}
-                    className="w-5 h-5 flex items-center justify-center rounded bg-white/5 hover:bg-white/10 text-slate-300 text-[10px]"
-                >
-                    +
-                </button>
             </div>
         </div>
     );

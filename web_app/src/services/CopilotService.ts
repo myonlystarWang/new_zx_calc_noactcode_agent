@@ -10,8 +10,7 @@ import { DataService, isValidSkill } from './DataService';
 import { getVisionFixture } from './vision/devFixture';
 import { downscaleDataUrl } from '../utils/imageDownscale';
 import { pinyin } from 'pinyin-pro';
-import { calculateDungeonPower } from '../utils/calculator';
-import type { CharacterAttributes, Dungeon, Monster, Skill, CuratedEquipItem, CuratedSkillItem, FabaoItem } from '../types';
+import type { Dungeon, Monster, CuratedEquipItem, CuratedSkillItem, FabaoItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
 export const UNIFIED_NOT_FOUND_REPLY =
@@ -43,37 +42,13 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_diag' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge';
     cardData?: any;
-}
-
-export interface ExtractedCPanel {
-    characterClass?: string;
-    faction?: 'XIAN' | 'FO' | 'MO';
-    attack?: number;
-    defense?: number;
-    hp?: number;
-    mp?: number;
-    critRate?: number;
-    critDamage?: number;
-    ignoreReduction?: number;
-    damageReduction?: number;
-    critReduction?: number;
-    monsterDamageBonus?: number;
-}
-
-export interface ExtractedXyc {
-    beast: '青龙' | '白虎' | '朱雀' | '玄武';
-    isHero: boolean;
-    level: number;
-    attributes: { name: string; value: number }[];
 }
 
 export interface VisionExtractionResult {
     mode: 'c_panel' | 'xyc' | 'item' | 'general';
     rawExplanation: string;
-    cPanelData?: ExtractedCPanel;
-    xycData?: ExtractedXyc;
     /** 新协议：识别到的原始结构化面板（存在时前端走 c_panel_review 校对新卡） */
     panel?: any;
     /** 新协议：通道与降级信息 */
@@ -746,7 +721,7 @@ export class CopilotService {
                 sender: 'assistant',
                 text: '已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。',
                 time: timeStr,
-                cardType: 'xyc_diag',
+                cardType: 'tool_card',
                 cardData: {
                     title: '轩辕策属性模拟',
                     desc: '支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定',
@@ -3558,65 +3533,4 @@ export class CopilotService {
         };
     }
 
-    /**
-     * 本地数学引擎接管：使用提取到的面板计算对 T20 Boss 的实战伤害
-     */
-    public calculateT20Damage(attributes: ExtractedCPanel): {
-        estimatedTotalDamage: string;
-        dungeonName: string;
-        bossName: string;
-        breakdownText: string;
-    } {
-        const dataService = DataService.getInstance();
-        const dungeons = dataService.getDungeons();
-        const t20 = dungeons?.find((d: Dungeon) => d.DungeonID === 'ZHENHAI_DUANLANG_T20') || dungeons?.[0];
-
-        const charAttrs: CharacterAttributes = {
-            CharacterMinAttack: Math.round((attributes.attack || 150000) * 0.9),
-            CharacterMaxAttack: attributes.attack || 150000,
-            CharacterDefense: attributes.defense || 80000,
-            CharacterHealth: attributes.hp || 3000000,
-            CharacterMana: attributes.mp || 1000000,
-            CharacterCriticalHitRatePercent: attributes.critRate || 130,
-            CharacterCriticalHitDamagePercent: attributes.critDamage || 800,
-            CharacterMonsterDamageIncreasePercent: attributes.monsterDamageBonus || 65,
-        };
-
-        if (t20) {
-            try {
-                const classes = dataService.getClasses() || [];
-                const classObj = classes.find(c => c.ClassName === attributes.characterClass || c.ClassID === attributes.characterClass);
-                const classId = classObj ? classObj.ClassID : 'ZHU_SHUANG';
-                const classSkills = dataService.getSkills(classId) || dataService.getSkills('ZHU_SHUANG');
-                const faction = attributes.faction || 'XIAN';
-                const skills = (classSkills ? classSkills[faction] || Object.values(classSkills)[0] : []) as Skill[];
-                const monsters = t20.Monsters || [];
-
-                let power = calculateDungeonPower(charAttrs, skills, monsters, []);
-
-                // 融合无视减免穿透系数修正（T20 门槛约 130%，超过 130% 享受无视溢出增益）
-                if (typeof attributes.ignoreReduction === 'number' && attributes.ignoreReduction > 0) {
-                    const ignoreRatio = Math.max(0.6, Math.min(1.6, attributes.ignoreReduction / 130));
-                    power = power * ignoreRatio;
-                }
-
-                const billion = (power / 100000000).toFixed(2);
-                return {
-                    estimatedTotalDamage: `${billion} 亿`,
-                    dungeonName: t20.DungeonName,
-                    bossName: t20.Monsters?.[0]?.MonsterName || '断浪 BOSS',
-                    breakdownText: `在无外部增益基准下，你对 ${t20.DungeonName} 测算单套爆发输出约为 ${billion} 亿伤害。`
-                };
-            } catch (err) {
-                console.warn('Simulation error:', err);
-            }
-        }
-
-        return {
-            estimatedTotalDamage: '18.65 亿',
-            dungeonName: '镇海！断浪碎晶宫（T20）',
-            bossName: '逆戟鲸神',
-            breakdownText: '预估单套爆发战力约为 18.65 亿。'
-        };
-    }
 }
