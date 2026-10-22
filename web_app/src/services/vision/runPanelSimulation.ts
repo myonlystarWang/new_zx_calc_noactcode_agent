@@ -1,12 +1,16 @@
 /**
- * 从校对卡直接跑副本模拟，产出可追溯的 CalculationTrace。
+ * 从校对卡算「对该 BOSS 的战力指数」。
+ *
+ * 口径：与【战力计算器】同源 —— calculateDungeonPower(cheracter, skills, [boss], buffs, buffValues)
+ * 不接训练场（秒伤需 runSimulation，训练场本身尚不完善，见 doc §8 Phase C 备注）。
+ *
  * 铁律（doc §7）：
  *   · 只吃 ok 字段；缺的非关键项补 0 并记进 filledWithZero，绝不编「合理默认值」
- *   · 技能池为空（如昭冥·仙）直接拒绝，不借他人技能
+ *   · 技能池为空（如昭冥）直接拒绝，不借他人技能
  *   · 结果必须带 trace，缺 trace 的 UI 不显示数字
  */
-import type { CharacterAttributes } from '@zx/simulation-engine';
-import { assembleScenario, runSimulation } from '@zx/simulation-engine';
+import type { CharacterAttributes, Buff } from '@zx/simulation-engine';
+import { calculateDungeonPower } from '@zx/simulation-engine';
 import { DataService } from '../DataService';
 import type { RecognizedPanel } from './types';
 import { mapToEngine, assertEngineReady } from './mapToEngine';
@@ -19,6 +23,28 @@ export interface SimTarget {
     bossName: string;
 }
 
+/** 四项战斗增益（默认值来自 combat_buffs.json 中 IsDefaultActive=true 的四条） */
+export interface CombatBuffs {
+    BUFF_FOCUS_EFFECT: number;
+    BUFF_HOLYWRATH_EFFECT: number;
+    BUFF_MON_CRITDAMAGE_EFFECT: number;
+    BUFF_MON_HARMED_EFFECT: number;
+}
+
+export const DEFAULT_COMBAT_BUFFS: CombatBuffs = {
+    BUFF_FOCUS_EFFECT: 261,
+    BUFF_HOLYWRATH_EFFECT: 22.5,
+    BUFF_MON_CRITDAMAGE_EFFECT: 900,
+    BUFF_MON_HARMED_EFFECT: 120
+};
+
+export const COMBAT_BUFF_LABELS: { key: keyof CombatBuffs; label: string; unit: string }[] = [
+    { key: 'BUFF_FOCUS_EFFECT', label: '专注', unit: '' },
+    { key: 'BUFF_HOLYWRATH_EFFECT', label: '巫咒', unit: '%' },
+    { key: 'BUFF_MON_CRITDAMAGE_EFFECT', label: '绿点', unit: '%' },
+    { key: 'BUFF_MON_HARMED_EFFECT', label: '易伤', unit: '%' }
+];
+
 export interface CalculationTrace {
     traceId: string;
     panelId: string;
@@ -26,18 +52,14 @@ export interface CalculationTrace {
     dungeonId: string;
     bossId: string;
     buffIds: string[];
-    engineFn: 'runSimulation';
+    engineFn: 'calculateDungeonPower';
     result: {
-        totalDamage: number;
-        averageDps: number;
-        durationMs: number;
-        bossKilled: boolean;
-        killTimeMs: number | null;
+        /** 战力指数（与战力计算器同口径，不是秒伤） */
+        power: number;
+        bossName: string;
         bossMaxHealth: number;
     };
-    /** 缺失但被记为 0 的非关键属性（在 UI 上要显式提示） */
     filledWithZero: string[];
-    /** 本次未计入的增益（诚实标注） */
     buffNote: string;
     createdAt: string;
 }
@@ -53,12 +75,21 @@ const hashAttrs = (attrs: Record<string, number>): string => {
     return `a${(h >>> 0).toString(36)}`;
 };
 
-const pickSkillIds = (skills: any[]): string[] => skills
-    .filter(s => s.ActionType === 'DAMAGE')
-    .map(s => s.SkillID);
+export function resolveDefaultBuffs(): CombatBuffs {
+    const out = { ...DEFAULT_COMBAT_BUFFS };
+    try {
+        const buffs = DataService.getInstance().getBuffs() || [];
+        for (const b of buffs as any[]) {
+            if (b?.BuffID in out && typeof b.DefaultEffectValue === 'number') {
+                (out as any)[b.BuffID] = b.DefaultEffectValue;
+            }
+        }
+    } catch { /* 数据未就绪时用常量默认值 */ }
+    return out;
+}
 
-export function runPanelSimulation(panel: RecognizedPanel, target: SimTarget): SimOutcome {
-    // 1. 职业覆盖闸门：技能池空直接拒绝（昭冥·仙就是这种情况）
+export function runPanelSimulation(panel: RecognizedPanel, target: SimTarget, buffs: CombatBuffs = DEFAULT_COMBAT_BUFFS): SimOutcome {
+    // 1. 职业覆盖闸门：技能池空直接拒绝
     const coverage = classCoverage(panel.character?.classRaw, panel.character?.factionRaw);
     if (!coverage.ok) {
         return { ok: false, code: coverage.code || 'CLASS_COVERAGE_MISSING', message: coverage.reason || '该职业阵营无法推演' };
@@ -72,7 +103,7 @@ export function runPanelSimulation(panel: RecognizedPanel, target: SimTarget): S
         return { ok: false, code: 'ENGINE_INPUT_INCOMPLETE', message: e?.message || '属性不完整' };
     }
 
-    // 3. 补齐引擎必填但面板没有 / 本次未识别的非关键项（记为 0 并记录）
+    // 3. 补齐引擎必填但本次未识别的非关键项（记 0 并记录）
     const attrs = { ...mapped.attrs } as Partial<CharacterAttributes>;
     const filledWithZero: string[] = [];
     const fillIfMissing = (key: keyof CharacterAttributes) => {
@@ -95,8 +126,8 @@ export function runPanelSimulation(panel: RecognizedPanel, target: SimTarget): S
     }
 
     const skills = getFactionSkills(allSkills as any, coverage.classId!, coverage.faction!);
-    const skillIds = pickSkillIds(skills);
-    if (skillIds.length === 0) {
+    const damageSkills = skills.filter(s => s.ActionType === 'DAMAGE');
+    if (damageSkills.length === 0) {
         return { ok: false, code: 'NO_DAMAGE_SKILL', message: '该职业阵营没有可用的输出技能' };
     }
 
@@ -105,33 +136,28 @@ export function runPanelSimulation(panel: RecognizedPanel, target: SimTarget): S
         return { ok: false, code: 'BOSS_NOT_FOUND', message: '所选 BOSS 不在该副本中' };
     }
 
-    // 5. 组装 + 跑
+    // 5. 增益：先把 4 项数值写进 buffValues（键 = BuffID），Buff 对象从 combat_buffs 取
+    let activeBuffs: Buff[] = [];
     try {
-        const scenario = assembleScenario({
-            scenarioId: `vision-${Date.now()}`,
-            maxTimeMs: 30_000,
-            dungeonId: target.dungeonId,
-            bossId: target.bossId,
-            dpsActor: {
-                actorId: 'vision_dps',
-                classId: coverage.classId!,
-                faction: coverage.faction!,
-                profileAttributes: attrs as CharacterAttributes,
-                // DPS 策略只支持 MANUAL_TIMELINE / FIXED_ROTATION / SKILL_BAR；
-                // 这里用技能栏顺序循环（等价"见到就放"），不伪造时间轴
-                strategy: { type: 'SKILL_BAR', skillIds, scanMode: 'CONTINUE_POINTER' },
-                skillIds
-            }
-        }, {
-            skills: allSkills as any,
-            monstersByDungeon: monstersByDungeon as any
-        });
+        const all = (ds.getBuffs() || []) as Buff[];
+        const ids = Object.keys(buffs);
+        activeBuffs = all.filter((b: any) => ids.includes(b.BuffID));
+    } catch { /* 无增益数据时按空处理，并在 trace 里标注 */ }
+    const buffValues: Record<string, number> = { ...buffs };
 
-        const result = runSimulation(scenario);
-        const summary: any = (result as any).summary || {};
-        const bossState: any = (result as any).boss || {};
-        const totalDamage = Number(summary.TotalDamage ?? 0);
-        const durationMs = Number(summary.DpsDurationMs ?? 0);
+    // 6. 算（与战力计算器同源）
+    try {
+        const power = calculateDungeonPower(
+            attrs as CharacterAttributes,
+            damageSkills,
+            [boss as any],
+            activeBuffs,
+            buffValues
+        );
+
+        if (!Number.isFinite(power)) {
+            return { ok: false, code: 'ENGINE_ERROR', message: '引擎返回了非法数值' };
+        }
 
         const trace: CalculationTrace = {
             traceId: `t-${Date.now().toString(36)}`,
@@ -139,18 +165,17 @@ export function runPanelSimulation(panel: RecognizedPanel, target: SimTarget): S
             attrsHash: hashAttrs(mapped.attrs as Record<string, number>),
             dungeonId: target.dungeonId,
             bossId: target.bossId,
-            buffIds: [],
-            engineFn: 'runSimulation',
+            buffIds: activeBuffs.map((b: any) => b.BuffID),
+            engineFn: 'calculateDungeonPower',
             result: {
-                totalDamage,
-                averageDps: Number(summary.AverageDps ?? (durationMs > 0 ? totalDamage / (durationMs / 1000) : 0)),
-                durationMs,
-                bossKilled: Boolean(bossState.killedAtMs),
-                killTimeMs: bossState.killedAtMs ?? null,
-                bossMaxHealth: Number(bossState.startingHealth ?? 0)
+                power,
+                bossName: (boss as any).MonsterName || target.bossId,
+                bossMaxHealth: Number((boss as any)?.MonsterAttributeModifiers?.MonsterHealth ?? 0)
             },
             filledWithZero,
-            buffNote: '未计入专注/绿点/易伤等增益（本期只算面板 + 技能）',
+            buffNote: activeBuffs.length > 0
+                ? `已计入 ${activeBuffs.length} 项团队增益（专注/巫咒/绿点/易伤），数值可在卡上改`
+                : '未匹配到增益数据，按无增益计算',
             createdAt: new Date().toISOString()
         };
         return { ok: true, trace };

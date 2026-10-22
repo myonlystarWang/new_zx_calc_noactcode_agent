@@ -5,7 +5,14 @@ import type { FieldCell, RecognizedPanel } from '../../services/vision/types';
 import { kindLabel } from '../../services/vision/fieldRegistry';
 import { mapToEngine } from '../../services/vision/mapToEngine';
 import { classCoverage } from '../../services/vision/classCoverage';
-import { runPanelSimulation, type CalculationTrace, type SimTarget } from '../../services/vision/runPanelSimulation';
+import {
+    runPanelSimulation,
+    resolveDefaultBuffs,
+    COMBAT_BUFF_LABELS,
+    type CalculationTrace,
+    type CombatBuffs,
+    type SimTarget
+} from '../../services/vision/runPanelSimulation';
 import { DungeonBossPicker } from './DungeonBossPicker';
 
 export interface VisionReviewCardProps {
@@ -129,6 +136,7 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
     );
 
     const [target, setTarget] = useState<SimTarget | null>(null);
+    const [buffs, setBuffs] = useState<CombatBuffs>(() => resolveDefaultBuffs());
     const [sim, setSim] = useState<{ running: boolean; trace?: CalculationTrace; error?: string }>({ running: false });
 
     const missingZh: Record<string, string> = {
@@ -153,13 +161,13 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
         if (blockedReason || !target) return;
         setSim({ running: true });
         try {
-            const out = runPanelSimulation(live, target);
+            const out = runPanelSimulation(live, target, buffs);
             if (out.ok) setSim({ running: false, trace: out.trace });
             else setSim({ running: false, error: out.message });
         } catch (e: any) {
             setSim({ running: false, error: e?.message || '引擎计算失败' });
         }
-    }, [blockedReason, target, live]);
+    }, [blockedReason, target, live, buffs]);
 
     const fmtBig = (n: number): string => {
         if (!Number.isFinite(n)) return '—';
@@ -357,6 +365,39 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
             {/* 隐藏 JSON：给本地 e2e 断言用，不占视觉 */}
             <pre data-testid="panel-json" className="hidden">{JSON.stringify({ kind: live.kind, fields: live.fields.map(f => ({ k: f.key, v: f.value, s: f.status })), engine: live.engine })}</pre>
 
+            {/* 战斗增益四项（默认值来自 combat_buffs.json，可改） */}
+            {live.kind === 'character_panel' && (
+                <div className="mt-2.5 pt-2.5 border-t border-white/5">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <span className="text-[11px] text-slate-400">战斗增益（团队，已给默认值）</span>
+                        <span className="text-[10px] text-slate-500">与战力计算器同口径</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1.5">
+                        {COMBAT_BUFF_LABELS.map(b => (
+                            <label
+                                key={b.key}
+                                className="flex items-center justify-between gap-1 rounded-lg bg-black/40 border border-white/5 px-2 py-1"
+                            >
+                                <span className="text-[11px] text-slate-400 whitespace-nowrap">{b.label}</span>
+                                <span className="flex items-center">
+                                    <input
+                                        type="number"
+                                        data-buff-key={b.key}
+                                        value={Number.isFinite(buffs[b.key]) ? buffs[b.key] : ''}
+                                        onChange={e => {
+                                            const v = e.target.value === '' ? 0 : Number(e.target.value);
+                                            setBuffs(prev => ({ ...prev, [b.key]: Number.isFinite(v) ? v : 0 }));
+                                        }}
+                                        className="w-12 bg-transparent text-right font-mono text-xs text-slate-100 outline-none"
+                                    />
+                                    {b.unit && <span className="text-[10px] text-slate-500 ml-0.5">{b.unit}</span>}
+                                </span>
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* 副本 / BOSS 选择 + 结果（仅角色属性面板） */}
             {live.kind === 'character_panel' && (
                 <div className="mt-2.5 pt-2.5 border-t border-white/5 flex flex-col gap-2">
@@ -366,24 +407,19 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                         <div data-testid="sim-result" className="rounded-lg bg-black/30 border border-white/5 p-2.5 flex flex-col gap-1.5">
                             <div className="flex items-center gap-4 flex-wrap">
                                 <div className="flex items-baseline gap-1.5">
-                                    <span className="text-[10px] text-slate-500">单套总伤</span>
-                                    <span className="font-mono text-sm font-black text-amber-300">{fmtBig(sim.trace.result.totalDamage)}</span>
+                                    <span className="text-[10px] text-slate-500">战力指数</span>
+                                    <span className="font-mono text-sm font-black text-amber-300">{fmtBig(sim.trace.result.power)}</span>
                                 </div>
                                 <div className="flex items-baseline gap-1.5">
-                                    <span className="text-[10px] text-slate-500">平均秒伤</span>
-                                    <span className="font-mono text-sm font-black text-amber-300">{fmtBig(sim.trace.result.averageDps)}</span>
-                                </div>
-                                <div className="flex items-baseline gap-1.5">
-                                    <span className="text-[10px] text-slate-500">击杀</span>
-                                    <span className={clsx('font-mono text-xs', sim.trace.result.bossKilled ? 'text-emerald-400' : 'text-slate-400')}>
-                                        {sim.trace.result.bossKilled ? `${(sim.trace.result.killTimeMs! / 1000).toFixed(1)}s` : `未击杀 / ${(sim.trace.result.durationMs / 1000).toFixed(0)}s`}
-                                    </span>
+                                    <span className="text-[10px] text-slate-500">对</span>
+                                    <span className="text-xs text-slate-300">{sim.trace.result.bossName}</span>
                                 </div>
                             </div>
                             <div className="flex items-center gap-2 flex-wrap text-[10px] text-slate-500 font-mono">
-                                <span>{target?.dungeonName} · {target?.bossName}</span>
+                                <span>{target?.dungeonName}</span>
                                 <span>trace {sim.trace.attrsHash}</span>
                                 <span>{sim.trace.engineFn}</span>
+                                <span>buffs {sim.trace.buffIds.length}</span>
                             </div>
                             {(sim.trace.filledWithZero.length > 0 || sim.trace.buffNote) && (
                                 <div className="text-[10px] text-amber-600/80 leading-relaxed">
