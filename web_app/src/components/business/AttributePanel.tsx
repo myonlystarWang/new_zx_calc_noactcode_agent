@@ -48,7 +48,8 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
             <div>
                 <h2 className="text-sm font-bold text-slate-100 mb-2 flex items-center gap-2">
                     <span className="w-1 h-4 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full"></span>
-                    角色基础属性
+                    角色属性
+                    <span className="text-[11px] font-normal text-slate-400">（建议填写昭冥上身满状态属性）</span>
                 </h2>
                 <div className="flex flex-col gap-3">
                     {/* Row 1: 4 Cards (Min/Max Atk, HP, MP) */}
