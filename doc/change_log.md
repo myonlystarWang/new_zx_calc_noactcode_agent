@@ -10,6 +10,7 @@
 - **对话内轻量卡** `web_app/src/components/compendium/YunlingForgeCard.tsx`：词表「蕴灵 / 装备蕴灵 / 蕴灵模拟 / 炼器模拟 / 装备炼器 / 神隐蕴灵」，交互对齐神机锻造卡。
 - **数据实验室** `web_app/src/components/tools/YunlingSimulatorView.tsx` + 路由 `ROUTE.yunlingSimulator = '/tools/yunling'`；`ToolsHubView` 新增「装备蕴灵模拟器」tab（工具数 3 → 4）。右侧分屏入口与 `CopilotService` 的进阶判断块已注释关闭（2026-10-22 用户要求）。
 - **装备详情卡受控模式** `EquipDetailCard.tsx` 新增 `refLevel` / `onRefLevelChange` / `hideStepper` / `hideShenjiPool`，供蕴灵模拟器实时联动与隐藏神机池。
+- **意见反馈未读角标** `useGuestbookUnread.ts` + `utils/guestbookSeen.ts`：顶部反馈入口在有新回复时显示 `NEW` 角标，点开一次后清除（已读状态落地本地存储），窄屏收敛为圆点。
 
 #### Changed
 
