@@ -65,6 +65,7 @@ export const XYC_FIELDS: FieldDef[] = [
 export const TIANYUAN_FIELDS: FieldDef[] = [
     { key: 'name', label: '名称', unit: 'text', engine: false, expectedLabels: [] },
     { key: 'part', label: '部位', unit: 'text', engine: false, expectedLabels: [] },
+    { key: 'suffix', label: '后缀', unit: 'text', engine: false, expectedLabels: [] },
     { key: 'tianyuanLevel', label: '天缘等级', unit: 'point', engine: false, expectedLabels: [] }
 ];
 

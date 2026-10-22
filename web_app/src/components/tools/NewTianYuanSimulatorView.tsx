@@ -33,11 +33,21 @@ function fmt(val: number, unit = ''): string {
     return `${numStr}${unit}`;
 }
 
-export const NewTianYuanSimulatorView: React.FC = () => {
+/** 识图带入的初始值：具体是哪一件天缘（部位全名）+ 天命等级 */
+export interface TianyuanSeed {
+    /** 例：上玄佑万辰须弥盔 / 上玄佑万辰须弥刃 / 上玄佑万辰须弥甲 */
+    groupName?: string;
+    /** 天缘等级 0–10 */
+    level?: number;
+}
+
+export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> = ({ seed }) => {
     const [data, setData] = useState<TianYuanData | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedGroupIdx, setSelectedGroupIdx] = useState<number>(0);
-    const [currentLevel, setCurrentLevel] = useState<number>(10); // 默认展示顶级 Lv.10
+    const [currentLevel, setCurrentLevel] = useState<number>(
+        typeof seed?.level === 'number' ? Math.min(10, Math.max(0, seed.level)) : 10
+    );
     const [expandedKey, setExpandedKey] = useState<string | null>(null);
 
     useEffect(() => {
@@ -48,6 +58,11 @@ export const NewTianYuanSimulatorView: React.FC = () => {
                 if (mounted) {
                     setData(d);
                     setLoading(false);
+                    // 识图带入：按部位全名定位到对应词条池
+                    if (seed?.groupName) {
+                        const idx = d.attributeGroups.findIndex(g => g.name === seed.groupName || g.name.includes(seed.groupName!));
+                        if (idx >= 0) setSelectedGroupIdx(idx);
+                    }
                 }
             })
             .catch(err => {
@@ -55,7 +70,7 @@ export const NewTianYuanSimulatorView: React.FC = () => {
                 if (mounted) setLoading(false);
             });
         return () => { mounted = false; };
-    }, []);
+    }, [seed?.groupName]);
 
     // 计算当前等级下的天命额外等级
     const maxExtraLevel = useMemo(() => {

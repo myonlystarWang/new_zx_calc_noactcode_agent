@@ -50,11 +50,20 @@ const VISION_SYSTEM_PROMPT = `你是《诛仙3》截图录入员。你只做转�
   第5行：技能命中        | 技能躲闪        → 不取
   顶部资源条：气血 cur/max、真气 cur/max、第三槽 cur/max → health / mana 取斜杠后的上限
 轩辕策的取值：标题里的 青龙/白虎/朱雀/玄武 → beast，尖括号里的书名 → bookName，末尾「·英雄版」→ heroVersion；「六品」→ tier；★ 个数 → stars；「洗炼次数 4/10」→ washUsed=4；「等级 20」→ level；「（进阶技能）霜池映月III 《碧海》 3级」→ advSkillName / advSkillVariant / advSkillLevel。
+天缘的取值：标题「上玄佑万辰须弥盔（+2真气）」→ name=上玄佑万辰须弥盔、part=盔、suffix=+2真气；「天缘+10」→ tianyuanLevel=10；随后每一行「天命+2 真气 +5.8%」都进 attrs 数组：tianming=2、name=真气、value=+5.8%。**天缘有几行输出几行，不许合并、不许省略。**
 
 【四、取字段】每个字段必须同时给 label（图上该行左侧的中文标签），label 必须来自上面的行序地图；没看到就 status="absent"、value=null，并且 raw、label 都为 null。
 
 character_panel 的 key（只这 8 个，不要输出别的）：attackMin / attackMax / defense / health / mana / critDamage / critRate / monsterDamageBonus
 xyc 的 key：beast / bookName / heroVersion / tier / stars / washUsed / level / advSkillName / advSkillVariant / advSkillLevel
+tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attrs 数组**（天缘的全部「天命+N 属性 +值」行）
+
+【四之二、attrs 数组】轩辕策与天缘用它承载词条行，格式：
+[{"tianming":2,"name":"真气","value":"+5.8%"},{"tianming":1,"name":"固定攻击","value":"+2057"}]
+- name 取属性名（保留「固定」前缀，如 固定攻击 / 固定真气 / 固定气血）
+- value 保留原文的正负号与百分号，不要换算成数字
+- tianming 只有天缘有（天命+N 的 N）；轩辕策洗炼词条可省略 tianming，改用 "wash" 放括号增量、"extra" 放第二个括号
+- 天缘一张图有几行词条就输出几条，漏行等于丢数据
 
 【五、反例铁律（最常见的错，逐条避开）】
 - 角色属性面板上没有"对怪增伤"这一行 → monsterDamageBonus 必须 absent，不得填 78 / 82 / 65 / 49.6。
@@ -62,6 +71,7 @@ xyc 的 key：beast / bookName / heroVersion / tier / stars / washUsed / level /
 - 普攻命中（如 3610）、普攻躲闪（2906）、技能命中（369.5）、技能躲闪（77.5）都不是攻击力，也不是暴击率，不得填进 critRate / critDamage / ignoreReduction。
 - 气血 814972/1604910 → health 取上限 1604910，不取当前值。
 - 四象（青龙/白虎/朱雀/玄武）是轩辕策名字的前缀，不要输出为独立字段。
+- 天缘标题括号里的「+2真气」是后缀（suffix），不是一条词条，不要放进 attrs。
 
 【六、输出】只输出一个 JSON，不要 markdown 代码块，不要任何解释文字。**必须按示例把所有 8 个 key 都列出来**（没有的就写 absent），不要省略：
 {"panelKind":"character_panel","kindEvidence":["致命一击","血炼值"],"kindConfidence":0.9,
@@ -106,13 +116,15 @@ interface TransportResult {
 }
 
 /**
- * Workers AI 视觉三条，顺序 = 实测「准确率 + 延迟」综合排序
- * 实测（昭冥面板真图）：mistral 20s 全对 / scout 46s 全对 / llama-3.2 118s 且易截断
+ * Workers AI 视觉通道（顺序 = 实测「准确率 + 延迟」）
+ * · mistral：20s，角色面板 8/8 全对，天缘结构全对（唯一的数字误读是把 4468 读成 44468，靠校对卡纠）
+ * · scout：46–68s，字段准但爱把 attrs 塞进 fields（前端已做结构兜底）
+ * · llama-3.2-11b：**已移除**。实测会把 prompt 示例里的昭冥面板当成识别结果输出（照抄示例 = 造假），
+ *   宁可降级也不能让它返回假数据。
  */
 const CF_VISION_CHAIN = [
     '@cf/mistralai/mistral-small-3.1-24b-instruct',
-    '@cf/meta/llama-4-scout-17b-16e-instruct',
-    '@cf/meta/llama-3.2-11b-vision-instruct'  // 兜底：慢且爱加前言，放最后
+    '@cf/meta/llama-4-scout-17b-16e-instruct'
 ];
 
 async function runCfVision(ai: any, modelId: string, dataUrl: string, userPrompt: string): Promise<TransportResult> {
