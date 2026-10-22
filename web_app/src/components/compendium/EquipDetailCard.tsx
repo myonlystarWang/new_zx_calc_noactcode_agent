@@ -27,7 +27,7 @@ export interface EquipDetailCardProps {
     hideShenjiPool?: boolean;
 }
 
-const YUNLING_SLOTS = ['武器', '头盔', '帽子', '衣服', '靴子', '鞋', '袖甲', '护腕'];
+const YUNLING_SLOTS = ['武器', '头盔', '帽子', '衣服', '靴子', '鞋', '腰带', '袖甲', '护腕'];
 
 function formatAttrText(text: string): string {
     if (!text) return '';
