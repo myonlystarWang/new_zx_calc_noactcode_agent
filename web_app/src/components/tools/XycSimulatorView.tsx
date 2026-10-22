@@ -151,7 +151,7 @@ export const XycSimulatorView: React.FC<{ seed?: XycSeed | null }> = ({ seed }) 
     const activeRules = isHero ? HERO_RULES : STANDARD_RULES;
     const beastMeta = BEASTS[selectedBeast];
 
-    // 可选的属性键列表（当前四象专属 + 通用基础）
+    // 可选的属性键列表（当前书系专属 + 通用基础）
     const availableKeys = useMemo(() => {
         return [...beastMeta.specificKeys, ...COMMON_KEYS];
     }, [beastMeta]);
@@ -277,7 +277,7 @@ export const XycSimulatorView: React.FC<{ seed?: XycSeed | null }> = ({ seed }) 
                     <div>
                         <div className="flex items-center gap-2">
                             <h2 className="text-xl font-black text-slate-100 tracking-wide">
-                                轩辕策四象模拟器
+                                轩辕策模拟器
                             </h2>
                             <span className="text-xs px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 font-bold">
                                 1~20级精准推算
@@ -315,10 +315,10 @@ export const XycSimulatorView: React.FC<{ seed?: XycSeed | null }> = ({ seed }) 
                 </div>
             </div>
 
-            {/* 四象品类切换与英雄版本开关 */}
+            {/* 书系切换与英雄版本开关 */}
             <div className="flex items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 flex-wrap">
                 <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs text-slate-400 font-bold mr-1">四象书型:</span>
+                    <span className="text-xs text-slate-400 font-bold mr-1">书系:</span>
                     {(['青龙', '白虎', '朱雀', '玄武'] as const).map(bName => {
                         const isSelected = selectedBeast === bName;
                         const meta = BEASTS[bName];
@@ -560,7 +560,7 @@ export const XycSimulatorView: React.FC<{ seed?: XycSeed | null }> = ({ seed }) 
                             className="bg-[#0b0e14]/95 text-xs font-sans leading-relaxed border-slate-700/80"
                         >
                             <div className="text-[11px] text-slate-400 pb-1 border-b border-slate-800">
-                                轩辕天书 · 蕴含四象神力
+                                轩辕天书 · 策书属性加成
                             </div>
                             <div className="space-y-1 py-1 font-mono">
                                 {evaluatedResults.map(item => (

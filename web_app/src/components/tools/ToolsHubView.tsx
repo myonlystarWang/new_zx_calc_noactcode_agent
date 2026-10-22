@@ -20,10 +20,10 @@ export const TOOLS_CONFIG: { id: ToolSubTab; label: string; path: string; icon: 
     },
     {
         id: 'xyc',
-        label: '轩辕策四象模拟器',
+        label: '轩辕策模拟器',
         path: ROUTE.xycSimulator,
         icon: <Compass className="w-4 h-4 text-teal-400" />,
-        desc: '青龙/白虎/朱雀/玄武成长与品相推算'
+        desc: '四系书型品相与 1~20 阶成长推算'
     },
     {
         id: 'newtianyuan',

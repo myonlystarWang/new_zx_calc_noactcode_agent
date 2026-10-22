@@ -77,7 +77,7 @@ export async function syncServerList(): Promise<void> {
 }
 
 export async function syncXycRules(): Promise<void> {
-    console.log('[4/5] 校验轩辕策四象规则表...');
+    console.log('[4/5] 校验轩辕策规则表...');
     const dest = path.join(TARGET_DIR, 'xyc_rules.json');
     if (fs.existsSync(dest)) {
         console.log(`  ✓ xyc_rules.json 已就绪 (${dest})`);

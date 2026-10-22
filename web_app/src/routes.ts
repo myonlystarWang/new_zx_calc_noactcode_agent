@@ -110,7 +110,7 @@ export function titleForPath(pathname: string): string {
     if (parts[0] === 'tools') {
         const map: Record<string, string> = {
             server: '开服雷达监测',
-            xyc: '轩辕策四象模拟器',
+            xyc: '轩辕策模拟器',
             newtianyuan: '新版天缘模拟器',
             yunling: '装备蕴灵模拟器',
         };
