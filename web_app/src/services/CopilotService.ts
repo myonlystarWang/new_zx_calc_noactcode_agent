@@ -36,6 +36,35 @@ export const TOP_HUB_OPTIONS = [
     { key: 'server', label: '开服雷达', query: '开服雷达' },
 ];
 
+/**
+ * 统一的「未命中」消息工厂（2026-10-22）
+ * 铁律：L1 任何走查无结果的返回，都必须自带 top_hub 全景分类导航卡。
+ * 历史坑：早期 4 处 return 只回 UNIFIED_NOT_FOUND_REPLY 文本、不带 cardType，
+ * 而 HomePage 只在 L2 chatText 兜底时才补挂 top_hub → 用户在「武器上15的神机有哪些」
+ * 一类输入下只看到一堆示例文案、下方导航卡缺失（截图实证 2026-10-22）。
+ */
+export function buildNotFoundMessage(timeStr: string): CopilotMessage {
+    return {
+        id: `msg-${Date.now()}`,
+        sender: 'assistant',
+        text: UNIFIED_NOT_FOUND_REPLY,
+        time: timeStr,
+        cardType: 'top_hub',
+        cardData: {
+            title: '全景分类导航',
+            options: TOP_HUB_OPTIONS,
+        },
+    };
+}
+
+/** L2/远端可能返回同义「没听懂」文案，统一判定，避免导航卡只在一种措辞下出现 */
+const NOT_FOUND_MARKERS = ['未能完全理解', '未能理解', '无法理解', '没听懂', '本地知识库暂未覆盖'];
+
+export function isNotFoundReply(reply: string): boolean {
+    if (!reply) return false;
+    return NOT_FOUND_MARKERS.some((m) => reply.includes(m));
+}
+
 export interface CopilotMessage {
     id: string;
     sender: 'user' | 'assistant' | 'system';
@@ -517,12 +546,7 @@ export class CopilotService {
         if (bareDungeonNum) {
             q = `t${bareDungeonNum[1]}`;
         } else if (/^[+-]?\d+(?:\.\d+)?$/.test(q)) {
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: UNIFIED_NOT_FOUND_REPLY,
-                time: timeStr
-            };
+            return buildNotFoundMessage(timeStr);
         }
 
         // ====================================================
@@ -2778,12 +2802,7 @@ export class CopilotService {
                             }
                         };
                     } else if (matchedQ || matchedSlot || q.includes('装备')) {
-                        return {
-                            id: `msg-${Date.now()}`,
-                            sender: 'assistant',
-                            text: UNIFIED_NOT_FOUND_REPLY,
-                            time: timeStr
-                        };
+                        return buildNotFoundMessage(timeStr);
                     }
                 }
             }
@@ -2893,12 +2912,7 @@ export class CopilotService {
                         }
                     };
                 } else if (isExplicitFabaoQuery) {
-                    return {
-                        id: `msg-${Date.now()}`,
-                        sender: 'assistant',
-                        text: UNIFIED_NOT_FOUND_REPLY,
-                        time: timeStr
-                    };
+                    return buildNotFoundMessage(timeStr);
                 }
             }
         } catch (e) {
@@ -3268,12 +3282,7 @@ export class CopilotService {
                         }
                     };
                 } else if (isExplicitSkillQuery) {
-                    return {
-                        id: `msg-${Date.now()}`,
-                        sender: 'assistant',
-                        text: UNIFIED_NOT_FOUND_REPLY,
-                        time: timeStr
-                    };
+                    return buildNotFoundMessage(timeStr);
                 }
             }
 

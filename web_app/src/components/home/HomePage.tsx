@@ -17,7 +17,7 @@ import { HomeAIChatStage } from './HomeAIChatStage';
 import { SplitScreenWorkspace, type WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 import { useSplitDrag } from '../workspace/useSplitDrag';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
-import { CopilotService, type CopilotMessage, TOP_HUB_OPTIONS } from '../../services/CopilotService';
+import { CopilotService, type CopilotMessage, TOP_HUB_OPTIONS, isNotFoundReply } from '../../services/CopilotService';
 import { buildVisionMessage } from '../../services/vision/buildVisionMessage';
 import { DataService } from '../../services/DataService';
 import { CelestialStage } from './CelestialStage';
@@ -176,7 +176,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           }
         } else {
           const reply = await copilot.chatText(text);
-          const isNotFound = reply.includes('暂时未能完全理解');
+          const isNotFound = isNotFoundReply(reply);
           setChatMessages((prev) => [
             ...prev,
             {
@@ -253,7 +253,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             content: m.text,
           }));
           const reply = await copilot.chatText(trimmed, history);
-          const isNotFound = reply.includes('暂时未能完全理解');
+          const isNotFound = isNotFoundReply(reply);
           setChatMessages((prev) => [
             ...prev,
             {
