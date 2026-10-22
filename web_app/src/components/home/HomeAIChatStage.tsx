@@ -312,6 +312,15 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         }
     };
 
+    /** 天缘：把「部位全名 / 天命等级」带进天缘词条池 */
+    const handleOpenTianyuan = (seed: { groupName?: string; level?: number }) => {
+        if (onOpenSplitWorkspace) {
+            onOpenSplitWorkspace('newtianyuan', { tyGroupName: seed.groupName, tyLevel: seed.level });
+        } else {
+            navigate('/tools/tianyuan');
+        }
+    };
+
     const handleArchivePanel = (panel: RecognizedPanel) => {
         try {
             const key = 'zx_panel_archive_v1';
@@ -421,6 +430,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                 onImport={handleImportReviewPanel}
                                                 onArchive={handleArchivePanel}
                                                 onOpenXyc={handleOpenXyc}
+                                                onOpenTianyuan={handleOpenTianyuan}
                                             />
                                         )}
 

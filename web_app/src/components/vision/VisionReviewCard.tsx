@@ -25,6 +25,8 @@ export interface VisionReviewCardProps {
     onArchive?: (panel: RecognizedPanel) => void;
     /** 轩辕策：带 seed 打开模拟器（系别 / 普通·英雄 / 品阶 / 进阶技能） */
     onOpenXyc?: (seed: { beast?: string; isHero?: boolean; level?: number; advSkill?: RecognizedPanel['advSkill'] }) => void;
+    /** 天缘：带 seed 打开天缘词条池（部位全名 / 天命等级） */
+    onOpenTianyuan?: (seed: { groupName?: string; level?: number }) => void;
     onPeek?: (image: string) => void;
     className?: string;
 }
@@ -98,6 +100,7 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
     onSimulate,
     onArchive,
     onOpenXyc,
+    onOpenTianyuan,
     onPeek,
     className
 }) => {
@@ -453,6 +456,24 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </button>
 
                 <div className="flex items-center gap-2 flex-wrap">
+                    {live.kind === 'tianyuan' && onOpenTianyuan && (
+                        <button
+                            type="button"
+                            data-action="open-tianyuan"
+                            onClick={() => {
+                                const partRaw = String(live.fields.find(f => f.key === 'part')?.value ?? '');
+                                const part = partRaw.replace(/^上玄佑万辰须弥/, '');
+                                const level = live.fields.find(f => f.key === 'tianyuanLevel')?.value;
+                                onOpenTianyuan({
+                                    groupName: part ? `上玄佑万辰须弥${part}` : undefined,
+                                    level: typeof level === 'number' ? level : Number(level)
+                                });
+                            }}
+                            className="px-3.5 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 text-cyan-200 text-xs font-medium transition-all"
+                        >
+                            查该部位词条池
+                        </button>
+                    )}
                     {live.kind === 'xyc' && onOpenXyc && (
                         <button
                             type="button"

@@ -160,7 +160,7 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
 
         {mode === 'newtianyuan' && (
           <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
-            <NewTianYuanSimulatorView />
+            <NewTianYuanSimulatorView seed={{ groupName: params?.tyGroupName, level: params?.tyLevel }} />
           </div>
         )}
 
