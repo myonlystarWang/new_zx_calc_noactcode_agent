@@ -101,7 +101,7 @@ export const AboutPage: React.FC = () => {
                 <span>0ms 确定性边缘推演</span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
-                100% 运行于仙友本地浏览器与静态边缘，无任何网络延迟与算力等待。结合四象轩辕策、神级天缘等趣味模拟矩阵，随时推演毕业期望。
+                100% 运行于仙友本地浏览器与静态边缘，无任何网络延迟与算力等待。结合轩辕策、神级天缘等趣味模拟矩阵，随时推演毕业期望。
               </p>
             </div>
           </div>

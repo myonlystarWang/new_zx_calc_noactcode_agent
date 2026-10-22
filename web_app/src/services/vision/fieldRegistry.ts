@@ -53,7 +53,7 @@ export const CHARACTER_PANEL_FIELDS: FieldDef[] = [
 
 /** 轩辕策：按 tooltip 层级，词条单独走 attrs，不进 fields */
 export const XYC_FIELDS: FieldDef[] = [
-    { key: 'beast', label: '四象', unit: 'text', engine: false, expectedLabels: [] },
+    { key: 'beast', label: '书系', unit: 'text', engine: false, expectedLabels: [] },
     { key: 'bookName', label: '书名', unit: 'text', engine: false, expectedLabels: [] },
     { key: 'tier', label: '品阶', unit: 'text', engine: false, expectedLabels: [] },
     { key: 'stars', label: '星级', unit: 'point', engine: false, expectedLabels: [] },

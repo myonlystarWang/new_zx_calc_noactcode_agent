@@ -44,7 +44,7 @@ const PANEL_XYC = {
     kindConfidence: 0.92,
     textLines: [{ label: '等级', raw: '1' }, { label: '洗炼次数', raw: '4/10' }],
     fields: [
-        { key: 'beast', label: '四象', raw: '青龙', value: '青龙', status: 'ok' },
+        { key: 'beast', label: '书系', raw: '青龙', value: '青龙', status: 'ok' },
         { key: 'bookName', label: '书名', raw: '青囊玉书', value: '青囊玉书', status: 'ok' },
         { key: 'tier', label: '品阶', raw: '六品', value: '六品', status: 'ok' },
         { key: 'stars', label: '星级', raw: '★★★★★', value: 5, status: 'ok' },
