@@ -187,24 +187,3 @@ export function degradedPanel(envelope: { degradedReason?: string; lastError?: s
     base.engine = mapToEngine(base);
     return base;
 }
-
-/** 旧协议（cPanelData）兜底：只用于过渡，标 LEGACY_UNVERIFIED 并禁止显示秒伤 */
-export function fromLegacy(cPanel: any, imageRef: string | null): RecognizedPanel {
-    const pseudo = {
-        panelKind: 'character_panel',
-        kindConfidence: 0,
-        kindEvidence: [],
-        character: { classRaw: cPanel?.characterClass, factionRaw: cPanel?.faction === 'FO' ? '佛' : cPanel?.faction === 'MO' ? '魔' : '仙' },
-        textLines: [],
-        fields: [
-            { key: 'attackMax', label: '攻击', value: cPanel?.attack ?? null, status: cPanel?.attack != null ? 'ok' : 'absent' },
-            { key: 'attackMin', label: '攻击', value: cPanel?.minAttack ?? null, status: cPanel?.minAttack != null ? 'ok' : 'absent' },
-            { key: 'defense', label: '防御', value: cPanel?.defense ?? null, status: cPanel?.defense != null ? 'ok' : 'absent' },
-            { key: 'health', label: '气血', value: cPanel?.hp ?? null, status: cPanel?.hp != null ? 'ok' : 'absent' },
-            { key: 'mana', label: '真气', value: cPanel?.mp ?? null, status: cPanel?.mp != null ? 'ok' : 'absent' },
-            { key: 'critDamage', label: '致命伤害', value: cPanel?.critDamage ?? null, status: cPanel?.critDamage != null ? 'ok' : 'absent' }
-        ]
-    };
-    const panel = fromServerPanel(pseudo, imageRef, { quality: 'partial', issues: ['LEGACY_UNVERIFIED'] });
-    return panel;
-}
