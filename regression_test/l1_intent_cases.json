@@ -367,6 +367,19 @@
     "assert": "strong"
   },
   {
+    "id": "fallback-top-hub-01",
+    "input": "武器上15的神机有哪些",
+    "expect": {
+      "cardType": "top_hub",
+      "@textIncludes": "暂时未能完全理解"
+    },
+    "tags": [
+      "standard",
+      "fallback"
+    ],
+    "assert": "strong"
+  },
+  {
     "id": "fabao-tianya-01",
     "input": "天琊",
     "expect": {
