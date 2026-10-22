@@ -29,6 +29,16 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.2.7',
+        date: '2026-10-22',
+        title: '装备蕴灵模拟上线，神机概率修正',
+        changes: [
+            { type: 'feat', text: '【装备蕴灵模拟】输入"装备蕴灵"或"蕴灵模拟"，按等级看神隐装备 +1~+15 每次要花多少月德符、幸运值能帮上多少忙' },
+            { type: 'fix', text: '【神机洗练】修正各部位神机属性的品质概率（腰带、袖甲此前偏差较大），锻造读条提速到 0.5 秒' },
+            { type: 'perf', text: '【属性面板】标题改「角色属性」，并提醒填写昭冥上身满状态，避免战力测算偏低' },
+        ],
+    },
+    {
         version: '1.2.6',
         date: '2026-10-21',
         title: '四灵本元全系属性速查，神机洗练模拟器上线',
