@@ -30,7 +30,7 @@ export interface ShenjiForgeCardProps {
 }
 
 const SIM_FONT = '"SimSun", "宋体", "Microsoft YaHei", sans-serif';
-const FORGE_MS = 1000;
+const FORGE_MS = 500;
 const BAR_W = 216;
 
 /** 六类部位来自寻宝天行真实客户端图标（袖甲来自原版客户端提取） */
@@ -293,7 +293,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
     const pools = useMemo(() => buildShenjiPools(equips, slot, quality, yunling), [equips, slot, quality, yunling]);
     const poolReady = pools.length > 0 && pools.every((p) => p.length > 0);
 
-    /** 当前部位的 +11/+13/+15 五档概率文案（实测自客户端表 325，随部位变化） */
+    /** 当前部位的 +11/+13/+15 五档概率文案（体验调整值，随部位变化） */
     const tierRateText = useMemo(
         () => [11, 13, 15].map((l) => `+${l} 池 ${getShenjiTierRates(slot, l).join('/')}`).join('，'),
         [slot]
@@ -616,7 +616,8 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                     >
                         <div>· 每条属性独立抽取：先按属性出现概率选词条，再按档位概率选 5 档之一。</div>
                         <div>· 五档取值为固定值：第一档 = 区间下限（白），第五档 = 区间上限（红·极·）。</div>
-                        <div>· 档位概率（{slot}，实测自客户端）：{tierRateText}。</div>
+                        <div>· 档位概率（{slot}，模拟器体验调整值，非游戏内实测）：{tierRateText}。</div>
+                        <div>· 按此概率：约 1/26 出两条红、约 1/580 出三条红。</div>
                         <div>· 条数由蕴灵决定：+11 一条、+13 两条、+15 三条，依次取 +11 / +13 / +15 池。</div>
                         <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]">
                             {TIER_NAMES.map((n, i) => (
@@ -784,12 +785,6 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                             自动锻造
                         </span>
                         <div className="flex items-center gap-1.5">
-                            <span
-                                className="text-[13px] text-[#6b89a8] cursor-help px-1 hover:text-[#9bc2e6]"
-                                title="根据预设属性自动锻造，满足目标时自动停止"
-                            >
-                                ?
-                            </span>
                             <button
                                 type="button"
                                 onClick={() => {
