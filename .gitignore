@@ -3,6 +3,8 @@ zx_analysis_results/**/profile_test.json
 # 布局/截图验证产物，随时可删，不入库
 zx_analysis_results/_layout_check/
 doc/四灵本元截图
+# 四灵本元配套的分享用一图流 HTML（生成产物，不入库）
+doc/四灵说明.html
 # scripts/shot_full.mjs 的 Chrome 临时 profile（每次截图一个，百兆级）
 **/_cdp_profile*/
 # Dependencies and build output
