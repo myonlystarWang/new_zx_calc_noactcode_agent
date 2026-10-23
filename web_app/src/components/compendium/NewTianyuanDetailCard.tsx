@@ -3,6 +3,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
 import { GAME_COLORS } from '../../constants/gameColorSystem';
 
+/** 稀有档属性色：直接复用轩辕策信息卡「四系专属属性」的亮蓝（XycTomeDetailCard.SPECIAL_ATTR_COLOR） */
+const RARE_ATTR_COLOR = GAME_COLORS.SKY_BLUE;
+
 export interface NewTianyuanAttr {
     name: string;
     probability: string;
@@ -151,6 +154,10 @@ export const NewTianyuanDetailCard: React.FC<NewTianyuanDetailCardProps> = ({ ca
 
         const maxExtraCoeff = getSumCoeffForExtraLevel(maxExtraLevel);
 
+        // 官方表每个部位 14 槽，同名属性占两槽：首槽为主档（高权重低数值），次槽为稀有档（低权重新数值）。
+        // 这里只做着色标识，两行都保留 —— 属性池全貌。
+        const nameSeen = new Map<string, number>();
+
         return activeGroup.attributes.map((attr, idx) => {
             const u = attr.unit || '';
             const fixedMin = attr.initMin + (level * attr.perLevelGain);
@@ -158,9 +165,13 @@ export const NewTianyuanDetailCard: React.FC<NewTianyuanDetailCardProps> = ({ ca
             const extraMax = maxExtraCoeff * attr.perLevelGain;
             const totalMax = fixedMax + extraMax;
 
+            const seen = nameSeen.get(attr.name) ?? 0;
+            nameSeen.set(attr.name, seen + 1);
+
             return {
                 ...attr,
                 idx,
+                isRare: seen > 0,
                 unitStr: u,
                 baseRangeStr: `${fmt(fixedMin, u)} - ${fmt(fixedMax, u)}`,
                 extraMaxStr: extraMax > 0 ? `+${fmt(extraMax, u)}` : '0',
@@ -293,7 +304,7 @@ export const NewTianyuanDetailCard: React.FC<NewTianyuanDetailCardProps> = ({ ca
                             key={`${attr.name}-${attr.probability}-${i}`}
                             className="flex items-center justify-between text-[13px] leading-[22px]"
                         >
-                            <span style={{ color: GAME_COLORS.STAT_BLUE }}>
+                            <span style={{ color: attr.isRare ? RARE_ATTR_COLOR : GAME_COLORS.STAT_BLUE }}>
                                 · {attr.name} {attr.totalRangeStr}
                             </span>
                             <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>

@@ -71,7 +71,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'tianyuan_sim' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge' | 'xyc_tome' | 'xyc_hub';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'tianyuan_sim' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge' | 'xyc_tome' | 'xyc_wash' | 'xyc_hub';
     cardData?: any;
 }
 
@@ -783,6 +783,29 @@ export class CopilotService {
             const xycLvlMatch = q.match(/(\d{1,2})\s*级/);
             const initialLevel = xycLvlMatch ? Math.min(20, Math.max(1, parseInt(xycLvlMatch[1], 10))) : 1;
 
+            // 洗练 / 模拟 → 洗练模拟卡（1:1 物品窗 + 三种洗练道具）；其余 → 属性信息卡
+            if (wantsSim) {
+                const gradeMap: Record<string, number> = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6 };
+                const xycGradeMatch = q.match(/([一二三四五六])\s*品/);
+                const initialGrade = xycGradeMatch ? gradeMap[xycGradeMatch[1]] : 6;
+                const initialVersion = q.includes('英雄') ? '英雄' : q.includes('典藏') ? '典藏' : '普通';
+                const initialOcc = PROFESSIONS.find((pr) => q.includes(pr));
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: '为你打开【轩辕策洗练模拟】。洗练不改变属性条数：大衍奇术只洗属性、一元道契只洗技能（仅青龙 / 白虎）、太乙宝函属性与技能同洗；每本上限 10 次，可用轩辕拾遗录提升。',
+                    time: timeStr,
+                    cardType: 'xyc_wash',
+                    cardData: {
+                        initialBeast,
+                        initialVersion,
+                        initialGrade,
+                        initialOcc,
+                        initialLevel,
+                    },
+                };
+            }
+
             try {
                 const [xycRules, xycMeta] = await Promise.all([
                     dataService.getXycRules(),
@@ -791,9 +814,7 @@ export class CopilotService {
                 return {
                     id: `msg-${Date.now()}`,
                     sender: 'assistant',
-                    text: wantsSim
-                        ? '【轩辕策模拟·信息卡版】正在开发中，先为你呈现属性全览。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：'
-                        : '为你呈现【轩辕策属性全览】。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：',
+                    text: '为你呈现【轩辕策属性全览】。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：',
                     time: timeStr,
                     cardType: 'xyc_tome',
                     cardData: {
@@ -2010,6 +2031,7 @@ export class CopilotService {
                         { key: 'shenji', label: '神机洗练', query: '神机洗练' },
                         { key: 'yunling', label: '蕴灵模拟', query: '蕴灵模拟' },
                         { key: 'tianyuan_sim', label: '新天缘模拟', query: '新天缘模拟' },
+                        { key: 'xyc_wash', label: '轩辕策洗练', query: '轩辕策洗练' },
                     ]
                 }
             };

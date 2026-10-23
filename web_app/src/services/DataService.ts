@@ -348,6 +348,7 @@ export class DataService {
 
     private xycTomeMeta: any = null;
     private xycAdvSkills: any = null;
+    private xycRefine: any = null;
 
     /** 轩辕策四系书名 / 品阶 / 等级上限等展示元数据 */
     public async getXycTomeMeta(): Promise<any> {
@@ -356,6 +357,15 @@ export class DataService {
         if (!res.ok) throw new Error(`加载 xyc_tomes.json 失败: ${res.status}`);
         this.xycTomeMeta = await res.json();
         return this.xycTomeMeta;
+    }
+
+    /** 轩辕策洗练池（客户端 elements.data 表 213/214/215 解包产出，含条数/五档/技能概率） */
+    public async getXycRefine(): Promise<any> {
+        if (this.xycRefine) return this.xycRefine;
+        const res = await fetch(`${DATA_BASE_URL}/xyc_refine.json`);
+        if (!res.ok) throw new Error(`加载 xyc_refine.json 失败: ${res.status}`);
+        this.xycRefine = await res.json();
+        return this.xycRefine;
     }
 
     /** 轩辕策进阶技能（仅青龙 / 白虎，按职业分组） */

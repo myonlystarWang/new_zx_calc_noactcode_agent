@@ -6146,14 +6146,14 @@
     "input": "各类模拟器",
     "expect": {
       "cardType": "sim_hub",
-      "cardData.options.length": 3
+      "cardData.options.length": 4
     },
     "tags": [
       "hub",
       "simulator"
     ],
     "assert": "strong",
-    "note": "全景导航追加「装备蕴灵」「新天缘模拟」入口"
+    "note": "全景导航追加「装备蕴灵」「新天缘模拟」入口（2026-10-23：轩辕策洗练接入，选项 3→4）"
   },
   {
     "id": "yunling-lite-02",
@@ -6350,27 +6350,110 @@
     "id": "xyc-sim-01",
     "input": "轩辕策模拟",
     "expect": {
-      "cardType": "xyc_tome"
+      "cardType": "xyc_wash"
     },
     "tags": [
       "equip",
       "xyc_sim"
     ],
     "assert": "strong",
-    "note": "带「模拟」仍走模拟器工具卡（右分屏）"
+    "note": "2026-10-23：带「模拟」改出洗练模拟卡（1:1 物品窗 + 三种洗练道具）"
   },
   {
     "id": "xyc-sim-02",
     "input": "轩辕策洗炼",
     "expect": {
-      "cardType": "xyc_tome"
+      "cardType": "xyc_wash"
     },
     "tags": [
       "equip",
       "xyc_sim"
     ],
     "assert": "strong",
-    "note": "带「洗炼」仍走模拟器工具卡"
+    "note": "2026-10-23：带「洗炼」出洗练模拟卡（原信息卡占位已下架）"
+  },
+  {
+    "id": "xyc-wash-01",
+    "input": "轩辕策洗练",
+    "expect": {
+      "cardType": "xyc_wash"
+    },
+    "tags": [
+      "equip",
+      "xyc_wash"
+    ],
+    "assert": "strong",
+    "note": "洗练正字"
+  },
+  {
+    "id": "xyc-wash-02",
+    "input": "白虎轩辕策洗练",
+    "expect": {
+      "cardType": "xyc_wash",
+      "cardData.initialBeast": "白虎"
+    },
+    "tags": [
+      "equip",
+      "xyc_wash"
+    ],
+    "assert": "strong",
+    "note": "书系带入"
+  },
+  {
+    "id": "xyc-wash-03",
+    "input": "轩辕策洗练 六品",
+    "expect": {
+      "cardType": "xyc_wash",
+      "cardData.initialGrade": 6
+    },
+    "tags": [
+      "equip",
+      "xyc_wash"
+    ],
+    "assert": "strong",
+    "note": "品阶带入"
+  },
+  {
+    "id": "xyc-wash-04",
+    "input": "玄武策洗炼",
+    "expect": {
+      "cardType": "xyc_wash",
+      "cardData.initialBeast": "玄武"
+    },
+    "tags": [
+      "equip",
+      "xyc_wash"
+    ],
+    "assert": "strong",
+    "note": "「X策洗炼」+ 系别"
+  },
+  {
+    "id": "xyc-wash-05",
+    "input": "轩辕策英雄洗练",
+    "expect": {
+      "cardType": "xyc_wash",
+      "cardData.initialVersion": "英雄"
+    },
+    "tags": [
+      "equip",
+      "xyc_wash"
+    ],
+    "assert": "strong",
+    "note": "英雄版带入（洗练卡默认普通）"
+  },
+  {
+    "id": "xyc-wash-06",
+    "input": "轩辕策洗练 12级",
+    "expect": {
+      "cardType": "xyc_wash",
+      "cardData.initialLevel": 12
+    },
+    "tags": [
+      "equip",
+      "xyc_wash"
+    ],
+    "assert": "strong",
+    "note": "等级带入"
   },
   {
     "id": "xyc-name-01",
@@ -6385,7 +6468,12 @@
       "cardData.rules.standard.fy_r.name": "防御",
       "cardData.rules.standard.qx_r.name": "气血",
       "cardData.rules.standard.zq_r.name": "真气",
-      "@excludes": ["攻击%", "防御%", "气血%", "真气%"]
+      "@excludes": [
+        "攻击%",
+        "防御%",
+        "气血%",
+        "真气%"
+      ]
     },
     "tags": [
       "equip",
@@ -6405,7 +6493,11 @@
       "cardData.rules.standard.bh_jbj.name": "减免致命一击率",
       "cardData.rules.standard.ql_bs.name": "致命一击伤害",
       "cardData.rules.standard.xw_jbs.name": "减免致命一击伤害",
-      "@excludes": ["减暴击", "减免暴伤", "暴击伤害"]
+      "@excludes": [
+        "减暴击",
+        "减免暴伤",
+        "暴击伤害"
+      ]
     },
     "tags": [
       "equip",

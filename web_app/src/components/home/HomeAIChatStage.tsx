@@ -26,6 +26,7 @@ import { OldTianyuanDetailCard } from '../compendium/OldTianyuanDetailCard';
 import { NewTianyuanDetailCard } from '../compendium/NewTianyuanDetailCard';
 import { NewTianyuanSimCard } from '../compendium/NewTianyuanSimCard';
 import { XycTomeDetailCard } from '../compendium/XycTomeDetailCard';
+import { XycWashCard } from '../compendium/XycWashCard';
 import { XingsuDetailCard } from '../compendium/XingsuDetailCard';
 import { BaoshiDetailCard } from '../compendium/BaoshiDetailCard';
 import { SilinBenyuanCard } from '../compendium/SilinBenyuanCard';
@@ -805,6 +806,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {/* 6.8c3 轩辕策属性信息卡：四系×普通/英雄、Lv.1–20 词条区间、青龙/白虎 III 代进阶技能 */}
                                         {msg.cardType === 'xyc_tome' && (
                                             <XycTomeDetailCard cardData={msg.cardData} />
+                                        )}
+
+                                        {/* 6.8c4 轩辕策洗练模拟卡：1:1 物品窗 + 大衍奇术/一元道契/太乙宝函 */}
+                                        {msg.cardType === 'xyc_wash' && (
+                                            <XycWashCard cardData={msg.cardData} />
                                         )}
 
                                         {/* 6.8d 星宿属性及升星增益卡：启明/荧惑/重华3大星辰与1~5星测算 */}
