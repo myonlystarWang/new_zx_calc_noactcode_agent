@@ -14,6 +14,12 @@ import {
     type SimTarget
 } from '../../services/vision/runPanelSimulation';
 import { DungeonBossPicker } from './DungeonBossPicker';
+import { GAME_COLORS } from '../../constants/gameColorSystem';
+
+/** 与轩辕策信息卡（XycTomeDetailCard）同字体：游戏 tooltip 版式 */
+const FONT_SONG = '"SimSun", "宋体", "Microsoft YaHei", sans-serif';
+/** 括号内红色差异值：取项目内既有「彰武红」，纯 #ff0000 在深底过刺 */
+const BRACKET_RED = '#ff4d4f';
 
 export interface VisionReviewCardProps {
     panel: RecognizedPanel;
@@ -44,21 +50,15 @@ const withUnit = (cell: FieldCell): string => {
     return fmtNum(cell.value);
 };
 
-/** 通道名太长会把 360px 卡撑出横向滚动：只留「厂商/模型」并截断 */
-const shortProvider = (p: string): string => {
-    const s = p.replace(/^cf-workers-ai:/, '').replace(/^@/, '');
-    const parts = s.split('/');
-    const tail = parts[parts.length - 1] || s;
-    return tail.length > 20 ? tail.slice(0, 20) + '…' : tail;
-};
-
-/** 单元格：行式（label 左 / 值右），保证窄栏也不会把标签折成竖排 */
+/** 单元格：行式（label 左 / 值右），保证窄栏也不会把标签折成竖排。
+ *  plain=true 时去掉输入框外壳，按游戏 tooltip 的「等级 N」白字行渲染（轩辕策用）。 */
 const FieldRow: React.FC<{
     cell: FieldCell;
     editing: boolean;
+    plain?: boolean;
     onChange: (v: number | null) => void;
     onStartEdit: () => void;
-}> = ({ cell, editing, onChange, onStartEdit }) => {
+}> = ({ cell, editing, plain, onChange, onStartEdit }) => {
     const absent = cell.status === 'absent' || cell.status === 'invalid' || cell.status === 'unreadable';
     const dim = !cell.engine;
 
@@ -67,12 +67,22 @@ const FieldRow: React.FC<{
             data-field-key={cell.key}
             data-field-status={cell.status}
             className={clsx(
-                'flex items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 border transition-colors',
-                absent ? 'bg-black/20 border-dashed border-slate-700' : 'bg-black/40 border-white/5',
-                cell.status === 'low_confidence' && 'border-amber-600/40'
+                'flex items-center gap-2 transition-colors',
+                plain
+                    ? 'justify-start px-0.5 py-0.5'
+                    : clsx(
+                        'justify-between rounded-lg px-2.5 py-1.5 border',
+                        absent ? 'bg-black/20 border-dashed border-slate-700' : 'bg-black/40 border-white/5',
+                        cell.status === 'low_confidence' && 'border-amber-600/40'
+                    )
             )}
+            style={plain ? { fontFamily: FONT_SONG, letterSpacing: '0.3px' } : undefined}
         >
-            <span className="text-[11px] text-slate-400 whitespace-nowrap shrink-0" title={cell.reason || undefined}>
+            <span
+                className={clsx('whitespace-nowrap shrink-0', plain ? 'text-[13px]' : 'text-[11px] text-slate-400')}
+                style={plain ? { color: GAME_COLORS.WHITE } : undefined}
+                title={cell.reason || undefined}
+            >
                 {cell.label}
             </span>
             {editing ? (
@@ -88,9 +98,11 @@ const FieldRow: React.FC<{
                 <button
                     type="button"
                     onClick={onStartEdit}
+                    style={plain && !absent ? { color: GAME_COLORS.WHITE } : undefined}
                     className={clsx(
-                        'font-mono text-xs whitespace-nowrap shrink-0 cursor-text',
-                        absent ? 'text-amber-600/90 font-normal text-[11px]' : dim ? 'text-slate-400 font-normal' : 'text-slate-100 font-bold'
+                        'font-mono whitespace-nowrap shrink-0 cursor-text',
+                        plain ? 'text-[13px]' : 'text-xs',
+                        absent ? 'text-amber-600/90 font-normal text-[11px]' : dim ? (plain ? '' : 'text-slate-400 font-normal') : 'text-slate-100 font-bold'
                     )}
                 >
                     {absent
@@ -228,7 +240,12 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 <div className="flex items-center justify-between gap-2 min-w-0">
                     <div className="flex items-center gap-2 min-w-0">
                         <span className="w-1.5 h-4 rounded-full bg-cyan-400 shrink-0" />
-                        <h4 className="text-[15px] font-black text-slate-100 tracking-wide truncate">{headerTitle}</h4>
+                        <h4
+                            className="text-[15px] font-black text-slate-100 tracking-wide truncate"
+                            style={live.kind === 'xyc' ? { fontFamily: FONT_SONG, color: '#ffd272' } : undefined}
+                        >
+                            {headerTitle}
+                        </h4>
                         {factionText && (
                             <span className="px-1.5 py-0.5 rounded text-[11px] font-bold border bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shrink-0">
                                 {factionText}
@@ -261,11 +278,14 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                         </span>
                     )}
                     {live.xyc?.tier && (
-                        <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-lime-300 border border-lime-700/40 whitespace-nowrap">{live.xyc.tier}</span>
+                        <span className="px-1.5 py-0.5 rounded bg-cyan-950/60 text-cyan-200 border border-cyan-500/50 whitespace-nowrap font-bold">{live.xyc.tier}</span>
                     )}
                     {typeof live.xyc?.stars === 'number' && (
-                        <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-amber-300 border border-amber-700/40 whitespace-nowrap font-mono">
-                            {'★'.repeat(Math.max(0, Math.min(5, live.xyc.stars)))}
+                        <span
+                            className="px-1.5 py-0.5 rounded bg-slate-800/60 border border-slate-700/50 whitespace-nowrap tracking-[1px]"
+                            style={{ color: GAME_COLORS.GOLD_AMBER }}
+                        >
+                            {'★'.repeat(Math.max(0, Math.min(10, live.xyc.stars)))}
                         </span>
                     )}
                     {typeof live.xyc?.washUsed === 'number' && (
@@ -281,14 +301,6 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                     {!live.degraded && (
                         <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50 whitespace-nowrap font-mono">
                             识别 {live.fields.filter(f => f.status === 'ok').length}/{live.fields.length}
-                        </span>
-                    )}
-                    {live.provider && (
-                        <span
-                            className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50 whitespace-nowrap font-mono text-[10px] max-w-[132px] truncate"
-                            title={live.provider}
-                        >
-                            {shortProvider(live.provider)}
                         </span>
                     )}
                 </div>
@@ -326,12 +338,18 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </div>
             )}
 
-            {/* 字段区：行式，容器查询换列 */}
-            <div className={clsx('mt-3 grid gap-x-3.5 gap-y-1', live.kind === 'character_panel' ? 'grid-cols-1 @[420px]:grid-cols-2' : 'grid-cols-1 @[420px]:grid-cols-2')}>
-                {live.fields.map(cell => (
+            {/* 字段区：行式，容器查询换列。
+                轩辕策的书系/书名/品阶/星级/洗炼已由头部徽章承担，卡内只留「等级」；
+                例外：上面没能展示出来的（未识别成功的）项仍保留，方便手填。 */}
+            <div className={clsx('mt-3 grid gap-x-3.5 gap-y-1', live.kind === 'xyc' ? 'grid-cols-1' : 'grid-cols-1 @[420px]:grid-cols-2')}>
+                {(live.kind === 'xyc'
+                    ? live.fields.filter(f => f.key === 'level' || f.status !== 'ok')
+                    : live.fields
+                ).map(cell => (
                     <FieldRow
                         key={cell.key}
                         cell={cell}
+                        plain={live.kind === 'xyc'}
                         editing={editingKey === cell.key}
                         onChange={v => setField(cell.key, v)}
                         onStartEdit={() => setEditingKey(cell.key)}
@@ -339,18 +357,38 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 ))}
             </div>
 
-            {/* 轩辕策 tooltip 细节 */}
-            {live.kind === 'xyc' && live.advSkill && (live.advSkill.name || live.advSkill.variant) && (
-                <div className="mt-3 pt-2.5 border-t border-white/5 text-[11px] text-slate-300">
-                    <span className="text-slate-400">（进阶技能）</span>
-                    <span className="text-violet-200 font-semibold ml-1">{live.advSkill.name || '—'}</span>
-                    {live.advSkill.variant && <span className="text-slate-300 ml-1">《{live.advSkill.variant}》</span>}
-                    {typeof live.advSkill.level === 'number' && <span className="text-slate-400 ml-1 font-mono">{live.advSkill.level} 级</span>}
+            {/* 轩辕策：属性 + 进阶技能，1:1 还原游戏 tooltip 版式（对齐 XycTomeDetailCard）
+                —— 属性名与数值统一游戏蓝，括号内绿=洗炼、红=额外，进阶技能排在属性下方同款蓝字 */}
+            {live.kind === 'xyc' && ((live.attrs?.length || 0) > 0 || Boolean(live.advSkill?.name || live.advSkill?.variant)) && (
+                <div
+                    className="mt-3 rounded-xl border border-[#232c3d] bg-[#070b12]/95 px-3 py-2.5 flex flex-col gap-1 min-w-0"
+                    style={{
+                        fontFamily: FONT_SONG,
+                        letterSpacing: '0.3px',
+                        boxShadow: 'inset 0 0 16px rgba(16, 28, 48, 0.35)'
+                    }}
+                >
+                    {(live.attrs || []).map((a, i) => (
+                        <div key={i} className="flex items-baseline gap-1.5 text-[13px] leading-[22px] min-w-0" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                            <span className="shrink-0">·</span>
+                            <span className="shrink-0">{a.name}</span>
+                            <span className="font-mono shrink-0">{a.value}</span>
+                            {a.wash && <span className="font-mono text-[12px] shrink-0" style={{ color: GAME_COLORS.MINT_GREEN }}>({a.wash})</span>}
+                            {a.extra && <span className="font-mono text-[12px] shrink-0" style={{ color: BRACKET_RED }}>({a.extra})</span>}
+                        </div>
+                    ))}
+                    {(live.advSkill?.name || live.advSkill?.variant) && (
+                        <div className="text-[13px] leading-[22px] min-w-0 truncate" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                            （进阶技能）{live.advSkill?.name || '—'}
+                            {live.advSkill?.variant && `《${live.advSkill.variant}》`}
+                            {typeof live.advSkill?.level === 'number' && ` ${live.advSkill.level} 级`}
+                        </div>
+                    )}
                 </div>
             )}
 
-            {/* 词条（轩辕策洗炼 / 天缘天命） */}
-            {Array.isArray(live.attrs) && live.attrs.length > 0 && (
+            {/* 天缘天命词条 */}
+            {live.kind !== 'xyc' && Array.isArray(live.attrs) && live.attrs.length > 0 && (
                 <div className="mt-2.5 flex flex-col gap-1">
                     {live.attrs.map((a, i) => (
                         <div key={i} className="flex items-baseline gap-1.5 text-xs">
