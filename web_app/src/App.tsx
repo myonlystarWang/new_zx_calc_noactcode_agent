@@ -320,7 +320,7 @@ const MainContent: React.FC = () => {
         <Route
           path={ROUTE.arena}
           element={
-            <main className="w-full flex-1 min-h-0 max-w-none mx-auto px-3 xl:px-4 animate-in fade-in duration-300 flex flex-col overflow-hidden">
+            <main className="w-full flex-1 min-h-0 max-w-none mx-auto px-3 xl:px-4 animate-in fade-in duration-300 flex flex-col overflow-y-auto xl:overflow-hidden">
               <SimulationArena />
             </main>
           }

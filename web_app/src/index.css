@@ -1252,7 +1252,10 @@ input[type="number"] {
 
 .calc-two-col-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  /* 必须是 minmax(0,1fr)：裸 1fr 的自动最小尺寸 = 子项 min-content，
+     窄屏下会被卡片内的固有宽度顶到 379px（视口 390 时右侧被裁 5px）。
+     minmax(0,…) 把轨道的下限归零，子项再各自用 min-w-0 收缩。 */
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   align-items: start;
   width: 100%;

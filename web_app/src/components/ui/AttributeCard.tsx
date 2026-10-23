@@ -52,7 +52,7 @@ export const AttributeCard: React.FC<AttributeCardProps> = ({
 
     return (
         <div className={clsx(
-            "glass-panel h-[110px] p-3.5 flex flex-col justify-between transition-all duration-300 animate-fade-in group",
+            "glass-panel h-[110px] p-2.5 sm:p-3.5 flex flex-col justify-between transition-all duration-300 animate-fade-in group",
             styles.border
         )}>
             {/* Header: Label & Tag (Aligned with BuffSelector font style) */}
@@ -70,13 +70,15 @@ export const AttributeCard: React.FC<AttributeCardProps> = ({
             {/* Monospace Number Display */}
             <input
                 type="number"
+                size={1}
+                inputMode="numeric"
                 value={value}
                 onChange={handleChange}
                 min={min}
                 max={max}
                 step={step}
                 className={clsx(
-                    "w-full bg-transparent text-xl font-black text-white text-center font-mono focus:outline-none transition-colors py-1",
+                    "w-full min-w-0 bg-transparent text-xl font-black text-white text-center font-mono focus:outline-none transition-colors py-1",
                     styles.focus
                 )}
                 style={{ fontVariantNumeric: 'tabular-nums' }}

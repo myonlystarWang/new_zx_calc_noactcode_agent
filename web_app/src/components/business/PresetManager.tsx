@@ -209,7 +209,7 @@ export const PresetManager: React.FC = () => {
                     </div>
 
                     {/* 第二行：操作按钮平铺 */}
-                    <div className="grid grid-cols-5 gap-1.5 pt-1.5 border-t border-slate-800/60">
+                    <div className="grid grid-cols-5 gap-1.5 pt-1.5 border-t border-slate-800/60 whitespace-nowrap">
                         <button
                             type="button"
                             onClick={handleCompareClick}
