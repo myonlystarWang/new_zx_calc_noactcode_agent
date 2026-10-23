@@ -71,7 +71,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'tianyuan_sim' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge' | 'xyc_tome' | 'xyc_hub';
     cardData?: any;
 }
 
@@ -534,6 +534,9 @@ export class CopilotService {
             if (normalized) q = normalized;
         }
 
+        // 「四象」= 四象七副本的简写（用户 2026-10-23 明确：与轩辕策无关，走副本 BOSS）
+        if (q === '四象') q = '四象七';
+
         const dataService = DataService.getInstance();
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -612,7 +615,12 @@ export class CopilotService {
                 );
             });
             if (hitZhanQu) {
-                const servers = Array.isArray(hitZhanQu.servers) ? hitZhanQu.servers : [];
+                // 只透出卡面需要的字段（server_list.json 现带有 aliases/openAt/isNew 等雷达专用字段）
+                const servers = (Array.isArray(hitZhanQu.servers) ? hitZhanQu.servers : []).map((sv: any) => ({
+                    name: sv.name,
+                    server: sv.server,
+                    serverId: sv.serverId,
+                }));
                 return {
                     id: `msg-${Date.now()}`,
                     sender: 'assistant',
@@ -648,13 +656,13 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方 9 大战区 36 个服务器毫秒级开服状态，支持开服声音即时提醒。',
+                text: '已为你定位【全区开服雷达监测】。本站实时探测诛仙3官方全部区服毫秒级开服状态，支持开服声音即时提醒。',
                 time: timeStr,
                 cardType: 'server',
                 cardData: {
                     subType: 'radar',
                     title: '全区开服雷达监测',
-                    desc: '9 大战区 36 个服务器实时检测开服状态，支持声音提醒与时延速览',
+                    desc: '全部区服实时检测开服状态，支持声音提醒与时延速览',
                     workspaceMode: 'server',
                     workspaceParams: {},
                     route: '/tools/server',
@@ -723,6 +731,84 @@ export class CopilotService {
             };
         }
 
+        // 3.97 四象裸词歧义分流（xyc_hub）
+        // 「青龙 / 白虎 / 朱雀 / 玄武」既是轩辕策四系，也是副本 BOSS / 技能名（玄武经、青龙献爪），硬猜必错。
+        // 与 class_hub 同款选择卡：点选后再发可命中的具体词（`X策` / `X boss`），无上下文依赖、无循环。
+        const bareBeast = q.trim();
+        if (['青龙', '白虎', '朱雀', '玄武'].includes(bareBeast)) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `「${bareBeast}」在站内有多类内容，请选择要看的一类：`,
+                time: timeStr,
+                cardType: 'xyc_hub',
+                cardData: {
+                    title: bareBeast,
+                    options: [
+                        { key: 'xyc_tome', label: `轩辕策·${bareBeast}书`, query: `${bareBeast}策` },
+                        { key: 'boss', label: `副本 BOSS·${bareBeast}`, query: `${bareBeast} boss` },
+                        { key: 'sixiangqi', label: '四象七 · 副本 BOSS', query: '四象七' },
+                    ],
+                },
+            };
+        }
+
+        // 3.98 轩辕策属性信息卡（xyc_tome）
+        // 四系 × 普通/英雄 × Lv.1–20 全词条区间（装备大类「轩辕策」入口 / 裸「轩辕策」均走此卡）
+        // 「轩辕策模拟 / 洗炼」也先落本卡：右分屏模拟器暂停使用，模拟卡（信息卡版）待开发
+        const isXycTomeQuery =
+            (q.includes('轩辕策') ||
+                q.includes('青龙策') ||
+                q.includes('白虎策') ||
+                q.includes('朱雀策') ||
+                q.includes('玄武策') ||
+                q.includes('青龙书') ||
+                q.includes('白虎书') ||
+                q.includes('朱雀书') ||
+                q.includes('玄武书') ||
+                q.includes('青囊玉书') ||
+                q.includes('白锦道册') ||
+                q.includes('朱翎术纪') ||
+                q.includes('玄甲元略')) &&
+            !PROFESSIONS.some((pr) => q.includes(pr));
+
+        if (isXycTomeQuery) {
+            let initialBeast = '青龙';
+            if (q.includes('白虎') || q.includes('白锦道册')) initialBeast = '白虎';
+            else if (q.includes('朱雀') || q.includes('朱翎术纪')) initialBeast = '朱雀';
+            else if (q.includes('玄武') || q.includes('玄甲元略')) initialBeast = '玄武';
+
+            const wantsSim = q.includes('模拟') || q.includes('洗炼') || q.includes('洗练');
+            const initialHero = !q.includes('普通');
+            const xycLvlMatch = q.match(/(\d{1,2})\s*级/);
+            const initialLevel = xycLvlMatch ? Math.min(20, Math.max(1, parseInt(xycLvlMatch[1], 10))) : 1;
+
+            try {
+                const [xycRules, xycMeta] = await Promise.all([
+                    dataService.getXycRules(),
+                    dataService.getXycTomeMeta(),
+                ]);
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: wantsSim
+                        ? '【轩辕策模拟·信息卡版】正在开发中，先为你呈现属性全览。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：'
+                        : '为你呈现【轩辕策属性全览】。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：',
+                    time: timeStr,
+                    cardType: 'xyc_tome',
+                    cardData: {
+                        rules: xycRules,
+                        meta: xycMeta,
+                        initialBeast,
+                        initialHero,
+                        initialLevel,
+                    },
+                };
+            } catch (e) {
+                console.error('[CopilotService] 轩辕策信息卡数据加载失败', e);
+            }
+        }
+
         // 4. 轩辕策属性模拟
         // T-12（R2 裁决）：带职业前缀的「职业+轩辕策」是技能查询（技能数据有 27 个「职业·轩辕策」组），
         // 排除后落技能分支；仅裸「轩辕策」才走本工具卡
@@ -758,6 +844,7 @@ export class CopilotService {
 
         // 5a. 天缘属性分类卡（tianyuan_hub）：精准呈现新旧天缘两大分支
         const isTianyuanHubQuery =
+            q === '天缘' ||
             q === '天缘属性' ||
             q === '天缘分类' ||
             q === '天缘系统' ||
@@ -776,6 +863,49 @@ export class CopilotService {
                         { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
                         { key: 'tianyuan_new', label: '新天缘', query: '新天缘' },
                     ]
+                }
+            };
+        }
+
+        // 5a2. 新版天缘模拟卡（对话内嵌）：开箱生成 + 精炼天命，不跳转 tools
+        // 新天缘整类优先给模拟器（下方可展开信息卡），仅「X级」数值查询走信息卡
+        const isNewTianyuanSimQuery =
+            !q.includes('旧天缘') &&
+            !/\d{1,2}\s*级/.test(q) &&
+            (
+                q.includes('须弥') ||
+                q.includes('新天缘') ||
+                q.includes('上玄') ||
+                q.includes('佑万') ||
+                (q.includes('天缘') &&
+                    (
+                        q.includes('模拟') ||
+                        q.includes('精炼') ||
+                        q.includes('洗') ||
+                        q.includes('概率') ||
+                        q.includes('几率') ||
+                        q.includes('属性') ||
+                        q.includes('词条')
+                    ))
+            );
+
+        if (isNewTianyuanSimQuery) {
+            let simGroupName = '上玄佑万辰须弥刃';
+            if (q.includes('甲') || q.includes('衣')) simGroupName = '上玄佑万辰须弥甲';
+            else if (q.includes('盔') || q.includes('冠') || q.includes('帽') || q.includes('头')) {
+                simGroupName = '上玄佑万辰须弥盔';
+            }
+
+            const simData = await dataService.getNewTianYuanData();
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '已为你调出【新版天缘模拟器】。可直接在对话里开箱抽词条、精炼到 +10，并推演 +3/+6/+9/+10 的天命点分配：',
+                time: timeStr,
+                cardType: 'tianyuan_sim',
+                cardData: {
+                    data: simData,
+                    initialGroupName: simGroupName
                 }
             };
         }
@@ -1356,17 +1486,17 @@ export class CopilotService {
             q === '九纹等级';
 
         if (isJiuwenlangQuery) {
-            let targetLvl = 20;
+            let targetLvl = 40;
             const lvlMatch = q.match(/(\d{1,2})\s*级/);
             if (lvlMatch) {
-                targetLvl = Math.min(20, Math.max(1, parseInt(lvlMatch[1], 10)));
+                targetLvl = Math.min(40, Math.max(1, parseInt(lvlMatch[1], 10)));
             }
 
             const jiuwenlangData = await dataService.getJiuwenlangData();
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: `为你速查到【佩章·九纹琅】属性与等级对照。支持 1~20 级滑块切换及差额测算：`,
+                text: `为你速查到【佩章·九纹琅】1~40 级属性与升级材料对照。可切换等级查看属性，并横向对比该级各配方所需材料：`,
                 time: timeStr,
                 cardType: 'jiuwenlang',
                 cardData: {
@@ -1647,6 +1777,7 @@ export class CopilotService {
                         { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
                         { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
                         { key: 'tianyuan_new', label: '新天缘', query: '新天缘' },
+                        { key: 'xyc_tome', label: '轩辕策', query: '轩辕策属性' },
                         { key: 'shenji', label: '神级首饰', query: '神级项链' },
                         { key: 'baoshi', label: '宝石属性', query: '宝石' },
                     ]
@@ -1878,8 +2009,7 @@ export class CopilotService {
                     options: [
                         { key: 'shenji', label: '神机洗练', query: '神机洗练' },
                         { key: 'yunling', label: '蕴灵模拟', query: '蕴灵模拟' },
-                        // { key: 'tianyuan', label: '天缘洗练', query: '天缘洗练' },
-                        // { key: 'xyc', label: '轩辕策洗练', query: '轩辕策洗练' },
+                        { key: 'tianyuan_sim', label: '新天缘模拟', query: '新天缘模拟' },
                     ]
                 }
             };

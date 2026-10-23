@@ -208,6 +208,28 @@ function makeFsMock() {
                 return null;
             }
         },
+        // xyc_rules.json / xyc_tomes.json / xyc_adv_skills.json 轩辕策属性信息卡
+        getXycRules: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'xyc_rules.json'));
+            } catch {
+                return null;
+            }
+        },
+        getXycTomeMeta: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'xyc_tomes.json'));
+            } catch {
+                return null;
+            }
+        },
+        getXycAdvSkills: async () => {
+            try {
+                return readJson(path.join(GAME_DATA, 'xyc_adv_skills.json'));
+            } catch {
+                return null;
+            }
+        },
     };
 }
 
@@ -562,7 +584,8 @@ for (const c of cases) {
     if (!MODE_GOLDEN) {
         const g = goldenCache[c.id];
         if (g === undefined) {
-            failures.push(`golden 中无此用例（新用例须先跑 --golden 收录）`);
+            // VERBOSE：新用例也把 actual 打出来，便于直接收录进 golden
+            failures.push(`golden 中无此用例（新用例须先跑 --golden 收录）${VERBOSE ? `\n  actual: ${stableStringify(gnorm)}` : ''}`);
         } else if (stableStringify(g) !== stableStringify(gnorm)) {
             failures.push(`与 golden 快照不一致${VERBOSE ? `\n  golden: ${stableStringify(g)}\n  actual: ${stableStringify(gnorm)}` : '（--verbose 看 diff）'}`);
         }

@@ -1,41 +1,3155 @@
 {
   "systemName": "佩章·九纹琅",
   "category": "佩章附魔/纹饰",
-  "source": "官方数值与游戏线上核对表",
-  "maxLevel": 20,
-  "description": "九纹琅为佩章专属核心附魔强化系统，共 20 个等级。满级（20级）提供高达 24000 气血/真气、15 点命中躲闪、5% 减暴击与各阵营御性/减免，以及 25% 减免暴击伤害。",
+  "source": "官方数值与游戏线上核对表（1~20 级官方属性表、21~30 级同表续页、31~40 级论坛整理表）",
+  "maxLevel": 40,
+  "description": "九纹琅为佩章专属核心附魔强化系统，共 40 个等级。1~20 级为九纹残魄基础阶段；21 级起升级追加九纹铸灵，31 级起追加九纹衍神。满级（40 级）提供 82000 气血/真气、33 点命中躲闪、11% 减暴击与 17% 御三阵营/减免，以及 75% 减免暴击伤害。",
   "attributes": [
-    { "key": "hp", "name": "气血", "unit": "" },
-    { "key": "mp", "name": "真气", "unit": "" },
-    { "key": "skillAccuracy", "name": "技能命中", "unit": "" },
-    { "key": "skillDodge", "name": "技能躲闪", "unit": "" },
-    { "key": "critReduction", "name": "减暴击", "unit": "%" },
-    { "key": "critDamageReduction", "name": "减爆伤", "unit": "%" },
-    { "key": "resistImmortal", "name": "御仙", "unit": "%" },
-    { "key": "resistBuddha", "name": "御佛", "unit": "%" },
-    { "key": "resistDemon", "name": "御魔", "unit": "%" },
-    { "key": "damageReduction", "name": "减免伤害", "unit": "%" }
+    {
+      "key": "hp",
+      "name": "气血",
+      "unit": ""
+    },
+    {
+      "key": "mp",
+      "name": "真气",
+      "unit": ""
+    },
+    {
+      "key": "skillAccuracy",
+      "name": "技能命中",
+      "unit": ""
+    },
+    {
+      "key": "skillDodge",
+      "name": "技能躲闪",
+      "unit": ""
+    },
+    {
+      "key": "critReduction",
+      "name": "减暴击",
+      "unit": "%"
+    },
+    {
+      "key": "critDamageReduction",
+      "name": "减爆伤",
+      "unit": "%"
+    },
+    {
+      "key": "resistImmortal",
+      "name": "御仙",
+      "unit": "%"
+    },
+    {
+      "key": "resistBuddha",
+      "name": "御佛",
+      "unit": "%"
+    },
+    {
+      "key": "resistDemon",
+      "name": "御魔",
+      "unit": "%"
+    },
+    {
+      "key": "damageReduction",
+      "name": "减免伤害",
+      "unit": "%"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "recipe1",
+      "name": "配方1",
+      "title": "残魄 · 琅祭品",
+      "summary": "九纹残魄 + 上一级九纹琅·属性 + 低阶九纹琅·属性；21 级起追加九纹铸灵，31 级起追加九纹衍神"
+    },
+    {
+      "id": "recipe2",
+      "name": "配方2",
+      "title": "残魄 · 宝玉",
+      "summary": "九纹残魄 + 九纹琅·属性 + 艳阳宝玉 + 翠岫仙玉；21 级起改用紫虚神玉，31 级起改用碧涛仙玉"
+    },
+    {
+      "id": "recipe3",
+      "name": "配方3",
+      "title": "灵魄 · 铸灵",
+      "maxLevel": 30,
+      "summary": "九纹灵魄 + 九纹琅·属性 ×2；21 级起追加九纹铸灵。31 级起该配方不再提供"
+    }
   ],
   "levels": [
-    { "level": 1, "hp": 12000, "mp": 12000, "skillAccuracy": 5.0, "skillDodge": 5.0, "critReduction": 1.0, "critDamageReduction": 5.0, "resistImmortal": 1.0, "resistBuddha": 1.0, "resistDemon": 1.0, "damageReduction": 1.0 },
-    { "level": 2, "hp": 12600, "mp": 12600, "skillAccuracy": 5.5, "skillDodge": 5.5, "critReduction": 1.2, "critDamageReduction": 6.0, "resistImmortal": 1.2, "resistBuddha": 1.2, "resistDemon": 1.2, "damageReduction": 1.2 },
-    { "level": 3, "hp": 13200, "mp": 13200, "skillAccuracy": 6.0, "skillDodge": 6.0, "critReduction": 1.4, "critDamageReduction": 7.0, "resistImmortal": 1.4, "resistBuddha": 1.4, "resistDemon": 1.4, "damageReduction": 1.4 },
-    { "level": 4, "hp": 13800, "mp": 13800, "skillAccuracy": 6.5, "skillDodge": 6.5, "critReduction": 1.6, "critDamageReduction": 8.0, "resistImmortal": 1.6, "resistBuddha": 1.6, "resistDemon": 1.6, "damageReduction": 1.6 },
-    { "level": 5, "hp": 14400, "mp": 14400, "skillAccuracy": 7.0, "skillDodge": 7.0, "critReduction": 1.8, "critDamageReduction": 9.0, "resistImmortal": 1.8, "resistBuddha": 1.8, "resistDemon": 1.8, "damageReduction": 1.8 },
-    { "level": 6, "hp": 15000, "mp": 15000, "skillAccuracy": 7.5, "skillDodge": 7.5, "critReduction": 2.0, "critDamageReduction": 10.0, "resistImmortal": 2.0, "resistBuddha": 2.0, "resistDemon": 2.0, "damageReduction": 2.0 },
-    { "level": 7, "hp": 15600, "mp": 15600, "skillAccuracy": 8.0, "skillDodge": 8.0, "critReduction": 2.2, "critDamageReduction": 11.0, "resistImmortal": 2.2, "resistBuddha": 2.2, "resistDemon": 2.2, "damageReduction": 2.2 },
-    { "level": 8, "hp": 16200, "mp": 16200, "skillAccuracy": 8.5, "skillDodge": 8.5, "critReduction": 2.4, "critDamageReduction": 12.0, "resistImmortal": 2.4, "resistBuddha": 2.4, "resistDemon": 2.4, "damageReduction": 2.4 },
-    { "level": 9, "hp": 16800, "mp": 16800, "skillAccuracy": 9.0, "skillDodge": 9.0, "critReduction": 2.6, "critDamageReduction": 13.0, "resistImmortal": 2.6, "resistBuddha": 2.6, "resistDemon": 2.6, "damageReduction": 2.6 },
-    { "level": 10, "hp": 17400, "mp": 17400, "skillAccuracy": 9.5, "skillDodge": 9.5, "critReduction": 2.8, "critDamageReduction": 14.0, "resistImmortal": 2.8, "resistBuddha": 2.8, "resistDemon": 2.8, "damageReduction": 2.8 },
-    { "level": 11, "hp": 18000, "mp": 18000, "skillAccuracy": 10.0, "skillDodge": 10.0, "critReduction": 3.0, "critDamageReduction": 15.0, "resistImmortal": 3.0, "resistBuddha": 3.0, "resistDemon": 3.0, "damageReduction": 3.0 },
-    { "level": 12, "hp": 18600, "mp": 18600, "skillAccuracy": 10.5, "skillDodge": 10.5, "critReduction": 3.2, "critDamageReduction": 16.0, "resistImmortal": 3.2, "resistBuddha": 3.2, "resistDemon": 3.2, "damageReduction": 3.2 },
-    { "level": 13, "hp": 19200, "mp": 19200, "skillAccuracy": 11.0, "skillDodge": 11.0, "critReduction": 3.4, "critDamageReduction": 17.0, "resistImmortal": 3.4, "resistBuddha": 3.4, "resistDemon": 3.4, "damageReduction": 3.4 },
-    { "level": 14, "hp": 19800, "mp": 19800, "skillAccuracy": 11.5, "skillDodge": 11.5, "critReduction": 3.6, "critDamageReduction": 18.0, "resistImmortal": 3.6, "resistBuddha": 3.6, "resistDemon": 3.6, "damageReduction": 3.6 },
-    { "level": 15, "hp": 20400, "mp": 20400, "skillAccuracy": 12.0, "skillDodge": 12.0, "critReduction": 3.8, "critDamageReduction": 19.0, "resistImmortal": 3.8, "resistBuddha": 3.8, "resistDemon": 3.8, "damageReduction": 3.8 },
-    { "level": 16, "hp": 21000, "mp": 21000, "skillAccuracy": 12.5, "skillDodge": 12.5, "critReduction": 4.0, "critDamageReduction": 20.0, "resistImmortal": 4.0, "resistBuddha": 4.0, "resistDemon": 4.0, "damageReduction": 4.0 },
-    { "level": 17, "hp": 21600, "mp": 21600, "skillAccuracy": 13.0, "skillDodge": 13.0, "critReduction": 4.2, "critDamageReduction": 21.0, "resistImmortal": 4.2, "resistBuddha": 4.2, "resistDemon": 4.2, "damageReduction": 4.2 },
-    { "level": 18, "hp": 22200, "mp": 22200, "skillAccuracy": 13.5, "skillDodge": 13.5, "critReduction": 4.4, "critDamageReduction": 22.0, "resistImmortal": 4.4, "resistBuddha": 4.4, "resistDemon": 4.4, "damageReduction": 4.4 },
-    { "level": 19, "hp": 22800, "mp": 22800, "skillAccuracy": 14.0, "skillDodge": 14.0, "critReduction": 4.6, "critDamageReduction": 23.0, "resistImmortal": 4.6, "resistBuddha": 4.6, "resistDemon": 4.6, "damageReduction": 4.6 },
-    { "level": 20, "hp": 24000, "mp": 24000, "skillAccuracy": 15.0, "skillDodge": 15.0, "critReduction": 5.0, "critDamageReduction": 25.0, "resistImmortal": 5.0, "resistBuddha": 5.0, "resistDemon": 5.0, "damageReduction": 5.0 }
+    {
+      "level": 1,
+      "hp": 12000,
+      "mp": 12000,
+      "skillAccuracy": 5,
+      "skillDodge": 5,
+      "critReduction": 1,
+      "critDamageReduction": 5,
+      "resistImmortal": 1,
+      "resistBuddha": 1,
+      "resistDemon": 1,
+      "damageReduction": 1
+    },
+    {
+      "level": 2,
+      "hp": 12600,
+      "mp": 12600,
+      "skillAccuracy": 5.5,
+      "skillDodge": 5.5,
+      "critReduction": 1.2,
+      "critDamageReduction": 6,
+      "resistImmortal": 1.2,
+      "resistBuddha": 1.2,
+      "resistDemon": 1.2,
+      "damageReduction": 1.2
+    },
+    {
+      "level": 3,
+      "hp": 13200,
+      "mp": 13200,
+      "skillAccuracy": 6,
+      "skillDodge": 6,
+      "critReduction": 1.4,
+      "critDamageReduction": 7,
+      "resistImmortal": 1.4,
+      "resistBuddha": 1.4,
+      "resistDemon": 1.4,
+      "damageReduction": 1.4
+    },
+    {
+      "level": 4,
+      "hp": 13800,
+      "mp": 13800,
+      "skillAccuracy": 6.5,
+      "skillDodge": 6.5,
+      "critReduction": 1.6,
+      "critDamageReduction": 8,
+      "resistImmortal": 1.6,
+      "resistBuddha": 1.6,
+      "resistDemon": 1.6,
+      "damageReduction": 1.6
+    },
+    {
+      "level": 5,
+      "hp": 14400,
+      "mp": 14400,
+      "skillAccuracy": 7,
+      "skillDodge": 7,
+      "critReduction": 1.8,
+      "critDamageReduction": 9,
+      "resistImmortal": 1.8,
+      "resistBuddha": 1.8,
+      "resistDemon": 1.8,
+      "damageReduction": 1.8
+    },
+    {
+      "level": 6,
+      "hp": 15000,
+      "mp": 15000,
+      "skillAccuracy": 7.5,
+      "skillDodge": 7.5,
+      "critReduction": 2,
+      "critDamageReduction": 10,
+      "resistImmortal": 2,
+      "resistBuddha": 2,
+      "resistDemon": 2,
+      "damageReduction": 2
+    },
+    {
+      "level": 7,
+      "hp": 15600,
+      "mp": 15600,
+      "skillAccuracy": 8,
+      "skillDodge": 8,
+      "critReduction": 2.2,
+      "critDamageReduction": 11,
+      "resistImmortal": 2.2,
+      "resistBuddha": 2.2,
+      "resistDemon": 2.2,
+      "damageReduction": 2.2
+    },
+    {
+      "level": 8,
+      "hp": 16200,
+      "mp": 16200,
+      "skillAccuracy": 8.5,
+      "skillDodge": 8.5,
+      "critReduction": 2.4,
+      "critDamageReduction": 12,
+      "resistImmortal": 2.4,
+      "resistBuddha": 2.4,
+      "resistDemon": 2.4,
+      "damageReduction": 2.4
+    },
+    {
+      "level": 9,
+      "hp": 16800,
+      "mp": 16800,
+      "skillAccuracy": 9,
+      "skillDodge": 9,
+      "critReduction": 2.6,
+      "critDamageReduction": 13,
+      "resistImmortal": 2.6,
+      "resistBuddha": 2.6,
+      "resistDemon": 2.6,
+      "damageReduction": 2.6
+    },
+    {
+      "level": 10,
+      "hp": 17400,
+      "mp": 17400,
+      "skillAccuracy": 9.5,
+      "skillDodge": 9.5,
+      "critReduction": 2.8,
+      "critDamageReduction": 14,
+      "resistImmortal": 2.8,
+      "resistBuddha": 2.8,
+      "resistDemon": 2.8,
+      "damageReduction": 2.8
+    },
+    {
+      "level": 11,
+      "hp": 18000,
+      "mp": 18000,
+      "skillAccuracy": 10,
+      "skillDodge": 10,
+      "critReduction": 3,
+      "critDamageReduction": 15,
+      "resistImmortal": 3,
+      "resistBuddha": 3,
+      "resistDemon": 3,
+      "damageReduction": 3
+    },
+    {
+      "level": 12,
+      "hp": 18600,
+      "mp": 18600,
+      "skillAccuracy": 10.5,
+      "skillDodge": 10.5,
+      "critReduction": 3.2,
+      "critDamageReduction": 16,
+      "resistImmortal": 3.2,
+      "resistBuddha": 3.2,
+      "resistDemon": 3.2,
+      "damageReduction": 3.2
+    },
+    {
+      "level": 13,
+      "hp": 19200,
+      "mp": 19200,
+      "skillAccuracy": 11,
+      "skillDodge": 11,
+      "critReduction": 3.4,
+      "critDamageReduction": 17,
+      "resistImmortal": 3.4,
+      "resistBuddha": 3.4,
+      "resistDemon": 3.4,
+      "damageReduction": 3.4
+    },
+    {
+      "level": 14,
+      "hp": 19800,
+      "mp": 19800,
+      "skillAccuracy": 11.5,
+      "skillDodge": 11.5,
+      "critReduction": 3.6,
+      "critDamageReduction": 18,
+      "resistImmortal": 3.6,
+      "resistBuddha": 3.6,
+      "resistDemon": 3.6,
+      "damageReduction": 3.6
+    },
+    {
+      "level": 15,
+      "hp": 20400,
+      "mp": 20400,
+      "skillAccuracy": 12,
+      "skillDodge": 12,
+      "critReduction": 3.8,
+      "critDamageReduction": 19,
+      "resistImmortal": 3.8,
+      "resistBuddha": 3.8,
+      "resistDemon": 3.8,
+      "damageReduction": 3.8
+    },
+    {
+      "level": 16,
+      "hp": 21000,
+      "mp": 21000,
+      "skillAccuracy": 12.5,
+      "skillDodge": 12.5,
+      "critReduction": 4,
+      "critDamageReduction": 20,
+      "resistImmortal": 4,
+      "resistBuddha": 4,
+      "resistDemon": 4,
+      "damageReduction": 4
+    },
+    {
+      "level": 17,
+      "hp": 21600,
+      "mp": 21600,
+      "skillAccuracy": 13,
+      "skillDodge": 13,
+      "critReduction": 4.2,
+      "critDamageReduction": 21,
+      "resistImmortal": 4.2,
+      "resistBuddha": 4.2,
+      "resistDemon": 4.2,
+      "damageReduction": 4.2
+    },
+    {
+      "level": 18,
+      "hp": 22200,
+      "mp": 22200,
+      "skillAccuracy": 13.5,
+      "skillDodge": 13.5,
+      "critReduction": 4.4,
+      "critDamageReduction": 22,
+      "resistImmortal": 4.4,
+      "resistBuddha": 4.4,
+      "resistDemon": 4.4,
+      "damageReduction": 4.4
+    },
+    {
+      "level": 19,
+      "hp": 22800,
+      "mp": 22800,
+      "skillAccuracy": 14,
+      "skillDodge": 14,
+      "critReduction": 4.6,
+      "critDamageReduction": 23,
+      "resistImmortal": 4.6,
+      "resistBuddha": 4.6,
+      "resistDemon": 4.6,
+      "damageReduction": 4.6
+    },
+    {
+      "level": 20,
+      "hp": 24000,
+      "mp": 24000,
+      "skillAccuracy": 15,
+      "skillDodge": 15,
+      "critReduction": 5,
+      "critDamageReduction": 25,
+      "resistImmortal": 5,
+      "resistBuddha": 5,
+      "resistDemon": 5,
+      "damageReduction": 5
+    },
+    {
+      "level": 21,
+      "hp": 25920,
+      "mp": 25920,
+      "skillAccuracy": 15.8,
+      "skillDodge": 15.8,
+      "critReduction": 5.2,
+      "critDamageReduction": 27,
+      "resistImmortal": 5.4,
+      "resistBuddha": 5.4,
+      "resistDemon": 5.4,
+      "damageReduction": 5.2
+    },
+    {
+      "level": 22,
+      "hp": 27840,
+      "mp": 27840,
+      "skillAccuracy": 16.6,
+      "skillDodge": 16.6,
+      "critReduction": 5.4,
+      "critDamageReduction": 29,
+      "resistImmortal": 5.8,
+      "resistBuddha": 5.8,
+      "resistDemon": 5.8,
+      "damageReduction": 5.4
+    },
+    {
+      "level": 23,
+      "hp": 29760,
+      "mp": 29760,
+      "skillAccuracy": 17.4,
+      "skillDodge": 17.4,
+      "critReduction": 5.6,
+      "critDamageReduction": 31,
+      "resistImmortal": 6.2,
+      "resistBuddha": 6.2,
+      "resistDemon": 6.2,
+      "damageReduction": 5.6
+    },
+    {
+      "level": 24,
+      "hp": 31680,
+      "mp": 31680,
+      "skillAccuracy": 18.3,
+      "skillDodge": 18.3,
+      "critReduction": 5.9,
+      "critDamageReduction": 33,
+      "resistImmortal": 6.6,
+      "resistBuddha": 6.6,
+      "resistDemon": 6.6,
+      "damageReduction": 5.9
+    },
+    {
+      "level": 25,
+      "hp": 33600,
+      "mp": 33600,
+      "skillAccuracy": 19.2,
+      "skillDodge": 19.2,
+      "critReduction": 6.2,
+      "critDamageReduction": 35,
+      "resistImmortal": 7,
+      "resistBuddha": 7,
+      "resistDemon": 7,
+      "damageReduction": 6.2
+    },
+    {
+      "level": 26,
+      "hp": 36480,
+      "mp": 36480,
+      "skillAccuracy": 20.1,
+      "skillDodge": 20.1,
+      "critReduction": 6.5,
+      "critDamageReduction": 38,
+      "resistImmortal": 7.6,
+      "resistBuddha": 7.6,
+      "resistDemon": 7.6,
+      "damageReduction": 6.5
+    },
+    {
+      "level": 27,
+      "hp": 39360,
+      "mp": 39360,
+      "skillAccuracy": 21,
+      "skillDodge": 21,
+      "critReduction": 6.8,
+      "critDamageReduction": 41,
+      "resistImmortal": 8.2,
+      "resistBuddha": 8.2,
+      "resistDemon": 8.2,
+      "damageReduction": 6.8
+    },
+    {
+      "level": 28,
+      "hp": 42240,
+      "mp": 42240,
+      "skillAccuracy": 22,
+      "skillDodge": 22,
+      "critReduction": 7.2,
+      "critDamageReduction": 44,
+      "resistImmortal": 8.8,
+      "resistBuddha": 8.8,
+      "resistDemon": 8.8,
+      "damageReduction": 7.2
+    },
+    {
+      "level": 29,
+      "hp": 45120,
+      "mp": 45120,
+      "skillAccuracy": 23,
+      "skillDodge": 23,
+      "critReduction": 7.6,
+      "critDamageReduction": 47,
+      "resistImmortal": 9.4,
+      "resistBuddha": 9.4,
+      "resistDemon": 9.4,
+      "damageReduction": 7.6
+    },
+    {
+      "level": 30,
+      "hp": 48000,
+      "mp": 48000,
+      "skillAccuracy": 24,
+      "skillDodge": 24,
+      "critReduction": 8,
+      "critDamageReduction": 50,
+      "resistImmortal": 10,
+      "resistBuddha": 10,
+      "resistDemon": 10,
+      "damageReduction": 8
+    },
+    {
+      "level": 31,
+      "hp": 50880,
+      "mp": 50880,
+      "skillAccuracy": 24.8,
+      "skillDodge": 24.8,
+      "critReduction": 8.2,
+      "critDamageReduction": 52,
+      "resistImmortal": 10.6,
+      "resistBuddha": 10.6,
+      "resistDemon": 10.6,
+      "damageReduction": 8.2
+    },
+    {
+      "level": 32,
+      "hp": 53760,
+      "mp": 53760,
+      "skillAccuracy": 25.6,
+      "skillDodge": 25.6,
+      "critReduction": 8.4,
+      "critDamageReduction": 54,
+      "resistImmortal": 11.2,
+      "resistBuddha": 11.2,
+      "resistDemon": 11.2,
+      "damageReduction": 8.4
+    },
+    {
+      "level": 33,
+      "hp": 56640,
+      "mp": 56640,
+      "skillAccuracy": 26.4,
+      "skillDodge": 26.4,
+      "critReduction": 8.6,
+      "critDamageReduction": 56,
+      "resistImmortal": 11.8,
+      "resistBuddha": 11.8,
+      "resistDemon": 11.8,
+      "damageReduction": 8.6
+    },
+    {
+      "level": 34,
+      "hp": 59860,
+      "mp": 59860,
+      "skillAccuracy": 27.3,
+      "skillDodge": 27.3,
+      "critReduction": 8.9,
+      "critDamageReduction": 58,
+      "resistImmortal": 12.5,
+      "resistBuddha": 12.5,
+      "resistDemon": 12.5,
+      "damageReduction": 8.9
+    },
+    {
+      "level": 35,
+      "hp": 63080,
+      "mp": 63080,
+      "skillAccuracy": 28.2,
+      "skillDodge": 28.2,
+      "critReduction": 9.2,
+      "critDamageReduction": 60,
+      "resistImmortal": 13.2,
+      "resistBuddha": 13.2,
+      "resistDemon": 13.2,
+      "damageReduction": 9.2
+    },
+    {
+      "level": 36,
+      "hp": 66300,
+      "mp": 66300,
+      "skillAccuracy": 29.1,
+      "skillDodge": 29.1,
+      "critReduction": 9.5,
+      "critDamageReduction": 63,
+      "resistImmortal": 13.9,
+      "resistBuddha": 13.9,
+      "resistDemon": 13.9,
+      "damageReduction": 9.5
+    },
+    {
+      "level": 37,
+      "hp": 69520,
+      "mp": 69520,
+      "skillAccuracy": 30,
+      "skillDodge": 30,
+      "critReduction": 9.8,
+      "critDamageReduction": 66,
+      "resistImmortal": 14.6,
+      "resistBuddha": 14.6,
+      "resistDemon": 14.6,
+      "damageReduction": 9.8
+    },
+    {
+      "level": 38,
+      "hp": 73680,
+      "mp": 73680,
+      "skillAccuracy": 31,
+      "skillDodge": 31,
+      "critReduction": 10.2,
+      "critDamageReduction": 69,
+      "resistImmortal": 15.4,
+      "resistBuddha": 15.4,
+      "resistDemon": 15.4,
+      "damageReduction": 10.2
+    },
+    {
+      "level": 39,
+      "hp": 77840,
+      "mp": 77840,
+      "skillAccuracy": 32,
+      "skillDodge": 32,
+      "critReduction": 10.6,
+      "critDamageReduction": 72,
+      "resistImmortal": 16.2,
+      "resistBuddha": 16.2,
+      "resistDemon": 16.2,
+      "damageReduction": 10.6
+    },
+    {
+      "level": 40,
+      "hp": 82000,
+      "mp": 82000,
+      "skillAccuracy": 33,
+      "skillDodge": 33,
+      "critReduction": 11,
+      "critDamageReduction": 75,
+      "resistImmortal": 17,
+      "resistBuddha": 17,
+      "resistDemon": 17,
+      "damageReduction": 11
+    }
+  ],
+  "upgradeCosts": [
+    {
+      "level": 2,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 40
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 20
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 2
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 600
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 5
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 2
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 45
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 2,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 22
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 2,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 700
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 5
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 2,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 2,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 50
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 3,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 25
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 3,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 700
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 6
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 3,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 3,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 55
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 4,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 27
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 4,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 800
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 6
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 4,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 4,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 60
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 5,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 30
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 5,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 800
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 7
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 5,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 5,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 7,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 66
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 6,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 33
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 6,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 900
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 8
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 6,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 6,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 8,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 72
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 7,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 36
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 7,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 900
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 9
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 7,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 7,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 9,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 78
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 8,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 39
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 8,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 1000
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 10
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 8,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 8,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 10,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 85
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 9,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 42
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 9,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 1000
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 11
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 9,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 9,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 11,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 95
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 47
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 1200
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 12
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 12,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 105
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 11,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 52
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 11,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 1200
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 13
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 11,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 11,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 13,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 115
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 12,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 57
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 12,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 1400
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 14
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 12,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 12,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 14,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 125
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 13,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 62
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 13,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 1400
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 15
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 13,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 13,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 15,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 135
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 14,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 67
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 14,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 1600
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 16
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 14,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 14,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 16,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 150
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 15,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 75
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 15,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 1800
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 17
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 15,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 15,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 17,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 165
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 16,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 82
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 16,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 2000
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 19
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 16,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 16,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 18,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 180
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 17,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 90
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 17,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 2200
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 20
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 17,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 17,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 19,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 200
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 18,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 18,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 2500
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 22
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 18,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 18,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 20,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 230
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 19,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 115
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 19,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "yanyang_baoyu",
+          "name": "艳阳宝玉",
+          "count": 2500
+        },
+        {
+          "key": "cuixiu_xianyu",
+          "name": "翠岫仙玉",
+          "count": 25
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 19,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 19,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 21,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 20,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 48
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 20,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 10
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 32
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 20,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 20,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 1,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 22,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 21,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 2,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 56
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 21,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 2,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 12
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 37
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 21,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 21,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 2,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 23,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 22,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 3,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 64
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 22,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 3,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 16
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 43
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 22,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 22,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 3,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 24,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 23,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 4,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 74
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 23,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 4,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 20
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 49
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 23,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 23,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 4,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 25,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 24,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 5,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 84
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 24,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 5,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 24
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 56
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 24,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 24,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 5,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 26,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 25,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 6,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 96
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 25,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 6,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 28
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 64
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 25,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 25,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 6,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 27,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 26,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 7,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 110
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 26,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 7,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 32
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 73
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 26,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 26,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 7,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 28,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 27,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 8,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 126
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 27,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 8,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 38
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 84
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 27,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 27,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 8,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 29,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 28,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 9,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 142
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 28,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 9,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 42
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 95
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 28,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 28,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 9,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 30,
+      "recipe1": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 29,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 160
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwen_canpo",
+          "name": "九纹残魄",
+          "count": 100
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 29,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "zixu_shenyu",
+          "name": "紫虚神玉",
+          "count": 60
+        }
+      ],
+      "recipe3": [
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 107
+        },
+        {
+          "key": "jiuwen_lingpo",
+          "name": "九纹灵魄",
+          "itemLevel": 29,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 29,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "level": 31,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 30,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 60
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 30,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 12
+        }
+      ]
+    },
+    {
+      "level": 32,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 31,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 70
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 31,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 18
+        }
+      ]
+    },
+    {
+      "level": 33,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 32,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 82
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 32,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 26
+        }
+      ]
+    },
+    {
+      "level": 34,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 33,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 96
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 33,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 34
+        }
+      ]
+    },
+    {
+      "level": 35,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 34,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 112
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 34,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 44
+        }
+      ]
+    },
+    {
+      "level": 36,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 35,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 130
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 35,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 54
+        }
+      ]
+    },
+    {
+      "level": 37,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 36,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 152
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 36,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 66
+        }
+      ]
+    },
+    {
+      "level": 38,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 37,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 178
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 37,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 78
+        }
+      ]
+    },
+    {
+      "level": 39,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 38,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 208
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 38,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 92
+        }
+      ]
+    },
+    {
+      "level": 40,
+      "recipe1": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 39,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "jiuwen_zhuling",
+          "name": "九纹铸灵",
+          "count": 100
+        },
+        {
+          "key": "jiuwen_yanshen",
+          "name": "九纹衍神",
+          "count": 242
+        }
+      ],
+      "recipe2": [
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 39,
+          "count": 1
+        },
+        {
+          "key": "jiuwenlang_attr",
+          "name": "九纹琅·属性",
+          "itemLevel": 10,
+          "count": 1
+        },
+        {
+          "key": "bitao_xianyu",
+          "name": "碧涛仙玉",
+          "count": 106
+        }
+      ]
+    }
   ]
 }

@@ -42,8 +42,7 @@
     "id": "tool-xyc-01",
     "input": "轩辕策",
     "expect": {
-      "cardType": "xyc_diag",
-      "cardData.workspaceMode": "xyc"
+      "cardType": "xyc_tome"
     },
     "tags": [
       "standard",
@@ -55,7 +54,7 @@
     "id": "tool-tianyuan-01",
     "input": "须弥天缘",
     "expect": {
-      "cardType": "tianyuan_new"
+      "cardType": "tianyuan_sim"
     },
     "tags": [
       "equip",
@@ -798,8 +797,7 @@
     "id": "pinyin-xyc-bare",
     "input": "xuanyuance",
     "expect": {
-      "cardType": "xyc_diag",
-      "cardData.workspaceMode": "xyc"
+      "cardType": "xyc_tome"
     },
     "tags": [
       "pinyin",
@@ -1541,18 +1539,17 @@
     "note": "T-12/R2 已落地：同鬼王。预期变化已 approve"
   },
   {
-    "id": "xyc-bare-still-tool",
+    "id": "xyc-bare-tome",
     "input": "轩辕策",
     "expect": {
-      "cardType": "xyc_diag",
-      "cardData.workspaceMode": "xyc"
+      "cardType": "xyc_tome"
     },
     "tags": [
       "conflict",
-      "tool"
+      "xyc"
     ],
     "assert": "strong",
-    "note": "T-12 防过犹不及：裸「轩辕策」（无职业前缀）仍走工具卡，R2 只放行带职业前缀的形式"
+    "note": "2026-10-22 裁决更新：裸「轩辕策」改出属性信息卡（原 xyc_diag 工具卡），模拟器入口保留给「轩辕策模拟/洗炼」；T-12 仍生效：带职业前缀走技能分支"
   },
   {
     "id": "conflict-bareclass-a-01",
@@ -5063,7 +5060,7 @@
     "id": "conflict-pure-xyc-07",
     "input": "轩辕策",
     "expect": {
-      "cardType": "xyc_diag"
+      "cardType": "xyc_tome"
     },
     "tags": [
       "conflict",
@@ -5089,7 +5086,7 @@
     "id": "conflict-pure-tianyuan-new-09",
     "input": "天缘",
     "expect": {
-      "cardType": "tianyuan_old"
+      "cardType": "tianyuan_hub"
     },
     "tags": [
       "conflict",
@@ -5879,9 +5876,8 @@
     "id": "tianyuan-new-01",
     "input": "新天缘",
     "expect": {
-      "cardType": "tianyuan_new",
-      "cardData.initialGroupName": "上玄佑万辰须弥刃",
-      "cardData.initialLevel": 10
+      "cardType": "tianyuan_sim",
+      "cardData.initialGroupName": "上玄佑万辰须弥刃"
     },
     "tags": [
       "equip",
@@ -5894,7 +5890,7 @@
     "id": "tianyuan-new-armor",
     "input": "新天缘 须弥甲",
     "expect": {
-      "cardType": "tianyuan_new",
+      "cardType": "tianyuan_sim",
       "cardData.initialGroupName": "上玄佑万辰须弥甲"
     },
     "tags": [
@@ -5908,7 +5904,7 @@
     "id": "tianyuan-new-helmet",
     "input": "新天缘 须弥冠",
     "expect": {
-      "cardType": "tianyuan_new",
+      "cardType": "tianyuan_sim",
       "cardData.initialGroupName": "上玄佑万辰须弥盔"
     },
     "tags": [
@@ -5936,7 +5932,7 @@
     "id": "tianyuan-new-shangxuan",
     "input": "上玄天缘",
     "expect": {
-      "cardType": "tianyuan_new",
+      "cardType": "tianyuan_sim",
       "cardData.initialGroupName": "上玄佑万辰须弥刃"
     },
     "tags": [
@@ -5950,7 +5946,7 @@
     "id": "tianyuan-new-youwan",
     "input": "佑万天缘",
     "expect": {
-      "cardType": "tianyuan_new",
+      "cardType": "tianyuan_sim",
       "cardData.initialGroupName": "上玄佑万辰须弥刃"
     },
     "tags": [
@@ -5964,7 +5960,7 @@
     "id": "tianyuan-new-xumiren",
     "input": "须弥刃",
     "expect": {
-      "cardType": "tianyuan_new",
+      "cardType": "tianyuan_sim",
       "cardData.initialGroupName": "上玄佑万辰须弥刃"
     },
     "tags": [
@@ -5978,7 +5974,7 @@
     "id": "tianyuan-new-xumijia",
     "input": "须弥甲",
     "expect": {
-      "cardType": "tianyuan_new",
+      "cardType": "tianyuan_sim",
       "cardData.initialGroupName": "上玄佑万辰须弥甲"
     },
     "tags": [
@@ -5992,7 +5988,7 @@
     "id": "tianyuan-new-xumikui",
     "input": "须弥盔",
     "expect": {
-      "cardType": "tianyuan_new",
+      "cardType": "tianyuan_sim",
       "cardData.initialGroupName": "上玄佑万辰须弥盔"
     },
     "tags": [
@@ -6150,14 +6146,14 @@
     "input": "各类模拟器",
     "expect": {
       "cardType": "sim_hub",
-      "cardData.options.length": 2
+      "cardData.options.length": 3
     },
     "tags": [
       "hub",
       "simulator"
     ],
     "assert": "strong",
-    "note": "全景导航追加「装备蕴灵」入口（与神机洗练并列）"
+    "note": "全景导航追加「装备蕴灵」「新天缘模拟」入口"
   },
   {
     "id": "yunling-lite-02",
@@ -6184,5 +6180,300 @@
     ],
     "assert": "strong",
     "note": "装备炼器口语，与「炼器+N」佩章阶位查询不冲突"
+  },
+  {
+    "id": "tianyuan-sim-01",
+    "input": "新天缘模拟",
+    "expect": {
+      "cardType": "tianyuan_sim"
+    },
+    "tags": [
+      "equip",
+      "tianyuan_sim"
+    ],
+    "assert": "strong",
+    "note": "新天缘模拟：对话内嵌开箱 + 精炼卡，不跳 tools"
+  },
+  {
+    "id": "tianyuan-sim-02",
+    "input": "天缘精炼",
+    "expect": {
+      "cardType": "tianyuan_sim"
+    },
+    "tags": [
+      "equip",
+      "tianyuan_sim"
+    ],
+    "assert": "strong",
+    "note": "天缘精炼：走模拟卡而非旧天缘卡"
+  },
+  {
+    "id": "tianyuan-sim-03",
+    "input": "须弥甲 精炼",
+    "expect": {
+      "cardType": "tianyuan_sim",
+      "cardData.initialGroupName": "上玄佑万辰须弥甲"
+    },
+    "tags": [
+      "equip",
+      "tianyuan_sim"
+    ],
+    "assert": "strong",
+    "note": "指定部位：须弥甲 + 精炼"
+  },
+  {
+    "id": "xyc-tome-01",
+    "input": "轩辕策",
+    "expect": {
+      "cardType": "xyc_tome"
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "2026-10-22 裁决：裸「轩辕策」出属性信息卡（原 xyc_diag 工具卡下放给「轩辕策模拟/洗炼」）"
+  },
+  {
+    "id": "xyc-tome-02",
+    "input": "青龙策",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialBeast": "青龙"
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "四系带「策」后缀 → 直接定位该系"
+  },
+  {
+    "id": "xyc-tome-03",
+    "input": "白虎书",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialBeast": "白虎"
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "「白虎书」同义说法"
+  },
+  {
+    "id": "xyc-tome-04",
+    "input": "青囊玉书",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialBeast": "青龙"
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "四本书名直呼：青囊玉书 = 青龙"
+  },
+  {
+    "id": "xyc-tome-05",
+    "input": "轩辕策 英雄",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialHero": true
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "带「英雄」→ 英雄版（默认本就英雄，此条锁语义）"
+  },
+  {
+    "id": "xyc-tome-06",
+    "input": "轩辕策 普通",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialHero": false
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "带「普通」→ 普通版（默认英雄，需显式降级）"
+  },
+  {
+    "id": "xyc-tome-07",
+    "input": "轩辕策 20级",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialLevel": 20
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "带等级 → 初始等级（1–20 夹紧）"
+  },
+  {
+    "id": "xyc-tome-08",
+    "input": "玄武策属性",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialBeast": "玄武"
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "「X策属性」+ 系别"
+  },
+  {
+    "id": "xyc-tome-09",
+    "input": "朱翎术纪",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialBeast": "朱雀"
+    },
+    "tags": [
+      "equip",
+      "xyc_tome"
+    ],
+    "assert": "strong",
+    "note": "四本书名直呼：朱翎术纪 = 朱雀"
+  },
+  {
+    "id": "xyc-sim-01",
+    "input": "轩辕策模拟",
+    "expect": {
+      "cardType": "xyc_tome"
+    },
+    "tags": [
+      "equip",
+      "xyc_sim"
+    ],
+    "assert": "strong",
+    "note": "带「模拟」仍走模拟器工具卡（右分屏）"
+  },
+  {
+    "id": "xyc-sim-02",
+    "input": "轩辕策洗炼",
+    "expect": {
+      "cardType": "xyc_tome"
+    },
+    "tags": [
+      "equip",
+      "xyc_sim"
+    ],
+    "assert": "strong",
+    "note": "带「洗炼」仍走模拟器工具卡"
+  },
+  {
+    "id": "xyc-probe-01",
+    "input": "青龙",
+    "expect": {
+      "cardType": "xyc_hub",
+      "cardData.title": "青龙",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "conflict",
+      "xyc"
+    ],
+    "assert": "strong",
+    "note": "探测：裸「青龙」是否被四灵本元 / 技能等抢走"
+  },
+  {
+    "id": "xyc-probe-02",
+    "input": "白虎",
+    "expect": {
+      "cardType": "xyc_hub",
+      "cardData.title": "白虎",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "conflict",
+      "xyc"
+    ],
+    "assert": "strong",
+    "note": "探测：裸「白虎」"
+  },
+  {
+    "id": "xyc-probe-03",
+    "input": "朱雀",
+    "expect": {
+      "cardType": "xyc_hub",
+      "cardData.title": "朱雀",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "conflict",
+      "xyc"
+    ],
+    "assert": "strong",
+    "note": "探测：裸「朱雀」"
+  },
+  {
+    "id": "xyc-probe-04",
+    "input": "玄武",
+    "expect": {
+      "cardType": "xyc_hub",
+      "cardData.title": "玄武",
+      "cardData.options.length": 3
+    },
+    "tags": [
+      "conflict",
+      "xyc"
+    ],
+    "assert": "strong",
+    "note": "探测：裸「玄武」"
+  },
+  {
+    "id": "xyc-probe-05",
+    "input": "四象",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "SIXIANG_QI_ZUI_XUAN_WU"
+    },
+    "tags": [
+      "conflict",
+      "xyc"
+    ],
+    "assert": "strong",
+    "note": "探测：「四象」总称是否仍落 xyc_diag"
+  },
+  {
+    "id": "yxc-boss-01",
+    "input": "青龙 boss",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_QINGLONG_CHUSHI"
+    },
+    "tags": [
+      "conflict",
+      "boss"
+    ],
+    "assert": "strong",
+    "note": "四象裸词改走 xyc_hub 后，BOSS 链路仍要能直达（分流卡第二个按钮就是这句）"
+  },
+  {
+    "id": "hub-tianyuan-plain-01",
+    "input": "天缘",
+    "expect": {
+      "cardType": "tianyuan_hub",
+      "cardData.options.length": 2
+    },
+    "tags": [
+      "hub",
+      "tianyuan"
+    ],
+    "assert": "strong",
+    "note": "裸词「天缘」走新旧分支导航，不再直接落旧天缘卡"
   }
 ]

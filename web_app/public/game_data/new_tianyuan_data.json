@@ -1,8 +1,131 @@
 {
-  "attributeGroups": [
+  "version": 2,
+  "source": "elements.data v183 idx425（2026-09-29 补丁）+ 官方天命数值表",
+  "generatedAt": "2026-10-22T09:53:00.309Z",
+  "countProbabilities": [
     {
-      "name": "上玄佑万辰须弥刃",
-      "extraCoeffs": [
+      "count": 3,
+      "probability": 0.6
+    },
+    {
+      "count": 4,
+      "probability": 0.3
+    },
+    {
+      "count": 5,
+      "probability": 0.1
+    }
+  ],
+  "triggerProbabilities": [
+    {
+      "count": 2,
+      "probability": 0.4
+    },
+    {
+      "count": 3,
+      "probability": 0.6
+    },
+    {
+      "count": 4,
+      "probability": 0.8
+    },
+    {
+      "count": 5,
+      "probability": 1
+    }
+  ],
+  "destinyCoeffs": [
+    1,
+    2,
+    4,
+    4,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6
+  ],
+  "destinyCumulative": [
+    1,
+    3,
+    7,
+    11,
+    17,
+    23,
+    29,
+    35,
+    41,
+    47
+  ],
+  "refine": {
+    "maxLevel": 10,
+    "safeLevels": [
+      3,
+      6,
+      9
+    ],
+    "triggerLevels": [
+      3,
+      6,
+      9,
+      10
+    ],
+    "triggerPoints": {
+      "3": 3,
+      "6": 3,
+      "9": 3,
+      "10": 1
+    },
+    "costGold": 200,
+    "defaultSuccessRate": 0.5,
+    "ruixiangLevels": [
+      2,
+      5,
+      8
+    ],
+    "ruixiangPoints": 3
+  },
+  "pieces": [
+    {
+      "key": "armor",
+      "name": "上玄佑万辰须弥甲",
+      "shortName": "须弥甲",
+      "slot": "衣服",
+      "sourceName": "新天命甲天缘属性配置表",
+      "countProbabilities": [
+        {
+          "count": 3,
+          "probability": 0.6
+        },
+        {
+          "count": 4,
+          "probability": 0.3
+        },
+        {
+          "count": 5,
+          "probability": 0.1
+        }
+      ],
+      "triggerProbabilities": [
+        {
+          "count": 2,
+          "probability": 0.4
+        },
+        {
+          "count": 3,
+          "probability": 0.6
+        },
+        {
+          "count": 4,
+          "probability": 0.8
+        },
+        {
+          "count": 5,
+          "probability": 1
+        }
+      ],
+      "destinyCoeffs": [
         1,
         2,
         4,
@@ -14,112 +137,588 @@
         6,
         6
       ],
+      "weightSum": 1,
       "attributes": [
         {
-          "name": "攻击",
-          "probability": "5%",
-          "initMin": 500,
-          "initMax": 1000,
-          "perLevelGain": 100
+          "id": 17,
+          "name": "减免暴击",
+          "group": "减免暴击",
+          "min": 0.015,
+          "max": 0.03,
+          "perLevel": 0.003,
+          "weight": 0.13,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "攻击百分比",
-          "probability": "5%",
-          "initMin": 1,
-          "initMax": 2,
-          "perLevelGain": 0.3,
-          "unit": "%"
+          "id": 17,
+          "name": "减免暴击",
+          "group": "减免暴击",
+          "min": 0.03,
+          "max": 0.05,
+          "perLevel": 0.003,
+          "weight": 0.03,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "对怪物增伤",
-          "probability": "0.5%",
-          "initMin": 0.1,
-          "initMax": 0.3,
-          "perLevelGain": 0.1,
-          "unit": "%"
+          "id": 26,
+          "name": "技能躲闪",
+          "group": "技能躲闪",
+          "min": 0.04,
+          "max": 0.08,
+          "perLevel": 0.003,
+          "weight": 0.13,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "致命一击率",
-          "probability": "16%",
-          "initMin": 1,
-          "initMax": 2,
-          "perLevelGain": 0.3,
-          "unit": "%"
+          "id": 26,
+          "name": "技能躲闪",
+          "group": "技能躲闪",
+          "min": 0.08,
+          "max": 0.12,
+          "perLevel": 0.003,
+          "weight": 0.03,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "致命一击率",
-          "probability": "5%",
-          "initMin": 2,
-          "initMax": 4,
-          "perLevelGain": 0.3,
-          "unit": "%"
+          "id": 27,
+          "name": "御仙",
+          "group": "御仙",
+          "min": 0.01,
+          "max": 0.02,
+          "perLevel": 0.003,
+          "weight": 0.13,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "克仙",
-          "probability": "16%",
-          "initMin": 2,
-          "initMax": 4,
-          "perLevelGain": 0.3,
-          "unit": "%"
+          "id": 27,
+          "name": "御仙",
+          "group": "御仙",
+          "min": 0.02,
+          "max": 0.04,
+          "perLevel": 0.003,
+          "weight": 0.03,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "克佛",
-          "probability": "16%",
-          "initMin": 2,
-          "initMax": 4,
-          "perLevelGain": 0.3,
-          "unit": "%"
+          "id": 28,
+          "name": "御佛",
+          "group": "御佛",
+          "min": 0.01,
+          "max": 0.02,
+          "perLevel": 0.003,
+          "weight": 0.13,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "克魔",
-          "probability": "16%",
-          "initMin": 2,
-          "initMax": 4,
-          "perLevelGain": 0.3,
-          "unit": "%"
+          "id": 28,
+          "name": "御佛",
+          "group": "御佛",
+          "min": 0.02,
+          "max": 0.04,
+          "perLevel": 0.003,
+          "weight": 0.03,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "无视伤害减免",
-          "probability": "2%",
-          "initMin": 1.2,
-          "initMax": 2.2,
-          "perLevelGain": 0.1,
-          "unit": "%"
+          "id": 29,
+          "name": "御魔",
+          "group": "御魔",
+          "min": 0.01,
+          "max": 0.02,
+          "perLevel": 0.003,
+          "weight": 0.13,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "无视伤害减免",
-          "probability": "0.5%",
-          "initMin": 2.2,
-          "initMax": 3.5,
-          "perLevelGain": 0.1,
-          "unit": "%"
+          "id": 29,
+          "name": "御魔",
+          "group": "御魔",
+          "min": 0.02,
+          "max": 0.04,
+          "perLevel": 0.003,
+          "weight": 0.03,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "对人物增伤",
-          "probability": "17.6%",
-          "initMin": 0.5,
-          "initMax": 1.2,
-          "perLevelGain": 0.1,
-          "unit": "%"
+          "id": 45,
+          "name": "化灵",
+          "group": "化灵",
+          "min": 0.002,
+          "max": 0.006,
+          "perLevel": 0.001,
+          "weight": 0.122,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "冲灵",
-          "probability": "0.3%",
-          "initMin": 0.2,
-          "initMax": 1,
-          "perLevelGain": 0.1,
-          "unit": "%"
+          "id": 45,
+          "name": "化灵",
+          "group": "化灵",
+          "min": 0.01,
+          "max": 0.02,
+          "perLevel": 0.001,
+          "weight": 0.028,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         },
         {
-          "name": "冲灵",
-          "probability": "0.2%",
-          "initMin": 1,
-          "initMax": 3,
-          "perLevelGain": 0.1,
-          "unit": "%"
+          "id": 33,
+          "name": "伤害减免",
+          "group": "伤害减免",
+          "min": 0.001,
+          "max": 0.003,
+          "perLevel": 0.001,
+          "weight": 0.04,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 33,
+          "name": "伤害减免",
+          "group": "伤害减免",
+          "min": 0.005,
+          "max": 0.012,
+          "perLevel": 0.001,
+          "weight": 0.01,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
         }
       ]
     },
+    {
+      "key": "blade",
+      "name": "上玄佑万辰须弥刃",
+      "shortName": "须弥刃",
+      "slot": "武器",
+      "sourceName": "新天命武器",
+      "countProbabilities": [
+        {
+          "count": 3,
+          "probability": 0.6
+        },
+        {
+          "count": 4,
+          "probability": 0.3
+        },
+        {
+          "count": 5,
+          "probability": 0.1
+        }
+      ],
+      "triggerProbabilities": [
+        {
+          "count": 2,
+          "probability": 0.4
+        },
+        {
+          "count": 3,
+          "probability": 0.6
+        },
+        {
+          "count": 4,
+          "probability": 0.8
+        },
+        {
+          "count": 5,
+          "probability": 1
+        }
+      ],
+      "destinyCoeffs": [
+        1,
+        2,
+        4,
+        4,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "weightSum": 1,
+      "attributes": [
+        {
+          "id": 0,
+          "name": "攻击",
+          "group": "攻击",
+          "min": 500,
+          "max": 1000,
+          "perLevel": 100,
+          "weight": 0.05,
+          "unit": "",
+          "displayScale": 1,
+          "decimals": 0
+        },
+        {
+          "id": 12,
+          "name": "攻击百分比",
+          "group": "攻击百分比",
+          "min": 0.01,
+          "max": 0.02,
+          "perLevel": 0.003,
+          "weight": 0.05,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 32,
+          "name": "对怪物增伤",
+          "group": "对怪物增伤",
+          "min": 0.001,
+          "max": 0.003,
+          "perLevel": 0.001,
+          "weight": 0.005,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 16,
+          "name": "致命一击率",
+          "group": "致命一击率",
+          "min": 0.01,
+          "max": 0.02,
+          "perLevel": 0.003,
+          "weight": 0.16,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 16,
+          "name": "致命一击率",
+          "group": "致命一击率",
+          "min": 0.02,
+          "max": 0.04,
+          "perLevel": 0.003,
+          "weight": 0.05,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 21,
+          "name": "克仙",
+          "group": "克仙",
+          "min": 0.02,
+          "max": 0.04,
+          "perLevel": 0.003,
+          "weight": 0.16,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 22,
+          "name": "克佛",
+          "group": "克佛",
+          "min": 0.02,
+          "max": 0.04,
+          "perLevel": 0.003,
+          "weight": 0.16,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 23,
+          "name": "克魔",
+          "group": "克魔",
+          "min": 0.02,
+          "max": 0.04,
+          "perLevel": 0.003,
+          "weight": 0.16,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 24,
+          "name": "无视伤害减免",
+          "group": "无视伤害减免",
+          "min": 0.012,
+          "max": 0.022,
+          "perLevel": 0.001,
+          "weight": 0.02,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 24,
+          "name": "无视伤害减免",
+          "group": "无视伤害减免",
+          "min": 0.022,
+          "max": 0.035,
+          "perLevel": 0.001,
+          "weight": 0.005,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 31,
+          "name": "对人物增伤",
+          "group": "对人物增伤",
+          "min": 0.005,
+          "max": 0.012,
+          "perLevel": 0.001,
+          "weight": 0.1755,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 44,
+          "name": "冲灵",
+          "group": "冲灵",
+          "min": 0.002,
+          "max": 0.01,
+          "perLevel": 0.001,
+          "weight": 0.003,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 44,
+          "name": "冲灵",
+          "group": "冲灵",
+          "min": 0.01,
+          "max": 0.03,
+          "perLevel": 0.001,
+          "weight": 0.0015,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        }
+      ]
+    },
+    {
+      "key": "helmet",
+      "name": "上玄佑万辰须弥盔",
+      "shortName": "须弥盔",
+      "slot": "帽子",
+      "sourceName": "新天命帽子",
+      "countProbabilities": [
+        {
+          "count": 3,
+          "probability": 0.6
+        },
+        {
+          "count": 4,
+          "probability": 0.3
+        },
+        {
+          "count": 5,
+          "probability": 0.1
+        }
+      ],
+      "triggerProbabilities": [
+        {
+          "count": 2,
+          "probability": 0.4
+        },
+        {
+          "count": 3,
+          "probability": 0.6
+        },
+        {
+          "count": 4,
+          "probability": 0.8
+        },
+        {
+          "count": 5,
+          "probability": 1
+        }
+      ],
+      "destinyCoeffs": [
+        1,
+        2,
+        4,
+        4,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "weightSum": 1,
+      "attributes": [
+        {
+          "id": 2,
+          "name": "气血",
+          "group": "气血",
+          "min": 1500,
+          "max": 3000,
+          "perLevel": 100,
+          "weight": 0.21,
+          "unit": "",
+          "displayScale": 1,
+          "decimals": 0
+        },
+        {
+          "id": 14,
+          "name": "气血百分比",
+          "group": "气血百分比",
+          "min": 0.015,
+          "max": 0.025,
+          "perLevel": 0.002,
+          "weight": 0.01,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 3,
+          "name": "真气",
+          "group": "真气",
+          "min": 1500,
+          "max": 3000,
+          "perLevel": 100,
+          "weight": 0.21,
+          "unit": "",
+          "displayScale": 1,
+          "decimals": 0
+        },
+        {
+          "id": 15,
+          "name": "真气百分比",
+          "group": "真气百分比",
+          "min": 0.015,
+          "max": 0.025,
+          "perLevel": 0.003,
+          "weight": 0.01,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 0,
+          "name": "攻击",
+          "group": "攻击",
+          "min": 500,
+          "max": 2000,
+          "perLevel": 50,
+          "weight": 0.15,
+          "unit": "",
+          "displayScale": 1,
+          "decimals": 0
+        },
+        {
+          "id": 12,
+          "name": "攻击百分比",
+          "group": "攻击百分比",
+          "min": 0.005,
+          "max": 0.025,
+          "perLevel": 0.004,
+          "weight": 0.02,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 19,
+          "name": "减免暴击伤害",
+          "group": "减免暴击伤害",
+          "min": 0.01,
+          "max": 0.05,
+          "perLevel": 0.006,
+          "weight": 0.06,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 19,
+          "name": "减免暴击伤害",
+          "group": "减免暴击伤害",
+          "min": 0.1,
+          "max": 0.15,
+          "perLevel": 0.006,
+          "weight": 0.02,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 17,
+          "name": "减免暴击",
+          "group": "减免暴击",
+          "min": 0.001,
+          "max": 0.01,
+          "perLevel": 0.003,
+          "weight": 0.01,
+          "unit": "%",
+          "displayScale": 100,
+          "decimals": 1
+        },
+        {
+          "id": 5,
+          "name": "魅惑抗性",
+          "group": "魅惑抗性",
+          "min": 5,
+          "max": 15,
+          "perLevel": 2,
+          "weight": 0.1,
+          "unit": "",
+          "displayScale": 1,
+          "decimals": 0
+        },
+        {
+          "id": 4,
+          "name": "眩晕抗性",
+          "group": "眩晕抗性",
+          "min": 5,
+          "max": 15,
+          "perLevel": 2,
+          "weight": 0.1,
+          "unit": "",
+          "displayScale": 1,
+          "decimals": 0
+        },
+        {
+          "id": 8,
+          "name": "定身抗性",
+          "group": "定身抗性",
+          "min": 5,
+          "max": 15,
+          "perLevel": 2,
+          "weight": 0.1,
+          "unit": "",
+          "displayScale": 1,
+          "decimals": 0
+        }
+      ]
+    }
+  ],
+  "attributeGroups": [
     {
       "name": "上玄佑万辰须弥甲",
       "extraCoeffs": [
@@ -136,23 +735,7 @@
       ],
       "attributes": [
         {
-          "name": "减免伤害",
-          "probability": "4%",
-          "initMin": 0.1,
-          "initMax": 0.3,
-          "perLevelGain": 0.1,
-          "unit": "%"
-        },
-        {
-          "name": "减免伤害",
-          "probability": "1%",
-          "initMin": 0.5,
-          "initMax": 1.2,
-          "perLevelGain": 0.1,
-          "unit": "%"
-        },
-        {
-          "name": "减免致命一击",
+          "name": "减免暴击",
           "probability": "13%",
           "initMin": 1.5,
           "initMax": 3,
@@ -160,7 +743,7 @@
           "unit": "%"
         },
         {
-          "name": "减免致命一击",
+          "name": "减免暴击",
           "probability": "3%",
           "initMin": 3,
           "initMax": 5,
@@ -246,6 +829,143 @@
           "initMax": 2,
           "perLevelGain": 0.1,
           "unit": "%"
+        },
+        {
+          "name": "伤害减免",
+          "probability": "4%",
+          "initMin": 0.1,
+          "initMax": 0.3,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "伤害减免",
+          "probability": "1%",
+          "initMin": 0.5,
+          "initMax": 1.2,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "name": "上玄佑万辰须弥刃",
+      "extraCoeffs": [
+        1,
+        2,
+        4,
+        4,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "attributes": [
+        {
+          "name": "攻击",
+          "probability": "5%",
+          "initMin": 500,
+          "initMax": 1000,
+          "perLevelGain": 100,
+          "unit": ""
+        },
+        {
+          "name": "攻击百分比",
+          "probability": "5%",
+          "initMin": 1,
+          "initMax": 2,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "对怪物增伤",
+          "probability": "0.5%",
+          "initMin": 0.1,
+          "initMax": 0.3,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "致命一击率",
+          "probability": "16%",
+          "initMin": 1,
+          "initMax": 2,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "致命一击率",
+          "probability": "5%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "克仙",
+          "probability": "16%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "克佛",
+          "probability": "16%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "克魔",
+          "probability": "16%",
+          "initMin": 2,
+          "initMax": 4,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
+          "name": "无视伤害减免",
+          "probability": "2%",
+          "initMin": 1.2,
+          "initMax": 2.2,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "无视伤害减免",
+          "probability": "0.5%",
+          "initMin": 2.2,
+          "initMax": 3.5,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "对人物增伤",
+          "probability": "17.5%",
+          "initMin": 0.5,
+          "initMax": 1.2,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "冲灵",
+          "probability": "0.3%",
+          "initMin": 0.2,
+          "initMax": 1,
+          "perLevelGain": 0.1,
+          "unit": "%"
+        },
+        {
+          "name": "冲灵",
+          "probability": "0.1%",
+          "initMin": 1,
+          "initMax": 3,
+          "perLevelGain": 0.1,
+          "unit": "%"
         }
       ]
     },
@@ -265,26 +985,12 @@
       ],
       "attributes": [
         {
-          "name": "攻击",
-          "probability": "15%",
-          "initMin": 500,
-          "initMax": 2000,
-          "perLevelGain": 50
-        },
-        {
-          "name": "攻击百分比",
-          "probability": "2%",
-          "initMin": 0.5,
-          "initMax": 2.5,
-          "perLevelGain": 0.4,
-          "unit": "%"
-        },
-        {
           "name": "气血",
           "probability": "21%",
           "initMin": 1500,
           "initMax": 3000,
-          "perLevelGain": 100
+          "perLevelGain": 100,
+          "unit": ""
         },
         {
           "name": "气血百分比",
@@ -299,7 +1005,8 @@
           "probability": "21%",
           "initMin": 1500,
           "initMax": 3000,
-          "perLevelGain": 100
+          "perLevelGain": 100,
+          "unit": ""
         },
         {
           "name": "真气百分比",
@@ -310,15 +1017,23 @@
           "unit": "%"
         },
         {
-          "name": "减免致命一击",
-          "probability": "1%",
-          "initMin": 0.1,
-          "initMax": 1,
-          "perLevelGain": 0.3,
+          "name": "攻击",
+          "probability": "15%",
+          "initMin": 500,
+          "initMax": 2000,
+          "perLevelGain": 50,
+          "unit": ""
+        },
+        {
+          "name": "攻击百分比",
+          "probability": "2%",
+          "initMin": 0.5,
+          "initMax": 2.5,
+          "perLevelGain": 0.4,
           "unit": "%"
         },
         {
-          "name": "减免致命一击伤害",
+          "name": "减免暴击伤害",
           "probability": "6%",
           "initMin": 1,
           "initMax": 5,
@@ -326,7 +1041,7 @@
           "unit": "%"
         },
         {
-          "name": "减免致命一击伤害",
+          "name": "减免暴击伤害",
           "probability": "2%",
           "initMin": 10,
           "initMax": 15,
@@ -334,25 +1049,36 @@
           "unit": "%"
         },
         {
+          "name": "减免暴击",
+          "probability": "1%",
+          "initMin": 0.1,
+          "initMax": 1,
+          "perLevelGain": 0.3,
+          "unit": "%"
+        },
+        {
           "name": "魅惑抗性",
           "probability": "10%",
           "initMin": 5,
           "initMax": 15,
-          "perLevelGain": 2
+          "perLevelGain": 2,
+          "unit": ""
         },
         {
           "name": "眩晕抗性",
           "probability": "10%",
           "initMin": 5,
           "initMax": 15,
-          "perLevelGain": 2
+          "perLevelGain": 2,
+          "unit": ""
         },
         {
           "name": "定身抗性",
           "probability": "10%",
           "initMin": 5,
           "initMax": 15,
-          "perLevelGain": 2
+          "perLevelGain": 2,
+          "unit": ""
         }
       ]
     }

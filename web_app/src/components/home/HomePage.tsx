@@ -55,6 +55,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // 首页标题文字区：该区域内星空微粒淡出，保证标题/副标题可读
+  const heroTextBoxRef = useRef<HTMLDivElement>(null);
   const copilot = useMemo(() => CopilotService.getInstance(), []);
 
   // 双轨分屏：左右可拖拽分隔条
@@ -396,8 +398,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
   // 2. 初始主页：定稿版 Moonshot 风格月相浑天视觉全知推演台
   return (
     <div className="w-full flex-1 min-h-0 flex flex-col justify-between overflow-hidden relative cosmic-bg select-none">
-      {/* 背景动态深空星河微粒 Canvas */}
-      <CosmicStarCanvas />
+      {/* 背景动态深空星河微粒 Canvas（标题文字区自动净空） */}
+      <CosmicStarCanvas avoidRef={heroTextBoxRef} />
 
       {/* 主舞台居中容器 (微上浮 -mt-2，黄金视线聚焦) */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 relative z-10 -mt-2 min-h-0">
@@ -406,8 +408,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           {/* 浑天月相太极星核动效天体 */}
           <CelestialStage onClick={() => inputRef.current?.focus()} />
 
-          {/* 核心主标题与愿景副标题 */}
-          <div className="space-y-2 mb-6">
+          {/* 核心主标题与愿景副标题（此区域不绘制星空微粒，避免星点穿透文字） */}
+          <div ref={heroTextBoxRef} className="space-y-2 mb-6">
             <h1 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight aurora-text">
               天书万象 AI · 诛仙全知大模型
             </h1>

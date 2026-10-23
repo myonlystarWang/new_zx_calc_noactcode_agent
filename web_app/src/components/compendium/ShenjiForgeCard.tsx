@@ -326,6 +326,15 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
         [slot]
     );
 
+    /** 「两条红 / 三条红」期望文案：由 +15 池红档概率实时推导（r² 关系，改红档自动同步） */
+    const redComboText = useMemo(() => {
+        const rates = getShenjiTierRates(slot, 15);
+        const r = rates[4] / rates.reduce((a, b) => a + b, 0);
+        const two = 3 * r * r * (1 - r);
+        const three = r * r * r;
+        return `约 1/${Math.round(1 / two)} 出两条红、约 1/${Math.round(1 / three)} 出三条红`;
+    }, [slot]);
+
     // 装备载体与三个档位池的备选词条名
     const equip = useMemo(() => findShenjiEquip(equips, slot, quality), [equips, slot, quality]);
     const pool11 = useMemo(() => getShenjiPool(equip, quality, 11), [equip, quality]);
@@ -644,7 +653,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                         <div>· 每条属性独立抽取：先按属性出现概率选词条，再按档位概率选 5 档之一。</div>
                         <div>· 五档取值为固定值：第一档 = 区间下限（白），第五档 = 区间上限（红·极·）。</div>
                         <div>· 档位概率（{slot}，模拟器体验调整值，非游戏内实测）：{tierRateText}。</div>
-                        <div>· 按此概率：约 1/26 出两条红、约 1/580 出三条红。</div>
+                        <div>· 按此概率：{redComboText}。</div>
                         <div>· 条数由蕴灵决定：+11 一条、+13 两条、+15 三条，依次取 +11 / +13 / +15 池。</div>
                         <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]">
                             {TIER_NAMES.map((n, i) => (

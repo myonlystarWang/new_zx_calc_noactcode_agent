@@ -2333,9 +2333,9 @@
     "id": "gen-boss-青龙",
     "input": "青龙",
     "expect": {
-      "cardType": "boss_candidates",
-      "cardData.candidates.length": 3,
-      "cardData.candidates.0.id": "SIXIANG_QI_ZUI_QING_LONG"
+      "cardType": "xyc_hub",
+      "cardData.title": "青龙",
+      "cardData.options.length": 3
     },
     "tags": [
       "generated",
@@ -2343,7 +2343,8 @@
     ],
     "assert": "strong",
     "golden": "lean",
-    "source": "matrix"
+    "source": "matrix",
+    "note": "2026-10-23：青龙既是四象七 BOSS 又是轩辕策青龙书 → 改走歧义分流卡；BOSS 链路由 yxc-boss-01 单独兜底"
   },
   {
     "id": "gen-boss-幽姬",
