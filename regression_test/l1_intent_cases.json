@@ -6373,6 +6373,69 @@
     "note": "带「洗炼」仍走模拟器工具卡"
   },
   {
+    "id": "xyc-name-01",
+    "input": "轩辕策属性",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.rules.standard.gj.name": "固定攻击",
+      "cardData.rules.standard.fy.name": "固定防御",
+      "cardData.rules.standard.qx.name": "固定气血",
+      "cardData.rules.standard.zq.name": "固定真气",
+      "cardData.rules.standard.gj_r.name": "攻击",
+      "cardData.rules.standard.fy_r.name": "防御",
+      "cardData.rules.standard.qx_r.name": "气血",
+      "cardData.rules.standard.zq_r.name": "真气",
+      "@excludes": ["攻击%", "防御%", "气血%", "真气%"]
+    },
+    "tags": [
+      "equip",
+      "xyc_tome",
+      "attr_name"
+    ],
+    "assert": "strong",
+    "note": "属性命名契约（2026-10-23）：固定值加「固定」前缀，百分比侧直接用裸名；旧「攻击%」写法不得回潮"
+  },
+  {
+    "id": "xyc-name-02",
+    "input": "白虎策 减免爆伤",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialBeast": "白虎",
+      "cardData.rules.standard.bh_bj.name": "致命一击率",
+      "cardData.rules.standard.bh_jbj.name": "减免致命一击率",
+      "cardData.rules.standard.ql_bs.name": "致命一击伤害",
+      "cardData.rules.standard.xw_jbs.name": "减免致命一击伤害",
+      "@excludes": ["减暴击", "减免暴伤", "暴击伤害"]
+    },
+    "tags": [
+      "equip",
+      "xyc_tome",
+      "attr_name"
+    ],
+    "assert": "strong",
+    "note": "暴击系改名契约：暴击→致命一击率、减暴击→减免致命一击率、暴击伤害→致命一击伤害、减免爆伤→减免致命一击伤害；旧称不得回潮"
+  },
+  {
+    "id": "xyc-name-03",
+    "input": "白虎策英雄属性",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialBeast": "白虎",
+      "cardData.initialHero": true,
+      "cardData.rules.hero.gj.name": "固定攻击",
+      "cardData.rules.hero.gj_r.name": "攻击",
+      "cardData.rules.hero.bh_bj.name": "致命一击率",
+      "cardData.rules.hero.xw_jbs.name": "减免致命一击伤害"
+    },
+    "tags": [
+      "equip",
+      "xyc_tome",
+      "attr_name"
+    ],
+    "assert": "strong",
+    "note": "英雄池与普通池是两张独立表，命名必须同步（只改 standard 会漏）"
+  },
+  {
     "id": "xyc-probe-01",
     "input": "青龙",
     "expect": {

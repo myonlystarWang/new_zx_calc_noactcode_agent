@@ -19,6 +19,7 @@
  *     "cardData.candidates.length"  -> 以 .length 结尾：数组长度相等
  *     "cardData.candidates.ids"     -> 以 .ids 结尾：数组各项 id 的集合相等（无视顺序）
  *     "@textIncludes": "子串"        -> result.text 包含子串
+ *     "@excludes": "子串" | ["子串"]  -> 整条结果序列化后不得包含该子串（旧命名/旧文案回潮守卫）
  *   assert: "weak"       -> 只强制执行 cardType 断言（演进期过渡）
  *
  * golden 快照（regression_test/l1_intent_golden.json）：
@@ -340,6 +341,13 @@ function checkExpect(testCase, result) {
         if (key === '@textIncludes') {
             if (!String(result.text || '').includes(want)) {
                 failures.push(`@textIncludes: text 应包含 "${want}"`);
+            }
+            continue;
+        }
+        if (key === '@excludes') {
+            const hay = stableStringify(result);
+            for (const needle of Array.isArray(want) ? want : [want]) {
+                if (hay.includes(needle)) failures.push(`@excludes: 结果中不应出现 "${needle}"`);
             }
             continue;
         }
