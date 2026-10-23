@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import {
     Radio,
     Star,
@@ -10,126 +10,47 @@ import {
     Pause,
     Maximize2,
     Minimize2,
-    X
+    X,
+    Sparkles,
+    Heart,
 } from 'lucide-react';
 import clsx from 'clsx';
+import { SERVER_ZONES, type RadarServer } from '../../data/serverList.generated';
 
-interface ServerInfo {
-    name: string;
-    server: string;
-    serverId: string;
-}
+type ViewKey = { kind: 'new' } | { kind: 'fav' } | { kind: 'zone'; zhanQu: string };
 
-interface ZhanQu {
+interface ServerEntry extends RadarServer {
     zhanQu: string;
-    servers: ServerInfo[];
 }
 
-const SERVER_CONFIG: ZhanQu[] = [
-    {
-        zhanQu: "体验服",
-        servers: [
-            { name: "先知", server: "xianzhi", serverId: "10086" },
-            // { name: "不通", server: "butong", serverId: "10087" }
-        ]
-    },
-    {
-        zhanQu: "昊天战区",
-        servers: [
-            { name: "创世绮梦", server: "chuangshiqimeng", serverId: "517" },
-            { name: "龙腾碧霄", server: "longtengbixiao", serverId: "519" },
-            { name: "碧瑶(网通)", server: "biyaowangtong", serverId: "821" },
-            { name: "雪琪(网通)", server: "xueqiwangtong", serverId: "2079" }
-        ]
-    },
-    {
-        zhanQu: "炎天战区",
-        servers: [
-            { name: "瑶梦故城", server: "yaomenggucheng", serverId: "525" },
-            { name: "沧海琼音", server: "canghaiqiongyin", serverId: "2060" },
-            { name: "夜羽凰踪", server: "yeyuhuangzong", serverId: "2027" },
-            { name: "幻月冰心", server: "huanyuebingxin", serverId: "531" },
-            { name: "皓月长生", server: "haoyuechangsheng", serverId: "545" }
-        ]
-    },
-    {
-        zhanQu: "阳天战区",
-        servers: [
-            { name: "决胜风云", server: "jueshengfengyun", serverId: "2064" },
-            { name: "月舞江南", server: "yuewujiangnan", serverId: "2065" },
-            { name: "独霸天关", server: "dubatianguan", serverId: "554" }
-        ]
-    },
-    {
-        zhanQu: "朱天战区",
-        servers: [
-            { name: "万毒行疆", server: "wanduxingjiang", serverId: "583" },
-            { name: "瀚海潮歌", server: "hanhaichaoge", serverId: "811" },
-            { name: "掣马凌霄", server: "chemalingxiao", serverId: "514" },
-            { name: "剑啸青锋", server: "jianxiaoqingfeng", serverId: "2088" }
-        ]
-    },
-    {
-        zhanQu: "幽天战区",
-        servers: [
-            { name: "云龙剑影", server: "yunlongjianying", serverId: "990" },
-            { name: "龙战乾坤", server: "longzhanqiankun", serverId: "947" },
-            { name: "十载仙梦", server: "shizaixianmeng", serverId: "2051" },
-            { name: "九天奇缘", server: "jiutianqiyuan", serverId: "2008" },
-            { name: "万里河山", server: "wanliheshan", serverId: "968" }
-        ]
-    },
-    {
-        zhanQu: "变天战区",
-        servers: [
-            { name: "星耀至尊", server: "xingyaozhizun", serverId: "581" },
-            { name: "剑尊鸿威", server: "jianzunhongwei", serverId: "822" },
-            { name: "雷龙耀世", server: "leilongyaoshi", serverId: "513" },
-            { name: "烽火流年", server: "fenghuoliunian", serverId: "804" },
-            { name: "金龙碧海", server: "jinlongbihai", serverId: "541" },
-            { name: "碧瑶(电信)", server: "biyao", serverId: "847" }
-        ]
-    },
-    {
-        zhanQu: "苍天战区",
-        servers: [
-            { name: "紫电荣光", server: "zidianrongguang", serverId: "527" },
-            { name: "霜雪玉龙", server: "shuangxueyulong", serverId: "507" },
-            { name: "承天问影", server: "chengtianwenying", serverId: "550" },
-            { name: "幻月御风", server: "huanyueyufeng", serverId: "502" }
-        ]
-    },
-    {
-        zhanQu: "扶风战区",
-        servers: [
-            { name: "大竹峰", server: "dazhufeng", serverId: "819" },
-            { name: "小竹峰", server: "xiaozhufeng", serverId: "546" },
-            { name: "滴血洞", server: "dixuedong", serverId: "2089" }
-        ]
-    }
-];
+const FAVORITES_KEY = 'zx_server_radar_favorites_v2';
+const STATUS_CACHE_KEY = 'zx_server_radar_cache_v2';
+const CACHE_TTL_MS = 30 * 60 * 1000;
+const PROBE_INTERVAL_MS = 4000;
+const NEW_BADGE_DAYS = 90;
 
-const FAVORITES_KEY = 'zx_server_radar_favorites';
-const STATUS_CACHE_KEY = 'zx_server_radar_cache_v1';
-const CACHE_TTL_MS = 30 * 60 * 1000; // 30 分钟缓存置状态
+const ALL_SERVERS: ServerEntry[] = SERVER_ZONES.flatMap(z =>
+    z.servers.map(s => ({ ...s, zhanQu: z.zhanQu }))
+);
+
+const DEFAULT_SERVER = 'longtengbixiao';
 
 export interface ServerStatusItem {
-    status: number; // 1: 在线, 0: 维护中
-    ping: number;   // 延迟 (ms)
+    status: number; // 1: 已开服, 0: 维护中
+    ping: number;
     msg: string;
-    updatedAt: number; // 探测时间戳 (ms)
+    updatedAt: number;
 }
 
 interface ProbeLog {
     id: string;
     time: string;
     serverName: string;
-    status: 'online' | 'offline' | 'unstable' | 'error';
-    ping?: number;
+    status: 'online' | 'offline' | 'error';
     message: string;
 }
 
-const loadStatusCache = (): Record<string, ServerStatusItem> => {
+const loadCache = (): Record<string, ServerStatusItem> => {
     try {
         const raw = localStorage.getItem(STATUS_CACHE_KEY);
         return raw ? JSON.parse(raw) : {};
@@ -138,12 +59,70 @@ const loadStatusCache = (): Record<string, ServerStatusItem> => {
     }
 };
 
-const saveStatusCache = (map: Record<string, ServerStatusItem>) => {
+const saveCache = (map: Record<string, ServerStatusItem>) => {
     try {
         localStorage.setItem(STATUS_CACHE_KEY, JSON.stringify(map));
-    } catch (e) {
-        console.warn('Failed to save radar cache:', e);
+    } catch {
+        /* 隐私模式下写入失败，忽略 */
     }
+};
+
+const loadFavorites = (): string[] => {
+    try {
+        const raw = localStorage.getItem(FAVORITES_KEY);
+        if (raw) return JSON.parse(raw);
+    } catch {
+        /* ignore */
+    }
+    // 老版本按 serverId 存收藏，迁移成新的 server 键
+    try {
+        const legacy = localStorage.getItem('zx_server_radar_favorites');
+        if (legacy) {
+            const ids: string[] = JSON.parse(legacy);
+            const mapped = ALL_SERVERS.filter(s => ids.includes(s.serverId)).map(s => s.server);
+            if (mapped.length > 0) return mapped;
+        }
+    } catch {
+        /* ignore */
+    }
+    return ['longtengbixiao', 'chuangshiqimeng'];
+};
+
+/** 延迟分档：只呈现时延，不臆造官方负载值 */
+const pingTier = (ping: number) => {
+    if (ping < 60) return { label: '流畅', cls: 'text-emerald-400' };
+    if (ping < 120) return { label: '良好', cls: 'text-emerald-300' };
+    if (ping < 200) return { label: '一般', cls: 'text-amber-300' };
+    return { label: '较高', cls: 'text-rose-400' };
+};
+
+/** 开服时间描述 */
+const openInfo = (openAt: string | null) => {
+    if (!openAt) return null;
+    const ts = new Date(openAt).getTime();
+    const diff = ts - Date.now();
+    if (diff > 0) {
+        const hours = Math.floor(diff / 3600000);
+        if (hours < 24) return { text: `今日 ${openAt.slice(11, 16)} 开服`, pending: true };
+        return { text: `${Math.ceil(hours / 24)} 天后开服`, pending: true };
+    }
+    const days = Math.floor(-diff / 86400000);
+    return { text: days === 0 ? '今日开服' : `开服 ${days} 天`, pending: false };
+};
+
+const showNewBadge = (openAt: string | null) => {
+    if (!openAt) return false;
+    const days = (Date.now() - new Date(openAt).getTime()) / 86400000;
+    return days <= NEW_BADGE_DAYS;
+};
+
+const matchServer = (srv: RadarServer, query: { name?: string; id?: string }) => {
+    const name = query.name || '';
+    const id = query.id || '';
+    return (
+        (!!name && (srv.name === name || srv.server === name || srv.aliases.includes(name))) ||
+        (!!id && srv.serverId === String(id))
+    );
 };
 
 export interface ServerRadarViewProps {
@@ -165,125 +144,74 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
     initialServerName,
     initialServerId,
 }) => {
-    const [selectedZhanQuIndex, setSelectedZhanQuIndex] = useState<number>(() => {
-        if (initialZhanQu) {
-            const idx = SERVER_CONFIG.findIndex(z =>
-                z.zhanQu === initialZhanQu ||
-                z.zhanQu.includes(initialZhanQu) ||
-                initialZhanQu.includes(z.zhanQu.replace('战区', ''))
-            );
-            if (idx !== -1) return idx;
-        }
-        if (initialServerName || initialServerId) {
-            for (let i = 0; i < SERVER_CONFIG.length; i++) {
-                if (SERVER_CONFIG[i].servers.some(s =>
-                    (initialServerName && (s.name === initialServerName || s.server === initialServerName)) ||
-                    (initialServerId && s.serverId === String(initialServerId))
-                )) {
-                    return i;
-                }
-            }
-        }
-        return 1; // 默认昊天战区
-    });
-
-    const [selectedServer, setSelectedServer] = useState<ServerInfo>(() => {
-        if (initialServerName || initialServerId) {
-            for (const z of SERVER_CONFIG) {
-                const s = z.servers.find(sv =>
-                    (initialServerName && (sv.name === initialServerName || sv.server === initialServerName)) ||
-                    (initialServerId && sv.serverId === String(initialServerId))
-                );
-                if (s) return s;
-            }
-        }
-        if (initialZhanQu) {
-            const z = SERVER_CONFIG.find(zq =>
-                zq.zhanQu === initialZhanQu ||
-                zq.zhanQu.includes(initialZhanQu) ||
-                initialZhanQu.includes(zq.zhanQu.replace('战区', ''))
-            );
-            if (z && z.servers.length > 0) return z.servers[0];
-        }
-        return SERVER_CONFIG[1].servers[1]; // 默认龙腾碧霄
-    });
-
-    // 监听外部传入的战区/单服参数动态切换
-    useEffect(() => {
-        if (!initialZhanQu && !initialServerName && !initialServerId) return;
-
-        if (initialServerName || initialServerId) {
-            for (let zIdx = 0; zIdx < SERVER_CONFIG.length; zIdx++) {
-                const z = SERVER_CONFIG[zIdx];
-                const matchedSv = z.servers.find(s =>
-                    (initialServerName && (s.name === initialServerName || s.server === initialServerName)) ||
-                    (initialServerId && s.serverId === String(initialServerId))
-                );
-                if (matchedSv) {
-                    setSelectedZhanQuIndex(zIdx);
-                    setSelectedServer(matchedSv);
-                    return;
-                }
-            }
-        }
-
-        if (initialZhanQu) {
-            const zqIdx = SERVER_CONFIG.findIndex(z =>
-                z.zhanQu === initialZhanQu ||
-                z.zhanQu.includes(initialZhanQu) ||
-                initialZhanQu.includes(z.zhanQu.replace('战区', ''))
-            );
-            if (zqIdx !== -1) {
-                setSelectedZhanQuIndex(zqIdx);
-                if (SERVER_CONFIG[zqIdx].servers.length > 0) {
-                    setSelectedServer(SERVER_CONFIG[zqIdx].servers[0]);
-                }
-            }
-        }
+    const resolvedInitial = useMemo(() => {
+        const hit = ALL_SERVERS.find(s => matchServer(s, { name: initialServerName, id: initialServerId }));
+        if (hit) return hit;
+        const zone = initialZhanQu
+            ? SERVER_ZONES.find(z => z.zhanQu === initialZhanQu || z.zhanQu.includes(initialZhanQu.replace('战区', '')))
+            : undefined;
+        if (zone?.servers[0]) return { ...zone.servers[0], zhanQu: zone.zhanQu };
+        return ALL_SERVERS.find(s => s.server === DEFAULT_SERVER) || ALL_SERVERS[0];
     }, [initialZhanQu, initialServerName, initialServerId]);
-    const [isProbing, setIsProbing] = useState<boolean>(false);
-    const [isBatchProbing, setIsBatchProbing] = useState<boolean>(false);
-    const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
 
-    const [favorites, setFavorites] = useState<string[]>(() => {
-        try {
-            return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '["519", "517"]');
-        } catch {
-            return ['519', '517'];
-        }
-    });
+    const [view, setView] = useState<ViewKey>({ kind: 'zone', zhanQu: resolvedInitial.zhanQu });
+    const [selected, setSelected] = useState<ServerEntry>(resolvedInitial);
+    const [isProbing, setIsProbing] = useState(false);
+    const [isBatchProbing, setIsBatchProbing] = useState(false);
+    const [soundEnabled, setSoundEnabled] = useState(true);
+    const [favorites, setFavorites] = useState<string[]>(loadFavorites);
 
-    // 记录各服务器状态与探测缓存（30分钟单次探测持久化）
-    const [serverStatusMap, setServerStatusMap] = useState<Record<string, ServerStatusItem>>(() => loadStatusCache());
-
-    const [, setCurrentStatus] = useState<'unknown' | 'online' | 'offline' | 'unstable' | 'error'>('unknown');
+    const cacheRef = useRef<Record<string, ServerStatusItem>>(loadCache());
+    const [statusMap, setStatusMap] = useState<Record<string, ServerStatusItem>>(cacheRef.current);
+    const [pingHistory, setPingHistory] = useState<Record<string, number[]>>({});
     const [logs, setLogs] = useState<ProbeLog[]>([]);
 
     const timerRef = useRef<number | null>(null);
     const audioCtxRef = useRef<AudioContext | null>(null);
 
-    // 收藏切换
-    const toggleFavorite = (serverId: string) => {
-        setFavorites(prev => {
-            const next = prev.includes(serverId)
-                ? prev.filter(id => id !== serverId)
-                : [...prev, serverId];
-            localStorage.setItem(FAVORITES_KEY, JSON.stringify(next));
-            return next;
-        });
-    };
+    // 外部传入区服变化时联动
+    useEffect(() => {
+        if (!initialZhanQu && !initialServerName && !initialServerId) return;
+        const hit = ALL_SERVERS.find(s => matchServer(s, { name: initialServerName, id: initialServerId }));
+        if (hit) {
+            setSelected(hit);
+            setView({ kind: 'zone', zhanQu: hit.zhanQu });
+            return;
+        }
+        if (initialZhanQu) {
+            const zone = SERVER_ZONES.find(z => z.zhanQu.includes(initialZhanQu.replace('战区', '')));
+            if (zone) {
+                setView({ kind: 'zone', zhanQu: zone.zhanQu });
+                if (zone.servers[0]) setSelected({ ...zone.servers[0], zhanQu: zone.zhanQu });
+            }
+        }
+    }, [initialZhanQu, initialServerName, initialServerId]);
 
-    // 原生 Web Audio 提示音（开服三音阶两轮：第一轮原调、第二轮升八度）
-    const playSuccessChime = () => {
+    const commitStatus = useCallback((updates: Array<{ server: string; item: ServerStatusItem }>) => {
+        const next = { ...cacheRef.current };
+        for (const u of updates) next[u.server] = u.item;
+        cacheRef.current = next;
+        saveCache(next);
+        setStatusMap(next);
+        setPingHistory(prev => {
+            const hist = { ...prev };
+            for (const u of updates) {
+                const arr = (hist[u.server] || []).slice(-27);
+                arr.push(u.item.status === 1 ? u.item.ping : 0);
+                hist[u.server] = arr;
+            }
+            return hist;
+        });
+    }, []);
+
+    const playSuccessChime = useCallback(() => {
         if (!soundEnabled) return;
         try {
             const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
             if (!AudioContextClass) return;
             const ctx = audioCtxRef.current || new AudioContextClass();
             audioCtxRef.current = ctx;
-
             const now = ctx.currentTime;
-            // 两轮琶音：C5-E5-G5 升到 C6-E6-G6，共约 1.8s
             [523.25, 659.25, 783.99, 1046.5, 1318.5, 1568].forEach((freq, idx) => {
                 const start = now + idx * 0.14;
                 const osc = ctx.createOscillator();
@@ -297,167 +225,121 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                 osc.start(start);
                 osc.stop(start + 0.45);
             });
-        } catch (e) {
-            console.warn('Audio chime error:', e);
+        } catch {
+            /* 浏览器策略拦截时静默 */
         }
-    };
+    }, [soundEnabled]);
 
-    // 战区单次批量探测并缓存（30分钟或1小时置状态）
-    const probeZoneBatch = useCallback(async (servers: ServerInfo[], force = false) => {
+    const pushLog = useCallback((serverName: string, status: ProbeLog['status'], message: string) => {
+        const now = new Date();
+        const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+        setLogs(prev => [{ id: `${Date.now()}-${Math.random()}`, time, serverName, status, message }, ...prev].slice(0, 60));
+    }, []);
+
+    /** 批量探测（30 分钟缓存；force 强制刷新） */
+    const probeBatch = useCallback(async (servers: ServerEntry[], force = false) => {
         const now = Date.now();
-        const targetsToProbe = force
+        const targets = force
             ? servers
             : servers.filter(s => {
-                const cached = serverStatusMap[s.server];
-                return !cached || (now - cached.updatedAt > CACHE_TTL_MS);
+                const cached = cacheRef.current[s.server];
+                return !cached || now - cached.updatedAt > CACHE_TTL_MS;
             });
-
-        if (targetsToProbe.length === 0) return;
+        if (targets.length === 0) return;
 
         setIsBatchProbing(true);
         try {
-            const serverQuery = targetsToProbe.map(s => s.server).join(',');
-            const res = await fetch(`/api/jiance?servers=${encodeURIComponent(serverQuery)}`);
+            const query = targets.map(s => s.server).join(',');
+            const res = await fetch(`/api/jiance?servers=${encodeURIComponent(query)}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
-
-            if (data.results && Array.isArray(data.results)) {
-                setServerStatusMap(prev => {
-                    const next = { ...prev };
-                    data.results.forEach((item: { server: string; status: number; ping: number; msg: string }) => {
-                        next[item.server] = {
-                            status: item.status,
-                            ping: item.ping,
-                            msg: item.msg,
-                            updatedAt: now
-                        };
-                    });
-                    saveStatusCache(next);
-                    return next;
-                });
+            if (Array.isArray(data.results)) {
+                commitStatus(
+                    data.results.map((item: { server: string; status: number; ping: number; msg: string }) => ({
+                        server: item.server,
+                        item: { status: item.status, ping: item.ping, msg: item.msg, updatedAt: Date.now() },
+                    }))
+                );
             }
         } catch (e) {
-            console.warn('Batch probe error:', e);
+            console.warn('批量探测失败', e);
         } finally {
             setIsBatchProbing(false);
         }
-    }, [serverStatusMap]);
+    }, [commitStatus]);
 
-    // 切换战区时自动批量探测未缓存或过期的服务器
-    useEffect(() => {
-        const activeServers = SERVER_CONFIG[selectedZhanQuIndex].servers;
-        probeZoneBatch(activeServers, false);
-    }, [selectedZhanQuIndex, probeZoneBatch]);
-
-    // 单独针对选定区服的高频探测
-    const probeSelectedServer = useCallback(async (silent = false) => {
-        const now = new Date();
-        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
-        const logId = `${Date.now()}-${Math.random()}`;
-
+    /** 选定服的高频轮询探测 */
+    const probeSelected = useCallback(async (target: ServerEntry, opts: { silent?: boolean } = {}) => {
         try {
-            const res = await fetch(`/api/jiance?server=${encodeURIComponent(selectedServer.server)}`);
+            const res = await fetch(`/api/jiance?server=${encodeURIComponent(target.server)}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
             const content = data.content;
+            if (!content) return;
 
-            if (content) {
-                const isOnline = content.status === 1;
-                setCurrentStatus(isOnline ? 'online' : 'offline');
-
-                // 同步刷新本地缓存
-                setServerStatusMap(prev => {
-                    const next = {
-                        ...prev,
-                        [selectedServer.server]: {
-                            status: content.status,
-                            ping: content.ping,
-                            msg: content.msg,
-                            updatedAt: Date.now()
-                        }
-                    };
-                    saveStatusCache(next);
-                    return next;
-                });
-
-                if (isOnline) {
-                    if (!silent) playSuccessChime();
-                    setLogs(prev => [
-                        {
-                            id: logId,
-                            time: timeStr,
-                            serverName: selectedServer.name,
-                            status: 'online',
-                            ping: content.ping,
-                            message: `已开服！响应延迟 ${content.ping}ms，官方通道通畅！`
-                        },
-                        ...prev.slice(0, 49)
-                    ]);
-                    // 服务器状态正常/已开服，立即自动停止持续轮询监测（与小木匠开服即止逻辑一致）
-                    setIsProbing(false);
-                } else {
-                    setLogs(prev => [
-                        {
-                            id: logId,
-                            time: timeStr,
-                            serverName: selectedServer.name,
-                            status: 'offline',
-                            ping: content.ping,
-                            message: '维护中（官方网关端口 29000 未放行）'
-                        },
-                        ...prev.slice(0, 49)
-                    ]);
-                }
-            }
-        } catch (err) {
-            setCurrentStatus('error');
-            setLogs(prev => [
-                {
-                    id: logId,
-                    time: timeStr,
-                    serverName: selectedServer.name,
-                    status: 'error',
-                    message: '探测超时，正在持续轮询重连...'
-                },
-                ...prev.slice(0, 49)
+            commitStatus([
+                { server: target.server, item: { status: content.status, ping: content.ping, msg: content.msg, updatedAt: Date.now() } },
             ]);
-        }
-    }, [selectedServer, soundEnabled]);
 
-    // 选定服务器高频雷达轮询控制（每 4 秒单次心跳）
+            if (content.status === 1) {
+                if (!opts.silent) playSuccessChime();
+                pushLog(target.name, 'online', `已开服 · 响应 ${content.ping}ms`);
+                setIsProbing(false);
+            } else {
+                pushLog(target.name, 'offline', '维护中 · 29000 网关未放行');
+            }
+        } catch {
+            pushLog(target.name, 'error', '探测超时，继续轮询重试');
+        }
+    }, [commitStatus, playSuccessChime, pushLog]);
+
+    const visibleServers = useMemo(() => {
+        if (view.kind === 'new') {
+            return ALL_SERVERS
+                .filter(s => s.isNew)
+                .sort((a, b) => new Date(b.openAt || 0).getTime() - new Date(a.openAt || 0).getTime());
+        }
+        if (view.kind === 'fav') {
+            return ALL_SERVERS.filter(s => favorites.includes(s.server));
+        }
+        const zone = SERVER_ZONES.find(z => z.zhanQu === view.zhanQu);
+        return zone ? zone.servers.map(s => ({ ...s, zhanQu: zone.zhanQu })) : [];
+    }, [view, favorites]);
+
+    // 切换视图自动补齐未探测的服
+    useEffect(() => {
+        if (visibleServers.length === 0) return;
+        probeBatch(visibleServers, false);
+    }, [visibleServers, probeBatch]);
+
+    // 选定服轮询
     useEffect(() => {
         if (!isProbing) {
-            if (timerRef.current) clearInterval(timerRef.current);
+            if (timerRef.current) window.clearInterval(timerRef.current);
             return;
         }
-
-        // 立即执行一次
-        probeSelectedServer(false);
-
-        // 持续探测选定服务器
-        timerRef.current = window.setInterval(() => {
-            probeSelectedServer(false);
-        }, 4000);
-
+        probeSelected(selected, { silent: false });
+        timerRef.current = window.setInterval(() => probeSelected(selected, { silent: false }), PROBE_INTERVAL_MS);
         return () => {
-            if (timerRef.current) clearInterval(timerRef.current);
+            if (timerRef.current) window.clearInterval(timerRef.current);
         };
-    }, [isProbing, probeSelectedServer]);
+    }, [isProbing, selected, probeSelected]);
 
-    // 选择服务器响应（强化双向联动：自动定位并切换对应战区）
-    const handleSelectServer = (srv: ServerInfo) => {
-        setSelectedServer(srv);
-        // 自动计算该服务器真实所属战区，并同步激活左侧大区选中态
-        const targetZqIndex = SERVER_CONFIG.findIndex(zq => zq.servers.some(s => s.serverId === srv.serverId));
-        if (targetZqIndex !== -1 && targetZqIndex !== selectedZhanQuIndex) {
-            setSelectedZhanQuIndex(targetZqIndex);
-        }
-        const cached = serverStatusMap[srv.server];
-        if (cached) {
-            setCurrentStatus(cached.status === 1 ? 'online' : 'offline');
-        } else {
-            setCurrentStatus('unknown');
-        }
+    const toggleFavorite = (server: string) => {
+        setFavorites(prev => {
+            const next = prev.includes(server) ? prev.filter(s => s !== server) : [...prev, server];
+            try {
+                localStorage.setItem(FAVORITES_KEY, JSON.stringify(next));
+            } catch {
+                /* ignore */
+            }
+            return next;
+        });
+    };
+
+    const handleSelect = (srv: ServerEntry) => {
+        setSelected(srv);
+        if (statusMap[srv.server]?.status === 1) setIsProbing(false);
     };
 
     const handleToggleProbing = () => {
@@ -465,96 +347,201 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
             setIsProbing(false);
             return;
         }
-
-        const cached = serverStatusMap[selectedServer.server];
-        if (cached && cached.status === 1) {
-            // 已开服状态：仅执行一次单次探测校验，无需启动持续轮询
-            probeSelectedServer(false);
+        if (statusMap[selected.server]?.status === 1) {
+            probeSelected(selected, { silent: false });
             return;
         }
-
         setIsProbing(true);
     };
 
-    const activeZhanQu = SERVER_CONFIG[selectedZhanQuIndex];
+    const onlineCount = ALL_SERVERS.filter(s => statusMap[s.server]?.status === 1).length;
+    const offlineCount = ALL_SERVERS.filter(s => statusMap[s.server]?.status === 0).length;
+    const newCount = ALL_SERVERS.filter(s => s.isNew).length;
+    const activeLabel = view.kind === 'new' ? '新服推荐' : view.kind === 'fav' ? '常驻关注' : view.zhanQu;
+    const selectedStatus = statusMap[selected.server];
+    const selectedOpen = openInfo(selected.openAt);
+    const selectedHistory = (pingHistory[selected.server] || []).slice(-28);
+
+    const railItemCls = (active: boolean, extra?: string) =>
+        clsx(
+            'text-left px-2.5 py-[7px] rounded-md text-[13px] transition-colors flex items-center justify-between gap-2 border',
+            active
+                ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-200 font-bold'
+                : 'border-transparent text-slate-400 hover:bg-slate-800/70 hover:text-slate-200',
+            extra ?? 'w-full'
+        );
+
+    const renderCard = (srv: ServerEntry) => {
+        const isSelected = selected.server === srv.server;
+        const isFav = favorites.includes(srv.server);
+        const st = statusMap[srv.server];
+        const tier = st && st.status === 1 ? pingTier(st.ping) : null;
+        const open = openInfo(srv.openAt);
+        // 已能连上就别再显示「今日 12:00 开服」，避免同一张卡自相矛盾
+        const openText = open && !(st?.status === 1 && open.pending) ? open : null;
+        // 状态条：条越长＝延迟越低（100ms 以上开始明显变短），维护中/未探测给保底短条
+        const barPct = st && st.status === 1
+            ? Math.round(Math.max(16, 100 - (Math.min(st.ping, 220) / 220) * 100))
+            : 8;
+        const barCls = !st
+            ? 'bg-slate-700'
+            : st.status === 0
+                ? 'bg-slate-600'
+                : st.ping < 60 ? 'bg-emerald-500' : st.ping < 120 ? 'bg-emerald-400' : st.ping < 200 ? 'bg-amber-400' : 'bg-rose-500';
+
+        return (
+            <button
+                key={`${srv.zhanQu}-${srv.server}`}
+                type="button"
+                onClick={() => handleSelect(srv)}
+                onDoubleClick={() => {
+                    handleSelect(srv);
+                    setIsProbing(true);
+                }}
+                className={clsx(
+                    'group relative text-left rounded-[4px] border px-3 pt-2.5 pb-[16px] pr-8 transition-colors h-full flex flex-col justify-between overflow-hidden select-none cursor-pointer',
+                    isSelected
+                        ? 'bg-cyan-500/12 border-cyan-500/70'
+                        : 'bg-slate-950/60 border-slate-700/80 hover:bg-slate-900/80 hover:border-slate-500'
+                )}
+                title={srv.aliases.length > 1 ? srv.aliases.join(' / ') : srv.name}
+            >
+                <div className="flex items-center gap-1.5 min-w-0">
+                    <span className={clsx('text-[13px] font-bold truncate', isSelected ? 'text-cyan-200' : 'text-slate-100')}>
+                        {srv.name}
+                    </span>
+                    {srv.aliases.length > 1 && (
+                        <span className="shrink-0 text-[10px] px-1 rounded bg-slate-800 text-slate-400 border border-slate-700/80">
+                            合{srv.aliases.length}
+                        </span>
+                    )}
+                </div>
+
+                <div className="flex items-baseline gap-2 leading-none min-w-0">
+                    {st && st.status === 1 && tier ? (
+                        <>
+                            <span className={clsx('font-mono font-bold text-[12px] shrink-0', tier.cls)}>{st.ping}ms</span>
+                            <span className={clsx('text-[11px] shrink-0', tier.cls)}>{tier.label}</span>
+                        </>
+                    ) : st && st.status === 0 ? (
+                        <span className="text-[11px] text-slate-400 shrink-0">维护中</span>
+                    ) : (
+                        <span className="text-[11px] text-slate-500 shrink-0">{isBatchProbing ? '检测中…' : '待检测'}</span>
+                    )}
+                    {openText && (
+                        <span className={clsx('text-[11px] truncate', openText.pending ? 'text-rose-300/90' : 'text-slate-500')}>
+                            {openText.pending ? openText.text : `· ${openText.text}`}
+                        </span>
+                    )}
+                </div>
+
+                {/* 底部状态条：长度＝延迟表现 */}
+                <span className="absolute left-3 right-3 bottom-[7px] h-[4px] rounded-full bg-slate-800/90 overflow-hidden">
+                    <span
+                        className={clsx('block h-full rounded-full transition-[width] duration-500', barCls)}
+                        style={{ width: `${barPct}%` }}
+                    />
+                </span>
+
+                {showNewBadge(srv.openAt) && (
+                    <span className="absolute top-0 right-0 w-[22px] h-[15px] bg-rose-600/90 text-[10px] leading-[15px] text-center text-white font-bold">
+                        新
+                    </span>
+                )}
+
+                <span
+                    role="button"
+                    tabIndex={-1}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(srv.server);
+                    }}
+                    className={clsx(
+                        'absolute right-1.5 bottom-[16px] p-0.5 transition-opacity cursor-pointer',
+                        isFav ? 'text-amber-400' : 'text-slate-600 opacity-0 group-hover:opacity-100 hover:text-amber-300'
+                    )}
+                    title={isFav ? '取消关注' : '加入常驻关注'}
+                >
+                    <Star className={clsx('w-3.5 h-3.5', isFav && 'fill-amber-400')} />
+                </span>
+            </button>
+        );
+    };
 
     return (
-        <div className="flex flex-col gap-4 max-w-[1560px] mx-auto w-full">
-            {/* 顶栏标题与控制栏 */}
-            <div className="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-4 sm:p-4.5 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 backdrop-blur-md">
-                <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">
-                        <Radio className="w-5 h-5 animate-pulse text-cyan-400" />
+        <div className="@container w-full max-w-[1560px] mx-auto flex flex-col gap-3 h-full min-h-[calc(100vh-200px)]">
+            {/* 顶栏 */}
+            <div className="bg-slate-900/80 border border-slate-800/80 rounded-xl px-3.5 py-3 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                    <div className="p-2 rounded-lg bg-cyan-500/15 border border-cyan-500/30 text-cyan-300">
+                        <Radio className="w-4 h-4" />
                     </div>
                     <div>
-                        <div className="flex items-center gap-2">
-                            <h2 className="text-lg font-black text-slate-100 tracking-wide">
-                                诛仙3开服雷达监测
-                            </h2>
-                            {/* <span className="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-bold flex items-center gap-1">
-                                <span>官方29000网关直连</span>
-                            </span> */}
-                        </div>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                            全区状态扫描 · 秒级独占雷达 · 开服声光提醒
+                        <h2 className="text-[15px] font-bold text-slate-100 leading-tight">诛仙3开服雷达监测</h2>
+                        <p className="text-[11px] text-slate-400 mt-0.5">
+                            {SERVER_ZONES.length} 大战区 · {ALL_SERVERS.length} 台服务器 · {onlineCount} 台已开服
                         </p>
                     </div>
                 </div>
 
-                {/* 快捷操作控件 */}
-                <div className="flex items-center gap-2.5 flex-wrap">
+                <div className="flex items-center gap-2">
                     <button
                         type="button"
-                        onClick={() => setSoundEnabled(!soundEnabled)}
+                        onClick={() => setSoundEnabled(v => !v)}
                         className={clsx(
-                            'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer select-none',
+                            'flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-bold border transition-colors cursor-pointer',
                             soundEnabled
-                                ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shadow-sm'
+                                ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300'
                                 : 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200'
                         )}
-                        title="开服时播放提示音"
                     >
-                        {soundEnabled ? <Volume2 className="w-4 h-4 text-cyan-400" /> : <VolumeX className="w-4 h-4 text-slate-500" />}
-                        <span>{soundEnabled ? '提示音开' : '提示音关'}</span>
+                        {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                        <span>提示音</span>
                     </button>
 
                     <button
                         type="button"
                         onClick={handleToggleProbing}
                         className={clsx(
-                            'flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border shadow-lg cursor-pointer select-none',
+                            'flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-bold border transition-colors cursor-pointer',
                             isProbing
-                                ? 'bg-rose-500/20 border-rose-500/50 text-rose-300 shadow-rose-500/20 animate-pulse'
-                                : 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/50 text-cyan-300 shadow-cyan-500/15 hover:from-cyan-500/30 hover:to-blue-500/30'
+                                ? 'bg-rose-500/15 border-rose-500/50 text-rose-300'
+                                : 'bg-cyan-500/15 border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/25'
                         )}
                     >
-                        {isProbing ? <Pause className="w-4 h-4 text-rose-400" /> : <Play className="w-4 h-4 text-cyan-400" />}
+                        {isProbing ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                         <span>{isProbing ? '停止监测' : '启动监测'}</span>
                     </button>
 
-                    {/* 分屏工作区原生视窗控制按钮 */}
+                    <button
+                        type="button"
+                        onClick={() => probeBatch(visibleServers, true)}
+                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-bold border border-slate-700 bg-slate-800/80 text-slate-300 hover:text-slate-100 transition-colors cursor-pointer"
+                    >
+                        <RefreshCw className={clsx('w-3.5 h-3.5', isBatchProbing && 'animate-spin')} />
+                        <span>刷新</span>
+                    </button>
+
                     {isSplitScreen && (
-                        <div className="flex items-center gap-1.5 pl-2.5 ml-1 border-l border-slate-700/80">
+                        <div className="flex items-center gap-1 pl-2 border-l border-slate-700/80">
                             {onToggleMaximize && (
                                 <button
                                     type="button"
                                     onClick={onToggleMaximize}
-                                    className="p-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-cyan-300 transition-colors border border-slate-700/80 shadow-sm cursor-pointer"
-                                    title={isMaximized ? '还原分屏' : '最大化工作区'}
-                                    aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
+                                    className="p-1.5 rounded-md bg-slate-800/90 hover:bg-slate-700 text-slate-300 border border-slate-700/80 cursor-pointer"
+                                    title={isMaximized ? '还原分屏' : '最大化'}
                                 >
-                                    {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                                    {isMaximized ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
                                 </button>
                             )}
                             {onClose && (
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="p-1.5 rounded-xl bg-slate-800/90 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 transition-colors border border-slate-700/80 shadow-sm cursor-pointer"
-                                    title="关闭右侧工作区"
-                                    aria-label="关闭工作区"
+                                    className="p-1.5 rounded-md bg-slate-800/90 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 border border-slate-700/80 cursor-pointer"
+                                    title="关闭工作区"
                                 >
-                                    <X className="w-4 h-4" />
+                                    <X className="w-3.5 h-3.5" />
                                 </button>
                             )}
                         </div>
@@ -562,256 +549,240 @@ export const ServerRadarView: React.FC<ServerRadarViewProps> = ({
                 </div>
             </div>
 
-            {/* 我的常驻关注快捷栏（带多层深度联动指示） */}
-            {favorites.length > 0 && (
-                <div className="flex items-center gap-2.5 bg-slate-900/80 px-3.5 py-2.5 rounded-xl border border-slate-800/80 text-xs shadow-md backdrop-blur-sm">
-                    <span className="text-amber-400 font-bold flex items-center gap-1.5 pl-0.5 shrink-0 select-none">
-                        <Star className="w-3.5 h-3.5 fill-amber-400" />
-                        <span>常驻关注:</span>
-                    </span>
-                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                        {SERVER_CONFIG.flatMap(zq => zq.servers)
-                            .filter(s => favorites.includes(s.serverId))
-                            .map(favSrv => {
-                                const isSelected = selectedServer.serverId === favSrv.serverId;
-                                const favStatus = serverStatusMap[favSrv.server];
+            <div className="flex flex-col @[880px]:flex-row gap-3 items-stretch flex-1 min-h-0">
+                {/* 左栏：区服导航 */}
+                <div className="self-stretch bg-slate-900/80 border border-slate-800/80 rounded-xl p-2 @[880px]:w-[178px] shrink-0 flex flex-col gap-1">
+                    <div className="text-[11px] text-slate-500 px-2 pt-1 pb-1.5 tracking-wider">区服导航</div>
 
-                                return (
-                                    <button
-                                        key={favSrv.serverId}
-                                        type="button"
-                                        onClick={() => handleSelectServer(favSrv)}
-                                        className={clsx(
-                                            'px-3 py-1 rounded-lg text-xs font-bold transition-all border flex items-center gap-2 cursor-pointer whitespace-nowrap select-none',
-                                            isSelected
-                                                ? 'bg-amber-500/20 border-amber-500/60 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.25)] ring-1 ring-amber-500/40'
-                                                : 'bg-slate-800/80 border-slate-700/70 text-slate-300 hover:bg-slate-700/80 hover:text-slate-100'
-                                        )}
-                                    >
-                                        <span>{favSrv.name}</span>
-                                        {favStatus ? (
-                                            <span className={clsx(
-                                                'w-1.5 h-1.5 rounded-full',
-                                                favStatus.status === 1 ? 'bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.8)]' : 'bg-slate-500'
-                                            )} />
-                                        ) : null}
-                                        {isSelected && isProbing && (
-                                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-                                        )}
-                                    </button>
-                                );
-                            })}
-                    </div>
-                </div>
-            )}
-
-            {/* 核心战备工作台：左侧战区选择(3列) + 右侧主体(9列上下横向全宽占满) */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch flex-1 min-h-[580px] lg:h-[calc(100vh-235px)] lg:max-h-[760px]">
-                {/* 左侧：战区选择导航轨 (3列，撑满等高) */}
-                <div className="lg:col-span-3 bg-slate-900/80 border border-slate-800/80 rounded-2xl p-3.5 flex flex-col justify-between shadow-xl backdrop-blur-sm h-full">
-                    <div className="flex flex-col gap-1.5 flex-1">
-                        <div className="flex items-center justify-between px-2 pb-2 mb-1 border-b border-slate-800/80">
-                            <span className="text-xs text-slate-400 font-bold tracking-wide">战区选择</span>
-                            {/* <span className="text-[11px] text-slate-500 font-mono">共 9 大战区</span> */}
-                            <span className="text-xs text-cyan-400/80 font-bold">36组服务器在线</span>
-                        </div>
-
-                        <div className="flex flex-col gap-1.5 flex-1 justify-between">
-                            {SERVER_CONFIG.map((zq, idx) => {
-                                const isActive = selectedZhanQuIndex === idx;
-                                const onlineCount = zq.servers.filter(s => serverStatusMap[s.server]?.status === 1).length;
-                                const probedCount = zq.servers.filter(s => !!serverStatusMap[s.server]).length;
-
-                                return (
-                                    <button
-                                        key={zq.zhanQu}
-                                        type="button"
-                                        onClick={() => setSelectedZhanQuIndex(idx)}
-                                        className={clsx(
-                                            'px-3.5 py-2.5 rounded-xl text-left text-xs font-bold transition-all flex items-center justify-between cursor-pointer select-none border',
-                                            isActive
-                                                ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/10 border-cyan-500/60 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/30'
-                                                : 'bg-slate-950/40 border-transparent text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
-                                        )}
-                                    >
-                                        <span className="tracking-wide">{zq.zhanQu}</span>
-                                        <div className="flex items-center gap-1.5">
-                                            {probedCount > 0 && (
-                                                <span className={clsx(
-                                                    'text-[10px] font-mono px-1.5 py-0.5 rounded font-bold',
-                                                    onlineCount > 0
-                                                        ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
-                                                        : 'bg-slate-800 text-slate-500 border border-slate-700/50'
-                                                )}>
-                                                    {onlineCount > 0 ? `${onlineCount}服在线` : '维护中'}
-                                                </span>
-                                            )}
-                                            <span className="text-[10px] font-mono opacity-50">
-                                                {zq.servers.length}服
-                                            </span>
-                                        </div>
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* 底部全服统计微栏 */}
-                    <div className="pt-3 mt-2 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-between px-1">
+                    <button type="button" onClick={() => setView({ kind: 'new' })} className={railItemCls(view.kind === 'new')}>
                         <span className="flex items-center gap-1.5">
-                            {/* <Activity className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>战区监控雷达</span> */}
+                            <Sparkles className="w-3.5 h-3.5" />
+                            新服推荐
                         </span>
+                        <span className="text-[13px] font-mono text-rose-300/90">{newCount}</span>
+                    </button>
 
+                    <button type="button" onClick={() => setView({ kind: 'fav' })} className={railItemCls(view.kind === 'fav')}>
+                        <span className="flex items-center gap-1.5">
+                            <Heart className="w-3.5 h-3.5" />
+                            常驻关注
+                        </span>
+                        <span className="text-[13px] font-mono text-amber-300/90">{favorites.length}</span>
+                    </button>
+
+                    <div className="h-px bg-slate-800 my-1" />
+
+                    <div className="flex flex-wrap @[880px]:flex-col gap-1">
+                        {SERVER_ZONES.map(z => {
+                            const active = view.kind === 'zone' && view.zhanQu === z.zhanQu;
+                            const online = z.servers.filter(s => statusMap[s.server]?.status === 1).length;
+                            const probed = z.servers.some(s => !!statusMap[s.server]);
+                            return (
+                                <button
+                                    key={z.zhanQu}
+                                    type="button"
+                                    onClick={() => {
+                                        setView({ kind: 'zone', zhanQu: z.zhanQu });
+                                        if (z.servers[0]) setSelected({ ...z.servers[0], zhanQu: z.zhanQu });
+                                    }}
+                                    className={railItemCls(active, 'flex-1 min-w-[88px] @[880px]:flex-none @[880px]:w-full')}
+                                >
+                                    <span className="whitespace-nowrap">{z.zhanQu}</span>
+                                    <span className={clsx('text-[13px] font-mono', !probed ? 'text-slate-500' : online > 0 ? 'text-emerald-400' : 'text-slate-400')}>
+                                        {probed ? `${online}/${z.servers.length}` : z.servers.length}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* 全服概览：撑住左栏底部的空白 */}
+                    <div className="hidden @[880px]:flex mt-auto pt-2.5 border-t border-slate-800/80 flex-col gap-1 text-[12px]">
+                        <div className="flex items-center justify-between px-1">
+                            <span className="text-slate-500">服务器总数</span>
+                            <span className="font-mono text-slate-300">{ALL_SERVERS.length}</span>
+                        </div>
+                        <div className="flex items-center justify-between px-1">
+                            <span className="text-slate-500">已开服</span>
+                            <span className="font-mono text-emerald-400">{onlineCount}</span>
+                        </div>
+                        <div className="flex items-center justify-between px-1">
+                            <span className="text-slate-500">维护中</span>
+                            <span className="font-mono text-slate-400">{offlineCount}</span>
+                        </div>
+                        <div className="flex items-center justify-between px-1">
+                            <span className="text-slate-500">新服</span>
+                            <span className="font-mono text-rose-300/90">{newCount}</span>
+                        </div>
                     </div>
                 </div>
 
-                {/* 右侧：主体区域 (9列，上下结构，横向全宽占满) */}
-                <div className="lg:col-span-9 flex flex-col justify-between gap-4 h-full">
-                    {/* 上部：战区服务器列表 (向右全宽占满) */}
-                    <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-xl flex-1 flex flex-col backdrop-blur-sm min-h-[300px]">
-                        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80">
-                            <span className="text-sm font-black text-slate-100 tracking-wide">
-                                {activeZhanQu.zhanQu} · 服务器列表
-                            </span>
+                {/* 右侧主体 */}
+                <div className="flex-1 min-w-0 min-h-0 flex flex-col gap-3">
+                    <div className="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 shrink-0 flex flex-col gap-2.5">
+                        <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-800/80">
+                            <div className="flex items-baseline gap-2 min-w-0">
+                                <span className="text-[12px] font-bold text-slate-100">{activeLabel}</span>
+                                <span className="text-[10px] text-slate-500 font-mono">{visibleServers.length} 台</span>
+                            </div>
+                            <span className="text-[11px] text-slate-500">单击选中 · 双击监测 · 底部条越长延迟越低</span>
+                        </div>
 
+                        {visibleServers.length === 0 ? (
+                            <div className="flex-1 min-h-[180px] flex flex-col items-center justify-center gap-2 text-slate-500 text-[12px]">
+                                <Heart className="w-5 h-5 text-slate-600" />
+                                <span>{view.kind === 'fav' ? '还没有常驻关注，鼠标悬停卡片点星标添加' : '暂无数据'}</span>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 @[430px]:grid-cols-2 @[760px]:grid-cols-3 @[1180px]:grid-cols-4 auto-rows-[76px] gap-3 content-start">
+                                {visibleServers.map(renderCard)}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* 选中服详情：吃掉剩余高度，同时承载操作入口 */}
+                    <div className="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 shrink-0 flex flex-col gap-3">
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                    <span className="text-[17px] font-bold text-slate-100 leading-tight truncate">{selected.name}</span>
+                                    {showNewBadge(selected.openAt) && (
+                                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-600/90 text-white font-bold">新服</span>
+                                    )}
+                                    {selected.aliases.length > 1 && (
+                                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700/80 text-slate-400">
+                                            合 {selected.aliases.length} 服
+                                        </span>
+                                    )}
+                                    {favorites.includes(selected.server) && (
+                                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/15 border border-amber-500/40 text-amber-300">
+                                            常驻关注
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="text-[12px] text-slate-400 mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+                                    <span className="text-slate-300">{selected.zhanQu}</span>
+                                    {selectedOpen && (
+                                        <span className={clsx(selectedOpen.pending ? 'text-rose-300/90' : 'text-slate-500')}>
+                                            {selectedOpen.text}
+                                        </span>
+                                    )}
+                                </div>
+                                {selected.aliases.length > 1 && (
+                                    <div className="mt-2 flex flex-wrap gap-1.5">
+                                        {selected.aliases.slice(1).map(alias => (
+                                            <span
+                                                key={alias}
+                                                className="text-[10px] px-1.5 py-0.5 rounded bg-slate-950/70 border border-slate-800 text-slate-400"
+                                            >
+                                                {alias}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="text-right shrink-0 whitespace-nowrap">
+                                {selectedStatus?.status === 1 ? (
+                                    <>
+                                        <div className={clsx('text-[24px] font-black font-mono leading-none', pingTier(selectedStatus.ping).cls)}>
+                                            {selectedStatus.ping}
+                                            <span className="text-[12px] font-normal ml-0.5">ms</span>
+                                        </div>
+                                        <div className={clsx('text-[12px] mt-1.5', pingTier(selectedStatus.ping).cls)}>
+                                            {pingTier(selectedStatus.ping).label}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-[24px] font-black font-mono leading-none text-slate-600">--</div>
+                                        <div className="text-[12px] mt-1.5 text-slate-500">
+                                            {selectedStatus ? '维护中' : '待检测'}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* 心跳时序 */}
+                        <div className="min-h-[40px] flex flex-col justify-end">
+                            <div className="flex items-end gap-[3px] h-[36px]">
+                                {selectedHistory.length === 0 ? (
+                                    <span className="text-[12px] text-slate-500 self-center">开始监测后在此绘制延迟曲线</span>
+                                ) : (
+                                    selectedHistory.map((ping, idx) => {
+                                        const h = ping === 0 ? 4 : Math.min(36, Math.max(6, Math.round((ping / 200) * 36)));
+                                        const cls = ping === 0
+                                            ? 'bg-slate-700'
+                                            : ping < 60 ? 'bg-emerald-500/80' : ping < 120 ? 'bg-emerald-400/60' : ping < 200 ? 'bg-amber-400/80' : 'bg-rose-500/80';
+                                        return <span key={idx} className={clsx('w-[5px] rounded-sm', cls)} style={{ height: `${h}px` }} />;
+                                    })
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2 pt-2.5 border-t border-slate-800/80">
                             <button
                                 type="button"
-                                onClick={() => probeZoneBatch(activeZhanQu.servers, true)}
-                                className="text-xs text-slate-300 hover:text-slate-100 font-bold flex items-center gap-1.5 cursor-pointer transition-colors px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700"
-                                title="立即批量检测当前战区全部服务器状态"
+                                onClick={handleToggleProbing}
+                                className={clsx(
+                                    'flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-[12px] font-bold border transition-colors cursor-pointer',
+                                    isProbing
+                                        ? 'bg-rose-500/15 border-rose-500/50 text-rose-300'
+                                        : 'bg-cyan-500/15 border-cyan-500/60 text-cyan-200 hover:bg-cyan-500/25'
+                                )}
                             >
-                                <RefreshCw className={clsx("w-3.5 h-3.5 text-slate-400", isBatchProbing && "animate-spin")} />
-                                <span>刷新本区状态</span>
+                                {isProbing ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                                {isProbing ? '停止监测' : '开始监测'}
                             </button>
-                        </div>
-
-                        {/* 规格化网格排版：自适应向右充分铺开 (3~4 列) */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 flex-1 content-start">
-                            {activeZhanQu.servers.map(srv => {
-                                const isSelected = selectedServer.serverId === srv.serverId;
-                                const isFav = favorites.includes(srv.serverId);
-                                const statusItem = serverStatusMap[srv.server];
-
-                                return (
-                                    <div
-                                        key={srv.serverId}
-                                        onClick={() => handleSelectServer(srv)}
-                                        className={clsx(
-                                            'p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between gap-3 select-none relative group h-[88px]',
-                                            isSelected
-                                                ? 'bg-gradient-to-br from-cyan-950/60 to-slate-900 border-cyan-400/80 shadow-[0_0_20px_rgba(6,182,212,0.25)] ring-2 ring-cyan-500/50'
-                                                : 'bg-slate-950/50 border-slate-800/90 hover:bg-slate-800/50 hover:border-slate-700'
-                                        )}
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <span className={clsx(
-                                                'font-black text-xs sm:text-sm tracking-wide',
-                                                isSelected ? 'text-cyan-300 font-bold' : 'text-slate-200'
-                                            )}>
-                                                {srv.name}
-                                            </span>
-                                            <button
-                                                type="button"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    toggleFavorite(srv.serverId);
-                                                }}
-                                                className="text-slate-600 hover:text-amber-400 p-0.5 cursor-pointer transition-colors"
-                                                title={isFav ? '取消关注' : '加入常驻关注'}
-                                            >
-                                                <Star className={clsx(
-                                                    'w-4 h-4',
-                                                    isFav ? 'fill-amber-400 text-amber-400' : 'hover:text-slate-400'
-                                                )} />
-                                            </button>
-                                        </div>
-
-                                        {/* 状态徽标与延迟 */}
-                                        <div className="flex items-center justify-between text-[11px]">
-                                            {statusItem ? (
-                                                statusItem.status === 1 ? (
-                                                    <span className="inline-flex items-center gap-1.5 text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">
-                                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                                                        <span>已开服 {statusItem.ping}ms</span>
-                                                    </span>
-                                                ) : (
-                                                    <span className="inline-flex items-center gap-1 text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/50">
-                                                        <span className="w-1.5 h-1.5 rounded-full bg-slate-500" />
-                                                        <span>维护中</span>
-                                                    </span>
-                                                )
-                                            ) : isBatchProbing ? (
-                                                <span className="inline-flex items-center gap-1 text-cyan-400 font-mono text-[10px]">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-                                                    <span>检测中...</span>
-                                                </span>
-                                            ) : (
-                                                <span className="inline-flex items-center gap-1 text-slate-500 text-[10px]">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-700" />
-                                                    <span>待置状态</span>
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                            <button
+                                type="button"
+                                onClick={() => toggleFavorite(selected.server)}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-bold border border-slate-700 bg-slate-800/80 text-slate-300 hover:text-amber-300 transition-colors cursor-pointer"
+                            >
+                                <Star className={clsx('w-3.5 h-3.5', favorites.includes(selected.server) && 'fill-amber-400 text-amber-400')} />
+                                {favorites.includes(selected.server) ? '已关注' : '加关注'}
+                            </button>
                         </div>
                     </div>
 
-                    {/* 下部：雷达探测日志 (移至下方横向向右全宽占满，纯净纯文字分色) */}
-                    <div className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between shadow-xl backdrop-blur-sm min-h-[220px] max-h-[280px] shrink-0">
-                        <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-slate-800/80">
-                            <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                    {/* 日志 */}
+                    <div className="bg-slate-900/80 border border-slate-800/80 rounded-xl px-3 py-2 flex flex-col flex-1 min-h-[112px]">
+                        <div className="flex items-center justify-between pb-1.5">
+                            <span className="text-[12px] font-bold text-slate-300 flex items-center gap-1.5">
                                 <Activity className="w-3.5 h-3.5 text-cyan-400" />
-                                <span>雷达探测日志</span>
+                                探测日志
                             </span>
-
                             {logs.length > 0 && (
                                 <button
                                     type="button"
                                     onClick={() => setLogs([])}
-                                    className="text-[11px] text-slate-400 hover:text-slate-200 px-2 py-0.5 rounded hover:bg-slate-800 cursor-pointer transition-colors border border-slate-700/60"
+                                    className="text-[11px] px-2 py-0.5 rounded border border-slate-700 bg-slate-800/80 text-slate-300 hover:text-slate-100 hover:bg-slate-700 transition-colors cursor-pointer"
                                 >
-                                    清空日志
+                                    清空
                                 </button>
                             )}
                         </div>
-
-                        {/* 单行流式日志列表容器 */}
-                        <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 no-scrollbar">
+                        <div className="flex-1 min-h-[64px] overflow-y-auto no-scrollbar flex flex-col gap-0.5">
                             {logs.length === 0 ? (
-                                <div className="h-full flex flex-col items-center justify-center py-8 text-slate-500 text-xs gap-2">
-                                    <div className="flex items-center gap-2 text-slate-400 font-medium">
-                                        <Radio className="w-4 h-4 text-cyan-400 animate-pulse" />
-                                        <span>雷达站就绪待命</span>
-                                    </div>
-                                    <span className="text-[11px] text-slate-600">
-                                        开启监测或点击“立即单次检测”后，各服心跳结果将以纯文字日志在此实时滚屏呈现
-                                    </span>
+                                <div className="h-full flex items-center justify-center text-[12px] text-slate-500">
+                                    待命中 · 启动监测后心跳结果在此滚动
                                 </div>
                             ) : (
                                 logs.map(log => (
-                                    <div
-                                        key={log.id}
-                                        className="px-2.5 py-1.5 rounded-lg bg-slate-950/40 hover:bg-slate-950/70 border border-slate-800/40 text-xs font-mono flex items-center gap-3 transition-colors select-none"
-                                    >
-                                        {/* 时间：纯灰色 */}
-                                        <span className="text-slate-500 font-mono text-xs shrink-0">
-                                            {log.time}
-                                        </span>
-
-                                        {/* 服务器：纯青蓝色文字，无边框背景胶囊 */}
-                                        <span className="text-cyan-400 font-bold text-xs shrink-0">
-                                            {log.serverName}
-                                        </span>
-
-                                        {/* 状态正文：直接用颜色区分，无任何胶囊框与末尾重复延迟 */}
-                                        <span className={clsx(
-                                            'text-xs font-medium truncate flex-1',
-                                            log.status === 'online' ? 'text-emerald-400' :
-                                                log.status === 'offline' ? 'text-slate-400' : 'text-rose-400'
-                                        )}>
+                                    <div key={log.id} className="flex items-center gap-2 text-[12px] font-mono leading-5">
+                                        <span className="text-slate-500 shrink-0">{log.time}</span>
+                                        <span className="text-cyan-400 shrink-0 truncate max-w-[170px]">{log.serverName}</span>
+                                        <span
+                                            className={clsx(
+                                                'truncate',
+                                                log.status === 'online'
+                                                    ? 'text-emerald-400'
+                                                    : log.status === 'offline'
+                                                        ? 'text-slate-400'
+                                                        : 'text-rose-400'
+                                            )}
+                                        >
                                             {log.message}
                                         </span>
                                     </div>

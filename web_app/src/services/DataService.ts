@@ -346,6 +346,27 @@ export class DataService {
         return this.tianyuanData;
     }
 
+    private xycTomeMeta: any = null;
+    private xycAdvSkills: any = null;
+
+    /** 轩辕策四系书名 / 品阶 / 等级上限等展示元数据 */
+    public async getXycTomeMeta(): Promise<any> {
+        if (this.xycTomeMeta) return this.xycTomeMeta;
+        const res = await fetch(`${DATA_BASE_URL}/xyc_tomes.json`);
+        if (!res.ok) throw new Error(`加载 xyc_tomes.json 失败: ${res.status}`);
+        this.xycTomeMeta = await res.json();
+        return this.xycTomeMeta;
+    }
+
+    /** 轩辕策进阶技能（仅青龙 / 白虎，按职业分组） */
+    public async getXycAdvSkills(): Promise<any> {
+        if (this.xycAdvSkills) return this.xycAdvSkills;
+        const res = await fetch(`${DATA_BASE_URL}/xyc_adv_skills.json`);
+        if (!res.ok) throw new Error(`加载 xyc_adv_skills.json 失败: ${res.status}`);
+        this.xycAdvSkills = await res.json();
+        return this.xycAdvSkills;
+    }
+
     private peizhangData: any = null;
     private ninglingqiData: any = null;
     private silinBenyuanData: any = null;

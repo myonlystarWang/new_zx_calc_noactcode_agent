@@ -3,12 +3,12 @@ import {
   Paperclip,
   Calculator,
   Radio,
-  Compass,
-  Sparkles,
   Swords,
-  Scroll,
-  Hammer,
-  Gem
+  Shield,
+  Zap,
+  BookOpen,
+  SlidersHorizontal,
+  Cpu,
 } from 'lucide-react';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 
@@ -70,7 +70,7 @@ interface MenuItem {
   onClick?: () => void;
 }
 
-// 菜单项：根据用户需求调整为 8 项纯速查与分屏工具
+// 菜单项：与首页快捷药丸一一对齐，额外保留置顶「上传截图」与「副本训练场」
 const menuItems: MenuItem[] = [
     {
       id: 'upload',
@@ -83,11 +83,11 @@ const menuItems: MenuItem[] = [
       },
     },
     {
-      id: 'calc',
-      icon: Calculator,
-      title: '战力计算器',
-      desc: '属性录入 · 增益勾选 · T20/团本秒伤推演',
-      onClick: () => handleToolClick('calc'),
+      id: 'server',
+      icon: Radio,
+      title: '开服雷达',
+      desc: '9 大战区 33 服务器毫秒级心跳探测与声光提醒',
+      onClick: () => handleToolClick('server'),
     },
     {
       id: 'arena',
@@ -97,47 +97,49 @@ const menuItems: MenuItem[] = [
       onClick: () => handleToolClick('arena'),
     },
     {
-      id: 'server',
-      icon: Radio,
-      title: '开服雷达',
-      desc: '9 大战区 33 服务器毫秒级心跳探测与声光提醒',
-      onClick: () => handleToolClick('server'),
+      id: 'equip',
+      icon: Shield,
+      title: '装备属性',
+      desc: '装备图鉴 · 天缘 / 蕴灵 / 神机词条速查',
+      onClick: () => handleSendMessageClick('装备'),
     },
     {
-      id: 'silin_benyuan',
-      icon: Compass,
-      title: '四灵本元',
-      desc: '伏龙鼎四灵 × 1~5阶全词条与满级折算速查',
-      onClick: () => handleSendMessageClick('四灵本元'),
+      id: 'skill',
+      icon: Zap,
+      title: '技能图鉴',
+      desc: '全职业技能、四代与造化被动、伤害系数速查',
+      onClick: () => handleSendMessageClick('技能'),
     },
     {
-      id: 'shenji',
-      icon: Hammer,
-      title: '神机洗练',
-      desc: '修武/昭武/彰武 × 6 部位 · 蕴灵档位概率锻造模拟',
-      onClick: () => handleSendMessageClick('神机洗练'),
+      id: 'guide',
+      icon: BookOpen,
+      title: '玩法攻略',
+      desc: '副本机制、毕业路线与实战打法',
+      onClick: () => handleSendMessageClick('玩法攻略'),
     },
     {
-      id: 'yunling',
-      icon: Gem,
-      title: '装备蕴灵',
-      desc: '神隐蕴灵 +1~+15 · 幸运值与月德符消耗逐手模拟',
-      // ⛔ 数据实验室（右侧分屏）入口已关闭（2026-10-22）：恢复时改回 handleToolClick('yunling')
-      onClick: () => handleSendMessageClick('装备蕴灵'),
+      id: 'calc',
+      icon: Calculator,
+      title: '伤害计算',
+      desc: '属性录入 · 增益勾选 · T20/团本秒伤推演',
+      onClick: () => {
+        onSelectWorkspace('calc');
+        handleSendMessageClick('计算实战战力');
+      },
     },
     {
-      id: 'tianyuan',
-      icon: Sparkles,
-      title: '天缘属性',
-      desc: '旧天缘天命四大部位与新天缘须弥系列分类卡',
-      onClick: () => handleSendMessageClick('天缘属性'),
+      id: 'measure',
+      icon: SlidersHorizontal,
+      title: '属性测算',
+      desc: '面板属性逐项测算与增益折算',
+      onClick: () => handleSendMessageClick('属性测算'),
     },
     {
-      id: 'ninglingqi',
-      icon: Scroll,
-      title: '宸极凝灵契',
-      desc: '12 孔属性池 · 官方稀有/暴伤上限规则速查',
-      onClick: () => handleSendMessageClick('凝灵契'),
+      id: 'sim',
+      icon: Cpu,
+      title: '各类模拟器',
+      desc: '神机洗练 / 蕴灵模拟 / 新天缘模拟',
+      onClick: () => handleSendMessageClick('各类模拟器'),
     },
   ];
 

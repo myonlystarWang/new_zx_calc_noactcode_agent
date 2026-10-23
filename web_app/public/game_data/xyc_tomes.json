@@ -1,0 +1,16 @@
+{
+  "_source": "轩辕策四系书名与品阶，取自完美世界官方专题「天书第四卷---轩辕策」(event51.wanmei.com/zhuxian/201410/xinban/details2.htm)",
+  "tiers": ["一品", "二品", "三品", "四品", "五品", "六品"],
+  "currentTier": "六品",
+  "maxLevel": 20,
+  "minLevel": 1,
+  "washBaseMax": 10,
+  "washExtraMax": 4,
+  "variants": ["英雄", "大地", "天空", "碧海"],
+  "books": {
+    "青龙": { "bookName": "青囊玉书", "color": "#11ff11" },
+    "白虎": { "bookName": "白锦道册", "color": "#ffcb4a" },
+    "朱雀": { "bookName": "朱翎术纪", "color": "#ff4d4f" },
+    "玄武": { "bookName": "玄甲元略", "color": "#11aaff" }
+  }
+}

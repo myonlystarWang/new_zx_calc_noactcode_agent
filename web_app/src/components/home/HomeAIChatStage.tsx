@@ -24,6 +24,8 @@ import { PeizhangDetailCard } from '../compendium/PeizhangDetailCard';
 import { JiuwenlangDetailCard } from '../compendium/JiuwenlangDetailCard';
 import { OldTianyuanDetailCard } from '../compendium/OldTianyuanDetailCard';
 import { NewTianyuanDetailCard } from '../compendium/NewTianyuanDetailCard';
+import { NewTianyuanSimCard } from '../compendium/NewTianyuanSimCard';
+import { XycTomeDetailCard } from '../compendium/XycTomeDetailCard';
 import { XingsuDetailCard } from '../compendium/XingsuDetailCard';
 import { BaoshiDetailCard } from '../compendium/BaoshiDetailCard';
 import { SilinBenyuanCard } from '../compendium/SilinBenyuanCard';
@@ -704,6 +706,27 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             </div>
                                         )}
 
+                                        {/* 6.5b 四象裸词歧义分流卡（xyc_hub）：青龙/白虎/朱雀/玄武 = 轩辕策某系 or 副本BOSS */}
+                                        {msg.cardType === 'xyc_hub' && msg.cardData && (
+                                            <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 space-y-3">
+                                                <div className="text-sm font-bold text-cyan-300">
+                                                    【{msg.cardData.title}】· 请选择查询方向
+                                                </div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {(msg.cardData.options || []).map((opt: { key: string; label: string; query: string }) => (
+                                                        <button
+                                                            key={opt.key}
+                                                            type="button"
+                                                            onClick={() => onSendMessage(opt.query)}
+                                                            className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
+                                                        >
+                                                            {opt.label}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
                                         {/* 6.6 裸部位名歧义分流卡（T-16 方案A）：点击入口=无状态重发品质 部位」查询词 */}
                                         {msg.cardType === 'slot_hub' && msg.cardData && (
                                             <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 space-y-3">
@@ -759,7 +782,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             <PeizhangDetailCard cardData={msg.cardData} />
                                         )}
 
-                                        {/* 6.8b 佩章·九纹琅信息卡：1~20级属性与升级差额测算 */}
+                                        {/* 6.8b 佩章·九纹琅信息卡：1~40级属性与三套升级配方材料对照 */}
                                         {msg.cardType === 'jiuwenlang' && (
                                             <JiuwenlangDetailCard cardData={msg.cardData} />
                                         )}
@@ -772,6 +795,16 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                         {/* 6.8c2 新天缘属性信息卡：须弥刃/甲/冠3大部位词条池与天命增益推算 */}
                                         {msg.cardType === 'tianyuan_new' && (
                                             <NewTianyuanDetailCard cardData={msg.cardData} />
+                                        )}
+
+                                        {/* 6.8c3 新天缘模拟卡：开箱生成 + 精炼天命（对话内嵌，不跳 tools） */}
+                                        {msg.cardType === 'tianyuan_sim' && (
+                                            <NewTianyuanSimCard cardData={msg.cardData} />
+                                        )}
+
+                                        {/* 6.8c3 轩辕策属性信息卡：四系×普通/英雄、Lv.1–20 词条区间、青龙/白虎 III 代进阶技能 */}
+                                        {msg.cardType === 'xyc_tome' && (
+                                            <XycTomeDetailCard cardData={msg.cardData} />
                                         )}
 
                                         {/* 6.8d 星宿属性及升星增益卡：启明/荧惑/重华3大星辰与1~5星测算 */}
