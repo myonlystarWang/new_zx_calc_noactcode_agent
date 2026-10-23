@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四灵本元升阶 · 全解图解 - 万象天书AI</title>
+<style>
+  :root{
+    --bg-deep:#090c12; --bg-panel:#111622;
+    --gold-bright:#fff3d1; --gold-main:#e5be73; --gold-dark:#a67c33;
+    --cyan-glow:#66f0e2; --red-glow:#ff6875; --green-glow:#4be898;
+    --text-primary:#f2f5fa; --text-muted:#7e8da8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#05070b;
+    font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;
+    color:var(--text-primary);
+    display:flex;flex-direction:column;align-items:center;
+    padding:24px;-webkit-font-smoothing:antialiased;
+  }
+  .ActionBar{
+    margin-bottom:22px;display:flex;gap:18px;align-items:center;
+    background:#111622;padding:12px 26px;border-radius:8px;
+    border:1px solid rgba(229,190,115,.35);box-shadow:0 10px 30px rgba(0,0,0,.6);
+    font-size:13px;color:var(--text-muted);
+  }
+  .btn-export{
+    background:linear-gradient(135deg,#f3d492 0%,#c4913a 100%);
+    color:#090c12;border:none;padding:10px 24px;font-size:15px;font-weight:900;
+    border-radius:6px;cursor:pointer;letter-spacing:.5px;
+  }
+  #poster{
+    width:880px;
+    background:
+      radial-gradient(ellipse at 50% 0%,rgba(229,190,115,.12) 0%,transparent 55%),
+      radial-gradient(ellipse at 100% 60%,rgba(102,240,226,.05) 0%,transparent 50%),
+      linear-gradient(180deg,#101521 0%,#090c12 100%);
+    border:1px solid rgba(229,190,115,.3);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 25px 70px rgba(0,0,0,.85);
+    border-radius:16px;padding:44px 40px 38px;position:relative;overflow:hidden;
+  }
+  .fx-gold{background:linear-gradient(180deg,#fff 0%,#ffe09e 50%,#d49b3b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;filter:drop-shadow(0 2px 10px rgba(229,190,115,.28))}
+  .fx-red{color:#ff7582;font-weight:900;text-shadow:0 0 14px rgba(255,87,104,.45);border-bottom:2px solid rgba(255,104,117,.45);padding-bottom:1px}
+  .fx-cyan{color:#72f5e7;font-weight:900;text-shadow:0 0 14px rgba(102,240,226,.38)}
+  .fx-green{color:#5ef2a5;font-weight:900;text-shadow:0 0 14px rgba(75,232,152,.35)}
+
+  /* 水印 */
+  .wm-strategic{
+    position:absolute;left:0;right:0;z-index:60;pointer-events:none;user-select:none;
+    text-align:center;white-space:nowrap;transform:rotate(-12deg);
+    font-size:15px;font-weight:800;letter-spacing:2px;
+    color:rgba(255,243,209,.13);text-shadow:0 2px 6px rgba(0,0,0,.4);
+  }
+  .wm-pos-1{top:300px;left:-40px}
+  .wm-pos-2{top:880px;left:30px}
+  .wm-pos-3{top:1500px;left:-20px}
+  .wm-pos-4{top:2180px;left:20px}
+  .content-wrapper{position:relative;z-index:10}
+
+  .header{text-align:center;margin-bottom:30px}
+  .header-kicker{font-size:13px;font-weight:700;letter-spacing:4px;color:var(--gold-main);margin-bottom:10px;opacity:.9}
+  .header h1{
+    font-size:44px;font-weight:900;letter-spacing:3px;
+    background:linear-gradient(180deg,#fff 15%,#f5d796 60%,#b8842d 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 6px 20px rgba(229,190,115,.25));margin-bottom:12px;
+  }
+  .header-sub{font-size:15px;color:var(--text-muted);font-weight:700;letter-spacing:1px}
+  .header-divider{width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-main),transparent);margin:14px auto 0}
+
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin:32px 0 16px;border-bottom:1px solid rgba(229,190,115,.18);padding-bottom:8px}
+  .sec-head-left{display:flex;align-items:baseline;gap:12px}
+  .sec-idx{font-size:28px;font-weight:900;font-style:italic;background:linear-gradient(180deg,var(--gold-bright),var(--gold-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sec-title{font-size:22px;font-weight:900;color:#fff;letter-spacing:1px}
+  .sec-wm-inline{font-size:12px;font-weight:600;color:rgba(229,190,115,.42);letter-spacing:.5px}
+
+  .glass-panel{
+    background:linear-gradient(145deg,rgba(23,30,46,.88) 0%,rgba(13,18,28,.94) 100%);
+    border:1px solid rgba(229,190,115,.25);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 12px 32px rgba(0,0,0,.45);
+    border-radius:12px;padding:24px 22px;
+  }
+
+  /* 公式 */
+  .formula-grid{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .f-node{flex:1;text-align:center;padding:16px 8px;background:rgba(9,12,18,.65);border:1px solid rgba(255,255,255,.06);border-radius:10px;min-height:112px;display:flex;flex-direction:column;justify-content:center}
+  .f-node.accent{border-color:rgba(229,190,115,.35);background:linear-gradient(180deg,rgba(229,190,115,.08) 0%,rgba(9,12,18,.7) 100%)}
+  .f-big{font-size:23px;margin-bottom:4px;white-space:nowrap}
+  .f-main-txt{font-size:15px;font-weight:800;white-space:nowrap}
+  .f-sub-txt{font-size:11px;color:var(--text-muted);margin-top:4px;white-space:nowrap}
+  .f-operator{font-size:22px;font-weight:300;color:var(--gold-main);opacity:.75;flex-shrink:0}
+
+  .core-alert{
+    margin-top:18px;padding:14px 20px;
+    background:linear-gradient(90deg,transparent 0%,rgba(255,87,104,.14) 50%,transparent 100%);
+    border-top:1px solid rgba(255,104,117,.3);border-bottom:1px solid rgba(255,104,117,.3);
+    text-align:center;font-size:17px;font-weight:800;letter-spacing:.5px;
+  }
+
+  /* 每阶运作 */
+  .step-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+  .step-col{background:rgba(9,12,18,.55);border:1px solid rgba(255,255,255,.06);border-top:2px solid var(--gold-main);border-radius:8px;padding:14px 10px;text-align:center}
+  .step-tier{font-size:15px;font-weight:900;color:var(--gold-bright);margin-bottom:12px;letter-spacing:.5px}
+  .step-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:9px;min-height:22px}
+  .step-row .lb{font-size:11px;color:var(--text-muted);width:26px;text-align:right;flex:none}
+  .step-row .cnt{font-size:11px;color:var(--text-muted);font-weight:800;margin-left:2px;flex:none}
+  .sq{width:18px;height:18px;border-radius:5px;flex:none}
+  .sq.k{background:linear-gradient(160deg,#f0d49a,#c9a35e)}
+  .sq.n{background:linear-gradient(160deg,#6ee0d5,#35a89e)}
+  .sq.l{background:transparent;border:1.5px dashed #46505f}
+  .step-final{margin-top:6px;padding-top:8px;border-top:1px solid rgba(255,255,255,.07);font-size:14px;font-weight:900;color:var(--gold-main);white-space:nowrap}
+  .step-lose{font-size:11px;color:#ff8b96;font-weight:800;margin-top:5px}
+
+  .legend-row{display:flex;gap:18px;justify-content:center;margin-top:16px;font-size:12px;color:var(--text-muted);font-weight:700}
+  .legend-row i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+  /* 属性池 */
+  .pool-note{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+  .pool-note .big{font-size:26px;font-weight:900}
+  .pool-note .small{font-size:12px;color:var(--text-muted);font-weight:700}
+  .layers{display:flex;flex-direction:column;gap:8px}
+  .ly{display:grid;grid-template-columns:74px 1fr 84px;align-items:center;gap:12px;background:rgba(9,12,18,.55);border:1px solid rgba(255,255,255,.06);border-radius:9px;padding:11px 14px}
+  .ly .ln{font-size:13px;font-weight:900;color:var(--gold-main)}
+  .ly .la{font-size:13.5px;color:#cfd8e4;font-weight:700;line-height:1.4}
+  .ly .lp{font-size:15px;font-weight:900;color:var(--cyan-glow);text-align:right}
+  .ly.hi{background:linear-gradient(90deg,rgba(229,190,115,.14),rgba(9,12,18,.6));border-color:rgba(229,190,115,.38)}
+  .ly.hi .ln{color:var(--gold-bright)}
+  .ly.hi .lp{color:var(--gold-main)}
+  .pool-foot{margin-top:14px;font-size:13px;color:var(--text-muted);font-weight:700;line-height:1.7;text-align:center}
+
+  /* 例子 */
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .case-card{background:linear-gradient(145deg,rgba(23,30,46,.85) 0%,rgba(13,18,28,.95) 100%);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px}
+  .case-tag{font-size:12px;font-weight:800;color:var(--text-muted);letter-spacing:1px;margin-bottom:8px}
+  .case-title{font-size:17px;font-weight:900;color:var(--gold-bright);margin-bottom:12px;line-height:1.4}
+  .case-big{font-size:34px;font-weight:900;line-height:1;margin-bottom:8px}
+  .case-desc{font-size:13.5px;line-height:1.75;color:#c7d2e6;font-weight:700}
+  .case-calc{margin-top:12px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.1);font-size:12.5px;color:var(--text-muted);font-weight:700;letter-spacing:.3px}
+
+  /* 场景 */
+  .scene-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .scene-card{background:linear-gradient(145deg,rgba(23,30,46,.85) 0%,rgba(13,18,28,.95) 100%);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;position:relative;overflow:hidden}
+  .scene-card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--gold-main),transparent)}
+  .scene-bg-num{position:absolute;right:12px;bottom:-12px;font-size:64px;font-weight:900;font-style:italic;color:rgba(255,255,255,.03);line-height:1}
+  .scene-title{font-size:17px;font-weight:900;color:var(--gold-bright);margin-bottom:9px;letter-spacing:.5px}
+  .scene-desc{font-size:14px;line-height:1.8;color:#d5deed;font-weight:600}
+
+  /* 误区 */
+  .myth-stack{display:flex;flex-direction:column;gap:10px}
+  .myth-bar{background:linear-gradient(90deg,rgba(255,87,104,.07) 0%,rgba(17,22,34,.9) 42%,rgba(75,232,152,.07) 100%);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 18px;display:grid;grid-template-columns:1fr 1.35fr;align-items:center;gap:16px}
+  .myth-left{font-size:14.5px;font-weight:800;color:#ff8b96}
+  .myth-right{font-size:14px;font-weight:800;color:#eef4fc;border-left:2px solid var(--green-glow);padding-left:14px;line-height:1.6}
+
+  .footer{margin-top:32px;padding-top:22px;border-top:1px solid rgba(229,190,115,.25);display:flex;justify-content:space-between;align-items:flex-end}
+  .footer-quote{font-size:18px;font-weight:900;letter-spacing:.5px}
+  .footer-sub{font-size:12px;color:var(--text-muted);margin-top:8px;letter-spacing:.5px;line-height:1.6}
+  .footer-sign{text-align:right;line-height:1.6}
+  .sign-author{font-size:16px;font-weight:900;color:var(--gold-bright);letter-spacing:1px}
+  .sign-url{font-size:14px;font-weight:800;color:var(--cyan-glow);letter-spacing:.5px}
+</style>
+</head>
+<body>
+
+<div class="ActionBar">
+  <span>已按 880px 宽排版，可直接导出长图：</span>
+  <button class="btn-export" onclick="exportPoster()">导出 3 倍超清长图 (PNG)</button>
+</div>
+
+<div id="poster">
+  <div class="wm-strategic wm-pos-1">zxai.raddishlab.com 万象天书AI &nbsp;&middot;&nbsp; 作者：星耀-萝卜</div>
+  <div class="wm-strategic wm-pos-2">作者：星耀-萝卜 &nbsp;&middot;&nbsp; zxai.raddishlab.com 万象天书AI</div>
+  <div class="wm-strategic wm-pos-3">zxai.raddishlab.com 万象天书AI &nbsp;&middot;&nbsp; 作者：星耀-萝卜</div>
+  <div class="wm-strategic wm-pos-4">作者：星耀-萝卜 &nbsp;&middot;&nbsp; zxai.raddishlab.com 万象天书AI</div>
+
+  <div class="content-wrapper">
+
+    <div class="header">
+      <div class="header-kicker">诛仙3 客户端数据实锤 &middot; 全流程图解</div>
+      <h1>四灵本元升阶 &middot; 全解</h1>
+      <div class="header-sub">逻辑 / 每阶运作 / 属性池 / 概率 / 策略</div>
+      <div class="header-divider"></div>
+    </div>
+
+    <!-- 01 -->
+    <div class="sec-head">
+      <div class="sec-head-left"><span class="sec-idx">01</span><span class="sec-title">升阶底层逻辑</span></div>
+      <span class="sec-wm-inline">zxai.raddishlab.com 万象天书AI &middot; 星耀-萝卜</span>
+    </div>
+
+    <div class="glass-panel">
+      <div class="formula-grid">
+        <div class="f-node">
+          <div class="f-big fx-gold">2 个</div>
+          <div class="f-main-txt">同名同阶本元</div>
+          <div class="f-sub-txt">属性可以不同</div>
+        </div>
+        <div class="f-operator">&#10140;</div>
+        <div class="f-node accent">
+          <div class="f-big fx-gold">留 N 条</div>
+          <div class="f-main-txt">数值 &times;2</div>
+          <div class="f-sub-txt">N = 材料阶数</div>
+        </div>
+        <div class="f-operator">+</div>
+        <div class="f-node accent">
+          <div class="f-big fx-cyan">白送 2 条</div>
+          <div class="f-main-txt">全阶池随机</div>
+          <div class="f-sub-txt">无法指定</div>
+        </div>
+        <div class="f-operator">=</div>
+        <div class="f-node">
+          <div class="f-big fx-gold">1 个</div>
+          <div class="f-main-txt">高一阶成品</div>
+          <div class="f-sub-txt">总条数净增 1</div>
+        </div>
+      </div>
+
+      <div class="core-alert">
+        每升一阶，<span class="fx-red">必淘汰至少 1 条旧属性</span>（升阶是换血，不是纯加法）
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="sec-head">
+      <div class="sec-head-left"><span class="sec-idx">02</span><span class="sec-title">每一阶具体怎么运作</span></div>
+      <span class="sec-wm-inline">作者：星耀-萝卜 &middot; 万象天书AI</span>
+    </div>
+
+    <div class="glass-panel" style="padding:20px 18px">
+      <div class="step-strip">
+        <div class="step-col">
+          <div class="step-tier">1 阶 &#10140; 2 阶</div>
+          <div class="step-row"><span class="lb">现有</span><i class="sq k"></i><i class="sq k"></i><span class="cnt">2</span></div>
+          <div class="step-row"><span class="lb">产出</span><i class="sq k"></i><i class="sq n"></i><i class="sq n"></i><span class="cnt">3</span></div>
+          <div class="step-lose">丢 1 条</div>
+          <div class="step-final">2 阶 = 3 条</div>
+        </div>
+        <div class="step-col">
+          <div class="step-tier">2 阶 &#10140; 3 阶</div>
+          <div class="step-row"><span class="lb">现有</span><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><span class="cnt">3</span></div>
+          <div class="step-row"><span class="lb">产出</span><i class="sq k"></i><i class="sq k"></i><i class="sq n"></i><i class="sq n"></i><span class="cnt">4</span></div>
+          <div class="step-lose">丢 1 条</div>
+          <div class="step-final">3 阶 = 4 条</div>
+        </div>
+        <div class="step-col">
+          <div class="step-tier">3 阶 &#10140; 4 阶</div>
+          <div class="step-row"><span class="lb">现有</span><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><span class="cnt">4</span></div>
+          <div class="step-row"><span class="lb">产出</span><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq n"></i><i class="sq n"></i><span class="cnt">5</span></div>
+          <div class="step-lose">丢 1 条</div>
+          <div class="step-final">4 阶 = 5 条</div>
+        </div>
+        <div class="step-col">
+          <div class="step-tier">4 阶 &#10140; 5 阶</div>
+          <div class="step-row"><span class="lb">现有</span><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><span class="cnt">5</span></div>
+          <div class="step-row"><span class="lb">产出</span><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq n"></i><i class="sq n"></i><span class="cnt">6</span></div>
+          <div class="step-lose">丢 1 条</div>
+          <div class="step-final">5 阶 = 6 条</div>
+        </div>
+      </div>
+      <div class="legend-row">
+        <span><i class="sq k" style="width:11px;height:11px"></i>继承保留</span>
+        <span><i class="sq n" style="width:11px;height:11px"></i>白送随机</span>
+        <span class="fx-red" style="font-size:12px">丢 1 条 = 被淘汰</span>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="sec-head">
+      <div class="sec-head-left"><span class="sec-idx">03</span><span class="sec-title">属性池里都有谁</span></div>
+      <span class="sec-wm-inline">zxai.raddishlab.com</span>
+    </div>
+
+    <div class="glass-panel">
+      <div class="pool-note">
+        <div class="big fx-gold">5 阶能出 <span class="fx-cyan">20 种</span> 属性</div>
+        <div class="small">不是只有 5 阶那 6 个 &middot; 每条概率 = 权重 &divide; 阶数</div>
+      </div>
+
+      <div class="layers">
+        <div class="ly">
+          <div class="ln">1 阶组</div>
+          <div class="la">技能命中 &middot; 防御 &middot; 抗性（五系）</div>
+          <div class="lp">6.6%</div>
+        </div>
+        <div class="ly">
+          <div class="ln">2 阶组</div>
+          <div class="la">暴伤 &middot; 普攻命中 &middot; 抗性（五系）</div>
+          <div class="lp">6.6%</div>
+        </div>
+        <div class="ly">
+          <div class="ln">3 阶组</div>
+          <div class="la">对天脉减伤 &middot; 普攻躲闪 &middot; 抗性 &middot; 固定攻击</div>
+          <div class="lp">5.0%</div>
+        </div>
+        <div class="ly">
+          <div class="ln">4 阶组</div>
+          <div class="la">对苍祇减伤 &middot; 小攻 &middot; 抗性 &middot; 固定真气</div>
+          <div class="lp">5.0%</div>
+        </div>
+        <div class="ly hi">
+          <div class="ln">5 阶组</div>
+          <div class="la">冲灵 &middot; 减免伤害固定值 &middot; 抗性 &middot; 防御百分比 &middot; 元力值 &middot; 固定气血</div>
+          <div class="lp">3.3%</div>
+        </div>
+      </div>
+
+      <div class="pool-foot">
+        越老的属性反而越容易出：1 阶组每条 6.6%，5 阶专属只有 3.3%<br>
+        上表为夔牛；黄鸟 / 烛龙 / 饕餮 同结构，专属词条分别为 化灵 / 减免百分比 / 无视
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="sec-head">
+      <div class="sec-head-left"><span class="sec-idx">04</span><span class="sec-title">两个例子看懂概率</span></div>
+      <span class="sec-wm-inline">作者：星耀-萝卜 &middot; 万象天书AI</span>
+    </div>
+
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-tag">案例 A &middot; 群里常见疑问</div>
+        <div class="case-title">两个 4 阶都没爆伤，<br>合 5 阶却出了爆伤？</div>
+        <div class="case-big fx-cyan">12.8%</div>
+        <div class="case-desc">
+          完全正常。4 阶组里没有暴伤，但 <span class="fx-gold">暴伤在 2 阶组</span>，5 阶的池子里有它。
+        </div>
+        <div class="case-calc">单条 6.6% &nbsp;&rarr;&nbsp; 2 条至少 1 条 = 1-(1-6.6%)&sup2; = 12.8%</div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag">案例 B &middot; 养胚子的真实成本</div>
+        <div class="case-title">一条 1 阶属性，<br>活到 5 阶有多难？</div>
+        <div class="case-big fx-gold">13.3%</div>
+        <div class="case-desc">
+          要连闯 4 次「保留淘汰」，每次都在变薄的池子里赌它不被挤掉。
+        </div>
+        <div class="case-calc">2/3 &times; 1/2 &times; 2/3 &times; 3/4 &times; 4/5 &asymp; 13.3% &nbsp;（约 8 套出 1 套）</div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="sec-head">
+      <div class="sec-head-left"><span class="sec-idx">05</span><span class="sec-title">四类玩家，四条路线</span></div>
+      <span class="sec-wm-inline">zxai.raddishlab.com 万象天书AI</span>
+    </div>
+
+    <div class="scene-grid">
+      <div class="scene-card">
+        <div class="scene-bg-num">01</div>
+        <div class="scene-title">想要指定某条属性进 5 阶</div>
+        <div class="scene-desc">
+          必须从 <span class="fx-gold">1 阶胚子就带上</span>，这是唯一可控入口。<br>
+          连闯 4 次保留只剩 <span class="fx-cyan">13.3%</span>，求稳准备 <span class="fx-red">8 套</span>。
+        </div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-bg-num">02</div>
+        <div class="scene-title">想赌 5 阶专属词条</div>
+        <div class="scene-desc">
+          冲灵 / 化灵 / 无视 / 减免百分比，1~4 阶根本不出。<br>
+          唯一来源是 4&rarr;5 那 2 条随机，单条约 <span class="fx-cyan">3.3%</span>，多备 4 阶直接冲。
+        </div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-bg-num">03</div>
+        <div class="scene-title">两只材料属性不一样</div>
+        <div class="scene-desc">
+          能合，但属于 <span class="fx-red">主动降成功率</span>。<br>
+          并集变杂，想留的那条更容易被挤掉，务必 <span class="fx-green">同属性配对</span>。
+        </div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-bg-num">04</div>
+        <div class="scene-title">自己养还是买成品</div>
+        <div class="scene-desc">
+          不想赌脸，直接 <span class="fx-green">买高阶成品最划算</span>，花钱买确定结果。<br>
+          自己动手切记：先右键鉴定，且必须同名同阶。
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="sec-head">
+      <div class="sec-head-left"><span class="sec-idx">06</span><span class="sec-title">三个误区，别再传了</span></div>
+      <span class="sec-wm-inline">作者：星耀-萝卜 &middot; 万象天书AI</span>
+    </div>
+
+    <div class="myth-stack">
+      <div class="myth-bar">
+        <div class="myth-left">&#10005; 1 阶没有的属性，5 阶合不出来</div>
+        <div class="myth-right"><span class="fx-green">真相：</span>5 阶池 = 1~5 阶全部，每阶还白送 2 条随机</div>
+      </div>
+      <div class="myth-bar">
+        <div class="myth-left">&#10005; 材料属性越多越杂越好</div>
+        <div class="myth-right"><span class="fx-green">真相：</span>每阶只保留固定条数，越杂好属性越容易被顶掉</div>
+      </div>
+      <div class="myth-bar">
+        <div class="myth-left">&#10005; 升阶只是做加法变强</div>
+        <div class="myth-right"><span class="fx-green">真相：</span>每升 1 阶必丢至少 1 条，核心词条随时中途暴毙</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>
+        <div class="footer-quote fx-gold">口诀：一阶挑对，五阶不废；稀有词条，四升五赌；<br>升一阶掉一条，两只越像越不亏。</div>
+        <div class="footer-sub">
+          依据诛仙3客户端 interfaces.pck 内置帮助 与 elements.data 属性组权重表拆包整理<br>
+          条数 / 权重 / 阶位倍率均为客户端原值，概率按「权重 &divide; 阶数」折算
+        </div>
+      </div>
+      <div class="footer-sign">
+        <div class="sign-author">作者：星耀-萝卜</div>
+        <div class="sign-url">zxai.raddishlab.com 万象天书AI</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function loadHtml2Canvas(cb){
+    if (typeof html2canvas !== 'undefined') return cb();
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+    s.onload = cb;
+    s.onerror = () => alert('导出组件加载失败（需要联网）。可直接用浏览器截图，或本地运行截图脚本。');
+    document.head.appendChild(s);
+  }
+
+  function exportPoster(){
+    const poster = document.getElementById('poster');
+    const btn = document.querySelector('.btn-export');
+    const old = btn.innerText;
+    btn.innerText = '正在加载导出组件...';
+    btn.disabled = true;
+    loadHtml2Canvas(() => {
+      btn.innerText = '正在渲染 3 倍超清图...';
+      html2canvas(poster, { scale: 3, useCORS: true, backgroundColor: '#090c12' }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = '诛仙3_四灵本元升阶全解_星耀-萝卜_万象天书AI.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        btn.innerText = '导出成功！点击可重新保存';
+        btn.disabled = false;
+      }).catch(() => { btn.innerText = old; btn.disabled = false; });
+    });
+  }
+</script>
+</body>
+</html>

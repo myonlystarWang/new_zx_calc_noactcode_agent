@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>四灵本元升阶 · 一张图看懂</title>
+<style>
+  :root{
+    --bg:#0a0d12; --card:#151b25; --card2:#1b2330;
+    --gold:#e8c37a; --gold-dim:#7d6a44; --cyan:#4fd1c5; --red:#e35d5d;
+    --text:#e9edf4; --muted:#8b94a3; --line:#2a3341;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    width:480px; margin:0 auto; padding:26px 20px 34px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .hero{text-align:center;padding:6px 0 22px}
+  .hero h1{font-size:30px;letter-spacing:2px;color:var(--gold);font-weight:800}
+  .hero p{margin-top:8px;font-size:14px;color:var(--muted);letter-spacing:1px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+  .card h2{font-size:15px;color:var(--gold);letter-spacing:1px;margin-bottom:16px;font-weight:700}
+  .card h2 span{color:var(--muted);font-weight:400;font-size:12px;margin-left:6px;letter-spacing:0}
+
+  /* 公式 */
+  .formula{display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .slot{flex:1;text-align:center}
+  .slot .box{
+    height:78px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:700;line-height:1.3;
+  }
+  .slot .box.a{background:linear-gradient(160deg,#2b3648,#1d2532);border:1px solid #3b4859;color:#c8d2e0}
+  .slot .box.res{background:linear-gradient(160deg,#4a3a18,#2a2110);border:1.5px solid var(--gold);color:var(--gold)}
+  .slot .cap{margin-top:8px;font-size:12px;color:var(--muted)}
+  .op{font-size:22px;color:var(--gold-dim);padding-bottom:22px}
+
+  /* 三个动作 */
+  .acts{display:flex;gap:10px;text-align:center}
+  .act{flex:1;background:var(--card2);border-radius:12px;padding:14px 6px}
+  .act b{display:block;font-size:26px;line-height:1.1;margin-bottom:6px}
+  .act.g b{color:var(--gold)} .act.c b{color:var(--cyan)} .act.w b{color:#c8d2e0}
+  .act span{font-size:12px;color:var(--muted)}
+
+  /* 条数变化 */
+  .row{display:flex;align-items:center;gap:6px;padding:11px 0;border-bottom:1px solid #1f2733}
+  .row:last-child{border-bottom:none}
+  .lv{width:30px;font-size:11px;color:var(--muted);text-align:center;flex:none}
+  .attrs{display:flex;gap:4px;flex:1;min-width:0}
+  .sq{width:18px;height:18px;border-radius:5px;flex:none}
+  .sq.k{background:linear-gradient(160deg,#f0d49a,#c9a35e)}
+  .sq.n{background:linear-gradient(160deg,#6ee0d5,#35a89e)}
+  .sq.l{background:transparent;border:1.5px dashed #46505f}
+  .delta{width:38px;text-align:right;font-size:10.5px;line-height:1.35;flex:none}
+  .delta .d1{color:var(--red)} .delta .d2{color:var(--cyan)}
+  .arrow{color:#4a5464;font-size:12px;flex:none}
+  .legend{display:flex;gap:14px;margin-top:14px;font-size:11px;color:var(--muted)}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+  /* 大字结论 */
+  .big{background:linear-gradient(160deg,#241a1a,#1a1212);border-color:#4a2b2b}
+  .big .t{font-size:27px;font-weight:800;color:#ff8a8a;text-align:center;line-height:1.4}
+  .big .s{margin-top:10px;text-align:center;font-size:13px;color:#b99a9a}
+
+  /* 对错 */
+  .vs{display:flex;gap:12px}
+  .vs .col{flex:1;border-radius:12px;padding:16px 12px;text-align:center}
+  .vs .no{background:#221518;border:1px solid #4a2529}
+  .vs .yes{background:#12211f;border:1px solid #235045}
+  .vs .mark{font-size:26px;font-weight:800;line-height:1}
+  .vs .no .mark{color:#ff6b6b} .vs .yes .mark{color:#4fd1c5}
+  .vs p{margin-top:10px;font-size:14px;line-height:1.5;color:#d5dbe5}
+  .vs .no p{color:#e0b4b4} .vs .yes p{color:#a9e0d8}
+  .vs small{display:block;margin-top:8px;font-size:11px;color:#7b8494}
+
+  /* 两条路 */
+  .path{display:flex;gap:12px}
+  .path .p{flex:1;background:var(--card2);border-radius:12px;padding:16px 12px}
+  .path .p b{display:block;font-size:15px;margin-bottom:8px}
+  .path .p.gold b{color:var(--gold)} .path .p.cyan b{color:var(--cyan)}
+  .path .p p{font-size:12.5px;line-height:1.6;color:#aeb7c4}
+
+  /* 阶名表 */
+  .tiers{display:grid;grid-template-columns:38px repeat(5,1fr);gap:5px;font-size:11px}
+  .tiers .h{color:var(--muted);text-align:center;padding-bottom:2px}
+  .tiers .sp{color:#c8d2e0;display:flex;align-items:center;font-size:12px}
+  .tiers .c{background:var(--card2);border-radius:8px;padding:9px 2px;text-align:center;color:#c2cbd8}
+  .tiers .c.top{background:linear-gradient(160deg,#3d3016,#241c0d);color:var(--gold);font-weight:700}
+
+  /* 两个池 */
+  .split{display:flex;gap:10px}
+  .split .s{flex:1;border-radius:12px;padding:14px 12px;text-align:center}
+  .split .s.a{background:linear-gradient(160deg,#2a2312,#1d180c);border:1px solid #5a4a22}
+  .split .s.b{background:linear-gradient(160deg,#122523,#0e1b1a);border:1px solid #245049}
+  .split .num{font-size:30px;font-weight:800;line-height:1}
+  .split .a .num{color:var(--gold)} .split .b .num{color:var(--cyan)}
+  .split .lab{margin-top:8px;font-size:12.5px;line-height:1.5;color:#b9c2cf}
+  .split .src{margin-top:6px;font-size:11px;color:#7b8494}
+
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{background:var(--card2);border:1px solid #2f3a49;border-radius:9px;padding:9px 10px;font-size:12.5px;color:#cfd8e4;flex:1 1 30%;text-align:center}
+  .chip b{display:block;color:var(--cyan);font-size:11px;font-weight:600;margin-top:3px}
+
+  .layers{display:flex;flex-direction:column;gap:6px}
+  .ly{display:flex;align-items:center;gap:8px;background:var(--card2);border-radius:8px;padding:9px 10px}
+  .ly .ln{width:42px;font-size:11.5px;color:var(--muted);flex:none}
+  .ly .la{flex:1;font-size:11.5px;color:#c2cbd8;line-height:1.35}
+  .ly b{font-size:13px;color:var(--cyan);flex:none}
+  .ly.hi{background:linear-gradient(160deg,#3d3016,#241c0d);border:1px solid #5a4a22}
+  .ly.hi b{color:var(--gold)}
+
+  .bar{margin-top:6px;height:14px;border-radius:7px;background:#1d2532;overflow:hidden}
+  .bar i{display:block;height:100%;width:13.3%;background:linear-gradient(90deg,#e8c37a,#c9a35e)}
+  .barlab{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:7px}
+
+  .foot{text-align:center;padding:8px 0 0}
+  .foot .l1{font-size:17px;font-weight:800;color:var(--gold);letter-spacing:1px}
+  .foot .l2{margin-top:12px;font-size:11px;color:#5c6675;line-height:1.6}
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <h1>四灵本元 · 升阶</h1>
+    <p>一张图看懂（客户端官方规则）</p>
+  </div>
+
+  <!-- 公式 -->
+  <div class="card">
+    <h2>怎么升<span>放两个一样的，出一个更高级的</span></h2>
+    <div class="formula">
+      <div class="slot"><div class="box a">3阶<br>本元</div><div class="cap">属性随便</div></div>
+      <div class="op">+</div>
+      <div class="slot"><div class="box a">3阶<br>本元</div><div class="cap">必须同名同阶</div></div>
+      <div class="op">→</div>
+      <div class="slot"><div class="box res">4阶<br>本元</div><div class="cap">属性重新定</div></div>
+    </div>
+  </div>
+
+  <!-- 三个动作 -->
+  <div class="card">
+    <h2>每次升阶，只做三件事</h2>
+    <div class="acts">
+      <div class="act g"><b>留 N 条</b><span>N = 你放进去的阶数</span></div>
+      <div class="act w"><b>×2</b><span>留下的数值翻倍</span></div>
+      <div class="act c"><b>+2</b><span>白送两条随机</span></div>
+    </div>
+  </div>
+
+  <!-- 条数变化 -->
+  <div class="card">
+    <h2>所以每升一阶，都会掉一条<span>金色=留下 青色=新给 虚线=丢掉</span></h2>
+
+    <div class="row">
+      <div class="lv">1阶</div>
+      <div class="attrs"><i class="sq k"></i><i class="sq l"></i></div>
+      <div class="arrow">→</div>
+      <div class="lv">2阶</div>
+      <div class="attrs"><i class="sq k"></i><i class="sq n"></i><i class="sq n"></i></div>
+      <div class="delta"><span class="d1">丢1</span><br><span class="d2">得2</span></div>
+    </div>
+
+    <div class="row">
+      <div class="lv">2阶</div>
+      <div class="attrs"><i class="sq k"></i><i class="sq k"></i><i class="sq l"></i></div>
+      <div class="arrow">→</div>
+      <div class="lv">3阶</div>
+      <div class="attrs"><i class="sq k"></i><i class="sq k"></i><i class="sq n"></i><i class="sq n"></i></div>
+      <div class="delta"><span class="d1">丢1</span><br><span class="d2">得2</span></div>
+    </div>
+
+    <div class="row">
+      <div class="lv">3阶</div>
+      <div class="attrs"><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq l"></i></div>
+      <div class="arrow">→</div>
+      <div class="lv">4阶</div>
+      <div class="attrs"><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq n"></i><i class="sq n"></i></div>
+      <div class="delta"><span class="d1">丢1</span><br><span class="d2">得2</span></div>
+    </div>
+
+    <div class="row">
+      <div class="lv">4阶</div>
+      <div class="attrs"><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq l"></i></div>
+      <div class="arrow">→</div>
+      <div class="lv">5阶</div>
+      <div class="attrs"><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq k"></i><i class="sq n"></i><i class="sq n"></i></div>
+      <div class="delta"><span class="d1">丢1</span><br><span class="d2">得2</span></div>
+    </div>
+
+    <div class="legend">
+      <span><i class="sq k" style="width:11px;height:11px"></i>带上来</span>
+      <span><i class="sq n" style="width:11px;height:11px"></i>新随机</span>
+      <span><i class="sq l" style="width:11px;height:11px"></i>被挤掉</span>
+    </div>
+  </div>
+
+  <!-- 两个池 -->
+  <div class="card">
+    <h2>五阶那 6 条，从哪来<span>两个池，别搞混</span></h2>
+    <div class="split">
+      <div class="s a">
+        <div class="num">4 条</div>
+        <div class="lab">从你两个 4 阶里挑</div>
+        <div class="src">能控：材料属性对齐</div>
+      </div>
+      <div class="s b">
+        <div class="num">2 条</div>
+        <div class="lab">1~5 阶池随机给</div>
+        <div class="src">不能控：纯看脸</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 五阶能出什么 -->
+  <div class="card">
+    <h2>五阶能出哪些属性<span>不是只有 5 阶那 6 个</span></h2>
+    <div class="layers">
+      <div class="ly"><span class="ln">1阶组</span><span class="la">技能命中 · 防御 · 抗性</span><b>6.6%</b></div>
+      <div class="ly"><span class="ln">2阶组</span><span class="la">暴伤 · 普攻命中 · 抗性</span><b>6.6%</b></div>
+      <div class="ly"><span class="ln">3阶组</span><span class="la">对天脉减伤 · 普攻躲闪 · 抗性 · 固定攻击</span><b>5.0%</b></div>
+      <div class="ly"><span class="ln">4阶组</span><span class="la">对苍祇减伤 · 小攻 · 抗性 · 固定真气</span><b>5.0%</b></div>
+      <div class="ly hi"><span class="ln">5阶组</span><span class="la">冲灵 · 减免伤害固定值 · 抗性 · 防御% · 元力 · 固定气血</span><b>3.3%</b></div>
+    </div>
+    <div class="legend" style="margin-top:12px">
+      <span>1~5 阶全部能出，越老的属性反而越容易出</span>
+    </div>
+  </div>
+
+  <!-- 反例 -->
+  <div class="card">
+    <h2>四阶没爆伤，五阶出了？<span>正常，别惊讶</span></h2>
+    <div class="split">
+      <div class="s b">
+        <div class="num">6.6%</div>
+        <div class="lab">五阶单条出暴伤</div>
+        <div class="src">暴伤是 2 阶组属性</div>
+      </div>
+      <div class="s b">
+        <div class="num">12.8%</div>
+        <div class="lab">2 条里至少 1 条</div>
+        <div class="src">约 8 次出 1 次</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 活到五阶 -->
+  <div class="card">
+    <h2>一条一阶属性，活到五阶的概率</h2>
+    <div style="text-align:center;font-size:34px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:12px">13%</div>
+    <div class="bar"><i></i></div>
+    <div class="barlab"><span>0%</span><span>100%</span></div>
+    <div class="legend" style="margin-top:12px;justify-content:center">
+      <span>约 8 套一阶，才出 1 套</span>
+    </div>
+  </div>
+
+  <!-- 大字结论 -->
+  <div class="card big">
+    <div class="t">升阶不是只加<br>是换血</div>
+    <div class="s">每阶至少掉 1 条，两只属性不一样掉得更多</div>
+  </div>
+
+  <!-- 对错 -->
+  <div class="card">
+    <h2>「一阶没有就合不出来」是真的吗</h2>
+    <div class="vs">
+      <div class="col no">
+        <div class="mark">✕</div>
+        <p>一阶没这条<br>五阶就出不来</p>
+        <small>网上都这么说</small>
+      </div>
+      <div class="col yes">
+        <div class="mark">✓</div>
+        <p>每阶都白送<br>2 条新的</p>
+        <small>官方文案原文</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- 两条路 -->
+  <div class="card">
+    <h2>那你该怎么玩</h2>
+    <div class="path">
+      <div class="p gold">
+        <b>想要稳</b>
+        <p>目标属性<br>一阶就得带上<br>两只材料属性<br>尽量一模一样</p>
+      </div>
+      <div class="p cyan">
+        <b>想要赌</b>
+        <p>冲灵 / 化灵<br>减免百分比 / 无视<br>低阶根本不出<br>只能赌 4→5</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 阶名 -->
+  <div class="card">
+    <h2>五阶都叫啥<span>别买错</span></h2>
+    <div class="tiers">
+      <div class="h"></div><div class="h">1阶</div><div class="h">2阶</div><div class="h">3阶</div><div class="h">4阶</div><div class="h">5阶</div>
+
+      <div class="sp">夔牛</div>
+      <div class="c">雷纹</div><div class="c">夔骨</div><div class="c">震鼓</div><div class="c">风雷</div><div class="c top">钧天玄霆</div>
+
+      <div class="sp">黄鸟</div>
+      <div class="c">羽灵</div><div class="c">金翎</div><div class="c">扶摇</div><div class="c">九霄</div><div class="c top">玄黄天音</div>
+
+      <div class="sp">烛龙</div>
+      <div class="c">萤烛</div><div class="c">龙息</div><div class="c">幽明</div><div class="c">九阴</div><div class="c top">烛照太初</div>
+
+      <div class="sp">饕餮</div>
+      <div class="c">贪噬</div><div class="c">吞渊</div><div class="c">饕煞</div><div class="c">噬心</div><div class="c top">归墟无厌</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="l1">想要稳，低阶带<br>想要出，随机出</div>
+    <div class="l2">规则来源：诛仙3 客户端 interfaces.pck 内置帮助<br>数值来源：elements.data（2026-10-23 版本）</div>
+  </div>
+
+</body>
+</html>
