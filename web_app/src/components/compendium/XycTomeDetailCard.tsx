@@ -62,10 +62,7 @@ function fmtNum(val: number, unit = ''): string {
     return `${s}${unit}`;
 }
 
-/** 「攻击%」→「攻击百分比」「防御%」→「防御百分比」，其余原名 */
-function displayAttrName(name: string): string {
-    return name.endsWith('%') ? `${name.slice(0, -1)}百分比` : name;
-}
+/** 属性名直接用数据表里的游戏原生叫法（固定攻击 / 致命一击率 …），不再做「%→百分比」拼接 */
 
 export const XycTomeDetailCard: React.FC<XycTomeDetailCardProps> = ({ cardData, className }) => {
     const rules = cardData?.rules;
@@ -100,7 +97,7 @@ export const XycTomeDetailCard: React.FC<XycTomeDetailCardProps> = ({ cardData, 
             const curMax = rule.max + rule.gain * level;
             return {
                 key,
-                name: displayAttrName(rule.name),
+                name: rule.name,
                 specific,
                 rangeStr: `${fmtNum(curMin, unit)} - ${fmtNum(curMax, unit)}`,
                 gainStr: `+${fmtNum(rule.gain, unit)}/级`,
