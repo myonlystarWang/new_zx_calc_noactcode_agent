@@ -85,6 +85,8 @@ export interface RefineResult {
     destinyHits: number[];
     /** 本次结算的天命档位 */
     triggerLevel?: number;
+    /** 瑞祥符本次实际加上的天命点（0 表示未使用） */
+    blessGain?: number;
 }
 
 export type Rng = () => number;
@@ -219,10 +221,11 @@ export function refineOnce(
     data: TianyuanData,
     successRate: number,
     rng: Rng = defaultRng,
+    opts?: { blessIdx?: number; blessPoints?: number; skipDestiny?: boolean },
 ): RefineResult {
     const max = data.refine.maxLevel;
     if (item.level >= max) {
-        return { success: false, from: item.level, to: item.level, destinyGain: 0, destinyHits: [] };
+        return { success: false, from: item.level, to: item.level, destinyGain: 0, destinyHits: [], blessGain: 0 };
     }
     const from = item.level;
     const success = rng() < successRate;
@@ -233,17 +236,31 @@ export function refineOnce(
         item.level = from;
     }
 
+    // 瑞祥符：先把 +N 点稳稳加到指定属性（优先占用天命额度），再考虑该档随机触发
+    let blessGain = 0;
+    const blessIdx = opts?.blessIdx;
+    if (success && typeof blessIdx === 'number' && opts?.blessPoints) {
+        const target = item.attrs[blessIdx];
+        if (target) {
+            for (let i = 0; i < opts.blessPoints; i++) {
+                if (totalDestiny(item) >= 10) break;
+                target.destinyPoints = Math.min(10, target.destinyPoints + 1);
+                blessGain++;
+            }
+        }
+    }
+
     let destinyGain = 0;
     let destinyHits: number[] = [];
     let triggerLevel: number | undefined;
-    if (success && data.refine.triggerLevels.includes(item.level)) {
+    if (success && !opts?.skipDestiny && data.refine.triggerLevels.includes(item.level)) {
         triggerLevel = item.level;
         const res = settleDestiny(item, item.level, data, rng);
         destinyGain = res.gain;
         destinyHits = res.hits;
     }
 
-    return { success, from, to: item.level, destinyGain, destinyHits, triggerLevel };
+    return { success, from, to: item.level, destinyGain, destinyHits, triggerLevel, blessGain };
 }
 
 /** 瑞祥符：+2/+5/+8 时可指定一条属性必定获得 3 点天命（每件一次） */

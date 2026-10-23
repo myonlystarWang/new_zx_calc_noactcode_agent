@@ -10,7 +10,6 @@ import {
     rollItem,
     refineOnce,
     resetItem,
-    totalDestiny,
 } from '../../utils/newTianyuanSim';
 
 export interface NewTianyuanSimCardProps {
@@ -269,19 +268,19 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                 };
                 const blessIdxNow = pendingRef.current;
                 const forced = blessIdxNow !== null;
-                const res: RefineResult = refineOnce(next, data, forced ? 1 : SUCCESS_RATE);
+                const res: RefineResult = refineOnce(
+                    next,
+                    data,
+                    forced ? 1 : SUCCESS_RATE,
+                    undefined,
+                    forced && blessIdxNow !== null
+                        ? { blessIdx: blessIdxNow, blessPoints: data.refine.ruixiangPoints, skipDestiny: true }
+                        : undefined,
+                );
 
-                // 瑞祥符：本次必定成功，读条结束后指定属性 +3 次天命
-                let blessGain = 0;
-                if (forced && res.success && blessIdxNow !== null) {
-                    const target = next.attrs[blessIdxNow];
-                    if (target) {
-                        for (let i = 0; i < data.refine.ruixiangPoints; i++) {
-                            if (totalDestiny(next) >= 10) break;
-                            target.destinyPoints = Math.min(10, target.destinyPoints + 1);
-                            blessGain++;
-                        }
-                    }
+                // 瑞祥符：本次必定成功，且只给指定属性 +3（不再叠加随机天命，避免"串味"）
+                const blessGain = res.blessGain ?? 0;
+                if (forced && res.success) {
                     pendingRef.current = null;
                     setPendingBless(null);
                 }
