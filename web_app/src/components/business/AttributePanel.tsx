@@ -38,8 +38,10 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
             {/* Preset Manager */}
             <PresetManager />
 
-            {/* Class & Faction Selectors - 并排半行，节约纵向空间 */}
-            <div className="calc-selector-pair grid grid-cols-1 md:grid-cols-2 gap-3">
+            {/* Class & Faction Selectors - 并排半行，节约纵向空间
+                两列由 .calc-selector-pair 的容器查询（≥640px）驱动，不用 md: 视口断点：
+                分屏面板里视口很宽但面板可能只有 400px，视口断点会误判。 */}
+            <div className="calc-selector-pair grid grid-cols-1 gap-3">
                 <ClassSelector />
                 <FactionSelector />
             </div>
@@ -53,7 +55,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                 </h2>
                 <div className="flex flex-col gap-3">
                     {/* Row 1: 4 Cards (Min/Max Atk, HP, MP) */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div className="calc-attr-grid grid grid-cols-2 gap-3">
                         <AttributeCard
                             label="最小攻击"
                             tag="Min"
@@ -91,7 +93,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                     </div>
 
                     {/* Row 2: 3 Cards (DEF, CRIT, M-DMG) - 与第1行小卡片同宽，末位自然留空 */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div className="calc-attr-grid grid grid-cols-2 gap-3">
                         <AttributeCard
                             label="防御"
                             tag="DEF"

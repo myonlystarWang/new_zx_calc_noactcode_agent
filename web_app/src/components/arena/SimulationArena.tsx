@@ -979,7 +979,7 @@ export const SimulationArena: React.FC = () => {
     };
 
     return (
-        <div className="w-full xl:h-full max-w-[1800px] mx-auto flex flex-col flex-1 xl:min-h-0 py-2" data-theme={dpsFaction}>
+        <div className="w-full @[900px]:h-full max-w-[1800px] mx-auto flex flex-col flex-1 @[900px]:min-h-0 py-2" data-theme={dpsFaction}>
             {error && (
                 <div className="mb-3 bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3 text-xs text-red-300">
                     <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
@@ -990,8 +990,8 @@ export const SimulationArena: React.FC = () => {
                 </div>
             )}
 
-            <div className="flex-1 grid grid-rows-[auto_auto] xl:grid-rows-[minmax(0,1fr)_188px] xl:min-h-0 gap-3">
-                <div className="grid grid-cols-1 xl:grid-cols-[286px_minmax(0,1fr)_314px] gap-3 xl:min-h-0">
+            <div className="flex-1 grid grid-rows-[auto_auto] @[900px]:grid-rows-[minmax(0,1fr)_188px] @[900px]:min-h-0 gap-3">
+                <div className="grid grid-cols-1 @[900px]:grid-cols-[286px_minmax(0,1fr)_314px] gap-3 @[900px]:min-h-0">
                     <PartyRail
                         dpsFaction={dpsFaction}
                         supports={supports}

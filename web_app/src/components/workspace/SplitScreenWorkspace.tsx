@@ -109,9 +109,11 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
       <div className="flex-1 overflow-y-auto min-h-0 bg-[#070a10]">
         {mode === 'calc' && (
           <div className="calc-container-root @container p-3 sm:p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
-            <div className="calc-two-col-grid grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+            {/* 两栏由 .calc-two-col-grid 的容器查询（≥640px）驱动，不用 md: 视口断点：
+                分屏面板里视口可能 1440，但面板只有 400 —— 视口断点会把 12 栏硬塞进 400px。 */}
+            <div className="calc-two-col-grid grid grid-cols-1 gap-4 items-start">
               {/* 左列：全部输入项（方案/职业/阵营/属性/增益）+ 综合战力评分 */}
-              <div className="calc-col-inputs md:col-span-6 flex flex-col gap-4">
+              <div className="calc-col-inputs flex flex-col gap-4">
                 <AttributePanel
                   attributes={userCharacter.BaseAttributes}
                   onChange={updateCharacterAttributes}
@@ -120,7 +122,7 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
               </div>
 
               {/* 右列：副本战力分析（原版 3D 轮播） */}
-              <div className="calc-col-results md:col-span-6 flex flex-col">
+              <div className="calc-col-results flex flex-col">
                 <div className="flex-1">
                   <ResultSection searchNav={null} onSearchConsumed={() => {}} />
                 </div>
@@ -130,7 +132,10 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
         )}
 
         {mode === 'arena' && (
-          <div className="h-full flex flex-col overflow-hidden animate-in fade-in duration-200">
+          /* @container：面板宽度才是竞技场的真实可用宽（视口宽 ≠ 面板宽）。
+             保留 h-full 让宽面板下三栏铺满、不出现多余滚动；不设 overflow-hidden，
+             窄面板（<900）时内容自然撑高，由外层 overflow-y-auto 接管滚动。 */
+          <div className="@container h-full flex flex-col min-h-0 animate-in fade-in duration-200">
             <SimulationArena />
           </div>
         )}

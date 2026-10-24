@@ -290,9 +290,9 @@ const MainContent: React.FC = () => {
           element={
             <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
               <main className="calc-container-root @container w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-2 pb-6 animate-in fade-in duration-300 flex-1">
-                <div className="calc-two-col-grid grid grid-cols-1 md:grid-cols-12 gap-4 xl:gap-5 items-start">
+                <div className="calc-two-col-grid grid grid-cols-1 gap-4 xl:gap-5 items-start">
                   {/* 左列：全部输入项（方案/职业/阵营/属性/增益）+ 综合战力评分 */}
-                  <div className="calc-col-inputs md:col-span-6 flex flex-col gap-4">
+                  <div className="calc-col-inputs flex flex-col gap-4">
                     <AttributePanel
                       attributes={userCharacter.BaseAttributes}
                       onChange={updateCharacterAttributes}
@@ -305,7 +305,7 @@ const MainContent: React.FC = () => {
                   </div>
 
                   {/* 右列：副本战力分析（原版 3D 轮播） */}
-                  <div className="calc-col-results md:col-span-6 flex flex-col">
+                  <div className="calc-col-results flex flex-col">
                     <div className="flex-1">
                       <ResultSection searchNav={searchNav} onSearchConsumed={() => setSearchNav(null)} />
                     </div>
@@ -320,7 +320,7 @@ const MainContent: React.FC = () => {
         <Route
           path={ROUTE.arena}
           element={
-            <main className="w-full flex-1 min-h-0 max-w-none mx-auto px-3 xl:px-4 animate-in fade-in duration-300 flex flex-col overflow-y-auto xl:overflow-hidden">
+            <main className="@container w-full flex-1 min-h-0 max-w-none mx-auto px-3 xl:px-4 animate-in fade-in duration-300 flex flex-col overflow-y-auto xl:overflow-hidden">
               <SimulationArena />
             </main>
           }

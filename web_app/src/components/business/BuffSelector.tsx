@@ -158,7 +158,7 @@ export const BuffSelector: React.FC<{ onNavigateToFocus?: () => void }> = () => 
                 )}
             </h2>
 
-            <div className="calc-attr-grid grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="calc-attr-grid grid grid-cols-2 gap-3">
                 {visibleBuffs.map((buff) => {
                     const isActive = activeBuffIds.includes(buff.BuffID);
                     const currentValue = buffValues[buff.BuffID] ?? buff.DefaultEffectValue ?? 0;
