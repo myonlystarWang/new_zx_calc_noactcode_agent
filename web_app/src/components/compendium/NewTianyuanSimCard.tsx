@@ -302,11 +302,7 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                         setMsg({ ok: true, level: next.level, title: `精炼成功 · 天缘 +${next.level}` });
                     }
                 } else {
-                    setMsg({
-                        ok: false,
-                        level: next.level,
-                        title: res.to === res.from ? '精炼失败 · 已到保底档' : '精炼失败 · 掉 1 级（天命保留）',
-                    });
+                    setMsg({ ok: false, level: next.level, title: '精炼失败' });
                 }
 
                 setBusy(false);

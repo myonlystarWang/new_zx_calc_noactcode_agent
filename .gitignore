@@ -15,6 +15,9 @@ dist/
 **/dist/
 *.tsbuildinfo
 films/
+# 生成产物：角色头像、幻灯片截图
+avatars_output/
+doc/slides/
 # Local generated profiles and temporary analysis input
 agent_tool/profile_test_*.json
 agent_tool/temp_profile_*.json
