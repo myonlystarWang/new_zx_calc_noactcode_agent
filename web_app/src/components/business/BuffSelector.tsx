@@ -167,7 +167,7 @@ export const BuffSelector: React.FC<{ onNavigateToFocus?: () => void }> = () => 
                     // 滑块步长按「手指拖得准」的量级给；数字框保持 step=1，可填精确值
                     const overrides = {
                         'BUFF_FOCUS_EFFECT': { max: 400, step: 20 },          // 专注
-                        'BUFF_HOLYWRATH_EFFECT': { max: 22.5, step: 1 },      // 巫咒
+                        'BUFF_HOLYWRATH_EFFECT': { max: 22.5, step: 0.5 },      // 巫咒
                         'BUFF_MON_CRITDAMAGE_EFFECT': { max: 900, step: 50 }, // 绿点
                         'BUFF_MON_HARMED_EFFECT': { max: 120, step: 10 }      // 易伤
                     }[buff.BuffID] || {};

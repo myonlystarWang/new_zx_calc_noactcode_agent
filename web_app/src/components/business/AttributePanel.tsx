@@ -120,7 +120,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                             value={attributes.CharacterMonsterDamageIncreasePercent}
                             onChange={(v) => handleChange('CharacterMonsterDamageIncreasePercent', v)}
                             max={100}
-                            step={5}
+                            step={0.5}
                             color="orange"
                         />
                     </div>
