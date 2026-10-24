@@ -81,7 +81,8 @@ export const Header: React.FC = () => {
                         aria-label="更新动态"
                     >
                         <span className="relative">
-                            更新动态
+                            <span className="sm:hidden">更新</span>
+                            <span className="hidden sm:inline">更新动态</span>
                             {unseen && (
                                 /* 窄屏圆点绝对定位：与意见反馈同款，不占布局宽度 */
                                 <span
@@ -111,7 +112,8 @@ export const Header: React.FC = () => {
                         aria-label={guestbookUnseen ? '意见反馈（有新留言）' : '意见反馈'}
                     >
                         <span className="relative">
-                            意见反馈
+                            <span className="sm:hidden">留言</span>
+                            <span className="hidden sm:inline">意见反馈</span>
                             {guestbookUnseen && (
                                 /* 窄屏圆点绝对定位：不占布局宽度，390px 下不会把导航再撑高 */
                                 <span
@@ -140,7 +142,8 @@ export const Header: React.FC = () => {
                         // title="查看关于本站愿景与理念"
                         aria-label="关于本站"
                     >
-                        <span>关于本站</span>
+                        <span className="sm:hidden">关于</span>
+                        <span className="hidden sm:inline">关于本站</span>
                     </button>
                 </div>
             </div>
