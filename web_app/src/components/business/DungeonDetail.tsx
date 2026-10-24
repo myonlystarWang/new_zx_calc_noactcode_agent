@@ -465,10 +465,10 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                     <table className="w-full text-sm">
                                         <thead>
                                             <tr className="border-b border-slate-700/50">
-                                                <th className="text-left py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap w-1/2">技能</th>
+                                                <th className="text-left py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap w-[58%]">技能</th>
                                                 <th className="hidden text-right py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap">最小伤害</th>
                                                 <th className="hidden text-right py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap">最大伤害</th>
-                                                <th className="text-right py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap w-1/2">平均伤害</th>
+                                                <th className="text-right py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap w-[42%]">平均伤害</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-slate-700/30">
@@ -493,7 +493,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                     >
                                                         <td className="py-3 px-2 text-slate-200 font-medium relative z-10 whitespace-nowrap">
                                                             <div className="flex items-center gap-2 relative">
-                                                                <span className={clsx("shrink line-clamp-1 max-w-[100px] sm:max-w-[120px]", isFocusedSkill && "text-cyan-300 font-bold")}>{skill.SkillName}</span>
+                                                                <span className={clsx("shrink line-clamp-1 max-w-[150px] sm:max-w-[220px]", isFocusedSkill && "text-cyan-300 font-bold")}>{skill.SkillName}</span>
                                                                 <Info 
                                                                     className="w-4 h-4 text-slate-500 hover:text-[var(--theme-primary)] transition-colors shrink-0"
                                                                     onClick={(e) => {
@@ -535,14 +535,18 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                             {formatNumber(dmg.maxFinalDamage)}
                                                         </td>
                                                         <td className="py-3 px-2 text-right relative">
-                                                            {/* Damage Bar Background */}
-                                                            <div
-                                                                className="absolute inset-y-1 right-1 bg-yellow-500/20 rounded-sm transition-all duration-500"
-                                                                style={{ width: `${barWidth * 0.95}%` }}
-                                                            />
-                                                            <span className="relative z-10 text-yellow-300 font-mono font-bold text-sm md:text-base shadow-black drop-shadow-sm whitespace-nowrap">
-                                                                {formatNumber(dmg.avgFinalDamage)}
-                                                            </span>
+                                                            {/* 上行：细条形图；下行：数值（与左侧伤害范围同一行） */}
+                                                            <div className="flex flex-col items-end gap-1.5">
+                                                                <div className="w-full h-2 rounded-full bg-slate-800/70 overflow-hidden">
+                                                                    <div
+                                                                        className="h-full rounded-full bg-gradient-to-r from-yellow-600/70 to-yellow-400/90 transition-all duration-500"
+                                                                        style={{ width: `${Math.max(barWidth, 2)}%` }}
+                                                                    />
+                                                                </div>
+                                                                <span className="text-xs md:text-sm text-yellow-300 font-mono font-bold whitespace-nowrap">
+                                                                    {formatNumber(dmg.avgFinalDamage)}
+                                                                </span>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                     {isExpanded && dmg.hits && dmg.hits.map(hit => {
@@ -562,14 +566,19 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                 </td>
                                                                 <td className="hidden py-2 px-2"></td>
                                                                 <td className="hidden py-2 px-2"></td>
-                                                                <td className="py-1 px-2 text-right relative">
-                                                                    <div
-                                                                        className="absolute inset-y-1.5 right-1 bg-yellow-500/10 rounded-sm transition-all duration-500"
-                                                                        style={{ width: `${hitBarWidth * 0.95}%` }}
-                                                                    />
-                                                                    <span className="relative z-10 text-yellow-500/90 font-mono font-semibold text-xs md:text-sm drop-shadow-sm whitespace-nowrap">
-                                                                        {formatNumber(hit.avgFinalDamage)}
-                                                                    </span>
+                                                                <td className="py-1 px-2 text-right">
+                                                                    {/* 与主行同构：细条在上、数值在下 */}
+                                                                    <div className="flex flex-col items-end gap-1">
+                                                                        <div className="w-full h-1.5 rounded-full bg-slate-800/60 overflow-hidden">
+                                                                            <div
+                                                                                className="h-full rounded-full bg-yellow-500/50 transition-all duration-500"
+                                                                                style={{ width: `${Math.max(hitBarWidth, 2)}%` }}
+                                                                            />
+                                                                        </div>
+                                                                        <span className="text-xs md:text-sm text-yellow-500/90 font-mono font-semibold whitespace-nowrap">
+                                                                            {formatNumber(hit.avgFinalDamage)}
+                                                                        </span>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         );
