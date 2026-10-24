@@ -1361,3 +1361,54 @@ input[type="number"] {
     filter: blur(2px);
   }
 }
+
+/* ==========================================================================
+   移动端触控尺寸与输入体验
+   只在手机（含横屏）生效，桌面端一律不受影响。
+   ========================================================================== */
+@media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
+  /* 1) 可点元素最小命中区 40px：视觉尺寸基本不变，靠 min-height 撑开。
+        注意不能只写 [role='dialog'] —— 有些组件用 portal 挂到 body 上，
+        按 dialog 作用域会漏掉（实测增益胶囊就是漏网的那批）。 */
+  button,
+  [role='button'],
+  a {
+    min-height: 40px;
+  }
+
+  /* 表格内的行内小图标不撑到 40px，否则技能表会被拉散 */
+  table button {
+    min-height: 32px;
+  }
+
+  /* 2) 输入框 16px：iOS Safari 对 <16px 的输入框会强制放大整页 */
+  [role='dialog'] input,
+  [role='dialog'] textarea,
+  [role='dialog'] select {
+    font-size: 16px;
+  }
+
+  /* 3) 滑块：12px 的 thumb 手指点不准，放大到 22px；轨道同步加粗 */
+  .calc-container-root input[type='range'],
+  [role='dialog'] input[type='range'] {
+    /* 只放大命中区（元素高度），轨道由 ::-webkit-slider-runnable-track 单独画，视觉不变 */
+    height: 32px;
+  }
+  .calc-container-root input[type='range']::-webkit-slider-thumb,
+  [role='dialog'] input[type='range']::-webkit-slider-thumb {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .calc-container-root input[type='range']::-moz-range-thumb,
+  [role='dialog'] input[type='range']::-moz-range-thumb {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  /* 4) 去掉移动端点按时的灰色高亮块 */
+  button,
+  [role='button'],
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
