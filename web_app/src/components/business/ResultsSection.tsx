@@ -498,64 +498,38 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                 </div>
             </div>
 
-            {isMobile ? (
-                /* 手机：纵向手风琴。一次只渲染当前副本的详情，其余只给摘要行，
-                   既避免 16 份详情同时挂载，也避免 675px 固定高 + 横向翻页在触屏上难用。 */
-                <div className="flex flex-col gap-2">
+            {isMobile && (
+                /* 手机：横向滑动仍是主交互，这里给一条可点的副本快捷条（T16/T17…），
+                   既解决「不知道能滑」，也兜住手势失灵的情况。 */
+                <div className="flex gap-1.5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
                     {results.dungeonPowers.map((d) => {
                         const isActive = d.DungeonID === selectedDungeonId;
-                        const rankConfig = getRankConfig(d.TotalDamage);
+                        const tag = (d.DungeonName.match(/T\d+/) || [d.DungeonName.slice(0, 4)])[0];
                         return (
-                            <div
+                            <button
                                 key={d.DungeonID}
+                                type="button"
+                                onClick={() => {
+                                    if (isActive) return;
+                                    setSelectedDungeonId(d.DungeonID);
+                                    setFocusMonsterId(null);
+                                    setFocusSkillName(null);
+                                    setAutoShowAttr(false);
+                                }}
                                 className={clsx(
-                                    'rounded-2xl border overflow-hidden transition-colors',
-                                    isActive ? 'border-cyan-500/40 bg-slate-900/60' : 'border-slate-800 bg-slate-900/30'
+                                    'shrink-0 px-2.5 py-1 rounded-full border text-[11px] font-bold whitespace-nowrap transition-colors',
+                                    isActive
+                                        ? 'border-cyan-400/60 bg-cyan-500/20 text-cyan-200'
+                                        : 'border-slate-700 bg-slate-900/60 text-slate-400'
                                 )}
                             >
-                                <button
-                                    type="button"
-                                    aria-expanded={isActive}
-                                    onClick={() => {
-                                        if (isActive) return;
-                                        setSelectedDungeonId(d.DungeonID);
-                                        setFocusMonsterId(null);
-                                        setFocusSkillName(null);
-                                        setAutoShowAttr(false);
-                                    }}
-                                    className="w-full flex items-center justify-between gap-3 px-3 py-2.5 text-left"
-                                >
-                                    <div className="min-w-0">
-                                        <div className="text-sm font-bold text-slate-100 truncate">{d.DungeonName}</div>
-                                        <div className="text-[11px] text-slate-500 mt-0.5">
-                                            {d.Monsters.length} 个 BOSS{isActive ? ' · 已展开' : ''}
-                                        </div>
-                                    </div>
-                                    <div className="shrink-0 text-right">
-                                        <div className="text-sm font-black text-slate-100 font-mono">{formatNumber(d.TotalDamage)}</div>
-                                        <div className={clsx('text-[11px] font-bold', rankConfig.TextColor)}>{rankConfig.Rank} 级</div>
-                                    </div>
-                                </button>
-                                {isActive && (
-                                    <div className="border-t border-slate-800/80 px-1 pb-1">
-                                        <DungeonDetail
-                                            dungeon={d}
-                                            isExpanded
-                                            standalone
-                                            rankConfig={rankConfig}
-                                            power={d.TotalDamage}
-                                            focusMonsterId={focusMonsterId}
-                                            focusSkillName={focusSkillName}
-                                            autoShowAttr={autoShowAttr}
-                                            onMonsterChange={handleMonsterChange}
-                                        />
-                                    </div>
-                                )}
-                            </div>
+                                {tag}
+                            </button>
                         );
                     })}
                 </div>
-            ) : (
+            )}
+
             <div
                 ref={containerRef}
                 className="relative w-full h-[675px] flex items-start justify-center perspective-1000 touch-pan-y overflow-hidden"
@@ -639,7 +613,6 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                     })}
                 </div>
             </div>
-            )}
             {shareOpen && menuPos && createPortal(
                 <>
                     <div className="fixed inset-0 z-[9998]" onClick={() => setShareOpen(false)} aria-hidden />
