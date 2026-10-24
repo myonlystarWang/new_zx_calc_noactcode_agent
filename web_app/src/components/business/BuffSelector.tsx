@@ -164,11 +164,12 @@ export const BuffSelector: React.FC<{ onNavigateToFocus?: () => void }> = () => 
                     const currentValue = buffValues[buff.BuffID] ?? buff.DefaultEffectValue ?? 0;
 
                     const defaults = { min: 0, max: 500, step: 1 };
+                    // 滑块步长按「手指拖得准」的量级给；数字框保持 step=1，可填精确值
                     const overrides = {
-                        'BUFF_FOCUS_EFFECT': { max: 400 },
-                        'BUFF_HOLYWRATH_EFFECT': { max: 22.5, step: 0.1 },
-                        'BUFF_MON_CRITDAMAGE_EFFECT': { max: 900 },
-                        'BUFF_MON_HARMED_EFFECT': { max: 120 }
+                        'BUFF_FOCUS_EFFECT': { max: 400, step: 20 },          // 专注
+                        'BUFF_HOLYWRATH_EFFECT': { max: 22.5, step: 1 },      // 巫咒
+                        'BUFF_MON_CRITDAMAGE_EFFECT': { max: 900, step: 50 }, // 绿点
+                        'BUFF_MON_HARMED_EFFECT': { max: 120, step: 10 }      // 易伤
                     }[buff.BuffID] || {};
 
                     const config = { ...defaults, ...overrides };
@@ -205,7 +206,7 @@ export const BuffSelector: React.FC<{ onNavigateToFocus?: () => void }> = () => 
                                         onClick={(e) => e.stopPropagation()}
                                         min={config.min}
                                         max={config.max}
-                                        step={config.step}
+                                        step={1}
                                         className={clsx(
                                             "w-full bg-transparent text-center font-black text-xl focus:outline-none font-mono py-1",
                                             isActive ? "text-white focus:text-cyan-400" : "text-slate-500"

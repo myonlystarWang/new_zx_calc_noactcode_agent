@@ -62,6 +62,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                             value={attributes.CharacterMinAttack}
                             onChange={(v) => handleChange('CharacterMinAttack', v)}
                             max={1000000}
+                            step={1000}
                             color="cyan"
                         />
                         <AttributeCard
@@ -70,6 +71,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                             value={attributes.CharacterMaxAttack}
                             onChange={(v) => handleChange('CharacterMaxAttack', v)}
                             max={1000000}
+                            step={1000}
                             color="purple"
                         />
                         <AttributeCard
@@ -78,7 +80,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                             value={attributes.CharacterHealth}
                             onChange={(v) => handleChange('CharacterHealth', v)}
                             max={10000000}
-                            step={100}
+                            step={100000}
                             color="red"
                         />
                         <AttributeCard
@@ -87,7 +89,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                             value={attributes.CharacterMana}
                             onChange={(v) => handleChange('CharacterMana', v)}
                             max={10000000}
-                            step={100}
+                            step={100000}
                             color="blue"
                         />
                     </div>
@@ -100,6 +102,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                             value={attributes.CharacterDefense}
                             onChange={(v) => handleChange('CharacterDefense', v)}
                             max={1000000}
+                            step={1000}
                             color="emerald"
                         />
                         <AttributeCard
@@ -108,6 +111,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                             value={attributes.CharacterCriticalHitDamagePercent}
                             onChange={(v) => handleChange('CharacterCriticalHitDamagePercent', v)}
                             max={4000}
+                            step={50}
                             color="yellow"
                         />
                         <AttributeCard
@@ -116,6 +120,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                             value={attributes.CharacterMonsterDamageIncreasePercent}
                             onChange={(v) => handleChange('CharacterMonsterDamageIncreasePercent', v)}
                             max={100}
+                            step={5}
                             color="orange"
                         />
                     </div>
