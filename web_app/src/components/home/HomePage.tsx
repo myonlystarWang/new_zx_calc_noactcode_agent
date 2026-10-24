@@ -521,7 +521,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                     ? '已粘贴截图，输入补充指令或直接回车启动推演...'
                     : '问点什么，比如四灵本元，神机洗练，昭武衣服，苍龙啸，新天缘等...'
                 }
-                className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-[16px] md:text-sm focus:outline-none px-1 py-1.5"
+                className="flex-1 min-w-0 bg-transparent text-slate-100 placeholder-slate-500 text-[16px] md:text-sm focus:outline-none px-1 py-1.5"
               />
 
               {/* 发送按钮 */}

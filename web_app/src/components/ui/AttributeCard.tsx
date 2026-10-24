@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 
 const colorStyles: Record<string, { text: string; focus: string; border: string; thumb: string; tagBg: string }> = {
@@ -34,6 +34,17 @@ export const AttributeCard: React.FC<AttributeCardProps> = ({
     tag,
 }) => {
     const styles = colorStyles[color] || colorStyles.cyan;
+
+    /**
+     * 滑块的步长按「量级」取，而不是 1：
+     * 气血 150 万这种值，1 步 1 点根本拖不准。取量级的百分之一作步长
+     * （max=1e6 → 10000，max=1e5 → 1000），大约 100 个档位；
+     * 想要精确值就用数字输入框改尾部。桌面/移动一致。
+     */
+    const sliderStep = useMemo(() => {
+        const digits = Math.floor(Math.log10(Math.max(max, 10)));
+        return Math.max(1, Math.pow(10, Math.max(0, digits - 2)));
+    }, [max]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value === '') {
@@ -84,12 +95,12 @@ export const AttributeCard: React.FC<AttributeCardProps> = ({
                 style={{ fontVariantNumeric: 'tabular-nums' }}
             />
 
-            {/* Slim Range Slider */}
+            {/* Slim Range Slider：按量级跳变，精确值用上面的输入框改尾部 */}
             <input
                 type="range"
                 min={min}
                 max={max}
-                step={step}
+                step={sliderStep}
                 value={value}
                 onChange={handleChange}
                 className={clsx(

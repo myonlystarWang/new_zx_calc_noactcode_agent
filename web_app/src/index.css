@@ -1398,6 +1398,9 @@ input[type="number"] {
   [role='dialog'] input[type='range']::-webkit-slider-thumb {
     width: 22px !important;
     height: 22px !important;
+    /* 轨道 4px、thumb 22px → 上移 9px 才能同心。组件里按 12px thumb 写的是 -4px，
+       放大后必须同步改，否则圆点会明显偏下（真机截图反馈）。 */
+    margin-top: -9px !important;
   }
   .calc-container-root input[type='range']::-moz-range-thumb,
   [role='dialog'] input[type='range']::-moz-range-thumb {
