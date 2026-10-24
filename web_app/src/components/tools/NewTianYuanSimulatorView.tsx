@@ -132,14 +132,10 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
         setStock((prev) => prev.map((v) => (v > 1 ? v - 1 : 99)));
 
         if (res.success) {
+            pushLog(`+${res.from} → +${res.to} 成功`);
             if (res.destinyGain > 0) {
-                pushLog(`+${res.from} → +${res.to} 成功 · 天命触发 ${res.destinyGain} 点`);
                 const idx = res.destinyHits[res.destinyHits.length - 1];
                 if (typeof idx === 'number') setFlash({ idx, ts: Date.now() });
-            } else if (res.triggerLevel) {
-                pushLog(`+${res.from} → +${res.to} 成功 · 天命未触发`);
-            } else {
-                pushLog(`+${res.from} → +${res.to} 成功`);
             }
         } else {
             pushLog(res.to === res.from ? `+${res.from} 失败` : `+${res.from} → +${res.to} 失败`);
@@ -528,7 +524,7 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
                                 <ChevronRight className="w-3 h-3 text-slate-600 shrink-0" />
                                 <span
                                     className={clsx(
-                                        l.includes('失败') ? 'text-rose-300' : l.includes('天命触发') ? 'text-amber-300' : 'text-slate-300',
+                                        l.includes('失败') ? 'text-rose-300' : l.includes('成功') ? 'text-amber-300' : 'text-slate-300',
                                     )}
                                 >
                                     {l}
