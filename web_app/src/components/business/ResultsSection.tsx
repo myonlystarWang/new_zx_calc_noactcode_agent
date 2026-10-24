@@ -597,17 +597,20 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                                     transition: isDragging ? 'none' : 'all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)'
                                 }}
                             >
-                                <DungeonDetail
-                                    dungeon={d}
-                                    isExpanded={isActive}
-                                    standalone={true}
-                                    rankConfig={rankConfig}
-                                    power={powerRaw}
-                                    focusMonsterId={focusMonsterId}
-                                    focusSkillName={focusSkillName}
-                                    autoShowAttr={autoShowAttr}
-                                    onMonsterChange={isActive ? handleMonsterChange : undefined}
-                                />
+                                {/* 只挂载当前卡与左右各一张：16 份 DungeonDetail 同时渲染在手机上会明显卡顿 */}
+                                {Math.abs(baseOffset) <= 1 ? (
+                                    <DungeonDetail
+                                        dungeon={d}
+                                        isExpanded={isActive}
+                                        standalone={true}
+                                        rankConfig={rankConfig}
+                                        power={powerRaw}
+                                        focusMonsterId={focusMonsterId}
+                                        focusSkillName={focusSkillName}
+                                        autoShowAttr={autoShowAttr}
+                                        onMonsterChange={isActive ? handleMonsterChange : undefined}
+                                    />
+                                ) : null}
                             </div>
                         );
                     })}

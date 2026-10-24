@@ -25,6 +25,7 @@ import { AboutPage } from './components/about/AboutPage';
 import { FeedbackPage } from './components/feedback/FeedbackPage';
 import { decodeSharePayload } from './utils/shareSnapshot';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { AlertTriangle } from 'lucide-react';
 import type { SearchTarget } from './components/GlobalSearch';
 import type { SubTab } from './components/compendium/CompendiumView';
@@ -91,6 +92,8 @@ const MainContent: React.FC = () => {
   const { isLoading, loadError, userCharacter, activeBuffIds, updateCharacterAttributes, updateCharacterClass, restoreBuffState } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
+  // iOS 弹键盘时把内容顶到键盘之上（Android 差值为 0，不受影响）
+  const keyboardInset = useKeyboardInset();
 
   const activeTab = primaryTabFromPath(location.pathname);
 
@@ -245,6 +248,7 @@ const MainContent: React.FC = () => {
         "h-screen h-[100dvh] overflow-hidden flex flex-col",
         activeTab === 'home' ? 'cosmic-bg' : 'bg-slate-950 zx-ink-bg'
       )}
+      style={keyboardInset ? { paddingBottom: keyboardInset } : undefined}
       data-theme={activeTab === 'calculator' ? userCharacter.Faction : undefined}
     >
       {loadError && (
