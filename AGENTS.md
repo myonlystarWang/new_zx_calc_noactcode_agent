@@ -64,5 +64,5 @@
 - 路由是 HashRouter：`http://localhost:5173/#/arena`，直接开 `/arena` 会落到首页。
 - `scratch/`、`dist/`、`films/` 均被 gitignore；需要留存的分析脚本放 `scripts/`。
 - 提交只入本地库；**push 必须等用户明确说「推送」**。
-- 当前移动端分支：`feat/mobile-responsive`（从 `feat/ai-copilot-tools` 切出）。
+- 当前开发分支：`feat/ai-copilot-tools`（2026-10-24 已并入移动端改造；原 `feat/mobile-responsive` 已删除，后续都在这条分支上开发）。
 - 移动端方案文档：`doc/移动端全面支持_评估与改造方案_20261023.md`。
