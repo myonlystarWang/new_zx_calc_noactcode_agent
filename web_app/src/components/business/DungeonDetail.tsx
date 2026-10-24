@@ -9,6 +9,7 @@ import { clsx } from 'clsx';
 import { useApp } from '../../context/AppContext';
 import { DataService } from '../../services/DataService';
 import { formatNumber } from '../../utils/format';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 interface DungeonDetailProps {
     dungeon: Dungeon;
@@ -37,6 +38,8 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
     onMonsterChange
 }) => {
     const { userCharacter, activeBuffIds, buffs, buffValues } = useApp();
+    // 手机：tooltip 改成居中弹层（跟着手指的 320px 浮层会被手指挡住、也没法滚动）
+    const isMobile = useIsMobile();
     const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
     const [pinnedAttr, setPinnedAttr] = useState(false);
     const [pinnedSkill, setPinnedSkill] = useState<Skill | null>(null);
@@ -493,6 +496,15 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                 <span className={clsx("shrink line-clamp-1 max-w-[100px] sm:max-w-[120px]", isFocusedSkill && "text-cyan-300 font-bold")}>{skill.SkillName}</span>
                                                                 <Info 
                                                                     className="w-4 h-4 text-slate-500 hover:text-[var(--theme-primary)] transition-colors shrink-0"
+                                                                    onClick={(e) => {
+                                                                        // 触屏没有 hover：点一下切换显示（再点关闭）
+                                                                        e.stopPropagation();
+                                                                        setTooltipState(prev =>
+                                                                            prev.visible && prev.skill?.SkillID === skill.SkillID
+                                                                                ? { visible: false, x: 0, y: 0, skill: null }
+                                                                                : { visible: true, x: e.clientX, y: e.clientY, skill }
+                                                                        );
+                                                                    }}
                                                                     onMouseEnter={(e) => {
                                                                         e.stopPropagation();
                                                                         setTooltipState({ visible: true, x: e.clientX, y: e.clientY, skill });
@@ -576,9 +588,22 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
 
             {/* Tooltip Portal */}
             {tooltipState.visible && tooltipState.skill && createPortal(
+                <>
+                {isMobile && (
+                    <div
+                        className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm"
+                        onClick={() => setTooltipState({ visible: false, x: 0, y: 0, skill: null })}
+                        aria-hidden
+                    />
+                )}
                 <div 
-                    className="fixed z-[9999] pointer-events-none w-[320px] p-4 bg-slate-955/95 border border-slate-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-opacity animate-in fade-in"
-                    style={{ 
+                    className={clsx(
+                        'fixed z-[9999] p-4 bg-slate-955/95 border border-slate-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl animate-in fade-in',
+                        isMobile
+                            ? 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92vw] max-w-[380px] max-h-[72vh] overflow-y-auto'
+                            : 'pointer-events-none w-[320px] transition-opacity'
+                    )}
+                    style={isMobile ? undefined : { 
                         left: Math.min(tooltipState.x + 15, window.innerWidth - 340), 
                         top: Math.max(10, Math.min(tooltipState.y - 150, window.innerHeight - 200))
                     }}
@@ -602,14 +627,28 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                             <div className="text-slate-400">使用频次: <span className={clsx("font-medium", tooltipState.skill.SkillFrequency >= 0.8 ? "text-yellow-400" : tooltipState.skill.SkillFrequency >= 0.4 ? "text-[var(--theme-accent)]" : "text-slate-400")}>{getFrequencyText(tooltipState.skill.SkillFrequency)}</span></div>
                         </div>
                     </div>
-                </div>,
+                </div>
+                </>,
                 document.body
             )}
 
             {monsterTooltipState.visible && monsterTooltipState.monster && createPortal(
+                <>
+                {isMobile && (
+                    <div
+                        className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm"
+                        onClick={() => setMonsterTooltipState({ visible: false, x: 0, y: 0, monster: null })}
+                        aria-hidden
+                    />
+                )}
                 <div
-                    className="fixed z-[9999] pointer-events-none w-[340px] p-4 bg-slate-955/95 border border-slate-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl transition-opacity animate-in fade-in max-h-[460px] overflow-y-auto"
-                    style={{
+                    className={clsx(
+                        'fixed z-[9999] p-4 bg-slate-955/95 border border-slate-800 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl animate-in fade-in max-h-[460px] overflow-y-auto',
+                        isMobile
+                            ? 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92vw] max-w-[380px] max-h-[72vh]'
+                            : 'pointer-events-none w-[340px] transition-opacity'
+                    )}
+                    style={isMobile ? undefined : {
                         left: Math.min(monsterTooltipState.x + 15, window.innerWidth - 360),
                         top: Math.max(10, Math.min(monsterTooltipState.y - 150, window.innerHeight - 470))
                     }}
@@ -633,7 +672,8 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                             <div className="text-sm text-slate-500 py-2">暂无属性数据</div>
                         )}
                     </div>
-                </div>,
+                </div>
+                </>,
                 document.body
             )}
         </div>
