@@ -369,7 +369,7 @@ const AttributeTable: React.FC<{ sectionKey: string; sectionTitle: string }> = (
                 </div>
             ) : viewMode === 'grid' ? (
                 /* 卡片视图：响应式多列网格，吃满大屏空间，单卡紧凑排列 */
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
+                <div className="cv-list grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
                     {visibleDomains.map((domainKey) => {
                         const meta = DOMAINS[domainKey];
                         const Icon = meta.icon;
@@ -627,7 +627,7 @@ const SourceSectionView: React.FC<SourceSectionViewProps> = ({ section, showCond
                     没有找到符合检索条件的项目
                 </div>
             ) : viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
+                <div className="cv-list grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
                     {visibleDomains.map((domainKey) => {
                         const meta = DOMAINS[domainKey];
                         const Icon = meta.icon;
@@ -1367,7 +1367,7 @@ const SupportView: React.FC = () => {
                             · {supportRoles.length}
                         </span>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                    <div className="cv-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                         {supportRoles.map((role, idx) => (
                             <SupportCard
                                 key={`${role.name}-${role.faction}-${idx}`}
@@ -1393,7 +1393,7 @@ const SupportView: React.FC = () => {
                             · {dpsRoles.length}
                         </span>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                    <div className="cv-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                         {dpsRoles.map((role, idx) => (
                             <SupportCard
                                 key={`${role.name}-${role.faction}-${idx}`}

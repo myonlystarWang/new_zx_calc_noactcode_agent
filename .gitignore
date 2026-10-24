@@ -13,6 +13,7 @@ node_modules/
 agent_tool/node_modules_win/
 dist/
 **/dist/
+**/dist-verify/
 *.tsbuildinfo
 films/
 # 生成产物：角色头像、幻灯片截图

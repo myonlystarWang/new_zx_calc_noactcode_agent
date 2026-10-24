@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import {
   HashRouter,
   Navigate,
@@ -17,9 +17,10 @@ import { HomePage } from './components/home/HomePage';
 import { AttributePanel } from './components/business/AttributePanel';
 import { BuffPanel } from './components/business/BuffPanel';
 import { ResultSection } from './components/business/ResultsSection';
-import { SimulationArena } from './components/arena/SimulationArena';
-import { CompendiumView } from './components/compendium/CompendiumView';
-import { ToolsHubView } from './components/tools/ToolsHubView';
+// 路由页已停用，但仍保留可直达；这三个重组件改成按需加载，避免它们进主包拖慢首屏。
+const SimulationArena = React.lazy(() => import('./components/arena/SimulationArena').then(m => ({ default: m.SimulationArena })));
+const CompendiumView = React.lazy(() => import('./components/compendium/CompendiumView').then(m => ({ default: m.CompendiumView })));
+const ToolsHubView = React.lazy(() => import('./components/tools/ToolsHubView').then(m => ({ default: m.ToolsHubView })));
 import { ChangelogPage } from './components/changelog/ChangelogPage';
 import { AboutPage } from './components/about/AboutPage';
 import { FeedbackPage } from './components/feedback/FeedbackPage';
@@ -279,6 +280,7 @@ const MainContent: React.FC = () => {
       )}
       <Header />
 
+      <Suspense fallback={<div className="flex-1 grid place-items-center"><div className="w-6 h-6 rounded-full border-2 border-slate-700 border-t-cyan-400 animate-spin" /></div>}>
       <Routes>
         <Route
           path={ROUTE.home}
@@ -394,6 +396,7 @@ const MainContent: React.FC = () => {
 
         <Route path="*" element={<Navigate to={ROUTE.home} replace />} />
       </Routes>
+      </Suspense>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
   Calculator,
   Swords,
@@ -15,11 +15,13 @@ import { useApp } from '../../context/AppContext';
 import { AttributePanel } from '../business/AttributePanel';
 import { BuffPanel } from '../business/BuffPanel';
 import { ResultSection } from '../business/ResultsSection';
-import { SimulationArena } from '../arena/SimulationArena';
-import { ServerRadarView } from '../tools/ServerRadarView';
-import { XycSimulatorView } from '../tools/XycSimulatorView';
-import { NewTianYuanSimulatorView } from '../tools/NewTianYuanSimulatorView';
-import { YunlingSimulatorView } from '../tools/YunlingSimulatorView';
+// 五个重页面改成按需加载：训练场 3200 行、模拟器各几百行，全塞进主包会拖慢首屏。
+// 计算器（AttributePanel/BuffPanel/ResultsSection）保持同步加载，它是默认视图。
+const SimulationArena = React.lazy(() => import('../arena/SimulationArena').then(m => ({ default: m.SimulationArena })));
+const ServerRadarView = React.lazy(() => import('../tools/ServerRadarView').then(m => ({ default: m.ServerRadarView })));
+const XycSimulatorView = React.lazy(() => import('../tools/XycSimulatorView').then(m => ({ default: m.XycSimulatorView })));
+const NewTianYuanSimulatorView = React.lazy(() => import('../tools/NewTianYuanSimulatorView').then(m => ({ default: m.NewTianYuanSimulatorView })));
+const YunlingSimulatorView = React.lazy(() => import('../tools/YunlingSimulatorView').then(m => ({ default: m.YunlingSimulatorView })));
 import {
   WORKSPACE_TAG,
   WORKSPACE_TAG_ICON,
@@ -112,6 +114,13 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
 
       {/* 工作区主内容呈现 */}
       <div className="flex-1 overflow-y-auto min-h-0 bg-[#070a10]">
+        <Suspense
+          fallback={
+            <div className="h-full min-h-[240px] grid place-items-center">
+              <div className="w-6 h-6 rounded-full border-2 border-slate-700 border-t-cyan-400 animate-spin" aria-label="加载中" />
+            </div>
+          }
+        >
         {mode === 'calc' && (
           <div className="calc-container-root @container p-3 sm:p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
             {/* 两栏由 .calc-two-col-grid 的容器查询（≥640px）驱动，不用 md: 视口断点：
@@ -194,6 +203,7 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
             <YunlingSimulatorView />
           </div>
         )}
+        </Suspense>
       </div>
     </div>
   );
