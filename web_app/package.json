@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "predev": "node ../scripts/build_skills_meta.mjs",
     "build": "tsc -b && vite build",
+    "prebuild": "node ../scripts/build_skills_meta.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test:l1": "node ../scripts/l1_intent_fixture.mjs"

@@ -32,8 +32,16 @@ import type {
     Skill
 } from '../../types';
 import { DataService } from '../../services/DataService';
-import skillsData from '../../../public/game_data/skills.json';
-const META = (skillsData as any)._meta;
+// 这里只需要 skills.json 的 _meta（阵营/职业名、默认属性、搜索别名等配置）。
+// 不能直接 import public/game_data/skills.json：public 目录按设计只能按 URL 访问，
+// JS 侧 import 会触发 Vite 警告 "Assets in public directory cannot be imported
+// from JavaScript."，且是否被 tree-shake 取决于实现细节（一旦有人整表使用，
+// 132KB 技能表就会进主包，而运行时 DataService 还会再 fetch 一次 = 双份）。
+// 故由 scripts/build_skills_meta.mjs 抽出 _meta 生成 src/game_data/skillsMeta.json，
+// npm run dev / build 前由 predev / prebuild 自动同步。
+import skillsMeta from '../../game_data/skillsMeta.json';
+
+const META = skillsMeta as any;
 import { StrategyEditor } from './StrategyEditor';
 import { SimulationReport } from './SimulationReport';
 import clsx from 'clsx';

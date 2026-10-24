@@ -1,0 +1,837 @@
+{
+  "factions": {
+    "XIAN": "仙",
+    "FO": "佛",
+    "MO": "魔"
+  },
+  "compendiumOrder": [
+    "ZHU_SHUANG",
+    "NIE_YU",
+    "TAI_HAO",
+    "GUI_WANG",
+    "TIAN_YIN",
+    "FEN_XIANG",
+    "ZHAO_MING",
+    "YING_ZHAO",
+    "TIAN_HUA",
+    "SHI_LUO",
+    "GUI_YUN"
+  ],
+  "classLabels": {
+    "QING_YUN": "青云",
+    "GUI_WANG": "鬼王",
+    "TIAN_YIN": "天音",
+    "HE_HUAN": "合欢",
+    "GUI_DAO": "鬼道",
+    "FEN_XIANG": "焚香",
+    "CHANG_SHENG": "长生",
+    "LIE_SHAN": "烈山",
+    "JIU_LI": "九黎",
+    "HUAI_GUANG": "怀光",
+    "TIAN_HUA": "天华",
+    "TAI_HAO": "太昊",
+    "CHEN_HUANG": "辰皇",
+    "WAN_DU": "万毒",
+    "QIAN_JI": "牵机",
+    "YING_ZHAO": "英招",
+    "HUA_YING": "画影",
+    "QING_LUO": "青罗",
+    "PO_JUN": "破军",
+    "GUI_YUN": "归云",
+    "SHI_LUO": "释罗",
+    "BAI_LING": "百灵",
+    "NIE_YU": "涅羽",
+    "ZHU_SHUANG": "逐霜",
+    "JING_LAN": "惊岚",
+    "ZHAO_MING": "昭冥"
+  },
+  "supportClasses": [
+    {
+      "id": "TIAN_YIN",
+      "name": "天音",
+      "defaultFaction": "FO"
+    },
+    {
+      "id": "FEN_XIANG",
+      "name": "焚香",
+      "defaultFaction": "FO"
+    },
+    {
+      "id": "ZHAO_MING",
+      "name": "昭冥",
+      "defaultFaction": "FO"
+    },
+    {
+      "id": "YING_ZHAO",
+      "name": "英招",
+      "defaultFaction": "FO"
+    },
+    {
+      "id": "TIAN_HUA",
+      "name": "天华",
+      "defaultFaction": "FO"
+    }
+  ],
+  "defaultSupportAttributes": {
+    "CharacterMinAttack": 200000,
+    "CharacterMaxAttack": 220000,
+    "CharacterDefense": 300000,
+    "CharacterHealth": 3000000,
+    "CharacterMana": 4000000,
+    "CharacterCriticalHitDamagePercent": 800,
+    "CharacterMonsterDamageIncreasePercent": 25,
+    "CharacterOnePercentAttack": 1000,
+    "CharacterOnePercentDefense": 1500,
+    "CharacterOnePercentHealth": 20000,
+    "CharacterOnePercentMana": 30000
+  },
+  "defaultDpsAttributes": {
+    "CharacterMinAttack": 329779,
+    "CharacterMaxAttack": 390200,
+    "CharacterDefense": 374395,
+    "CharacterHealth": 4000000,
+    "CharacterMana": 5346203,
+    "CharacterCriticalHitDamagePercent": 2802,
+    "CharacterMonsterDamageIncreasePercent": 49.6,
+    "CharacterOnePercentAttack": 1500,
+    "CharacterOnePercentDefense": 2000,
+    "CharacterOnePercentHealth": 25000,
+    "CharacterOnePercentMana": 35000
+  },
+  "dpsStartDelayMs": 2000,
+  "dpsDefaultFourthGenQuality": "XI_RI",
+  "supportOverrides": {
+    "zhaoming_sup": {
+      "ZM_FO_SKILL_TYNF": {
+        "SkillLevel": 1
+      },
+      "ZM_FO_SKILL_RYHG": {
+        "RyhgPhase2DelaySeconds": 15
+      }
+    },
+    "tianyin_sup": {
+      "TY_FO_SKILL_CHFY": {
+        "SkillLevel": 1
+      }
+    },
+    "tianhua_sup": {
+      "TH_FO_SKILL_JSKW": {
+        "SkillLevel": 1
+      },
+      "TH_FO_SKILL_QSYY": {
+        "SkillLevel": 1
+      }
+    },
+    "yingzhao_sup": {
+      "YZ_FO_SKILL_BS": {
+        "SkillLevel": 1,
+        "FourthGenQuality": "HAO_YUE"
+      }
+    }
+  },
+  "supportRoles": {
+    "metrics": [
+      "易伤",
+      "绿点",
+      "紫点",
+      "破防"
+    ],
+    "roles": [
+      {
+        "name": "焚香",
+        "faction": "佛",
+        "damageBoost": 100,
+        "greenPoint": "×2",
+        "purplePoint": 4,
+        "defenseBreak": 100,
+        "focus": 30,
+        "abilities": [
+          "群神佑",
+          "技能增伤",
+          "绿点翻倍"
+        ],
+        "rating": "S+",
+        "focusType": [
+          "group"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "天音",
+        "faction": "佛",
+        "damageBoost": 30,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 100,
+        "focus": 20,
+        "abilities": [
+          "救人",
+          "免控",
+          "免死",
+          "解控",
+          "减伤",
+          "血槽"
+        ],
+        "rating": "S+",
+        "focusType": [
+          "group"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "天华",
+        "faction": "佛",
+        "damageBoost": 0,
+        "greenPoint": 0,
+        "purplePoint": 25,
+        "defenseBreak": 100,
+        "focus": 62,
+        "abilities": [
+          "救人",
+          "超级单体增益"
+        ],
+        "rating": "S+",
+        "focusType": [
+          "group"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "太昊",
+        "faction": "仙",
+        "damageBoost": 10,
+        "greenPoint": 220,
+        "purplePoint": 50,
+        "defenseBreak": 0,
+        "focus": 0,
+        "abilities": [
+          "增加急速",
+          "T0状态输出"
+        ],
+        "rating": "S",
+        "roleType": "support"
+      },
+      {
+        "name": "昭冥",
+        "faction": "佛",
+        "damageBoost": 0,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 60,
+        "abilities": [
+          "对怪增伤",
+          "单体附身",
+          "延长持续",
+          "清除CD"
+        ],
+        "rating": "S",
+        "focusType": [
+          "group"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "青罗",
+        "faction": "魔",
+        "damageBoost": 40,
+        "greenPoint": 360,
+        "purplePoint": 0,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "单体加暴伤",
+          "T1状态输出"
+        ],
+        "rating": "S",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "support",
+        "critDamage": 200
+      },
+      {
+        "name": "青罗",
+        "faction": "佛",
+        "damageBoost": 40,
+        "greenPoint": 300,
+        "purplePoint": 0,
+        "defenseBreak": 100,
+        "focus": 0,
+        "critDamage": 280,
+        "abilities": [
+          "单体加暴伤",
+          "T1状态输出"
+        ],
+        "rating": "S",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "画影",
+        "faction": "仙",
+        "damageBoost": 60,
+        "greenPoint": 150,
+        "purplePoint": 30,
+        "defenseBreak": 100,
+        "focus": "27+",
+        "abilities": [
+          "群锁血",
+          "免死",
+          "加攻击",
+          "每40万真气+1群体专注"
+        ],
+        "rating": "S",
+        "focusType": [
+          "group"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "英招",
+        "faction": "佛",
+        "damageBoost": 40,
+        "greenPoint": 340,
+        "purplePoint": 35,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "团队加攻防",
+          "抗怪"
+        ],
+        "rating": "S",
+        "roleType": "support"
+      },
+      {
+        "name": "鬼王",
+        "faction": "佛",
+        "damageBoost": 0,
+        "greenPoint": 345,
+        "purplePoint": 6,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "九变",
+          "抗怪"
+        ],
+        "rating": "S",
+        "roleType": "support"
+      },
+      {
+        "name": "鬼王",
+        "faction": "仙",
+        "damageBoost": 0,
+        "greenPoint": 385,
+        "purplePoint": 16,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "九变",
+          "抗怪"
+        ],
+        "rating": "S",
+        "roleType": "support"
+      },
+      {
+        "name": "鬼王",
+        "faction": "魔",
+        "damageBoost": 0,
+        "greenPoint": 345,
+        "purplePoint": 21,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "九变",
+          "抗怪"
+        ],
+        "rating": "S",
+        "roleType": "support"
+      },
+      {
+        "name": "鬼道",
+        "faction": "佛",
+        "damageBoost": 40,
+        "greenPoint": 300,
+        "purplePoint": 18,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "洞主"
+        ],
+        "rating": "S",
+        "roleType": "support"
+      },
+      {
+        "name": "释罗",
+        "faction": "魔",
+        "damageBoost": 40,
+        "greenPoint": 200,
+        "purplePoint": 30,
+        "defenseBreak": 0,
+        "focus": 0,
+        "abilities": [
+          "T1状态输出",
+          "抗怪",
+          "冰墙"
+        ],
+        "rating": "S",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "烈山",
+        "faction": "魔",
+        "damageBoost": 30,
+        "greenPoint": 300,
+        "purplePoint": 60,
+        "defenseBreak": 80,
+        "focus": 0,
+        "abilities": [
+          "最高紫点"
+        ],
+        "rating": "S",
+        "roleType": "support"
+      },
+      {
+        "name": "百灵",
+        "faction": "仙",
+        "damageBoost": 0,
+        "greenPoint": 360,
+        "purplePoint": 25,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "救人",
+          "群免死",
+          "加攻击",
+          "加血上限"
+        ],
+        "rating": "A+",
+        "roleType": "support"
+      },
+      {
+        "name": "百灵",
+        "faction": "魔佛",
+        "damageBoost": 0,
+        "greenPoint": 300,
+        "purplePoint": 25,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "救人",
+          "群免死",
+          "加攻击",
+          "加血上限"
+        ],
+        "rating": "A+",
+        "roleType": "support"
+      },
+      {
+        "name": "破军",
+        "faction": "魔",
+        "damageBoost": 0,
+        "greenPoint": 360,
+        "purplePoint": 29,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "T1状态输出"
+        ],
+        "rating": "A+",
+        "roleType": "support"
+      },
+      {
+        "name": "牵机",
+        "faction": "仙",
+        "damageBoost": 50,
+        "greenPoint": 0,
+        "purplePoint": 35,
+        "defenseBreak": 100,
+        "focus": 0,
+        "abilities": [
+          "群破防"
+        ],
+        "rating": "A",
+        "roleType": "support"
+      },
+      {
+        "name": "九黎",
+        "faction": "佛",
+        "damageBoost": 40,
+        "greenPoint": 425,
+        "purplePoint": 45,
+        "defenseBreak": 190,
+        "focus": 0,
+        "abilities": [
+          "增加气血",
+          "增加攻击",
+          "抗怪",
+          "增加爆伤"
+        ],
+        "rating": "A",
+        "roleType": "support",
+        "critDamage": 20
+      },
+      {
+        "name": "长生堂",
+        "faction": "魔",
+        "damageBoost": 0,
+        "greenPoint": 300,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 0,
+        "abilities": [
+          "T1+输出"
+        ],
+        "rating": "A",
+        "roleType": "support"
+      },
+      {
+        "name": "怀光",
+        "faction": "仙",
+        "damageBoost": 20,
+        "greenPoint": 120,
+        "purplePoint": 39,
+        "defenseBreak": 180,
+        "focus": "0+",
+        "abilities": [
+          "T1状态输出",
+          "每4万真气+1专注"
+        ],
+        "rating": "A",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "合欢",
+        "faction": "魔",
+        "damageBoost": 42,
+        "greenPoint": 75,
+        "purplePoint": 35,
+        "defenseBreak": 0,
+        "focus": 0,
+        "abilities": [
+          "结算",
+          "T1输出"
+        ],
+        "rating": "A",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "support"
+      },
+      {
+        "name": "逐霜",
+        "faction": "仙",
+        "damageBoost": 0,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 79,
+        "abilities": [
+          "T0输出"
+        ],
+        "rating": "S+",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "dps"
+      },
+      {
+        "name": "逐霜",
+        "faction": "魔佛",
+        "damageBoost": 0,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 49,
+        "abilities": [
+          "T0输出"
+        ],
+        "rating": "S+",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "dps"
+      },
+      {
+        "name": "归云",
+        "faction": "魔",
+        "damageBoost": 0,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 90,
+        "abilities": [
+          "T0输出"
+        ],
+        "rating": "S+",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "dps"
+      },
+      {
+        "name": "归云",
+        "faction": "仙佛",
+        "damageBoost": 0,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 30,
+        "abilities": [
+          "T0输出"
+        ],
+        "rating": "S+",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "dps"
+      },
+      {
+        "name": "青云",
+        "faction": "仙",
+        "damageBoost": 5,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 50,
+        "abilities": [
+          "T1输出"
+        ],
+        "rating": "A+",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "dps"
+      },
+      {
+        "name": "青云",
+        "faction": "魔",
+        "damageBoost": 0,
+        "greenPoint": 50,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 30,
+        "abilities": [
+          "T1输出"
+        ],
+        "rating": "A+",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "dps"
+      },
+      {
+        "name": "青云",
+        "faction": "佛",
+        "damageBoost": 0,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": 30,
+        "abilities": [
+          "T1输出"
+        ],
+        "rating": "A+",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "dps"
+      },
+      {
+        "name": "涅羽",
+        "faction": "仙",
+        "damageBoost": 0,
+        "greenPoint": 0,
+        "purplePoint": 0,
+        "defenseBreak": 0,
+        "focus": "70+",
+        "abilities": [
+          "T0输出",
+          "每10万真气+1自身专注"
+        ],
+        "rating": "S+",
+        "focusType": [
+          "self"
+        ],
+        "roleType": "dps"
+      }
+    ],
+    "notes": [
+      "回归玩家或新大区新服想玩辅助且不想太多花费的推荐：天音、昭冥、画影、英招、鬼王、鬼道、释罗、烈山、百灵。",
+      "青云、辰皇、归云、逐霜、惊岚、涅羽属于输出职业，输出职业基本跟细节挂钩。",
+      "现版本针对 PVE 玩法基本做成辅助和主C两个极端：① 主C 需要一定消费能力（副本 1C 带 5 辅可通刷所有副本，C 竞争压力大）；② 对辅助非常友好，每个辅助都有自己的特点。"
+    ]
+  },
+  "focusReference": {
+    "general": [
+      {
+        "name": "三碗专注",
+        "total": 20,
+        "focusType": [
+          "group"
+        ]
+      }
+    ]
+  },
+  "attributeFields": [
+    {
+      "key": "CharacterMinAttack",
+      "label": "最小攻击"
+    },
+    {
+      "key": "CharacterMaxAttack",
+      "label": "最大攻击"
+    },
+    {
+      "key": "CharacterDefense",
+      "label": "防御"
+    },
+    {
+      "key": "CharacterHealth",
+      "label": "气血"
+    },
+    {
+      "key": "CharacterMana",
+      "label": "真气"
+    },
+    {
+      "key": "CharacterCriticalHitDamagePercent",
+      "label": "爆伤",
+      "suffix": "%"
+    },
+    {
+      "key": "CharacterCriticalHitRatePercent",
+      "label": "暴击率",
+      "suffix": "%"
+    },
+    {
+      "key": "CharacterMonsterDamageIncreasePercent",
+      "label": "对怪增伤",
+      "suffix": "%"
+    },
+    {
+      "key": "CharacterOnePercentAttack",
+      "label": "1%攻击折算"
+    },
+    {
+      "key": "CharacterOnePercentDefense",
+      "label": "1%防御折算"
+    },
+    {
+      "key": "CharacterOnePercentHealth",
+      "label": "1%气血折算"
+    },
+    {
+      "key": "CharacterOnePercentMana",
+      "label": "1%真气折算"
+    }
+  ],
+  "searchAliases": {
+    "ZHU_SHUANG": [
+      "zhushuang",
+      "zs",
+      "zhushuangxian",
+      "zhushuangmo"
+    ],
+    "TIAN_YIN": [
+      "tianyin",
+      "ty"
+    ],
+    "FEN_XIANG": [
+      "fenxiang",
+      "fx"
+    ],
+    "ZHAO_MING": [
+      "zhaoming",
+      "zm"
+    ],
+    "YING_ZHAO": [
+      "yingzhao",
+      "yz"
+    ],
+    "TIAN_HUA": [
+      "tianhua",
+      "th"
+    ],
+    "ZHENHAI_DUANLANG_T20": [
+      "zhenhai",
+      "duanlang",
+      "t20"
+    ],
+    "ZHENHAI_DUANLANG_T21": [
+      "zhenhai",
+      "duanlang",
+      "t21"
+    ],
+    "CHI_SUO_T20": [
+      "chisu",
+      "chisuo",
+      "t20boss"
+    ],
+    "CHI_SUO_T21": [
+      "chisu",
+      "chisuo",
+      "t21boss"
+    ],
+    "ZS_XIAN_SKILL_CLX": [
+      "canglongxiao",
+      "clx"
+    ],
+    "ZS_MO_SKILL_CLX": [
+      "canglongxiao",
+      "clx"
+    ],
+    "ZS_XIAN_SKILL_YLXB": [
+      "yinlinxuanbing",
+      "ylxb"
+    ],
+    "ZS_MO_SKILL_YLXB": [
+      "yinlinxuanbing",
+      "ylxb"
+    ],
+    "ZS_XIAN_SKILL_LZYY": [
+      "longzhanyuye",
+      "lzyy"
+    ],
+    "ZS_MO_SKILL_LZYY": [
+      "longzhanyuye",
+      "lzyy"
+    ],
+    "ZS_XIAN_SKILL_ZGDD": [
+      "zhenggedaidan",
+      "zgdd"
+    ],
+    "ZS_MO_SKILL_ZGDD": [
+      "zhenggedaidan",
+      "zgdd"
+    ],
+    "ZS_XIAN_SKILL_QXHS": [
+      "qingxiaohengshuo",
+      "qxhs"
+    ],
+    "ZS_MO_SKILL_QXHS": [
+      "qingxiaohengshuo",
+      "qxhs"
+    ],
+    "TY_FO_SKILL_WLYZ": [
+      "wuliangzhenyan",
+      "wlyz"
+    ],
+    "TY_FO_SKILL_WLYZ_CHAN": [
+      "wuliangzhenyanchan",
+      "wlyzc"
+    ],
+    "ZM_FO_SKILL_FGSL": [
+      "fugushengling",
+      "fgsl"
+    ]
+  }
+}
