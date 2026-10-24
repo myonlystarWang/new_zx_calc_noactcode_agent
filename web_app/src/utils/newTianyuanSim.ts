@@ -7,7 +7,13 @@
  *  - +3/+6/+9/+10 分别触发 3/3/3/1 次天命，每次随机落一条已有属性
  *  - 天命点加成 = 每级成长 × 累计系数（1/3/7/11/17/23/29/35/41/47）
  *
- * 精炼成功率官方未公布，作为可调参数（默认 50%）；失败掉 1 级，+3/+6/+9 保底。
+ * 精炼成功率官方未公布，作为可调参数（默认 50%）。
+ *
+ * 失败规则（2026-10-24 按玩家实测口径修正）：
+ *  - 失败掉 1 级，但不会跌破最近一个保底档：+3/+6/+9 为档位下限。
+ *    例：+2 连败可掉到 0；到过 +4 之后最多掉到 +3；+9 之后最多掉到 +9。
+ *  - 失败**只掉天缘等级，不掉天命**：天命点已结算即永久保留，
+ *    且 settled 记录保证同一档位不会因上下反复而重复抽签。
  */
 
 export interface TianyuanAttrDef {
@@ -216,6 +222,15 @@ function settleDestiny(
     return { gain: hits.length, hits };
 }
 
+/** 失败掉级的下限：不超过当前等级的最高保底档（+3/+6/+9），没有则 0 */
+export function dropFloor(level: number, safeLevels: number[]): number {
+    let floor = 0;
+    for (const s of safeLevels) {
+        if (s <= level && s > floor) floor = s;
+    }
+    return floor;
+}
+
 export function refineOnce(
     item: TianyuanItem,
     data: TianyuanData,
@@ -232,8 +247,9 @@ export function refineOnce(
     if (success) {
         item.level = Math.min(max, from + 1);
     } else {
-        // 新版天缘：失败不掉级（官方无回退），只有成功才 +1
-        item.level = from;
+        // 失败掉 1 级，但不跌破最近一个保底档（+3/+6/+9）；天命点不动
+        const floor = dropFloor(from, data.refine.safeLevels);
+        item.level = Math.max(floor, from - 1);
     }
 
     // 瑞祥符：先把 +N 点稳稳加到指定属性（优先占用天命额度），再考虑该档随机触发

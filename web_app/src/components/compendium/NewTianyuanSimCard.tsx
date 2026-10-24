@@ -9,7 +9,6 @@ import {
     formatAttrValue,
     rollItem,
     refineOnce,
-    resetItem,
 } from '../../utils/newTianyuanSim';
 
 export interface NewTianyuanSimCardProps {
@@ -303,7 +302,11 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                         setMsg({ ok: true, level: next.level, title: `精炼成功 · 天缘 +${next.level}` });
                     }
                 } else {
-                    setMsg({ ok: false, level: next.level, title: '精炼失败' });
+                    setMsg({
+                        ok: false,
+                        level: next.level,
+                        title: res.to === res.from ? '精炼失败 · 已到保底档' : '精炼失败 · 掉 1 级（天命保留）',
+                    });
                 }
 
                 setBusy(false);
@@ -360,16 +363,6 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
         },
         [data, pieceKey, stopAll],
     );
-
-    const resetLevel = useCallback(() => {
-        stopAll();
-        setMsg(null);
-        setBlessIdx(null);
-        setRuixiangOpen(false);
-        setPendingBless(null);
-        pendingRef.current = null;
-        setItem((prev) => (prev ? resetItem(prev) : prev));
-    }, [stopAll]);
 
     /** 瑞祥符：点一次施加（第一条属性 +3 天命），再点取消并回退 */
     const toggleRuixiang = useCallback(() => {
@@ -586,7 +579,13 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                             >
                                 精炼
                             </button>
-                            <button type="button" onClick={resetLevel} style={sideBtnStyle} title="重置：保留词条，等级与天命清零">
+                            <button
+                                type="button"
+                                disabled
+                                aria-disabled="true"
+                                style={{ ...sideBtnStyle, opacity: 0.4, cursor: 'not-allowed', filter: 'grayscale(1)' }}
+                                title="重置已停用：精炼等级与天命只能通过精炼变化"
+                            >
                                 重置
                             </button>
                         </div>

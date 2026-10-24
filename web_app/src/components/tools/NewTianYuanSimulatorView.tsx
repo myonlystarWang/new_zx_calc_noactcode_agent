@@ -21,7 +21,6 @@ import {
     rollItem,
     refineOnce,
     applyRuixiang,
-    resetItem,
     totalDestiny,
     triggerProbabilityFor,
 } from '../../utils/newTianyuanSim';
@@ -143,7 +142,11 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
                 pushLog(`+${res.from} → +${res.to} 成功`);
             }
         } else {
-            pushLog(`+${res.from} → +${res.to} 失败`);
+            pushLog(
+                res.to === res.from
+                    ? `+${res.from} 失败 · 已到保底档，等级不降`
+                    : `+${res.from} → +${res.to} 失败 · 掉 1 级（天命保留）`,
+            );
         }
 
         if (next.level >= data.refine.maxLevel) setRunning(false);
@@ -227,12 +230,10 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
                     </button>
                     <button
                         type="button"
-                        onClick={() => {
-                            setRunning(false);
-                            setItem((prev) => (prev ? resetItem(prev) : prev));
-                            setLogs([]);
-                        }}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 hover:bg-slate-700 cursor-pointer"
+                        disabled
+                        aria-disabled="true"
+                        title="重置已停用：精炼等级与天命只能通过精炼变化"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/60 border border-slate-800 text-xs font-bold text-slate-600 opacity-50 cursor-not-allowed"
                     >
                         <RotateCcw className="w-3.5 h-3.5" />
                         重置精炼
@@ -473,8 +474,7 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
                             <GameButton
                                 onClick={() => {
                                     setRunning(false);
-                                    setItem((prev) => (prev ? resetItem(prev) : prev));
-                                    setLogs([]);
+                                    setRuixiangOpen(false);
                                 }}
                             >
                                 取消
@@ -508,7 +508,7 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
                         className="w-full accent-amber-400 cursor-pointer"
                     />
                     <p className="text-[11px] text-slate-400 leading-5">
-                        官方未公布天缘精炼成功率，此处为可调参数。失败掉 1 级，+3/+6/+9 保底。
+                        官方未公布天缘精炼成功率，此处为可调参数。失败掉 1 级，但 +3/+6/+9 为档位下限（到过 +4 最多掉到 +3）；失败不影响天命。
                     </p>
 
                     <div className="grid grid-cols-3 gap-2">
