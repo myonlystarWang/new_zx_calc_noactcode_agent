@@ -1349,3 +1349,15 @@ input[type="number"] {
   border: 2px solid #070a10 !important;
   box-shadow: 0 0 8px rgba(6, 182, 212, 0.6) !important;
 }
+
+/* ==========================================================================
+   移动端专用：副本战力轮播的「邻卡景深」
+   只在手机（含横屏）生效，桌面端保持原来的清晰邻卡，避免改动桌面观感。
+   ========================================================================== */
+@media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
+  .carousel-card-inactive {
+    /* 内联 style 里设了 opacity，这里必须 !important 才能压过 */
+    opacity: 0.45 !important;
+    filter: blur(2px);
+  }
+}

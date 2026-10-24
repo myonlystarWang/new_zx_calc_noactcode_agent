@@ -551,15 +551,13 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                                 }}
                                 className={clsx(
                                     "absolute ease-out cursor-pointer origin-top",
-                                    // 手机上也留出左右各 6% 的空隙，让相邻副本卡露出一点边缘（提示可左右滑）
-                                    isActive ? "z-50 w-[88%] max-w-5xl h-auto" : "w-[85%] md:w-[80%] h-auto"
+                                    // 手机 88% 宽（左右各露约 22px，提示可左右滑）；桌面维持原来的 90%，不动
+                                    isActive ? "z-50 w-[88%] md:w-[90%] max-w-5xl h-auto" : "carousel-card-inactive w-[85%] md:w-[80%] h-auto"
                                 )}
                                 style={{
                                     transform: `translateX(${xPercent}%) scale(${scale}) translateZ(${translateZ}px) rotateY(${rotateY}deg)`,
                                     zIndex: 50 - Math.round(absOffset),
-                                    opacity: isActive ? 1 : Math.min(opacity, 0.45),
-                                    // 相邻卡做模糊，形成「后面还有卡」的景深提示；当前卡必须清晰
-                                    filter: isActive ? 'none' : 'blur(2px)',
+                                    opacity: opacity,
                                     willChange: 'transform',
                                     transition: isDragging ? 'none' : 'all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)'
                                 }}
