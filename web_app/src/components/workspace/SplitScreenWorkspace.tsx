@@ -48,6 +48,8 @@ export interface SplitScreenWorkspaceProps {
   isMaximized: boolean;
   onToggleMaximize: () => void;
   onClose: () => void;
+  /** 移动端抽屉内渲染：去掉左边框/滑入动画，隐藏最大化与关闭（由抽屉自己提供） */
+  inSheet?: boolean;
 }
 
 const FEATURE_META: Record<WorkspaceMode, { label: string; icon: React.ReactNode }> = {
@@ -66,12 +68,13 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
   isMaximized,
   onToggleMaximize,
   onClose,
+  inSheet = false,
 }) => {
   const { userCharacter, updateCharacterAttributes } = useApp();
   const currentMeta = FEATURE_META[mode] || FEATURE_META.calc;
 
   return (
-    <div className="relative flex flex-col h-full bg-[#080c14] border-l border-slate-800/80 shadow-2xl overflow-hidden animate-in slide-in-from-right-4 duration-300">
+    <div className={`relative flex flex-col h-full bg-[#080c14] overflow-hidden ${inSheet ? '' : 'border-l border-slate-800/80 shadow-2xl animate-in slide-in-from-right-4 duration-300'}`}>
       {/* 统一顶栏格式：5个功能统一保留该顶栏 */}
       <div className="py-2 px-3 sm:px-4 border-b border-slate-800/80 bg-[#0d121c]/95 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
         {/* 顶栏最左侧：该功能的名字带框，精致暗调科技感风格 */}
@@ -82,27 +85,29 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
           </div>
         </div>
 
-        {/* 顶栏最右侧：放大/还原 和 关闭 */}
-        <div className="flex items-center gap-1.5 shrink-0">
-          <button
-            type="button"
-            onClick={onToggleMaximize}
-            className={WORKSPACE_MAXIMIZE_BUTTON}
-            title={isMaximized ? '还原分屏 (双轨对照)' : '最大化工作区 (全屏模式)'}
-            aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
-          >
-            {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className={WORKSPACE_CLOSE_BUTTON}
-            title="关闭右侧工作区 (返回居中对话)"
-            aria-label="关闭工作区"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+        {/* 顶栏最右侧：放大/还原 和 关闭（抽屉模式下由抽屉提供关闭，这里不显示） */}
+        {!inSheet && (
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={onToggleMaximize}
+              className={WORKSPACE_MAXIMIZE_BUTTON}
+              title={isMaximized ? '还原分屏 (双轨对照)' : '最大化工作区 (全屏模式)'}
+              aria-label={isMaximized ? '还原分屏' : '最大化工作区'}
+            >
+              {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className={WORKSPACE_CLOSE_BUTTON}
+              title="关闭右侧工作区 (返回居中对话)"
+              aria-label="关闭工作区"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 工作区主内容呈现 */}

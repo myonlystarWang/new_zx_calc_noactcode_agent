@@ -15,6 +15,8 @@ import type { SearchTarget } from '../GlobalSearch';
 import { Footer } from '../layout/Footer';
 import { HomeAIChatStage } from './HomeAIChatStage';
 import { SplitScreenWorkspace, type WorkspaceMode } from '../workspace/SplitScreenWorkspace';
+import { MobileSheet } from '../ui/MobileSheet';
+import { useIsMobile, useIsShortViewport } from '../../hooks/useMediaQuery';
 import { useSplitDrag } from '../workspace/useSplitDrag';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import { CopilotService, type CopilotMessage, TOP_HUB_OPTIONS, isNotFoundReply } from '../../services/CopilotService';
@@ -61,6 +63,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
   // 双轨分屏：左右可拖拽分隔条
   const { leftWidth, isResizing, onSplitterPointerDown } = useSplitDrag();
+
+  // 手机（含横屏）不走左右分屏，改为全屏抽屉：左栏最小 460px 会把右栏顶出视口
+  const isMobile = useIsMobile();
+  const isShortViewport = useIsShortViewport();
 
   // 监听全局 Ctrl+V 粘贴截图
   useEffect(() => {
@@ -304,17 +310,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     });
   };
 
-  // 1. 对话展开态（含居中全宽态与双轨分屏态）
+  // 1. 对话展开态（含居中全宽态、桌面双轨分屏态、手机全屏抽屉态）
   if (isChatActive) {
+    // 手机不再左右分屏：左栏最小 460px > 390 视口，右栏会被顶出屏幕（iPhone 上表现为一片空白）
+    const useSheet = isMobile && workspaceState.isOpen;
+
     return (
       <div className="w-full flex-1 min-h-0 flex overflow-hidden">
         {/* 左侧 AI 窄栏 / 居中主栏 */}
-        {!workspaceState.isMaximized && (
+        {(!workspaceState.isMaximized || isMobile) && (
           <div
-            style={workspaceState.isOpen ? { width: leftWidth } : undefined}
+            style={workspaceState.isOpen && !isMobile ? { width: leftWidth } : undefined}
             className={clsx(
               'flex flex-col h-full overflow-hidden bg-[#080c14]',
-              workspaceState.isOpen
+              workspaceState.isOpen && !isMobile
                 ? 'shrink-0 border-r border-slate-800/80'
                 : 'flex-1 max-w-[1020px] mx-auto w-full',
               !isResizing && 'transition-[width] duration-300'
@@ -351,8 +360,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           </div>
         )}
 
-        {/* 左右分屏拖拽分隔条 */}
-        {workspaceState.isOpen && !workspaceState.isMaximized && (
+        {/* 左右分屏拖拽分隔条（仅桌面） */}
+        {workspaceState.isOpen && !workspaceState.isMaximized && !isMobile && (
           <div
             onPointerDown={onSplitterPointerDown}
             className={clsx(
@@ -367,8 +376,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           </div>
         )}
 
-        {/* 右侧多功能工作区 */}
-        {workspaceState.isOpen && (
+        {/* 右侧多功能工作区（仅桌面） */}
+        {workspaceState.isOpen && !isMobile && (
           <div className="flex-1 min-w-0 h-full overflow-hidden flex flex-col">
             <SplitScreenWorkspace
               mode={workspaceState.mode}
@@ -390,6 +399,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               }
             />
           </div>
+        )}
+
+        {/* 手机：全屏抽屉（内容单列瀑布式，由容器查询自适应） */}
+        {useSheet && (
+          <MobileSheet
+            fullHeight={isShortViewport}
+            onClose={() =>
+              setWorkspaceState((prev) => ({ ...prev, isOpen: false, isMaximized: false }))
+            }
+          >
+            <SplitScreenWorkspace
+              mode={workspaceState.mode}
+              params={workspaceState.params}
+              onModeChange={(m) => setWorkspaceState((prev) => ({ ...prev, mode: m }))}
+              isMaximized
+              onToggleMaximize={() => { }}
+              onClose={() =>
+                setWorkspaceState((prev) => ({ ...prev, isOpen: false, isMaximized: false }))
+              }
+              inSheet
+            />
+          </MobileSheet>
         )}
       </div>
     );
