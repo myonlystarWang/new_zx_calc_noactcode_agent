@@ -157,9 +157,12 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         };
     }, [userCharacter, activeBuffIds, buffs, buffValues]);
 
-    // Initialize selected dungeon
+    // 选中项必须存在于当前结果里：AppContext 里的副本 ID 可能不在本轮 dungeonPowers 中，
+    // 一旦失配 activeIndex = -1，所有卡片会整体偏移到右侧（第一张不在中间），左右滑也切不动。
     useEffect(() => {
-        if (!selectedDungeonId && results.dungeonPowers.length > 0) {
+        if (results.dungeonPowers.length === 0) return;
+        const exists = results.dungeonPowers.some((d) => d.DungeonID === selectedDungeonId);
+        if (!exists) {
             setSelectedDungeonId(results.dungeonPowers[0].DungeonID);
         }
     }, [results.dungeonPowers, selectedDungeonId]);
@@ -182,55 +185,72 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         }
     }, [searchNav, onSearchConsumed]);
 
-    const touchStartX = useRef<number>(0);
-    const touchStartY = useRef<number>(0);
     const [dragOffset, setDragOffset] = useState(0);
+    // 手势结束要读「最后一次位移」，不能读 state：快速滑动时 pointerup 可能早于
+    // setDragOffset 的提交，读 state 会拿到旧值（0），表现为「滑了但没切换」。
+    const dragOffsetRef = useRef(0);
     const [isDragging, setIsDragging] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const handleTouchStart = (e: React.TouchEvent) => {
-        touchStartX.current = e.touches[0].clientX;
-        touchStartY.current = e.touches[0].clientY;
-        setIsDragging(true);
+    // 统一用 Pointer Events：触摸 / 鼠标 / 触控笔一套逻辑，桌面也能拖。
+    // 触摸端由 touch-action: pan-y 保证纵向滚动仍归浏览器、横向位移归这里。
+    const pointerStart = useRef<{ x: number; y: number } | null>(null);
+    // 拖拽结束后浏览器还会补一个 click，必须抑制，否则「滑一下」会顺带切卡
+    const suppressClickRef = useRef(false);
+
+    const handlePointerDown = (e: React.PointerEvent) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        pointerStart.current = { x: e.clientX, y: e.clientY };
+        dragOffsetRef.current = 0;
         setDragOffset(0);
+        setIsDragging(true);
+        (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
     };
 
-    const handleTouchMove = (e: React.TouchEvent) => {
-        if (!isDragging) return;
+    const handlePointerMove = (e: React.PointerEvent) => {
+        if (!pointerStart.current) return;
+        const deltaX = e.clientX - pointerStart.current.x;
+        const deltaY = e.clientY - pointerStart.current.y;
 
-        const currentX = e.touches[0].clientX;
-        const currentY = e.touches[0].clientY;
-        const deltaX = currentX - touchStartX.current;
-        const deltaY = currentY - touchStartY.current;
-
-        // Locking direction: if vertical scroll is dominant, stop tracking drag
+        // 纵向为主且横向还没起步 → 让位给页面滚动
         if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaX) < 10) {
+            pointerStart.current = null;
             setIsDragging(false);
             return;
         }
 
-        // If we are dragging horizontally
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            dragOffsetRef.current = deltaX;
             setDragOffset(deltaX);
         }
     };
 
-    const handleTouchEnd = () => {
+    const endDrag = () => {
+        if (!pointerStart.current) return;
+        pointerStart.current = null;
         setIsDragging(false);
-        const threshold = 100; // px to trigger switch
 
-        if (Math.abs(dragOffset) > threshold) {
+        const dx = dragOffsetRef.current;
+        dragOffsetRef.current = 0;
+        setDragOffset(0);
+
+        // 位移超过 10px 就算拖拽，抑制随后的 click（避免拖完顺带切卡）
+        suppressClickRef.current = Math.abs(dx) > 10;
+        if (suppressClickRef.current) {
+            window.setTimeout(() => { suppressClickRef.current = false; }, 0);
+        }
+
+        const threshold = 100; // px to trigger switch
+        if (Math.abs(dx) > threshold) {
             const currentIndex = results.dungeonPowers.findIndex(d => d.DungeonID === selectedDungeonId);
-            if (dragOffset > 0 && currentIndex > 0) {
-                // Swipe Right -> Prev
+            if (dx > 0 && currentIndex > 0) {
+                // 右滑 -> 上一张
                 setSelectedDungeonId(results.dungeonPowers[currentIndex - 1].DungeonID);
-            } else if (dragOffset < 0 && currentIndex < results.dungeonPowers.length - 1) {
-                // Swipe Left -> Next
+            } else if (dx < 0 && currentIndex >= 0 && currentIndex < results.dungeonPowers.length - 1) {
+                // 左滑 -> 下一张
                 setSelectedDungeonId(results.dungeonPowers[currentIndex + 1].DungeonID);
             }
         }
-
-        setDragOffset(0);
     };
 
     // ---- Step 10：分享数据与动作 ----
@@ -478,9 +498,10 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
             <div
                 ref={containerRef}
                 className="relative w-full h-[675px] flex items-start justify-center perspective-1000 touch-pan-y overflow-hidden"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={endDrag}
+                onPointerCancel={endDrag}
             >
                 {/* Cards Container */}
                 <div className="relative w-full h-full flex items-start justify-center transform-style-3d">
@@ -521,7 +542,8 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                             <div
                                 key={d.DungeonID}
                                 onClick={() => {
-                                    if (isDragging) return;
+                                    // 拖拽结束浏览器补发的 click 要忽略，否则滑完会顺带切卡
+                                    if (isDragging || suppressClickRef.current) return;
                                     setSelectedDungeonId(d.DungeonID);
                                     setFocusMonsterId(null);
                                     setFocusSkillName(null);
@@ -529,12 +551,15 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                                 }}
                                 className={clsx(
                                     "absolute ease-out cursor-pointer origin-top",
-                                    isActive ? "z-50 w-full md:w-[90%] max-w-5xl h-auto" : "w-[85%] md:w-[80%] h-auto"
+                                    // 手机上也留出左右各 6% 的空隙，让相邻副本卡露出一点边缘（提示可左右滑）
+                                    isActive ? "z-50 w-[88%] max-w-5xl h-auto" : "w-[85%] md:w-[80%] h-auto"
                                 )}
                                 style={{
                                     transform: `translateX(${xPercent}%) scale(${scale}) translateZ(${translateZ}px) rotateY(${rotateY}deg)`,
                                     zIndex: 50 - Math.round(absOffset),
-                                    opacity: opacity,
+                                    opacity: isActive ? 1 : Math.min(opacity, 0.45),
+                                    // 相邻卡做模糊，形成「后面还有卡」的景深提示；当前卡必须清晰
+                                    filter: isActive ? 'none' : 'blur(2px)',
                                     willChange: 'transform',
                                     transition: isDragging ? 'none' : 'all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)'
                                 }}

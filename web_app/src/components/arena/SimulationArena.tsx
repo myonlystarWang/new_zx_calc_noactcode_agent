@@ -749,7 +749,8 @@ export const SimulationArena: React.FC = () => {
                 const result = runSimulation(scenario);
                 setSimulationResult(result);
                 setCurrentTimeMs(0);
-                setIsPlaying(false);
+                // 计算完直接从头播放：玩家不用再点一次播放键
+                setIsPlaying(true);
                 setIsResultStale(false);
             } catch (err: any) {
                 console.error(err);
