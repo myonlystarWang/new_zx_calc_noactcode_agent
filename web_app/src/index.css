@@ -1429,3 +1429,11 @@ input[type="number"] {
   -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
   mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
 }
+
+/* 紧凑控件（如结果区顶栏的分享按钮）在手机上不参与 40px 最小命中区，
+   否则会比旁边的徽章高出一截，视觉错位。 */
+@media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
+  [data-compact] {
+    min-height: 0 !important;
+  }
+}

@@ -465,10 +465,10 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                     <table className="w-full text-sm">
                                         <thead>
                                             <tr className="border-b border-slate-700/50">
-                                                <th className="text-left py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap w-[58%]">技能</th>
+                                                <th className={clsx("text-left py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap", isMobile ? "w-[58%]" : "w-1/2")}>技能</th>
                                                 <th className="hidden text-right py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap">最小伤害</th>
                                                 <th className="hidden text-right py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap">最大伤害</th>
-                                                <th className="text-right py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap w-[42%]">平均伤害</th>
+                                                <th className={clsx("text-right py-2 px-2 text-slate-400 font-medium text-xs whitespace-nowrap", isMobile ? "w-[42%]" : "w-1/2")}>平均伤害</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-slate-700/30">
@@ -535,30 +535,45 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                             {formatNumber(dmg.maxFinalDamage)}
                                                         </td>
                                                         <td className="py-3 px-2 text-right relative">
-                                                            {/* 上行：细条形图；下行：数值（与左侧伤害范围同一行） */}
-                                                            <div className="flex flex-col items-end gap-1.5">
-                                                                <div className="w-full h-2 rounded-full bg-slate-800/70 overflow-hidden">
+                                                            {isMobile ? (
+                                                                <>
+                                                                    {/* 手机：细条在上、数值在下（与左侧伤害范围同一行） */}
+                                                                    <div className="flex flex-col items-end gap-1.5">
+                                                                        <div className="w-full h-2 rounded-full bg-slate-800/70 overflow-hidden">
+                                                                            <div
+                                                                                className="h-full rounded-full bg-gradient-to-r from-yellow-600/70 to-yellow-400/90 transition-all duration-500"
+                                                                                style={{ width: `${Math.max(barWidth, 2)}%` }}
+                                                                            />
+                                                                        </div>
+                                                                        <span className="text-xs text-yellow-300 font-mono font-bold whitespace-nowrap">
+                                                                            {formatNumber(dmg.avgFinalDamage)}
+                                                                        </span>
+                                                                    </div>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    {/* 桌面：保持原样——整格高度色块 + 数值压在中间 */}
                                                                     <div
-                                                                        className="h-full rounded-full bg-gradient-to-r from-yellow-600/70 to-yellow-400/90 transition-all duration-500"
-                                                                        style={{ width: `${Math.max(barWidth, 2)}%` }}
+                                                                        className="absolute inset-y-1 right-1 bg-yellow-500/20 rounded-sm transition-all duration-500"
+                                                                        style={{ width: `${barWidth * 0.95}%` }}
                                                                     />
-                                                                </div>
-                                                                <span className="text-xs md:text-sm text-yellow-300 font-mono font-bold whitespace-nowrap">
-                                                                    {formatNumber(dmg.avgFinalDamage)}
-                                                                </span>
-                                                            </div>
+                                                                    <span className="relative z-10 text-yellow-300 font-mono font-bold text-sm md:text-base shadow-black drop-shadow-sm whitespace-nowrap">
+                                                                        {formatNumber(dmg.avgFinalDamage)}
+                                                                    </span>
+                                                                </>
+                                                            )}
                                                         </td>
                                                     </tr>
                                                     {isExpanded && dmg.hits && dmg.hits.map(hit => {
+                                                        const hitBarWidth = maxAvgDamage > 0 ? (hit.avgFinalDamage / maxAvgDamage) * 100 : 0;
                                                         return (
                                                             <tr key={`${skill.SkillID}-hit-${hit.hitIndex}`} className="bg-slate-900/30 hover:bg-slate-800/50 transition-colors border-t border-slate-700/20">
-                                                                <td className="py-1 px-2 pl-8 md:pl-10 text-slate-400 font-medium relative z-10 whitespace-nowrap">
-                                                                    <div className="flex items-center gap-2 mb-0.5">
-                                                                        <div className="w-1 h-1 rounded-full bg-slate-650"></div>
+                                                                <td className="py-1 px-2 text-slate-400 font-medium relative z-10 whitespace-nowrap">
+                                                                    <div className="mb-0.5">
                                                                         <span className="text-xs leading-tight">第 {hit.hitIndex} 段</span>
                                                                     </div>
-                                                                    {/* 段伤害与范围同一行、同一字号，整体左对齐 */}
-                                                                    <div className="text-[11px] md:text-xs leading-tight text-slate-500 font-mono flex items-center gap-1.5 pl-3">
+                                                                    {/* 段伤害与范围同一行、同一字号，与「第 N 段」左边缘对齐 */}
+                                                                    <div className="text-[11px] md:text-xs leading-tight text-slate-500 font-mono flex items-center gap-1.5">
                                                                         <span className="text-[var(--theme-primary)]/70">{formatNumber(hit.minFinalDamage, false)}</span>
                                                                         <span className="text-slate-600">~</span>
                                                                         <span className="text-[var(--theme-accent)]/70">{formatNumber(hit.maxFinalDamage)}</span>
@@ -568,7 +583,19 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                 </td>
                                                                 <td className="hidden py-2 px-2"></td>
                                                                 <td className="hidden py-2 px-2"></td>
-                                                                <td className="py-1 px-2" />
+                                                                <td className="py-1 px-2 text-right relative">
+                                                                    {isMobile ? null : (
+                                                                        <>
+                                                                            <div
+                                                                                className="absolute inset-y-1.5 right-1 bg-yellow-500/10 rounded-sm transition-all duration-500"
+                                                                                style={{ width: `${Math.min(hitBarWidth * 0.95, 100)}%` }}
+                                                                            />
+                                                                            <span className="relative z-10 text-yellow-500/90 font-mono font-semibold text-xs md:text-sm drop-shadow-sm whitespace-nowrap">
+                                                                                {formatNumber(hit.avgFinalDamage)}
+                                                                            </span>
+                                                                        </>
+                                                                    )}
+                                                                </td>
                                                             </tr>
                                                         );
                                                     })}
