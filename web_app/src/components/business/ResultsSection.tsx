@@ -207,7 +207,11 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         dragOffsetRef.current = 0;
         setDragOffset(0);
         setIsDragging(true);
-        (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+        // 只对触摸/触控笔做指针捕获：鼠标捕获后 pointerup 会把随后的 click 也派发到
+        // 捕获元素（容器）上，卡片内部的点击（展开每一段伤害）就全失效了。
+        if (e.pointerType !== 'mouse') {
+            (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+        }
     };
 
     const handlePointerMove = (e: React.PointerEvent) => {

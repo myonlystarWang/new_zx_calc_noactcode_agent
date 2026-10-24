@@ -1415,3 +1415,17 @@ input[type="number"] {
     -webkit-tap-highlight-color: transparent;
   }
 }
+
+/* ==========================================================================
+   滚动容器边缘渐隐：提示「右边 / 下面还有内容」
+   用 mask-image，不额外加覆盖层，不影响滚动与点击。
+   ========================================================================== */
+.fade-edge-x {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 20px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 20px), transparent);
+}
+
+.fade-edge-y {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+}

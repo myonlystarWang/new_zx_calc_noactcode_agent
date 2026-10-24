@@ -332,7 +332,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                     <div className="flex items-center gap-1 md:gap-2 px-2 py-2 border-b border-slate-700/30 bg-slate-900/50">
                         <div
                             ref={tabsContainerRef}
-                            className="flex-1 flex overflow-x-auto gap-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                            className="flex-1 flex overflow-x-auto gap-2 fade-edge-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
                         >
                             {dungeon.Monsters.map((monster) => {
                                 const isSelected = monster.MonsterID === selectedMonsterId;
@@ -461,7 +461,7 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                 )}
 
                                 {/* Skills Damage Table */}
-                                <div className="overflow-x-auto overflow-y-auto max-h-[400px] md:max-h-[550px] scrollbar-thin scrollbar-thumb-slate-700/80 scrollbar-track-transparent">
+                                <div className="overflow-x-auto overflow-y-auto max-h-[400px] md:max-h-[550px] fade-edge-y scrollbar-thin scrollbar-thumb-slate-700/80 scrollbar-track-transparent">
                                     <table className="w-full text-sm">
                                         <thead>
                                             <tr className="border-b border-slate-700/50">
@@ -550,7 +550,6 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                         </td>
                                                     </tr>
                                                     {isExpanded && dmg.hits && dmg.hits.map(hit => {
-                                                        const hitBarWidth = maxAvgDamage > 0 ? (hit.avgFinalDamage / maxAvgDamage) * 100 : 0;
                                                         return (
                                                             <tr key={`${skill.SkillID}-hit-${hit.hitIndex}`} className="bg-slate-900/30 hover:bg-slate-800/50 transition-colors border-t border-slate-700/20">
                                                                 <td className="py-1 px-2 pl-8 md:pl-10 text-slate-400 font-medium relative z-10 whitespace-nowrap">
@@ -558,28 +557,18 @@ export const DungeonDetail = React.memo<DungeonDetailProps>(({
                                                                         <div className="w-1 h-1 rounded-full bg-slate-650"></div>
                                                                         <span className="text-xs leading-tight">第 {hit.hitIndex} 段</span>
                                                                     </div>
+                                                                    {/* 段伤害与范围同一行、同一字号，整体左对齐 */}
                                                                     <div className="text-[11px] md:text-xs leading-tight text-slate-500 font-mono flex items-center gap-1.5 pl-3">
                                                                         <span className="text-[var(--theme-primary)]/70">{formatNumber(hit.minFinalDamage, false)}</span>
                                                                         <span className="text-slate-600">~</span>
                                                                         <span className="text-[var(--theme-accent)]/70">{formatNumber(hit.maxFinalDamage)}</span>
+                                                                        <span className="text-slate-600">·</span>
+                                                                        <span className="text-yellow-500/90 font-semibold">{formatNumber(hit.avgFinalDamage)}</span>
                                                                     </div>
                                                                 </td>
                                                                 <td className="hidden py-2 px-2"></td>
                                                                 <td className="hidden py-2 px-2"></td>
-                                                                <td className="py-1 px-2 text-right">
-                                                                    {/* 与主行同构：细条在上、数值在下 */}
-                                                                    <div className="flex flex-col items-end gap-1">
-                                                                        <div className="w-full h-1.5 rounded-full bg-slate-800/60 overflow-hidden">
-                                                                            <div
-                                                                                className="h-full rounded-full bg-yellow-500/50 transition-all duration-500"
-                                                                                style={{ width: `${Math.max(hitBarWidth, 2)}%` }}
-                                                                            />
-                                                                        </div>
-                                                                        <span className="text-xs md:text-sm text-yellow-500/90 font-mono font-semibold whitespace-nowrap">
-                                                                            {formatNumber(hit.avgFinalDamage)}
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
+                                                                <td className="py-1 px-2" />
                                                             </tr>
                                                         );
                                                     })}
