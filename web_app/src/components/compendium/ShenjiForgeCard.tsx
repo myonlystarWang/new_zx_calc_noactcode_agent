@@ -6,7 +6,6 @@ import { getEquipQualityColor } from '../../constants/gameColorSystem';
 import {
     SHENJI_QUALITIES,
     SHENJI_SLOTS,
-    TIER_NAMES,
     buildShenjiPools,
     findShenjiEquip,
     getShenjiPool,
@@ -14,7 +13,6 @@ import {
     rollShenjiPools,
     matchAutoForgeTarget,
     getShenjiAttrDisplayName,
-    getShenjiTierRates,
     type AutoForgeTarget,
     type ShenjiQuality,
     type ShenjiRoll,
@@ -69,8 +67,6 @@ const SLOT_IMAGE_MAP: Record<ShenjiQuality, Record<ShenjiSlot, string>> = {
         袖甲: '/game_data/equip_icons/shenji/zhangwu_cuff.png',
     },
 };
-
-const TIER_HEX = ['#ffffff', '#4fbc3c', '#b446ff', '#ffd94d', '#f80000'];
 
 function renderValue(roll: ShenjiRoll): string {
     return `+${formatShenjiValue(roll.value, roll.decimal)}${roll.percent ? '%' : ''}`;
@@ -289,7 +285,6 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
     /** 是否启用过渡动画（归零那一刻必须关掉，否则会看到倒退） */
     const [barAnim, setBarAnim] = useState(false);
     const [forgeCount, setForgeCount] = useState(0);
-    const [showHelp, setShowHelp] = useState(false);
 
     /** 是否显示自动锻造设置面板（默认关闭，点击自动锻造打开） */
     const [showAutoPanel, setShowAutoPanel] = useState(false);
@@ -319,21 +314,6 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
 
     const pools = useMemo(() => buildShenjiPools(equips, slot, quality, yunling), [equips, slot, quality, yunling]);
     const poolReady = pools.length > 0 && pools.every((p) => p.length > 0);
-
-    /** 当前部位的 +11/+13/+15 五档概率文案（体验调整值，随部位变化） */
-    const tierRateText = useMemo(
-        () => [11, 13, 15].map((l) => `+${l} 池 ${getShenjiTierRates(slot, l).join('/')}`).join('，'),
-        [slot]
-    );
-
-    /** 「两条红 / 三条红」期望文案：由 +15 池红档概率实时推导（r² 关系，改红档自动同步） */
-    const redComboText = useMemo(() => {
-        const rates = getShenjiTierRates(slot, 15);
-        const r = rates[4] / rates.reduce((a, b) => a + b, 0);
-        const two = 3 * r * r * (1 - r);
-        const three = r * r * r;
-        return `约 1/${Math.round(1 / two)} 出两条红、约 1/${Math.round(1 / three)} 出三条红`;
-    }, [slot]);
 
     // 装备载体与三个档位池的备选词条名
     const equip = useMemo(() => findShenjiEquip(equips, slot, quality), [equips, slot, quality]);
@@ -586,15 +566,15 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                         神机属性锻造
                     </span>
                     <div className="flex items-center gap-2">
-                        <button
-                            type="button"
-                            onClick={() => setShowHelp((v) => !v)}
-                            style={{ color: showHelp ? '#ffd94d' : '#6b89a8' }}
+                        {/* 问号仅作装饰，不可点击 */}
+                        <span
+                            style={{ color: '#6b89a8' }}
                             title="洗练规则"
-                            className="hover:text-[#9bc2e6] transition-colors"
+                            aria-hidden="true"
+                            className="select-none cursor-default pointer-events-none"
                         >
                             <HelpCircle className="w-4 h-4" />
-                        </button>
+                        </span>
                     </div>
                 </div>
 
@@ -640,31 +620,6 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                     ))}
                     {!poolReady && <span className="text-[11px] ml-2" style={{ color: '#ff8080' }}>该组合暂无神机池</span>}
                 </div>
-
-                {showHelp && (
-                    <div
-                        className="mb-3 rounded-[3px] px-3 py-2 text-[12px] leading-[22px]"
-                        style={{
-                            background: 'rgba(16,32,48,.5)',
-                            border: '1px solid #2a415a',
-                            color: '#9adfff',
-                        }}
-                    >
-                        <div>· 每条属性独立抽取：先按属性出现概率选词条，再按档位概率选 5 档之一。</div>
-                        <div>· 五档取值为固定值：第一档 = 区间下限（白），第五档 = 区间上限（红·极·）。</div>
-                        <div>· 档位概率（{slot}，模拟器体验调整值，非游戏内实测）：{tierRateText}。</div>
-                        <div>· 按此概率：{redComboText}。</div>
-                        <div>· 条数由蕴灵决定：+11 一条、+13 两条、+15 三条，依次取 +11 / +13 / +15 池。</div>
-                        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]">
-                            {TIER_NAMES.map((n, i) => (
-                                <span key={n} className="flex items-center gap-1">
-                                    <span className="inline-block w-2 h-2 rounded-sm" style={{ background: TIER_HEX[i] }} />
-                                    <span style={{ color: TIER_HEX[i] }}>{i === 4 ? '红（极·）' : n}</span>
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )}
 
                 {/* 左右属性卡片区 */}
                 <div className="grid grid-cols-1 @md:grid-cols-[1fr_auto_1fr] items-stretch gap-2.5">
