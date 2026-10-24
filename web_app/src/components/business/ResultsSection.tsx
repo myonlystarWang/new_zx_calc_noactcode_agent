@@ -11,6 +11,7 @@ import type { SearchTarget } from '../GlobalSearch';
 import type { Skill } from '../../types';
 import { buildConfigText, buildShareUrl, FACTION_LABELS, type ShareSnapshot } from '../../utils/shareSnapshot';
 import type { ShareCardData, ShareSkillRow } from '../share/ShareCard';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /** 剪贴板：优先 Clipboard API，非安全上下文回退 execCommand（与 TotalPowerCard 同一策略） */
 async function copyToClipboard(text: string): Promise<boolean> {
@@ -191,6 +192,8 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
     const dragOffsetRef = useRef(0);
     const [isDragging, setIsDragging] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    // 手机：3D 轮播换成纵向手风琴（一次只展开一个副本，其余只显示摘要行）
+    const isMobile = useIsMobile();
 
     // 统一用 Pointer Events：触摸 / 鼠标 / 触控笔一套逻辑，桌面也能拖。
     // 触摸端由 touch-action: pan-y 保证纵向滚动仍归浏览器、横向位移归这里。
@@ -495,6 +498,64 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                 </div>
             </div>
 
+            {isMobile ? (
+                /* 手机：纵向手风琴。一次只渲染当前副本的详情，其余只给摘要行，
+                   既避免 16 份详情同时挂载，也避免 675px 固定高 + 横向翻页在触屏上难用。 */
+                <div className="flex flex-col gap-2">
+                    {results.dungeonPowers.map((d) => {
+                        const isActive = d.DungeonID === selectedDungeonId;
+                        const rankConfig = getRankConfig(d.TotalDamage);
+                        return (
+                            <div
+                                key={d.DungeonID}
+                                className={clsx(
+                                    'rounded-2xl border overflow-hidden transition-colors',
+                                    isActive ? 'border-cyan-500/40 bg-slate-900/60' : 'border-slate-800 bg-slate-900/30'
+                                )}
+                            >
+                                <button
+                                    type="button"
+                                    aria-expanded={isActive}
+                                    onClick={() => {
+                                        if (isActive) return;
+                                        setSelectedDungeonId(d.DungeonID);
+                                        setFocusMonsterId(null);
+                                        setFocusSkillName(null);
+                                        setAutoShowAttr(false);
+                                    }}
+                                    className="w-full flex items-center justify-between gap-3 px-3 py-2.5 text-left"
+                                >
+                                    <div className="min-w-0">
+                                        <div className="text-sm font-bold text-slate-100 truncate">{d.DungeonName}</div>
+                                        <div className="text-[11px] text-slate-500 mt-0.5">
+                                            {d.Monsters.length} 个 BOSS{isActive ? ' · 已展开' : ''}
+                                        </div>
+                                    </div>
+                                    <div className="shrink-0 text-right">
+                                        <div className="text-sm font-black text-slate-100 font-mono">{formatNumber(d.TotalDamage)}</div>
+                                        <div className={clsx('text-[11px] font-bold', rankConfig.TextColor)}>{rankConfig.Rank} 级</div>
+                                    </div>
+                                </button>
+                                {isActive && (
+                                    <div className="border-t border-slate-800/80 px-1 pb-1">
+                                        <DungeonDetail
+                                            dungeon={d}
+                                            isExpanded
+                                            standalone
+                                            rankConfig={rankConfig}
+                                            power={d.TotalDamage}
+                                            focusMonsterId={focusMonsterId}
+                                            focusSkillName={focusSkillName}
+                                            autoShowAttr={autoShowAttr}
+                                            onMonsterChange={handleMonsterChange}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            ) : (
             <div
                 ref={containerRef}
                 className="relative w-full h-[675px] flex items-start justify-center perspective-1000 touch-pan-y overflow-hidden"
@@ -578,6 +639,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                     })}
                 </div>
             </div>
+            )}
             {shareOpen && menuPos && createPortal(
                 <>
                     <div className="fixed inset-0 z-[9998]" onClick={() => setShareOpen(false)} aria-hidden />
