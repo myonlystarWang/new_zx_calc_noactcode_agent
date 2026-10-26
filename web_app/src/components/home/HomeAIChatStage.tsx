@@ -1039,6 +1039,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         type="text"
                         value={inputText}
                         onChange={e => setInputText(e.target.value)}
+                        onFocus={() => {
+                            // L2 预取（装备库/法宝库）：聚焦输入框即后台拉，回车前就绪。
+                            // 首页不再预取这两个大文件，避免首屏下载 6MB+。
+                            DataService.getInstance().preloadCopilotDataWarm();
+                        }}
                         onKeyDown={e => {
                             if (e.key === 'Enter') handleSend();
                         }}

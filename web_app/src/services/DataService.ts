@@ -94,6 +94,8 @@ export class DataService {
     private xycRules: any = null;
     private tianyuanData: any = null;
     private serverList: any[] | null = null;
+    /** L2 预取是否已触发（输入框聚焦只拉一次） */
+    private warmPreloadStarted = false;
 
     private constructor() { }
 
@@ -572,20 +574,40 @@ export class DataService {
     }
 
     /**
-     * 在打开主页时异步静默提取并预热所有 Copilot 意图识别与图鉴核心数据
-     * 避免首次对话查询时产生网络与解析等待
+     * L1 轻量预取（≈30KB）：首页挂载即调用。
+     * 只含「不点开工具也要能直答」的元数据 —— 服务器列表、轩辕策规则、副本、技能元信息。
+     *
+     * ⚠️ 不要把 getEquipList()（5.6MB）/ getAllCuratedSkills()（24.8MB）放回这里：
+     * 二者曾在此并发预取，导致聊天首页一打开就下载并解析约 30MB，
+     * 是首屏最主要的性能负担（2026-10-26 首屏优化实测）。
      */
     public preloadCopilotData(): void {
         Promise.allSettled([
-            this.getEquipList(),
-            this.getFabaoList(),
-            this.getAllCuratedSkills(),
             this.getServerList(),
             this.getXycRules(),
             this.getDungeonsAsync(),
             this.getSkillMetaAsync()
         ]).catch(() => {});
     }
+
+    /**
+     * L2 中等预取（≈200KB gz）：装备库 + 法宝库。
+     * 由输入框聚焦触发 —— 用户开始打字时后台拉取，按下回车时通常已就绪，
+     * 既保住「首次提问不用等」的体验，又不占首屏带宽。
+     */
+    public preloadCopilotDataWarm(): void {
+        if (this.warmPreloadStarted) return;
+        this.warmPreloadStarted = true;
+        Promise.allSettled([
+            this.getEquipList(),
+            this.getFabaoList()
+        ]).catch(() => {});
+    }
+
+    /**
+     * L3 全量技能库（24.8MB raw / ≈1.6MB gz）不再预取：
+     * 仅当具体查询命中技能分支时由 CopilotService 按需 await（内部已有缓存）。
+     */
 }
 
 /**

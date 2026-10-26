@@ -95,7 +95,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     return () => window.removeEventListener('paste', handlePaste);
   }, []);
 
-  // 打开主页时异步静默提取 Copilot 意图与图鉴核心数据，避免用户第一次提问时等待数据下载
+  // 打开主页时只静默预取 L1 轻量元数据（服务器/副本/轩辕策规则/技能元信息，≈30KB）。
+  // 装备库 5.6MB 与技能全量 24.8MB 改由输入框聚焦（L2）和具体查询（L3）按需触发，
+  // 否则聊天首页一加载就要下载并解析约 30MB —— 首屏最大的性能负担。
   useEffect(() => {
     DataService.getInstance().preloadCopilotData();
   }, []);
@@ -511,6 +513,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => {
+                  // L2 预取：用户开始输入时再拉装备库/法宝库（≈200KB gz），
+                  // 不占首屏带宽，但能在回车前把首次查询要用的数据备好。
+                  DataService.getInstance().preloadCopilotDataWarm();
+                }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     handleStartAiChat(query, attachedImage);

@@ -9,7 +9,7 @@
 import { DataService, isValidSkill } from './DataService';
 import { getVisionFixture } from './vision/devFixture';
 import { downscaleDataUrl } from '../utils/imageDownscale';
-import { pinyin } from 'pinyin-pro';
+import { PINYIN_ALIASES } from './pinyinVocab.generated';
 import type { Dungeon, Monster, CuratedEquipItem, CuratedSkillItem, FabaoItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
 
@@ -355,7 +355,7 @@ const PROFESSIONS: string[] = [
 // T-05 拼音归一词库（L0 层）：与下方 matchLocalIntent 内的品质/部位数组、
 // PROFESSIONS、SKILL_CATEGORY_MAP 同源（P2 词库数据化时统一为单一数据文件）
 // ------------------------------------------------------------
-const PINYIN_VOCAB_TERMS: string[] = [
+export const PINYIN_VOCAB_TERMS: string[] = [
     ...PROFESSIONS,
     // 装备品质
     '修武', '昭武', '彰武', '神隐', '神级', '天命', '至尊', '混虚',
@@ -366,26 +366,12 @@ const PINYIN_VOCAB_TERMS: string[] = [
     '易伤', '增伤', '破防', '绿点', '紫点',
 ];
 
-// [拼音, 中文术语]，按拼音长度降序（贪心最长匹配）；同音歧义整键弃用防误命中
-let pinyinAliasCache: Array<[string, string]> | null = null;
+// [拼音, 中文术语]，按拼音长度降序（贪心最长匹配）；同音歧义整键弃用防误命中。
+// 表由 scripts/gen_pinyin_vocab.mjs 在构建期生成，运行时不再依赖 pinyin-pro
+// （该依赖打包后 295KB raw / 136KB gz，曾占首屏 JS 体积约 30%）。
+// ⚠️ 修改 PINYIN_VOCAB_TERMS 或 PROFESSIONS 后必须重跑该脚本，否则拼音匹配会漂移。
 function getPinyinAliases(): Array<[string, string]> {
-    if (pinyinAliasCache) return pinyinAliasCache;
-    const byPinyin = new Map<string, string[]>();
-    for (const term of PINYIN_VOCAB_TERMS) {
-        // ü→v 规范化：pinyin-pro 返回 "lü"，而用户键盘输入用 "lv"，两边必须同构
-        const py = pinyin(term, { toneType: 'none' }).replace(/ü/g, 'v').replace(/[^a-z]/g, '');
-        if (!py) continue;
-        const list = byPinyin.get(py) || [];
-        list.push(term);
-        byPinyin.set(py, list);
-    }
-    const aliases: Array<[string, string]> = [];
-    for (const [py, terms] of byPinyin) {
-        if (terms.length === 1) aliases.push([py, terms[0]]);
-    }
-    aliases.sort((a, b) => b[0].length - a[0].length);
-    pinyinAliasCache = aliases;
-    return aliases;
+    return PINYIN_ALIASES;
 }
 
 // ------------------------------------------------------------
