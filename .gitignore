@@ -33,3 +33,11 @@ scratch/
 .refactor_baseline/
 .workbuddy/
 .workbuddy-ai/
+
+# 开源发布：运营文案不公开（含平台投稿参数、发布节奏）
+publish/
+# 开源发布：doc 下的截图/表格属于过程产物，体积大且无复现价值
+doc/**/*.png
+doc/**/*.jpg
+doc/**/*.jpeg
+doc/**/*.xlsx
