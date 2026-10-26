@@ -583,8 +583,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             <button
               type="button"
               onClick={() => {
-                // 只唤起右分屏伤害计算器（不再发「计算实战战力」静态指南文案）
-                setWorkspaceState({ isOpen: true, mode: 'calc', isMaximized: false });
+                // 必须走 handleOpenMicroTool：右分屏只在 isChatActive 分支里渲染，
+                // 只 setWorkspaceState({isOpen:true}) 会停在首页、什么都不弹（2026-10-26 线上 bug）
+                handleOpenMicroTool('calc');
               }}
               className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-amber-500/30 text-xs text-slate-300 hover:text-amber-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >
