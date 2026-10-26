@@ -14,6 +14,8 @@ import {
   Loader2
 } from 'lucide-react';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE } from '../../routes';
 import { computeGuestbookStamp, markGuestbookSeen } from '../../utils/guestbookSeen';
 
 export type GuestbookCategory = 'all' | 'suggestion' | 'bug' | 'build' | 'feature';
@@ -37,6 +39,8 @@ export interface GuestbookEntry {
   statusBadge?: 'adopted' | 'in_progress' | 'fixed';
   statusText?: string;
   replies?: GuestbookReply[];
+  /** 正文下方的跳转入口（置顶公告用来引到「关于作者」） */
+  cta?: { prefix?: string; label: string; to: string; suffix?: string };
 }
 
 const CATEGORIES: { id: GuestbookCategory; label: string }[] = [
@@ -53,6 +57,18 @@ const IMMORTAL_TITLES = [
   '玄天居士', '南疆巫灵', '天音参悟者', '诛仙百晓生', '星耀散仙'
 ];
 
+/**
+ * 置顶公告固定的「关于作者」入口。
+ * 线上公告正文来自 /api/guestbook（KV 里的旧数据没有 cta 字段），
+ * 所以渲染时对置顶帖兜底注入，改文案只改这一处。
+ */
+const PINNED_CTA: NonNullable<GuestbookEntry['cta']> = {
+  prefix: '想认识一下做这个站的人？',
+  label: '关于作者与平台初衷',
+  to: `${ROUTE.about}#creator`,
+  suffix: '。',
+};
+
 const INITIAL_POSTS: GuestbookEntry[] = [
   {
     id: 'pin-1',
@@ -64,6 +80,7 @@ const INITIAL_POSTS: GuestbookEntry[] = [
     isPinned: true,
     statusBadge: 'adopted',
     statusText: '官方公告',
+    cta: PINNED_CTA,
     replies: []
   }
 ];
@@ -72,6 +89,7 @@ const STORAGE_KEY = 'tianshu_guestbook_posts_v3';
 const LIKED_STORAGE_KEY = 'tianshu_guestbook_liked_v3';
 
 export const FeedbackPage: React.FC = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<GuestbookEntry[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -498,6 +516,7 @@ export const FeedbackPage: React.FC = () => {
             const isLiked = !!likedMap[post.id];
             const isReplying = replyingPostId === post.id;
             const replies = post.replies || [];
+            const cta = post.cta ?? (post.isPinned ? PINNED_CTA : undefined);
 
             return (
               <div
@@ -544,6 +563,19 @@ export const FeedbackPage: React.FC = () => {
                 {/* 留言正文 */}
                 <div className="text-sm text-slate-200 mt-3 leading-relaxed whitespace-pre-wrap">
                   {post.content}
+                  {cta && (
+                    <span className="block mt-1.5">
+                      {cta.prefix}
+                      <button
+                        type="button"
+                        onClick={() => navigate(cta.to)}
+                        className="text-amber-300 hover:text-amber-200 font-semibold underline decoration-amber-400/70 decoration-2 underline-offset-4 mx-0.5 cursor-pointer transition-colors"
+                      >
+                        {cta.label}
+                      </button>
+                      {cta.suffix}
+                    </span>
+                  )}
                 </div>
 
                 {/* 底部互动操作栏：分类、点赞、回复按钮 */}

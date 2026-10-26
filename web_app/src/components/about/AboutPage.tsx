@@ -1,17 +1,39 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTE } from '../../routes';
 import {
   Award,
-  GitBranch,
-  MessageSquare,
   ShieldCheck,
   Code2,
   Heart
 } from 'lucide-react';
+import { CreatorSocialLinks } from './CreatorSocialLinks';
+
+/** 留言板置顶公告等外部入口会跳到 /about#creator，需要滚到作者卡并闪一下高亮 */
+const CREATOR_ANCHOR = 'creator';
 
 export const AboutPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const creatorRef = useRef<HTMLDivElement | null>(null);
+  const [highlightCreator, setHighlightCreator] = useState(false);
+
+  useEffect(() => {
+    if (location.hash !== `#${CREATOR_ANCHOR}`) return;
+    const el = creatorRef.current;
+    if (!el) return;
+
+    const scrollTimer = window.setTimeout(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setHighlightCreator(true);
+    }, 60);
+    const flashTimer = window.setTimeout(() => setHighlightCreator(false), 2600);
+
+    return () => {
+      window.clearTimeout(scrollTimer);
+      window.clearTimeout(flashTimer);
+    };
+  }, [location.hash]);
 
   return (
     <div className="w-full min-h-full bg-[#05080f] text-slate-100 flex flex-col justify-between select-none">
@@ -108,7 +130,13 @@ export const AboutPage: React.FC = () => {
         </div> */}
 
         {/* 做这个站的人 (借鉴 aihot 的创作者自述与社区互动卡片) */}
-        <div className="w-full p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-slate-900/60 via-[#0b101c]/80 to-slate-900/60 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-lg">
+        <div
+          ref={creatorRef}
+          id={CREATOR_ANCHOR}
+          className={`w-full p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-slate-900/60 via-[#0b101c]/80 to-slate-900/60 border flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-lg transition-all duration-500 ${
+            highlightCreator ? 'border-cyan-500/60 ring-2 ring-cyan-500/20' : 'border-slate-800/80'
+          }`}
+        >
           <div className="space-y-2 max-w-xl">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500/30 to-amber-500/30 border border-cyan-500/40 flex items-center justify-center text-slate-100 font-bold text-xs shrink-0">
@@ -142,24 +170,7 @@ export const AboutPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 shrink-0">
-            <button
-              type="button"
-              onClick={() => navigate(ROUTE.changelog)}
-              className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer"
-            >
-              <GitBranch className="w-3.5 h-3.5 text-cyan-400" />
-              <span>更新动态</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate(ROUTE.feedback)}
-              className="px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-xs text-amber-300 hover:text-amber-200 transition-all font-semibold flex items-center gap-1.5 cursor-pointer shadow-sm shadow-amber-950/20"
-            >
-              <MessageSquare className="w-3.5 h-3.5 text-amber-400" />
-              <span>仙友留言板</span>
-            </button>
-          </div>
+          <CreatorSocialLinks />
         </div>
 
         {/* 我们的初心与致谢 (Craftsmanship & Heart) */}
