@@ -169,6 +169,10 @@ for (const s of adv) {
     if (!mt) continue;
     const variant = mt[1];
     if (!['英雄', '大地', '天空', '碧海'].includes(variant)) continue;
+    // 客户端技能表里有占位/被动条目把效果描述拼进了名字
+    // （如「卷平岚III 《英雄》攻击怪物减少冷却」，desc 只有“学习条件：人物等级达到0级”）
+    // 正常技能名一定止于 《变体》/触发/（协同攻击）这类后缀
+    if (!/(《[^》]+》|触发|）)$/.test(s.name)) continue;
     if (!skillPool[s.occ]) skillPool[s.occ] = [];
     skillPool[s.occ].push({ id: s.id, name: s.name, variant, replace: replaceById.get(s.id) || '', desc: s.desc });
 }

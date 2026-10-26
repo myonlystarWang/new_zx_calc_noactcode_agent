@@ -5,7 +5,7 @@
  * `elements.data` 表 213 / 214 / 215 直接解出，脚本内含 Σ=1 自检）。
  *
  * 关键规则（官方 221025info + 客户端字段）：
- * - 洗练不改变「属性条数」（只有鉴定决定 2/3/4/5 条）；
+ * - 洗练不改变「属性条数」（只有鉴定决定；六品固定 5 条，一~五品 2/3/4/5 条按概率）；
  * - 三种道具：大衍奇术=只洗属性 / 一元道契=只洗技能 / 太乙宝函=属性+技能；
  * - 技能只可能出现在青龙、白虎，且要求 品阶≥3 且 条数≥4；朱雀、玄武一定没有技能；
  * - 属性数值：先掷一个「五档品质档」，全部属性数值落在该档的 1/5 区间内随机。
@@ -119,11 +119,9 @@ export function getPool(data: XycRefineData, version: XycVersion, beast: XycBeas
     return data?.pools?.[version]?.[beast]?.[String(grade)] ?? null;
 }
 
-/** 该版本/系别在游戏里是否存在（典藏只到六品，英雄目前只开放青龙/白虎） */
-export function versionSupports(version: XycVersion, beast: XycBeast): boolean {
-    if (version === '普通') return true;
-    if (version === '典藏') return true;
-    return beast === '青龙' || beast === '白虎';
+/** 该版本/系别在游戏里是否存在（典藏版已下线；英雄版四系均已开放，仅限六品） */
+export function versionSupports(_version: XycVersion, _beast: XycBeast): boolean {
+    return true;
 }
 
 export function canRollSkill(data: XycRefineData, beast: XycBeast, grade: number, attrCount: number): boolean {
@@ -200,8 +198,12 @@ export function rollAttrs(pool: XycPool, count: number, tier: number, rng: Rng):
 }
 
 export function rollSkill(data: XycRefineData, occ: string, grade: number, rng: Rng): XycSkillRoll | null {
-    const list = data.skill.pool?.[occ];
-    if (!list || list.length === 0) return null;
+    const raw = data.skill.pool?.[occ];
+    if (!raw || raw.length === 0) return null;
+    // 兜底：客户端技能表里混有占位/被动条目（名字后面拼了效果描述，如「…《英雄》攻击怪物减少冷却」），
+    // 正常技能名一定止于 《变体》/触发/（协同攻击）
+    const clean = raw.filter((s) => /(《[^》]+》|触发|）)$/.test(s.name));
+    const list = clean.length > 0 ? clean : raw;
     const def = list[Math.floor(rng() * list.length)] ?? list[0];
     const probs = getSkillLevelProbs(data, grade);
     const level = pickIndexByProbs(probs, rng) + 1;
@@ -219,7 +221,8 @@ export interface IdentifyOptions {
 export function identifyBook(data: XycRefineData, opts: IdentifyOptions, rng: Rng): XycBook | null {
     const pool = getPool(data, opts.version, opts.beast, opts.grade);
     if (!pool) return null;
-    const attrCount = rollAttrCount(pool, rng);
+    // 六品固定 5 条属性（普通/英雄一致）；一~五品仍按客户端条数概率表
+    const attrCount = opts.grade >= 6 ? 5 : rollAttrCount(pool, rng);
     const tier = rollTier(pool, rng);
     const attrs = rollAttrs(pool, attrCount, tier, rng);
     const hasSkillSlot = canRollSkill(data, opts.beast, opts.grade, attrCount);

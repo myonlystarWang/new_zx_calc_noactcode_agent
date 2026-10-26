@@ -774,7 +774,7 @@ export class CopilotService {
                 const gradeMap: Record<string, number> = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6 };
                 const xycGradeMatch = q.match(/([一二三四五六])\s*品/);
                 const initialGrade = xycGradeMatch ? gradeMap[xycGradeMatch[1]] : 6;
-                const initialVersion = q.includes('英雄') ? '英雄' : q.includes('典藏') ? '典藏' : '普通';
+                const initialVersion = q.includes('英雄') ? '英雄' : '普通';
                 const initialOcc = PROFESSIONS.find((pr) => q.includes(pr));
                 return {
                     id: `msg-${Date.now()}`,
