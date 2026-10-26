@@ -504,11 +504,18 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                 @container (max-width: 470px) {
                     .xyc-book-body { margin-left: 18px !important; }
                 }
-                /* 手机窄屏才缩图标与左边距 */
+                /* 窄容器：**只缩图标与左边距，字号与折行口径一律不动**。
+                   实测 12px 下「（进阶技能）猛火咒III 《英雄》 2级」自然宽度 204px，
+                   要单行放下，body 必须 ≥ 210px；而 body = 容器 - 22(内边距+描边) - 图标 - 左边距，
+                   所以每档按「图标 + 左边距 ≤ 容器 - 232」逐级缩图标即可。
+                   曾经这里是「容器 ≤340 时把字号压到 11px」，结果字变小了还是折行 —— 治标不治本。 */
+                @container (max-width: 400px) {
+                    .xyc-book-icon { width: 88px !important; height: 88px !important; }
+                    .xyc-book-body { margin-left: 14px !important; }
+                }
                 @container (max-width: 340px) {
-                    .xyc-book-icon { width: 72px !important; height: 72px !important; }
-                    .xyc-book-body { margin-left: 12px !important; }
-                    .xyc-skill-line { font-size: 11px !important; }
+                    .xyc-book-icon { width: 64px !important; height: 64px !important; }
+                    .xyc-book-body { margin-left: 8px !important; }
                 }
             `}</style>
 
@@ -592,7 +599,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 <span>
                                     {beast}&lt;{bookName}&gt;
                                 </span>
-                                {version === '英雄' && <span style={{ color: '#ffd272', whiteSpace: 'nowrap' }}>·英雄版</span>}
+                                {version === '英雄' && <span style={{ whiteSpace: 'nowrap' }}>·英雄版</span>}
                             </div>
                             <div style={{ color: C_WARN }} className="text-[12px]">
                                 不会掉落
