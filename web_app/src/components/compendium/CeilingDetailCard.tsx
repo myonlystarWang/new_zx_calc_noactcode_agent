@@ -128,24 +128,25 @@ const CategoryInline: React.FC<{ children?: React.ReactNode; tone: string }> = (
 
 /**
  * 四档数值单元。
- * 窄卡：**标签在上、数值在下**（左对齐），四档各自成列 —— 之前写成「标签左、数值右两端对齐」，
- *   61px 列里标签贴着左边、数值贴着右边，读起来是「25 夯 25 顶级 25或23 毕业 23」一锅粥，
- *   分不清哪个数属于哪一档（2026-10-26 用户反馈）。
+ * 窄卡：**标签在上、数值在下**，整列右对齐（数值列靠右对齐才好纵向比大小，也与宽卡口径一致）。
+ *   曾经写成「标签贴左、数值贴右」的两端对齐，61px 列里标签离自己的数值很远、离下一档很近，
+ *   读成「25 夯 25 顶级 25或23 毕业 23」，分不清哪档是哪档（2026-10-26 用户反馈）。
  * ≥@sm：标签隐藏，只剩数值右对齐，由上方表头承担标签。
  * 始终用 flex-col，避免 flex/block 在同一元素上的 display 冲突。
+ * 数值颜色统一 slate-200，最高档只靠 font-bold 区分 —— 曾经夯/顶级用 slate-400，
+ *   在深底上像「禁用态」，被误认为显示异常。
  */
-const CeilingValue: React.FC<{ label: string; value: React.ReactNode; strong?: boolean; tone?: string }> = ({
+const CeilingValue: React.FC<{ label: string; value: React.ReactNode; strong?: boolean }> = ({
     label,
     value,
     strong,
-    tone,
 }) => (
-    <div className="flex flex-col items-start gap-0.5 @sm:items-end">
+    <div className="flex flex-col items-end gap-0.5">
         <span className="text-[10px] leading-none tracking-wide text-slate-400 @sm:hidden">{label}</span>
         <span
             className={clsx(
                 'font-mono tabular-nums whitespace-nowrap text-[11px] leading-none @sm:text-xs',
-                strong ? 'font-bold text-slate-100' : tone || 'text-slate-400'
+                strong ? 'font-bold text-slate-100' : 'text-slate-200'
             )}
         >
             {value}
@@ -489,7 +490,7 @@ export const CeilingDetailCard: React.FC<CeilingDetailCardProps> = ({ cardData, 
                                                 <CeilingValue label="最高" value={renderValue(row.theoryMax)} strong />
                                                 <CeilingValue label="夯" value={renderValue(row.floor)} />
                                                 <CeilingValue label="顶级" value={renderValue(row.top)} />
-                                                <CeilingValue label="毕业" value={renderValue(row.graduation)} tone="text-slate-300" />
+                                                <CeilingValue label="毕业" value={renderValue(row.graduation)} />
                                             </div>
                                         ))}
                                 </section>
