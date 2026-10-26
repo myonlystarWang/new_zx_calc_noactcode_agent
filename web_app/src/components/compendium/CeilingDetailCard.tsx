@@ -102,8 +102,14 @@ interface SourceRow {
  * 窄卡（<@sm）压窄数值列并收掉独立类别列，把宽度全部让给项目名。
  */
 const ROW_GRID_SOURCE = 'grid grid-cols-[minmax(0,1fr)_2.75rem] @sm:grid-cols-[minmax(0,1fr)_3.25rem] items-center gap-x-1.5 @sm:gap-x-2';
+/**
+ * 四档列（最高 / 夯 / 顶级 / 毕业）。
+ * 窄卡（<@sm，即卡片 < 384px）：项目名独占一行，四个数值落到第二行按 4 等分排，
+ *   每个数值前带 10px 小标签（列头在窄卡隐藏，否则 5 列塞不进 280px 会把毕业列裁掉）。
+ * ≥@sm：恢复单行 5 列，列头由上方表头统一承担。
+ */
 const ROW_GRID_CEILING =
-    'grid grid-cols-[minmax(0,1fr)_2.4rem_2rem_2rem_2.4rem] @sm:grid-cols-[minmax(0,1fr)_3rem_2.25rem_2.25rem_3rem] items-center gap-x-1.5 @sm:gap-x-2';
+    'grid grid-cols-4 gap-x-1.5 gap-y-1 @sm:grid-cols-[minmax(0,1fr)_3rem_2.5rem_2.5rem_3rem] @sm:gap-x-2 @sm:gap-y-0 items-center';
 
 /** 单元格：与 BossDetailCard 属性格同款（黑底 + 极淡描边 + 8px 圆角） */
 const CELL =
@@ -118,6 +124,30 @@ const CategoryTag: React.FC<{ children?: React.ReactNode; tone: string }> = ({ c
 
 const CategoryInline: React.FC<{ children?: React.ReactNode; tone: string }> = ({ children, tone }) => (
     <span className={clsx('@sm:hidden mr-1 shrink-0 text-[10px] leading-snug', tone)}>{children || '其他'}·</span>
+);
+
+/**
+ * 四档数值单元。
+ * 窄卡：左标签右数值（一行内两端对齐），保证 280px 下四档全部可见；
+ * ≥@sm：只剩数值并右对齐，标签由表头承担。
+ */
+const CeilingValue: React.FC<{ label: string; value: React.ReactNode; strong?: boolean; tone?: string }> = ({
+    label,
+    value,
+    strong,
+    tone,
+}) => (
+    <div className="flex items-baseline justify-between gap-1 @sm:block @sm:text-right">
+        <span className="shrink-0 text-[10px] leading-none text-slate-500 @sm:hidden">{label}</span>
+        <span
+            className={clsx(
+                'font-mono tabular-nums whitespace-nowrap text-[11px] @sm:text-xs',
+                strong ? 'font-bold text-slate-100' : tone || 'text-slate-400'
+            )}
+        >
+            {value}
+        </span>
+    </div>
 );
 
 export const CeilingDetailCard: React.FC<CeilingDetailCardProps> = ({ cardData, className }) => {
@@ -389,20 +419,18 @@ export const CeilingDetailCard: React.FC<CeilingDetailCardProps> = ({ cardData, 
 
             {/* 3. 数据区 */}
             <div className="overflow-x-auto no-scrollbar">
-                <div className="min-w-[19rem] flex flex-col gap-3">
-                    {/* 四档列头（仅 ceiling 篇目需要） */}
+                <div className="min-w-0 flex flex-col gap-3">
+                    {/* 四档列头（仅 ceiling 篇目需要；窄卡隐藏，四档标签内联到每个数值前）。
+                        用外层 wrapper 控制显隐，避免 hidden 与 grid 同元素上的 display 冲突。 */}
                     {!isSourceMode && (
-                        <div
-                            className={clsx(
-                                ROW_GRID_CEILING,
-                                'px-2 @sm:px-2.5 text-[10px] @sm:text-[11px] text-slate-400 -mb-1'
-                            )}
-                        >
-                            <span className="@sm:pl-[4.1rem] pl-0">项目 / 细分</span>
-                            <span className="text-right">最高</span>
-                            <span className="text-right">夯</span>
-                            <span className="text-right">顶级</span>
-                            <span className="text-right">毕业</span>
+                        <div className="hidden @sm:block px-2 @sm:px-2.5 -mb-1">
+                            <div className={clsx(ROW_GRID_CEILING, 'text-[10px] @sm:text-[11px] text-slate-400')}>
+                                <span className="@sm:pl-[4.1rem] pl-0">项目 / 细分</span>
+                                <span className="text-right">最高</span>
+                                <span className="text-right">夯</span>
+                                <span className="text-right">顶级</span>
+                                <span className="text-right">毕业</span>
+                            </div>
                         </div>
                     )}
 
@@ -444,7 +472,8 @@ export const CeilingDetailCard: React.FC<CeilingDetailCardProps> = ({ cardData, 
                                         ? (g.sourceRows as SourceRow[]).map((row, idx) => renderRow(row, idx))
                                         : (g.ceilingRows as AttributeCeilingRow[]).map((row, idx) => (
                                             <div key={idx} className={clsx(CELL, ROW_GRID_CEILING)}>
-                                                <div className="flex items-baseline gap-1 @sm:gap-2 min-w-0">
+                                                {/* 窄卡独占一行（col-span-4），≥@sm 回到首列 */}
+                                                <div className="col-span-4 @sm:col-span-1 flex items-baseline gap-1 @sm:gap-2 min-w-0">
                                                     <CategoryTag tone={meta.tag}>{row.category}</CategoryTag>
                                                     <span
                                                         className="min-w-0 truncate text-[11px] @sm:text-xs text-slate-200 leading-relaxed"
@@ -454,18 +483,10 @@ export const CeilingDetailCard: React.FC<CeilingDetailCardProps> = ({ cardData, 
                                                         {row.item}
                                                     </span>
                                                 </div>
-                                                <span className="text-right font-mono font-bold text-[11px] @sm:text-xs text-slate-100 tabular-nums whitespace-nowrap">
-                                                    {renderValue(row.theoryMax)}
-                                                </span>
-                                                <span className="text-right font-mono text-[11px] @sm:text-xs text-slate-400 tabular-nums whitespace-nowrap">
-                                                    {renderValue(row.floor)}
-                                                </span>
-                                                <span className="text-right font-mono text-[11px] @sm:text-xs text-slate-400 tabular-nums whitespace-nowrap">
-                                                    {renderValue(row.top)}
-                                                </span>
-                                                <span className="text-right font-mono text-[11px] @sm:text-xs text-slate-300 tabular-nums whitespace-nowrap">
-                                                    {renderValue(row.graduation)}
-                                                </span>
+                                                <CeilingValue label="最高" value={renderValue(row.theoryMax)} strong />
+                                                <CeilingValue label="夯" value={renderValue(row.floor)} />
+                                                <CeilingValue label="顶级" value={renderValue(row.top)} />
+                                                <CeilingValue label="毕业" value={renderValue(row.graduation)} tone="text-slate-300" />
                                             </div>
                                         ))}
                                 </section>
