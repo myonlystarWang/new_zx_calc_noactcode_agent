@@ -43,3 +43,7 @@ doc/**/*.jpeg
 doc/**/*.xlsx
 # 开源发布：视频分镜脚本不入库
 doc/scripts/
+# 规划/方法论文档与 EP01 分镜截图脚本（2026-10-26 用户确认不入库）
+doc/天书万象AI_*.md
+doc/天书万象_*.md
+scripts/capture_ep01*.mjs

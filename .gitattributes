@@ -1,0 +1,5 @@
+# 统一行尾：脚本生成的 JSON 数据文件一律 LF
+# 根因：core.autocrlf=true 时 checkout 会把它们转成 CRLF，
+# 而 build_*.mjs 用纯 LF 重写 → 出现「git diff 为空但 status 显示 M」的假改动。
+web_app/src/game_data/*.json text eol=lf
+web_app/public/game_data/*.json text eol=lf
