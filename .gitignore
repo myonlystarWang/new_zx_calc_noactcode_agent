@@ -41,3 +41,5 @@ doc/**/*.png
 doc/**/*.jpg
 doc/**/*.jpeg
 doc/**/*.xlsx
+# 开源发布：视频分镜脚本不入库
+doc/scripts/
