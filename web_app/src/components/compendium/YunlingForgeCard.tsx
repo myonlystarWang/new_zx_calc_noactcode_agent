@@ -281,6 +281,9 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                 }
 
                 setBusy(false);
+                // 读条跑满后瞬间清空（不做满→空回落动画）；先清再回调，连点会各自重新起条
+                setBarAnim(false);
+                setBarFill(0);
                 onDone?.(r.success);
             }, delay);
         },
@@ -344,12 +347,24 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                     background: linear-gradient(180deg, #38536e 0%, #1d3346 100%);
                     border: 1px solid #4a6c8e; border-radius: 3px;
                 }
-                @container (min-width: 700px) {
+                /* 卡片自身作为容器：内部「两栏 / 单列」断点必须跟**卡片实际宽度**走。
+                   卡片会被父级限宽（563），若仍按外层容器（905）判断，卡片收窄后排版不会跟着变。 */
+                .ylf-card { container-type: inline-size; }
+                /* PC 未分屏：与神机主卡同一宽度口径（预留 330 自动锻造位 = 342），
+                   但**下限取 620 而不是 563** —— 实测 563 时左栏只有 237px，
+                   「千秋岁·混虚昭武（蕴灵 +0）」「已绑定；已锁定；不会掉落；不可卖店」
+                   「穿戴要求：…170级」都会折行；620 时（左栏 294）全部单行。 */
+                @container (min-width: 860px) {
+                    .ylf-card { max-width: max(620px, calc(100% - 342px)) !important; }
+                }
+                /* 两栏 / 单列断点：卡片宽 563 → 内容宽 533（内边距 14×2 + 描边 2 = 30）。
+                   ⚠️ 容器查询匹配的是容器的**内容盒**，所以阈值要减掉 30，不能直接写 563。 */
+                @container (min-width: 533px) {
                     .ylf-layout { flex-direction: row !important; align-items: stretch !important; }
                     .ylf-equip { flex: 1 1 0%; min-width: 0; }
                     .ylf-side { width: 284px !important; min-width: 284px !important; flex: 0 0 284px !important; }
                 }
-                @container (max-width: 699px) {
+                @container (max-width: 532px) {
                     .ylf-layout { flex-direction: column !important; }
                     .ylf-side { width: 100% !important; min-width: 0 !important; }
                 }
@@ -362,7 +377,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
             `}</style>
 
             <div
-                className="w-full rounded-[4px] p-3.5 select-none"
+                className="ylf-card w-full rounded-[4px] p-3.5 select-none"
                 style={{
                     background: 'linear-gradient(180deg, #131b24 0%, #0c1219 100%)',
                     border: '1px solid #283e54',
@@ -662,11 +677,12 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
 
                 {/* 读条 + 按钮 */}
                 <div className="relative mt-3">
-                    <div className="mx-auto" style={{ width: BAR_W }}>
+                    {/* 读条与按钮组同宽：w-fit 让读条贴着按钮组实际宽度（对齐天缘精炼弹窗），maxWidth 封顶防溢出 */}
+                    <div className="mx-auto w-fit" style={{ maxWidth: BAR_W }}>
                         <div
                             className="relative overflow-hidden"
                             style={{
-                                width: BAR_W,
+                                width: '100%',
                                 height: 10,
                                 borderRadius: 999,
                                 background: '#081219',
@@ -689,12 +705,13 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                             />
                         </div>
 
-                        <div className="flex gap-2.5 mt-2.5">
+                        {/* 三键按文字宽度自适应，不强制等宽：「蕴灵」「重置」两字没必要和「连点到 +15」一样宽 */}
+                        <div className="flex items-stretch justify-center gap-2.5 mt-2.5">
                             <button
                                 type="button"
                                 disabled={busy || level >= YUNLING_MAX}
                                 onClick={handleDraw}
-                                className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider font-medium transition-all whitespace-nowrap"
+                                className="px-4 py-1.5 rounded-[3px] text-[13px] tracking-wider font-medium transition-all whitespace-nowrap"
                                 style={btnStyle(!busy && level < YUNLING_MAX)}
                             >
                                 蕴灵
@@ -703,7 +720,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                                 type="button"
                                 disabled={!auto && level >= YUNLING_MAX}
                                 onClick={() => { if (autoRef.current) { stopAll(); return; } startAuto(); }}
-                                className="flex-1 py-1.5 rounded-[3px] text-[14px] tracking-wider font-medium transition-all"
+                                className="px-4 py-1.5 rounded-[3px] text-[13px] tracking-wider font-medium transition-all whitespace-nowrap"
                                 style={btnStyle(auto || level < YUNLING_MAX, auto ? 'danger' : 'normal')}
                             >
                                 {auto ? '停止' : '连点到 +15'}
@@ -711,7 +728,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                             <button
                                 type="button"
                                 onClick={resetAll}
-                                className="px-3 py-1.5 rounded-[3px] text-[13px] shrink-0"
+                                className="px-4 py-1.5 rounded-[3px] text-[13px] transition-all whitespace-nowrap"
                                 style={btnStyle(true)}
                             >
                                 重置

@@ -199,7 +199,10 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
     return (
         <div className={clsx(
-            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left w-full min-w-0 max-w-xl',
+            /* 自适应宽度：卡片按内容自然宽度收缩（不靠 w-full 撑满留一大片空），
+               下限 = 移动端宽度（min(320px,100%)，窄屏不会溢出），上限仍是 36rem。
+               注意不能用 w-full：那会让 576px 的卡里文字只占一半、右边全空。 */
+            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left w-max min-w-[min(320px,100%)] max-w-[min(100%,36rem)]',
             className
         )}>
             {/* 1:1 游戏实机与寻宝天行原生 Tooltip 视效容器 */}
@@ -321,7 +324,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
                 {/* 基础攻击（经典游戏蓝 #8080ff，炼器加成直接合并不分行、不带右侧括号） */}
                 {currentItem.atk && (
-                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                    <div className="flex items-baseline gap-2" style={{ color: GAME_COLORS.STAT_BLUE }}>
                         <span>
                             基础攻击 {currentItem.atk[0] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)} － {currentItem.atk[1] + (hasYunling && targetRefKey === 'atk' ? currentRefBonus : 0)}
                         </span>
@@ -340,7 +343,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
                 {/* 命中与躲闪（常见于法身、金身、印） */}
                 {currentItem.hit !== undefined && (
-                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                    <div className="flex items-baseline gap-2" style={{ color: GAME_COLORS.STAT_BLUE }}>
                         <span>命中 ＋{currentItem.hit}</span>
                         {!hasYunling && nextItem && nextItem.hit !== undefined && nextItem.hit > currentItem.hit && (
                             <span className="text-emerald-400 font-sans text-[11px] font-medium">
@@ -350,7 +353,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                     </div>
                 )}
                 {currentItem.dod !== undefined && (
-                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                    <div className="flex items-baseline gap-2" style={{ color: GAME_COLORS.STAT_BLUE }}>
                         <span>躲闪 ＋{currentItem.dod}</span>
                         {!hasYunling && nextItem && nextItem.dod !== undefined && nextItem.dod > currentItem.dod && (
                             <span className="text-emerald-400 font-sans text-[11px] font-medium">
@@ -362,7 +365,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
                 {/* 防御力（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
                 {currentItem.def !== undefined && (
-                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                    <div className="flex items-baseline gap-2" style={{ color: GAME_COLORS.STAT_BLUE }}>
                         <span>
                             基础防御 ＋{currentItem.def + (hasYunling && targetRefKey === 'def' ? currentRefBonus : 0)}
                         </span>
@@ -381,7 +384,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
                 {/* 基础气血（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
                 {currentItem.hp !== undefined && (
-                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                    <div className="flex items-baseline gap-2" style={{ color: GAME_COLORS.STAT_BLUE }}>
                         <span>
                             基础气血 ＋{currentItem.hp + (hasYunling && targetRefKey === 'hp' ? currentRefBonus : 0)}
                         </span>
@@ -400,7 +403,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
 
                 {/* 基础真气（经典游戏蓝 #8080ff，炼器加成直接合并不分行） */}
                 {currentItem.mp !== undefined && (
-                    <div className="flex items-center justify-between" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                    <div className="flex items-baseline gap-2" style={{ color: GAME_COLORS.STAT_BLUE }}>
                         <span>
                             基础真气 ＋{currentItem.mp + (hasYunling && targetRefKey === 'mp' ? currentRefBonus : 0)}
                         </span>
@@ -452,8 +455,8 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                     style={{
                                         color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED,
                                         display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between'
+                                        alignItems: 'baseline',
+                                        gap: 6
                                     }}
                                 >
                                     <span>{displayText}</span>
@@ -505,12 +508,15 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                                     <span>+{tier}档位</span>
                                                     <span>{isUnlocked ? '已激活' : '需蕴灵 +' + tier}</span>
                                                 </div>
-                                                {shouldShowList && tierItems.map((bi, bIdx) => {
+                                                {shouldShowList && (
+                                                <div className="overflow-x-auto no-scrollbar">
+                                                <div className="w-full min-w-max">
+                                                {tierItems.map((bi, bIdx) => {
                                                     const parsed = parseAttrAndRate(bi.d);
                                                     return (
                                                         <div
                                                             key={bIdx}
-                                                            className="pl-2 flex items-center justify-between text-[13px] leading-[22px]"
+                                                            className="pl-2 flex items-baseline justify-between gap-3 text-[13px] leading-[22px] whitespace-nowrap"
                                                             style={{
                                                                 color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED
                                                             }}
@@ -524,6 +530,9 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
                                                         </div>
                                                     );
                                                 })}
+                                                </div>
+                                                </div>
+                                                )}
                                             </div>
                                         );
                                     })}

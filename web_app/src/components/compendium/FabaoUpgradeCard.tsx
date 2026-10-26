@@ -119,19 +119,19 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
         <table className="w-full text-center border-collapse whitespace-nowrap text-[11px] sm:text-xs">
             <thead>
                 <tr className="border-b border-[#1c2436] bg-black/60 text-[10px] sm:text-[11px] text-slate-400">
-                    <th className="px-1.5 py-1.5 font-bold text-sky-400 bg-sky-950/20 border-r border-[#1c2436] w-14 shrink-0">
+                    <th className="px-1 sm:px-1.5 py-1.5 font-bold text-sky-400 bg-sky-950/20 border-r border-[#1c2436] w-12 sm:w-14 shrink-0">
                         等级
                     </th>
-                    <th className="px-2 py-1.5 text-slate-300 border-r border-[#1c2436] text-right">
+                    <th className="px-1 sm:px-2 py-1.5 text-slate-300 border-r border-[#1c2436] text-right">
                         本级经验
                     </th>
-                    <th className="px-2 py-1.5 text-slate-300 border-r border-[#1c2436] text-right">
+                    <th className="px-1 sm:px-2 py-1.5 text-slate-300 border-r border-[#1c2436] text-right">
                         累计经验
                     </th>
-                    <th className="px-2 py-1.5 text-red-400 font-semibold border-r border-[#1c2436] text-right">
+                    <th className="px-1 sm:px-2 py-1.5 text-red-400 font-semibold border-r border-[#1c2436] text-right">
                         天龙魔血
                     </th>
-                    <th className="px-2 py-1.5 text-amber-400 font-semibold text-right">
+                    <th className="px-1 sm:px-2 py-1.5 text-amber-400 font-semibold text-right">
                         折合真龙
                     </th>
                 </tr>
@@ -148,25 +148,25 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                                 }`}
                         >
                             <td
-                                className={`px-1.5 py-1 font-bold border-r border-[#1c2436] ${isMilestone
+                                className={`px-1 sm:px-1.5 py-1 font-bold border-r border-[#1c2436] ${isMilestone
                                     ? 'text-red-400 bg-red-950/40 font-black'
                                     : 'text-sky-400 bg-sky-950/10'
                                     }`}
                             >
                                 {row.level}级
                             </td>
-                            <td className="px-2 py-1 text-slate-300 border-r border-[#1c2436] text-right">
+                            <td className="px-1 sm:px-2 py-1 text-slate-300 border-r border-[#1c2436] text-right">
                                 {row.level > 1 ? row.currentExp.toLocaleString() : '-'}
                             </td>
-                            <td className={`px-2 py-1 border-r border-[#1c2436] text-right ${isMilestone ? 'text-red-300 font-bold' : 'text-slate-300'
+                            <td className={`px-1 sm:px-2 py-1 border-r border-[#1c2436] text-right ${isMilestone ? 'text-red-300 font-bold' : 'text-slate-300'
                                 }`}>
                                 {row.level > 1 ? row.cumulativeExp.toLocaleString() : '-'}
                             </td>
-                            <td className={`px-2 py-1 border-r border-[#1c2436] text-right font-semibold ${isMilestone ? 'text-red-400 font-bold' : 'text-red-300/90'
+                            <td className={`px-1 sm:px-2 py-1 border-r border-[#1c2436] text-right font-semibold ${isMilestone ? 'text-red-400 font-bold' : 'text-red-300/90'
                                 }`}>
                                 {row.level > 1 ? row.tianlong.toFixed(1) : '-'}
                             </td>
-                            <td className="px-2 py-1 text-amber-300 text-right">
+                            <td className="px-1 sm:px-2 py-1 text-amber-300 text-right">
                                 {row.level > 1 ? zhenlong : '-'}
                             </td>
                         </tr>
@@ -229,21 +229,6 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                                 ))}
                             </select>
                         </div>
-
-                        <div className="flex items-center gap-1 shrink-0">
-                            {[35, 40].map((quickLv) => (
-                                <button
-                                    key={quickLv}
-                                    onClick={() => {
-                                        if (startLevel >= quickLv) setStartLevel(Math.max(1, quickLv - 5));
-                                        setTargetLevel(quickLv);
-                                    }}
-                                    className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
-                                >
-                                    直达{quickLv}级
-                                </button>
-                            ))}
-                        </div>
                     </div>
 
                     <div className="p-2 rounded bg-black/40 border border-[#1e293b] text-[11px] space-y-1.5">
@@ -302,7 +287,7 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                         </div>
                     </button>
                     {openP1 && (
-                        <div className="overflow-x-auto w-full border-t border-[#1c2436]">
+                        <div className="overflow-x-auto no-scrollbar w-full border-t border-[#1c2436]">
                             {renderLevelTable(p1Levels)}
                         </div>
                     )}
@@ -324,7 +309,7 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                         </div>
                     </button>
                     {openP2 && (
-                        <div className="overflow-x-auto w-full border-t border-[#1c2436]">
+                        <div className="overflow-x-auto no-scrollbar w-full border-t border-[#1c2436]">
                             {renderLevelTable(p2Levels)}
                         </div>
                     )}
@@ -361,7 +346,7 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                         <div className="flex items-center gap-1.5 shrink-0">
                             <span className="text-xs text-cyan-400 font-bold">30级满</span>
                         </div>
-                        <div className="grid grid-cols-[5rem_6rem_4rem] justify-end gap-x-2 text-[11px]">
+                        <div className="flex flex-wrap justify-end gap-x-3 gap-y-0.5 text-[11px] ml-auto sm:grid sm:grid-cols-[5rem_6rem_4rem] sm:gap-x-2 sm:gap-y-0">
                             <span className="text-right whitespace-nowrap">
                                 <span className="text-orange-400 font-bold tabular-nums">1,679</span>
                                 <span className="text-slate-500"> 个</span>
@@ -385,7 +370,7 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                         <div className="flex items-center gap-1.5 shrink-0">
                             <span className="text-xs text-cyan-400 font-bold">35级满</span>
                         </div>
-                        <div className="grid grid-cols-[5rem_6rem_4rem] justify-end gap-x-2 text-[11px]">
+                        <div className="flex flex-wrap justify-end gap-x-3 gap-y-0.5 text-[11px] ml-auto sm:grid sm:grid-cols-[5rem_6rem_4rem] sm:gap-x-2 sm:gap-y-0">
                             <span className="text-right whitespace-nowrap">
                                 <span className="text-orange-400 font-bold tabular-nums">3,152</span>
                                 <span className="text-slate-500"> 个</span>
@@ -409,7 +394,7 @@ export const FabaoUpgradeCard: React.FC<FabaoUpgradeCardProps> = ({ cardData, cl
                         <div className="flex items-center gap-1.5 shrink-0">
                             <span className="text-xs text-cyan-400 font-bold">40级满</span>
                         </div>
-                        <div className="grid grid-cols-[5rem_6rem_4rem] justify-end gap-x-2 text-[11px]">
+                        <div className="flex flex-wrap justify-end gap-x-3 gap-y-0.5 text-[11px] ml-auto sm:grid sm:grid-cols-[5rem_6rem_4rem] sm:gap-x-2 sm:gap-y-0">
                             <span className="text-right whitespace-nowrap">
                                 <span className="text-orange-400 font-bold tabular-nums">25,152</span>
                                 <span className="text-slate-500"> 个</span>

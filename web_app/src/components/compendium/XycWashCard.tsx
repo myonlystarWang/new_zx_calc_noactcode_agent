@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { RotateCw } from 'lucide-react';
+import { Square, X } from 'lucide-react';
+import { XycTomeDetailCard } from './XycTomeDetailCard';
 import clsx from 'clsx';
 import { DataService } from '../../services/DataService';
 import {
@@ -37,6 +38,25 @@ const WASH_MS = 1000;
 const IDENTIFY_MS = 1000;
 /** 左窗「升级」读条时长（比鉴定快） */
 const UPGRADE_MS = 500;
+/** 「升级失败」红字停留时长（只提示失败本身，不带等级/概率） */
+const UPGRADE_TIP_MS = 500;
+/**
+ * 升级成功率表：下标 = 当前等级（0~19），值 = 升到下一级的成功率。
+ * 等级越高越难升：0→1 95% 起步，逐级递减到 19→20 的 15%。
+ * 客户端 elements.data 表 213/214/215 未暴露这张表，数值为本站设定；
+ * 若拿到官方概率，直接改这一行即可（长度须为 20）。
+ */
+const UPGRADE_RATES = [
+    0.95, 0.92, 0.89, 0.86, 0.82, 0.78, 0.74, 0.7, 0.65, 0.6,
+    0.55, 0.5, 0.45, 0.4, 0.35, 0.3, 0.26, 0.22, 0.18, 0.15,
+];
+
+/** 当前等级对应的升级成功率（满级沿用最后一项，仅用于文案展示） */
+function upgradeRateAt(level: number): number {
+    return UPGRADE_RATES[Math.min(Math.max(level, 0), UPGRADE_RATES.length - 1)];
+}
+/** 「使用轩辕拾遗录」按钮暂时封着不显示（增加洗练次数本身是灰的，缺前置入口） */
+const SHOW_RAISE_MAX = false;
 /** 品阶固定六品（2026-10-26 用户要求删除品阶选择行） */
 const GRADE = 6;
 
@@ -85,39 +105,52 @@ function tabStyle(active: boolean): React.CSSProperties {
           };
 }
 
-function btnStyle(enabled: boolean, tone: 'normal' | 'gold' = 'normal'): React.CSSProperties {
+/**
+ * 按钮样式：**文字口径与神机锻造卡完全一致**
+ * （13px · font-weight 500 · letter-spacing 0.05em · 启用 #edf5fc / 禁用 #4a657c），
+ * 底色/描边也用神机那套蓝灰金属。原先轩辕策自用一套偏青的配色 + 无字距无字重，
+ * 两卡并排时按钮文字观感不一致（2026-10-26 用户反馈）。
+ */
+function btnStyle(enabled: boolean, tone: 'normal' | 'danger' = 'normal'): React.CSSProperties {
     if (!enabled) {
         return {
             background: 'rgba(16, 26, 36, 0.6)',
-            border: '1px solid #22303f',
-            color: '#4b5f70',
+            border: '1px solid #203244',
+            color: '#4a657c',
             borderRadius: 3,
             fontFamily: SIM_FONT,
-            fontSize: 12,
+            fontSize: 13,
+            fontWeight: 500,
+            letterSpacing: '0.05em',
             cursor: 'not-allowed',
         };
     }
-    return tone === 'gold'
-        ? {
-              background: 'linear-gradient(180deg, #4a3a1c 0%, #2a2110 100%)',
-              border: '1px solid #a5822f',
-              color: '#ffe6a8',
-              borderRadius: 3,
-              fontFamily: SIM_FONT,
-              fontSize: 12,
-              cursor: 'pointer',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14), 0 2px 6px rgba(0,0,0,0.5)',
-          }
-        : {
-              background: 'linear-gradient(180deg, #1c3348 0%, #101d2a 100%)',
-              border: '1px solid #3d6382',
-              color: '#cfe6f7',
-              borderRadius: 3,
-              fontFamily: SIM_FONT,
-              fontSize: 12,
-              cursor: 'pointer',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.12), 0 2px 6px rgba(0,0,0,0.5)',
-          };
+    if (tone === 'danger') {
+        return {
+            background: 'linear-gradient(180deg, #872e22 0%, #4f1710 100%)',
+            border: '1px solid #b34739',
+            color: '#ffffff',
+            borderRadius: 3,
+            fontFamily: SIM_FONT,
+            fontSize: 13,
+            fontWeight: 500,
+            letterSpacing: '0.05em',
+            cursor: 'pointer',
+            boxShadow: '0 0 12px rgba(220,60,40,0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
+        };
+    }
+    return {
+        background: 'linear-gradient(180deg, #274563 0%, #142a3d 100%)',
+        border: '1px solid #3c678f',
+        color: '#edf5fc',
+        borderRadius: 3,
+        fontFamily: SIM_FONT,
+        fontSize: 13,
+        fontWeight: 500,
+        letterSpacing: '0.05em',
+        cursor: 'pointer',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.5)',
+    };
 }
 
 /** 已展开态：与禁用灰同色，但仍可点击（再点收起） */
@@ -140,6 +173,10 @@ interface ChangeLine {
     from: string;
     to: string;
     isSkill?: boolean;
+    /** 变化方向：1 提升（绿）/ -1 下降（红）/ 0 无（技能行等） */
+    dir?: 1 | -1 | 0;
+    /** 增量文案：+371 / −1.6% / 新增 / 移除 */
+    deltaStr?: string;
 }
 
 export interface XycWashCardProps {
@@ -181,6 +218,9 @@ const ITEM_ICONS: Record<XycWashMode, { src: string; ch: string }> = {
 export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className }) => {
     const [data, setData] = useState<XycRefineData | null>(null);
     const [loadErr, setLoadErr] = useState<string | null>(null);
+    /** 底部「轩辕策信息卡」展开态 + 懒加载的规则数据（与新天缘精炼卡同款交互） */
+    const [showInfo, setShowInfo] = useState(false);
+    const [tomeData, setTomeData] = useState<{ rules: any; meta: any } | null>(null);
 
     const initialBeast = (BEAST_ORDER as string[]).includes(cardData?.initialBeast || '')
         ? (cardData!.initialBeast as XycBeast)
@@ -194,21 +234,26 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     const [occ, setOcc] = useState<string>(OCC_ORDER.includes(cardData?.initialOcc || '') ? cardData!.initialOcc! : '鬼王');
     const [level, setLevel] = useState<number>(() => {
         const lv = cardData?.initialLevel;
-        return typeof lv === 'number' ? Math.min(20, Math.max(1, lv)) : 1;
+        return typeof lv === 'number' ? Math.min(20, Math.max(0, lv)) : 0;
     });
 
     const [book, setBook] = useState<XycBook | null>(null);
     const [mode, setMode] = useState<XycWashMode>('attr');
     const [changeLines, setChangeLines] = useState<ChangeLine[]>([]);
     const [changeSeq, setChangeSeq] = useState(0);
+    /** 升级失败提示（0.5s 后自动消失；固定高度占位，不顶动布局） */
+    const [upgradeTip, setUpgradeTip] = useState<string | null>(null);
     /** 右侧洗练窗默认收起，点左窗「洗炼」才展开 */
     const [washOpen, setWashOpen] = useState(false);
 
     /** 读条（对齐天缘模拟器：busy + barFill/barAnim） */
     const [busy, setBusy] = useState(false);
+    /** 连续洗练：自动循环，直到次数用尽或手动「停止」（对齐新天缘连续精炼） */
+    const [auto, setAuto] = useState(false);
     const [barFill, setBarFill] = useState(0);
     const [barAnim, setBarAnim] = useState(false);
     const busyRef = useRef(false);
+    const autoRef = useRef(false);
     const timerRef = useRef<number | null>(null);
     const barRef = useRef<number | null>(null);
 
@@ -249,13 +294,18 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         bookRef.current = book;
     }, [book]);
 
+    /** 鉴定 = 换一本新的：属性重掷 + 洗练次数归零 + **等级归 0**（升到 20 靠「升级」逐级点） */
     const regenerate = useCallback(() => {
         if (!data) return;
-        const next = identifyBook(data, { version, beast, grade: GRADE, level, occ }, rngRef.current);
+        autoRef.current = false;
+        setAuto(false);
+        setUpgradeTip(null);
+        const next = identifyBook(data, { version, beast, grade: GRADE, level: 0, occ }, rngRef.current);
         setBook(next);
         bookRef.current = next;
         setChangeLines([]);
-    }, [data, version, beast, level, occ]);
+        setLevel(0);
+    }, [data, version, beast, occ]);
 
     // 数据/配置变化后重新鉴定（等级变化不重置书，只改显示）
     const identKey = `${version}|${beast}|${occ}`;
@@ -284,7 +334,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         setBarAnim(false);
     }, []);
 
-    /** 一轮洗练跑完：清计时器、解除忙碌，但读条停在满格（与天缘一致） */
+    /** 一轮洗练跑完：清计时器、解除忙碌（读条已在 washOnce 里瞬间清空） */
     const finishBar = useCallback(() => {
         busyRef.current = false;
         setBusy(false);
@@ -298,7 +348,13 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         }
     }, []);
 
-    useEffect(() => stopBar, [stopBar]);
+    useEffect(
+        () => () => {
+            autoRef.current = false;
+            stopBar();
+        },
+        [stopBar],
+    );
 
     const stopLeftBar = useCallback(() => {
         leftBusyRef.current = false;
@@ -317,7 +373,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
 
     useEffect(() => stopLeftBar, [stopLeftBar]);
 
-    /** 左窗读条：跑满后执行 onDone，进度条停在满格 */
+    /** 左窗读条：跑满后瞬间清空，再执行 onDone（不做满→空回落动画） */
     const runLeftBar = useCallback((ms: number, onDone: () => void) => {
         if (busyRef.current || leftBusyRef.current) return;
         leftBusyRef.current = true;
@@ -332,9 +388,12 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         }, 20);
         leftTimerRef.current = window.setTimeout(() => {
             leftTimerRef.current = null;
-            onDone();
             leftBusyRef.current = false;
             setLeftBusy(false);
+            // 读条跑满后瞬间清空（不做满→空回落动画），再执行 onDone
+            setLeftAnim(false);
+            setLeftFill(0);
+            onDone();
         }, ms);
     }, []);
 
@@ -355,7 +414,23 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         });
     }, []);
 
-    /** 把本次累计快照与当前书对比，生成「本次洗练属性变化」 */
+    /** 展开/收起底部「轩辕策信息卡」：首次展开时懒加载规则与书目元数据（不拖慢洗练卡首屏） */
+    const toggleInfo = useCallback(async () => {
+        if (!showInfo && !tomeData) {
+            try {
+                const [rules, meta] = await Promise.all([
+                    DataService.getInstance().getXycRules(),
+                    DataService.getInstance().getXycTomeMeta(),
+                ]);
+                setTomeData({ rules, meta });
+            } catch {
+                setTomeData(null);
+            }
+        }
+        setShowInfo((v) => !v);
+    }, [showInfo, tomeData]);
+
+
     const buildChangeLines = useCallback((): ChangeLine[] => {
         const cur = bookRef.current;
         if (!data || !cur || !pool) return [];
@@ -368,15 +443,80 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
             const def = data.attrs[String(id)];
             if (!def) continue;
             const step = pool.attrs.find((a) => a.id === id)?.step ?? 0;
-            out.push({
-                name: def.name,
-                from: before === null ? '—' : formatAttrValue(data, id, before + step * cur.level),
-                to: after === null ? '—' : formatAttrValue(data, id, after + step * cur.level),
-            });
+            const fromStr = before === null ? '—' : formatAttrValue(data, id, before + step * cur.level);
+            const toStr = after === null ? '—' : formatAttrValue(data, id, after + step * cur.level);
+            // 显示值完全一致（小数四舍五入后相同）的行没有意义，直接不列（如 33 → 33）
+            if (before !== null && after !== null && fromStr === toStr) continue;
+            // 变化方向与增量：新增/移除单独标记；数值差用「显示值」相减，避免与左右两列对不上
+            let dir: 1 | -1 | 0 = 0;
+            let deltaStr: string | undefined;
+            if (before === null && after !== null) {
+                dir = 1;
+                deltaStr = '新增';
+            } else if (before !== null && after === null) {
+                dir = -1;
+                deltaStr = '移除';
+            } else {
+                const numOf = (s: string) => {
+                    const m = s.match(/-?\d+(?:\.\d+)?/);
+                    return m ? parseFloat(m[0]) : null;
+                };
+                const a = numOf(fromStr);
+                const b = numOf(toStr);
+                if (a !== null && b !== null) {
+                    const d = b - a;
+                    if (Math.abs(d) > 0.049) {
+                        dir = d > 0 ? 1 : -1;
+                        const isPct = toStr.includes('%');
+                        const abs = isPct ? Math.abs(d).toFixed(1) : String(Math.round(Math.abs(d)));
+                        deltaStr = `${d > 0 ? '+' : '−'}${abs}${isPct ? '%' : ''}`;
+                    }
+                }
+            }
+            out.push({ name: def.name, from: fromStr, to: toStr, dir, deltaStr });
         }
         const curSkill = cur.skill ? `${cur.skill.name} ${cur.skill.level}级` : '无';
+        // 展示只保留「书名+等级」（天空2级 / 碧海1级），避免整串太长换行；比较仍用完整串
+        const shortSkill = (s: string | null): string => {
+            if (!s) return '无';
+            const m = s.match(/《(.+?)》\s*(\d+)级/);
+            return m ? `${m[1]}${m[2]}级` : s;
+        };
         if (skillAccRef.current && skillAccRef.current.before !== curSkill) {
-            out.push({ name: '进阶技能', from: skillAccRef.current.before ?? '无', to: curSkill, isSkill: true });
+            const fromS = shortSkill(skillAccRef.current.before);
+            const toS = shortSkill(curSkill);
+            // 方向按「技能等级升降」判定：升绿 / 降红 / 同级换书不判方向；习得与失去单独标记
+            const lvOf = (s: string): number | null => {
+                const m = s.match(/(\d+)级/);
+                return m ? parseInt(m[1], 10) : null;
+            };
+            const lvA = lvOf(fromS);
+            const lvB = lvOf(toS);
+            let sDir: 1 | -1 | 0 = 0;
+            let sDelta: string | undefined;
+            if (fromS === '无' && toS !== '无') {
+                sDir = 1;
+                sDelta = '习得';
+            } else if (toS === '无' && fromS !== '无') {
+                sDir = -1;
+                sDelta = '失去';
+            } else if (lvA !== null && lvB !== null) {
+                if (lvB > lvA) {
+                    sDir = 1;
+                    sDelta = `+${lvB - lvA}级`;
+                } else if (lvB < lvA) {
+                    sDir = -1;
+                    sDelta = `−${lvA - lvB}级`;
+                }
+            }
+            out.push({
+                name: '进阶技能',
+                from: fromS,
+                to: toS,
+                isSkill: true,
+                dir: sDir,
+                deltaStr: sDelta,
+            });
         }
         return out;
     }, [data, pool]);
@@ -400,52 +540,87 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         return true;
     }, [data, mode, occ]);
 
-    /** 洗练：逐次读条（单次 1 手，连洗最多 10 手），对齐天缘模拟器节奏 */
-    const runWash = useCallback(
-        (times: number) => {
-            if (busyRef.current || !data || !bookRef.current) return;
-            accRef.current = new Map();
-            skillAccRef.current = null;
-            setChangeLines([]);
-            busyRef.current = true;
-            setBusy(true);
+    /** 还能不能再洗一手（次数用尽 / 技能洗练条件不满足） */
+    const washBlocked = useCallback((): boolean => {
+        const cur = bookRef.current;
+        if (!data || !cur) return true;
+        if (cur.washUsed >= cur.washMax) return true;
+        if (mode === 'skill' && !canRollSkill(data, cur.beast, cur.grade, cur.attrCount)) return true;
+        return false;
+    }, [data, mode]);
 
-            let remaining = times;
-            const step = () => {
-                if (!busyRef.current) return;
-                const cur = bookRef.current;
-                const blocked =
-                    !cur ||
-                    cur.washUsed >= cur.washMax ||
-                    (mode === 'skill' && !canRollSkill(data, cur.beast, cur.grade, cur.attrCount));
-                if (remaining <= 0 || blocked) {
-                    finishBar();
-                    setChangeLines(buildChangeLines());
-                    setChangeSeq((s) => s + 1);
-                    return;
-                }
+    /** 开一轮洗练会话：清空「本次变化」累计，进入忙碌态 */
+    const beginWashSession = useCallback(() => {
+        accRef.current = new Map();
+        skillAccRef.current = null;
+        setChangeLines([]);
+        busyRef.current = true;
+        setBusy(true);
+    }, []);
 
+    /** 跑一手：起读条 → WASH_MS 后落结果并刷新变化行 → onDone */
+    const washOnce = useCallback(
+        (onDone: () => void) => {
+            setBarAnim(false);
+            setBarFill(0);
+            barRef.current = window.setTimeout(() => {
+                barRef.current = null;
+                setBarAnim(true);
+                setBarFill(1);
+            }, 20);
+            timerRef.current = window.setTimeout(() => {
+                timerRef.current = null;
+                applyOneWash();
+                setChangeLines(buildChangeLines());
+                setChangeSeq((s) => s + 1);
+                // 读条跑满后瞬间清空（不做满→空回落动画）；先清再回调，连点会各自重新起条
                 setBarAnim(false);
                 setBarFill(0);
-                barRef.current = window.setTimeout(() => {
-                    barRef.current = null;
-                    setBarAnim(true);
-                    setBarFill(1);
-                }, 20);
-
-                timerRef.current = window.setTimeout(() => {
-                    timerRef.current = null;
-                    applyOneWash();
-                    remaining -= 1;
-                    setChangeLines(buildChangeLines());
-                    setChangeSeq((s) => s + 1);
-                    step();
-                }, WASH_MS);
-            };
-            step();
+                onDone();
+            }, WASH_MS);
         },
-        [data, mode, applyOneWash, buildChangeLines, finishBar]
+        [applyOneWash, buildChangeLines],
     );
+
+    /** 单次洗练（读条一次即结束） */
+    const runWash = useCallback(() => {
+        if (busyRef.current || autoRef.current || !data || !bookRef.current) return;
+        beginWashSession();
+        if (washBlocked()) {
+            finishBar();
+            return;
+        }
+        washOnce(() => finishBar());
+    }, [data, beginWashSession, washBlocked, washOnce, finishBar]);
+
+    /** 连续洗练：不断开新的一手，直到次数用尽 / 条件不满足 / 点「停止」 */
+    const toggleAuto = useCallback(() => {
+        if (autoRef.current) {
+            autoRef.current = false;
+            setAuto(false);
+            stopBar();
+            return;
+        }
+        if (busyRef.current || leftBusyRef.current || !data || !bookRef.current) return;
+        if (washBlocked()) return;
+        beginWashSession();
+        autoRef.current = true;
+        setAuto(true);
+        const loop = () => {
+            if (!autoRef.current) return;
+            if (washBlocked()) {
+                autoRef.current = false;
+                setAuto(false);
+                finishBar();
+                return;
+            }
+            washOnce(() => {
+                if (!autoRef.current) return;
+                loop();
+            });
+        };
+        loop();
+    }, [data, beginWashSession, washBlocked, washOnce, finishBar, stopBar]);
 
     const raiseWashMax = useCallback(() => {
         if (!data) return;
@@ -500,22 +675,38 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                     .xyc-layout { flex-direction: column !important; }
                     .xyc-left, .xyc-right { width: 100% !important; max-width: 100% !important; }
                 }
-                /* 桌面分屏（面板 400~520）：左边距收窄，保住技能行 12px 不缩、不折行 */
+                /* 属性 + 进阶技能是**一个整体**，左缘必须与属性行严格对齐 ——
+                   所以不能用「技能行自己跨出去」的办法（会破坏左对齐）。
+                   正确做法：文字列按「最长一行」取宽（width: max-content，等价于不换行时的宽度），
+                   剩下的横向空间全部让给图标 —— 技能名越长，图标越小，文字列越宽。
+                   图标留 40px 下限、左边距 14px，只有极端长名（19 字≈280px）才会退回换行。 */
+                .xyc-book-body {
+                    flex: 0 0 auto !important;
+                    width: max-content !important;
+                    max-width: calc(100% - 48px) !important;
+                }
+                .xyc-book-icon {
+                    flex: 0 1 120px !important;
+                    width: auto !important;
+                    min-width: 36px !important;
+                    height: auto !important;
+                    aspect-ratio: 1 / 1 !important;
+                    align-self: flex-start !important;
+                }
+                /* 桌面分屏（面板 400~520）：左边距收窄 */
                 @container (max-width: 470px) {
-                    .xyc-book-body { margin-left: 18px !important; }
+                    .xyc-book-body { margin-left: 12px !important; }
                 }
-                /* 窄容器：**只缩图标与左边距，字号与折行口径一律不动**。
-                   实测 12px 下「（进阶技能）猛火咒III 《英雄》 2级」自然宽度 204px，
-                   要单行放下，body 必须 ≥ 210px；而 body = 容器 - 22(内边距+描边) - 图标 - 左边距，
-                   所以每档按「图标 + 左边距 ≤ 容器 - 232」逐级缩图标即可。
-                   曾经这里是「容器 ≤340 时把字号压到 11px」，结果字变小了还是折行 —— 治标不治本。 */
-                @container (max-width: 400px) {
-                    .xyc-book-icon { width: 88px !important; height: 88px !important; }
-                    .xyc-book-body { margin-left: 14px !important; }
-                }
+                /* 更窄（手机）：左右内边距各让 4px 出来给文字列，
+                   360 视口下文字列才能从 209 涨到 217，容下「（进阶技能）玄阳火典III 《天空》 1级」(216)。 */
                 @container (max-width: 340px) {
-                    .xyc-book-icon { width: 64px !important; height: 64px !important; }
-                    .xyc-book-body { margin-left: 8px !important; }
+                    .xyc-book-row { padding-left: 6px !important; padding-right: 6px !important; }
+                }
+                /* 宽卡（PC 未分屏，书窗 460）：按钮组/读条不再锁 216，但也不铺满整卡，
+                   收到 340（每键约 165）—— 比 216 舒展、又不至于像铺满时那样空。
+                   两列间距仍是 gap-2.5(10px)，与神机/蕴灵两列按钮组一致。 */
+                @container (min-width: 420px) {
+                    .xyc-wide { max-width: 340px !important; }
                 }
             `}</style>
 
@@ -527,11 +718,6 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             {beast}
                             <span style={{ color: '#f7f4bb' }}>&lt;{bookName}&gt;</span>
                         </span>
-                        <div className="absolute right-3 flex items-center gap-2">
-                            <button type="button" onClick={regenerate} title="重新鉴定（重抽条数与数值）" className="cursor-pointer hover:brightness-150">
-                                <RotateCw className="w-3.5 h-3.5" style={{ color: '#5b7894' }} />
-                            </button>
-                        </div>
                     </div>
 
                     {/* 四系切换 */}
@@ -581,7 +767,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                     </div>
 
                     {/* 图标 + tooltip：属性块在图标右侧空间里居中，两侧留白均分（不再贴左导致右边空一大片） */}
-                    <div className="p-2.5 flex min-w-0">
+                    <div className="xyc-book-row p-2.5 flex min-w-0">
                         <div className="xyc-book-icon relative w-[120px] h-[120px] shrink-0 rounded-[3px] overflow-hidden">
                             <img
                                 src={BOOK_ICONS[`${beast}|${version === '英雄' ? 1 : 0}`] || '/game_data/equip_icons/xyc_book.png'}
@@ -637,7 +823,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                     {/* 底部读条 + 四键（对应游戏：鉴定 / 升级 / 分解 / 洗炼） */}
                     <div className="px-2.5 pb-2.5" style={{ borderTop: '1px solid #2a4054', paddingTop: 8 }}>
                         <div
-                            className="relative overflow-hidden w-full mb-2"
+                            className="relative overflow-hidden xyc-wide mx-auto w-full max-w-[216px] mb-2"
                             style={{
                                 height: 10,
                                 borderRadius: 999,
@@ -661,26 +847,39 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-1.5">
+                        {/* 四键与神机锻造按钮组完全对齐：216 宽度轴、10px 间距（按钮各 103） */}
+                        <div className="grid grid-cols-2 gap-2.5 xyc-wide mx-auto w-full max-w-[216px]">
                             <button
                                 type="button"
                                 onClick={() => runLeftBar(IDENTIFY_MS, regenerate)}
                                 disabled={busy || leftBusy}
-                                title="鉴定：重新随机属性条目与数值（洗练次数归零）"
-                                style={{ ...btnStyle(!busy && !leftBusy), padding: '5px 0' }}
+                                title="鉴定：重新随机属性条目与数值（洗练次数与等级归零）"
+                                style={{ ...btnStyle(!busy && !leftBusy), padding: '6px 0' }}
                             >
                                 鉴定
                             </button>
                             <button
                                 type="button"
-                                onClick={() => runLeftBar(UPGRADE_MS, () => setLevel((v) => Math.min(data.meta.maxLevel, v + 1)))}
+                                onClick={() => {
+                                    // 先跑读条，读条结束才判定成败（失败也要走完读条）
+                                    runLeftBar(UPGRADE_MS, () => {
+                                        const from = bookRef.current?.level ?? 0;
+                                        if (Math.random() >= upgradeRateAt(from)) {
+                                            setUpgradeTip('升级失败');
+                                            window.setTimeout(() => setUpgradeTip(null), UPGRADE_TIP_MS);
+                                            return;
+                                        }
+                                        setUpgradeTip(null);
+                                        setLevel((v) => Math.min(data.meta.maxLevel, v + 1));
+                                    });
+                                }}
                                 disabled={busy || leftBusy || book.level >= data.meta.maxLevel}
-                                title="升级：属性数值按每级固定增益提升"
-                                style={{ ...btnStyle(!busy && !leftBusy && book.level < data.meta.maxLevel), padding: '5px 0' }}
+                                title={`升级：等级越高越难（当前 ${book.level} → ${Math.min(data.meta.maxLevel, book.level + 1)} 成功率 ${Math.round(upgradeRateAt(book.level) * 100)}%）`}
+                                style={{ ...btnStyle(!busy && !leftBusy && book.level < data.meta.maxLevel), padding: '6px 0' }}
                             >
                                 升级
                             </button>
-                            <button type="button" disabled title="增加洗练次数：本站暂不模拟" style={{ ...btnStyle(false), padding: '5px 0' }}>
+                            <button type="button" disabled title="增加洗练次数：本站暂不模拟" style={{ ...btnStyle(false), padding: '6px 0' }}>
                                 增加洗练次数
                             </button>
                             <button
@@ -690,10 +889,27 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 title={washOpen ? '收起洗练面板' : '洗炼：展开右侧道具洗练面板'}
                                 style={{
                                     ...(washOpen && !busy && !leftBusy ? MUTED_BTN : btnStyle(!busy && !leftBusy)),
-                                    padding: '5px 0',
+                                    padding: '6px 0',
                                 }}
                             >
                                 洗炼
+                            </button>
+                        </div>
+
+                        {/* 升级结果提示：固定 16px 高占位，失败文案出现/消失都不顶动布局 */}
+                        <div className="h-4 mt-1 text-center text-[11px] leading-4 font-sans" style={{ color: '#f87171' }}>
+                            {upgradeTip || ''}
+                        </div>
+
+                        {/* 底部：展开/收起轩辕策属性信息卡（与新天缘精炼卡同款，左对齐） */}
+                        <div>
+                            <button
+                                type="button"
+                                onClick={toggleInfo}
+                                className="mt-1 text-[12px] cursor-pointer hover:brightness-125 transition-all"
+                                style={{ color: '#9adfff' }}
+                            >
+                                {showInfo ? '收起轩辕策信息卡 ▲' : '查看轩辕策信息卡 ▼'}
                             </button>
                         </div>
                     </div>
@@ -704,6 +920,16 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                     <div id="xyc-wash-anchor" className="xyc-right w-full min-w-0 rounded-[4px] overflow-hidden flex flex-col" style={CARD_STYLE}>
                         <div className="relative flex items-center justify-center px-3 py-2" style={TITLE_BAR_STYLE}>
                             <span style={TITLE_TEXT_STYLE}>洗 练</span>
+                            {/* 右上角关闭：与神机「自动锻造」面板同款，收起后可从左卡「洗炼」按钮再展开 */}
+                            <button
+                                type="button"
+                                onClick={toggleWash}
+                                disabled={busy}
+                                title="关闭洗练面板"
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors disabled:cursor-not-allowed"
+                            >
+                                <X className="w-3.5 h-3.5" />
+                            </button>
                         </div>
 
                         {/* 三种洗练道具：只放图标，点图标切换，选中态高亮 */}
@@ -755,7 +981,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                         <div className="px-3 py-2 flex flex-col gap-2">
                             {/* 读条（对齐天缘模拟器） */}
                             <div
-                                className="relative overflow-hidden w-full"
+                                className="relative overflow-hidden xyc-wide mx-auto w-full max-w-[216px]"
                                 style={{
                                     height: 10,
                                     borderRadius: 999,
@@ -779,28 +1005,39 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 />
                             </div>
 
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-2.5 xyc-wide mx-auto w-full max-w-[216px]">
                                 <button
                                     type="button"
-                                    onClick={() => runWash(1)}
+                                    onClick={runWash}
                                     disabled={!canWash || busy || leftBusy}
-                                    className="flex-1 py-1.5 rounded-[3px] text-[12.5px] font-bold"
+                                    className="flex-1 py-1.5 rounded-[3px] text-[12.5px] font-bold whitespace-nowrap"
                                     style={btnStyle(canWash && !busy && !leftBusy)}
                                 >
                                     洗练一次
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => runWash(10)}
-                                    disabled={!canWash || busy || leftBusy}
-                                    className="flex-1 py-1.5 rounded-[3px] text-[12.5px] font-bold"
-                                    style={btnStyle(canWash && !busy && !leftBusy)}
+                                    onClick={toggleAuto}
+                                    disabled={!auto && (!canWash || busy || leftBusy)}
+                                    className="flex-1 py-1.5 rounded-[3px] text-[12.5px] font-bold whitespace-nowrap"
+                                    style={btnStyle(auto || (canWash && !leftBusy), auto ? 'danger' : 'normal')}
+                                    title={
+                                        auto
+                                            ? '停止连续洗练'
+                                            : `连续洗练：自动逐次洗练，直到次数用尽（剩 ${washLeft} 次）或点「停止」`
+                                    }
                                 >
-                                    连洗 10
+                                    {auto ? (
+                                        <span className="inline-flex items-center justify-center gap-1">
+                                            <Square className="w-3 h-3" /> 停止
+                                        </span>
+                                    ) : (
+                                        '连续洗练'
+                                    )}
                                 </button>
                             </div>
 
-                            {canRaiseMax && (
+                            {SHOW_RAISE_MAX && canRaiseMax && (
                                 <button
                                     type="button"
                                     onClick={raiseWashMax}
@@ -839,21 +1076,43 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                         </span>
                                     </div>
                                     <div className="px-2.5 py-1.5 flex flex-col gap-[3px]">
-                                        {changeLines.map((line, i) => (
-                                            <div key={i} className="flex items-baseline gap-2 min-w-0 text-[11.5px] leading-[18px]">
-                                                <span
-                                                    className="shrink-0 w-[96px] truncate"
-                                                    style={{ color: line.isSkill ? '#9adfff' : C_STAT }}
+                                        {changeLines.map((line, i) => {
+                                            // 绿加红减：提升绿、下降红、无变化（技能行）保持白
+                                            const upColor = '#4ade80';
+                                            const downColor = '#f87171';
+                                            const toColor =
+                                                line.dir === 1 ? upColor : line.dir === -1 ? downColor : line.to === '—' ? '#5b7894' : '#dbe7f5';
+                                            const deltaColor = line.dir === 1 ? upColor : downColor;
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    className="flex items-baseline gap-2 min-w-0 text-[11.5px] leading-[18px] whitespace-nowrap"
+                                                    style={{ letterSpacing: line.isSkill ? '0.6px' : undefined }}
                                                 >
-                                                    {line.name}
-                                                </span>
-                                                <span className="flex items-baseline gap-1 font-mono min-w-0">
-                                                    <span style={{ color: '#5b7894' }}>{line.from}</span>
-                                                    <span style={{ color: '#3d6382' }}>→</span>
-                                                    <span style={{ color: line.to === '—' ? '#5b7894' : '#dbe7f5', fontWeight: 700 }}>{line.to}</span>
-                                                </span>
-                                            </div>
-                                        ))}
+                                                    <span
+                                                        className="shrink-0 w-[96px] truncate"
+                                                        style={{ color: line.isSkill ? '#9adfff' : C_STAT }}
+                                                    >
+                                                        {line.name}
+                                                    </span>
+                                                    <span className="flex items-baseline font-mono min-w-0 whitespace-nowrap">
+                                                        <span style={{ color: '#5b7894' }}>{line.from}</span>
+                                                        {/* 箭头左右各留一个空格（nbsp 防止被折叠） */}
+                                                        <span style={{ color: '#3d6382' }}>{'\u00A0→\u00A0'}</span>
+                                                        <span style={{ color: toColor, fontWeight: 700 }}>{line.to}</span>
+                                                    </span>
+                                                    {line.deltaStr && (
+                                                        <span
+                                                            className="ml-auto shrink-0 font-mono font-bold text-[11px] tabular-nums"
+                                                            style={{ color: deltaColor }}
+                                                            title={line.dir === 1 ? '本次提升' : '本次下降'}
+                                                        >
+                                                            {line.deltaStr}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             )}
@@ -861,6 +1120,21 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                     </div>
                 )}
             </div>
+
+            {/* 底部展开的轩辕策属性信息卡：四系 × 普通/英雄 的属性区间与每级增益（数据懒加载） */}
+            {showInfo && tomeData && (
+                <div className="mt-3 w-full">
+                    <XycTomeDetailCard
+                        cardData={{
+                            rules: tomeData.rules,
+                            meta: tomeData.meta,
+                            initialBeast: beast,
+                            initialHero: version === '英雄',
+                            initialLevel: book.level,
+                        }}
+                    />
+                </div>
+            )}
         </div>
     );
 };

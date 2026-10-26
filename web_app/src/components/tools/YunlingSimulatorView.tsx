@@ -292,6 +292,9 @@ export const YunlingSimulatorView: React.FC = () => {
                         : `蕴灵失败 · 累积幸运 +${cfg.luckGainPerFail}（本次成功率 ${fmtPct(r.prob * 100)}%，消耗 ${spent} 符）`,
                 });
 
+                // 读条跑满后瞬间清空（不做满→空回落动画）；先清再回调，连点会各自重新起条
+                setBarAnim(false);
+                setBarFill(0);
                 onDone?.(r.success);
             }, delay);
         },
@@ -619,7 +622,7 @@ export const YunlingSimulatorView: React.FC = () => {
                     {/* 等级阶梯 */}
                     <div className="relative rounded-[4px] p-3.5" style={panelStyle}>
                         <PanelTitle
-                            text="蕴灵模拟"
+                            text="神隐蕴灵"
                             right={
                                 <button
                                     type="button"

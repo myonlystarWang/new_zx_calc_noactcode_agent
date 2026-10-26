@@ -526,7 +526,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 placeholder={
                   attachedImage
                     ? '已粘贴截图，输入补充指令或直接回车启动推演...'
-                    : '问点什么，比如四灵本元，神机洗练，昭武衣服，苍龙啸，新天缘等...'
+                    : isMobile
+                      ? '问点什么？试试四灵本元…'
+                      : '问点什么，比如四灵本元，神机洗练，昭武衣服，苍龙啸，新天缘等...'
                 }
                 className="flex-1 min-w-0 bg-transparent text-slate-100 placeholder-slate-500 text-[16px] md:text-sm focus:outline-none px-1 py-1.5"
               />
@@ -581,8 +583,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             <button
               type="button"
               onClick={() => {
+                // 只唤起右分屏伤害计算器（不再发「计算实战战力」静态指南文案）
                 setWorkspaceState({ isOpen: true, mode: 'calc', isMaximized: false });
-                handleStartAiChat('计算实战战力');
               }}
               className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-amber-500/30 text-xs text-slate-300 hover:text-amber-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >

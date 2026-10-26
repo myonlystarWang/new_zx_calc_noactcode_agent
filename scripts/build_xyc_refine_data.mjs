@@ -41,7 +41,7 @@ const ATTR = {
     4: { name: '眩晕抗性', unit: '', pct: false, scope: '青龙' },
     8: { name: '定身抗性', unit: '', pct: false, scope: '青龙' },
     18: { name: '致命一击伤害', unit: '%', pct: true, scope: '青龙' },
-    20: { name: '技能命中', unit: '%', pct: true, scope: '青龙' },
+    20: { name: '技能命中', unit: '', pct: true, scope: '青龙' },   // pct=true 仅表示数据是比例，实机按点数展示（11 而非 11.0%）
     5: { name: '魅惑抗性', unit: '', pct: false, scope: '白虎' },
     16: { name: '致命一击率', unit: '%', pct: true, scope: '白虎' },
     17: { name: '减免致命一击率', unit: '%', pct: true, scope: '白虎' },
@@ -135,14 +135,28 @@ for (let r = 0; r < L213.count; r++) {
     };
 }
 
-// ---------- 表 215：进阶技能 ----------
+// ---------- 表 215：进阶技能（青龙 / 白虎 两套，各自含低品/高品两块） ----------
+// 每个职业固定 4 条记录：附加 / 附加1 / 附加2(老职业复用无后缀重名) / 附加3
+//   '' 或 '2' → 青龙技能（低品 / 高品）  '1' 或 '3' → 白虎技能（低品 / 高品）
+// 判定依据：官方《技能体系基础介绍》「青龙所带的三代技能是输出向技能，白虎是防御保命向技能」，
+// 且天音实例（青龙=六道轮回、白虎=大梵般若）与 '' = 六道轮回 完全吻合。
 const L215 = m.lists[215];
 const replaceById = new Map();
 const levelCfgByOcc = {}; // occ -> { cfgKey: {id: {lv: prob}} }
-const OCC_RE = /^天书残卷(.+?)技能附加(\d?)$/;
+const BLOCK_RE = /^(?:天书残卷)?(.+?)技能附加(\d?)$/;
+/** 表 215 里新职业用的是内部名，UI 用对外名 */
+const OCC_ALIAS = { 刑屿: '释罗' };
+const SKILL_BEAST_BY_SUFFIX = { '': '青龙', 2: '青龙', 1: '白虎', 3: '白虎' };
+const blocks = [];
 for (let r = 0; r < L215.count; r++) {
     const b = m.readRec(215, r);
     const nm = wstr(b, 4, 64);
+    const bm = nm.match(BLOCK_RE);
+    if (!bm) continue;
+    const occ = OCC_ALIAS[bm[1]] || bm[1];
+    const sfx = bm[2] || '';
+    const ids = new Set();
+    let hasLv3 = false;
     for (let o = 68; o + 12 < L215.sizeof; o += 4) {
         const id = i32(b, o);
         const lv = i32(b, o + 4);
@@ -150,33 +164,47 @@ for (let r = 0; r < L215.count; r++) {
         if (id < 3000 || id > 20000 || lv < 1 || lv > 3 || !(p > 0 && p <= 1.001)) continue;
         const rep = wstr(b, o + 12, 64);
         if (rep && !replaceById.has(id)) replaceById.set(id, rep.replace(/^被替换技能[：:]\s*/, ''));
-        const mt = nm.match(OCC_RE);
-        if (!mt) continue;
-        const occ = mt[1];
-        const cfg = mt[2] || '0';
+        ids.add(id);
+        if (lv === 3) hasLv3 = true;
         if (!levelCfgByOcc[occ]) levelCfgByOcc[occ] = {};
+        const cfg = sfx || '0';
         if (!levelCfgByOcc[occ][cfg]) levelCfgByOcc[occ][cfg] = {};
         if (!levelCfgByOcc[occ][cfg][id]) levelCfgByOcc[occ][cfg][id] = {};
         levelCfgByOcc[occ][cfg][id][lv] = p;
     }
+    if (ids.size === 0) continue;
+    blocks.push({ occ, sfx, beast: SKILL_BEAST_BY_SUFFIX[sfx], ids: [...ids].sort((a, b) => a - b), hasLv3 });
 }
 
 // ---------- 进阶技能明细（复用已入库的 xyc_adv_skills.json） ----------
 const adv = JSON.parse(fs.readFileSync(path.join(ROOT, 'web_app/public/game_data/xyc_adv_skills.json'), 'utf8'));
-const skillPool = {};
-for (const s of adv) {
-    const mt = s.name.match(/《(.+?)》/);
-    if (!mt) continue;
-    const variant = mt[1];
-    if (!['英雄', '大地', '天空', '碧海'].includes(variant)) continue;
-    // 客户端技能表里有占位/被动条目把效果描述拼进了名字
-    // （如「卷平岚III 《英雄》攻击怪物减少冷却」，desc 只有“学习条件：人物等级达到0级”）
-    // 正常技能名一定止于 《变体》/触发/（协同攻击）这类后缀
-    if (!/(《[^》]+》|触发|）)$/.test(s.name)) continue;
-    if (!skillPool[s.occ]) skillPool[s.occ] = [];
-    skillPool[s.occ].push({ id: s.id, name: s.name, variant, replace: replaceById.get(s.id) || '', desc: s.desc });
+const advById = new Map(adv.map((s) => [s.id, s]));
+const VARIANTS = ['英雄', '大地', '天空', '碧海'];
+/** 统一成「技能名III 《变体》」：客户端里 <变体>、多余空格、缺 III 的写法都有 */
+function normSkillName(raw) {
+    const mt = raw.match(/^(.*?)\s*(III)?\s*[《<]([^》>]+)[》>]\s*$/);
+    if (!mt) return raw.trim();
+    const base = mt[1].trim();
+    return `${base}${mt[2] ? 'III ' : ''}《${mt[3]}》`;
 }
-for (const occ of Object.keys(skillPool)) skillPool[occ].sort((a, b) => a.id - b.id);
+const skillPool = { 青龙: {}, 白虎: {} };
+for (const blk of blocks) {
+    if (!blk.beast) { skipped.push({ why: '技能块无归属', ...blk }); continue; }
+    const bucket = (skillPool[blk.beast][blk.occ] = skillPool[blk.beast][blk.occ] || []);
+    for (const id of blk.ids) {
+        if (bucket.some((s) => s.id === id)) continue;
+        const s = advById.get(id);
+        if (!s) { skipped.push({ why: '技能明细缺失', id }); continue; }
+        const name = normSkillName(s.name);
+        const mt = name.match(/《([^》]+)》\s*$/);
+        const variant = mt ? mt[1] : '';
+        if (!VARIANTS.includes(variant)) { skipped.push({ why: '变体异常', id, name }); continue; }
+        bucket.push({ id, name, variant, replace: replaceById.get(id) || '', desc: s.desc });
+    }
+}
+for (const beast of Object.keys(skillPool)) {
+    for (const occ of Object.keys(skillPool[beast])) skillPool[beast][occ].sort((a, b) => a.id - b.id);
+}
 
 // ---------- 技能等级概率（表 215 逐块概率合计 ÷ 变体数） ----------
 const levelProbSample = {};
@@ -196,7 +224,7 @@ const data = {
         tables: {
             213: 'TALENT_SCROLL_ESSENCE 轩辕策书（系别/品阶/属性池外键/洗练次数上限=10）',
             214: 'TALENT_SCROLL_CONFIG 属性池（条数概率/技能概率/五档概率/12 条属性）',
-            215: '天书残卷XX技能附加（技能 id/等级/概率/被替换技能）',
+            215: '天书残卷XX技能附加（技能 id/等级/概率/被替换技能；每职业 4 块 = 青龙低品/白虎低品/青龙高品/白虎高品）',
         },
         note: '五档 = 属性数值所处的品质段（每条 20% 区间），概率按品阶与版本各一套；洗练不改变属性条数（官方规则）。',
     },
@@ -211,6 +239,8 @@ const data = {
         skillNeedGrade: 3,
         skillNeedAttrCount: 4,
         skillBeasts: ['青龙', '白虎'],
+        /** 青龙/白虎 各带一个固定的三代技能（青龙=输出向，白虎=防御保命向），互不通用 */
+        skillPerBeast: true,
     },
     attrs: ATTR,
     books: BOOK_BY_BEAST,
@@ -242,7 +272,20 @@ for (const [v, bs] of Object.entries(books)) for (const [b, gs] of Object.entrie
     if (!ok) { bad++; report.push(`  ✗ ${v}|${b}|${g} Σ条数=${cntSum} Σ档=${tierSum} Σ属性=${probSum}`); }
 }
 report.push(`概率自检：${bad === 0 ? 'ALL OK（条数/五档/属性出现概率 Σ=1）' : bad + ' 组异常'}`);
-report.push(`技能池：${Object.keys(skillPool).length} 门派 / ${adv.length} 个技能；鬼王示例 ${JSON.stringify(levelProbSample['鬼王#3'] || {})}`);
+report.push(`技能池：青龙 ${Object.keys(skillPool.青龙).length} 门派 / 白虎 ${Object.keys(skillPool.白虎).length} 门派；鬼王示例 ${JSON.stringify(levelProbSample['鬼王#3'] || {})}`);
+let skillBad = 0;
+for (const beast of ['青龙', '白虎']) {
+    for (const [occ, list] of Object.entries(skillPool[beast])) {
+        const bases = new Set(list.map((s) => s.name.replace(/《[^》]+》$/, '')));
+        if (list.length !== 4 || bases.size !== 1) { skillBad++; report.push(`  ✗ ${beast}|${occ} 条数=${list.length} 技能种类=${[...bases].join('/')}`); }
+    }
+}
+report.push(`技能池自检：${skillBad === 0 ? 'ALL OK（每系每职业 1 技能 × 4 变体）' : skillBad + ' 组异常'}`);
+report.push(`青龙/白虎 对照：` + Object.keys(skillPool.青龙).map((occ) => {
+    const a = skillPool.青龙[occ][0]?.name.replace(/《[^》]+》$/, '') || '-';
+    const b = skillPool.白虎[occ]?.[0]?.name.replace(/《[^》]+》$/, '') || '-';
+    return `${occ}:${a}/${b}`;
+}).join(' '));
 report.push(`青龙六品池：` + books['普通']['青龙'][6].attrs.map((a) => `${ATTR[a.id].name} ${a.min}~${a.max}(+${a.step}) ${(a.prob * 100).toFixed(0)}%`).join(' / '));
 
 fs.writeFileSync(path.join(ROOT, 'scratch/_xyc_build_report.txt'), report.join('\n'), 'utf8');

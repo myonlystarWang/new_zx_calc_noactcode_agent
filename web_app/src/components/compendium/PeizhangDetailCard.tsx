@@ -613,9 +613,9 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
                 </div>
             )}
 
-            {/* 1. 下方核心佩章信息卡：限制宽度 max-w-xl（显示效果与 boss 属性类似） */}
+            {/* 1. 下方核心佩章信息卡：自适应宽度（按内容收缩，下限移动端宽度、上限 36rem），与装备详情卡同口径 */}
             <div
-                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-max min-w-[min(320px,100%)] max-w-[min(100%,36rem)]"
                 style={{
                     fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
@@ -688,7 +688,7 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
                         <div
                             key={idx}
                             style={{ color: GAME_COLORS.WHITE }}
-                            className="flex items-center justify-between text-[13px] leading-[22px]"
+                            className="flex items-baseline gap-2 text-[13px] leading-[22px]"
                         >
                             <span>
                                 {formatPeizhangAttrName(attr.name)} {valStr}
@@ -741,14 +741,17 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
                                         )}
                                     </div>
                                 </div>
+                                {/* 移动端不换行：内容超宽时整块左右滑动（min-w-max + 外层 overflow-x-auto），
+                                    桌面端宽度够时仍撑满，让「概率」列靠右对齐 */}
                                 {shouldShowList && (
-                                    <div className="pl-2">
+                                    <div className="pl-2 overflow-x-auto no-scrollbar">
+                                        <div className="w-full min-w-max">
                                         {poolItems.map((pi, pIdx) => {
                                             const ratePct = (pi.rate * 100).toFixed(pi.rate * 100 % 1 === 0 ? 0 : 2);
                                             return (
                                                 <div
                                                     key={pIdx}
-                                                    className="flex items-center justify-between text-[13px] leading-[22px]"
+                                                    className="flex items-baseline justify-between gap-3 text-[13px] leading-[22px] whitespace-nowrap"
                                                     style={{
                                                         color: isUnlocked ? GAME_COLORS.STAT_BLUE : GAME_COLORS.TEXT_LOCKED
                                                     }}
@@ -760,6 +763,7 @@ export const PeizhangDetailCard: React.FC<PeizhangDetailCardProps> = ({
                                                 </div>
                                             );
                                         })}
+                                        </div>
                                     </div>
                                 )}
                             </div>

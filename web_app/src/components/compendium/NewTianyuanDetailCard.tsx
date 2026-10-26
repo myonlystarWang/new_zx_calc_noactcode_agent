@@ -240,7 +240,7 @@ export const NewTianyuanDetailCard: React.FC<NewTianyuanDetailCardProps> = ({ ca
 
             {/* 1. 下方核心信息卡：限制宽度 max-w-xl */}
             <div
-                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-max min-w-[min(320px,100%)] max-w-[min(100%,36rem)]"
                 style={{
                     fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
@@ -297,26 +297,30 @@ export const NewTianyuanDetailCard: React.FC<NewTianyuanDetailCardProps> = ({ ca
                     </div>
                 </div>
 
-                {/* 属性逐行展示：经典游戏蓝（#8080ff）+ 宋体 */}
-                <div className="py-1 space-y-1">
+                {/* 属性逐行展示：经典游戏蓝（#8080ff）+ 宋体。
+                    移动端不换行：内容超宽时整块左右滑动（外层 overflow-x-auto + 内层 min-w-max） */}
+                <div className="overflow-x-auto no-scrollbar">
+                <div className="w-full min-w-max py-1 space-y-1">
                     {computedAttrs.map((attr, i) => (
                         <div
                             key={`${attr.name}-${attr.probability}-${i}`}
-                            className="flex items-center justify-between text-[13px] leading-[22px]"
+                            className="flex items-baseline justify-between gap-3 text-[13px] leading-[22px] whitespace-nowrap"
                         >
                             <span style={{ color: attr.isRare ? RARE_ATTR_COLOR : GAME_COLORS.STAT_BLUE }}>
                                 · {attr.name} {attr.totalRangeStr}
-                            </span>
-                            <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
-                                概率 {attr.probability}
+                                {/* 每级提升紧跟在属性后面，概率列单独靠右 */}
                                 {attr.perLevelGain > 0 && (
-                                    <span className="text-emerald-400 ml-1.5 font-medium">
+                                    <span className="text-emerald-400 text-[11px] font-sans ml-1.5 font-medium">
                                         (+{attr.perLevelGain}{attr.unitStr}/级)
                                     </span>
                                 )}
                             </span>
+                            <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
+                                概率 {attr.probability}
+                            </span>
                         </div>
                     ))}
+                </div>
                 </div>
 
                 {/* 底部属性与洗炼说明 */}

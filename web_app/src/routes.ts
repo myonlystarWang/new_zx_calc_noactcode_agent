@@ -111,8 +111,8 @@ export function titleForPath(pathname: string): string {
         const map: Record<string, string> = {
             server: '开服雷达监测',
             xyc: '轩辕策模拟器',
-            newtianyuan: '新版天缘模拟器',
-            yunling: '装备蕴灵模拟器',
+            newtianyuan: '新天缘精炼',
+            yunling: '神隐蕴灵',
         };
         return `${map[parts[1]] || '微工具实验室'} · ${SITE_NAME}`;
     }

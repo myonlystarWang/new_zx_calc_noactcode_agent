@@ -763,13 +763,13 @@ export const SkillsView: React.FC<SkillsViewProps> = ({ searchNav, onSearchConsu
                         ))}
                     </div>
 
-                    <div className="relative flex-1 sm:max-w-xs">
+                    <div className="relative flex-1 min-w-[11rem] sm:max-w-xs">
                         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                         <input
                             type="text"
                             value={searchKeyword}
                             onChange={(e) => setSearchKeyword(e.target.value)}
-                            placeholder="在当前职业搜索技能名或机制..."
+                            placeholder="搜索技能名或机制…"
                             className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-3 py-1 text-xs md:text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/60 transition-colors"
                         />
                     </div>

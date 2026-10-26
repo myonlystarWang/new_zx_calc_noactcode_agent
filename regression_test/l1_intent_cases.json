@@ -6630,5 +6630,84 @@
     ],
     "assert": "strong",
     "note": "裸词「天缘」走新旧分支导航，不再直接落旧天缘卡"
+  },
+  {
+    "id": "rename-yunling-shenyinyin-01",
+    "input": "神隐蕴灵",
+    "expect": {
+      "cardType": "yunling_forge",
+      "@textIncludes": "【神隐蕴灵】",
+      "@excludes": [
+        "【装备蕴灵】"
+      ]
+    },
+    "tags": [
+      "standard",
+      "tool",
+      "rename"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "rename-yunling-shenyinyin-02",
+    "input": "神隐蕴灵 昭武",
+    "expect": {
+      "cardType": "yunling_forge",
+      "@textIncludes": "【神隐蕴灵】"
+    },
+    "tags": [
+      "variant",
+      "tool",
+      "rename"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "rename-tianyuan-jinglian-01",
+    "input": "新天缘精炼",
+    "expect": {
+      "cardType": "tianyuan_sim",
+      "@textIncludes": "【新天缘精炼】",
+      "@excludes": [
+        "新版天缘模拟器"
+      ]
+    },
+    "tags": [
+      "standard",
+      "tool",
+      "rename"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "rename-tianyuan-jinglian-02",
+    "input": "须弥甲 精炼",
+    "expect": {
+      "cardType": "tianyuan_sim",
+      "@textIncludes": "【新天缘精炼】"
+    },
+    "tags": [
+      "variant",
+      "tool",
+      "rename"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "simhub-order-01",
+    "input": "各类模拟器",
+    "expect": {
+      "cardType": "sim_hub",
+      "@excludes": [
+        "蕴灵模拟",
+        "新天缘模拟"
+      ]
+    },
+    "tags": [
+      "hub",
+      "simulator",
+      "rename"
+    ],
+    "assert": "strong"
   }
 ]

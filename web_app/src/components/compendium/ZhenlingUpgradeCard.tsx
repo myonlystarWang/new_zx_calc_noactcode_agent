@@ -98,7 +98,7 @@ export const ZhenlingUpgradeCard: React.FC<ZhenlingUpgradeCardProps> = ({ cardDa
                 <div className="flex items-center gap-2">
                     {/* <Layers className="w-4 h-4 text-amber-400" /> */}
                     <span className="font-bold text-sm text-slate-100 tracking-wide">
-                        阵灵聚灵升级消耗对照表
+                        阵灵聚灵升级消耗
                     </span>
                     {/* <span className="text-[10px] text-amber-400/90 px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20">
                         1~12阶全景
@@ -109,7 +109,7 @@ export const ZhenlingUpgradeCard: React.FC<ZhenlingUpgradeCardProps> = ({ cardDa
                     className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] text-cyan-300 hover:text-cyan-200 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/40 transition-colors"
                 >
                     <Calculator className="w-3 h-3" />
-                    <span>{showCalc ? '收起测算' : '自定义阶数测算'}</span>
+                    <span>{showCalc ? '收起测算' : '自定义测算'}</span>
                     {showCalc ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                 </button>
             </div>
@@ -117,7 +117,7 @@ export const ZhenlingUpgradeCard: React.FC<ZhenlingUpgradeCardProps> = ({ cardDa
             {/* 自定义阶数速算模块 */}
             {showCalc && (
                 <div className="p-2.5 rounded bg-[#080d16] border border-cyan-900/40 space-y-2 animate-fadeIn">
-                    <div className="flex items-center justify-between text-[11px] gap-1">
+                    <div className="flex flex-wrap items-center justify-between text-[11px] gap-x-2 gap-y-1">
                         <div className="flex items-center gap-1 shrink-0">
                             <span className="text-slate-400">升级阶数：</span>
                             <select
@@ -211,7 +211,7 @@ export const ZhenlingUpgradeCard: React.FC<ZhenlingUpgradeCardProps> = ({ cardDa
             )}
 
             {/* 1~12阶消耗完整对照表（紧凑无溢出排版，杜绝窄屏水平滚动条） */}
-            <div className="overflow-x-auto w-full rounded border border-[#1f293d]/80 bg-[#080d16]">
+            <div className="overflow-x-auto no-scrollbar w-full rounded border border-[#1f293d]/80 bg-[#080d16]">
                 <table className="w-full text-center border-collapse whitespace-nowrap text-[11px] sm:text-xs">
                     <thead>
                         {/* 双级表头 */}

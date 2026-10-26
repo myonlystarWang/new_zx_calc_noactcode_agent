@@ -172,7 +172,7 @@
       ],
       "bonus": {
         "name": "技能命中",
-        "value": "3.2%"
+        "value": "3.2"
       }
     },
     {
@@ -184,7 +184,7 @@
       ],
       "bonus": {
         "name": "技能躲闪",
-        "value": "3.2%"
+        "value": "3.2"
       }
     }
   ],
@@ -1328,7 +1328,7 @@
         {
           "id": 20,
           "name": "技能命中",
-          "isPercent": true,
+          "isPercent": false,
           "weight": 15,
           "min": 18,
           "max": 22
@@ -1336,7 +1336,7 @@
         {
           "id": 26,
           "name": "技能躲闪",
-          "isPercent": true,
+          "isPercent": false,
           "weight": 7,
           "min": 18,
           "max": 22
@@ -1634,7 +1634,7 @@
         {
           "id": 20,
           "name": "技能命中",
-          "isPercent": true,
+          "isPercent": false,
           "weight": 15,
           "min": 24,
           "max": 30
@@ -1642,7 +1642,7 @@
         {
           "id": 26,
           "name": "技能躲闪",
-          "isPercent": true,
+          "isPercent": false,
           "weight": 7.5,
           "min": 24,
           "max": 30

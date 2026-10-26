@@ -81,7 +81,7 @@ export const SkillDetailCard: React.FC<SkillDetailCardProps> = ({
 
     return (
         <div className={clsx(
-            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left select-none w-full min-w-0 max-w-xl',
+            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left select-none w-max min-w-[min(320px,100%)] max-w-[min(100%,36rem)]',
             className
         )}>
             {/* 1:1 游戏实机原生 Tooltip 视效容器 */}

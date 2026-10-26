@@ -183,7 +183,7 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
                         <Sparkles className="w-5 h-5" />
                     </div>
                     <div>
-                        <div className="text-sm font-bold text-slate-100">新版天缘模拟器</div>
+                        <div className="text-sm font-bold text-slate-100">新天缘精炼</div>
                         <div className="text-[11px] text-slate-400">
                             官方概率 · 3/4/5 条 60/30/10 · 天命触发 60/80/100
                         </div>
@@ -417,7 +417,7 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
                             onClick={() => setRunning((v) => !v)}
                             disabled={item.level >= maxLevel}
                             className={clsx(
-                                'mx-auto mt-0.5 w-[220px] h-8 rounded-[2px] text-[13px] font-bold transition-all border',
+                                'mx-auto mt-0.5 w-full max-w-[240px] h-8 rounded-[2px] text-[13px] font-bold transition-all border',
                                 item.level >= maxLevel ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:brightness-125',
                             )}
                             style={{
@@ -458,8 +458,8 @@ export const NewTianYuanSimulatorView: React.FC<{ seed?: TianyuanSeed | null }> 
                             </span>
                         </div>
 
-                        {/* 单次 / 取消 */}
-                        <div className="flex items-center justify-center gap-4 pt-0.5">
+                        {/* 单次 / 取消：与上方「连续精炼」共用 240px 宽度轴（对齐聊天卡精炼弹窗的比例） */}
+                        <div className="mx-auto flex w-full max-w-[240px] items-center justify-center gap-4 pt-0.5">
                             <GameButton disabled={item.level >= maxLevel} onClick={doRefine}>
                                 单次精炼
                             </GameButton>
@@ -658,7 +658,7 @@ const GameButton: React.FC<{ children: React.ReactNode; onClick?: () => void; di
         onClick={onClick}
         disabled={disabled}
         className={clsx(
-            'w-[116px] h-[30px] rounded-[2px] text-[13px] font-bold transition-all border',
+            'flex-1 max-w-[112px] h-[30px] rounded-[2px] text-[13px] font-bold transition-all border',
             disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:brightness-125',
         )}
         style={{

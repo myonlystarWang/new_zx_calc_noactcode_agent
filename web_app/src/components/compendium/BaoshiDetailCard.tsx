@@ -220,7 +220,7 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
 
             {/* 1. 下方核心宝石信息卡：限制宽度 max-w-xl（显示效果与 boss 属性类似） */}
             <div
-                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-max min-w-[min(320px,100%)] max-w-[min(100%,36rem)]"
                 style={{
                     fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
@@ -321,7 +321,7 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                             <div
                                 key={rawName}
                                 style={{ color: GAME_COLORS.STAT_BLUE }}
-                                className="flex items-center justify-between text-[13px] leading-[22px]"
+                                className="flex items-baseline gap-2 text-[13px] leading-[22px] whitespace-nowrap"
                             >
                                 <span>
                                     {name} ＋{val}{unit}
@@ -339,7 +339,7 @@ export const BaoshiDetailCard: React.FC<BaoshiDetailCardProps> = ({ cardData, cl
                     {quality === 'perfect' && level < 6 && activeGem.extraAttr && (
                         <div
                             style={{ color: GAME_COLORS.TEXT_LOCKED }}
-                            className="flex items-center justify-between text-[13px] leading-[22px]"
+                            className="flex items-baseline gap-2 text-[13px] leading-[22px] whitespace-nowrap"
                         >
                             <span>
                                 (+6) {activeGem.extraAttr}

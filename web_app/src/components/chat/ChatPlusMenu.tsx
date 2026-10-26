@@ -123,8 +123,8 @@ const menuItems: MenuItem[] = [
       title: '伤害计算',
       desc: '属性录入 · 增益勾选 · T20/团本秒伤推演',
       onClick: () => {
+        // 只唤起右分屏伤害计算器，不再发「计算实战战力」（那条只会拿回一段静态指南文案）
         onSelectWorkspace('calc');
-        handleSendMessageClick('计算实战战力');
       },
     },
     {
@@ -138,7 +138,7 @@ const menuItems: MenuItem[] = [
       id: 'sim',
       icon: Cpu,
       title: '各类模拟器',
-      desc: '神机洗练 / 蕴灵模拟 / 新天缘模拟',
+      desc: '轩辕策洗练 / 神机洗练 / 神隐蕴灵 / 新天缘精炼',
       onClick: () => handleSendMessageClick('各类模拟器'),
     },
   ];

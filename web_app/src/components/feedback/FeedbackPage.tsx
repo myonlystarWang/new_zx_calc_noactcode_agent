@@ -39,8 +39,6 @@ export interface GuestbookEntry {
   statusBadge?: 'adopted' | 'in_progress' | 'fixed';
   statusText?: string;
   replies?: GuestbookReply[];
-  /** 正文下方的跳转入口（置顶公告用来引到「关于作者」） */
-  cta?: { prefix?: string; label: string; to: string; suffix?: string };
 }
 
 const CATEGORIES: { id: GuestbookCategory; label: string }[] = [
@@ -58,35 +56,52 @@ const IMMORTAL_TITLES = [
 ];
 
 /**
- * 置顶公告固定的「关于作者」入口。
- * 线上公告正文来自 /api/guestbook（KV 里的旧数据没有 cta 字段），
- * 所以渲染时对置顶帖兜底注入，改文案只改这一处。
+ * 置顶公告正文以本地为准。
+ * 线上 /api/guestbook 里的旧公告文案不会自动更新（KV 已存），
+ * 所以置顶帖直接覆盖成这里的文案，改公告只改这一处。
  */
-const PINNED_CTA: NonNullable<GuestbookEntry['cta']> = {
-  prefix: '想认识一下做这个站的人？',
-  label: '关于作者与平台初衷',
-  to: `${ROUTE.about}#creator`,
-  suffix: '。',
-};
+const PINNED_CONTENT =
+  '欢迎仙友使用天书万象 AI 诛仙全知大模型！本平台真实数据全量免费开放，任何装备道具信息、技能公式误差、BOSS 属性校对或战力对比建议，均可在此留言交流！也欢迎各位仙友直接联系本作者！';
+
+/** 正文里这一段会被渲染成跳转 About 作者卡的链接 */
+const PINNED_AUTHOR_ANCHOR = '本作者';
 
 const INITIAL_POSTS: GuestbookEntry[] = [
   {
     id: 'pin-1',
     author: '星耀-萝卜 (作者)',
     category: 'suggestion',
-    content: '欢迎仙友使用天书万象 AI 诛仙全知大模型！本平台 100% 静态边缘计算，真实数据全量免费开放。任何技能公式误差、BOSS属性校对或战力对比建议，均可在此留言交流！',
+    content: PINNED_CONTENT,
     time: '2026-10-14 12:00',
     likes: 88,
     isPinned: true,
     statusBadge: 'adopted',
     statusText: '官方公告',
-    cta: PINNED_CTA,
     replies: []
   }
 ];
 
 const STORAGE_KEY = 'tianshu_guestbook_posts_v3';
 const LIKED_STORAGE_KEY = 'tianshu_guestbook_liked_v3';
+
+/** 把置顶公告里的「本作者」渲染成跳转 About 作者卡的链接，其余原样输出 */
+const renderPinnedContent = (text: string, onJump: () => void): React.ReactNode => {
+  const idx = text.indexOf(PINNED_AUTHOR_ANCHOR);
+  if (idx === -1) return text;
+  return (
+    <>
+      {text.slice(0, idx)}
+      <button
+        type="button"
+        onClick={onJump}
+        className="text-amber-300 hover:text-amber-200 font-semibold underline decoration-amber-400/70 decoration-2 underline-offset-4 mx-0.5 cursor-pointer transition-colors"
+      >
+        {PINNED_AUTHOR_ANCHOR}
+      </button>
+      {text.slice(idx + PINNED_AUTHOR_ANCHOR.length)}
+    </>
+  );
+};
 
 export const FeedbackPage: React.FC = () => {
   const navigate = useNavigate();
@@ -431,21 +446,21 @@ export const FeedbackPage: React.FC = () => {
         <form onSubmit={handlePostSubmit} className="p-4 sm:p-5 rounded-2xl bg-[#090d18]/90 border border-slate-800/90 shadow-xl space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              {/* 法号输入 */}
-              <div className="flex items-center gap-1.5 bg-black/50 border border-slate-700/80 rounded-xl px-2.5 py-1 text-xs">
-                <span className="text-slate-400 font-medium">法号:</span>
+              {/* 法号输入（与类别、输入框、按钮统一 h-10） */}
+              <div className="flex items-center gap-1.5 h-10 bg-black/50 border border-slate-700/80 rounded-xl px-2.5 text-xs">
+                <span className="text-slate-400 font-medium whitespace-nowrap shrink-0">法号:</span>
                 <input
                   type="text"
                   value={authorName}
                   onChange={e => setAuthorName(e.target.value)}
                   maxLength={12}
-                  className="bg-transparent text-slate-100 font-medium focus:outline-none w-24 text-xs"
+                  className="h-full bg-transparent text-slate-100 font-medium focus:outline-none w-24 min-w-0 text-xs"
                   placeholder="自定义法号"
                 />
                 <button
                   type="button"
                   onClick={handleRandomizeTitle}
-                  className="text-amber-400 hover:text-amber-300 p-0.5 cursor-pointer transition-transform active:rotate-180"
+                  className="text-amber-400 hover:text-amber-300 p-0.5 cursor-pointer transition-transform active:rotate-180 shrink-0"
                   title="随机仙门法号"
                 >
                   <Dices className="w-3.5 h-3.5" />
@@ -453,12 +468,12 @@ export const FeedbackPage: React.FC = () => {
               </div>
 
               {/* 类别选择 */}
-              <div className="flex items-center gap-1.5 bg-black/50 border border-slate-700/80 rounded-xl px-2.5 py-1 text-xs">
-                <span className="text-slate-400 font-medium">类别:</span>
+              <div className="flex items-center gap-1.5 h-10 bg-black/50 border border-slate-700/80 rounded-xl px-2.5 text-xs">
+                <span className="text-slate-400 font-medium whitespace-nowrap shrink-0">类别:</span>
                 <select
                   value={newPostCategory}
                   onChange={e => setNewPostCategory(e.target.value as GuestbookCategory)}
-                  className="bg-transparent text-amber-300 font-semibold focus:outline-none text-xs cursor-pointer"
+                  className="h-full bg-transparent text-amber-300 font-semibold focus:outline-none text-xs cursor-pointer"
                 >
                   {CATEGORIES.filter(c => c.id !== 'all').map(c => (
                     <option key={c.id} value={c.id} className="bg-slate-900 text-slate-100">
@@ -469,7 +484,7 @@ export const FeedbackPage: React.FC = () => {
               </div>
             </div>
 
-            <span className="text-[11px] text-slate-500">
+            <span className="hidden sm:inline text-[11px] text-slate-500">
               与千万仙友真诚交流，共研诛仙万象大道
             </span>
           </div>
@@ -491,14 +506,14 @@ export const FeedbackPage: React.FC = () => {
               type="text"
               value={postContent}
               onChange={e => setPostContent(e.target.value)}
-              placeholder="写下你的战术心得、数据捉虫或建议（回车发送）..."
+              placeholder="写点战术心得或建议…"
               maxLength={300}
-              className="flex-1 bg-black/60 border border-slate-700/80 focus:border-amber-500/70 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors"
+              className="flex-1 min-w-0 h-10 bg-black/60 border border-slate-700/80 focus:border-amber-500/70 rounded-xl px-3.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors"
             />
             <button
               type="submit"
               disabled={!postContent.trim() || isSubmitting}
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 disabled:opacity-40 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-amber-950/40 cursor-pointer shrink-0"
+              className="px-4 h-10 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 disabled:opacity-40 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-amber-950/40 cursor-pointer shrink-0"
             >
               {isSubmitting ? (
                 <Loader2 className="w-3.5 h-3.5 text-slate-950 animate-spin" />
@@ -515,8 +530,9 @@ export const FeedbackPage: React.FC = () => {
           {filteredPosts.map(post => {
             const isLiked = !!likedMap[post.id];
             const isReplying = replyingPostId === post.id;
+            /** 回复抬头不带「(作者)」后缀：卡片头部已标，省下的宽度让 360px 窄屏也能一行放下 */
+            const replyTargetName = post.author.replace(/\s*[（(]作者[)）]\s*/g, '');
             const replies = post.replies || [];
-            const cta = post.cta ?? (post.isPinned ? PINNED_CTA : undefined);
 
             return (
               <div
@@ -530,15 +546,15 @@ export const FeedbackPage: React.FC = () => {
               >
                 {/* 卡片头部：作者、时间、官方状态 */}
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/5 pb-2.5">
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 min-w-0">
                     {post.isPinned && (
-                      <span className="p-1 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40" title="置顶官方公告">
+                      <span className="p-1 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 shrink-0" title="置顶官方公告">
                         <Pin className="w-3 h-3" />
                       </span>
                     )}
-                    <span className="font-bold text-sm text-slate-100">{post.author}</span>
-                    <span className="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
+                    <span className="font-bold text-sm text-slate-100 break-words min-w-0">{post.author}</span>
+                    <span className="text-[11px] text-slate-500 font-mono flex items-center gap-1 whitespace-nowrap shrink-0">
+                      <Clock className="w-3 h-3 shrink-0" />
                       {post.time}
                     </span>
                   </div>
@@ -562,20 +578,9 @@ export const FeedbackPage: React.FC = () => {
 
                 {/* 留言正文 */}
                 <div className="text-sm text-slate-200 mt-3 leading-relaxed whitespace-pre-wrap">
-                  {post.content}
-                  {cta && (
-                    <span className="block mt-1.5">
-                      {cta.prefix}
-                      <button
-                        type="button"
-                        onClick={() => navigate(cta.to)}
-                        className="text-amber-300 hover:text-amber-200 font-semibold underline decoration-amber-400/70 decoration-2 underline-offset-4 mx-0.5 cursor-pointer transition-colors"
-                      >
-                        {cta.label}
-                      </button>
-                      {cta.suffix}
-                    </span>
-                  )}
+                  {post.isPinned
+                    ? renderPinnedContent(PINNED_CONTENT, () => navigate(`${ROUTE.about}#creator`))
+                    : post.content}
                 </div>
 
                 {/* 底部互动操作栏：分类、点赞、回复按钮 */}
@@ -630,22 +635,25 @@ export const FeedbackPage: React.FC = () => {
                     {replies.map(r => (
                       <div
                         key={r.id}
-                        className="text-xs p-2.5 rounded-xl bg-black/40 border border-slate-800/60 flex items-start justify-between gap-3"
+                        className="text-xs p-2.5 rounded-xl bg-black/40 border border-slate-800/60 min-w-0"
                       >
-                        <div className="flex-1 leading-relaxed">
+                        {/* 作者与时间独占头部一行，正文吃满整行宽度，避免时间列挤压正文 */}
+                        <div className="flex items-center justify-between gap-2 mb-1">
                           <span
                             className={clsx(
-                              'font-bold mr-1.5',
+                              'font-bold truncate',
                               r.isAuthor ? 'text-cyan-300' : 'text-amber-300'
                             )}
                           >
-                            {r.author}：
+                            {r.author}
                           </span>
-                          <span className="text-slate-200">{r.content}</span>
+                          <span className="text-[10px] text-slate-500 font-mono shrink-0">
+                            {r.time}
+                          </span>
                         </div>
-                        <span className="text-[10px] text-slate-500 font-mono shrink-0 pt-0.5">
-                          {r.time}
-                        </span>
+                        <p className="text-slate-200 leading-relaxed whitespace-pre-wrap break-words">
+                          {r.content}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -654,26 +662,28 @@ export const FeedbackPage: React.FC = () => {
                 {/* 展开的回复输入框 */}
                 {isReplying && (
                   <div className="mt-3 p-3 rounded-xl bg-black/50 border border-cyan-500/30 space-y-2.5 animate-in fade-in duration-200">
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-1.5">
-                        <CornerDownRight className="w-3.5 h-3.5 text-cyan-400" />
-                        <span className="text-slate-400 font-medium">回复 @{post.author}</span>
+                    <div className="flex items-center justify-between gap-2 text-xs">
+                      <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                        <CornerDownRight className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                        <span className="text-slate-400 font-medium truncate">
+                          回复 @{replyTargetName}
+                        </span>
                       </div>
 
-                      {/* 回复者法号 */}
-                      <div className="flex items-center gap-1 bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-0.5 text-xs">
-                        <span className="text-slate-400">法号:</span>
+                      {/* 回复者法号（窄屏不换行，交给左侧文字截断） */}
+                      <div className="flex items-center gap-1 h-8 bg-slate-900 border border-slate-700/80 rounded-lg px-2 text-xs shrink-0">
+                        <span className="text-slate-400 whitespace-nowrap shrink-0">法号:</span>
                         <input
                           type="text"
                           value={replyAuthorName}
                           onChange={e => setReplyAuthorName(e.target.value)}
                           maxLength={12}
-                          className="bg-transparent text-slate-200 font-medium focus:outline-none w-20 text-xs"
+                          className="h-full bg-transparent text-slate-200 font-medium focus:outline-none w-16 min-w-0 text-xs"
                         />
                         <button
                           type="button"
                           onClick={handleRandomizeReplyTitle}
-                          className="text-amber-400 hover:text-amber-300 p-0.5 cursor-pointer"
+                          className="text-amber-400 hover:text-amber-300 p-0.5 cursor-pointer shrink-0"
                           title="随机法号"
                         >
                           <Dices className="w-3 h-3" />
@@ -689,16 +699,16 @@ export const FeedbackPage: React.FC = () => {
                         onKeyDown={e => {
                           if (e.key === 'Enter') handleReplySubmit(post.id);
                         }}
-                        placeholder={`回复 ${post.author}...`}
+                        placeholder={`回复 ${replyTargetName}...`}
                         maxLength={200}
-                        className="flex-1 bg-slate-950/80 border border-slate-700/80 focus:border-cyan-500/70 rounded-xl px-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors"
+                        className="flex-1 min-w-0 h-8 bg-slate-950/80 border border-slate-700/80 focus:border-cyan-500/70 rounded-xl px-3 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors"
                         autoFocus
                       />
                       <button
                         type="button"
                         onClick={() => handleReplySubmit(post.id)}
                         disabled={!replyContent.trim()}
-                        className="px-3 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shrink-0"
+                        className="px-3 h-8 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shrink-0"
                       >
                         <Send className="w-3 h-3 text-slate-950" />
                         <span>发送</span>
@@ -706,7 +716,7 @@ export const FeedbackPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setReplyingPostId(null)}
-                        className="p-1.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-white/5 cursor-pointer"
+                        className="w-8 h-8 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-white/5 cursor-pointer flex items-center justify-center shrink-0"
                         title="取消回复"
                       >
                         <X className="w-3.5 h-3.5" />

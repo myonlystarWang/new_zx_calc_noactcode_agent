@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
 import { GAME_COLORS } from '../../constants/gameColorSystem';
+import { formatPointAttrValue, isPointAttr } from '../../utils/attrUnits';
 
 /**
  * 四灵本元（伏龙鼎镶嵌）信息卡
@@ -94,8 +95,10 @@ const TIER_QUALITY_COLORS: Record<number, string> = {
 
 const TIER_CN: Record<number, string> = { 1: '一阶', 2: '二阶', 3: '三阶', 4: '四阶', 5: '五阶' };
 
-function formatAttrEntry(displayName: string, curVal: number, isPercent: boolean): string {
-    let valStr: string;
+/** 只产出数值部分（不含属性名），供「每阶提升」括号复用 */
+function formatAttrValue(displayName: string, curVal: number, isPercent: boolean): string {
+    // 技能命中 / 技能躲闪是点数，永不带 %（数据源 isPercent 可能误标，这里硬兜底）
+    if (isPointAttr(displayName)) return formatPointAttrValue(curVal);
     if (isPercent) {
         if (
             displayName.includes('冲灵') ||
@@ -104,24 +107,25 @@ function formatAttrEntry(displayName: string, curVal: number, isPercent: boolean
             displayName.includes('减免百分比') ||
             displayName.includes('无视')
         ) {
-            valStr = `${curVal.toFixed(2)}%`;
-        } else if (displayName.includes('伤害增加') || displayName.includes('伤害减少')) {
-            valStr = `${curVal.toFixed(0)}%`;
-        } else if (
+            return `${curVal.toFixed(2)}%`;
+        }
+        if (displayName.includes('伤害增加') || displayName.includes('伤害减少')) {
+            return `${curVal.toFixed(0)}%`;
+        }
+        if (
             displayName.includes('暴击率') ||
             displayName.includes('暴击伤害') ||
-            displayName.includes('致命一击') ||
-            displayName.includes('技能命中') ||
-            displayName.includes('技能躲闪')
+            displayName.includes('致命一击')
         ) {
-            valStr = curVal % 1 === 0 ? `${curVal}%` : `${curVal.toFixed(2)}%`;
-        } else {
-            valStr = `${curVal}%`;
+            return curVal % 1 === 0 ? `${curVal}%` : `${curVal.toFixed(2)}%`;
         }
-    } else {
-        valStr = String(Math.round(curVal));
+        return `${curVal}%`;
     }
+    return String(Math.round(curVal));
+}
 
+function formatAttrEntry(displayName: string, curVal: number, isPercent: boolean): string {
+    const valStr = formatAttrValue(displayName, curVal, isPercent);
     if (
         displayName.includes('增加技能命中') ||
         displayName.includes('增加技能躲闪') ||
@@ -221,10 +225,11 @@ export const SilinBenyuanCard: React.FC<SilinBenyuanCardProps> = ({ cardData, cl
 
     return (
         <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
-            {/* 顶部控制栏：四灵切换 + 阶位切换 */}
-            <div className="flex flex-col gap-1.5 w-full max-w-xl">
+            {/* 顶部控制栏：四灵切换（移动端横向滑动，不换行） */}
+            <div className="flex flex-col gap-1.5 w-full max-w-[32rem]">
                 {/* 四灵切换栏 */}
-                <div className="flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full flex-wrap">
+                <div className="bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 w-full overflow-x-auto no-scrollbar">
+                    <div className="flex items-center gap-1.5 w-max min-w-full">
                     {spirits.map((s) => {
                         const isActive = s.id === activeSpiritId;
                         return (
@@ -246,48 +251,15 @@ export const SilinBenyuanCard: React.FC<SilinBenyuanCardProps> = ({ cardData, cl
                             </button>
                         );
                     })}
+                    </div>
                 </div>
 
-                {/* 阶位切换栏 */}
-                <div className="flex items-center bg-[#0a0f18]/80 border border-slate-800/80 rounded-lg p-1 gap-1.5 w-full flex-wrap">
-                    {TIERS.map((t) => {
-                        const isActive = t === tier;
-                        const tColor = TIER_QUALITY_COLORS[t];
-                        return (
-                            <button
-                                key={t}
-                                type="button"
-                                onClick={() => {
-                                    setTier(t);
-                                    setExpandedAttr(null);
-                                }}
-                                className={clsx(
-                                    'px-2 py-0.5 rounded text-[11px] font-sans transition-all border cursor-pointer',
-                                    isActive ? 'font-bold shadow-sm' : 'hover:bg-slate-800/60'
-                                )}
-                                style={
-                                    isActive
-                                        ? {
-                                            color: tColor,
-                                            borderColor: `${tColor}80`,
-                                            backgroundColor: `${tColor}18`
-                                        }
-                                        : {
-                                            color: '#94a3b8',
-                                            borderColor: 'transparent'
-                                        }
-                                }
-                            >
-                                {TIER_CN[t]}
-                            </button>
-                        );
-                    })}
-                </div>
+                {/* 阶位切换：已改为卡片内的「等阶 -1 / +1」步进（与天缘/九纹琅同款），此处不再用五个页签 */}
             </div>
 
             {/* 本元主卡：1:1 游戏实机 Tooltip 排版（对齐佩章原生排版样式） */}
             <div
-                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2.5 w-full max-w-xl"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2.5 w-full max-w-[32rem]"
                 style={{
                     fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
@@ -309,12 +281,48 @@ export const SilinBenyuanCard: React.FC<SilinBenyuanCardProps> = ({ cardData, cl
                     不会掉落
                 </div>
 
-                {/* 阶位信息与限定词条数（分开排列） */}
-                <div className="flex items-center justify-between" style={{ color: GAME_COLORS.WHITE }}>
-                    <span>{TIER_CN[tier]}</span>
-                    <span className="text-slate-200 text-[12px]">
-                        限定属性数目：<span className="text-amber-400 font-bold">{slotCount} 条</span>
+                {/* 阶位信息 + 等阶步进（与天缘 / 九纹琅信息卡同款按钮） */}
+                <div className="flex items-center justify-between gap-2 flex-wrap" style={{ color: GAME_COLORS.WHITE }}>
+                    <span className="flex items-baseline gap-2">
+                        {TIER_CN[tier]}
+                        <span className="text-slate-200 text-[12px]">
+                            限定属性数目：<span className="text-amber-400 font-bold">{slotCount} 条</span>
+                        </span>
                     </span>
+                    <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setTier((t) => Math.max(TIERS[0], t - 1));
+                                setExpandedAttr(null);
+                            }}
+                            disabled={tier <= TIERS[0]}
+                            className={clsx(
+                                'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                tier <= TIERS[0]
+                                    ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                    : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white'
+                            )}
+                        >
+                            等阶 -1
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setTier((t) => Math.min(TIERS[TIERS.length - 1], t + 1));
+                                setExpandedAttr(null);
+                            }}
+                            disabled={tier >= TIERS[TIERS.length - 1]}
+                            className={clsx(
+                                'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                tier >= TIERS[TIERS.length - 1]
+                                    ? 'bg-slate-900 border-slate-800 text-slate-600 cursor-not-allowed'
+                                    : 'bg-cyan-600/30 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/50 hover:text-white'
+                            )}
+                        >
+                            等阶 +1
+                        </button>
+                    </div>
                 </div>
 
                 {/* 2. 词条池区域：按几阶才会出现的可选项分段列出当前真实数值与概率 */}
@@ -333,8 +341,10 @@ export const SilinBenyuanCard: React.FC<SilinBenyuanCardProps> = ({ cardData, cl
                                     </span>
                                 </div>
 
-                                {/* 该阶池所有词条（当前阶数值折算 + 抽取概率） */}
-                                <div className="flex flex-col gap-1 pt-0.5">
+                                {/* 该阶池所有词条（当前阶数值折算 + 抽取概率）。
+                                    移动端不换行：外层 overflow-x-auto，行内 whitespace-nowrap */}
+                                <div className="flex flex-col gap-1 pt-0.5 overflow-x-auto no-scrollbar">
+                                    <div className="flex flex-col gap-1 min-w-max">
                                     {entries.map((entry) => {
                                         const isPercent = entry.isPercent;
                                         const curVal = entry.value * scale;
@@ -343,6 +353,11 @@ export const SilinBenyuanCard: React.FC<SilinBenyuanCardProps> = ({ cardData, cl
                                         const expanded = expandedAttr === uniqueKey;
                                         const ratePct = (entry.rate * 100).toFixed(2);
                                         const lineText = formatAttrEntry(attrDisplay(entry.attr), curVal, isPercent);
+                                        // 升到下一阶的增量（五阶已满，不再显示）
+                                        const nextScale = TIER_SCALE[tier + 1];
+                                        const gainStr = nextScale
+                                            ? formatAttrValue(attrDisplay(entry.attr), entry.value * nextScale - curVal, isPercent)
+                                            : null;
 
                                         return (
                                             <div key={entry.attr} className="min-w-0">
@@ -359,10 +374,15 @@ export const SilinBenyuanCard: React.FC<SilinBenyuanCardProps> = ({ cardData, cl
                                                         {expanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                                                     </span>
                                                     <span
-                                                        className="flex-1 min-w-0 truncate"
+                                                        className="flex-1 min-w-0 whitespace-nowrap"
                                                         style={{ color: GAME_COLORS.STAT_BLUE }}
                                                     >
                                                         {lineText}
+                                                        {gainStr && (
+                                                            <span className="text-emerald-400 text-[11px] font-sans ml-1.5 font-medium">
+                                                                (升级 +{gainStr})
+                                                            </span>
+                                                        )}
                                                     </span>
                                                     <span className="shrink-0 text-[11px] font-sans text-slate-400">
                                                         概率 {ratePct}%
@@ -376,7 +396,14 @@ export const SilinBenyuanCard: React.FC<SilinBenyuanCardProps> = ({ cardData, cl
                                                     >
                                                         {['虚弱', '眩晕', '昏睡', '定身', '魅惑'].map((el) => (
                                                             <span key={el} className="flex items-center gap-1">
-                                                                <span>{el}抗性 +{Math.round(entry.value * scale)}</span>
+                                                                <span>
+                                                                    {el}抗性 +{Math.round(entry.value * scale)}
+                                                                    {TIER_SCALE[tier + 1] && (
+                                                                        <span className="text-emerald-400 ml-1 font-medium">
+                                                                            (升级 +{Math.round(entry.value * TIER_SCALE[tier + 1] - curVal)})
+                                                                        </span>
+                                                                    )}
+                                                                </span>
                                                                 <span className="text-slate-400">
                                                                     (单系 {((entry.perElementRate ?? entry.rate / 5) * 100).toFixed(2)}%)
                                                                 </span>
@@ -387,6 +414,7 @@ export const SilinBenyuanCard: React.FC<SilinBenyuanCardProps> = ({ cardData, cl
                                             </div>
                                         );
                                     })}
+                                    </div>
                                 </div>
                             </div>
                         );

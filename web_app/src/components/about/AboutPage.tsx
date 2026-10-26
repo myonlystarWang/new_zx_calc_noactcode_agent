@@ -40,11 +40,15 @@ export const AboutPage: React.FC = () => {
       <div className="flex-1 flex flex-col items-center px-4 sm:px-6 py-10 md:py-16 max-w-4xl mx-auto w-full space-y-12 sm:space-y-14">
         {/* 顶部 Hero 标头区（无Logo与顶部胶囊，保留大标题、道风引言、平台定位与4项核心指标） */}
         <div className="flex flex-col items-center text-center max-w-3xl w-full">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-indigo-200 to-amber-300 mb-4">
-            天书万象 AI · 诛仙全知大模型
+          {/* 移动端按词意边界主动断行（避免「大 / 模型」残断），桌面单行 */}
+          <h1 className="text-[26px] sm:text-4xl lg:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-indigo-200 to-amber-300 mb-4">
+            天书万象 AI
+            <span className="max-sm:hidden"> · </span>
+            <br className="sm:hidden" />
+            诛仙全知大模型
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-400 font-serif-sc tracking-[0.22em] text-shadow mb-6">
+          <p className="text-xs sm:text-base text-slate-400 font-serif-sc tracking-[0.08em] sm:tracking-[0.22em] text-shadow mb-6">
             天地不仁以万物为刍狗 · 天书通晓诛仙万象规则
           </p>
 

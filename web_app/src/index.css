@@ -147,6 +147,21 @@ body {
   display: none;
 }
 
+/* iOS Safari 输入控件兜底
+   只有「会唤起软键盘的文本控件」聚焦时 Safari 才强制放大整页；<select> 弹的是
+   原生滚轮选择器、不弹键盘，不触发缩放，故不纳入 —— 本项目下拉全是 12/12.5px
+   的紧凑工具栏控件（h-26/28px），一并抬到 16px 会顶满边框、和旁边 13px 的 chip
+   失衡（2026-10-26 实测修正，此前 select 被误纳入）。
+   只在手机视口生效（index.html 未设 maximum-scale，不能靠禁缩放绕过）；横屏手机
+   宽 844 不满足 max-width:767，必须并上 (max-height:500px) and (pointer:coarse)。
+   元素+属性选择器特异性(0,1,1) > Tailwind .text-xs(0,1,0)，无需 !important。 */
+@media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='color']):not([type='button']):not([type='submit']):not([type='reset']),
+  textarea:not([disabled]) {
+    font-size: 16px;
+  }
+}
+
 /* Custom Range Slider Styling */
 input[type="range"] {
   -webkit-appearance: none;
@@ -1400,10 +1415,10 @@ input[type="number"] {
     transform: translateY(-50%);
   }
 
-  /* 2) 输入框 16px：iOS Safari 对 <16px 的输入框会强制放大整页 */
+  /* 2) 输入框 16px：iOS Safari 对 <16px 的输入框会强制放大整页
+        （select 不弹键盘、不触发缩放，见文件顶部说明，不纳入） */
   [role='dialog'] input,
-  [role='dialog'] textarea,
-  [role='dialog'] select {
+  [role='dialog'] textarea {
     font-size: 16px;
   }
 

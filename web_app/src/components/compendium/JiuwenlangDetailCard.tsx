@@ -166,6 +166,27 @@ export const JiuwenlangDetailCard: React.FC<JiuwenlangDetailCardProps> = ({ card
         return levels.find((l) => l.level === currentLevel) || levels[levels.length - 1];
     }, [levels, currentLevel]);
 
+    /** 属性行 + 「升到下一级的增量」绿色括号（满级时没有下一级，不显示括号） */
+    const attrRows = useMemo(() => {
+        const next = levels.find((l) => l.level === currentLevel + 1) || null;
+        const d = (cur: number, nxt: number | undefined, fmt: (v: number) => string): string | undefined =>
+            next && typeof nxt === 'number' && nxt > cur ? `+${fmt(nxt - cur)}` : undefined;
+        const plain = (v: number) => fmtNum(v);
+        const comma = (v: number) => v.toLocaleString();
+        return [
+            { key: 'hp', label: '基础气血', value: `＋${activeItem.hp.toLocaleString()}`, gain: d(activeItem.hp, next?.hp, comma) },
+            { key: 'mp', label: '基础真气', value: `＋${activeItem.mp.toLocaleString()}`, gain: d(activeItem.mp, next?.mp, comma) },
+            { key: 'hit', label: '增加技能命中', value: fmtNum(activeItem.skillAccuracy), gain: d(activeItem.skillAccuracy, next?.skillAccuracy, plain) },
+            { key: 'dodge', label: '增加技能躲闪', value: fmtNum(activeItem.skillDodge), gain: d(activeItem.skillDodge, next?.skillDodge, plain) },
+            { key: 'critRed', label: '被致命一击的概率减少', value: `${fmtNum(activeItem.critReduction)}%`, gain: d(activeItem.critReduction, next?.critReduction, (v) => `${plain(v)}%`) },
+            { key: 'critDmgRed', label: '减免暴伤', value: `＋${fmtNum(activeItem.critDamageReduction)}%`, gain: d(activeItem.critDamageReduction, next?.critDamageReduction, (v) => `${plain(v)}%`) },
+            { key: 'immortal', label: '御仙', value: `＋${fmtNum(activeItem.resistImmortal)}%`, gain: d(activeItem.resistImmortal, next?.resistImmortal, (v) => `${plain(v)}%`) },
+            { key: 'buddha', label: '御佛', value: `＋${fmtNum(activeItem.resistBuddha)}%`, gain: d(activeItem.resistBuddha, next?.resistBuddha, (v) => `${plain(v)}%`) },
+            { key: 'demon', label: '御魔', value: `＋${fmtNum(activeItem.resistDemon)}%`, gain: d(activeItem.resistDemon, next?.resistDemon, (v) => `${plain(v)}%`) },
+            { key: 'dmgRed', label: '减免伤害', value: `＋${fmtNum(activeItem.damageReduction)}%`, gain: d(activeItem.damageReduction, next?.damageReduction, (v) => `${plain(v)}%`) },
+        ];
+    }, [activeItem, levels, currentLevel]);
+
     /** 升到当前等级所需材料（1 级为初始等级，无材料） */
     const currentCost = useMemo(() => {
         if (!hasCosts) return null;
@@ -180,6 +201,38 @@ export const JiuwenlangDetailCard: React.FC<JiuwenlangDetailCardProps> = ({ card
         if (!currentCost) return [] as JiuwenlangRecipeMeta[];
         return recipes.filter((r) => (currentCost[r.id]?.length ?? 0) > 0);
     }, [currentCost, recipes]);
+
+    /** 消耗材料测算：选一段等级区间，按配方汇总该区间内所有材料（与法宝经验测算同款交互） */
+    const [showCalc, setShowCalc] = useState(false);
+    const [calcStart, setCalcStart] = useState(1);
+    const [calcTarget, setCalcTarget] = useState(() => Math.max(2, maxLevel));
+
+    const calcResult = useMemo(() => {
+        const from = Math.min(calcStart, calcTarget - 1);
+        const range = upgradeCosts.filter((c) => c.level > from && c.level <= calcTarget);
+        return recipes
+            .map((recipe) => {
+                // 按材料 key 合并（九纹琅·属性 每级对应不同等级的材料，逐条列会拉出几十行）
+                const map = new Map<string, { key: string; name: string; lvMin: number; lvMax: number; count: number }>();
+                let any = false;
+                for (const cost of range) {
+                    for (const item of cost[recipe.id] ?? []) {
+                        any = true;
+                        const hit = map.get(item.key);
+                        const lv = item.itemLevel ?? 0;
+                        if (hit) {
+                            hit.count += item.count;
+                            hit.lvMin = Math.min(hit.lvMin || lv, lv);
+                            hit.lvMax = Math.max(hit.lvMax, lv);
+                        } else {
+                            map.set(item.key, { key: item.key, name: item.name, lvMin: lv, lvMax: lv, count: item.count });
+                        }
+                    }
+                }
+                return { recipe, items: [...map.values()], any };
+            })
+            .filter((r) => r.any);
+    }, [calcStart, calcTarget, upgradeCosts, recipes]);
 
     return (
         <div className={clsx('w-full min-w-0 max-w-full flex flex-col gap-3 select-none', className)}>
@@ -247,38 +300,25 @@ export const JiuwenlangDetailCard: React.FC<JiuwenlangDetailCardProps> = ({ card
                     </div>
                 </div>
 
-                {/* 类似装备卡的属性逐行展示：经典游戏蓝（#8080ff）+ 宋体 */}
+                {/* 类似装备卡的属性逐行展示：经典游戏蓝（#8080ff）+ 宋体。
+                    每行尾部带「(升级 +N)」绿色括号（与天缘/轩辕策信息卡同款），N = 升到下一级的增量 */}
                 <div className="py-1 space-y-1">
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 基础气血 ＋{activeItem.hp.toLocaleString()}</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 基础真气 ＋{activeItem.mp.toLocaleString()}</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 增加技能命中 {fmtNum(activeItem.skillAccuracy)}</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 增加技能躲闪 {fmtNum(activeItem.skillDodge)}</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 被致命一击的概率减少 {fmtNum(activeItem.critReduction)}%</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 减免暴伤 ＋{fmtNum(activeItem.critDamageReduction)}%</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 御仙 ＋{fmtNum(activeItem.resistImmortal)}%</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 御佛 ＋{fmtNum(activeItem.resistBuddha)}%</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 御魔 ＋{fmtNum(activeItem.resistDemon)}%</span>
-                    </div>
-                    <div style={{ color: GAME_COLORS.STAT_BLUE }} className="flex items-center">
-                        <span>· 减免伤害 ＋{fmtNum(activeItem.damageReduction)}%</span>
-                    </div>
+                    {attrRows.map((r) => (
+                        <div
+                            key={r.key}
+                            style={{ color: GAME_COLORS.STAT_BLUE }}
+                            className="flex items-baseline gap-2 whitespace-nowrap"
+                        >
+                            <span>
+                                · {r.label} {r.value}
+                                {r.gain && (
+                                    <span className="text-emerald-400 text-[11px] font-sans ml-1.5 font-medium">
+                                        (升级 {r.gain})
+                                    </span>
+                                )}
+                            </span>
+                        </div>
+                    ))}
                 </div>
 
                 {/* 2. 升级材料：材料作行、配方作列（横向对照，窄屏不再反复换行） */}
@@ -350,12 +390,108 @@ export const JiuwenlangDetailCard: React.FC<JiuwenlangDetailCardProps> = ({ card
                     </div>
                 )}
 
-                {/* 底部属性与穿戴/附魔要求 */}
-                <div className="mt-1.5 pt-2 border-t border-[#1c2436]/60 text-[12px] leading-5 space-y-0.5">
-                    <div style={{ color: GAME_COLORS.OWNER_ORANGE }}>
-                        已绑定；已锁定；不会掉落；不可卖店
+                {/* 3. 消耗材料测算：选等级区间 → 按配方汇总区间内全部材料 */}
+                {hasCosts && (
+                    <div className="mt-1 pt-2 border-t border-[#1f293d]/80 font-sans">
+                        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+                            <span className="text-[12px] font-bold" style={{ color: GAME_COLORS.GOLD_AMBER }}>
+                                消耗材料测算
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setShowCalc((v) => !v)}
+                                className="px-2 py-0.5 rounded text-[11px] text-cyan-300 hover:text-cyan-200 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/40 transition-colors cursor-pointer whitespace-nowrap"
+                            >
+                                {showCalc ? '收起测算' : '自定义测算'}
+                            </button>
+                        </div>
+
+                        {showCalc && (
+                            <div className="mt-1.5 p-2 rounded bg-black/40 border border-[#1e293b] space-y-1.5">
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px]">
+                                    <span className="text-slate-400">升级区间：</span>
+                                    <select
+                                        value={calcStart}
+                                        onChange={(e) => {
+                                            const v = Number(e.target.value);
+                                            setCalcStart(v);
+                                            if (v >= calcTarget) setCalcTarget(Math.min(maxLevel, v + 1));
+                                        }}
+                                        className="bg-[#111827] border border-slate-700 rounded px-1 py-0.5 text-slate-200 outline-none"
+                                    >
+                                        {levels
+                                            .map((l) => l.level)
+                                            .filter((lv) => lv < maxLevel)
+                                            .map((lv) => (
+                                                <option key={lv} value={lv}>
+                                                    {lv} 级
+                                                </option>
+                                            ))}
+                                    </select>
+                                    <span className="text-slate-500">→</span>
+                                    <select
+                                        value={calcTarget}
+                                        onChange={(e) => setCalcTarget(Number(e.target.value))}
+                                        className="bg-[#111827] border border-slate-700 rounded px-1 py-0.5 text-slate-200 outline-none"
+                                    >
+                                        {levels
+                                            .map((l) => l.level)
+                                            .filter((lv) => lv > calcStart)
+                                            .map((lv) => (
+                                                <option key={lv} value={lv}>
+                                                    {lv} 级
+                                                </option>
+                                            ))}
+                                    </select>
+                                </div>
+
+                                <div className="text-[11px] text-slate-300">
+                                    从 <span className="text-cyan-300 font-bold">{Math.min(calcStart, calcTarget - 1)}级</span> 升至{' '}
+                                    <span className="text-cyan-300 font-bold">{calcTarget}级</span>
+                                </div>
+
+                                {calcResult.length === 0 ? (
+                                    <div className="text-[11px] text-slate-500">该区间没有可用材料数据</div>
+                                ) : (
+                                    calcResult.map(({ recipe, items }) => (
+                                        <div key={recipe.id} className="flex items-start gap-1.5">
+                                            <span
+                                                className="w-[38px] shrink-0 whitespace-nowrap text-[11px] font-bold leading-[16px]"
+                                                style={{ color: RECIPE_ACCENT[recipe.id] || '#cbd5e1' }}
+                                            >
+                                                {recipe.name}
+                                            </span>
+                                            <div className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+                                                {items.map((item, idx) => (
+                                                    <span
+                                                        key={`${item.key}-${idx}`}
+                                                        className="whitespace-nowrap text-[11px] leading-[16px]"
+                                                    >
+                                                        <span style={{ color: MATERIAL_COLOR[item.key] || '#cbd5e1' }}>
+                                                            {item.name}
+                                                            {item.lvMax > 0 &&
+                                                                (item.lvMin === item.lvMax
+                                                                    ? `（${item.lvMax}级）`
+                                                                    : `（${item.lvMin}~${item.lvMax}级）`)}
+                                                        </span>
+                                                        <span className="ml-0.5 text-amber-200/90">
+                                                            ×{item.count.toLocaleString()}
+                                                        </span>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                                <div className="text-[10.5px] text-slate-500 leading-4">
+                                    每套配方任选其一即可，数量为该区间内逐级累加值
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>
+                )}
+
+                {/* 底部：已按用户要求去掉「已绑定；已锁定；不会掉落；不可卖店」一行 */}
             </div>
         </div>
     );

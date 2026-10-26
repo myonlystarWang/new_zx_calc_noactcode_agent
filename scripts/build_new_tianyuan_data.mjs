@@ -97,7 +97,7 @@ const ATTR_META = {
   22: { name: '克佛',          group: '克佛',        unit: '%', scale: 100, decimals: 1 },
   23: { name: '克魔',          group: '克魔',        unit: '%', scale: 100, decimals: 1 },
   24: { name: '无视伤害减免',  group: '无视伤害减免', unit: '%', scale: 100, decimals: 1 },
-  26: { name: '技能躲闪',      group: '技能躲闪',    unit: '%', scale: 100, decimals: 1 },
+  26: { name: '技能躲闪',      group: '技能躲闪',    unit: '',  scale: 100, decimals: 0 },   // 点值，不带 %（2026-10-26）
   27: { name: '御仙',          group: '御仙',        unit: '%', scale: 100, decimals: 1 },
   28: { name: '御佛',          group: '御佛',        unit: '%', scale: 100, decimals: 1 },
   29: { name: '御魔',          group: '御魔',        unit: '%', scale: 100, decimals: 1 },

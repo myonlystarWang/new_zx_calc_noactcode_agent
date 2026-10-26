@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import clsx from 'clsx';
 import { GAME_COLORS } from '../../constants/gameColorSystem';
+import { isPointAttr } from '../../utils/attrUnits';
 
 export interface NinglingqiAttribute {
     id: number;
@@ -137,7 +138,7 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
 
     return (
         <div className={clsx(
-            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left w-full min-w-0 max-w-xl',
+            'bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 sm:p-4 shadow-2xl backdrop-blur-md flex flex-col gap-3 text-left w-full min-w-0 max-w-[32rem]',
             className
         )}>
             {/* 顶部分类与展开/折叠所有属性按钮 */}
@@ -149,9 +150,6 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
                     >
                         宸极
                     </button>
-                    <span className="text-[11px] text-slate-400 ml-1">
-                        12 孔位洗炼属性池与概率表
-                    </span>
                 </div>
 
                 <div className="flex items-center gap-1.5 shrink-0">
@@ -279,19 +277,21 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
                                     </span>
                                 </div>
 
-                                {/* 展开后的完整候选池与概率表（统一星宿/天缘同款两端对齐展示，无顶部表头） */}
+                                {/* 展开后的完整候选池与概率表（统一星宿/天缘同款两端对齐展示，无顶部表头）。
+                                    移动端不换行：内容超宽时整块左右滑动（外层 overflow-x-auto + 内层 min-w-max） */}
                                 {isExpanded && p && (
-                                    <div className="border-t border-[#1b2537] p-2 bg-black/40 space-y-1">
+                                    <div className="border-t border-[#1b2537] p-2 bg-black/40 overflow-x-auto no-scrollbar">
+                                        <div className="w-full min-w-max space-y-1">
                                         {p.attributes.map((attr, aIdx) => {
                                             const isRare = RARE_ATTR_NAMES.has(attr.name);
                                             const ratePct = ((attr.weight / totalWeight) * 100).toFixed(1);
-                                            const unit = attr.isPercent ? '%' : '';
+                                            const unit = attr.isPercent && !isPointAttr(attr.name) ? '%' : '';
                                             const displayName = formatNlqAttrName(attr.name);
 
                                             return (
                                                 <div
                                                     key={aIdx}
-                                                    className="flex items-center justify-between text-[13px] leading-[22px]"
+                                                    className="flex items-baseline justify-between gap-3 text-[13px] leading-[22px] whitespace-nowrap"
                                                 >
                                                     <span style={{
                                                         color: isRare ? '#38bdf8' : GAME_COLORS.STAT_BLUE
@@ -304,6 +304,7 @@ export const NinglingqiDetailCard: React.FC<NinglingqiDetailCardProps> = ({
                                                 </div>
                                             );
                                         })}
+                                        </div>
                                     </div>
                                 )}
                             </div>

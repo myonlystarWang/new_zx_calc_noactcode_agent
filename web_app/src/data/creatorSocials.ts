@@ -26,7 +26,8 @@ export const CREATOR_SOCIALS: CreatorSocial[] = [
     {
         id: 'douyin',
         label: '抖音',
-        handle: '抖音号 1398631127',
+        // 不带「抖音号」前缀：320px 窄屏两列等分时会被截断，而上面一行已经是「抖音」
+        handle: '1398631127',
         url: 'https://v.douyin.com/mr1LhZBwTjk',
         qrImage: '/social/douyin.png',
     },

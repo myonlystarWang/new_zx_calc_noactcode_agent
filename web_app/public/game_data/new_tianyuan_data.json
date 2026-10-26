@@ -171,9 +171,9 @@
           "max": 0.08,
           "perLevel": 0.003,
           "weight": 0.13,
-          "unit": "%",
+          "unit": "",
           "displayScale": 100,
-          "decimals": 1
+          "decimals": 0
         },
         {
           "id": 26,
@@ -183,9 +183,9 @@
           "max": 0.12,
           "perLevel": 0.003,
           "weight": 0.03,
-          "unit": "%",
+          "unit": "",
           "displayScale": 100,
-          "decimals": 1
+          "decimals": 0
         },
         {
           "id": 27,
@@ -756,7 +756,7 @@
           "initMin": 4,
           "initMax": 8,
           "perLevelGain": 0.3,
-          "unit": "%"
+          "unit": ""
         },
         {
           "name": "技能躲闪",
@@ -764,7 +764,7 @@
           "initMin": 8,
           "initMax": 12,
           "perLevelGain": 0.3,
-          "unit": "%"
+          "unit": ""
         },
         {
           "name": "御仙",

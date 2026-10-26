@@ -11,6 +11,8 @@
  * - 属性数值：先掷一个「五档品质档」，全部属性数值落在该档的 1/5 区间内随机。
  */
 
+import { formatPointAttrValue, isPointAttr } from './attrUnits';
+
 export type XycBeast = '青龙' | '白虎' | '朱雀' | '玄武';
 export type XycVersion = '普通' | '典藏' | '英雄';
 export type XycWashMode = 'attr' | 'skill' | 'both';
@@ -67,7 +69,8 @@ export interface XycRefineData {
         levelProbsLow: number[];
         levelProbsHigh: number[];
         variantProbs: Record<string, number>;
-        pool: Record<string, XycSkillDef[]>;
+        /** 系别 → 职业 → 技能（青龙/白虎 各带一个固定三代技能，互不通用） */
+        pool: Record<string, Record<string, XycSkillDef[]>>;
     };
 }
 
@@ -197,13 +200,14 @@ export function rollAttrs(pool: XycPool, count: number, tier: number, rng: Rng):
     return out;
 }
 
-export function rollSkill(data: XycRefineData, occ: string, grade: number, rng: Rng): XycSkillRoll | null {
-    const raw = data.skill.pool?.[occ];
-    if (!raw || raw.length === 0) return null;
-    // 兜底：客户端技能表里混有占位/被动条目（名字后面拼了效果描述，如「…《英雄》攻击怪物减少冷却」），
-    // 正常技能名一定止于 《变体》/触发/（协同攻击）
-    const clean = raw.filter((s) => /(《[^》]+》|触发|）)$/.test(s.name));
-    const list = clean.length > 0 ? clean : raw;
+/**
+ * 掷进阶技能。
+ * 青龙/白虎 各自只带一个固定的三代技能（青龙=输出向，白虎=防御保命向），
+ * 所以这里必须按 beast 取池，不能把两系合起来抽 —— 否则青龙会洗出白虎的技能。
+ */
+export function rollSkill(data: XycRefineData, beast: XycBeast, occ: string, grade: number, rng: Rng): XycSkillRoll | null {
+    const list = data.skill.pool?.[beast]?.[occ];
+    if (!list || list.length === 0) return null;
     const def = list[Math.floor(rng() * list.length)] ?? list[0];
     const probs = getSkillLevelProbs(data, grade);
     const level = pickIndexByProbs(probs, rng) + 1;
@@ -226,7 +230,7 @@ export function identifyBook(data: XycRefineData, opts: IdentifyOptions, rng: Rn
     const tier = rollTier(pool, rng);
     const attrs = rollAttrs(pool, attrCount, tier, rng);
     const hasSkillSlot = canRollSkill(data, opts.beast, opts.grade, attrCount);
-    const skill = hasSkillSlot && rng() < pool.skillProb ? rollSkill(data, opts.occ || '鬼王', opts.grade, rng) : null;
+    const skill = hasSkillSlot && rng() < pool.skillProb ? rollSkill(data, opts.beast, opts.occ || '鬼王', opts.grade, rng) : null;
     return {
         version: opts.version,
         beast: opts.beast,
@@ -282,7 +286,7 @@ export function wash(data: XycRefineData, book: XycBook, mode: XycWashMode, occ:
     if (mode === 'skill' || mode === 'both') {
         const eligible = canRollSkill(data, book.beast, book.grade, book.attrCount);
         const hit = eligible && rng() < pool.skillProb;
-        const nextSkill = hit ? rollSkill(data, occ, book.grade, rng) : null;
+        const nextSkill = hit ? rollSkill(data, book.beast, occ, book.grade, rng) : null;
         next = { ...next, skill: nextSkill };
         const beforeName = book.skill ? `${book.skill.name} ${book.skill.level}级` : null;
         const afterName = nextSkill ? `${nextSkill.name} ${nextSkill.level}级` : null;
@@ -311,6 +315,8 @@ export function attrValueAt(pool: XycPool, roll: XycAttrRoll, level: number): nu
 export function formatAttrValue(data: XycRefineData, id: number, raw: number): string {
     const def = data.attrs[String(id)];
     if (!def) return String(raw);
+    // 技能命中 / 技能躲闪：数据里存的是比例，实机按点数展示（不带 %）
+    if (isPointAttr(def.name)) return formatPointAttrValue(def.pct ? raw * 100 : raw);
     if (def.pct) return `${(raw * 100).toFixed(1)}%`;
     return String(Math.round(raw));
 }

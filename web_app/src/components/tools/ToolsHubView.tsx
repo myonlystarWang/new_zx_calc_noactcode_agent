@@ -27,14 +27,14 @@ export const TOOLS_CONFIG: { id: ToolSubTab; label: string; path: string; icon: 
     },
     {
         id: 'newtianyuan',
-        label: '新版天缘模拟器',
+        label: '新天缘精炼',
         path: ROUTE.newTianYuan,
         icon: <Sparkles className="w-4 h-4 text-amber-400" />,
         desc: '须弥装备天缘与天命理论上限'
     },
     {
         id: 'yunling',
-        label: '装备蕴灵模拟器',
+        label: '神隐蕴灵',
         path: ROUTE.yunlingSimulator,
         icon: <Dices className="w-4 h-4 text-rose-400" />,
         desc: '神隐蕴灵概率与月德符消耗推演'

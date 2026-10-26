@@ -32,7 +32,7 @@ export const TOP_HUB_OPTIONS = [
     { key: 'fabao', label: '法宝', query: '法宝' },
     { key: 'measure', label: '属性测算', query: '属性测算' },
     { key: 'guide', label: '玩法攻略', query: '玩法攻略' },
-    { key: 'calc', label: '伤害计算', query: '计算实战战力' },
+    { key: 'calc', label: '伤害计算', query: '计算实战战力', workspaceMode: 'calc' },
     { key: 'server', label: '开服雷达', query: '开服雷达' },
 ];
 
@@ -542,6 +542,83 @@ export class CopilotService {
         // 核心系统微工具与独立页面意图识别（高优先级，避免被实体槽位分词误伤）
         // ====================================================
 
+        // 3.98 轩辕策属性信息卡（xyc_tome）—— 已提到微工具区首位（与新天缘精炼同级优先）
+        // 四系 × 普通/英雄 × Lv.1–20 全词条区间（装备大类「轩辕策」入口 / 裸「轩辕策」均走此卡）
+        // 带「模拟 / 洗炼 / 洗练」时走下方 xyc_wash 洗练模拟卡；无模拟词才落本信息卡
+        const isXycTomeQuery =
+            (q.includes('轩辕策') ||
+                q.includes('青龙策') ||
+                q.includes('白虎策') ||
+                q.includes('朱雀策') ||
+                q.includes('玄武策') ||
+                q.includes('青龙书') ||
+                q.includes('白虎书') ||
+                q.includes('朱雀书') ||
+                q.includes('玄武书') ||
+                q.includes('青囊玉书') ||
+                q.includes('白锦道册') ||
+                q.includes('朱翎术纪') ||
+                q.includes('玄甲元略')) &&
+            !PROFESSIONS.some((pr) => q.includes(pr));
+
+        if (isXycTomeQuery) {
+            let initialBeast = '青龙';
+            if (q.includes('白虎') || q.includes('白锦道册')) initialBeast = '白虎';
+            else if (q.includes('朱雀') || q.includes('朱翎术纪')) initialBeast = '朱雀';
+            else if (q.includes('玄武') || q.includes('玄甲元略')) initialBeast = '玄武';
+
+            const wantsSim = q.includes('模拟') || q.includes('洗炼') || q.includes('洗练');
+            const initialHero = !q.includes('普通');
+            const xycLvlMatch = q.match(/(\d{1,2})\s*级/);
+            const initialLevel = xycLvlMatch ? Math.min(20, Math.max(1, parseInt(xycLvlMatch[1], 10))) : 1;
+
+            // 洗练 / 模拟 → 洗练模拟卡（1:1 物品窗 + 三种洗练道具）；其余 → 属性信息卡
+            if (wantsSim) {
+                const gradeMap: Record<string, number> = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6 };
+                const xycGradeMatch = q.match(/([一二三四五六])\s*品/);
+                const initialGrade = xycGradeMatch ? gradeMap[xycGradeMatch[1]] : 6;
+                const initialVersion = q.includes('英雄') ? '英雄' : '普通';
+                const initialOcc = PROFESSIONS.find((pr) => q.includes(pr));
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: '为你打开【轩辕策洗练模拟】。洗练不改变属性条数：大衍奇术只洗属性、一元道契只洗技能（仅青龙 / 白虎）、太乙宝函属性与技能同洗；每本上限 10 次，可用轩辕拾遗录提升。',
+                    time: timeStr,
+                    cardType: 'xyc_wash',
+                    cardData: {
+                        initialBeast,
+                        initialVersion,
+                        initialGrade,
+                        initialOcc,
+                        initialLevel,
+                    },
+                };
+            }
+
+            try {
+                const [xycRules, xycMeta] = await Promise.all([
+                    dataService.getXycRules(),
+                    dataService.getXycTomeMeta(),
+                ]);
+                return {
+                    id: `msg-${Date.now()}`,
+                    sender: 'assistant',
+                    text: '为你呈现【轩辕策属性全览】。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：',
+                    time: timeStr,
+                    cardType: 'xyc_tome',
+                    cardData: {
+                        rules: xycRules,
+                        meta: xycMeta,
+                        initialBeast,
+                        initialHero,
+                        initialLevel,
+                    },
+                };
+            } catch (e) {
+                console.error('[CopilotService] 轩辕策信息卡数据加载失败', e);
+            }
+        }
+
         // 0.9 服务器按名查询（T-06）：36 服名/拼音精确命中 → single_server 卡（带所属战区）
         {
             const serverList = await dataService.getServerList();
@@ -739,83 +816,6 @@ export class CopilotService {
             };
         }
 
-        // 3.98 轩辕策属性信息卡（xyc_tome）
-        // 四系 × 普通/英雄 × Lv.1–20 全词条区间（装备大类「轩辕策」入口 / 裸「轩辕策」均走此卡）
-        // 「轩辕策模拟 / 洗炼」也先落本卡：右分屏模拟器暂停使用，模拟卡（信息卡版）待开发
-        const isXycTomeQuery =
-            (q.includes('轩辕策') ||
-                q.includes('青龙策') ||
-                q.includes('白虎策') ||
-                q.includes('朱雀策') ||
-                q.includes('玄武策') ||
-                q.includes('青龙书') ||
-                q.includes('白虎书') ||
-                q.includes('朱雀书') ||
-                q.includes('玄武书') ||
-                q.includes('青囊玉书') ||
-                q.includes('白锦道册') ||
-                q.includes('朱翎术纪') ||
-                q.includes('玄甲元略')) &&
-            !PROFESSIONS.some((pr) => q.includes(pr));
-
-        if (isXycTomeQuery) {
-            let initialBeast = '青龙';
-            if (q.includes('白虎') || q.includes('白锦道册')) initialBeast = '白虎';
-            else if (q.includes('朱雀') || q.includes('朱翎术纪')) initialBeast = '朱雀';
-            else if (q.includes('玄武') || q.includes('玄甲元略')) initialBeast = '玄武';
-
-            const wantsSim = q.includes('模拟') || q.includes('洗炼') || q.includes('洗练');
-            const initialHero = !q.includes('普通');
-            const xycLvlMatch = q.match(/(\d{1,2})\s*级/);
-            const initialLevel = xycLvlMatch ? Math.min(20, Math.max(1, parseInt(xycLvlMatch[1], 10))) : 1;
-
-            // 洗练 / 模拟 → 洗练模拟卡（1:1 物品窗 + 三种洗练道具）；其余 → 属性信息卡
-            if (wantsSim) {
-                const gradeMap: Record<string, number> = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6 };
-                const xycGradeMatch = q.match(/([一二三四五六])\s*品/);
-                const initialGrade = xycGradeMatch ? gradeMap[xycGradeMatch[1]] : 6;
-                const initialVersion = q.includes('英雄') ? '英雄' : '普通';
-                const initialOcc = PROFESSIONS.find((pr) => q.includes(pr));
-                return {
-                    id: `msg-${Date.now()}`,
-                    sender: 'assistant',
-                    text: '为你打开【轩辕策洗练模拟】。洗练不改变属性条数：大衍奇术只洗属性、一元道契只洗技能（仅青龙 / 白虎）、太乙宝函属性与技能同洗；每本上限 10 次，可用轩辕拾遗录提升。',
-                    time: timeStr,
-                    cardType: 'xyc_wash',
-                    cardData: {
-                        initialBeast,
-                        initialVersion,
-                        initialGrade,
-                        initialOcc,
-                        initialLevel,
-                    },
-                };
-            }
-
-            try {
-                const [xycRules, xycMeta] = await Promise.all([
-                    dataService.getXycRules(),
-                    dataService.getXycTomeMeta(),
-                ]);
-                return {
-                    id: `msg-${Date.now()}`,
-                    sender: 'assistant',
-                    text: '为你呈现【轩辕策属性全览】。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：',
-                    time: timeStr,
-                    cardType: 'xyc_tome',
-                    cardData: {
-                        rules: xycRules,
-                        meta: xycMeta,
-                        initialBeast,
-                        initialHero,
-                        initialLevel,
-                    },
-                };
-            } catch (e) {
-                console.error('[CopilotService] 轩辕策信息卡数据加载失败', e);
-            }
-        }
-
         // 4. 轩辕策属性模拟
         // T-12（R2 裁决）：带职业前缀的「职业+轩辕策」是技能查询（技能数据有 27 个「职业·轩辕策」组），
         // 排除后落技能分支；仅裸「轩辕策」才走本工具卡
@@ -907,7 +907,7 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '已为你调出【新版天缘模拟器】。可直接在对话里开箱抽词条、精炼到 +10，并推演 +3/+6/+9/+10 的天命点分配：',
+                text: '已为你调出【新天缘精炼】。可直接在对话里开箱抽词条、精炼到 +10，并推演 +3/+6/+9/+10 的天命点分配：',
                 time: timeStr,
                 cardType: 'tianyuan_sim',
                 cardData: {
@@ -1921,8 +1921,8 @@ export class CopilotService {
                         { key: 'fabao_exp', label: '法宝经验', query: '法宝经验' },
                         { key: 'shenji', label: '神机洗练', query: '神机洗练' },
                         { key: 'zhenling_upgrade', label: '阵灵聚灵', query: '阵灵升级' },
-                        { key: 'tianyuan_sim', label: '天缘模拟', query: '天缘' },
-                        { key: 'calc', label: '伤害计算', query: '计算实战战力' },
+                        { key: 'tianyuan_sim', label: '天缘模拟', query: '天缘模拟' },
+                        { key: 'calc', label: '伤害计算', query: '计算实战战力', workspaceMode: 'calc' },
                     ]
                 }
             };
@@ -2014,10 +2014,10 @@ export class CopilotService {
                 cardData: {
                     title: '各类模拟器导航',
                     options: [
-                        { key: 'shenji', label: '神机洗练', query: '神机洗练' },
-                        { key: 'yunling', label: '蕴灵模拟', query: '蕴灵模拟' },
-                        { key: 'tianyuan_sim', label: '新天缘模拟', query: '新天缘模拟' },
                         { key: 'xyc_wash', label: '轩辕策洗练', query: '轩辕策洗练' },
+                        { key: 'shenji', label: '神机洗练', query: '神机洗练' },
+                        { key: 'yunling', label: '神隐蕴灵', query: '神隐蕴灵' },
+                        { key: 'tianyuan_sim', label: '新天缘精炼', query: '新天缘精炼' },
                     ]
                 }
             };
@@ -2187,7 +2187,7 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: `为你打开【装备蕴灵】${initialQuality ? `（已默认选定【${initialQuality}】）` : ''}。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：`,
+                text: `为你打开【神隐蕴灵】${initialQuality ? `（已默认选定【${initialQuality}】）` : ''}。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：`,
                 time: timeStr,
                 cardType: 'yunling_forge',
                 cardData: {

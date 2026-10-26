@@ -142,8 +142,10 @@ export const CreatorSocialLinks: React.FC = () => {
                 })}
             </div>
 
-            {/* 窄屏（<md）：自己的屏扫不了自己的码，只留跳转 chip */}
-            <div className="flex md:hidden flex-wrap items-center gap-2">
+            {/* 窄屏（<md）：自己的屏扫不了自己的码，只留跳转 chip。
+                用 grid-cols-2 等分撑满整行——卡片里所有内容都是左对齐，chip 居中会多出一条对齐轴；
+                等分则左右都贴边，和上方正文共用同一条左基线，视觉最稳。 */}
+            <div className="grid grid-cols-2 gap-2 md:hidden">
                 {items.map((social) => {
                     const Icon = ICONS[social.id];
                     const skin = SKIN[social.id];
@@ -155,16 +157,16 @@ export const CreatorSocialLinks: React.FC = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             title={`${social.label}：${social.handle}`}
-                            className={`flex items-center gap-2 rounded-xl border ${skin.border} ${skin.hover} bg-white/[0.03] px-2.5 py-1.5 transition-all no-underline`}
+                            className={`flex items-center gap-2 rounded-xl border ${skin.border} ${skin.hover} bg-white/[0.03] px-2.5 py-1.5 min-w-0 transition-all no-underline`}
                         >
                             <span
                                 className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 ${skin.iconBg} ${skin.icon}`}
                             >
                                 <Icon className="w-3.5 h-3.5" />
                             </span>
-                            <span className="flex flex-col leading-tight">
+                            <span className="flex flex-col leading-tight min-w-0">
                                 <span className={`text-[11px] font-bold ${skin.text}`}>{social.label}</span>
-                                <span className="text-[10px] text-slate-500 whitespace-nowrap">{social.handle}</span>
+                                <span className="text-[10px] text-slate-500 truncate">{social.handle}</span>
                             </span>
                         </a>
                     );

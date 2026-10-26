@@ -15,6 +15,7 @@ import {
     type BossCandidateItem
 } from '../../services/CopilotService';
 import { DataService } from '../../services/DataService';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 import { FabaoDetailCard } from '../compendium/FabaoDetailCard';
 import { EquipDetailCard } from '../compendium/EquipDetailCard';
 import { SkillDetailCard } from '../compendium/SkillDetailCard';
@@ -89,6 +90,8 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     const [inputText, setInputText] = useState('');
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [isPlusMenuOpen, setIsPlusMenuOpen] = useState(false);
+    /** 手机输入舱可用宽度仅 ~250px，长占位文案会被截掉一半 */
+    const isMobile = useIsMobile();
 
     // 候选列表选中的索引状态（按消息 ID 索引）
     const [selectedCandidateIndex, setSelectedCandidateIndex] = useState<Record<string, number>>({});
@@ -759,11 +762,19 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                     {msg.cardData.title || '分类导航'} · 点选直达对应功能
                                                 </div>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {(msg.cardData.options || []).map((opt: { key: string; label: string; query: string }) => (
+                                                    {(msg.cardData.options || []).map((opt: { key: string; label: string; query: string; workspaceMode?: string }) => (
                                                         <button
                                                             key={opt.key}
                                                             type="button"
-                                                            onClick={() => onSendMessage(opt.query)}
+                                                            onClick={() => {
+                                                                // 选项可直接指定右分屏模式（如「伤害计算」→ calc），
+                                                                // 否则只发查询词、由意图匹配决定卡片
+                                                                if (opt.workspaceMode && onOpenSplitWorkspace) {
+                                                                    onOpenSplitWorkspace(opt.workspaceMode as WorkspaceMode);
+                                                                } else {
+                                                                    onSendMessage(opt.query);
+                                                                }
+                                                            }}
                                                             className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
                                                         >
                                                             {opt.label}
@@ -1047,7 +1058,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                         onKeyDown={e => {
                             if (e.key === 'Enter') handleSend();
                         }}
-                        placeholder="问点什么，比如四灵本元，神机洗练，昭武衣服，苍龙啸，新天缘等..."
+                        placeholder={isMobile ? '问点什么？试试四灵本元…' : '问点什么，比如四灵本元，神机洗练，昭武衣服，苍龙啸，新天缘等...'}
                         className="flex-1 min-w-0 px-1 py-2 bg-transparent text-slate-100 placeholder-slate-400 text-[16px] md:text-sm focus:outline-none"
                     />
 

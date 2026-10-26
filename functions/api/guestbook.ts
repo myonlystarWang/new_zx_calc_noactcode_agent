@@ -37,7 +37,9 @@ const INITIAL_POSTS: GuestbookEntry[] = [
     id: 'pin-1',
     author: '星耀-萝卜 (作者)',
     category: 'suggestion',
-    content: '欢迎仙友使用天书万象 AI 诛仙全知大模型！本平台 100% 静态边缘计算，真实数据全量免费开放。任何技能公式误差、BOSS属性校对或战力对比建议，均可在此留言交流！',
+    // 与前端 FeedbackPage 的 PINNED_CONTENT 保持一致：前端渲染时会覆盖这条正文，
+    // 这里同步只是为了让接口单独返回的数据也正确（例如其它调用方直接读 /api/guestbook）。
+    content: '欢迎仙友使用天书万象 AI 诛仙全知大模型！本平台真实数据全量免费开放，任何装备道具信息、技能公式误差、BOSS 属性校对或战力对比建议，均可在此留言交流！也欢迎各位仙友直接联系本作者！',
     time: '2026-10-14 12:00',
     likes: 88,
     isPinned: true,

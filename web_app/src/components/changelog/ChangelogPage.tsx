@@ -411,10 +411,10 @@ export const ChangelogPage: React.FC = () => {
                 >
                   {/* 卡片顶栏：版本号、日期与星期、变动数胶囊 */}
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2 min-w-0">
                       <span
                         className={clsx(
-                          'font-mono font-black text-sm sm:text-base px-2.5 py-0.5 rounded-lg border',
+                          'font-mono font-black text-sm sm:text-base px-2.5 py-0.5 rounded-lg border whitespace-nowrap shrink-0',
                           isLatest
                             ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-sm shadow-cyan-500/20'
                             : 'bg-slate-900 border-slate-700/80 text-slate-200'
@@ -424,16 +424,23 @@ export const ChangelogPage: React.FC = () => {
                       </span>
 
                       {isLatest && (
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold flex items-center gap-1">
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold flex items-center gap-1 whitespace-nowrap shrink-0">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                           当前最新
                         </span>
                       )}
 
-                      <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5 ml-1">
-                        <Calendar className="w-3.5 h-3.5 text-slate-500" />
-                        <span>{formattedDate}</span>
-                        {weekday && <span className="text-slate-500">· {weekday}</span>}
+                      {/* 窄屏用紧凑日期，避免「2026 年 10 月 24 日」被拆成多行 */}
+                      <span className="text-xs text-slate-400 font-mono flex items-center gap-1.5 ml-1 whitespace-nowrap shrink-0">
+                        <Calendar className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                        <span className="sm:hidden">
+                          {entry.date}
+                          {weekday && ` · ${weekday}`}
+                        </span>
+                        <span className="hidden sm:inline">
+                          {formattedDate}
+                          {weekday && <span className="text-slate-500"> · {weekday}</span>}
+                        </span>
                       </span>
                     </div>
 

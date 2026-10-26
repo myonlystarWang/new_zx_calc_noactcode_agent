@@ -80,7 +80,7 @@ export const XycTomeDetailCard: React.FC<XycTomeDetailCardProps> = ({ cardData, 
         const lv = cardData?.initialLevel;
         return typeof lv === 'number' ? Math.min(max, Math.max(min, lv)) : min;
     });
-    const [stars, setStars] = useState<number>(5);
+    const [stars, setStars] = useState<number>(3);
 
     const maxLevel = meta?.maxLevel ?? 20;
     const minLevel = meta?.minLevel ?? 1;
@@ -136,24 +136,6 @@ export const XycTomeDetailCard: React.FC<XycTomeDetailCardProps> = ({ cardData, 
                         );
                     })}
                 </div>
-
-                <div className="flex items-center gap-1 shrink-0">
-                    {[false, true].map((hero) => (
-                        <button
-                            key={String(hero)}
-                            type="button"
-                            onClick={() => setIsHero(hero)}
-                            className={clsx(
-                                'px-2 py-1 rounded text-[11px] font-sans transition-all cursor-pointer border',
-                                isHero === hero
-                                    ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400/60 font-bold'
-                                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border-transparent',
-                            )}
-                        >
-                            {hero ? '英雄' : '普通'}
-                        </button>
-                    ))}
-                </div>
             </div>
 
             {/* 1. 主体卡：游戏 tooltip 版式 */}
@@ -162,7 +144,7 @@ export const XycTomeDetailCard: React.FC<XycTomeDetailCardProps> = ({ cardData, 
                 data-xyc-beast={beast}
                 data-xyc-hero={isHero ? '1' : '0'}
                 data-xyc-level={level}
-                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-max min-w-[min(320px,100%)] max-w-[min(100%,36rem)]"
                 style={{
                     fontFamily: FONT_SONG,
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
@@ -171,25 +153,32 @@ export const XycTomeDetailCard: React.FC<XycTomeDetailCardProps> = ({ cardData, 
             >
                 {/* 头部：书名（含等级）+ 品阶星级 + 等级步进 */}
                 <div className="pb-2 border-b border-[#1f293d]/80 flex flex-col gap-1.5 min-w-0">
+                    {/* 标题行：书名（普通/英雄切换已下移到等级步进同一行） */}
                     <div className="font-bold text-[14px] sm:text-[15px] leading-snug break-words" style={{ color: '#ffd272' }}>
                         <span data-xyc-beast-name style={{ color: '#ffd272' }}>{beast}</span>
                         <span>&lt;{book?.bookName || '策'}&gt;</span>
-                        {isHero && <span style={{ color: GAME_COLORS.GOLD_AMBER }}>·英雄版</span>}
+                        {/* 「·英雄版」继承书名颜色（不再用金色，与青龙同色） */}
+                        {isHero && <span>·英雄版</span>}
                     </div>
 
-                    <div className="flex items-center justify-between gap-2 min-w-0 flex-wrap">
-                        <div className="flex items-center gap-1.5 text-[11px] font-sans flex-wrap min-w-0">
-                            <span className="px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/50 text-cyan-200 font-bold whitespace-nowrap">
-                                {meta.currentTier}
-                            </span>
-                            <span
-                                className="tracking-[1px] whitespace-nowrap cursor-pointer"
-                                style={{ color: GAME_COLORS.GOLD_AMBER }}
-                                title="点击切换星级（3–5 星，展示用）"
-                                onClick={() => setStars((prev) => (prev >= 5 ? 3 : prev + 1))}
-                            >
-                                {'★'.repeat(stars)}
-                            </span>
+                    {/* 普通/英雄（左）+ 等级步进（右）：两枚按钮同规格 */}
+                    <div className="flex items-center justify-between gap-2 min-w-0">
+                        <div className="flex items-center gap-1 shrink-0">
+                            {[false, true].map((hero) => (
+                                <button
+                                    key={String(hero)}
+                                    type="button"
+                                    onClick={() => setIsHero(hero)}
+                                    className={clsx(
+                                        'px-2 py-0.5 rounded text-[11px] sm:text-xs font-bold transition-all border font-sans whitespace-nowrap cursor-pointer',
+                                        isHero === hero
+                                            ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-200 hover:bg-cyan-600/50 hover:text-white'
+                                            : 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750 hover:text-white',
+                                    )}
+                                >
+                                    {hero ? '英雄' : '普通'}
+                                </button>
+                            ))}
                         </div>
 
                         <div className="flex items-center gap-1 shrink-0 whitespace-nowrap ml-auto">
@@ -223,23 +212,41 @@ export const XycTomeDetailCard: React.FC<XycTomeDetailCardProps> = ({ cardData, 
                     </div>
                 </div>
 
+                {/* 品阶 + 星级：紧贴「等级 N」上方，用与属性一致的游戏蓝（星级仍为金色） */}
+                <div className="text-[13px] leading-[22px] flex items-baseline gap-1.5">
+                    <span style={{ color: GAME_COLORS.STAT_BLUE }}>{meta.currentTier}</span>
+                    <span
+                        className="tracking-[1px] whitespace-nowrap cursor-pointer"
+                        style={{ color: GAME_COLORS.GOLD_AMBER }}
+                        title="点击切换星级（3–5 星，展示用）"
+                        onClick={() => setStars((prev) => (prev >= 5 ? 3 : prev + 1))}
+                    >
+                        {'★'.repeat(stars)}
+                    </span>
+                </div>
+
                 {/* 等级行：白字，随等级加减实时变化（对齐游戏 tooltip 的「等级 N」单独一行） */}
                 <div className="text-[13px] leading-[22px]" style={{ color: GAME_COLORS.WHITE }}>
                     等级 {level}
                 </div>
 
-                {/* 属性池：通用 8 条在前，四系专属 4 条压底 */}
-                <div className="py-1 space-y-1">
+                {/* 属性池：通用 8 条在前，四系专属 4 条压底。
+                    移动端不换行：内容超宽时整块左右滑动（外层 overflow-x-auto + 内层 min-w-max），
+                    不再用 truncate 截断（「减免致命一击伤害 5.8% - 11…」） */}
+                <div className="overflow-x-auto no-scrollbar">
+                <div className="w-full min-w-max py-1 space-y-1">
                     {attrRows.map((row) => (
-                        <div key={row.key} className="flex items-center justify-between gap-2 text-[13px] leading-[22px] min-w-0">
-                            <span className="min-w-0 truncate" style={{ color: row.specific ? SPECIAL_ATTR_COLOR : GAME_COLORS.STAT_BLUE }}>
+                        <div key={row.key} className="flex items-baseline gap-2 text-[13px] leading-[22px] whitespace-nowrap">
+                            <span style={{ color: row.specific ? SPECIAL_ATTR_COLOR : GAME_COLORS.STAT_BLUE }}>
                                 · {row.name} {row.rangeStr}
-                            </span>
-                            <span className="text-[11px] font-sans shrink-0" style={{ color: GAME_COLORS.MINT_GREEN }}>
-                                {row.gainStr}
+                                {/* 每级增益紧跟在属性范围后面（不再右对齐到卡片边缘） */}
+                                <span className="text-[11px] font-sans ml-1.5" style={{ color: GAME_COLORS.MINT_GREEN }}>
+                                    {row.gainStr}
+                                </span>
                             </span>
                         </div>
                     ))}
+                </div>
                 </div>
             </div>
         </div>

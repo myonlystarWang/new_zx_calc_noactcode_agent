@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { HelpCircle, RotateCw, Square, X, Swords, Shirt, HardHat } from 'lucide-react';
+import { HelpCircle, Square, X, Swords, Shirt, HardHat } from 'lucide-react';
 import type { TianyuanData, TianyuanItem, RolledAttr, RefineResult } from '../../utils/newTianyuanSim';
 import { NewTianyuanDetailCard, type NewTianyuanData as DetailTianyuanData } from './NewTianyuanDetailCard';
 import {
@@ -306,6 +306,9 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                 }
 
                 setBusy(false);
+                // 读条跑满后瞬间清空（不做满→空回落动画）；先清再回调，连点会各自重新起条
+                setBarAnim(false);
+                setBarFill(0);
                 onDone?.(res.success);
 
                 if (next.level >= data.refine.maxLevel) {
@@ -477,9 +480,6 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                     <div className="relative flex items-center justify-center px-3 py-2" style={TITLE_BAR_STYLE}>
                         <span style={TITLE_TEXT_STYLE}>{piece.name}</span>
                         <div className="absolute right-3 flex items-center gap-2">
-                            <button type="button" onClick={() => regenerate()} title="重新鉴定" className="cursor-pointer hover:brightness-150">
-                                <RotateCw className="w-3.5 h-3.5" style={{ color: '#5b7894' }} />
-                            </button>
                             <HelpCircle className="w-3.5 h-3.5" style={{ color: '#5b7894' }} />
                         </div>
                     </div>

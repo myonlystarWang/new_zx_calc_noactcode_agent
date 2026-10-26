@@ -32,11 +32,11 @@
   "attributeDictionary": {
     "技能命中": {
       "display": "增加技能命中",
-      "isPercent": true
+      "isPercent": false
     },
     "技能躲闪": {
       "display": "增加技能躲闪",
-      "isPercent": true
+      "isPercent": false
     },
     "普攻命中": {
       "display": "命中",
@@ -197,7 +197,7 @@
           {
             "attr": "技能命中",
             "value": 16,
-            "isPercent": true,
+            "isPercent": false,
             "rate": 0.33
           },
           {
@@ -366,7 +366,7 @@
           {
             "attr": "技能躲闪",
             "value": 16,
-            "isPercent": true,
+            "isPercent": false,
             "rate": 0.33
           },
           {

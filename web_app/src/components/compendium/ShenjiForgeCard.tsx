@@ -394,6 +394,9 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                 setForgeCount((c) => c + 1);
                 setForging(false);
                 timerRef.current = null;
+                // 读条跑满后瞬间清空（不做满→空回落动画）；先清再回调，连点会各自重新起条
+                setBarAnim(false);
+                setBarFill(0);
                 onDone?.(rolled);
             }, FORGE_MS);
         },
@@ -501,15 +504,18 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                     background: linear-gradient(180deg, #4d7196 0%, #294863 100%);
                 }
 
-                /* 宽屏未分屏（容器宽度 >= 860px）：两列并排，主卡片弹性伸展尽可能占满对话框宽度 */
+                /* 宽屏未分屏（容器宽度 >= 860px）：两列并排。
+                   主卡宽度固定为「自动锻造面板展开后」的宽度（容器 - 330 面板 - 12 间距），
+                   默认关闭面板时也预留这 342px —— 这样点「自动锻造」展开/收起，主卡不再被拉宽压窄。 */
                 @container (min-width: 860px) {
                     .shenji-flex-layout {
                         flex-direction: row !important;
                         align-items: flex-start !important;
                     }
                     .shenji-main-card {
-                        flex: 1 1 0% !important;
-                        width: auto !important;
+                        flex: 0 1 auto !important;
+                        width: calc(100% - 342px) !important;
+                        max-width: calc(100% - 342px) !important;
                         min-width: 520px !important;
                     }
                     .shenji-auto-card {
@@ -689,7 +695,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                                 type="button"
                                 disabled={!poolReady || forging}
                                 onClick={handleForge}
-                                className="flex-1 py-1.5 rounded-[3px] text-[14px] tracking-wider transition-all font-medium select-none"
+                                className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
                                 style={{
                                     background: poolReady && !forging
                                         ? 'linear-gradient(180deg, #2b3d50 0%, #162432 100%)'
@@ -709,7 +715,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                                 type="button"
                                 disabled={!poolReady}
                                 onClick={handleAutoToggle}
-                                className="flex-1 py-1.5 rounded-[3px] text-[14px] tracking-wider transition-all font-medium select-none"
+                                className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
                                 style={{
                                     background: auto
                                         ? 'linear-gradient(180deg, #872e22 0%, #4f1710 100%)'
@@ -737,8 +743,9 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                         </div>
                     </div>
 
+                    {/* 已锻造次数：宽卡片靠按钮组右侧绝对定位（PC 原样），窄卡片落到按钮下方居中，不再溢出卡片 */}
                     <span
-                        className="absolute whitespace-nowrap text-[12px] tabular-nums select-none"
+                        className="block mt-2 text-center whitespace-nowrap text-[12px] tabular-nums select-none @md:mt-0 @md:absolute @md:text-left"
                         style={{ left: 'calc(50% + 122px)', bottom: 8, color: '#5b7894', fontFamily: SIM_FONT }}
                     >
                         已锻造 <b style={{ color: '#ffd94d', fontWeight: 600 }}>{forgeCount}</b> 次
@@ -757,17 +764,17 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                         boxShadow: '0 12px 36px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)',
                     }}
                 >
-                    {/* 标题栏：米金字体居中，右上角帮助与关闭 */}
+                    {/* 标题栏：与左卡「神机属性锻造」完全同规格（py-2 / 16px / tracking 3px）；
+                        关闭按钮绝对定位 —— 若留在流内，移动端全局 button{min-height:28px} 会把标题栏撑高 2px。 */}
                     <div
-                        className="relative flex items-center justify-between px-3 py-1.5 -mx-3.5 -mt-3.5 mb-2.5 rounded-t-[3px]"
+                        className="relative flex items-center justify-center px-3 py-2 -mx-3.5 -mt-3.5 mb-3 rounded-t-[3px]"
                         style={{
                             background: 'linear-gradient(180deg, #192636 0%, #101a24 100%)',
                             borderBottom: '1px solid #283e54',
                         }}
                     >
-                        <div className="w-5" />
                         <span
-                            className="text-[15px] font-bold tracking-[2px]"
+                            className="text-[16px] font-bold tracking-[3px] select-none"
                             style={{
                                 color: '#f7f4bb',
                                 textShadow: '0 0 10px rgba(247,244,187,0.35), 0 1px 2px #000000',
@@ -775,19 +782,17 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                         >
                             自动锻造
                         </span>
-                        <div className="flex items-center gap-1.5">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    if (auto) stopAll();
-                                    setShowAutoPanel(false);
-                                }}
-                                className="w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors"
-                                title="关闭自动锻造"
-                            >
-                                <X className="w-3.5 h-3.5" />
-                            </button>
-                        </div>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                if (auto) stopAll();
+                                setShowAutoPanel(false);
+                            }}
+                            className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors"
+                            title="关闭自动锻造"
+                        >
+                            <X className="w-3.5 h-3.5" />
+                        </button>
                     </div>
 
                     {/* 红色规则说明：与原版客户端完全一致 */}
@@ -859,7 +864,9 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                     )}
 
                     {/* 底部控制按钮（开始锻造/停止锻造，无神机石道具方格） */}
-                    <div className="flex gap-2.5 pt-3 mt-3 border-t border-[#1a2d40]">
+                    {/* 按钮组收在 BAR_W 内居中：与主卡「锻造/自动锻造」按钮组、读条同一宽度轴，宽面板下不被拉满整行 */}
+                    <div className="pt-3 mt-3 border-t border-[#1a2d40]">
+                        <div className="mx-auto flex gap-2.5" style={{ width: BAR_W }}>
                         <button
                             type="button"
                             disabled={!poolReady || auto}
@@ -898,6 +905,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                         >
                             停止锻造
                         </button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -224,7 +224,7 @@ export const XingsuDetailCard: React.FC<XingsuDetailCardProps> = ({ cardData, cl
 
             {/* 1. 下方核心信息卡：限制宽度 max-w-xl，居左 */}
             <div
-                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-full max-w-xl"
+                className="rounded-xl p-3 sm:p-3.5 text-[13px] leading-[22px] border border-[#232c3d] bg-[#070b12]/95 shadow-2xl min-w-0 flex flex-col gap-2 w-max min-w-[min(320px,100%)] max-w-[min(100%,36rem)]"
                 style={{
                     fontFamily: '"SimSun", "宋体", "Microsoft YaHei", sans-serif',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(16, 28, 48, 0.35)',
@@ -296,25 +296,28 @@ export const XingsuDetailCard: React.FC<XingsuDetailCardProps> = ({ cardData, cl
                     <div className="text-[12px] font-bold" style={{ color: '#ffcb4a' }}>
                         【主属性候选池】
                     </div>
-                    <div className="py-0.5 space-y-1">
+                    {/* 移动端不换行：内容超宽时整块左右滑动 */}
+                    <div className="overflow-x-auto no-scrollbar">
+                    <div className="w-full min-w-max py-0.5 space-y-1">
                         {computedMainAttrs.map((attr) => (
                             <div
                                 key={attr.name}
-                                className="flex items-center justify-between text-[13px] leading-[22px]"
+                                className="flex items-baseline justify-between gap-3 text-[13px] leading-[22px] whitespace-nowrap"
                             >
                                 <span style={{ color: GAME_COLORS.STAT_BLUE }}>
                                     {attr.name} {attr.currentMin}{attr.unit} - {attr.currentMax}{attr.unit}
-                                </span>
-                                <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
-                                    概率 {attr.probability}
                                     {attr.nextGain !== null && (
-                                        <span className="text-emerald-400 ml-1.5 font-medium">
+                                        <span className="text-emerald-400 text-[11px] font-sans ml-1.5 font-medium">
                                             (升级 +{attr.nextGain}{attr.unit})
                                         </span>
                                     )}
                                 </span>
+                                <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
+                                    概率 {attr.probability}
+                                </span>
                             </div>
                         ))}
+                    </div>
                     </div>
                 </div>
 
@@ -324,25 +327,28 @@ export const XingsuDetailCard: React.FC<XingsuDetailCardProps> = ({ cardData, cl
                         <div className="text-[12px] font-bold" style={{ color: '#ffcb4a' }}>
                             【副属性候选池】
                         </div>
-                        <div className="py-0.5 space-y-1">
+                        {/* 移动端不换行：内容超宽时整块左右滑动 */}
+                        <div className="overflow-x-auto no-scrollbar">
+                        <div className="w-full min-w-max py-0.5 space-y-1">
                             {computedSubAttrs.map((attr) => (
                                 <div
                                     key={attr.name}
-                                    className="flex items-center justify-between text-[13px] leading-[22px]"
+                                    className="flex items-baseline justify-between gap-3 text-[13px] leading-[22px] whitespace-nowrap"
                                 >
                                     <span style={{ color: GAME_COLORS.STAT_BLUE }}>
                                         {attr.name} {attr.currentMin}{attr.unit} - {attr.currentMax}{attr.unit}
-                                    </span>
-                                    <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
-                                        概率 {attr.probability}
                                         {attr.nextGain !== null && (
-                                            <span className="text-emerald-400 ml-1.5 font-medium">
+                                            <span className="text-emerald-400 text-[11px] font-sans ml-1.5 font-medium">
                                                 (升级 +{attr.nextGain}{attr.unit})
                                             </span>
                                         )}
                                     </span>
+                                    <span className="text-[11px] font-sans" style={{ color: '#8892b0' }}>
+                                        概率 {attr.probability}
+                                    </span>
                                 </div>
                             ))}
+                        </div>
                         </div>
                     </div>
                 )}
