@@ -1366,18 +1366,38 @@ input[type="number"] {
    只在手机（含横屏）生效，桌面端一律不受影响。
    ========================================================================== */
 @media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
-  /* 1) 可点元素最小命中区 40px：视觉尺寸基本不变，靠 min-height 撑开。
-        注意不能只写 [role='dialog'] —— 有些组件用 portal 挂到 body 上，
-        按 dialog 作用域会漏掉（实测增益胶囊就是漏网的那批）。 */
+  /* 1) 触控命中区：只保底 28px，**不再全局撑到 40px**。
+        ⚠️ 2026-10-26 回退：此前这里是 button/[role=button]/a { min-height:40px }，
+           把所有控件的高度差抹平了 —— 首页药丸 30→40、导航格 30→40、
+           chip 26→40、展开全部 26→40、神机品质/蕴灵 chip 28→40。
+           结果是主次层级消失、密集网格被撑散，观感明显差于未适配版本。
+        WCAG 2.5.8(AA) 只要求 24×24，本项目最小组件 24px 已达标；
+        chip / 网格这类密集控件靠 gap 拉开中心距即可，不需要靠撑高防误触。
+        真正需要更大命中区的「孤立图标按钮」，在组件里显式加 .tap-40。 */
   button,
   [role='button'],
   a {
-    min-height: 40px;
+    min-height: 28px;
   }
 
-  /* 表格内的行内小图标不撑到 40px，否则技能表会被拉散 */
+  /* 表格内保持原尺寸，否则技能表每行 +4px，20 行就多滚一屏 */
   table button {
-    min-height: 32px;
+    min-height: 0;
+  }
+
+  /* 隐形命中区扩展：视觉尺寸一点不变，只把可点范围撑到 40px。
+     ⚠️ 只用于周围留白足够的孤立控件；密集网格里用会和相邻控件重叠 → 误点。 */
+  .tap-40 {
+    position: relative;
+  }
+  .tap-40::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 40px;
+    transform: translateY(-50%);
   }
 
   /* 2) 输入框 16px：iOS Safari 对 <16px 的输入框会强制放大整页 */
