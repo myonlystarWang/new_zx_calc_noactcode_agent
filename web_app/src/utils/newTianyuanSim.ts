@@ -3,8 +3,8 @@
  *
  * 数据口径：elements.data v183 idx425（官方配置）
  *  - 条数概率：3 条 60% / 4 条 30% / 5 条 10%
- *  - 天命触发率：3 条 60% / 4 条 80% / 5 条 100%
- *  - +3/+6/+9/+10 分别触发 3/3/3/1 次天命，每次随机落一条已有属性
+ *  - 天命点命中率（每点独立判定）：3 条 60% / 4 条 80% / 5 条 100%
+ *  - +3/+6/+9/+10 分别尝试 3/3/3/1 次，每点各掷一次；命中后随机落一条已有属性（等概率、可叠加）
  *  - 天命点加成 = 每级成长 × 累计系数（1/3/7/11/17/23/29/35/41/47）
  *
  * 精炼成功率官方未公布，作为可调参数（默认 50%）。
@@ -206,16 +206,16 @@ function settleDestiny(
     item.settled[level] = true;
 
     const p = triggerProbabilityFor(item.attrs.length, data.triggerProbabilities);
-    if (rng() >= p) return { gain: 0, hits: [] };
-
     const times = data.refine.triggerPoints[String(level)] ?? 0;
     const hits: number[] = [];
+    // 每个天命点各自掷一次：命中才 +1，没中只是这一点作废（不是整档作废）
     for (let i = 0; i < times; i++) {
         if (item.attrs.length === 0) break;
+        if (totalDestiny(item) >= 10) break;
+        if (rng() >= p) continue;
         const idx = Math.floor(rng() * item.attrs.length);
         const target = item.attrs[idx];
         if (!target) continue;
-        if (totalDestiny(item) >= 10) break;
         target.destinyPoints = Math.min(10, target.destinyPoints + 1);
         hits.push(idx);
     }
