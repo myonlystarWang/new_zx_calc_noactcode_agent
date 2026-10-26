@@ -109,11 +109,11 @@ const ROW_GRID_SOURCE = 'grid grid-cols-[minmax(0,1fr)_2.75rem] @sm:grid-cols-[m
  * ≥@sm：恢复单行 5 列，列头由上方表头统一承担。
  */
 const ROW_GRID_CEILING =
-    'grid grid-cols-4 gap-x-1.5 gap-y-1 @sm:grid-cols-[minmax(0,1fr)_3rem_2.5rem_2.5rem_3rem] @sm:gap-x-2 @sm:gap-y-0 items-center';
+    'grid grid-cols-4 gap-x-1.5 gap-y-0.5 @sm:grid-cols-[minmax(0,1fr)_3rem_2.5rem_2.5rem_3rem] @sm:gap-x-2 @sm:gap-y-0 items-center';
 
 /** 单元格：与 BossDetailCard 属性格同款（黑底 + 极淡描边 + 8px 圆角） */
 const CELL =
-    'rounded-lg border border-white/5 bg-black/40 px-2 @sm:px-2.5 py-1.5 transition-colors hover:border-white/10 hover:bg-black/50';
+    'rounded-lg border border-white/5 bg-black/40 px-2 @sm:px-2.5 py-1 @sm:py-1.5 transition-colors hover:border-white/10 hover:bg-black/50';
 
 /** 类别列：≥@sm 独立成列保证项目名左对齐；窄卡内联到项目名前（带 ·），不占固定宽度 */
 const CategoryTag: React.FC<{ children?: React.ReactNode; tone: string }> = ({ children, tone }) => (
@@ -128,8 +128,11 @@ const CategoryInline: React.FC<{ children?: React.ReactNode; tone: string }> = (
 
 /**
  * 四档数值单元。
- * 窄卡：左标签右数值（一行内两端对齐），保证 280px 下四档全部可见；
- * ≥@sm：只剩数值并右对齐，标签由表头承担。
+ * 窄卡：**标签在上、数值在下**（左对齐），四档各自成列 —— 之前写成「标签左、数值右两端对齐」，
+ *   61px 列里标签贴着左边、数值贴着右边，读起来是「25 夯 25 顶级 25或23 毕业 23」一锅粥，
+ *   分不清哪个数属于哪一档（2026-10-26 用户反馈）。
+ * ≥@sm：标签隐藏，只剩数值右对齐，由上方表头承担标签。
+ * 始终用 flex-col，避免 flex/block 在同一元素上的 display 冲突。
  */
 const CeilingValue: React.FC<{ label: string; value: React.ReactNode; strong?: boolean; tone?: string }> = ({
     label,
@@ -137,11 +140,11 @@ const CeilingValue: React.FC<{ label: string; value: React.ReactNode; strong?: b
     strong,
     tone,
 }) => (
-    <div className="flex items-baseline justify-between gap-1 @sm:block @sm:text-right">
-        <span className="shrink-0 text-[10px] leading-none text-slate-500 @sm:hidden">{label}</span>
+    <div className="flex flex-col items-start gap-0.5 @sm:items-end">
+        <span className="text-[10px] leading-none tracking-wide text-slate-400 @sm:hidden">{label}</span>
         <span
             className={clsx(
-                'font-mono tabular-nums whitespace-nowrap text-[11px] @sm:text-xs',
+                'font-mono tabular-nums whitespace-nowrap text-[11px] leading-none @sm:text-xs',
                 strong ? 'font-bold text-slate-100' : tone || 'text-slate-400'
             )}
         >
@@ -476,7 +479,7 @@ export const CeilingDetailCard: React.FC<CeilingDetailCardProps> = ({ cardData, 
                                                 <div className="col-span-4 @sm:col-span-1 flex items-baseline gap-1 @sm:gap-2 min-w-0">
                                                     <CategoryTag tone={meta.tag}>{row.category}</CategoryTag>
                                                     <span
-                                                        className="min-w-0 truncate text-[11px] @sm:text-xs text-slate-200 leading-relaxed"
+                                                        className="min-w-0 truncate text-[11px] @sm:text-xs text-slate-200 leading-snug @sm:leading-relaxed"
                                                         title={row.item}
                                                     >
                                                         <CategoryInline tone={meta.tag}>{row.category}</CategoryInline>
