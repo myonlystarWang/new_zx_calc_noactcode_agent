@@ -181,9 +181,46 @@ function guestbookDevPlugin(): Plugin {
   };
 }
 
+/**
+ * 本地模拟 /api/track（线上由 functions/api/track.ts 写入 Analytics Engine）
+ * 只打印到终端，方便在 dev 里确认埋点真的发出了、字段对不对。
+ */
+function trackDevPlugin(): Plugin {
+  const handleTrackApi = (req: any, res: any, next: any) => {
+    if (!req.url || !req.url.startsWith('/api/track')) return next();
+    if (req.method !== 'POST') {
+      res.statusCode = 405;
+      res.end();
+      return;
+    }
+    let raw = '';
+    req.on('data', (chunk: any) => { raw += chunk; });
+    req.on('end', () => {
+      try {
+        const body = JSON.parse(raw || '{}');
+        console.log(`[track] ${body.e} ${JSON.stringify(body.d)} sid=${body.s}`);
+      } catch {
+        /* 忽略脏数据 */
+      }
+      res.statusCode = 204;
+      res.end();
+    });
+  };
+
+  return {
+    name: 'zx-track-dev-mock',
+    configureServer(server) {
+      server.middlewares.use(handleTrackApi);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(handleTrackApi);
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), zhuxianServerRadarPlugin(), guestbookDevPlugin()],
+  plugins: [react(), zhuxianServerRadarPlugin(), guestbookDevPlugin(), trackDevPlugin()],
   // 版本号唯一来源：package.json 的 version（Header 版本徽章 / 更新日志页 均由 __APP_VERSION__ 读出）
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
