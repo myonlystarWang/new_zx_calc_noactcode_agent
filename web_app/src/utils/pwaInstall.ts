@@ -139,42 +139,47 @@ export function getInstallEnv(): InstallEnv {
   };
 }
 
-/* ---------------- 访问次数 / 横幅关闭状态 ---------------- */
+/* ---------------- 顶部横幅的显示策略 ---------------- */
 
-const VISIT_KEY = 'zx_visit_count';
-const SESSION_FLAG = 'zx_visit_counted';
-const BANNER_OFF_KEY = 'zx_install_banner_off';
+const STREAK_KEY = 'zx_banner_close_streak';
 
 /**
- * 记一次访问。同一标签页内刷新不重复计数——否则用户连刷三下就被当成「老用户」。
- * 返回累计访问次数（从 1 开始）。
+ * 横幅从**第一次访问**就显示，每次访问都显示，直到用户**连续**关掉 3 次才永久收起。
+ *
+ * 为什么用「连续」而不是「累计」：点「怎么装」说明用户有兴趣，只是暂时不想装，
+ * 这种情况会把计数清零，避免「看过说明的人反而被永久屏蔽」。
  */
-export function countVisit(): number {
+export const BANNER_CLOSE_LIMIT = 3;
+
+export function getBannerCloseStreak(): number {
   try {
-    let n = Number(localStorage.getItem(VISIT_KEY) || '0') || 0;
-    if (!sessionStorage.getItem(SESSION_FLAG)) {
-      n += 1;
-      localStorage.setItem(VISIT_KEY, String(n));
-      sessionStorage.setItem(SESSION_FLAG, '1');
-    }
-    return Math.max(n, 1);
+    return Number(localStorage.getItem(STREAK_KEY) || '0') || 0;
   } catch {
-    return 1;
+    return 0;
   }
 }
 
-export function isBannerDismissed(): boolean {
+/** 用户点了 ×：连续关闭次数 +1，返回新值 */
+export function recordBannerClose(): number {
+  const next = getBannerCloseStreak() + 1;
   try {
-    return localStorage.getItem(BANNER_OFF_KEY) === '1';
+    localStorage.setItem(STREAK_KEY, String(next));
   } catch {
-    return false;
+    /* 隐私模式写不进去 → 每次都显示，不阻断 */
+  }
+  return next;
+}
+
+/** 用户点了「怎么装」：算作有兴趣，连续计数清零 */
+export function resetBannerCloseStreak(): void {
+  try {
+    localStorage.removeItem(STREAK_KEY);
+  } catch {
+    /* ignore */
   }
 }
 
-export function dismissBanner(): void {
-  try {
-    localStorage.setItem(BANNER_OFF_KEY, '1');
-  } catch {
-    /* 隐私模式下写不进去就每次显示，不阻断 */
-  }
+/** 横幅当前是否该显示：未安装 + 连续关闭次数还没到上限 */
+export function shouldShowBanner(): boolean {
+  return !isStandalone() && getBannerCloseStreak() < BANNER_CLOSE_LIMIT;
 }

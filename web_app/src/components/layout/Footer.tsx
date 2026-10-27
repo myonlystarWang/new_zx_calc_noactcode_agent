@@ -15,7 +15,10 @@ export const Footer: React.FC<FooterProps> = () => {
                 <span className="whitespace-nowrap">&copy; 2026 天书万象 AI</span>
                 <span className="text-slate-700 select-none" aria-hidden="true">·</span>
                 <span className="whitespace-nowrap">
-                    Created with pride by{' '}
+                    {/* 390px 下「Created with pride by」要占 136px，加完安装入口必然换行，
+                        手机端缩成「by」。桌面端文案不变。 */}
+                    <span className="hidden sm:inline">Created with pride by </span>
+                    <span className="sm:hidden">by </span>
                     <span className="text-slate-400 hover:text-slate-200 transition-colors cursor-default">
                         星耀-萝卜
                     </span>

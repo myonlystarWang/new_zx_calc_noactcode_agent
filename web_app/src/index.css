@@ -62,9 +62,21 @@ body {
   font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', Roboto, sans-serif;
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * 应用外壳高度。**不要写成 `h-screen h-[100dvh]` 两个 Tailwind 类**——
+ * Tailwind 把 `.h-[100dvh]` 排在 `.h-screen` 之前，同优先级下后者生效，
+ * 根容器实际是 `100vh`。iOS Safari 的 `100vh` 取「工具栏收起时」的大视口，
+ * 比当前可视区高 60~80px，底部 Footer 被 overflow-hidden 裁掉（真机实测：灵动岛机型完全看不到）。
+ *
+ * 这里用原生 CSS 的两条声明做渐进增强：支持 dvh 的浏览器用 dvh，不支持的自动回落到 vh。
+ */
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
 }
 
 /* 大屏等比缩放：2K/4K（Windows 100% 缩放）下观感对齐 1920x1080。

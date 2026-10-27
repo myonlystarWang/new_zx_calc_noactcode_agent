@@ -16,8 +16,9 @@ import {
   getInstallEnv,
   promptInstall,
   subscribeInstallPrompt,
-  dismissBanner,
-  isBannerDismissed,
+  shouldShowBanner,
+  recordBannerClose,
+  resetBannerCloseStreak,
   type InstallEnv,
 } from '../../utils/pwaInstall';
 
@@ -76,7 +77,7 @@ function buildGuide(env: InstallEnv): Guide {
   const escapeSteps: GuideStep[] = inApp
     ? platform === 'ios'
       ? [
-          { icon: 'menu-h', text: `点右上角的 ⋯`, sub: `${IN_APP_NAME[inApp] ?? '当前'}内置浏览器装不了，先换个浏览器` },
+          { icon: 'menu-h', text: `点微信右上角的 ⋯`, sub: `${IN_APP_NAME[inApp] ?? '当前'}内置浏览器装不了，先换个浏览器` },
           { icon: 'browser', text: '选择「在 Safari 中打开」' },
         ]
       : [
@@ -96,9 +97,14 @@ function buildGuide(env: InstallEnv): Guide {
       lead: iosNonSafari && !inApp ? '当前浏览器不支持添加主屏，请先用 Safari 打开本页' : '装好后从桌面图标直接进入，全屏无地址栏',
       steps: [
         ...escapeSteps,
-        { icon: 'share', text: '点屏幕底部的「分享」按钮' },
+        {
+          icon: 'menu-h',
+          text: inApp ? '在 Safari 里，点底部工具栏的「⋯」' : '点底部工具栏的「⋯」',
+          sub: '部分系统版本这里是「分享」图标，点它可直接跳到下一步',
+        },
+        { icon: 'share', text: '点「共享」' },
         { icon: 'plus', text: '在列表里找到「添加到主屏幕」', sub: '需要往下滑一段才看得到' },
-        { icon: 'check', text: '点右上角「添加」' },
+        { icon: 'check', text: '在弹出的页面点右上角「添加」' },
       ],
     };
   }
@@ -336,9 +342,7 @@ export const InstallEntry: React.FC<InstallEntryProps> = ({ className, separator
   if (standalone) return null;
 
   return (
-    // 手机上整块隐藏：390px 下这一项会把 footer 顶成两行，而手机本来就有顶部横幅 + 结果区两处入口。
-    // sm:contents 让桌面端恢复「直接参与父级 flex」—— 间距仍由 footer 自己的 gap 控制，不多一层盒模型。
-    <span className="hidden sm:contents">
+    <>
       {separator && (
         <span className="text-slate-700 select-none" aria-hidden="true">
           ·
@@ -346,42 +350,48 @@ export const InstallEntry: React.FC<InstallEntryProps> = ({ className, separator
       )}
       <button
         type="button"
+        data-pwa-entry
         onClick={openGuide}
         className={clsx('transition-colors cursor-pointer whitespace-nowrap', className)}
       >
         添加到桌面
       </button>
-    </span>
+    </>
   );
 };
 
 /* ------------------------------------------------------------------ *
- * 顶部细横幅（第 3 次访问才出现，可永久关闭）
+ * 顶部细横幅
+ *   第 1 次访问就显示，之后每次访问都显示；
+ *   连续关掉 3 次 → 永久收起；点「怎么装」算有兴趣，计数清零；已安装则完全不出现。
  * ------------------------------------------------------------------ */
 
-interface InstallBannerProps {
-  /** 累计访问次数，由 MainContent 挂载时 countVisit() 求得 */
-  visitCount: number;
-}
-
-export const InstallBanner: React.FC<InstallBannerProps> = ({ visitCount }) => {
+export const InstallBanner: React.FC = () => {
   const openGuide = useOpenInstallGuide();
-  const [visible, setVisible] = useState(
-    () => visitCount >= 3 && !isBannerDismissed() && !getInstallEnv().standalone,
-  );
+  const [visible, setVisible] = useState(() => shouldShowBanner());
 
-  // visitCount 是挂载时求的常量，这里只是给「挂载早于 visitCount 就绪」留个兜底
+  // 从主屏图标启动（standalone）后立刻收起；同一标签页里 display-mode 不会变，但监听一下更稳
   useEffect(() => {
-    if (visible) return;
-    if (visitCount < 3 || isBannerDismissed()) return;
-    if (getInstallEnv().standalone) return;
-    setVisible(true);
-  }, [visitCount, visible]);
+    const mql = window.matchMedia('(display-mode: standalone)');
+    const onChange = () => setVisible(shouldShowBanner());
+    mql.addEventListener('change', onChange);
+    window.addEventListener('appinstalled', onChange);
+    return () => {
+      mql.removeEventListener('change', onChange);
+      window.removeEventListener('appinstalled', onChange);
+    };
+  }, []);
 
   if (!visible) return null;
 
+  const open = () => {
+    resetBannerCloseStreak();
+    openGuide();
+  };
+
   const close = () => {
-    dismissBanner();
+    // 关掉立刻收起（本次浏览不再出现），下次打开页面按连续关闭次数决定还出不出现
+    recordBannerClose();
     setVisible(false);
   };
 
@@ -398,7 +408,7 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ visitCount }) => {
         </p>
         <button
           type="button"
-          onClick={openGuide}
+          onClick={open}
           className="shrink-0 px-2.5 h-6 rounded-md bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-200 font-medium transition-colors"
         >
           怎么装
