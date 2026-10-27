@@ -66,3 +66,28 @@
 - 提交只入本地库；**push 必须等用户明确说「推送」**。
 - 当前开发分支：`feat/ai-copilot-tools`（2026-10-24 已并入移动端改造；原 `feat/mobile-responsive` 已删除，后续都在这条分支上开发）。
 - 移动端方案文档：`doc/移动端全面支持_评估与改造方案_20261023.md`。
+
+### 5.1 vh / dvh 兜底：不要写成两个 Tailwind 类
+
+`className="h-screen h-[100dvh]"` **不生效** —— Tailwind 把任意值 `.h-[100dvh]` 排在命名值
+`.h-screen` **之前**，同优先级下后者赢，实际是 `height: 100vh`。
+
+后果：iOS Safari 的 `100vh` 取「工具栏收起时」的大视口，比当前可视区高 60~80px，
+配合父级 `overflow-hidden` 会把底部内容（footer）整块裁掉 —— 2026-10-27 线上真实发生过，
+所有带 Safari 工具栏的 iPhone 都看不到 footer。
+
+正确写法：`index.css` 里两条原生声明，浏览器自动取支持的后者：
+
+```css
+.app-shell { height: 100vh; height: 100dvh; }
+```
+
+根容器现在用 `className="app-shell overflow-hidden flex flex-col"`。
+**验收时务必断言「外壳高度 == 视口高」和「footer 底边不越视口」**，见 `scratch/pwa_probe.mjs`。
+
+### 5.2 PWA 相关
+
+- 只做轻 PWA（manifest + 图标），**不注册 Service Worker**，不要再提议加。
+- 改图标：`node scripts/gen_pwa_icons.mjs`（从 `public/favicon.svg` 光栅化，产物入库）。
+- 横幅策略：首次访问即显示，连续关 3 次后永久收起，点「怎么装」清零。
+- 完整方案与验收结论：`doc/产品增长与性能优化_评估与执行计划_20261026.md` §6。

@@ -15,3 +15,12 @@
 # 字体/图片等长期不变资源
 /*.png
   Cache-Control: public, max-age=604800
+
+# PWA manifest：显式声明 Content-Type。
+# Cloudflare Pages 的 MIME 表一般会把它识别成 application/manifest+json，但一旦识别成
+# octet-stream，Chrome 会直接丢弃 manifest —— 安装入口静默消失，控制台也只有一条警告。
+# 这里显式兜底，识别正确时是等价覆盖，识别错误时救命。
+# 缓存只给 1 小时：改图标/名称后不希望用户端长期拿旧 manifest。
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=3600
