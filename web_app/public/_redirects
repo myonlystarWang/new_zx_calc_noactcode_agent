@@ -1,5 +1,0 @@
-# Cloudflare Pages 重写/跳转规则
-#
-# 1) 百度站点验证文件：Pages 的「Pretty URLs」会把 /*.html 308 到无后缀路径，
-#    百度要求验证文件本身返回 200，遇 308 判失败。这条自引用 200 规则把它压回原路径。
-/baidu_verify_codeva-DZWASJuSol.html  /baidu_verify_codeva-DZWASJuSol.html  200
