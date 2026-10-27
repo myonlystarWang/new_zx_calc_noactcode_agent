@@ -76,11 +76,16 @@ for (const ver of versions) {
 }
 
 // ------------------------------------------------------------
+// 每张表下面都带来源与域名：这张页面的表格最可能被截图转发，
+// 品牌行必须紧贴表格，否则被裁掉就等于免费给别人做素材。
+const SRC_LINE = '<p class="src">数据来源：天书万象 AI · zxai.raddishlab.com</p>';
+
 const table = (headers, rows) => `
   <table>
     <thead><tr>${headers.map((h) => `<th>${h}</th>`).join('')}</tr></thead>
     <tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
-  </table>`;
+  </table>
+  ${SRC_LINE}`;
 
 const kvTable = (pairs) => table(['项目', '数值'], pairs.map((p) => [p.k, p.v]));
 
@@ -135,6 +140,7 @@ const html = `<!doctype html>
   tbody tr:hover td { background: #0e1420; }
   td:first-child { color: #e2e8f0; }
   .note { font-size: 12.5px; color: #64748b; margin: 10px 0 0; }
+  .src { font-size: 11px; color: #475569; margin: 2px 0 14px; text-align: right; letter-spacing: .2px; }
   .cta { display: inline-block; margin-top: 10px; padding: 9px 18px; border-radius: 999px;
          background: rgba(34,211,238,.12); color: #67e8f9; text-decoration: none;
          font-size: 13px; border: 1px solid rgba(34,211,238,.35); }

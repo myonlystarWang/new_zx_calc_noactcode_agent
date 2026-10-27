@@ -18,45 +18,19 @@
 
 ## 数据接口
 
-全部为公开 JSON，可直接抓取，允许引用（来源标注「天书万象 AI」即可）。
+核心 8 个，可直接抓取引用（标注来源「天书万象 AI」即可）：
 
-### 技能与职业
-- https://zxai.raddishlab.com/game_data/skills.json — 全职业技能数据（27 职业，含每段命中/加成字段）
+- https://zxai.raddishlab.com/game_data/skills.json — 全职业技能数据（27 职业，含每段命中与加成字段）
 - https://zxai.raddishlab.com/game_data/classes.json — 职业与阵营元数据
-- https://zxai.raddishlab.com/game_data/all_skills_curated_1.json — 技能图鉴分卷 1（约 8.3MB）
-- https://zxai.raddishlab.com/game_data/all_skills_curated_2.json — 技能图鉴分卷 2（约 9.1MB）
-- https://zxai.raddishlab.com/game_data/all_skills_curated_3.json — 技能图鉴分卷 3（约 7.4MB）
-
-### 装备
-- https://zxai.raddishlab.com/game_data/equip_curated.json — 神隐/修武/昭武/彰武 全装备属性（约 5.7MB）
-- https://zxai.raddishlab.com/game_data/peizhang_shengcui.json — 佩章与圣粹
-- https://zxai.raddishlab.com/game_data/fabao_curated.json — 法宝属性
-- https://zxai.raddishlab.com/game_data/fabao_upgrade_exp.json — 法宝升级经验
-- https://zxai.raddishlab.com/game_data/baoshi.json — 宝石
-- https://zxai.raddishlab.com/game_data/xingsu_upgrade.json — 星宿升星
-- https://zxai.raddishlab.com/game_data/zhenling_upgrade.json — 阵灵升级
-- https://zxai.raddishlab.com/game_data/jiuwenlang.json — 九纹琅（1–40 级材料）
-- https://zxai.raddishlab.com/game_data/pet_pledge.json — 宠物刻誓
-- https://zxai.raddishlab.com/game_data/fashion_skills_hesui.json — 时装技能（贺岁）
-
-### 属性系统
+- https://zxai.raddishlab.com/game_data/equip_curated.json — 神隐/修武/昭武/彰武 全装备属性
 - https://zxai.raddishlab.com/game_data/new_tianyuan_data.json — 新天缘词条池、条数概率、天命触发、精炼
-- https://zxai.raddishlab.com/game_data/tianyuan_old.json — 旧天缘
-- https://zxai.raddishlab.com/game_data/xyc_refine.json — 轩辕策洗练（五档概率、属性区间、技能概率、版本/品级矩阵）
-- https://zxai.raddishlab.com/game_data/xyc_tomes.json — 轩辕策书名与池映射
-- https://zxai.raddishlab.com/game_data/xyc_adv_skills.json — 轩辕策进阶技能
-- https://zxai.raddishlab.com/game_data/xyc_rules.json — 轩辕策规则
-- https://zxai.raddishlab.com/game_data/ninglingqi.json — 凝灵契
-- https://zxai.raddishlab.com/game_data/silin_benyuan.json — 四灵本元（伏龙鼎镶嵌）
-- https://zxai.raddishlab.com/game_data/combat_buffs.json — 战斗增益定义
-- https://zxai.raddishlab.com/game_data/attribute_ceiling_guide.json — 各属性理论上限与分档毕业线
-- https://zxai.raddishlab.com/game_data/stat_source_lists.json — 属性来源汇总（可查某属性从哪来）
-
-### 副本与服务器
+- https://zxai.raddishlab.com/game_data/xyc_refine.json — 轩辕策洗练（五档概率、属性区间、技能概率、版本品级矩阵）
 - https://zxai.raddishlab.com/game_data/dungeons.json — 副本列表与基础属性
 - https://zxai.raddishlab.com/game_data/dungeons_monsters.json — 各副本 BOSS 与怪物战斗属性（含 T16–T21 团队本）
-- https://zxai.raddishlab.com/game_data/server_list.json — 开服雷达（区服与开服时间）
-- https://zxai.raddishlab.com/game_data/rank_config.json — 战力档位配置
+- https://zxai.raddishlab.com/game_data/attribute_ceiling_guide.json — 各属性理论上限与分档毕业线
+
+其余系统（法宝、宝石、星宿、阵灵、九纹琅、四灵本元、凝灵契、佩章、时装、宠物等）见
+https://zxai.raddishlab.com/game_data/ 目录。
 
 ## 工具
 
