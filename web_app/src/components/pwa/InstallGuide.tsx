@@ -11,6 +11,7 @@ import {
   CircleCheck,
   X,
   ArrowUpRight,
+  ChevronRight,
 } from 'lucide-react';
 import {
   getInstallEnv,
@@ -400,24 +401,32 @@ export const InstallBanner: React.FC = () => {
     <div className="w-full shrink-0 px-4 sm:px-6 pt-2">
       <div
         data-pwa-banner
-        className="w-full max-w-5xl mx-auto h-8 rounded-lg border border-cyan-400/20 bg-cyan-400/[0.07] px-2.5 flex items-center gap-2 text-xs"
+        className="group w-full max-w-5xl mx-auto h-8 rounded-lg border border-cyan-400/20 bg-cyan-400/[0.07] pl-2.5 pr-1 flex items-center gap-1 text-xs transition-colors hover:border-cyan-400/40"
       >
-        <Smartphone className="w-3.5 h-3.5 text-cyan-300 shrink-0" aria-hidden="true" />
-        <p className="min-w-0 flex-1 truncate text-slate-300">
-          加到桌面，下次一秒打开
-        </p>
+        {/* 整条就是入口：点任意位置（× 除外）都能打开引导，不再单独放一个按钮 */}
         <button
           type="button"
           onClick={open}
-          className="shrink-0 px-2.5 h-6 rounded-md bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/30 text-cyan-200 font-medium transition-colors"
+          aria-label="查看如何把天书万象装到桌面"
+          className="min-w-0 flex-1 h-full flex items-center gap-2 text-left cursor-pointer"
         >
-          怎么装
+          <Smartphone className="w-3.5 h-3.5 text-cyan-300 shrink-0" aria-hidden="true" />
+          <span className="min-w-0 flex-1 truncate text-slate-300">
+            加到桌面，下次一秒打开
+          </span>
+          <span className="shrink-0 flex items-center gap-0.5 text-cyan-300 font-medium">
+            点我查看
+            <ChevronRight
+              className="w-3 h-3 transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </span>
         </button>
         <button
           type="button"
           onClick={close}
           aria-label="不再提示"
-          className="shrink-0 p-1 rounded-md text-slate-500 hover:text-slate-200 hover:bg-white/10 transition-colors"
+          className="shrink-0 p-1 rounded-md text-slate-500 hover:text-slate-200 hover:bg-white/10 transition-colors cursor-pointer"
         >
           <X className="w-3.5 h-3.5" />
         </button>
