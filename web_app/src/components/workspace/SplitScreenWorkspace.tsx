@@ -46,7 +46,6 @@ export interface SplitScreenWorkspaceProps {
     serverId?: string;
     [key: string]: any;
   };
-  onModeChange?: (mode: WorkspaceMode) => void;
   isMaximized: boolean;
   onToggleMaximize: () => void;
   onClose: () => void;

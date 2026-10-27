@@ -70,23 +70,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
    *
    * 不要在 SplitScreenWorkspace 内部埋：分屏内切 mode 时组件不一定重新 mount，会漏；
    * 挂 useEffect([mode]) 又分不清「首次打开」和「切换工具」。
-   * src 取值：pill 首页药丸 / plus 输入框+菜单 / card 聊天卡片 / chat 提问自动开 / ext 外部事件 / switch 切工具
+   * src 取值：pill 首页药丸 / plus 输入框+菜单 / card 聊天卡片 / chat 提问自动开 / ext 外部事件
+   *
+   * 注意：分屏已打开时再点 `+` 菜单换工具，走的也是这里（记 src=plus）。
+   * 没有单独的「分屏内切换器」UI，所以不存在 src=switch。
    */
   const openWorkspace = useCallback((mode: WorkspaceMode, src: string, params?: any) => {
     setIsChatActive(true);
     setWorkspaceState({ isOpen: true, mode, isMaximized: false, params });
     trackOpenTool(mode, src);
-  }, []);
-
-  /**
-   * 分屏内切换工具（不是「打开」，单独记 switch）。
-   * ⚠️ 目前 SplitScreenWorkspace 虽然声明了 onModeChange 属性，但组件内**从未调用**它
-   * —— 也就是说 src=switch 暂时不会出现在数据里。等真的加了模式切换 UI 才会生效，
-   * 别把「没有 switch」误读成「没人切工具」。
-   */
-  const switchTool = useCallback((mode: WorkspaceMode) => {
-    setWorkspaceState((prev) => ({ ...prev, mode }));
-    trackOpenTool(mode, 'switch');
   }, []);
 
   // 手机（含横屏）不走左右分屏，改为全屏抽屉：左栏最小 460px 会把右栏顶出视口
@@ -388,7 +380,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             <SplitScreenWorkspace
               mode={workspaceState.mode}
               params={workspaceState.params}
-              onModeChange={switchTool}
               isMaximized={workspaceState.isMaximized}
               onToggleMaximize={() =>
                 setWorkspaceState((prev) => ({
@@ -418,7 +409,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             <SplitScreenWorkspace
               mode={workspaceState.mode}
               params={workspaceState.params}
-              onModeChange={switchTool}
               isMaximized
               onToggleMaximize={() => { }}
               onClose={() =>
