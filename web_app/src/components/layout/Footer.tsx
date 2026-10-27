@@ -1,4 +1,5 @@
 import React from 'react';
+import { InstallEntry } from '../pwa/InstallGuide';
 
 interface FooterProps {
     activeTab?: string;
@@ -19,6 +20,11 @@ export const Footer: React.FC<FooterProps> = () => {
                         星耀-萝卜
                     </span>
                 </span>
+                {/* PWA 安装入口：已安装时组件自己返回 null，这里不用判断 */}
+                <InstallEntry
+                    separator
+                    className="text-slate-400 hover:text-cyan-300 underline decoration-dotted underline-offset-2"
+                />
             </div>
         </footer>
     );

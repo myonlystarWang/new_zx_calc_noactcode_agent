@@ -4,8 +4,21 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>天书万象 AI · 诛仙全知大模型</title>
+
+  <!-- PWA：只加 manifest + 图标，不注册 Service Worker。
+       理由见 doc/产品增长与性能优化_评估与执行计划_20261026.md #4 ——
+       本站是「要算最新数据」的工具站，SW 缓存旧版的代价远大于离线收益。 -->
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <!-- iOS 独立窗口模式：16.4+ 认 manifest.display，旧版认这两个 meta，两者都留 -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="天书万象" />
+  <meta name="format-detection" content="telephone=no" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- 字体异步加载：媒体查询先置 print，加载完成再切回 all。

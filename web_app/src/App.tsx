@@ -26,6 +26,8 @@ import { AboutPage } from './components/about/AboutPage';
 import { FeedbackPage } from './components/feedback/FeedbackPage';
 import { decodeSharePayload } from './utils/shareSnapshot';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { InstallGuideProvider, InstallBanner } from './components/pwa/InstallGuide';
+import { countVisit } from './utils/pwaInstall';
 import { useKeyboardInset } from './hooks/useKeyboardInset';
 import { AlertTriangle } from 'lucide-react';
 import type { SearchTarget } from './components/GlobalSearch';
@@ -118,6 +120,9 @@ const MainContent: React.FC = () => {
   // 分享链接恢复结果的提示。此前解析失败是静默的：只有职业/阵营/副本落地，
   // 属性与增益原封不动，用户会以为「分享链接没带配置」，实际是配置串损坏了。
   const [shareNotice, setShareNotice] = useState<string | null>(null);
+
+  // PWA 顶部横幅的触发条件「第 3 次访问」：挂载时记一次，同一标签页刷新不重复计
+  const [visitCount] = useState(() => countVisit());
 
   useEffect(() => {
     // 数据未就绪时不做解析：resolveSkill / isValidDungeonId 依赖 DataService 已加载，
@@ -280,6 +285,9 @@ const MainContent: React.FC = () => {
       )}
       <Header />
 
+      {/* PWA 安装引导横幅：第 3 次访问 + 未安装 + 未关闭才出现；点「怎么装」开弹窗 */}
+      <InstallBanner visitCount={visitCount} />
+
       <Suspense fallback={<div className="flex-1 grid place-items-center"><div className="w-6 h-6 rounded-full border-2 border-slate-700 border-t-cyan-400 animate-spin" /></div>}>
       <Routes>
         <Route
@@ -405,9 +413,11 @@ function App() {
   return (
     <ErrorBoundary>
       <HashRouter>
-        <AppProvider>
-          <MainContent />
-        </AppProvider>
+        <InstallGuideProvider>
+          <AppProvider>
+            <MainContent />
+          </AppProvider>
+        </InstallGuideProvider>
       </HashRouter>
     </ErrorBoundary>
   );

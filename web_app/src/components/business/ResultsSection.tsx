@@ -12,6 +12,7 @@ import type { Skill } from '../../types';
 import { buildConfigText, buildShareUrl, FACTION_LABELS, type ShareSnapshot } from '../../utils/shareSnapshot';
 import type { ShareCardData, ShareSkillRow } from '../share/ShareCard';
 import { useIsMobile } from '../../hooks/useMediaQuery';
+import { InstallHint } from '../pwa/InstallGuide';
 
 /**
  * 副本简称（手机快捷条用）：全名 8~14 个字，横向一行放不下 5 个。
@@ -647,6 +648,11 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                     })}
                 </div>
             </div>
+            {/* PWA：结果都算出来了才出现，位置最轻，不打断看数据 */}
+            <div className="mt-3 flex items-center justify-center">
+                <InstallHint />
+            </div>
+
             {shareOpen && menuPos && createPortal(
                 <>
                     <div className="fixed inset-0 z-[9998]" onClick={() => setShareOpen(false)} aria-hidden />
