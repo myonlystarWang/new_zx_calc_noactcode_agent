@@ -151,7 +151,11 @@ export class DataService {
                     this.skills = raw as AllSkills;
                 }
                 return this.skillMeta;
-            })();
+            })().catch((err) => {
+                // 失败即释放缓存，否则弱网抖动一次会让该数据永久不可用（直到刷新页面）
+                this.skillMetaPromise = null;
+                throw err;
+            });
         }
         await this.skillMetaPromise;
     }
@@ -169,7 +173,11 @@ export class DataService {
                 this.dungeonsMetadata = await metaResponse.json();
                 this.dungeonsMonsters = await monstersResponse.json();
                 return this.getDungeons();
-            })();
+            })().catch((err) => {
+                // 失败即释放缓存，否则弱网抖动一次会让该数据永久不可用（直到刷新页面）
+                this.dungeonsPromise = null;
+                throw err;
+            });
         }
         await this.dungeonsPromise;
     }
@@ -313,7 +321,11 @@ export class DataService {
                 if (!res.ok) throw new Error(`加载 fabao_curated.json 失败: ${res.status}`);
                 this.fabaoList = await res.json();
                 return this.fabaoList!;
-            })();
+            })().catch((err) => {
+                // 失败即释放缓存，否则弱网抖动一次会让该数据永久不可用（直到刷新页面）
+                this.fabaoListPromise = null;
+                throw err;
+            });
         }
         return this.fabaoListPromise;
     }
@@ -327,7 +339,11 @@ export class DataService {
                 const raw: CuratedEquipItem[] = await res.json();
                 this.equipList = Array.isArray(raw) ? raw.filter(isValidEquip) : [];
                 return this.equipList;
-            })();
+            })().catch((err) => {
+                // 失败即释放缓存，否则弱网抖动一次会让该数据永久不可用（直到刷新页面）
+                this.equipListPromise = null;
+                throw err;
+            });
         }
         return this.equipListPromise;
     }
@@ -568,7 +584,11 @@ export class DataService {
                 const raw = chunks.flat();
                 this.allCuratedSkills = Array.isArray(raw) ? raw.filter(isValidSkill) : [];
                 return this.allCuratedSkills;
-            })();
+            })().catch((err) => {
+                // 失败即释放缓存，否则弱网抖动一次会让该数据永久不可用（直到刷新页面）
+                this.allCuratedSkillsPromise = null;
+                throw err;
+            });
         }
         return this.allCuratedSkillsPromise;
     }
@@ -601,7 +621,10 @@ export class DataService {
         Promise.allSettled([
             this.getEquipList(),
             this.getFabaoList()
-        ]).catch(() => {});
+        ]).then((results) => {
+            // allSettled 不会 reject；任一失败就释放标记，下次聚焦可重试
+            if (results.some(r => r.status === 'rejected')) this.warmPreloadStarted = false;
+        });
     }
 
     /**
