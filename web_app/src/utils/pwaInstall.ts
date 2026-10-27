@@ -54,6 +54,9 @@ function detectPlatform(): Platform {
   const iOSUA = /iPad|iPhone|iPod/i.test(UA);
   const iPadOS = /Macintosh/i.test(UA) && typeof navigator !== 'undefined' && navigator.maxTouchPoints > 1;
   if (iOSUA || iPadOS) return 'ios';
+  // 兜底：魔改 UA（部分国产 ROM / 内置浏览器）可能既不带 Android 也不带 iPhone，
+  // 但只要带 Mobile 就一定是手机 —— 否则会被判成桌面，给出「Chrome/Edge 地址栏安装」的错误步骤。
+  if (/Mobile/i.test(UA)) return 'android';
   return 'desktop';
 }
 

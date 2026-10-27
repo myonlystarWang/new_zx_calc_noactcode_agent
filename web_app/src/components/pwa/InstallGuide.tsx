@@ -71,6 +71,8 @@ function buildGuide(env: InstallEnv): Guide {
   const { platform, inApp, iosNonSafari } = env;
 
   // ---- 第一段：内置浏览器逃逸 ----
+  // 微信 Android / iOS 的右上角菜单都是**横向**三个点（⋯），不是 Android Chrome 的竖点 ⋮，
+  // 所以这里一律用 menu-h；竖点只出现在下方「浏览器菜单」那一步。
   const escapeSteps: GuideStep[] = inApp
     ? platform === 'ios'
       ? [
@@ -78,15 +80,19 @@ function buildGuide(env: InstallEnv): Guide {
           { icon: 'browser', text: '选择「在 Safari 中打开」' },
         ]
       : [
-          { icon: 'menu-v', text: '点右上角的 ⋯', sub: `${IN_APP_NAME[inApp] ?? '当前'}内置浏览器装不了，先换个浏览器` },
+          { icon: 'menu-h', text: '点右上角的 ⋯', sub: `${IN_APP_NAME[inApp] ?? '当前'}内置浏览器装不了，先换个浏览器` },
           { icon: 'browser', text: '选择「在浏览器打开」' },
         ]
     : [];
 
   // ---- 第二段：目标平台步骤 ----
+  // ⚠️ 每个分支都必须拼上 escapeSteps：PC 微信 / 钉钉 / 飞书 的内置浏览器 platform 判成 desktop，
+  //    早期桌面分支漏了这一段，结果是「在微信里只看到 Chrome/Edge 的安装步骤，完全没提用浏览器打开」。
   if (platform === 'ios') {
     return {
-      title: '添加到 iPhone 主屏幕',
+      // 微信里第一眼就得知道「要先换浏览器」，所以标题直接说这件事；
+      // 只有已经用 Safari 打开时才提「添加到主屏幕」。
+      title: inApp ? '先在浏览器中打开' : '添加到 iPhone 主屏幕',
       lead: iosNonSafari && !inApp ? '当前浏览器不支持添加主屏，请先用 Safari 打开本页' : '装好后从桌面图标直接进入，全屏无地址栏',
       steps: [
         ...escapeSteps,
@@ -99,7 +105,7 @@ function buildGuide(env: InstallEnv): Guide {
 
   if (platform === 'android') {
     return {
-      title: '添加到 Android 主屏幕',
+      title: inApp ? '先在浏览器中打开' : '添加到 Android 主屏幕',
       lead: '装好后从桌面图标直接进入，全屏无地址栏',
       steps: [
         ...escapeSteps,
@@ -116,14 +122,16 @@ function buildGuide(env: InstallEnv): Guide {
   }
 
   return {
-    title: '把天书万象装到桌面',
+    title: inApp ? '先在浏览器中打开' : '把天书万象装到桌面',
+    // lead 不再重复「内置浏览器装不了」—— 那句已经在第 1 步的副标题里
     lead: '桌面版 Chrome / Edge 可直接安装成独立窗口，像本地程序一样启动',
     steps: [
+      ...escapeSteps,
       { icon: 'install', text: '看地址栏右侧有没有安装图标', sub: '一个带加号或屏幕形状的小图标' },
       { icon: 'menu-v', text: '没有的话，点 ⋮ 菜单 →「安装天书万象 AI」' },
       { icon: 'check', text: '确认「安装」，之后从开始菜单/程序坞启动' },
     ],
-    note: 'Safari 桌面版（macOS 14+）走「文件 → 添加到程序坞」。',
+    note: inApp ? undefined : 'Safari 桌面版（macOS 14+）走「文件 → 添加到程序坞」。',
   };
 }
 
@@ -328,7 +336,9 @@ export const InstallEntry: React.FC<InstallEntryProps> = ({ className, separator
   if (standalone) return null;
 
   return (
-    <>
+    // 手机上整块隐藏：390px 下这一项会把 footer 顶成两行，而手机本来就有顶部横幅 + 结果区两处入口。
+    // sm:contents 让桌面端恢复「直接参与父级 flex」—— 间距仍由 footer 自己的 gap 控制，不多一层盒模型。
+    <span className="hidden sm:contents">
       {separator && (
         <span className="text-slate-700 select-none" aria-hidden="true">
           ·
@@ -341,7 +351,7 @@ export const InstallEntry: React.FC<InstallEntryProps> = ({ className, separator
       >
         添加到桌面
       </button>
-    </>
+    </span>
   );
 };
 
@@ -378,10 +388,13 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ visitCount }) => {
   return (
     // 收进 Header 那条 max-w-5xl 的内容列里，不做通栏 —— 通栏会和上方未通栏的 LOGO/导航打架
     <div className="w-full shrink-0 px-4 sm:px-6 pt-2">
-      <div className="w-full max-w-5xl mx-auto h-8 rounded-lg border border-cyan-400/20 bg-cyan-400/[0.07] px-2.5 flex items-center gap-2 text-xs">
+      <div
+        data-pwa-banner
+        className="w-full max-w-5xl mx-auto h-8 rounded-lg border border-cyan-400/20 bg-cyan-400/[0.07] px-2.5 flex items-center gap-2 text-xs"
+      >
         <Smartphone className="w-3.5 h-3.5 text-cyan-300 shrink-0" aria-hidden="true" />
         <p className="min-w-0 flex-1 truncate text-slate-300">
-          天书万象可以装到桌面了，下次一秒打开
+          加到桌面，下次一秒打开
         </p>
         <button
           type="button"
