@@ -411,7 +411,8 @@ export const InstallBanner: React.FC = () => {
           className="min-w-0 flex-1 h-full flex items-center gap-2 text-left cursor-pointer"
         >
           <Smartphone className="w-3.5 h-3.5 text-cyan-300 shrink-0" aria-hidden="true" />
-          <span className="min-w-0 flex-1 truncate text-slate-300">
+          {/* 不加 flex-1：让「点我查看」紧跟文案，宽屏下不会飘到 700px 之外显得两截 */}
+          <span className="min-w-0 truncate text-slate-300">
             加到桌面，下次一秒打开
           </span>
           <span className="shrink-0 flex items-center gap-0.5 text-cyan-300 font-medium">
