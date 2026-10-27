@@ -97,7 +97,7 @@ const jsonLd = {
             '@id': `${SITE}/data/#page`,
             url: `${SITE}/data/`,
             name: '诛仙 3 概率公示与属性上限速查',
-            description: '诛仙 3 各系统概率公示：新天缘属性条数与天命触发、轩辕策洗练五档、装备蕴灵月德符曲线、神机洗练档位。数据来自游戏客户端解包。',
+            description: '诛仙 3 各系统概率公示：新天缘属性条数与天命触发、轩辕策洗练五档、装备蕴灵月德符曲线、神机洗练档位。数据来自游戏客户端整理。',
             inLanguage: 'zh-CN',
             isPartOf: { '@type': 'WebSite', name: '天书万象 AI', url: `${SITE}/` },
         },
@@ -117,7 +117,7 @@ const html = `<!doctype html>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>诛仙 3 概率公示与属性上限速查 · 天书万象 AI</title>
-<meta name="description" content="诛仙 3 各系统概率公示：新天缘 3/4/5 条属性概率 60%/30%/10%，轩辕策洗练五档，装备蕴灵月德符曲线，神机洗练档位。数据来自客户端 elements.data 解包。" />
+<meta name="description" content="诛仙 3 各系统概率公示：新天缘 3/4/5 条属性概率 60%/30%/10%，轩辕策洗练五档，装备蕴灵月德符曲线，神机洗练档位。数据来自客户端数据整理。" />
 <link rel="canonical" href="${SITE}/data/" />
 <meta name="robots" content="index, follow" />
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
@@ -154,7 +154,7 @@ const html = `<!doctype html>
 <div class="wrap">
   <header>
     <h1>诛仙 3 概率公示 · 速查表</h1>
-    <p class="sub">数据来自游戏客户端 elements.data 解包，非官方公示。整理：天书万象 AI（2026-10-27）</p>
+    <p class="sub">数据来自游戏客户端整理，非官方公示。整理：天书万象 AI（2026-10-27）</p>
   </header>
 
   <main>
@@ -190,19 +190,11 @@ const html = `<!doctype html>
     <p class="note">其余档位概率与各部件差异见站内神机模拟器。</p>
     <a class="cta" href="${SITE}/">打开神机模拟器 →</a>
 
-    <h2 id="data">完整数据</h2>
-    <p class="note">全部结构化数据可直接抓取：<br />
-      <a href="${SITE}/game_data/new_tianyuan_data.json">new_tianyuan_data.json</a> ·
-      <a href="${SITE}/game_data/xyc_refine.json">xyc_refine.json</a> ·
-      <a href="${SITE}/game_data/skills.json">skills.json</a> ·
-      <a href="${SITE}/game_data/equip_curated.json">equip_curated.json</a> ·
-      <a href="${SITE}/llms.txt">llms.txt</a>
-    </p>
   </main>
 
   <footer>
     天书万象 AI · 诛仙全知大模型 —— 玩家自建工具站，与完美世界 / 诛仙官方无关。<br />
-    概率与属性来自客户端解包，随游戏版本更新可能变化；模拟器采用独立随机，与游戏内伪随机机制可能存在差异。<br />
+    概率与属性来自客户端数据整理，随游戏版本更新可能变化；模拟器采用独立随机，与游戏内伪随机机制可能存在差异。<br />
     <a href="${SITE}/">返回工具站</a>
   </footer>
 </div>
