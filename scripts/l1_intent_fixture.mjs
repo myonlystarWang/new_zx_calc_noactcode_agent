@@ -31,6 +31,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { writeBaseline as writeDataBaseline } from './l1_data_fingerprint.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'web_app', 'src', 'services');
@@ -616,7 +617,10 @@ if (MODE_GOLDEN) {
     const golden = {};
     for (const r of results) golden[r.id] = r.norm;
     fs.writeFileSync(GOLDEN_FILE, `${JSON.stringify(golden, null, 2)}\n`, 'utf8');
+    // 同步刷新 game_data 指纹基线：check_l1_fresh.mjs 靠它判断「数据改了但 golden 没重跑」
+    const fp = writeDataBaseline();
     console.log(`\ngolden 快照已写入: ${GOLDEN_FILE}（${results.length} 条）`);
+    console.log(`数据指纹基线已刷新: regression_test/l1_golden.fingerprint.json（${fp.fileCount} 个文件，digest ${fp.digest}）`);
     console.log(`断言失败 ${failCaseCount} 条${failCaseCount > 0 ? '——快照已按当前行为重建，但断言失败须逐条人工确认是"预期变化"还是 bug！' : ''}`);
     process.exit(failCaseCount > 0 ? 1 : 0);
 }

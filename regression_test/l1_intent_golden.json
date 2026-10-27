@@ -692,9 +692,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -704,9 +704,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -1277,7 +1277,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -1285,7 +1285,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -50907,7 +50907,7 @@
             ],
             "bonus": {
               "name": "技能命中",
-              "value": "3.2%"
+              "value": "3.2"
             }
           },
           {
@@ -50919,7 +50919,7 @@
             ],
             "bonus": {
               "name": "技能躲闪",
-              "value": "3.2%"
+              "value": "3.2"
             }
           }
         ],
@@ -52063,7 +52063,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 18,
                 "max": 22
@@ -52071,7 +52071,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7,
                 "min": 18,
                 "max": 22
@@ -52369,7 +52369,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 24,
                 "max": 30
@@ -52377,7 +52377,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7.5,
                 "min": 24,
                 "max": 30
@@ -52632,7 +52632,7 @@
             ],
             "bonus": {
               "name": "技能命中",
-              "value": "3.2%"
+              "value": "3.2"
             }
           },
           {
@@ -52644,7 +52644,7 @@
             ],
             "bonus": {
               "name": "技能躲闪",
-              "value": "3.2%"
+              "value": "3.2"
             }
           }
         ],
@@ -53788,7 +53788,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 18,
                 "max": 22
@@ -53796,7 +53796,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7,
                 "min": 18,
                 "max": 22
@@ -54094,7 +54094,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 24,
                 "max": 30
@@ -54102,7 +54102,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7.5,
                 "min": 24,
                 "max": 30
@@ -54357,7 +54357,7 @@
             ],
             "bonus": {
               "name": "技能命中",
-              "value": "3.2%"
+              "value": "3.2"
             }
           },
           {
@@ -54369,7 +54369,7 @@
             ],
             "bonus": {
               "name": "技能躲闪",
-              "value": "3.2%"
+              "value": "3.2"
             }
           }
         ],
@@ -55513,7 +55513,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 18,
                 "max": 22
@@ -55521,7 +55521,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7,
                 "min": 18,
                 "max": 22
@@ -55819,7 +55819,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 24,
                 "max": 30
@@ -55827,7 +55827,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7.5,
                 "min": 24,
                 "max": 30
@@ -56082,7 +56082,7 @@
             ],
             "bonus": {
               "name": "技能命中",
-              "value": "3.2%"
+              "value": "3.2"
             }
           },
           {
@@ -56094,7 +56094,7 @@
             ],
             "bonus": {
               "name": "技能躲闪",
-              "value": "3.2%"
+              "value": "3.2"
             }
           }
         ],
@@ -57238,7 +57238,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 18,
                 "max": 22
@@ -57246,7 +57246,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7,
                 "min": 18,
                 "max": 22
@@ -57544,7 +57544,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 24,
                 "max": 30
@@ -57552,7 +57552,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7.5,
                 "min": 24,
                 "max": 30
@@ -57807,7 +57807,7 @@
             ],
             "bonus": {
               "name": "技能命中",
-              "value": "3.2%"
+              "value": "3.2"
             }
           },
           {
@@ -57819,7 +57819,7 @@
             ],
             "bonus": {
               "name": "技能躲闪",
-              "value": "3.2%"
+              "value": "3.2"
             }
           }
         ],
@@ -58963,7 +58963,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 18,
                 "max": 22
@@ -58971,7 +58971,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7,
                 "min": 18,
                 "max": 22
@@ -59269,7 +59269,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 24,
                 "max": 30
@@ -59277,7 +59277,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7.5,
                 "min": 24,
                 "max": 30
@@ -189823,7 +189823,7 @@
             ],
             "bonus": {
               "name": "技能命中",
-              "value": "3.2%"
+              "value": "3.2"
             }
           },
           {
@@ -189835,7 +189835,7 @@
             ],
             "bonus": {
               "name": "技能躲闪",
-              "value": "3.2%"
+              "value": "3.2"
             }
           }
         ],
@@ -190979,7 +190979,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 18,
                 "max": 22
@@ -190987,7 +190987,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7,
                 "min": 18,
                 "max": 22
@@ -191285,7 +191285,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 24,
                 "max": 30
@@ -191293,7 +191293,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7.5,
                 "min": 24,
                 "max": 30
@@ -191548,7 +191548,7 @@
             ],
             "bonus": {
               "name": "技能命中",
-              "value": "3.2%"
+              "value": "3.2"
             }
           },
           {
@@ -191560,7 +191560,7 @@
             ],
             "bonus": {
               "name": "技能躲闪",
-              "value": "3.2%"
+              "value": "3.2"
             }
           }
         ],
@@ -192704,7 +192704,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 18,
                 "max": 22
@@ -192712,7 +192712,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7,
                 "min": 18,
                 "max": 22
@@ -193010,7 +193010,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 24,
                 "max": 30
@@ -193018,7 +193018,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7.5,
                 "min": 24,
                 "max": 30
@@ -193273,7 +193273,7 @@
             ],
             "bonus": {
               "name": "技能命中",
-              "value": "3.2%"
+              "value": "3.2"
             }
           },
           {
@@ -193285,7 +193285,7 @@
             ],
             "bonus": {
               "name": "技能躲闪",
-              "value": "3.2%"
+              "value": "3.2"
             }
           }
         ],
@@ -194429,7 +194429,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 18,
                 "max": 22
@@ -194437,7 +194437,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7,
                 "min": 18,
                 "max": 22
@@ -194735,7 +194735,7 @@
               {
                 "id": 20,
                 "name": "技能命中",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 15,
                 "min": 24,
                 "max": 30
@@ -194743,7 +194743,7 @@
               {
                 "id": 26,
                 "name": "技能躲闪",
-                "isPercent": true,
+                "isPercent": false,
                 "weight": 7.5,
                 "min": 24,
                 "max": 30
@@ -201998,11 +201998,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -202163,7 +202163,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -202332,7 +202332,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -202975,11 +202975,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -203140,7 +203140,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -203309,7 +203309,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -203953,11 +203953,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -204118,7 +204118,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -204287,7 +204287,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -204932,11 +204932,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -205097,7 +205097,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -205266,7 +205266,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -205911,11 +205911,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -206076,7 +206076,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -206245,7 +206245,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -206890,11 +206890,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -207055,7 +207055,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -207224,7 +207224,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -207880,11 +207880,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -208045,7 +208045,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -208214,7 +208214,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -208858,11 +208858,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -209023,7 +209023,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -209192,7 +209192,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -209836,11 +209836,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -210001,7 +210001,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -210170,7 +210170,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -210814,11 +210814,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -210979,7 +210979,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -211148,7 +211148,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -211793,11 +211793,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -211958,7 +211958,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -212127,7 +212127,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -212772,11 +212772,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -212937,7 +212937,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -213106,7 +213106,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -213751,11 +213751,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -213916,7 +213916,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -214085,7 +214085,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -214730,11 +214730,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -214895,7 +214895,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -215064,7 +215064,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -215709,11 +215709,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -215874,7 +215874,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -216043,7 +216043,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -216688,11 +216688,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -216853,7 +216853,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -217022,7 +217022,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -217667,11 +217667,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -217832,7 +217832,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -218001,7 +218001,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -218646,11 +218646,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -218811,7 +218811,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -218980,7 +218980,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -219625,11 +219625,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -219790,7 +219790,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -219959,7 +219959,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -220604,11 +220604,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -220769,7 +220769,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -220938,7 +220938,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -221583,11 +221583,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -221748,7 +221748,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -221917,7 +221917,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -222560,11 +222560,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -222725,7 +222725,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -222894,7 +222894,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -223537,11 +223537,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -223702,7 +223702,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -223871,7 +223871,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -224514,11 +224514,11 @@
         "attributeDictionary": {
           "技能命中": {
             "display": "增加技能命中",
-            "isPercent": true
+            "isPercent": false
           },
           "技能躲闪": {
             "display": "增加技能躲闪",
-            "isPercent": true
+            "isPercent": false
           },
           "普攻命中": {
             "display": "命中",
@@ -224679,7 +224679,7 @@
                 {
                   "attr": "技能命中",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -224848,7 +224848,7 @@
                 {
                   "attr": "技能躲闪",
                   "value": 16,
-                  "isPercent": true,
+                  "isPercent": false,
                   "rate": 0.33
                 },
                 {
@@ -226286,9 +226286,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -226298,9 +226298,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -226871,7 +226871,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -226879,7 +226879,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -227380,9 +227380,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -227392,9 +227392,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -227965,7 +227965,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -227973,7 +227973,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -228474,9 +228474,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -228486,9 +228486,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -229059,7 +229059,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -229067,7 +229067,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -229568,9 +229568,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -229580,9 +229580,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -230153,7 +230153,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -230161,7 +230161,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -230663,9 +230663,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -230675,9 +230675,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -231248,7 +231248,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -231256,7 +231256,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -231757,9 +231757,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -231769,9 +231769,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -232342,7 +232342,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -232350,7 +232350,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -232851,9 +232851,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -232863,9 +232863,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -233436,7 +233436,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -233444,7 +233444,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -233945,9 +233945,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -233957,9 +233957,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -234530,7 +234530,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -234538,7 +234538,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -235039,9 +235039,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -235051,9 +235051,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -235624,7 +235624,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -235632,7 +235632,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -236345,9 +236345,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -236357,9 +236357,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -236930,7 +236930,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -236938,7 +236938,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -237439,9 +237439,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -237451,9 +237451,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -238024,7 +238024,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -238032,7 +238032,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -238533,9 +238533,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -238545,9 +238545,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -239118,7 +239118,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -239126,7 +239126,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -245717,9 +245717,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -245729,9 +245729,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -246302,7 +246302,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -246310,7 +246310,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
@@ -246811,9 +246811,9 @@
                 "max": 0.08,
                 "perLevel": 0.003,
                 "weight": 0.13,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 26,
@@ -246823,9 +246823,9 @@
                 "max": 0.12,
                 "perLevel": 0.003,
                 "weight": 0.03,
-                "unit": "%",
+                "unit": "",
                 "displayScale": 100,
-                "decimals": 1
+                "decimals": 0
               },
               {
                 "id": 27,
@@ -247396,7 +247396,7 @@
                 "initMin": 4,
                 "initMax": 8,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "技能躲闪",
@@ -247404,7 +247404,7 @@
                 "initMin": 8,
                 "initMax": 12,
                 "perLevelGain": 0.3,
-                "unit": "%"
+                "unit": ""
               },
               {
                 "name": "御仙",
