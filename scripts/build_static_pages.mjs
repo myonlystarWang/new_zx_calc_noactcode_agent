@@ -198,6 +198,31 @@ const html = `<!doctype html>
     <a href="${SITE}/">返回工具站</a>
   </footer>
 </div>
+<script>
+/* 埋点：这个页面不加载 React，track.ts 不会执行，只能内联。
+   与站内共用同一个 zx_sid，才能算「落地页 → 进站 → 用工具」的完整漏斗。
+   事件定义见 doc/埋点系统规划_20261026.md §3.5。 */
+(function () {
+  var sid = 'anon';
+  try {
+    sid = sessionStorage.getItem('zx_sid') || Math.random().toString(36).slice(2, 10);
+    sessionStorage.setItem('zx_sid', sid);
+  } catch (e) {}
+  function send(act) {
+    try {
+      navigator.sendBeacon('/api/track', new Blob([JSON.stringify({
+        e: 'static_page', s: sid,
+        d: { detail: act, extra: location.hostname, path: location.pathname, vw: innerWidth }
+      })], { type: 'application/json' }));
+    } catch (e) {}
+  }
+  send('view');
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest && e.target.closest('a[href^="${SITE}"]');
+    if (a) send('click_home');
+  }, true);
+})();
+</script>
 </body>
 </html>
 `;

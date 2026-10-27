@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   Send,
   Plus,
@@ -24,6 +24,7 @@ import { buildVisionMessage } from '../../services/vision/buildVisionMessage';
 import { DataService } from '../../services/DataService';
 import { CelestialStage } from './CelestialStage';
 import { CosmicStarCanvas } from './CosmicStarCanvas';
+import { trackOpenTool, trackChatSend } from '../../utils/track';
 
 
 interface HomePageProps {
@@ -63,6 +64,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
   // 双轨分屏：左右可拖拽分隔条
   const { leftWidth, isResizing, onSplitterPointerDown } = useSplitDrag();
+
+  /**
+   * 打开右侧工作区 —— 埋点 `open_tool` 的唯一收敛点。
+   *
+   * 不要在 SplitScreenWorkspace 内部埋：分屏内切 mode 时组件不一定重新 mount，会漏；
+   * 挂 useEffect([mode]) 又分不清「首次打开」和「切换工具」。
+   * src 取值：pill 首页药丸 / plus 输入框+菜单 / card 聊天卡片 / chat 提问自动开 / ext 外部事件 / switch 切工具
+   */
+  const openWorkspace = useCallback((mode: WorkspaceMode, src: string, params?: any) => {
+    setIsChatActive(true);
+    setWorkspaceState({ isOpen: true, mode, isMaximized: false, params });
+    trackOpenTool(mode, src);
+  }, []);
+
+  /**
+   * 分屏内切换工具（不是「打开」，单独记 switch）。
+   * ⚠️ 目前 SplitScreenWorkspace 虽然声明了 onModeChange 属性，但组件内**从未调用**它
+   * —— 也就是说 src=switch 暂时不会出现在数据里。等真的加了模式切换 UI 才会生效，
+   * 别把「没有 switch」误读成「没人切工具」。
+   */
+  const switchTool = useCallback((mode: WorkspaceMode) => {
+    setWorkspaceState((prev) => ({ ...prev, mode }));
+    trackOpenTool(mode, 'switch');
+  }, []);
 
   // 手机（含横屏）不走左右分屏，改为全屏抽屉：左栏最小 460px 会把右栏顶出视口
   const isMobile = useIsMobile();
@@ -119,12 +144,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
   useEffect(() => {
     const handleOpenWorkspace = (e: any) => {
       const mode = (e.detail?.mode as WorkspaceMode) || 'calc';
-      setIsChatActive(true);
-      setWorkspaceState({
-        isOpen: true,
-        mode,
-        isMaximized: false,
-      });
+      openWorkspace(mode, 'ext');
     };
 
     const handleOpenCopilot = (e: any) => {
@@ -141,7 +161,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
       window.removeEventListener('open-zx-workspace', handleOpenWorkspace);
       window.removeEventListener('open-zx-copilot', handleOpenCopilot);
     };
-  }, []);
+  }, [openWorkspace]);
 
   // 发起 AI 对话
   const handleStartAiChat = async (promptText: string, imageBase64?: string | null) => {
@@ -170,19 +190,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
     try {
       if (img) {
+        trackChatSend('vision');
         const diag = await copilot.diagnoseImage(img, text);
         setChatMessages((prev) => [...prev, buildVisionMessage(diag, img, timeStr)]);
       } else {
         const localMatch = await copilot.matchLocalIntent(text);
+        // local 命中说明词表够用；ai 兜底才说明没接住，此时带上原话前 20 字当词表缺口
+        trackChatSend(localMatch ? 'local' : 'ai', text);
         if (localMatch) {
           setChatMessages((prev) => [...prev, localMatch]);
           if (localMatch.cardData?.workspaceMode) {
-            setWorkspaceState({
-              isOpen: true,
-              mode: localMatch.cardData.workspaceMode,
-              isMaximized: false,
-              params: localMatch.cardData.workspaceParams,
-            });
+            openWorkspace(localMatch.cardData.workspaceMode, 'chat', localMatch.cardData.workspaceParams);
           }
         } else {
           const reply = await copilot.chatText(text);
@@ -243,19 +261,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
 
     try {
       if (image) {
+        trackChatSend('vision');
         const diag = await copilot.diagnoseImage(image, trimmed);
         setChatMessages((prev) => [...prev, buildVisionMessage(diag, image, timeStr)]);
       } else {
         const localMatch = await copilot.matchLocalIntent(trimmed);
+        trackChatSend(localMatch ? 'local' : 'ai', trimmed);
         if (localMatch) {
           setChatMessages((prev) => [...prev, localMatch]);
           if (localMatch.cardData?.workspaceMode) {
-            setWorkspaceState({
-              isOpen: true,
-              mode: localMatch.cardData.workspaceMode,
-              isMaximized: false,
-              params: localMatch.cardData.workspaceParams,
-            });
+            openWorkspace(localMatch.cardData.workspaceMode, 'chat', localMatch.cardData.workspaceParams);
           }
         } else {
           const history = chatMessages.slice(-4).map((m) => ({
@@ -301,15 +316,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
     }
   };
 
-  // 快捷微工具药丸点击：直接滑开右侧对应工作区
-  const handleOpenMicroTool = (mode: WorkspaceMode) => {
+  // 快捷微工具入口（首页药丸 / 输入框 + 菜单）：src 用来区分哪个入口真的有人点
+  const handleOpenMicroTool = (mode: WorkspaceMode, src: 'pill' | 'plus' = 'pill') => {
     setIsPlusMenuOpen(false);
-    setIsChatActive(true);
-    setWorkspaceState({
-      isOpen: true,
-      mode,
-      isMaximized: false,
-    });
+    openWorkspace(mode, src);
   };
 
   // 1. 对话展开态（含居中全宽态、桌面双轨分屏态、手机全屏抽屉态）
@@ -343,21 +353,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 setQuery('');
               }}
               isSplitOpen={workspaceState.isOpen}
-              onToggleSplit={() =>
-                setWorkspaceState((prev) => ({
-                  ...prev,
-                  isOpen: !prev.isOpen,
-                  isMaximized: false,
-                }))
-              }
-              onOpenSplitWorkspace={(mode, params) =>
-                setWorkspaceState({
-                  isOpen: true,
-                  mode,
-                  isMaximized: false,
-                  params,
-                })
-              }
+              onToggleSplit={() => {
+                // 折叠不算打开；只有「展开」记一次 open_tool(src=toggle)
+                if (workspaceState.isOpen) {
+                  setWorkspaceState((prev) => ({ ...prev, isOpen: false }));
+                } else {
+                  openWorkspace(workspaceState.mode, 'toggle');
+                }
+              }}
+              onOpenSplitWorkspace={(mode, params) => openWorkspace(mode, 'card', params)}
             />
           </div>
         )}
@@ -384,7 +388,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             <SplitScreenWorkspace
               mode={workspaceState.mode}
               params={workspaceState.params}
-              onModeChange={(m) => setWorkspaceState((prev) => ({ ...prev, mode: m }))}
+              onModeChange={switchTool}
               isMaximized={workspaceState.isMaximized}
               onToggleMaximize={() =>
                 setWorkspaceState((prev) => ({
@@ -414,7 +418,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             <SplitScreenWorkspace
               mode={workspaceState.mode}
               params={workspaceState.params}
-              onModeChange={(m) => setWorkspaceState((prev) => ({ ...prev, mode: m }))}
+              onModeChange={switchTool}
               isMaximized
               onToggleMaximize={() => { }}
               onClose={() =>
@@ -458,7 +462,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               isOpen={isPlusMenuOpen}
               onClose={() => setIsPlusMenuOpen(false)}
               onSelectUpload={() => fileInputRef.current?.click()}
-              onSelectWorkspace={(mode) => handleOpenMicroTool(mode)}
+              onSelectWorkspace={(mode) => handleOpenMicroTool(mode, 'plus')}
               onSendMessage={(q) => handleStartAiChat(q)}
               placement="down"
             />
@@ -585,7 +589,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
               onClick={() => {
                 // 必须走 handleOpenMicroTool：右分屏只在 isChatActive 分支里渲染，
                 // 只 setWorkspaceState({isOpen:true}) 会停在首页、什么都不弹（2026-10-26 线上 bug）
-                handleOpenMicroTool('calc');
+                handleOpenMicroTool('calc', 'pill');
               }}
               className="pill-btn group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0e1422]/90 hover:bg-[#151f35] border border-amber-500/30 text-xs text-slate-300 hover:text-amber-300 transition-all cursor-pointer shadow-sm active:scale-95"
             >

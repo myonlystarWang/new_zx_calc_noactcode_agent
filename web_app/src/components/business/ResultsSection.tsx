@@ -10,6 +10,7 @@ import { DungeonDetail } from './DungeonDetail';
 import type { SearchTarget } from '../GlobalSearch';
 import type { Skill } from '../../types';
 import { buildConfigText, buildShareUrl, FACTION_LABELS, type ShareSnapshot } from '../../utils/shareSnapshot';
+import { trackShareClick } from '../../utils/track';
 import type { ShareCardData, ShareSkillRow } from '../share/ShareCard';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 import { InstallHint } from '../pwa/InstallGuide';
@@ -386,6 +387,9 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
 
     const handleCopyLink = useCallback(async () => {
         setShareOpen(false);
+        // 先记意图再复制：剪贴板在无权限环境（含部分内置浏览器）会失败，
+        // 但那仍然是「用户想分享」的真实信号，不能因为复制失败就丢掉这条数据
+        trackShareClick('link', 'calc');
         const url = await buildShareUrl(shareSnapshot, selectedDungeonId);
         if (await copyToClipboard(url)) {
             setFeedback('link');
@@ -395,6 +399,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
 
     const handleCopyText = useCallback(async () => {
         setShareOpen(false);
+        trackShareClick('text', 'calc');
         if (await copyToClipboard(buildConfigText(shareSnapshot, buffs))) {
             setFeedback('text');
             window.setTimeout(() => setFeedback(null), 2000);
@@ -434,6 +439,8 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                 share.suggestShareFilename(shareCardData.dungeonName, shareCardData.bossName, shareCardData.dateText),
             );
             if (result.mode === 'preview' && result.dataUrl) setPreviewUrl(result.dataUrl);
+            // download=桌面直接下载；preview=微信/iOS 出预览图靠长按保存（用户可能没保存）
+            trackShareClick(result.mode === 'preview' ? 'preview' : 'download', 'calc');
             setExportState('idle');
         } catch (err) {
             console.error('导出分享长图失败:', err);

@@ -48,6 +48,14 @@ import type { RecognizedPanel } from '../../services/vision/types';
 import { ChatPlusMenu } from '../chat/ChatPlusMenu';
 import type { WorkspaceMode } from '../workspace/SplitScreenWorkspace';
 import type { FabaoItem, CuratedEquipItem, CuratedSkillItem } from '../../types';
+import { trackCardClick } from '../../utils/track';
+
+/**
+ * card_click 的主体名：className / slot / title 取第一个有值的。
+ * 没有它只知道「有人点了技能查询」，不知道「哪个职业的技能查询」。
+ */
+const cardSubject = (cd: any): string =>
+    String(cd?.className || cd?.slot || cd?.title || '').slice(0, 16);
 
 export interface WorkspaceParams {
     zhanQu?: string;
@@ -700,7 +708,10 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         <button
                                                             key={opt.key}
                                                             type="button"
-                                                            onClick={() => onSendMessage(opt.query)}
+                                                            onClick={() => {
+                                                                trackCardClick(String(msg.cardType || ''), opt.key, cardSubject(msg.cardData));
+                                                                onSendMessage(opt.query);
+                                                            }}
                                                             className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
                                                         >
                                                             {opt.label}
@@ -721,7 +732,10 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         <button
                                                             key={opt.key}
                                                             type="button"
-                                                            onClick={() => onSendMessage(opt.query)}
+                                                            onClick={() => {
+                                                                trackCardClick(String(msg.cardType || ''), opt.key, cardSubject(msg.cardData));
+                                                                onSendMessage(opt.query);
+                                                            }}
                                                             className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
                                                         >
                                                             {opt.label}
@@ -745,7 +759,10 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                             key={opt.key}
                                                             type="button"
                                                             // 所有按钮 query 均为自然词（含 exclude 型其他X」补集），无需 displayText
-                                                            onClick={() => onSendMessage(opt.query)}
+                                                            onClick={() => {
+                                                                trackCardClick(String(msg.cardType || ''), opt.key, cardSubject(msg.cardData));
+                                                                onSendMessage(opt.query);
+                                                            }}
                                                             className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
                                                         >
                                                             {opt.label}
@@ -766,15 +783,16 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         <button
                                                             key={opt.key}
                                                             type="button"
-                                                            onClick={() => {
-                                                                // 选项可直接指定右分屏模式（如「伤害计算」→ calc），
-                                                                // 否则只发查询词、由意图匹配决定卡片
-                                                                if (opt.workspaceMode && onOpenSplitWorkspace) {
-                                                                    onOpenSplitWorkspace(opt.workspaceMode as WorkspaceMode);
-                                                                } else {
-                                                                    onSendMessage(opt.query);
-                                                                }
-                                                            }}
+                                                        onClick={() => {
+                                                            // 选项可直接指定右分屏模式（如「伤害计算」→ calc），
+                                                            // 否则只发查询词、由意图匹配决定卡片
+                                                            trackCardClick(String(msg.cardType || ''), opt.key, cardSubject(msg.cardData));
+                                                            if (opt.workspaceMode && onOpenSplitWorkspace) {
+                                                                onOpenSplitWorkspace(opt.workspaceMode as WorkspaceMode);
+                                                            } else {
+                                                                onSendMessage(opt.query);
+                                                            }
+                                                        }}
                                                             className="px-3.5 py-1.5 rounded-lg bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs font-medium cursor-pointer transition-colors"
                                                         >
                                                             {opt.label}

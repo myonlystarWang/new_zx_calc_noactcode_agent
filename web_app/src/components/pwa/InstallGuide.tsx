@@ -22,6 +22,21 @@ import {
   resetBannerCloseStreak,
   type InstallEnv,
 } from '../../utils/pwaInstall';
+import { trackInstallPrompt } from '../../utils/track';
+
+/**
+ * 横幅曝光每会话只记一次。
+ * 不做去重的话，每次重渲染 / 路由变化都会发一条，把 close/show 比彻底拉歪。
+ */
+function trackBannerShowOnce() {
+  try {
+    if (sessionStorage.getItem('zx_pwa_show')) return;
+    sessionStorage.setItem('zx_pwa_show', '1');
+  } catch {
+    /* sessionStorage 不可用时照发，宁可多一条 */
+  }
+  trackInstallPrompt('show', 'banner');
+}
 
 /* ------------------------------------------------------------------ *
  * 引导内容
@@ -157,6 +172,7 @@ export const InstallGuideDialog: React.FC<InstallGuideDialogProps> = ({ open, on
 
   useEffect(() => {
     if (!open) return;
+    trackInstallPrompt('open', 'dialog');
     setEnv(getInstallEnv());
     return subscribeInstallPrompt(() => setEnv(getInstallEnv()));
   }, [open]);
@@ -236,7 +252,15 @@ export const InstallGuideDialog: React.FC<InstallGuideDialogProps> = ({ open, on
           {env.canPrompt && (
             <button
               type="button"
-              onClick={() => void promptInstall().then((ok) => ok && onClose())}
+              onClick={() => {
+                trackInstallPrompt('prompt', 'dialog');
+                void promptInstall().then((ok) => {
+                  if (ok) {
+                    trackInstallPrompt('ok', 'dialog');
+                    onClose();
+                  }
+                });
+              }}
               className="flex-1 h-10 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-sm font-bold transition-colors"
             >
               一键安装
@@ -305,7 +329,10 @@ export const InstallHint: React.FC = () => {
   return (
     <button
       type="button"
-      onClick={openGuide}
+      onClick={() => {
+        trackInstallPrompt('entry', 'result');
+        openGuide();
+      }}
       className="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-cyan-300 transition-colors cursor-pointer select-none"
     >
       加到桌面，下次一秒打开
@@ -352,7 +379,10 @@ export const InstallEntry: React.FC<InstallEntryProps> = ({ className, separator
       <button
         type="button"
         data-pwa-entry
-        onClick={openGuide}
+        onClick={() => {
+          trackInstallPrompt('entry', 'footer');
+          openGuide();
+        }}
         className={clsx('transition-colors cursor-pointer whitespace-nowrap', className)}
       >
         添加到桌面
@@ -383,15 +413,22 @@ export const InstallBanner: React.FC = () => {
     };
   }, []);
 
+  // 曝光：每会话只记一次（可见才算），用于和 close 算「打扰度」
+  useEffect(() => {
+    if (visible) trackBannerShowOnce();
+  }, [visible]);
+
   if (!visible) return null;
 
   const open = () => {
+    trackInstallPrompt('entry', 'banner');
     resetBannerCloseStreak();
     openGuide();
   };
 
   const close = () => {
     // 关掉立刻收起（本次浏览不再出现），下次打开页面按连续关闭次数决定还出不出现
+    trackInstallPrompt('close', 'banner');
     recordBannerClose();
     setVisible(false);
   };

@@ -26,43 +26,83 @@ const OUT_DIR = path.join(ROOT, 'scratch/analytics');
 
 const DATASET = 'zx_events';
 
-/** 预设查询 */
+/** 预设查询（槽位定义见 doc/埋点系统规划_20261026.md §4） */
 const QUERIES = {
-  /** 总览：按状态 × 国家 */
-  summary: `SELECT blob2 AS status, blob5 AS country, count() AS n,
-                   count(DISTINCT index1) AS sessions,
-                   sum(_sample_interval) AS weighted
-            FROM ${DATASET}
-            WHERE timestamp > NOW() - INTERVAL '7' DAY AND blob2 != 'probe'
-            GROUP BY status, country ORDER BY n DESC`,
+  /** 总览：各事件量级 × 环境。第一眼看「哪批事件在出数」 */
+  overview: `SELECT blob1 AS event, blob6 AS env, count() AS n,
+                    count(DISTINCT index1) AS sessions
+             FROM ${DATASET}
+             WHERE timestamp > NOW() - INTERVAL '7' DAY
+             GROUP BY event, env ORDER BY event, n DESC`,
 
-  /** 字体健康度关键判据：loaded / error 分布 */
-  font: `SELECT blob2 AS status,
-                count() AS n,
-                count(DISTINCT index1) AS sessions,
-                min(double1) AS min_loaded, max(double1) AS max_loaded, avg(double1) AS avg_loaded,
-                min(double2) AS min_err, max(double2) AS max_err, avg(double2) AS avg_err,
-                min(double3) AS min_total, max(double3) AS max_total
+  /** 会话基线：来源 × 环境。所有比例的分母 */
+  sessions: `SELECT blob2 AS ref, blob6 AS env, count(DISTINCT index1) AS sessions
+             FROM ${DATASET}
+             WHERE blob1 = 'session_start' AND timestamp > NOW() - INTERVAL '7' DAY
+             GROUP BY ref, env ORDER BY sessions DESC`,
+
+  /** 字体健康度：double1 = Serif（主标题）已加载分片数，0 就是真退化 */
+  font: `SELECT blob2 AS status, count() AS n, count(DISTINCT index1) AS sessions,
+                min(double1) AS min_serif, max(double1) AS max_serif, avg(double1) AS avg_serif,
+                sum(double2) AS err_sum, max(double3) AS max_serif_total
          FROM ${DATASET}
          WHERE blob1 = 'font_check' AND blob2 != 'probe' AND timestamp > NOW() - INTERVAL '7' DAY
          GROUP BY status ORDER BY n DESC`,
 
-  /** 按天趋势（看是否稳定、有无突增） */
-  daily: `SELECT toDate(timestamp) AS day, blob2 AS status, count() AS n
+  /** 工具热度 + 入口有效率 */
+  tools: `SELECT blob2 AS tool, blob3 AS src, count() AS opens,
+                 count(DISTINCT index1) AS sessions
           FROM ${DATASET}
-          WHERE blob1 = 'font_check' AND timestamp > NOW() - INTERVAL '30' DAY
-          GROUP BY day, status ORDER BY day DESC, n DESC`,
+          WHERE blob1 = 'open_tool' AND timestamp > NOW() - INTERVAL '7' DAY
+          GROUP BY tool, src ORDER BY tool, sessions DESC`,
 
-  /** 按小时趋势（今天） */
-  hourly: `SELECT toStartOfHour(timestamp) AS hour, blob2 AS status, count() AS n
+  /** ★ 点击热点：哪个职业 / 部位被点最多 → 内容投入的直接依据 */
+  clicks: `SELECT blob2 AS ct, blob7 AS sub, blob3 AS opt, count() AS clicks,
+                  count(DISTINCT index1) AS sessions
            FROM ${DATASET}
-           WHERE blob1 = 'font_check' AND timestamp > NOW() - INTERVAL '2' DAY
-           GROUP BY hour, status ORDER BY hour DESC`,
+           WHERE blob1 = 'card_click' AND timestamp > NOW() - INTERVAL '7' DAY
+           GROUP BY ct, sub, opt ORDER BY clicks DESC LIMIT 200`,
+
+  /** 分享通道：决定「分享要不要扩到 4 个模拟器」 */
+  share: `SELECT blob2 AS ch, count() AS clicks, count(DISTINCT index1) AS sessions
+          FROM ${DATASET}
+          WHERE blob1 = 'share_click' AND timestamp > NOW() - INTERVAL '7' DAY
+          GROUP BY ch ORDER BY clicks DESC`,
+
+  /** PWA 安装引导：曝光 / 关闭 / 入口点击 / 一键安装 */
+  install: `SELECT blob2 AS act, blob3 AS src, blob6 AS env, count() AS n
+            FROM ${DATASET}
+            WHERE blob1 = 'install_prompt' AND timestamp > NOW() - INTERVAL '7' DAY
+            GROUP BY act, src, env ORDER BY act, n DESC`,
+
+  /** GEO 落地页：view / click_home */
+  static: `SELECT blob2 AS act, count() AS n, count(DISTINCT index1) AS sessions
+           FROM ${DATASET}
+           WHERE blob1 = 'static_page' AND timestamp > NOW() - INTERVAL '7' DAY
+           GROUP BY act`,
+
+  /** AI 成本结构：本地命中 / AI 兜底 / 识图 */
+  chat: `SELECT blob2 AS src, count() AS n, count(DISTINCT index1) AS sessions
+         FROM ${DATASET}
+         WHERE blob1 = 'chat_send' AND timestamp > NOW() - INTERVAL '7' DAY
+         GROUP BY src ORDER BY n DESC`,
+
+  /** 词表缺口：AI 兜底时的原话（前 20 字）排行 */
+  gaps: `SELECT blob3 AS q, count() AS n
+         FROM ${DATASET}
+         WHERE blob1 = 'chat_send' AND blob2 = 'ai' AND timestamp > NOW() - INTERVAL '7' DAY
+         GROUP BY q ORDER BY n DESC LIMIT 100`,
+
+  /** 按天趋势（看是否稳定、有无突增） */
+  daily: `SELECT toDate(timestamp) AS day, blob1 AS event, count() AS n
+          FROM ${DATASET}
+          WHERE timestamp > NOW() - INTERVAL '30' DAY
+          GROUP BY day, event ORDER BY day DESC, n DESC`,
 
   /** 明细（最多 5000 行，用于自己算） */
-  detail: `SELECT timestamp, index1 AS sid, blob1 AS event, blob2 AS status,
-                  blob3 AS network, blob4 AS page, blob5 AS country,
-                  double1 AS loaded, double2 AS error, double3 AS total, double4 AS viewport
+  detail: `SELECT timestamp, index1 AS sid, blob1 AS event, blob2 AS detail,
+                  blob3 AS extra, blob4 AS page, blob5 AS country, blob6 AS env,
+                  blob7 AS sub, double1 AS v1, double2 AS v2, double3 AS v3, double4 AS vw
            FROM ${DATASET}
            WHERE timestamp > NOW() - INTERVAL '7' DAY
            ORDER BY timestamp DESC LIMIT 5000`,
