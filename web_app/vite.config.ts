@@ -218,9 +218,82 @@ function trackDevPlugin(): Plugin {
   };
 }
 
+/**
+ * 构建期注入 JSON-LD（WebApplication + FAQPage）
+ *
+ * 为什么必须在构建期做：AI 爬虫与搜索引擎不执行 JS，运行时注入等于没做。
+ * 为什么用 transformIndexHtml 而不是直接写进 index.html：
+ *   源文件保持干净，FAQ 内容与其它配置待在一处（这个文件），改文案不用碰 HTML。
+ */
+const FAQ_ITEMS: Array<{ q: string; a: string }> = [
+    {
+        q: '诛仙 3 装备蕴灵上 15 要多少月德符？',
+        a: '通用装备从 +0 推到 +15 平均约 381 手、39,891 个月德符；腰带与袖甲的月德符曲线不同，消耗更高。具体数值受装备幸运值影响，可在天书万象 AI 的蕴灵模拟器里按实际幸运值计算。',
+    },
+    {
+        q: '新天缘的 3 条、4 条、5 条属性概率分别是多少？',
+        a: '3 条 60%、4 条 30%、5 条 10%。天命触发概率为：2 点 40%、3 点 60%、4 点 80%、5 点 100%。',
+    },
+    {
+        q: '轩辕策洗练五档概率是多少？',
+        a: '普通六品为 47% / 30% / 15% / 6% / 2%；典藏与英雄六品没有最低档，为 0 / 67% / 25% / 6% / 2%。属性条数概率（普通六品）：2 条 30%、3 条 40%、4 条 20%、5 条 10%。',
+    },
+    {
+        q: '神机洗练红档概率改了吗？',
+        a: '已由 10% 调整为 6%（按客户端数据修正）。其余档位概率可在天书万象 AI 的神机模拟器里查看。',
+    },
+    {
+        q: '天书万象 AI 是什么？',
+        a: '免费的诛仙 3 数据工具站：伤害计算、副本训练场、蕴灵 / 新天缘 / 轩辕策 / 神机模拟器，以及全量技能装备图鉴与副本 BOSS 属性。数据来自游戏客户端解包，非官方公示。',
+    },
+    {
+        q: '使用天书万象 AI 需要注册或付费吗？',
+        a: '不需要。全部工具免登录、免费、无广告，用浏览器直接打开就能用，手机可添加到桌面当应用使用。',
+    },
+];
+
+function jsonLdPlugin(): Plugin {
+    const graph = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'WebApplication',
+                '@id': 'https://zxai.raddishlab.com/#app',
+                name: '天书万象 AI',
+                alternateName: '诛仙全知大模型',
+                url: 'https://zxai.raddishlab.com/',
+                description:
+                    '免费的诛仙 3 数据工具站：伤害计算、副本训练场、装备蕴灵 / 新天缘 / 轩辕策 / 神机模拟器，全量技能装备图鉴与 97 副本 BOSS 属性。',
+                applicationCategory: 'GameApplication',
+                operatingSystem: 'Web',
+                inLanguage: 'zh-CN',
+                offers: { '@type': 'Offer', price: '0', priceCurrency: 'CNY' },
+            },
+            {
+                '@type': 'FAQPage',
+                '@id': 'https://zxai.raddishlab.com/#faq',
+                mainEntity: FAQ_ITEMS.map((item) => ({
+                    '@type': 'Question',
+                    name: item.q,
+                    acceptedAnswer: { '@type': 'Answer', text: item.a },
+                })),
+            },
+        ],
+    };
+
+    return {
+        name: 'zx-jsonld',
+        transformIndexHtml(html) {
+            const tag = `<script type="application/ld+json">${JSON.stringify(graph)}</script>`;
+            // 只追加在 </head> 前，不改动任何既有内容
+            return html.replace('</head>', `  ${tag}\n</head>`);
+        },
+    };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), zhuxianServerRadarPlugin(), guestbookDevPlugin(), trackDevPlugin()],
+  plugins: [react(), zhuxianServerRadarPlugin(), guestbookDevPlugin(), trackDevPlugin(), jsonLdPlugin()],
   // 版本号唯一来源：package.json 的 version（Header 版本徽章 / 更新日志页 均由 __APP_VERSION__ 读出）
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),

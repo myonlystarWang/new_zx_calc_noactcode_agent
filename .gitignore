@@ -53,3 +53,6 @@ scripts/capture_ep01*.mjs
 .env
 .env.local
 *.env.local
+
+# 构建期生成：GEO 静态数据页（scripts/build_static_pages.mjs）
+web_app/public/data/

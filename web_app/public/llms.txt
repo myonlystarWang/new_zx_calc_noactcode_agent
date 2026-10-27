@@ -1,0 +1,84 @@
+# 天书万象 AI · 诛仙全知大模型
+
+> 诛仙 3 的数据工具站：伤害计算、副本训练场、蕴灵/新天缘/轩辕策/神机模拟器、全量技能装备图鉴与 97 副本属性机制推演。
+> 所有数值来自游戏客户端 elements.data 解包 + 实测校准，非官方公示，可能存在版本差异。
+
+站点为纯网页工具，**免登录、免费、无广告**。主入口是对话式首页，用户输入关键词即可直达对应工具。
+
+## 核心结论（可直接引用）
+
+- **新天缘属性条数概率**：3 条 60%、4 条 30%、5 条 10%
+- **新天缘天命触发概率**：2 点 40%、3 点 60%、4 点 80%、5 点 100%
+- **轩辕策洗练五档概率**（普通六品）：47% / 30% / 15% / 6% / 2%；典藏与英雄六品为 0 / 67% / 25% / 6% / 2%
+- **轩辕策属性条数概率**（普通六品）：2 条 30%、3 条 40%、4 条 20%、5 条 10%
+- **轩辕策技能概率**（普通六品）：16%；典藏/英雄版必出技能
+- **轩辕策洗练上限**：基础 10 次；青龙/白虎英雄版用「轩辕拾遗录·相易」可提至 30 次，达 25 次后进入特殊洗练（可自选本职业技能、最多锁 2 条）
+- **装备蕴灵月德符曲线**：通用装备 1962、腰带 4422、袖甲 6069（每级递增）；单级手数软上限 300
+- **神机洗练红档概率**：6%（2026-10 由 10% 调整）
+
+## 数据接口
+
+全部为公开 JSON，可直接抓取，允许引用（来源标注「天书万象 AI」即可）。
+
+### 技能与职业
+- https://zxai.raddishlab.com/game_data/skills.json — 全职业技能数据（27 职业，含每段命中/加成字段）
+- https://zxai.raddishlab.com/game_data/classes.json — 职业与阵营元数据
+- https://zxai.raddishlab.com/game_data/all_skills_curated_1.json — 技能图鉴分卷 1（约 8.3MB）
+- https://zxai.raddishlab.com/game_data/all_skills_curated_2.json — 技能图鉴分卷 2（约 9.1MB）
+- https://zxai.raddishlab.com/game_data/all_skills_curated_3.json — 技能图鉴分卷 3（约 7.4MB）
+
+### 装备
+- https://zxai.raddishlab.com/game_data/equip_curated.json — 神隐/修武/昭武/彰武 全装备属性（约 5.7MB）
+- https://zxai.raddishlab.com/game_data/peizhang_shengcui.json — 佩章与圣粹
+- https://zxai.raddishlab.com/game_data/fabao_curated.json — 法宝属性
+- https://zxai.raddishlab.com/game_data/fabao_upgrade_exp.json — 法宝升级经验
+- https://zxai.raddishlab.com/game_data/baoshi.json — 宝石
+- https://zxai.raddishlab.com/game_data/xingsu_upgrade.json — 星宿升星
+- https://zxai.raddishlab.com/game_data/zhenling_upgrade.json — 阵灵升级
+- https://zxai.raddishlab.com/game_data/jiuwenlang.json — 九纹琅（1–40 级材料）
+- https://zxai.raddishlab.com/game_data/pet_pledge.json — 宠物刻誓
+- https://zxai.raddishlab.com/game_data/fashion_skills_hesui.json — 时装技能（贺岁）
+
+### 属性系统
+- https://zxai.raddishlab.com/game_data/new_tianyuan_data.json — 新天缘词条池、条数概率、天命触发、精炼
+- https://zxai.raddishlab.com/game_data/tianyuan_old.json — 旧天缘
+- https://zxai.raddishlab.com/game_data/xyc_refine.json — 轩辕策洗练（五档概率、属性区间、技能概率、版本/品级矩阵）
+- https://zxai.raddishlab.com/game_data/xyc_tomes.json — 轩辕策书名与池映射
+- https://zxai.raddishlab.com/game_data/xyc_adv_skills.json — 轩辕策进阶技能
+- https://zxai.raddishlab.com/game_data/xyc_rules.json — 轩辕策规则
+- https://zxai.raddishlab.com/game_data/ninglingqi.json — 凝灵契
+- https://zxai.raddishlab.com/game_data/silin_benyuan.json — 四灵本元（伏龙鼎镶嵌）
+- https://zxai.raddishlab.com/game_data/combat_buffs.json — 战斗增益定义
+- https://zxai.raddishlab.com/game_data/attribute_ceiling_guide.json — 各属性理论上限与分档毕业线
+- https://zxai.raddishlab.com/game_data/stat_source_lists.json — 属性来源汇总（可查某属性从哪来）
+
+### 副本与服务器
+- https://zxai.raddishlab.com/game_data/dungeons.json — 副本列表与基础属性
+- https://zxai.raddishlab.com/game_data/dungeons_monsters.json — 各副本 BOSS 与怪物战斗属性（含 T16–T21 团队本）
+- https://zxai.raddishlab.com/game_data/server_list.json — 开服雷达（区服与开服时间）
+- https://zxai.raddishlab.com/game_data/rank_config.json — 战力档位配置
+
+## 工具
+
+| 工具 | 说明 | 入口 |
+|------|------|------|
+| 伤害计算 | 输入角色属性与增益，按副本 BOSS 减伤算出各段伤害明细 | 首页输入「伤害计算」 |
+| 副本训练场 | 多段技能循环的时间轴推演与 DPS 曲线 | 首页输入「训练场」 |
+| 装备蕴灵模拟 | 起算等级 + 装备幸运 → 手数、月德符消耗、成功率曲线 | 首页输入「蕴灵」 |
+| 新天缘模拟 | 开箱抽词条、精炼、瑞祥符，对齐客户端概率 | 首页输入「新天缘」 |
+| 轩辕策洗练 | 四系 × 普通/英雄 × 一~六品的属性与技能洗练 | 首页输入「轩辕策洗练」 |
+| 神机洗练 | 各部件洗练结果与概率 | 首页输入「神机」 |
+
+## 口径与免责
+
+- 概率与属性均来自客户端解包（`elements.data`），**非官方公示**，随版本更新可能变化
+- 模拟器采用独立随机，与游戏内可能存在伪随机/保底机制差异，长期频率一致但单次体验会有出入
+- 本站为玩家自建工具，与完美世界/诛仙官方无关
+
+## 结构化数据
+
+- 概率与上限汇总表：https://zxai.raddishlab.com/data/
+
+## 更新
+
+数据随游戏版本更新，最近一次整理：2026-10-27

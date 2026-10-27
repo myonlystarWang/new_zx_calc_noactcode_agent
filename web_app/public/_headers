@@ -1,0 +1,17 @@
+# Cloudflare Pages 响应头配置
+# 只做两件事：给带 hash 的静态资源长缓存、给游戏数据放开跨域。
+# 不影响任何站内功能（同源请求不受 CORS 限制）。
+
+# 带内容 hash 的构建产物：一年强缓存（文件名变了 URL 就变了，不会拿到旧代码）
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 游戏数据 JSON：允许第三方/AI 直接抓取引用
+# 不设 Cache-Control —— 数据会随版本更新，保持 Pages 默认的 ETag 协商缓存，
+# 否则用户可能拿到 1 小时前的旧数据。
+/game_data/*.json
+  Access-Control-Allow-Origin: *
+
+# 字体/图片等长期不变资源
+/*.png
+  Cache-Control: public, max-age=604800

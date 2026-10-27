@@ -7,7 +7,7 @@
     "dev": "vite",
     "predev": "node ../scripts/build_skills_meta.mjs && node ../scripts/check_l1_fresh.mjs --warn-only",
     "build": "tsc -b && vite build",
-    "prebuild": "node ../scripts/build_skills_meta.mjs && node ../scripts/check_l1_fresh.mjs",
+    "prebuild": "node ../scripts/build_skills_meta.mjs && node ../scripts/check_l1_fresh.mjs && node ../scripts/build_static_pages.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test:l1": "node ../scripts/l1_intent_fixture.mjs",
