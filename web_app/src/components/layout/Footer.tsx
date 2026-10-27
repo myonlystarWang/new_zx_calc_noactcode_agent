@@ -11,8 +11,8 @@ export const Footer: React.FC<FooterProps> = () => {
             {/* 顶部微光渐变分割线（中间微亮、两端隐没，不切割宇宙星空画布） */}
             <div className="w-full max-w-2xl mx-auto h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-3" />
 
-            <div className="w-full max-w-5xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs tracking-normal text-center text-slate-500">
-                <span className="whitespace-nowrap">&copy; 2026 天书万象</span>
+            <div className="w-full max-w-5xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 [&>*]:leading-none gap-y-1 text-xs tracking-normal text-center text-slate-500">
+                <span className="whitespace-nowrap">&copy; 2026 天书万象 AI</span>
                 {/* 作者署名：窄屏（<640px）隐藏，避免 footer 折成两行。
                     完整署名在「关于本站」页有展示，footer 在移动端优先保证导航项（安装 / 概率表）单行可点。 */}
                 <span className="hidden sm:inline-flex items-center gap-x-3">
@@ -28,7 +28,7 @@ export const Footer: React.FC<FooterProps> = () => {
                 {/* PWA 安装入口：已安装时组件自己返回 null，这里不用判断 */}
                 <InstallEntry
                     separator
-                    className="text-slate-400 hover:text-cyan-300 underline decoration-dotted underline-offset-2"
+                    className="min-h-0 tap-40 text-slate-400 hover:text-cyan-300 border-b border-dotted border-slate-600/70"
                 />
                 {/* 概率速查：独立静态页（/data/），给玩家一个入口，同时给页面带来真实访问信号。
                     target=_blank 避免跳走后丢失聊天状态；站内有「打开模拟器」回首页。 */}
@@ -37,7 +37,7 @@ export const Footer: React.FC<FooterProps> = () => {
                     href="/data/"
                     target="_blank"
                     rel="noopener"
-                    className="whitespace-nowrap text-slate-400 hover:text-cyan-300 underline decoration-dotted underline-offset-2 transition-colors"
+                    className="whitespace-nowrap min-h-0 tap-40 text-slate-400 hover:text-cyan-300 border-b border-dotted border-slate-600/70 transition-colors"
                 >
                     概率表
                 </a>
