@@ -11,7 +11,12 @@ import { DataService } from './services/DataService';
 import type { SearchTarget } from './components/search/searchIndex';
 import type { SubTab } from './components/compendium/CompendiumView';
 
-export const SITE_NAME = '天书万象 AI · 诛仙全知大模型';
+/**
+ * 站点名 = 浏览器标签 + 安装后图标名（安卓「添加到桌面」快捷方式读 document.title）。
+ * 2026-10-27 用户要求图标名干净显示「天书万象 AI」——再长会被 Launcher 截成「天书万象 AI…」。
+ * 关键词「诛仙全知大模型」仍在 index.html 的 description / og:title 里，不影响搜索摘要。
+ */
+export const SITE_NAME = '天书万象 AI';
 
 /** 路由路径常量 */
 export const ROUTE = {
