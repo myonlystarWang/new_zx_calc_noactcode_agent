@@ -291,9 +291,35 @@ function jsonLdPlugin(): Plugin {
     };
 }
 
+/**
+ * 让 `/data/` 在 dev / preview 下也能访问
+ *
+ * 线上 Cloudflare Pages 默认支持目录索引（`/data/` → `/data/index.html`），
+ * 但 Vite 的静态服务不自动找目录下的 index.html —— 请求 `/data/` 会落到 SPA fallback，
+ * 于是点了「概率表」看到的还是首页。这里显式重写一次，两个环境行为一致。
+ */
+function staticDataDirPlugin(): Plugin {
+    const rewrite = (req: any, _res: any, next: any) => {
+        const url = req.url || '';
+        if (url === '/data' || url === '/data/' || url.startsWith('/data/?')) {
+            req.url = '/data/index.html';
+        }
+        next();
+    };
+    return {
+        name: 'zx-data-dir',
+        configureServer(server) {
+            server.middlewares.use(rewrite);
+        },
+        configurePreviewServer(server) {
+            server.middlewares.use(rewrite);
+        },
+    };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), zhuxianServerRadarPlugin(), guestbookDevPlugin(), trackDevPlugin(), jsonLdPlugin()],
+  plugins: [react(), zhuxianServerRadarPlugin(), guestbookDevPlugin(), trackDevPlugin(), jsonLdPlugin(), staticDataDirPlugin()],
   // 版本号唯一来源：package.json 的 version（Header 版本徽章 / 更新日志页 均由 __APP_VERSION__ 读出）
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
