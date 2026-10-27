@@ -47,3 +47,9 @@ doc/scripts/
 doc/天书万象AI_*.md
 doc/天书万象_*.md
 scripts/capture_ep01*.mjs
+
+# 本地凭证（Cloudflare API Token 等），绝不入库
+.secrets/
+.env
+.env.local
+*.env.local
