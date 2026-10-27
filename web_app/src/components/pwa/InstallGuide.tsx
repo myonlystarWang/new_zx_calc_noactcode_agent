@@ -94,7 +94,6 @@ function buildGuide(env: InstallEnv): Guide {
         { icon: 'plus', text: '在列表里找到「添加到主屏幕」', sub: '需要往下滑一段才看得到' },
         { icon: 'check', text: '点右上角「添加」' },
       ],
-      note: 'iPhone 的系统菜单里没有「安装」入口，只能按上面步骤手动添加。',
     };
   }
 
@@ -197,8 +196,10 @@ export const InstallGuideDialog: React.FC<InstallGuideDialogProps> = ({ open, on
 
         <ol className="px-5 py-4 flex flex-col gap-3">
           {guide.steps.map((s, i) => (
-            <li key={`${s.text}-${i}`} className="flex items-start gap-3">
-              <span className="shrink-0 mt-0.5 grid place-items-center w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 text-cyan-300">
+            // 有副标题时图标对齐首行（items-start），没有副标题时整行居中对齐（items-center）——
+            // 否则单行文案会贴在 28px 图标框的顶部，看着像「提前预留了第二行」。
+            <li key={`${s.text}-${i}`} className={clsx('flex gap-3', s.sub ? 'items-start' : 'items-center')}>
+              <span className="shrink-0 grid place-items-center w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 text-cyan-300">
                 {STEP_ICON[s.icon]}
               </span>
               <div className="min-w-0">
@@ -375,8 +376,9 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ visitCount }) => {
   };
 
   return (
-    <div className="w-full shrink-0 bg-gradient-to-r from-cyan-500/10 via-indigo-500/10 to-amber-500/10 border-b border-cyan-400/15">
-      <div className="w-full max-w-5xl mx-auto px-3 sm:px-4 h-9 flex items-center gap-2 text-xs">
+    // 收进 Header 那条 max-w-5xl 的内容列里，不做通栏 —— 通栏会和上方未通栏的 LOGO/导航打架
+    <div className="w-full shrink-0 px-4 sm:px-6 pt-2">
+      <div className="w-full max-w-5xl mx-auto h-8 rounded-lg border border-cyan-400/20 bg-cyan-400/[0.07] px-2.5 flex items-center gap-2 text-xs">
         <Smartphone className="w-3.5 h-3.5 text-cyan-300 shrink-0" aria-hidden="true" />
         <p className="min-w-0 flex-1 truncate text-slate-300">
           天书万象可以装到桌面了，下次一秒打开
