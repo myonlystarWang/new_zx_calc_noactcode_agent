@@ -112,6 +112,9 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     const chatInputRef = useRef<HTMLInputElement>(null);
 
     const focusChatInput = useCallback(() => {
+        // 移动端不自动聚焦，避免弹出软键盘遮挡聊天流与卡片
+        if (isMobile) return;
+
         // 若用户当前正在划词选择文本，绝不强行夺焦，保障鼠标复制体验
         const selection = window.getSelection();
         if (selection && selection.toString().trim().length > 0) {
@@ -124,7 +127,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         }
         // 使用 preventScroll 避免视口强制滚动跳跃
         chatInputRef.current?.focus({ preventScroll: true });
-    }, []);
+    }, [isMobile]);
 
     // 1. 页面初次加载/刷新时自动锁定焦点
     useEffect(() => {
@@ -199,7 +202,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         onSendMessage(text, selectedImage || undefined);
         setInputText('');
         setSelectedImage(null);
-        setTimeout(focusChatInput, 20);
+        if (isMobile) {
+            chatInputRef.current?.blur();
+        } else {
+            setTimeout(focusChatInput, 20);
+        }
     };
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {

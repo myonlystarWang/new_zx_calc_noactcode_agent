@@ -98,7 +98,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
             const reader = new FileReader();
             reader.onload = (event) => {
               setAttachedImage(event.target?.result as string);
-              inputRef.current?.focus();
+              if (!isMobile) {
+                inputRef.current?.focus();
+              }
             };
             reader.readAsDataURL(blob);
             e.preventDefault();
@@ -302,7 +304,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
       const reader = new FileReader();
       reader.onload = (event) => {
         setAttachedImage(event.target?.result as string);
-        inputRef.current?.focus();
+        if (!isMobile) {
+          inputRef.current?.focus();
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -532,7 +536,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 type="button"
                 onClick={() => {
                   if (!query.trim() && !attachedImage) {
-                    inputRef.current?.focus();
+                    if (!isMobile) {
+                      inputRef.current?.focus();
+                    }
                     return;
                   }
                   handleStartAiChat(query, attachedImage);
