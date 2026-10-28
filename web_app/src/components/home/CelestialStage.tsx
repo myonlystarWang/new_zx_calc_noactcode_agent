@@ -9,7 +9,7 @@ export const CelestialStage: React.FC<CelestialStageProps> = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center cursor-pointer mb-3 select-none transition-transform duration-300 hover:scale-105"
+      className="hero-celestial-compact relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center cursor-pointer mb-3 select-none transition-transform duration-300 hover:scale-105 shrink-0"
       title="天书浑天太极星核 · 点击唤醒智能交互"
     >
       {/* 外部极光色散日冕光晕 (幽邃深空微光) */}
@@ -82,14 +82,14 @@ export const CelestialStage: React.FC<CelestialStageProps> = ({ onClick }) => {
       />
 
       {/* 浑天球本体：深邃墨色球体 + 核心八卦神经元全息投影 */}
-      <div className="relative w-40 h-40 sm:w-44 sm:h-44 rounded-full bg-[#070b14] border border-cyan-500/40 shadow-[inset_0_0_30px_rgba(34,211,238,0.25)] flex items-center justify-center overflow-hidden">
+      <div className="celestial-sphere relative w-40 h-40 sm:w-44 sm:h-44 rounded-full bg-[#070b14] border border-cyan-500/40 shadow-[inset_0_0_30px_rgba(34,211,238,0.25)] flex items-center justify-center overflow-hidden">
         {/* 内部量子扫描光栅线 */}
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(6,182,212,0.08)_51%)] bg-[length:100%_4px] pointer-events-none" />
 
         {/* 正式天书万象 AI 完整 Logo (高精矢量八卦神经元太极印，18s 顺时针自转 + 内部微动效) */}
         <TianShuLogo
           size={160}
-          className="w-36 h-36 sm:w-40 sm:h-40 animate-spin-slow drop-shadow-[0_0_24px_rgba(34,211,238,0.35)]"
+          className="celestial-logo w-36 h-36 sm:w-40 sm:h-40 animate-spin-slow drop-shadow-[0_0_24px_rgba(34,211,238,0.35)]"
           animated={true}
         />
       </div>

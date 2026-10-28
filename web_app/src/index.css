@@ -1493,3 +1493,108 @@ input[type="number"] {
   content-visibility: auto;
   contain-intrinsic-size: auto 260px;
 }
+
+
+/* ==========================================================================
+   视口自适应双阶梯（严格基于高度响应，绝不误伤高屏手机）
+   
+   档位1：默认状态 (高度 > 720px)
+         iPhone 15 Pro Max (430x932)、安卓主流 (412x915)、iPhone 13 (390x844)
+         以及所有桌面端，100% 保持原版 256px / 288px 饱满大视觉。
+   
+   档位2：中等矮屏 (高度 641px ~ 720px 且 宽度 < 640px)
+         典型代表：iPhone SE (375x667)、720p全屏 (360x640)
+         微调至 208px (13rem)，兼顾饱满大气与安全留白。
+   
+   档位3：极矮视口 (高度 <= 640px 且 宽度 < 640px)
+         典型代表：老安卓带浏览器栏 (360x560)、老款小屏机 (320x568 / 320x480)
+         收拢至 152px (9.5rem)，彻底消除与页脚重合，保证胶囊全部可见。
+   ========================================================================== */
+
+/* 档位 2：中等矮屏 (641px ~ 720px) */
+@media (max-height: 720px) and (max-width: 639px) {
+  .hero-celestial-compact {
+    width: 13rem !important;  /* 208px，保持天体饱满大气 */
+    height: 13rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .hero-celestial-compact .celestial-sphere {
+    width: 8rem !important;   /* 128px */
+    height: 8rem !important;
+  }
+  .hero-celestial-compact .celestial-logo {
+    width: 7rem !important;   /* 112px */
+    height: 7rem !important;
+  }
+  .hero-title-compact {
+    margin-bottom: 0.75rem !important; /* mb-3 */
+  }
+  .hero-pills-compact {
+    padding-top: 0.75rem !important;   /* pt-3 */
+    gap: 0.5rem !important;            /* gap-2 */
+  }
+  .hero-pills-compact .pill-btn {
+    padding-left: 0.625rem !important; /* px-2.5，两行整齐容纳不溢出 */
+    padding-right: 0.625rem !important;
+  }
+}
+
+/* 档位 3：极矮视口 (<= 640px) */
+@media (max-height: 640px) and (max-width: 639px) {
+  .hero-celestial-compact {
+    width: 9.5rem !important;  /* 152px，安全不遮挡 */
+    height: 9.5rem !important;
+    margin-bottom: 0.375rem !important;
+  }
+  .hero-celestial-compact .celestial-sphere {
+    width: 6rem !important;   /* 96px */
+    height: 6rem !important;
+  }
+  .hero-celestial-compact .celestial-logo {
+    width: 5.25rem !important;/* 84px */
+    height: 5.25rem !important;
+  }
+  .hero-title-compact {
+    margin-bottom: 0.5rem !important; /* mb-2 */
+  }
+  .hero-title-compact h1 {
+    font-size: 1.25rem !important;    /* text-xl (20px) 避免极矮屏折行 */
+  }
+  .hero-pills-compact {
+    padding-top: 0.5rem !important;   /* pt-2 */
+    gap: 0.375rem !important;         /* gap-1.5 */
+  }
+  .hero-pills-compact .pill-btn {
+    padding-top: 0.25rem !important;  /* py-1 */
+    padding-bottom: 0.25rem !important;
+    padding-left: 0.5rem !important;  /* px-2 */
+    padding-right: 0.5rem !important;
+  }
+}
+
+
+/* 极矮视口 / 横屏手机 (<= 500px) */
+@media (max-height: 500px) and (max-width: 639px) {
+  .hero-celestial-compact {
+    width: 8rem !important;   /* 128px */
+    height: 8rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  .hero-celestial-compact .celestial-sphere {
+    width: 5rem !important;
+    height: 5rem !important;
+  }
+  .hero-celestial-compact .celestial-logo {
+    width: 4.25rem !important;
+    height: 4.25rem !important;
+  }
+  .hero-title-compact {
+    margin-bottom: 0.25rem !important;
+  }
+  .hero-title-compact p {
+    display: none !important; /* 超矮视口隐藏愿景副标题，给胶囊让路 */
+  }
+  .hero-pills-compact {
+    padding-top: 0.25rem !important;
+  }
+}

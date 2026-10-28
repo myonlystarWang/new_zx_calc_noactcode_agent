@@ -442,7 +442,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           <CelestialStage onClick={() => inputRef.current?.focus()} />
 
           {/* 核心主标题与愿景副标题（此区域不绘制星空微粒，避免星点穿透文字） */}
-          <div ref={heroTextBoxRef} className="space-y-2 mb-6">
+          <div ref={heroTextBoxRef} className="hero-title-compact space-y-2 mb-6">
             <h1 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight aurora-text">
               天书万象 AI · 诛仙全知大模型
             </h1>
@@ -554,7 +554,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
           </div>
 
           {/* 快捷微工具引导药丸 (间距适度拉大，呼吸感提升) */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-2xl w-full pt-5 sm:pt-6">
+          <div className="hero-pills-compact flex flex-wrap items-center justify-center gap-2.5 max-w-2xl w-full pt-5 sm:pt-6">
             <button
               type="button"
               onClick={() => handleStartAiChat('装备')}
