@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, Share2 } from 'lucide-react';
 import { DataService } from '../../services/DataService';
 import type { CuratedEquipItem } from '../../types';
 import { getEquipQualityColor, getYunlingColor } from '../../constants/gameColorSystem';
@@ -19,6 +19,8 @@ import {
     luckTierRange,
     type YunlingConfig,
 } from '../../utils/yunlingSim';
+import { useSharePoster } from '../share/useSharePoster';
+import { todayText } from '../../utils/date';
 
 export interface YunlingForgeCardProps {
     cardData?: {
@@ -314,6 +316,33 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
     // ── 读数 ──
     /** 已开始蕴灵（打过至少一手）后锁定等级与幸运值；重置 / 换部位 / 换品质 / 换装备都会清零并解锁 */
     const locked = totalTries > 0;
+
+    /** 一键分享：把当前这次蕴灵结果画成长图（列表里 0 手的级别自动略过） */
+    const { busy: shareBusy, share: sharePoster } = useSharePoster();
+    const handleSharePoster = useCallback(() => {
+        if (totalTries <= 0) return;
+        void sharePoster(
+            async () => {
+                // 海报绘制模块按需加载：静态 import 会让整套 Canvas 绘制跟着图鉴页一起下载
+                const { buildYunlingPoster } = await import('../share/simPosters');
+                return buildYunlingPoster({
+                    equipName,
+                    qualityLabel: String(quality),
+                    slotLabel: String(slot),
+                    startLevel: 0,
+                    level,
+                    equipLuck,
+                    personLuck,
+                    rows,
+                    totalTries,
+                    totalCost,
+                    dateText: todayText(),
+                });
+            },
+            `装备蕴灵_${equipName || slot}_+${level}_${todayText()}`,
+            'yunling',
+        );
+    }, [sharePoster, equipName, quality, slot, level, equipLuck, personLuck, rows, totalTries, totalCost]);
     const target = Math.min(YUNLING_MAX, level + 1);
     const luck = luckBreakdown(cfg, 0);
     /** 本级已失败手数：驱动软保底与读数 */
@@ -397,15 +426,27 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                     >
                         装备蕴灵
                     </span>
-                    <button
-                        type="button"
-                        onClick={() => setShowHelp((v) => !v)}
-                        style={{ color: showHelp ? '#ffd94d' : '#6b89a8' }}
-                        title="蕴灵规则"
-                        className="hover:text-[#9bc2e6] transition-colors"
-                    >
-                        <HelpCircle className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={handleSharePoster}
+                            disabled={totalTries <= 0 || shareBusy}
+                            style={{ color: totalTries > 0 ? '#6ff0c8' : '#3f5670' }}
+                            title={totalTries > 0 ? '分享本次结果（长图）' : '先蕴灵出结果再分享'}
+                            className="hover:text-[#9bc2e6] transition-colors disabled:cursor-not-allowed"
+                        >
+                            <Share2 className="w-4 h-4" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setShowHelp((v) => !v)}
+                            style={{ color: showHelp ? '#ffd94d' : '#6b89a8' }}
+                            title="蕴灵规则"
+                            className="hover:text-[#9bc2e6] transition-colors"
+                        >
+                            <HelpCircle className="w-4 h-4" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* 品质 + 部位 + 装备：宽卡片三者同行；620~900 时下拉自然落到第二行；

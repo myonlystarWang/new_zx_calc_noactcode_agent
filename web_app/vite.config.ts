@@ -337,7 +337,9 @@ export default defineConfig({
             if (id.includes('react-dom') || id.includes('/react/') || id.includes('scheduler')) return 'vendor-react';
             // 只在「分享」动作里动态 import 的库，单独成块才能保持懒加载
             // （若混进 'vendor'，会因该块被主包静态引用而变成首屏就下载）
-            if (id.includes('lz-string') || id.includes('qrcode')) return 'vendor-share';
+            // modern-screenshot 必须列进来：漏了它就会掉进 vendor，而 vendor 被 index.html
+            // modulepreload → 首屏白白多下 ~14KB(gz)，动态 import 的隔离完全失效。
+            if (id.includes('lz-string') || id.includes('qrcode') || id.includes('modern-screenshot')) return 'vendor-share';
             return 'vendor';
           }
         },

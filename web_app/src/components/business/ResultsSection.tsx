@@ -346,7 +346,10 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         const classLabel = service.getClasses()?.find((c) => c.ClassID === userCharacter.ClassID)?.ClassName || userCharacter.ClassID;
 
         return {
-            siteName: '诛仙3战力模拟器',
+            // 品牌统一：站内、长图、PWA 全用「天书万象 AI」
+            siteName: '天书万象 AI',
+            siteUrl: 'zxai.raddishlab.com',
+            kicker: '诛仙 3 · 伤害模拟',
             dateText,
             className: classLabel,
             factionLabel: FACTION_LABELS[userCharacter.Faction] || userCharacter.Faction,
@@ -358,6 +361,12 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
             dungeonName: activeDungeon.DungeonName,
             bossName: activeBoss.MonsterName,
             skills: rows,
+            // 用当前选中副本的「参考战力」（卡片上那个数），不是全局静态战力 —— 两者口径不同
+            totalPower: activeDungeon?.TotalDamage,
+            // 免责口径：不否认数据来自官方，只说明「AI 模拟可能有误差、以游戏内为准」
+            // \n 是排版断行（两行刚好铺满二维码左侧），不是句子分割
+            watermark:
+                '本图由天书万象 AI 依据官方数据模拟生成，\n可能存在误差，请以游戏内实际为准。',
         };
     }, [activeDungeon, activeBoss, userCharacter, buffs, activeBuffIds, buffValues]);
 
@@ -373,17 +382,20 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
     }, []);
 
     const handleToggleShareMenu = useCallback(() => {
-        setShareOpen((prev) => {
-            if (!prev && shareAnchorRef.current) {
-                const rect = shareAnchorRef.current.getBoundingClientRect();
-                setMenuPos({
-                    top: rect.bottom + 6,
-                    right: window.innerWidth - rect.right,
-                });
-            }
-            return !prev;
-        });
-    }, []);
+        if (!shareOpen && shareAnchorRef.current) {
+            const rect = shareAnchorRef.current.getBoundingClientRect();
+            setMenuPos({
+                top: rect.bottom + 6,
+                right: window.innerWidth - rect.right,
+            });
+            // 预热：模块 / LOGO / 二维码库先下好，点「分享图片」时只剩画图。
+            // navigator.share 要求用户手势，网络请求若发生在点击之后，慢网下可能超出激活窗口。
+            void import('../share/ShareCard').then((m) => m.preloadShareLogo()).catch(() => {});
+            void import('../../utils/exportImage').catch(() => {});
+            void import('qrcode').catch(() => {});
+        }
+        setShareOpen((prev) => !prev);
+    }, [shareOpen]);
 
     const handleCopyLink = useCallback(async () => {
         setShareOpen(false);
@@ -406,38 +418,71 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         }
     }, [shareSnapshot, buffs]);
 
+    /**
+     * 能不能「一键分享图片」——只有移动端才给。
+     * 桌面 Chrome(Windows) 同样支持 navigator.canShare，一点就弹系统分享框，对桌面用户是噪音；
+     * 桌面要的是下载文件，走「导出分享长图」。
+     * 判据 = 有触点 + 主指针为粗指针（排除带触摸屏的 Windows 笔记本，那种主指针仍是鼠标）。
+     */
+    const canShareImage = useMemo(() => {
+        try {
+            if (typeof navigator === 'undefined' || typeof navigator.canShare !== 'function') return false;
+            if ((navigator.maxTouchPoints ?? 0) <= 0) return false;
+            if (typeof window !== 'undefined' && window.matchMedia && !window.matchMedia('(pointer: coarse)').matches) {
+                return false;
+            }
+            return navigator.canShare({ files: [new File([new Uint8Array(1)], 'p.png', { type: 'image/png' })] });
+        } catch {
+            return false;
+        }
+    }, []);
+
+    /**
+     * 渲染分享长图（导出 / 分享共用）。
+     * 二维码画到 480px 再由 canvas 缩到 240 显示 —— 2x 屏上不糊，扫码才稳。
+     */
+    const renderShareCanvas = useCallback(async () => {
+        const share = await import('../share/ShareCard');
+        if (!shareCardData) throw new Error('缺少当前副本/BOSS 数据');
+
+        // 二维码失败不阻塞出图
+        let qrDataUrl: string | null = null;
+        try {
+            // src=qr 只加在二维码里：埋点据此区分「扫码回流」与「点链接回流」，
+            // 否则两种来源在数据里都是 share，没法判断长图+二维码这笔投入值不值
+            const url = `${await buildShareUrl(shareSnapshot, selectedDungeonId)}&src=qr`;
+            const QRCode = (await import('qrcode')).default;
+            qrDataUrl = await QRCode.toDataURL(url, {
+                margin: 1,
+                width: 480,
+                errorCorrectionLevel: 'M',
+                color: { dark: '#0a0d0c', light: '#ffffff' },
+            });
+            await share.preloadQrImage(qrDataUrl);
+        } catch (err) {
+            console.warn('二维码生成失败，改为无码出图:', err);
+            qrDataUrl = null;
+        }
+        await share.preloadShareLogo();
+
+        const { canvas } = share.renderShareCard({ ...shareCardData, qrDataUrl }, share.readShareTheme());
+        const filename = share.suggestShareFilename(
+            shareCardData.dungeonName,
+            shareCardData.bossName,
+            shareCardData.dateText,
+        );
+        return { canvas, filename };
+    }, [shareCardData, shareSnapshot, selectedDungeonId]);
+
     const handleExportImage = useCallback(async () => {
         setShareOpen(false);
         setExportState('working');
         try {
-            const [share, exporter] = await Promise.all([
-                import('../share/ShareCard'),
+            const [{ canvas, filename }, exporter] = await Promise.all([
+                renderShareCanvas(),
                 import('../../utils/exportImage'),
             ]);
-            if (!shareCardData) throw new Error('缺少当前副本/BOSS 数据');
-
-            // 二维码失败不阻塞出图
-            let qrDataUrl: string | null = null;
-            try {
-                const url = await buildShareUrl(shareSnapshot, selectedDungeonId);
-                const QRCode = (await import('qrcode')).default;
-                qrDataUrl = await QRCode.toDataURL(url, {
-                    margin: 1,
-                    width: 336,
-                    errorCorrectionLevel: 'M',
-                    color: { dark: '#0a0d0c', light: '#ffffff' },
-                });
-                await share.preloadQrImage(qrDataUrl);
-            } catch (err) {
-                console.warn('二维码生成失败，改为无码出图:', err);
-                qrDataUrl = null;
-            }
-
-            const { canvas } = share.renderShareCard({ ...shareCardData, qrDataUrl }, share.readShareTheme());
-            const result = await exporter.exportCanvas(
-                canvas,
-                share.suggestShareFilename(shareCardData.dungeonName, shareCardData.bossName, shareCardData.dateText),
-            );
+            const result = await exporter.exportCanvas(canvas, filename);
             if (result.mode === 'preview' && result.dataUrl) setPreviewUrl(result.dataUrl);
             // download=桌面直接下载；preview=微信/iOS 出预览图靠长按保存（用户可能没保存）
             trackShareClick(result.mode === 'preview' ? 'preview' : 'download', 'calc');
@@ -447,7 +492,48 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
             setExportState('error');
             window.setTimeout(() => setExportState('idle'), 3000);
         }
-    }, [shareCardData, shareSnapshot, selectedDungeonId]);
+    }, [renderShareCanvas]);
+
+    /**
+     * 一键分享：能调起系统面板就直接发（微信/相册/存文件都走系统面板），
+     * 调不起就退回「下载 / 长按保存」。
+     */
+    const handleShareImage = useCallback(async () => {
+        setShareOpen(false);
+        setExportState('working');
+        try {
+            const [{ canvas, filename }, exporter] = await Promise.all([
+                renderShareCanvas(),
+                import('../../utils/exportImage'),
+            ]);
+            const result = await exporter.shareImage(canvas, filename, {
+                title: shareCardData ? `${shareCardData.dungeonName} · 伤害模拟` : '天书万象 AI',
+                text: '天书万象 AI · 诛仙3 伤害模拟',
+            });
+            trackShareClick(`share-${result.outcome || 'fallback'}`, 'calc');
+            if (result.outcome === 'fallback' && result.mode === 'preview' && result.dataUrl) {
+                setPreviewUrl(result.dataUrl);
+            }
+            setExportState('idle');
+        } catch (err) {
+            console.error('分享图片失败:', err);
+            setExportState('error');
+            window.setTimeout(() => setExportState('idle'), 3000);
+        }
+    }, [renderShareCanvas, shareCardData]);
+
+    /**
+     * 菜单项做成数组 —— 后续「发布到伤害打卡墙」直接往这里 push 一项即可，
+     * 不用再在 JSX 里插一段重复的按钮结构。
+     */
+    const shareMenuItems = useMemo(() => {
+        const items: Array<{ key: string; label: string; icon: React.ElementType; onClick: () => void }> = [];
+        if (canShareImage) items.push({ key: 'share', label: '分享图片', icon: Share2, onClick: handleShareImage });
+        items.push({ key: 'export', label: '导出分享长图', icon: Download, onClick: handleExportImage });
+        items.push({ key: 'link', label: '复制分享链接', icon: Link2, onClick: handleCopyLink });
+        items.push({ key: 'text', label: '复制配置文本', icon: FileText, onClick: handleCopyText });
+        return items;
+    }, [canShareImage, handleShareImage, handleExportImage, handleCopyLink, handleCopyText]);
 
     const totalPowerRankConfig = useMemo(() => getRankConfig(results.totalPower), [results.totalPower]);
     const [powerCopied, setPowerCopied] = useState(false);
@@ -669,18 +755,17 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                         className="fixed z-[9999] w-44 rounded-xl border border-slate-700 bg-slate-900 p-1.5 shadow-2xl shadow-black/70 flex flex-col gap-1"
                         style={{ top: menuPos.top, right: menuPos.right }}
                     >
-                        <button type="button" onClick={handleExportImage} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700/60 transition-colors text-left">
-                            <Download className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
-                            导出分享长图
-                        </button>
-                        <button type="button" onClick={handleCopyLink} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700/60 transition-colors text-left">
-                            <Link2 className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
-                            复制分享链接
-                        </button>
-                        <button type="button" onClick={handleCopyText} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700/60 transition-colors text-left">
-                            <FileText className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
-                            复制配置文本
-                        </button>
+                        {shareMenuItems.map((item) => (
+                            <button
+                                key={item.key}
+                                type="button"
+                                onClick={item.onClick}
+                                className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700/60 transition-colors text-left"
+                            >
+                                <item.icon className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
+                                {item.label}
+                            </button>
+                        ))}
                     </div>
                 </>,
                 document.body,

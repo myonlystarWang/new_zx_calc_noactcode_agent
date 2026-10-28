@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { HelpCircle, Square, X, Swords, Shirt, HardHat } from 'lucide-react';
+import { HelpCircle, Square, X, Swords, Shirt, HardHat, Share2 } from 'lucide-react';
 import type { TianyuanData, TianyuanItem, RolledAttr, RefineResult } from '../../utils/newTianyuanSim';
 import { NewTianyuanDetailCard, type NewTianyuanData as DetailTianyuanData } from './NewTianyuanDetailCard';
+import { useDomShare } from '../share/useDomShare';
 import {
     attrDisplayValue,
     attrDestinyBonus,
@@ -208,6 +209,18 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
     }, [data, item, cardData?.initialGroupName]);
 
     const piece = useMemo(() => data?.pieces.find((p) => p.key === pieceKey) ?? data?.pieces[0], [data, pieceKey]);
+    /** 分享：把这张信息卡原样截下来，套上品牌页头与二维码落款 */
+    const shareCardRef = useRef<HTMLDivElement>(null);
+    const { busy: shareBusy, share: shareDom } = useDomShare();
+    const handleShareCard = useCallback(() => {
+        void shareDom({
+            node: shareCardRef.current,
+            kicker: '诛仙 3 · 新天缘模拟',
+            name: `${piece?.name ?? '天缘'} +${item?.level ?? 0}`,
+            mode: 'tianyuan',
+            prefix: '新天缘',
+        });
+    }, [shareDom, piece, item]);
 
     const stopAll = useCallback(() => {
         autoRef.current = false;
@@ -480,6 +493,16 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                     <div className="relative flex items-center justify-center px-3 py-2" style={TITLE_BAR_STYLE}>
                         <span style={TITLE_TEXT_STYLE}>{piece.name}</span>
                         <div className="absolute right-3 flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={handleShareCard}
+                                disabled={shareBusy}
+                                title={shareBusy ? '正在生成图片…' : '分享这张卡（长图）'}
+                                className="transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                                style={{ color: '#6ff0c8' }}
+                            >
+                                <Share2 className="w-3.5 h-3.5" />
+                            </button>
                             <HelpCircle className="w-3.5 h-3.5" style={{ color: '#5b7894' }} />
                         </div>
                     </div>
@@ -507,7 +530,7 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
 
                     {/* 内容 + 右侧竖排按钮（鉴定 / 精炼 / 重置） */}
                     <div className="p-3 flex gap-2 flex-1 min-w-0">
-                        <div className="flex-1 min-w-0 flex flex-col gap-3">
+                        <div ref={shareCardRef} data-share-root className="flex-1 min-w-0 flex flex-col gap-3">
                             <div className="flex items-start gap-2.5">
                                 <div className="relative w-[62px] h-[62px] shrink-0">
                                     <div className="absolute inset-0 flex items-center justify-center" style={{ color: '#d9c2ff' }}>

@@ -71,6 +71,8 @@ export function track(event: string, data: TrackPayload = {}): void {
  */
 function detectRef(): string {
   try {
+    // 长图二维码回流（二维码 URL 带 src=qr）—— 必须排在普通分享之前，否则会被记成同一个 share
+    if (/[?&]src=qr/.test(location.hash || '')) return 'share-qr';
     // 分享链接回流（分享第 3 批上线后才会出现 #/?s=）
     if (/[?&]s=/.test(location.hash || '')) return 'share';
 

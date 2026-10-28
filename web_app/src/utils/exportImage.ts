@@ -7,11 +7,19 @@
  */
 export type ExportMode = 'download' | 'preview';
 
+/**
+ * 分享结果：
+ *  · shared   —— 唤起系统分享面板并完成（用户取消也算走到这一步，不报错）
+ *  · fallback —— 环境不支持分享，已降级为下载 / 长按保存
+ */
+export type ShareOutcome = 'shared' | 'cancelled' | 'fallback';
+
 export interface ExportResult {
     mode: ExportMode;
     /** preview 模式下用于 <img src> 的 dataURL */
     dataUrl?: string;
     error?: string;
+    outcome?: ShareOutcome;
 }
 
 export function isWeixin(): boolean {
@@ -79,4 +87,53 @@ export async function exportCanvas(canvas: HTMLCanvasElement, filename: string):
             error: err instanceof Error ? err.message : String(err),
         };
     }
+}
+
+/** 该环境能否直接调起系统分享面板（带文件） */
+export function canShareFiles(): boolean {
+    if (typeof navigator === 'undefined' || typeof navigator.canShare !== 'function') return false;
+    try {
+        const probe = new File([new Uint8Array(1)], 'probe.png', { type: 'image/png' });
+        return navigator.canShare({ files: [probe] });
+    } catch {
+        return false;
+    }
+}
+
+/**
+ * 一键分享：能在系统面板里直接发微信就发，不能就退回下载 / 长按保存。
+ *
+ * ⚠️ 必须在用户手势的**同一条调用链**里调用（`await` 本地动态 import 与 canvas 绘制没问题，
+ * 但中间不要插入 `setTimeout` 之类的任务边界，否则 Safari 会判定为「非手势触发」）。
+ */
+export async function shareImage(
+    canvas: HTMLCanvasElement,
+    filename: string,
+    meta?: { title?: string; text?: string },
+): Promise<ExportResult> {
+    const name = safeFilename(filename);
+
+    if (canShareFiles()) {
+        const blob = await canvasToBlob(canvas);
+        if (blob) {
+            try {
+                const file = new File([blob], `${name}.png`, { type: 'image/png' });
+                await navigator.share({
+                    files: [file],
+                    title: meta?.title || name,
+                    text: meta?.text || '',
+                });
+                return { mode: 'preview', outcome: 'shared' };
+            } catch (err) {
+                // 用户主动取消 → 按成功处理，不再降级弹一次预览，否则很吵
+                if (err instanceof Error && err.name === 'AbortError') {
+                    return { mode: 'preview', outcome: 'cancelled' };
+                }
+                // NotAllowedError / TypeError：面板没起来，走降级
+            }
+        }
+    }
+
+    const res = await exportCanvas(canvas, filename);
+    return { ...res, outcome: 'fallback' };
 }

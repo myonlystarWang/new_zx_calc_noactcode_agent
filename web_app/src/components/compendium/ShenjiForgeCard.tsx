@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { HelpCircle, X } from 'lucide-react';
+import { HelpCircle, X, Share2 } from 'lucide-react';
 import { DataService } from '../../services/DataService';
+import { useDomShare } from '../share/useDomShare';
 import type { CuratedEquipItem } from '../../types';
 import { getEquipQualityColor } from '../../constants/gameColorSystem';
 import {
@@ -285,6 +286,19 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
     /** 是否启用过渡动画（归零那一刻必须关掉，否则会看到倒退） */
     const [barAnim, setBarAnim] = useState(false);
     const [forgeCount, setForgeCount] = useState(0);
+
+    /** 分享：把「锻造前 → 锻造后」两块卡原样截下来，套上品牌页头与二维码落款 */
+    const shareCardRef = useRef<HTMLDivElement>(null);
+    const { busy: shareBusy, share: shareDom } = useDomShare();
+    const handleShareCard = useCallback(() => {
+        void shareDom({
+            node: shareCardRef.current,
+            kicker: '诛仙 3 · 神机属性锻造',
+            name: `${quality}${slot} +${forgeCount}次`,
+            mode: 'shenji',
+            prefix: '神机',
+        });
+    }, [shareDom, quality, slot, forgeCount]);
 
     /** 是否显示自动锻造设置面板（默认关闭，点击自动锻造打开） */
     const [showAutoPanel, setShowAutoPanel] = useState(false);
@@ -572,6 +586,16 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                         神机属性锻造
                     </span>
                     <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={handleShareCard}
+                            disabled={shareBusy}
+                            title={shareBusy ? '正在生成图片…' : '分享锻造结果（长图）'}
+                            className="transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                            style={{ color: '#6ff0c8' }}
+                        >
+                            <Share2 className="w-4 h-4" />
+                        </button>
                         {/* 问号仅作装饰，不可点击 */}
                         <span
                             style={{ color: '#6b89a8' }}
@@ -628,7 +652,7 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                 </div>
 
                 {/* 左右属性卡片区 */}
-                <div className="grid grid-cols-1 @md:grid-cols-[1fr_auto_1fr] items-stretch gap-2.5">
+                <div ref={shareCardRef} data-share-root className="grid grid-cols-1 @md:grid-cols-[1fr_auto_1fr] items-stretch gap-2.5">
                     <ForgePanel
                         side="left"
                         slot={slot}

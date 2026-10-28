@@ -10,6 +10,7 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom';
+import { ArrowLeft, X } from 'lucide-react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
@@ -299,6 +300,30 @@ const MainContent: React.FC = () => {
           path={ROUTE.calculator}
           element={
             <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
+              {/* 分享落地页专用通道：老分享链接仍然落在 /calculator，
+                  这里补一条「回聊天」的出口 —— 手机上浏览器没有后退键时不会被困住。
+                  角色属性/增益是 AppContext 全局状态，回首页后再开分屏仍是同一套配置。 */}
+              <div className="w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-2 flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => navigate(ROUTE.home)}
+                  className="h-8 flex items-center gap-1.5 px-3 rounded-full border border-cyan-500/35 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-500/60 text-xs font-semibold transition-colors cursor-pointer"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  继续对话
+                </button>
+                <span className="text-xs font-bold text-slate-500 tracking-wide">战力计算器</span>
+                <span className="flex-1" />
+                <button
+                  type="button"
+                  onClick={() => navigate(ROUTE.home)}
+                  aria-label="关闭并返回聊天"
+                  title="关闭并返回聊天"
+                  className="w-8 h-8 grid place-items-center rounded-full border border-slate-700 text-slate-400 hover:text-slate-100 hover:border-slate-500 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
               <main className="calc-container-root @container w-full max-w-[1760px] mx-auto px-4 xl:px-6 pt-2 pb-6 animate-in fade-in duration-300 flex-1">
                 <div className="calc-two-col-grid grid grid-cols-1 gap-4 xl:gap-5 items-start">
                   {/* 左列：全部输入项（方案/职业/阵营/属性/增益）+ 综合战力评分 */}

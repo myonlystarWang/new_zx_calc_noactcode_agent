@@ -354,7 +354,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSearchNavigate: _onSearchN
                 if (workspaceState.isOpen) {
                   setWorkspaceState((prev) => ({ ...prev, isOpen: false }));
                 } else {
-                  openWorkspace(workspaceState.mode, 'toggle');
+                  // 折叠会卸载分屏面板，展开时靠 params 重置内部初始值（区服/书名/等级等）。
+                  // 这里必须把原 params 一起带回去，否则「折叠→展开」后预选参数全部丢失。
+                  openWorkspace(workspaceState.mode, 'toggle', workspaceState.params);
                 }
               }}
               onOpenSplitWorkspace={(mode, params) => openWorkspace(mode, 'card', params)}

@@ -47,6 +47,11 @@ doc/scripts/
 doc/天书万象AI_*.md
 doc/天书万象_*.md
 scripts/capture_ep01*.mjs
+scripts/capture_ep04*.mjs
+scripts/snap_ep04*.mjs
+scripts/capture_real_ep04*.mjs
+scripts/measure_*.mjs
+scripts/test_*_seek.mjs
 
 # 本地凭证（Cloudflare API Token 等），绝不入库
 .secrets/

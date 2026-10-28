@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Square, X } from 'lucide-react';
+import { Square, X, Share2 } from 'lucide-react';
 import { XycTomeDetailCard } from './XycTomeDetailCard';
+import { useDomShare } from '../share/useDomShare';
 import clsx from 'clsx';
 import { DataService } from '../../services/DataService';
 import {
@@ -634,6 +635,11 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         });
     }, [data]);
 
+    /** 分享：hook 必须挂在提前 return 之前 —— React hooks 规则，
+        否则数据加载完成的那次渲染 hooks 数量变多，整页报「Rendered more hooks」直接崩。 */
+    const shareCardRef = useRef<HTMLDivElement>(null);
+    const { busy: shareBusy, share: shareDom } = useDomShare();
+
     if (loadErr) {
         return (
             <div className={clsx('w-full rounded-[4px] border border-[#3a2a2a] bg-[#140e0e] p-3 text-[12px] text-[#d99]', className)}>
@@ -651,6 +657,17 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     }
 
     const bookName = data.books[beast]?.bookName || '轩辕策';
+
+    const handleShareCard = () => {
+        void shareDom({
+            node: shareCardRef.current,
+            kicker: '诛仙 3 · 轩辕策洗练模拟',
+            name: `${beast}〈${bookName}〉`,
+            mode: 'xyc',
+            prefix: '轩辕策',
+        });
+    };
+
     const gradeName = data.meta.gradeNames[GRADE - 1] || '六品';
     const attrRows = book.attrs.map((roll) => {
         const def = data.attrs[String(roll.id)];
@@ -718,6 +735,18 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             {beast}
                             <span style={{ color: '#f7f4bb' }}>&lt;{bookName}&gt;</span>
                         </span>
+                        <div className="absolute right-3 flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={handleShareCard}
+                                disabled={shareBusy}
+                                title={shareBusy ? '正在生成图片…' : '分享这张卡（长图）'}
+                                className="transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                                style={{ color: '#6ff0c8' }}
+                            >
+                                <Share2 className="w-3.5 h-3.5" />
+                            </button>
+                        </div>
                     </div>
 
                     {/* 四系切换 */}
@@ -767,7 +796,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                     </div>
 
                     {/* 图标 + tooltip：属性块在图标右侧空间里居中，两侧留白均分（不再贴左导致右边空一大片） */}
-                    <div className="xyc-book-row p-2.5 flex min-w-0">
+                    <div ref={shareCardRef} data-share-root className="xyc-book-row p-2.5 flex min-w-0">
                         <div className="xyc-book-icon relative w-[120px] h-[120px] shrink-0 rounded-[3px] overflow-hidden">
                             <img
                                 src={BOOK_ICONS[`${beast}|${version === '英雄' ? 1 : 0}`] || '/game_data/equip_icons/xyc_book.png'}

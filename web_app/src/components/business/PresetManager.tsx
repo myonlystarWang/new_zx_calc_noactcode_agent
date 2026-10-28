@@ -149,7 +149,6 @@ export const PresetManager: React.FC = () => {
                     <span className="w-1 h-4 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full"></span>
                     属性方案
                 </h2>
-                <span className="text-[11px] text-slate-500">快速存储/读取</span>
             </div>
 
             <div className="glass-panel p-2.5 relative">
