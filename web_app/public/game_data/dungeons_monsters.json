@@ -4036,5 +4036,683 @@
         "ignoreReduction": 0
       }
     }
+  ],
+  "WENTIAN_HUANYUE_T13": [
+    {
+      "MonsterID": "XUAN_TIAN_SHOU_WEI_T13",
+      "MonsterName": "玄天守卫",
+      "DungeonLevel": 1,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 810,
+        "MonsterDefense": 135000,
+        "MonsterHealth": 3460364400,
+        "MonsterCriticalHitRateReduction": 125
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 346036440,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 180000,
+        "defense": 135000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 170,
+        "critRate": 170,
+        "critDamage": 970,
+        "resistance": 9999,
+        "critRateReduction": 125,
+        "critDamageReduction": 810,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 32
+      }
+    },
+    {
+      "MonsterID": "CAN_NIAN_ZHANG_XIAO_FAN_T13",
+      "MonsterName": "残念·张小凡",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 828,
+        "MonsterDefense": 137300,
+        "MonsterHealth": 4026968010,
+        "MonsterCriticalHitRateReduction": 135
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 402696801,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 234600,
+        "defense": 137300,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 174,
+        "critDamage": 999,
+        "resistance": 9999,
+        "critRateReduction": 135,
+        "critDamageReduction": 828,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 32
+      }
+    },
+    {
+      "MonsterID": "LI_QI_ZHANG_XIAO_FAN_T13",
+      "MonsterName": "戾气·张小凡",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 828,
+        "MonsterDefense": 137300,
+        "MonsterHealth": 4026968010,
+        "MonsterCriticalHitRateReduction": 135
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 402696801,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 234600,
+        "defense": 137300,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 1000,
+        "normalDodge": 0,
+        "critRate": 174,
+        "critDamage": 999,
+        "resistance": 9999,
+        "critRateReduction": 135,
+        "critDamageReduction": 828,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 32
+      }
+    },
+    {
+      "MonsterID": "XIN_MO_GUI_LI_T13",
+      "MonsterName": "心魔·鬼厉",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 828,
+        "MonsterDefense": 137300,
+        "MonsterHealth": 4026968010,
+        "MonsterCriticalHitRateReduction": 135
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 402696801,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 234600,
+        "defense": 137300,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 174,
+        "critDamage": 999,
+        "resistance": 9999,
+        "critRateReduction": 135,
+        "critDamageReduction": 828,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 32
+      }
+    },
+    {
+      "MonsterID": "XIN_MO_PU_ZHI_T13",
+      "MonsterName": "心魔·普智",
+      "DungeonLevel": 3,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 846,
+        "MonsterDefense": 149646,
+        "MonsterHealth": 4622276780,
+        "MonsterCriticalHitRateReduction": 135
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 462227678,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 239292,
+        "defense": 149646,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 178,
+        "critDamage": 1029,
+        "resistance": 9999,
+        "critRateReduction": 135,
+        "critDamageReduction": 846,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 32
+      }
+    },
+    {
+      "MonsterID": "MO_DAO_XUAN_ZHEN_REN_T13",
+      "MonsterName": "魔·道玄真人",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 863,
+        "MonsterDefense": 141799,
+        "MonsterHealth": 5497940010,
+        "MonsterCriticalHitRateReduction": 135
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 549794001,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 244077,
+        "defense": 141799,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 183,
+        "critDamage": 1059,
+        "resistance": 9999,
+        "critRateReduction": 135,
+        "critDamageReduction": 863,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 32
+      }
+    },
+    {
+      "MonsterID": "TIAN_DAO_T13",
+      "MonsterName": "天道",
+      "DungeonLevel": 5,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 873,
+        "MonsterDefense": 144235,
+        "MonsterHealth": 6224870240,
+        "MonsterCriticalHitRateReduction": 135
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 622487024,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 248959,
+        "defense": 144235,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 190,
+        "critDamage": 1091,
+        "resistance": 9999,
+        "critRateReduction": 135,
+        "critDamageReduction": 873,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 32
+      }
+    }
+  ],
+  "WENTIAN_HUANYUE_T14": [
+    {
+      "MonsterID": "XUAN_TIAN_SHOU_WEI_T14",
+      "MonsterName": "玄天守卫",
+      "DungeonLevel": 1,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1001,
+        "MonsterDefense": 208000,
+        "MonsterHealth": 4604248390,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 460424839,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 299000,
+        "defense": 208000,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 170,
+        "critRate": 187,
+        "critDamage": 1164,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1001,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 51
+      }
+    },
+    {
+      "MonsterID": "CAN_NIAN_ZHANG_XIAO_FAN_T14",
+      "MonsterName": "残念·张小凡",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1021,
+        "MonsterDefense": 210760,
+        "MonsterHealth": 5913069320,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 591306932,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 304980,
+        "defense": 210760,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 191,
+        "critDamage": 1198,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1021,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 51
+      }
+    },
+    {
+      "MonsterID": "LI_QI_ZHANG_XIAO_FAN_T14",
+      "MonsterName": "戾气·张小凡",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1021,
+        "MonsterDefense": 210760,
+        "MonsterHealth": 5913069320,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 591306932,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 304980,
+        "defense": 210760,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 1000,
+        "normalDodge": 0,
+        "critRate": 191,
+        "critDamage": 1198,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1021,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 51
+      }
+    },
+    {
+      "MonsterID": "XIN_MO_GUI_LI_T14",
+      "MonsterName": "心魔·鬼厉",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1021,
+        "MonsterDefense": 210760,
+        "MonsterHealth": 5913069320,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 591306932,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 304980,
+        "defense": 210760,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 191,
+        "critDamage": 1198,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1021,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 51
+      }
+    },
+    {
+      "MonsterID": "XIN_MO_PU_ZHI_T14",
+      "MonsterName": "心魔·普智",
+      "DungeonLevel": 3,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1041,
+        "MonsterDefense": 213575,
+        "MonsterHealth": 6216021600,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 621602160,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 311079,
+        "defense": 213575,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 195,
+        "critDamage": 1234,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1041,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 51
+      }
+    },
+    {
+      "MonsterID": "MO_DAO_XUAN_ZHEN_REN_T14",
+      "MonsterName": "魔·道玄真人",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1060,
+        "MonsterDefense": 216159,
+        "MonsterHealth": 6615340080,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 661534008,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 317301,
+        "defense": 216159,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 201,
+        "critDamage": 1271,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1060,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 51
+      }
+    },
+    {
+      "MonsterID": "TIAN_DAO_T14",
+      "MonsterName": "天道",
+      "DungeonLevel": 5,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1070,
+        "MonsterDefense": 219082,
+        "MonsterHealth": 7137265270,
+        "MonsterCriticalHitRateReduction": 150
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 713726527,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 323647,
+        "defense": 219082,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 209,
+        "critDamage": 1310,
+        "resistance": 9999,
+        "critRateReduction": 150,
+        "critDamageReduction": 1070,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 51
+      }
+    }
+  ],
+  "WENTIAN_HUANYUE_T15": [
+    {
+      "MonsterID": "XUAN_TIAN_SHOU_WEI_T15",
+      "MonsterName": "玄天守卫",
+      "DungeonLevel": 1,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1101,
+        "MonsterDefense": 231800,
+        "MonsterHealth": 5381312660,
+        "MonsterCriticalHitRateReduction": 165
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 538131266,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 236600,
+        "defense": 231800,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 170,
+        "critRate": 204,
+        "critDamage": 1338,
+        "resistance": 9999,
+        "critRateReduction": 165,
+        "critDamageReduction": 1101,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 54
+      }
+    },
+    {
+      "MonsterID": "CAN_NIAN_ZHANG_XIAO_FAN_T15",
+      "MonsterName": "残念·张小凡",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1123,
+        "MonsterDefense": 248912,
+        "MonsterHealth": 6538498870,
+        "MonsterCriticalHitRateReduction": 165
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 653849887,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 396474,
+        "defense": 248912,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 208,
+        "critDamage": 1123,
+        "resistance": 9999,
+        "critRateReduction": 165,
+        "critDamageReduction": 1123,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 54
+      }
+    },
+    {
+      "MonsterID": "LI_QI_ZHANG_XIAO_FAN_T15",
+      "MonsterName": "戾气·张小凡",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1123,
+        "MonsterDefense": 248912,
+        "MonsterHealth": 6538498870,
+        "MonsterCriticalHitRateReduction": 165
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 653849887,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 396474,
+        "defense": 248912,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 1000,
+        "normalDodge": 0,
+        "critRate": 208,
+        "critDamage": 1378,
+        "resistance": 9999,
+        "critRateReduction": 165,
+        "critDamageReduction": 1123,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 54
+      }
+    },
+    {
+      "MonsterID": "XIN_MO_GUI_LI_T15",
+      "MonsterName": "心魔·鬼厉",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1123,
+        "MonsterDefense": 248912,
+        "MonsterHealth": 6538498870,
+        "MonsterCriticalHitRateReduction": 165
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 653849887,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 396474,
+        "defense": 248912,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 208,
+        "critDamage": 1378,
+        "resistance": 9999,
+        "critRateReduction": 165,
+        "critDamageReduction": 1123,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 54
+      }
+    },
+    {
+      "MonsterID": "XIN_MO_PU_ZHI_T15",
+      "MonsterName": "心魔·普智",
+      "DungeonLevel": 3,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1145,
+        "MonsterDefense": 252290,
+        "MonsterHealth": 6864364270,
+        "MonsterCriticalHitRateReduction": 165
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 686436427,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 404403,
+        "defense": 252290,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 213,
+        "critDamage": 1420,
+        "resistance": 9999,
+        "critRateReduction": 165,
+        "critDamageReduction": 1145,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 54
+      }
+    },
+    {
+      "MonsterID": "MO_DAO_XUAN_ZHEN_REN_T15",
+      "MonsterName": "魔·道玄真人",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1166,
+        "MonsterDefense": 255391,
+        "MonsterHealth": 7295841770,
+        "MonsterCriticalHitRateReduction": 165
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 729584177,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 412491,
+        "defense": 255391,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 219,
+        "critDamage": 1462,
+        "resistance": 9999,
+        "critRateReduction": 165,
+        "critDamageReduction": 1166,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 54
+      }
+    },
+    {
+      "MonsterID": "TIAN_DAO_T15",
+      "MonsterName": "天道",
+      "DungeonLevel": 5,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 1177,
+        "MonsterDefense": 258899,
+        "MonsterHealth": 7847638940,
+        "MonsterCriticalHitRateReduction": 165
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 175,
+        "health": 784763894,
+        "healthBars": 10,
+        "zhenQi": 1500000,
+        "attack": 420741,
+        "defense": 258899,
+        "bonusDamage": 0,
+        "damageReduction": 0,
+        "normalHit": 10000,
+        "normalDodge": 0,
+        "critRate": 228,
+        "critDamage": 1506,
+        "resistance": 9999,
+        "critRateReduction": 165,
+        "critDamageReduction": 1177,
+        "skillDodge": 170,
+        "skillHit": 1000,
+        "ignoreReduction": 54
+      }
+    }
   ]
 }

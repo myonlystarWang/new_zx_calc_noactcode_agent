@@ -21,8 +21,10 @@
     "test:c": "tsx packages/simulation-engine/src/test_c.ts",
     "test:e": "tsx packages/simulation-engine/src/test_assembler.ts",
     "test:f": "tsx packages/simulation-engine/src/test_6person_team.ts",
-    "test:wudu": "node scripts/check_wudu_data.mjs",
-    "test:l1": "node scripts/l1_intent_fixture.mjs"
+    "test:l1": "node scripts/l1_intent_fixture.mjs",
+    "test:boss": "node scripts/check_boss_data.mjs",
+    "gen:boss": "node scripts/gen_dungeon_bosses.mjs",
+    "gen:fixtures": "node scripts/gen_dungeon_fixtures.mjs"
   },
   "devDependencies": {
     "tsx": "^4.22.3",

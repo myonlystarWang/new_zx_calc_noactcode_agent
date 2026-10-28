@@ -701,17 +701,26 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                             >
                                 {/* 只挂载当前卡与左右各一张：16 份 DungeonDetail 同时渲染在手机上会明显卡顿 */}
                                 {Math.abs(baseOffset) <= 1 ? (
-                                    <DungeonDetail
-                                        dungeon={d}
-                                        isExpanded={isActive}
-                                        standalone={true}
-                                        rankConfig={rankConfig}
-                                        power={powerRaw}
-                                        focusMonsterId={focusMonsterId}
-                                        focusSkillName={focusSkillName}
-                                        autoShowAttr={autoShowAttr}
-                                        onMonsterChange={isActive ? handleMonsterChange : undefined}
-                                    />
+                                    /* 非当前卡（模糊那两张）内部一律不可交互：
+                                       以前里面的关次 tab / 带入计算器 / BOSS 行仍可点，用户想点
+                                       前卡边缘或想滑动时会误触到后卡内部的按钮 —— 表现为"点击穿透"。
+                                       现在整卡只保留外层 onClick（点模糊卡=切到该副本），内部控件全部失效。 */
+                                    <div
+                                        className={isActive ? undefined : 'pointer-events-none select-none'}
+                                        aria-hidden={isActive ? undefined : true}
+                                    >
+                                        <DungeonDetail
+                                            dungeon={d}
+                                            isExpanded={isActive}
+                                            standalone={true}
+                                            rankConfig={rankConfig}
+                                            power={powerRaw}
+                                            focusMonsterId={focusMonsterId}
+                                            focusSkillName={focusSkillName}
+                                            autoShowAttr={autoShowAttr}
+                                            onMonsterChange={isActive ? handleMonsterChange : undefined}
+                                        />
+                                    </div>
                                 ) : null}
                             </div>
                         );

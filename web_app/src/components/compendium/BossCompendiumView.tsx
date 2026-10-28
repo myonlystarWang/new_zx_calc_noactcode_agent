@@ -45,7 +45,8 @@ const getDungeonCategory = (dungeonId: string): DungeonCategory => {
     if (
         dungeonId.startsWith('HUIMENG_LINGYUN') ||
         dungeonId.startsWith('ZHENHAI_DUANLANG') ||
-        dungeonId.startsWith('WUDU_QIGONGQIN')
+        dungeonId.startsWith('WUDU_QIGONGQIN') ||
+        dungeonId.startsWith('WENTIAN_HUANYUE')
     ) return 'tben';
     if (
         dungeonId.startsWith('TIANDI_BAOKU') ||

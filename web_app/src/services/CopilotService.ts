@@ -105,6 +105,9 @@ export const DUNGEON_CATEGORIES: DungeonCategoryConfig[] = [
             'WUDU_QIGONGQIN_T10',
             'WUDU_QIGONGQIN_T11',
             'WUDU_QIGONGQIN_T12',
+            'WENTIAN_HUANYUE_T13',
+            'WENTIAN_HUANYUE_T14',
+            'WENTIAN_HUANYUE_T15',
             'HUIMENG_LINGYUN_T16',
             'HUIMENG_LINGYUN_T17',
             'HUIMENG_LINGYUN_T18',
@@ -172,6 +175,30 @@ export const DUNGEON_DICTIONARY: DungeonDictionaryItem[] = [
         categoryId: 'tben',
         categoryLabel: 'T本（T10-T21）',
         aliases: ['t12', '五毒t12', '五毒其攻侵t12', '鏖战t12', '五毒高']
+    },
+    {
+        dungeonId: 'WENTIAN_HUANYUE_T13',
+        shortLabel: 'T13',
+        fullName: '问天！幻月自缥缈（T13）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T10-T21）',
+        aliases: ['t13', '幻月t13', '幻月自缥缈t13', '问天t13', '幻月初']
+    },
+    {
+        dungeonId: 'WENTIAN_HUANYUE_T14',
+        shortLabel: 'T14',
+        fullName: '问天！幻月自缥缈（T14）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T10-T21）',
+        aliases: ['t14', '幻月t14', '幻月自缥缈t14', '问天t14', '幻月中']
+    },
+    {
+        dungeonId: 'WENTIAN_HUANYUE_T15',
+        shortLabel: 'T15',
+        fullName: '问天！幻月自缥缈（T15）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T10-T21）',
+        aliases: ['t15', '幻月t15', '幻月自缥缈t15', '问天t15', '幻月高']
     },
     {
         dungeonId: 'HUIMENG_LINGYUN_T16',
@@ -318,6 +345,13 @@ export const DUNGEON_SERIES: DungeonSeriesConfig[] = [
         keywords: ['五毒', '五毒其攻侵', '鏖战', '心魔'],
         dungeonIds: ['WUDU_QIGONGQIN_T10', 'WUDU_QIGONGQIN_T11', 'WUDU_QIGONGQIN_T12'],
         hintText: '包含【T10】、【T11】、【T12】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗属性，或输入【T10】/【T11】/【T12】精准直达：'
+    },
+    {
+        seriesId: 'huanyue',
+        seriesName: '问天！幻月自缥缈',
+        keywords: ['幻月', '问天', '幻月自缥缈'],
+        dungeonIds: ['WENTIAN_HUANYUE_T13', 'WENTIAN_HUANYUE_T14', 'WENTIAN_HUANYUE_T15'],
+        hintText: '包含【T13】、【T14】、【T15】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗属性，或输入【T13】/【T14】/【T15】精准直达：'
     },
     {
         seriesId: 'liubo',

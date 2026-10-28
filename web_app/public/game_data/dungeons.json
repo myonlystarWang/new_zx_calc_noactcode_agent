@@ -131,5 +131,26 @@
     "Description": "【鏖战！五毒其攻侵】系列日常团队副本之一，高级难度。",
     "difficulty": "较难",
     "DungeonImportanceWeight": 1
+  },
+  {
+    "DungeonID": "WENTIAN_HUANYUE_T13",
+    "DungeonName": "问天！幻月自缥缈（T13）",
+    "Description": "【问天！幻月自缥缈】系列日常团队副本之一，低级难度。",
+    "difficulty": "简单",
+    "DungeonImportanceWeight": 1
+  },
+  {
+    "DungeonID": "WENTIAN_HUANYUE_T14",
+    "DungeonName": "问天！幻月自缥缈（T14）",
+    "Description": "【问天！幻月自缥缈】系列日常团队副本之一，中级难度。",
+    "difficulty": "中等",
+    "DungeonImportanceWeight": 1
+  },
+  {
+    "DungeonID": "WENTIAN_HUANYUE_T15",
+    "DungeonName": "问天！幻月自缥缈（T15）",
+    "Description": "【问天！幻月自缥缈】系列日常团队副本之一，高级难度。",
+    "difficulty": "较难",
+    "DungeonImportanceWeight": 1
   }
 ]

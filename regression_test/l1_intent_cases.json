@@ -205,7 +205,7 @@
     "input": "T本",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 9,
+      "cardData.candidates.length": 12,
       "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16"
     },
     "tags": [
@@ -233,7 +233,7 @@
     "input": "副本",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 19,
+      "cardData.candidates.length": 22,
       "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_YI_T10"
     },
     "tags": [
@@ -7001,6 +7001,555 @@
     "tags": [
       "standard",
       "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t16-upper",
+    "input": "T16",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "会盟！凌云诛众仙（T16）",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_QIAN_HUANG_T16"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t16-lower",
+    "input": "t16",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "会盟！凌云诛众仙（T16）",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_QIAN_HUANG_T16"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t17-upper",
+    "input": "T17",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "会盟！凌云诛众仙（T17）",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T17_QIAN_HUANG_T17"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t17-lower",
+    "input": "t17",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "会盟！凌云诛众仙（T17）",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T17_QIAN_HUANG_T17"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t18-upper",
+    "input": "T18",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "会盟！凌云诛众仙（T18）",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T18_QIAN_HUANG_T18"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t18-lower",
+    "input": "t18",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "会盟！凌云诛众仙（T18）",
+      "cardData.candidates.length": 6,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T18_QIAN_HUANG_T18"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t19-upper",
+    "input": "T19",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "镇海！断浪碎晶宫（T19）",
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t19-lower",
+    "input": "t19",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "镇海！断浪碎晶宫（T19）",
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CHI_SUO_T19"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t20-upper",
+    "input": "T20",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "镇海！断浪碎晶宫（T20）",
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t20-lower",
+    "input": "t20",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "镇海！断浪碎晶宫（T20）",
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T20_CHI_SUO_T20"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t21-upper",
+    "input": "T21",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "镇海！断浪碎晶宫（T21）",
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T21_CHI_SUO_T21"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t21-lower",
+    "input": "t21",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "镇海！断浪碎晶宫（T21）",
+      "cardData.candidates.length": 9,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T21_CHI_SUO_T21"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t10-upper",
+    "input": "T10",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T10）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_CHI_T10"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t10-lower",
+    "input": "t10",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T10）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_CHI_T10"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t11-upper",
+    "input": "T11",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T11）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T11_CHI_T11"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t11-lower",
+    "input": "t11",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T11）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T11_CHI_T11"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t12-upper",
+    "input": "T12",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T12）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T12_CHI_T12"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t12-lower",
+    "input": "t12",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T12）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T12_CHI_T12"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t13-upper",
+    "input": "T13",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "问天！幻月自缥缈（T13）",
+      "cardData.candidates.length": 7,
+      "cardData.candidates.0.id": "WENTIAN_HUANYUE_T13_XUAN_TIAN_SHOU_WEI_T13"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t13-lower",
+    "input": "t13",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "问天！幻月自缥缈（T13）",
+      "cardData.candidates.length": 7,
+      "cardData.candidates.0.id": "WENTIAN_HUANYUE_T13_XUAN_TIAN_SHOU_WEI_T13"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t14-upper",
+    "input": "T14",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "问天！幻月自缥缈（T14）",
+      "cardData.candidates.length": 7,
+      "cardData.candidates.0.id": "WENTIAN_HUANYUE_T14_XUAN_TIAN_SHOU_WEI_T14"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t14-lower",
+    "input": "t14",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "问天！幻月自缥缈（T14）",
+      "cardData.candidates.length": 7,
+      "cardData.candidates.0.id": "WENTIAN_HUANYUE_T14_XUAN_TIAN_SHOU_WEI_T14"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t15-upper",
+    "input": "T15",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "问天！幻月自缥缈（T15）",
+      "cardData.candidates.length": 7,
+      "cardData.candidates.0.id": "WENTIAN_HUANYUE_T15_XUAN_TIAN_SHOU_WEI_T15"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-tier-t15-lower",
+    "input": "t15",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "问天！幻月自缥缈（T15）",
+      "cardData.candidates.length": 7,
+      "cardData.candidates.0.id": "WENTIAN_HUANYUE_T15_XUAN_TIAN_SHOU_WEI_T15"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-series-huimeng-lingyun",
+    "input": "会盟！凌云诛众仙",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.seriesName": "会盟！凌云诛众仙",
+      "cardData.candidates.length": 18
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-series-zhenhai-duanlang",
+    "input": "镇海！断浪碎晶宫",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.seriesName": "镇海！断浪碎晶宫",
+      "cardData.candidates.length": 27
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-series-wudu-qigongqin",
+    "input": "鏖战！五毒其攻侵",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.seriesName": "鏖战！五毒其攻侵",
+      "cardData.candidates.length": 15
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-series-wentian-huanyue",
+    "input": "问天！幻月自缥缈",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.seriesName": "问天！幻月自缥缈",
+      "cardData.candidates.length": 21
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-boss-太灵",
+    "input": "太灵",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-boss-沧渊",
+    "input": "沧渊",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "ZHENHAI_DUANLANG_T19_CANG_YUAN_T19"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-boss-小灰",
+    "input": "小灰",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "TIANDI_BAOKU_NORMAL_XIAO_HUI_NORMAL"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-boss-幽冥圣母",
+    "input": "幽冥圣母",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "JIEQI_KONGSANG_NORMAL_YOUMING_SHENGMU_NORMAL"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "auto-boss-苍松真人",
+    "input": "苍松真人",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "LIU_BO_JING_BIAN_CHUSHI_CANGSONG_CHUSHI"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "auto"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-boss-dot-01",
+    "input": "七尾蜈蚣·雄",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 2,
+      "cardData.candidates.0.id": "XUANYELIN_QIWEI_WUGONG_QIWEI_WUGONG_CI"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "dot-name"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-boss-dot-02",
+    "input": "罪·玄晔",
+    "expect": {
+      "cardType": "boss",
+      "cardData.monsterId": "ZUI_XUAN_YE",
+      "cardData.dungeonId": "SIXIANG_QI"
+    },
+    "tags": [
+      "standard",
+      "dungeon",
+      "dot-name"
     ],
     "assert": "strong"
   }
