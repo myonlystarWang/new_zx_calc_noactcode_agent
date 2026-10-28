@@ -537,6 +537,11 @@ export class CopilotService {
         // 「四象」= 四象七副本的简写（用户 2026-10-23 明确：与轩辕策无关，走副本 BOSS）
         if (q === '四象') q = '四象七';
 
+        // 玩家高频同音/错别字与特定别名归一（2026-10-28 线上 Gap 归口）
+        if (q === '黄帝内径') q = '黄帝内经';
+        if (q === '归去来玄') q = '归去来';
+        if (q === '奥义提升') q = '天琊';
+
         const dataService = DataService.getInstance();
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -808,7 +813,26 @@ export class CopilotService {
             };
         }
 
-        // 3.97 四象裸词歧义分流（xyc_hub）
+        // 3.97 轩辕 / 四象裸词歧义分流（xyc_hub）
+        if (q === '轩辕') {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: '为你定位到【轩辕】相关系统与技能，请选择要查询的方向：',
+                time: timeStr,
+                cardType: 'xyc_hub',
+                cardData: {
+                    title: '轩辕',
+                    options: [
+                        { key: 'xyc_wash', label: '轩辕策洗练模拟', query: '轩辕策洗练' },
+                        { key: 'xyc_tome', label: '轩辕策全系属性', query: '轩辕策' },
+                        { key: 'skill_hdnj', label: '青云技能·黄帝内经', query: '黄帝内经' },
+                        { key: 'silin', label: '四灵本元系统', query: '四灵本元' },
+                    ],
+                },
+            };
+        }
+
         // 「青龙 / 白虎 / 朱雀 / 玄武」既是轩辕策四系，也是副本 BOSS / 技能名（玄武经、青龙献爪），硬猜必错。
         // 与 class_hub 同款选择卡：点选后再发可命中的具体词（`X策` / `X boss`），无上下文依赖、无循环。
         const bareBeast = q.trim();
@@ -1123,7 +1147,7 @@ export class CopilotService {
             '帽子': '头盔', '头': '头盔', '冠': '头盔', '盔': '头盔', '帽': '头盔',
             '衣服': '衣服', '甲': '衣服', '铠': '衣服', '铠甲': '衣服', '袍': '衣服', '衣': '衣服',
             '鞋': '靴子', '鞋子': '靴子', '靴': '靴子', '履': '靴子',
-            '护腕': '袖甲', '手环': '袖甲', '手': '袖甲', '手套': '袖甲', '钏': '袖甲', '腕': '袖甲', '袖': '袖甲',
+            '护腕': '袖甲', '手环': '袖甲', '手': '袖甲', '手套': '袖甲', '钏': '袖甲', '腕': '袖甲', '袖': '袖甲', '袖子': '袖甲',
             '带': '腰带', '腰带': '腰带',
             '金身': '法身',
             '印': '玺绶', '玉玺': '玺绶', '玺': '玺绶',
@@ -1598,7 +1622,9 @@ export class CopilotService {
             q === '四灵' ||
             q === '四灵系统' ||
             q === '四灵本元' ||
+            q === '四灵本源' ||
             q.includes('本元') ||
+            q.includes('本源') ||
             q.includes('伏龙鼎');
 
         if (isSilinBenyuanQuery) {
@@ -2183,7 +2209,7 @@ export class CopilotService {
         // 词表：蕴灵 / 装备蕴灵 / 蕴灵模拟 / 炼器模拟 / 装备炼器 / 神隐蕴灵 …
         // 注意：必须在装备查询分支之前；「炼器+N」只命中佩章阶位查询，与此不冲突
         // ------------------------------------------------------------
-        const YUNLING_KEYWORDS = ['蕴灵', '装备炼器', '炼器模拟'];
+        const YUNLING_KEYWORDS = ['蕴灵', '装备炼器', '炼器模拟', '装备练器', '练器模拟'];
         const isYunlingLiteQuery =
             q === '蕴灵' ||
             q === '装备蕴灵' ||
@@ -2191,6 +2217,10 @@ export class CopilotService {
             q === '装备蕴灵模拟' ||
             q === '神隐蕴灵' ||
             q === '蕴灵系统' ||
+            q === '炼器' ||
+            q === '练器' ||
+            q === '炼器系统' ||
+            q === '练器系统' ||
             YUNLING_KEYWORDS.some((k) => q.includes(k));
 
         if (isYunlingLiteQuery) {
@@ -2221,6 +2251,7 @@ export class CopilotService {
         const SLOT_HUB_ALIAS: Record<string, string> = {
             '帽子': '头盔', '帽': '头盔', '盔': '头盔', '冠': '头盔',
             '鞋子': '靴子', '鞋': '靴子', '靴': '靴子', '履': '靴子',
+            '袖子': '袖甲', '护腕': '袖甲', '手套': '袖甲', '袖': '袖甲',
         };
         const SERIES_HUB_SLOTS = ['项链', '戒指', '锦囊', '罡气', '法身', '玺绶'];
         if (SERIES_HUB_SLOTS.includes(q)) {

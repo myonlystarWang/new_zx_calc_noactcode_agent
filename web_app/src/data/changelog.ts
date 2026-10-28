@@ -29,6 +29,16 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
     {
+        version: '1.3.1',
+        date: '2026-10-28',
+        title: '计算器模拟器长图分享上线，手机端首页显示优化',
+        changes: [
+            { type: 'feat', text: '【战报长图】伤害测算与四大模拟器右上角新增「分享」按钮，点击生成结果长图可保存或转发微信' },
+            { type: 'feat', text: '【返回对话】从二维码或分享链接进入天书万象AI时，左上角新增「返回 AI 对话」按钮，随时切回聊天主界面' },
+            { type: 'perf', text: '【手机显示】优化了手机端首页背景与输入框排版，小屏手机上不再遮挡输入框，操作更顺手' },
+        ],
+    },
+    {
         version: '1.3.0',
         date: '2026-10-26',
         title: '轩辕策洗练模拟器上线，手机端 UI 全面优化',

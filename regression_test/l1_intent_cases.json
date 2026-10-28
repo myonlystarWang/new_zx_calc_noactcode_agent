@@ -6709,5 +6709,113 @@
       "rename"
     ],
     "assert": "strong"
+  },
+  {
+    "id": "gap-20261028-01",
+    "input": "黄帝内径",
+    "expect": {
+      "cardType": "skill",
+      "cardData.skill.name": "黄帝内经"
+    },
+    "tags": [
+      "variant",
+      "skill",
+      "gap"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-20261028-02",
+    "input": "归去来玄",
+    "expect": {
+      "cardType": "skill_candidates"
+    },
+    "tags": [
+      "variant",
+      "skill",
+      "gap"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-20261028-03",
+    "input": "奥义提升",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.fabao.名称": "天琊"
+    },
+    "tags": [
+      "variant",
+      "fabao",
+      "gap"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-20261028-04",
+    "input": "炼器",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "variant",
+      "tool",
+      "gap"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-20261028-05",
+    "input": "练器",
+    "expect": {
+      "cardType": "yunling_forge"
+    },
+    "tags": [
+      "variant",
+      "tool",
+      "gap"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-20261028-06",
+    "input": "袖子",
+    "expect": {
+      "cardType": "slot_hub",
+      "cardData.slot": "袖甲"
+    },
+    "tags": [
+      "variant",
+      "equip",
+      "gap"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-20261028-07",
+    "input": "轩辕",
+    "expect": {
+      "cardType": "xyc_hub",
+      "cardData.title": "轩辕"
+    },
+    "tags": [
+      "hub",
+      "xyc",
+      "gap"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-20261028-08",
+    "input": "四灵本源",
+    "expect": {
+      "cardType": "silin_benyuan"
+    },
+    "tags": [
+      "variant",
+      "equip",
+      "gap"
+    ],
+    "assert": "strong"
   }
 ]

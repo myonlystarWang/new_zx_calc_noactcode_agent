@@ -247757,6 +247757,1116 @@
       ]
     }
   },
+  "gap-20261028-01": {
+    "sender": "assistant",
+    "text": "为你速查到技能【黄帝内经】（青云）的 1:1 游戏原生视图，可在卡片右上角进行【等级 -1 / 等级 +1】推演：",
+    "cardType": "skill",
+    "cardData": {
+      "skill": {
+        "id": 461,
+        "name": "黄帝内经"
+      },
+      "name": "黄帝内经"
+    }
+  },
+  "gap-20261028-02": {
+    "sender": "assistant",
+    "text": "为你检索到 2 个符合条件的技能，可在下方快速切换查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": [
+        {
+          "id": 1521,
+          "name": "归去来",
+          "el_max": 10,
+          "el_cd": 600000,
+          "el_mp": 2275,
+          "el_req": 90,
+          "occ": 148,
+          "tags": [],
+          "group_name": "造化·仙(通用)",
+          "group_kind": "cat"
+        },
+        {
+          "id": 3013,
+          "name": "归去来<玄>",
+          "el_max": 20,
+          "el_cd": 580000,
+          "el_mp": 2275,
+          "el_req": 120,
+          "occ": 167,
+          "tags": [],
+          "group_name": "神通·仙(通用)",
+          "group_kind": "cat"
+        }
+      ],
+      "skill": {
+        "id": 1521,
+        "name": "归去来"
+      }
+    }
+  },
+  "gap-20261028-03": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【天琊】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 118,
+      "name": "天琊",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 118
+      }
+    }
+  },
+  "gap-20261028-04": {
+    "sender": "assistant",
+    "text": "为你打开【神隐蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "gap-20261028-05": {
+    "sender": "assistant",
+    "text": "为你打开【神隐蕴灵】。选好神隐装备后点【蕴灵】即可，失败装备幸运值 +1，右侧小框逐级记录手数与月德符消耗：",
+    "cardType": "yunling_forge",
+    "cardData": {
+      "data": {}
+    }
+  },
+  "gap-20261028-06": {
+    "sender": "assistant",
+    "text": "为你定位到装备部位【袖甲】。请选择要查询的品质系列：",
+    "cardType": "slot_hub",
+    "cardData": {
+      "slot": "袖甲",
+      "options": [
+        {
+          "key": "修武",
+          "label": "修武系",
+          "query": "修武 袖甲"
+        },
+        {
+          "key": "昭武",
+          "label": "昭武系",
+          "query": "昭武 袖甲"
+        },
+        {
+          "key": "彰武",
+          "label": "彰武系",
+          "query": "彰武 袖甲"
+        }
+      ]
+    }
+  },
+  "gap-20261028-07": {
+    "sender": "assistant",
+    "text": "为你定位到【轩辕】相关系统与技能，请选择要查询的方向：",
+    "cardType": "xyc_hub",
+    "cardData": {
+      "title": "轩辕",
+      "options": [
+        {
+          "key": "xyc_wash",
+          "label": "轩辕策洗练模拟",
+          "query": "轩辕策洗练"
+        },
+        {
+          "key": "xyc_tome",
+          "label": "轩辕策全系属性",
+          "query": "轩辕策"
+        },
+        {
+          "key": "skill_hdnj",
+          "label": "青云技能·黄帝内经",
+          "query": "黄帝内经"
+        },
+        {
+          "key": "silin",
+          "label": "四灵本元系统",
+          "query": "四灵本元"
+        }
+      ]
+    }
+  },
+  "gap-20261028-08": {
+    "sender": "assistant",
+    "text": "为你速查到装备【四灵本元】（伏龙鼎镶嵌）。支持四灵切换与 1~5 阶切换，逐阶查看可能词条、五阶满值、本阶折算数值与精确概率：",
+    "cardType": "silin_benyuan",
+    "cardData": {
+      "data": {
+        "systemName": "四灵本元",
+        "category": "装备系统 · 伏龙鼎镶嵌",
+        "shortName": "本元",
+        "source": "用户实机截图 9 张（tooltip 实测）＋ 完美游戏论坛《四灵本元属性概率表》（Excel 截图）",
+        "version": "2026-10-21 v1",
+        "description": "四灵本元为伏龙鼎四面的镶嵌灵物，分黄鸟、烛龙、饕餮、夔牛四灵，每灵独立一系，共 1~5 阶。同灵同阶的『本元名』固定，词条为概率产出：阶 N 的本元最多 N+1 条词条，每条按对应阶的概率池独立抽取。属合成式系统（低阶合成高阶），故本项目只做『每阶可能词条 + 概率』速查，不做随机模拟器。",
+        "dropStatus": "不会掉落（绑定，不可交易）",
+        "rules": {
+          "spiritCount": 4,
+          "maxTier": 5,
+          "slotRule": "阶 N 的本元 = N+1 条词条；前 N 条对应 1..N 阶概率池，最后 1 条从 1..N 阶累计池中抽取（实测 5 阶样本中存在同阶双词条，规则待进一步验证）",
+          "slotCountByTier": {
+            "1": 2,
+            "2": 3,
+            "3": 4,
+            "4": 5,
+            "5": 6
+          },
+          "slotCountConfidence": "3/4/5 阶由 6 张实测 tooltip 验证（4/5/6 条）；1 阶为按规律推定，2 阶实测出现 4 条（其中 1 条疑为面板透字，待核）",
+          "valueScale": {
+            "1": 0.0625,
+            "2": 0.125,
+            "3": 0.25,
+            "4": 0.5,
+            "5": 1
+          },
+          "valueScaleNote": "本表『数值』列为五阶满值。实测折算系数：二阶 12.5%、三阶 25%、四阶 50%、五阶 100%；一阶按等比推定为 6.25%。词条数值只按『本元阶位』折算，与词条出自哪一阶池无关（如五阶黄鸟可带一阶『固定攻击 4160』的满值）。",
+          "resistanceRule": "『抗性（五行之一）』为虚弱/眩晕/昏睡/定身/魅惑五系，出现概率为五系合计，单系均等分（例：一阶合计 34%，单系 6.8%）；同一件本元可出现两条不同系的抗性（实测钧天玄霆：虚弱抗性 + 昏睡抗性）",
+          "bindNote": "镶嵌于伏龙鼎鼎身对应灵兽一面；五阶实机红字注释：『注：镶嵌后瑞灵呈祥增益效果额外增加5%。』"
+        },
+        "attributeDictionary": {
+          "技能命中": {
+            "display": "增加技能命中",
+            "isPercent": false
+          },
+          "技能躲闪": {
+            "display": "增加技能躲闪",
+            "isPercent": false
+          },
+          "普攻命中": {
+            "display": "命中",
+            "isPercent": false
+          },
+          "普攻躲闪": {
+            "display": "躲闪",
+            "isPercent": false
+          },
+          "暴伤": {
+            "display": "暴击伤害",
+            "isPercent": true
+          },
+          "减暴伤": {
+            "display": "受到致命一击伤害减少",
+            "isPercent": true
+          },
+          "暴击": {
+            "display": "暴击率",
+            "isPercent": true
+          },
+          "减暴击": {
+            "display": "被致命一击的概率减少",
+            "isPercent": true
+          },
+          "防御": {
+            "display": "基础防御",
+            "isPercent": false
+          },
+          "基础防御": {
+            "display": "基础防御",
+            "isPercent": false
+          },
+          "固定攻击": {
+            "display": "固定攻击",
+            "isPercent": false
+          },
+          "攻击固定值": {
+            "display": "固定攻击",
+            "isPercent": false
+          },
+          "小攻": {
+            "display": "基础最小攻击",
+            "isPercent": false
+          },
+          "固定气血": {
+            "display": "固定气血",
+            "isPercent": false
+          },
+          "基础气血": {
+            "display": "基础气血",
+            "isPercent": false
+          },
+          "固定真气": {
+            "display": "固定真气",
+            "isPercent": false
+          },
+          "基础真气": {
+            "display": "基础真气",
+            "isPercent": false
+          },
+          "元力值": {
+            "display": "元力",
+            "isPercent": false
+          },
+          "防御百分比": {
+            "display": "防御百分比",
+            "isPercent": true
+          },
+          "减免伤害固定值": {
+            "display": "减免伤害固定值",
+            "isPercent": false
+          },
+          "减免百分比": {
+            "display": "减免百分比",
+            "isPercent": true
+          },
+          "无视": {
+            "display": "无视人物伤害减免",
+            "isPercent": true
+          },
+          "冲灵": {
+            "display": "冲灵",
+            "isPercent": true
+          },
+          "化灵": {
+            "display": "化灵",
+            "isPercent": true
+          },
+          "对人族增伤": {
+            "display": "对人族伤害增加",
+            "isPercent": true
+          },
+          "对神裔增伤": {
+            "display": "对神裔伤害增加",
+            "isPercent": true
+          },
+          "对天脉增伤": {
+            "display": "对天脉伤害增加",
+            "isPercent": true
+          },
+          "对苍祇增伤": {
+            "display": "对苍祇伤害增加",
+            "isPercent": true
+          },
+          "对人族减伤": {
+            "display": "受到人族伤害减少",
+            "isPercent": true
+          },
+          "对神裔减伤": {
+            "display": "受到神裔伤害减少",
+            "isPercent": true
+          },
+          "对天脉减伤": {
+            "display": "受到天脉伤害减少",
+            "isPercent": true
+          },
+          "对苍祇减伤": {
+            "display": "受到苍祇伤害减少",
+            "isPercent": true
+          },
+          "抗性（五行之一）": {
+            "display": "五种抗性",
+            "isPercent": false,
+            "isGroup": true
+          }
+        },
+        "spirits": [
+          {
+            "id": "kuiniu",
+            "name": "夔牛",
+            "slotFace": "伏龙鼎 · 夔牛面",
+            "theme": "减伤 + 冲灵（防御向）",
+            "tierNames": {
+              "1": "雷纹",
+              "2": "夔骨",
+              "3": "震鼓",
+              "4": "风雷",
+              "5": "钧天玄霆"
+            },
+            "flavor": {
+              "1": "雷纹初现，风雷暗藏。",
+              "2": "夔骨铮铮，雷力贯通。",
+              "3": "震鼓如雷，声动四野。",
+              "4": "风雷俱发，威势滔天。",
+              "5": "钧天玄霆，天威浩荡。"
+            },
+            "bestPicks": [
+              "冲灵",
+              "减免伤害固定值",
+              "对苍祇减伤",
+              "对天脉减伤",
+              "暴伤",
+              "技能命中"
+            ],
+            "pools": {
+              "1": [
+                {
+                  "attr": "技能命中",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "防御",
+                  "value": 960,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "2": [
+                {
+                  "attr": "暴伤",
+                  "value": 24,
+                  "isPercent": true,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "普攻命中",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "3": [
+                {
+                  "attr": "对天脉减伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "sheetValue": "0.08",
+                  "rate": 0.25
+                },
+                {
+                  "attr": "普攻躲闪",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定攻击",
+                  "value": 480,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "4": [
+                {
+                  "attr": "对苍祇减伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "sheetValue": "0.08",
+                  "rate": 0.25
+                },
+                {
+                  "attr": "小攻",
+                  "value": 80,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定真气",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "5": [
+                {
+                  "attr": "冲灵",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "减免伤害固定值",
+                  "value": 32000,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.166,
+                  "perElementRate": 0.0332
+                },
+                {
+                  "attr": "防御百分比",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "元力值",
+                  "value": 320,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "固定气血",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.17
+                }
+              ]
+            }
+          },
+          {
+            "id": "huangniao",
+            "name": "黄鸟",
+            "slotFace": "伏龙鼎 · 黄鸟面",
+            "theme": "增伤 + 化灵（输出向）",
+            "tierNames": {
+              "1": "羽灵",
+              "2": "金翎",
+              "3": "扶摇",
+              "4": "九霄",
+              "5": "玄黄天音"
+            },
+            "flavor": {
+              "1": "羽翼初展，灵性自生。",
+              "2": "金翎耀日，灵鸟通神。",
+              "3": "扶摇直上，乘风万里。",
+              "4": "九霄之极，羽翼遮天。",
+              "5": "玄黄天音，大道共鸣。"
+            },
+            "bestPicks": [
+              "化灵",
+              "减免伤害固定值",
+              "对神裔增伤",
+              "对人族增伤",
+              "减暴伤",
+              "技能躲闪"
+            ],
+            "pools": {
+              "1": [
+                {
+                  "attr": "技能躲闪",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "攻击固定值",
+                  "value": 4160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "2": [
+                {
+                  "attr": "减暴伤",
+                  "value": 24,
+                  "isPercent": true,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "普攻命中",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "3": [
+                {
+                  "attr": "对人族增伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "普攻躲闪",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定气血",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "4": [
+                {
+                  "attr": "对神裔增伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "小攻",
+                  "value": 80,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定真气",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "5": [
+                {
+                  "attr": "化灵",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "减免伤害固定值",
+                  "value": 32000,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.166,
+                  "perElementRate": 0.0332
+                },
+                {
+                  "attr": "防御百分比",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "元力值",
+                  "value": 320,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "基础防御",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.17
+                }
+              ]
+            }
+          },
+          {
+            "id": "zhulong",
+            "name": "烛龙",
+            "slotFace": "伏龙鼎 · 烛龙面",
+            "theme": "暴击 + 减免百分比（暴击向）",
+            "tierNames": {
+              "1": "萤烛",
+              "2": "龙息",
+              "3": "幽明",
+              "4": "九阴",
+              "5": "烛照太初"
+            },
+            "flavor": {
+              "1": "微光如萤，烛龙初醒。",
+              "2": "龙息初吐，灵韵渐生。",
+              "3": "幽明莫测，神目洞虚。",
+              "4": "九阴之极，寒光凛冽。",
+              "5": "烛照太初，鸿蒙始开。"
+            },
+            "bestPicks": [
+              "减免百分比",
+              "减免伤害固定值",
+              "对天脉增伤",
+              "对苍祇增伤",
+              "暴击",
+              "—"
+            ],
+            "pools": {
+              "1": [
+                {
+                  "attr": "基础真气",
+                  "value": 6400,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "固定真气",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "2": [
+                {
+                  "attr": "暴击",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "普攻命中",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "3": [
+                {
+                  "attr": "对天脉增伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "普攻躲闪",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定气血",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "4": [
+                {
+                  "attr": "对苍祇增伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "小攻",
+                  "value": 80,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定攻击",
+                  "value": 480,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "5": [
+                {
+                  "attr": "减免百分比",
+                  "value": 1.6,
+                  "isPercent": true,
+                  "sheetValue": "0.016",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "减免伤害固定值",
+                  "value": 32000,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.166,
+                  "perElementRate": 0.0332
+                },
+                {
+                  "attr": "防御百分比",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "元力值",
+                  "value": 320,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "基础防御",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.17
+                }
+              ]
+            }
+          },
+          {
+            "id": "taotie",
+            "name": "饕餮",
+            "slotFace": "伏龙鼎 · 饕餮面",
+            "theme": "气血 + 无视（血牛向）",
+            "tierNames": {
+              "1": "贪噬",
+              "2": "吞渊",
+              "3": "饕煞",
+              "4": "噬心",
+              "5": "归墟无厌"
+            },
+            "flavor": {
+              "1": "贪婪吞噬，初显凶性。",
+              "2": "吞渊之势，深不可测。",
+              "3": "饕煞凶威，煞气纵横。",
+              "4": "噬空之能，虚空崩裂。",
+              "5": "归墟无厌，万物终焉。"
+            },
+            "bestPicks": [
+              "无视",
+              "减免伤害固定值",
+              "对神裔减伤",
+              "对人族减伤",
+              "减暴击",
+              "—"
+            ],
+            "pools": {
+              "1": [
+                {
+                  "attr": "基础气血",
+                  "value": 6400,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "固定气血",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "2": [
+                {
+                  "attr": "减暴击",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "普攻命中",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "3": [
+                {
+                  "attr": "对人族减伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "普攻躲闪",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定真气",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "4": [
+                {
+                  "attr": "对神裔减伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "小攻",
+                  "value": 80,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定攻击",
+                  "value": 480,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "5": [
+                {
+                  "attr": "无视",
+                  "value": 1.6,
+                  "isPercent": true,
+                  "sheetValue": "0.016",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "减免伤害固定值",
+                  "value": 32000,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.166,
+                  "perElementRate": 0.0332
+                },
+                {
+                  "attr": "防御百分比",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "元力值",
+                  "value": 320,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "基础防御",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.17
+                }
+              ]
+            }
+          }
+        ],
+        "tierSamples": [
+          {
+            "spirit": "夔牛",
+            "tier": 2,
+            "itemName": "夔牛本元·夔骨",
+            "lines": [
+              "虚弱抗性 +2",
+              "暴击伤害 +3.00%",
+              "命中 +20"
+            ],
+            "rawTooltip": "夔牛本元·夔骨 / 不会掉落 / 二阶 / 虚弱抗性 +2 / 暴击伤害 +3.00% / 命中 +20（其后灰色『致命一击伤害 +27.00%』『对苍祇减伤 +6.75%』为背后角色面板透字，非本元词条）",
+            "check": "2 = 16×12.5%，3% = 24×12.5%，20 = 160×12.5% → 二阶系数 12.5%"
+          },
+          {
+            "spirit": "烛龙",
+            "tier": 3,
+            "itemName": "烛龙本元·幽明",
+            "lines": [
+              "暴击率 +2.00%",
+              "固定真气 +200",
+              "魅惑抗性 +4",
+              "对天脉伤害增加 2.0%"
+            ],
+            "check": "2% = 8×25%，200 = 800×25%，4 = 16×25% → 三阶系数 25%"
+          },
+          {
+            "spirit": "黄鸟",
+            "tier": 3,
+            "itemName": "黄鸟本元·扶摇",
+            "lines": [
+              "受到致命一击伤害减少 6.00%",
+              "增加技能躲闪 4.00",
+              "固定气血 +200",
+              "对人族伤害增加 2.0%"
+            ],
+            "check": "6% = 24×25%，4 = 16×25%，200 = 800×25%，2% = 8×25% → 三阶系数 25%"
+          },
+          {
+            "spirit": "黄鸟",
+            "tier": 4,
+            "itemName": "黄鸟本元·九霄",
+            "lines": [
+              "魅惑抗性 +8",
+              "受到致命一击伤害减少 12.00%",
+              "躲闪 +80",
+              "固定真气 +400",
+              "对神裔伤害增加 4.0%"
+            ],
+            "check": "8 = 16×50%，12% = 24×50%，80 = 160×50%，400 = 800×50%，4% = 8×50% → 四阶系数 50%"
+          },
+          {
+            "spirit": "夔牛",
+            "tier": 4,
+            "itemName": "夔牛本元·风雷",
+            "lines": [
+              "基础防御 +480",
+              "暴击伤害 +12.00%",
+              "命中 +80",
+              "基础最小攻击 +40",
+              "眩晕抗性 +8"
+            ],
+            "check": "12% = 24×50%，80 = 160×50%，40 = 80×50%，8 = 16×50%；480 = 960(一阶防御)×50% → 一阶『防御 960』应为『基础防御 960』",
+            "anomaly": "表中夔牛三阶另有『固定攻击 480』，与本次 480 数值相同但非同一词条，需再取一张三阶截图区分"
+          },
+          {
+            "spirit": "饕餮",
+            "tier": 5,
+            "itemName": "饕餮本元·归墟无厌",
+            "lines": [
+              "躲闪 +160",
+              "受到神裔伤害减少 8.0%",
+              "基础气血 +6400",
+              "受到人族伤害减少 8.0%",
+              "昏睡抗性 +16",
+              "无视人物伤害减免 +1.60%"
+            ],
+            "check": "全为五阶满值（100%）；6 条词条 = 5+1；出现两条不同系的减伤词条"
+          },
+          {
+            "spirit": "黄鸟",
+            "tier": 5,
+            "itemName": "黄鸟本元·玄黄天音",
+            "lines": [
+              "躲闪 +160",
+              "固定攻击 +4160",
+              "虚弱抗性 +16",
+              "基础最小攻击 +80",
+              "减免伤害固定值 32000",
+              "基础防御 +800"
+            ],
+            "check": "五阶 100%；含一阶『攻击固定值 4160』与三/四阶词条，证明高阶池累计沿用低阶词条"
+          },
+          {
+            "spirit": "烛龙",
+            "tier": 5,
+            "itemName": "烛龙本元·烛照太初",
+            "lines": [
+              "基础真气 +6400",
+              "暴击率 +8.00%",
+              "对苍祇伤害增加 8.0%",
+              "定身抗性 +16",
+              "元力 +320",
+              "防御 +3%"
+            ],
+            "check": "五阶 100%；『防御 +3%』= 防御百分比 3.20% 的实机四舍五入显示"
+          },
+          {
+            "spirit": "夔牛",
+            "tier": 5,
+            "itemName": "夔牛本元·钧天玄霆",
+            "lines": [
+              "命中 +160",
+              "暴击伤害 +24.00%",
+              "固定真气 +800",
+              "虚弱抗性 +16",
+              "防御 +3%",
+              "昏睡抗性 +16"
+            ],
+            "check": "五阶 100%；出现两条抗性（虚弱 + 昏睡），且出现二阶『暴伤 24%』满值，佐证『最后 1 条取自累计池』"
+          }
+        ],
+        "openQuestions": [
+          "一阶本元名（四灵各缺 1 个）；夔牛三阶、黄鸟二阶、烛龙四阶、饕餮一~四阶本元名均缺失",
+          "二阶实测出现 4 条词条，与『阶+1』推定的 3 条冲突，需再取一张二阶截图确认（疑第 4 条为面板透字）",
+          "五阶 tooltip 红字『……同类增益效果额外增加 5%。』原文被裁切，需补全（是否为本元镶嵌后的套装式加成）",
+          "抗性五系是否严格均等（表中只给合计 34%/25%/16.6%），暂按均等分",
+          "『减暴击 8%』的实机显示文案（疑为『受到致命一击率降低』）缺实测截图",
+          "夔牛三阶『固定攻击 480』与风雷实测『基础防御 +480』的区分",
+          "一阶本元是否存在 2 条词条（当前为推定）",
+          "本元是否可分解/合成继承词条（包裹内有『本元分解』按钮，合成规则未知）"
+        ]
+      }
+    }
+  },
   "gen-equip-修武-武器": {
     "sender": "assistant",
     "text": "为你检索到 56 件符合【修武 武器】的候选装备，可在下方直接切换查看详情：",
