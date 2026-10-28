@@ -15,6 +15,7 @@
  * 对比只读 preset 数据、不 loadPreset，因此不会污染计算器当前配置。
  */
 import { DataService } from '../services/DataService';
+import { DUNGEON_ORDER } from '../data/dungeonMeta';
 import { buildSingleCalcSkills, calculateDamage } from './calculator';
 import { defaultAttributes } from '../context/AppContext';
 import type { Buff, CharacterAttributes, Skill } from '../types';
@@ -55,24 +56,7 @@ export const DUNGEON_CATEGORY_LABELS: Record<DungeonCategory, string> = {
 
 export const DUNGEON_CATEGORY_ORDER: DungeonCategory[] = ['tben', 'tuanben', 'trials'];
 
-const DUNGEON_ORDER_MAP: Record<string, number> = {
-    HUIMENG_LINGYUN_T16: 10,
-    HUIMENG_LINGYUN_T17: 20,
-    HUIMENG_LINGYUN_T18: 30,
-    ZHENHAI_DUANLANG_T19: 40,
-    ZHENHAI_DUANLANG_T20: 50,
-    ZHENHAI_DUANLANG_T21: 60,
-    SHOUSHEN_JIANGLIN_HARD: 110,
-    JIEQI_KONGSANG_NORMAL: 120,
-    JIEQI_KONGSANG_HARD: 130,
-    TIANDI_BAOKU_NORMAL: 140,
-    TIANDI_BAOKU_MEDIUM: 150,
-    TIANDI_BAOKU_HARD: 160,
-    LIU_BO_JING_BIAN_CHUSHI: 170,
-    LIU_BO_JING_BIAN_HARD: 180,
-    SIXIANG_QI: 210,
-    XUANYELIN_QIWEI_WUGONG: 220,
-};
+const DUNGEON_ORDER_MAP = DUNGEON_ORDER;
 
 export const getDungeonCategory = (dungeonId: string): DungeonCategory => {
     if (dungeonId.startsWith('HUIMENG_LINGYUN') || dungeonId.startsWith('ZHENHAI_DUANLANG')) return 'tben';

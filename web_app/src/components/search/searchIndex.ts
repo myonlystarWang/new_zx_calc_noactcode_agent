@@ -1,4 +1,5 @@
 import { pinyin } from 'pinyin-pro';
+import { DUNGEON_ALIASES, DUNGEON_LABEL } from '../../data/dungeonMeta';
 import type { SubTab } from '../compendium/CompendiumView';
 import { DataService } from '../../services/DataService';
 import { buildSingleCalcSkills } from '../../utils/calculator';
@@ -133,45 +134,11 @@ const CLASS_PINYIN_MAP: Record<string, { initials: string; full: string }> = {
 
 export const FACTION_LABELS: Record<string, string> = { XIAN: '仙', FO: '佛', MO: '魔', COMMON: '通用' };
 
-/** 副本二级筛选简写映射（与 BossCompendiumView 一致） */
-export const DUNGEON_SHORT_LABELS: Record<string, string> = {
-    HUIMENG_LINGYUN_T16: 'T16',
-    HUIMENG_LINGYUN_T17: 'T17',
-    HUIMENG_LINGYUN_T18: 'T18',
-    ZHENHAI_DUANLANG_T19: 'T19',
-    ZHENHAI_DUANLANG_T20: 'T20',
-    ZHENHAI_DUANLANG_T21: 'T21',
-    SHOUSHEN_JIANGLIN_HARD: '兽神困难',
-    JIEQI_KONGSANG_NORMAL: '空桑初识',
-    JIEQI_KONGSANG_HARD: '空桑困难',
-    TIANDI_BAOKU_NORMAL: '天帝1',
-    TIANDI_BAOKU_MEDIUM: '天帝2',
-    TIANDI_BAOKU_HARD: '天帝3',
-    LIU_BO_JING_BIAN_CHUSHI: '流波初识',
-    LIU_BO_JING_BIAN_HARD: '流波困难',
-    SIXIANG_QI: '四象七',
-    XUANYELIN_QIWEI_WUGONG: '悬夜林',
-};
+/** 副本二级筛选简写映射与搜索别名：统一取自 data/dungeonMeta */
+export const DUNGEON_SHORT_LABELS = DUNGEON_LABEL;
 
-/** 副本别名与首字母缩写增强库 */
-export const DUNGEON_EXTRA_ALIASES: Record<string, string[]> = {
-    HUIMENG_LINGYUN_T16: ['t16', '凌云16', 'ly16', 'huimeng'],
-    HUIMENG_LINGYUN_T17: ['t17', '凌云17', 'ly17', 'huimeng'],
-    HUIMENG_LINGYUN_T18: ['t18', '凌云18', 'ly18', 'huimeng'],
-    ZHENHAI_DUANLANG_T19: ['t19', '断浪19', 'dl19', 'zhenhai', 'duanlang'],
-    ZHENHAI_DUANLANG_T20: ['t20', '断浪20', 'dl20', 'zhenhai', 'duanlang'],
-    ZHENHAI_DUANLANG_T21: ['t21', '断浪21', 'dl21', 'zhenhai', 'duanlang'],
-    SHOUSHEN_JIANGLIN_HARD: ['兽神', '困难', '兽神困难', 'ss', 'kn', 'sskn', 'shoushen', 'shoushenkunnan'],
-    JIEQI_KONGSANG_NORMAL: ['空桑', '初识', '空桑初识', 'ks', 'cs', 'kscs', 'kongsang'],
-    JIEQI_KONGSANG_HARD: ['空桑', '困难', '空桑困难', 'ks', 'kn', 'kskn', 'kongsang'],
-    TIANDI_BAOKU_NORMAL: ['天帝', '天帝1', '天帝一层', '初入江湖', 'td', 'td1', 'tiandi'],
-    TIANDI_BAOKU_MEDIUM: ['天帝', '天帝2', '天帝二层', '再起风云', 'td', 'td2', 'tiandi'],
-    TIANDI_BAOKU_HARD: ['天帝', '天帝3', '天帝三层', '三生苦旅', 'td', 'td3', 'tiandi'],
-    LIU_BO_JING_BIAN_CHUSHI: ['流波', '初识', '流波初识', 'lb', 'cs', 'lbcs', 'liubo'],
-    LIU_BO_JING_BIAN_HARD: ['流波', '困难', '流波困难', 'lb', 'kn', 'lbkn', 'liubo'],
-    SIXIANG_QI: ['四象', '四象七', '四象7', '七杀罪狱', 'sx', 'sxq', 'sx7', 'sixiang', 'sixiangqi'],
-    XUANYELIN_QIWEI_WUGONG: ['悬夜林', '七尾蜈蚣', 'xyl', 'xuanyelin', 'wugong'],
-};
+export const DUNGEON_EXTRA_ALIASES = DUNGEON_ALIASES;
+
 
 /** 片段切分：按空白、括号、标点拆词；「·」保留为词内连接符 */
 const SEGMENT_SPLIT_RE = /[\s\-_/\\|、,，.。:：;；+'"“”()（）【】\[\]]+/;

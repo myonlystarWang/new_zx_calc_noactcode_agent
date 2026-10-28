@@ -14,35 +14,7 @@ import { trackShareClick } from '../../utils/track';
 import type { ShareCardData, ShareSkillRow } from '../share/ShareCard';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 import { InstallHint } from '../pwa/InstallGuide';
-
-/**
- * 副本简称（手机快捷条用）：全名 8~14 个字，横向一行放不下 5 个。
- * 同一副本的不同难度按 1/2/3 编号，例：流波1/流波2、天帝1/天帝2/天帝3。
- */
-const DUNGEON_SHORT_NAME: Record<string, string> = {
-    WUDU_QIGONGQIN_T10: 'T10',
-    WUDU_QIGONGQIN_T11: 'T11',
-    WUDU_QIGONGQIN_T12: 'T12',
-    HUIMENG_LINGYUN_T16: 'T16',
-    HUIMENG_LINGYUN_T17: 'T17',
-    HUIMENG_LINGYUN_T18: 'T18',
-    ZHENHAI_DUANLANG_T19: 'T19',
-    ZHENHAI_DUANLANG_T20: 'T20',
-    ZHENHAI_DUANLANG_T21: 'T21',
-    SIXIANG_QI: '四象',
-    TIANDI_BAOKU_NORMAL: '天帝1',
-    TIANDI_BAOKU_MEDIUM: '天帝2',
-    TIANDI_BAOKU_HARD: '天帝3',
-    JIEQI_KONGSANG_NORMAL: '空桑1',
-    JIEQI_KONGSANG_HARD: '空桑2',
-    SHOUSHEN_JIANGLIN_HARD: '兽神',
-    XUANYELIN_QIWEI_WUGONG: '悬夜林',
-    LIU_BO_JING_BIAN_CHUSHI: '流波1',
-    LIU_BO_JING_BIAN_HARD: '流波2',
-};
-
-const shortDungeonName = (id: string, name: string): string =>
-    DUNGEON_SHORT_NAME[id] || name.match(/T\d+/)?.[0] || name.replace(/[（(].*$/, '').slice(0, 3);
+import { shortDungeonName, sortDungeons } from '../../data/dungeonMeta';
 
 /** 剪贴板：优先 Clipboard API，非安全上下文回退 execCommand（与 TotalPowerCard 同一策略） */
 async function copyToClipboard(text: string): Promise<boolean> {
@@ -161,7 +133,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         const service = DataService.getInstance();
         const skillsMap = service.getSkills(userCharacter.ClassID);
         const skills = skillsMap ? skillsMap[userCharacter.Faction] || [] : [];
-        const dungeons = service.getDungeons();
+        const dungeons = sortDungeons(service.getDungeons());
         const activeBuffs = buffs.filter(b => activeBuffIds.includes(b.BuffID));
 
         const dungeonPowers = dungeons.map(dungeon => {

@@ -6,6 +6,7 @@ import { pinyin } from 'pinyin-pro';
 import { DataService } from '../../services/DataService';
 import type { Dungeon, Monster } from '../../types';
 import { formatNumber } from '../../utils/format';
+import { DUNGEON_LABEL, DUNGEON_ORDER } from '../../data/dungeonMeta';
 
 interface BossCompendiumViewProps {
     focusDungeonId?: string | null;
@@ -39,52 +40,6 @@ const DUNGEON_CATEGORIES: { id: DungeonCategory; label: string }[] = [
     { id: 'tuanben', label: '团本（兽神、空桑、天帝、流波）' },
     { id: 'trials', label: '历练与试炼（四象七、悬夜林）' },
 ];
-
-// 二级筛选简写映射
-const DUNGEON_SHORT_LABELS: Record<string, string> = {
-    WUDU_QIGONGQIN_T10: '五毒T10',
-    WUDU_QIGONGQIN_T11: '五毒T11',
-    WUDU_QIGONGQIN_T12: '五毒T12',
-    HUIMENG_LINGYUN_T16: 'T16',
-    HUIMENG_LINGYUN_T17: 'T17',
-    HUIMENG_LINGYUN_T18: 'T18',
-    ZHENHAI_DUANLANG_T19: 'T19',
-    ZHENHAI_DUANLANG_T20: 'T20',
-    ZHENHAI_DUANLANG_T21: 'T21',
-    SHOUSHEN_JIANGLIN_HARD: '兽神困难',
-    JIEQI_KONGSANG_NORMAL: '空桑初识',
-    JIEQI_KONGSANG_HARD: '空桑困难',
-    TIANDI_BAOKU_NORMAL: '天帝1',
-    TIANDI_BAOKU_MEDIUM: '天帝2',
-    TIANDI_BAOKU_HARD: '天帝3',
-    LIU_BO_JING_BIAN_CHUSHI: '流波初识',
-    LIU_BO_JING_BIAN_HARD: '流波困难',
-    SIXIANG_QI: '四象七',
-    XUANYELIN_QIWEI_WUGONG: '悬夜林',
-};
-
-// 预设排序权重（与用户列出顺序完全一致）
-const DUNGEON_ORDER_MAP: Record<string, number> = {
-    WUDU_QIGONGQIN_T10: 1,
-    WUDU_QIGONGQIN_T11: 2,
-    WUDU_QIGONGQIN_T12: 3,
-    HUIMENG_LINGYUN_T16: 10,
-    HUIMENG_LINGYUN_T17: 20,
-    HUIMENG_LINGYUN_T18: 30,
-    ZHENHAI_DUANLANG_T19: 40,
-    ZHENHAI_DUANLANG_T20: 50,
-    ZHENHAI_DUANLANG_T21: 60,
-    SHOUSHEN_JIANGLIN_HARD: 110,
-    JIEQI_KONGSANG_NORMAL: 120,
-    JIEQI_KONGSANG_HARD: 130,
-    TIANDI_BAOKU_NORMAL: 140,
-    TIANDI_BAOKU_MEDIUM: 150,
-    TIANDI_BAOKU_HARD: 160,
-    LIU_BO_JING_BIAN_CHUSHI: 170,
-    LIU_BO_JING_BIAN_HARD: 180,
-    SIXIANG_QI: 210,
-    XUANYELIN_QIWEI_WUGONG: 220,
-};
 
 const getDungeonCategory = (dungeonId: string): DungeonCategory => {
     if (
@@ -179,7 +134,7 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
         const list = activeCategory === 'all'
             ? dungeons
             : dungeons.filter((d) => getDungeonCategory(d.DungeonID) === activeCategory);
-        return [...list].sort((a, b) => (DUNGEON_ORDER_MAP[a.DungeonID] || 999) - (DUNGEON_ORDER_MAP[b.DungeonID] || 999));
+        return [...list].sort((a, b) => (DUNGEON_ORDER[a.DungeonID] || 999) - (DUNGEON_ORDER[b.DungeonID] || 999));
     }, [dungeons, activeCategory]);
 
     // 过滤渲染副本与 BOSS 列表
@@ -197,7 +152,7 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
 
                 // 搜索关键字检索（支持副本名、BOSS名、拼音缩写及全拼）
                 if (kw) {
-                    const shortName = DUNGEON_SHORT_LABELS[dungeon.DungeonID] || '';
+                    const shortName = DUNGEON_LABEL[dungeon.DungeonID] || '';
                     const dungeonNameMatch =
                         dungeon.DungeonName.toLowerCase().includes(kw) ||
                         shortName.toLowerCase().includes(kw);
@@ -264,7 +219,7 @@ export const BossCompendiumView: React.FC<BossCompendiumViewProps> = ({
                         </button>
                         {categoryDungeons.map((d) => {
                             const isSelected = selectedDungeonId === d.DungeonID;
-                            const shortLabel = DUNGEON_SHORT_LABELS[d.DungeonID] || d.DungeonName;
+                            const shortLabel = DUNGEON_LABEL[d.DungeonID] || d.DungeonName;
                             return (
                                 <button
                                     key={d.DungeonID}
