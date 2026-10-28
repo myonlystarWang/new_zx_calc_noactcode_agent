@@ -14,7 +14,7 @@ import { trackShareClick } from '../../utils/track';
 import type { ShareCardData, ShareSkillRow } from '../share/ShareCard';
 import { useIsMobile } from '../../hooks/useMediaQuery';
 import { InstallHint } from '../pwa/InstallGuide';
-import { shortDungeonName, sortDungeons } from '../../data/dungeonMeta';
+import { pickDefaultDungeon, shortDungeonName, sortDungeons } from '../../data/dungeonMeta';
 
 /** 剪贴板：优先 Clipboard API，非安全上下文回退 execCommand（与 TotalPowerCard 同一策略） */
 async function copyToClipboard(text: string): Promise<boolean> {
@@ -167,7 +167,9 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
         if (results.dungeonPowers.length === 0) return;
         const exists = results.dungeonPowers.some((d) => d.DungeonID === selectedDungeonId);
         if (!exists) {
-            setSelectedDungeonId(results.dungeonPowers[0].DungeonID);
+            // 默认落在 T17（用户拍板），而不是排序后的第一张（那是 T10）
+            const fallback = pickDefaultDungeon(results.dungeonPowers);
+            if (fallback) setSelectedDungeonId(fallback.DungeonID);
         }
     }, [results.dungeonPowers, selectedDungeonId]);
 

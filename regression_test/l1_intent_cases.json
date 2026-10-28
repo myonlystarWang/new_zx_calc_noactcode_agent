@@ -6875,5 +6875,133 @@
       "dungeon"
     ],
     "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-t11-01",
+    "input": "T11",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T11）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T11_CHI_T11"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-t12-02",
+    "input": "鏖战T12",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T12）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T12_CHI_T12"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-alias-lower-01",
+    "input": "t10",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T10）",
+      "cardData.candidates.length": 5
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-series-02",
+    "input": "五毒其攻侵",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.seriesName": "鏖战！五毒其攻侵",
+      "cardData.candidates.length": 15
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-series-03",
+    "input": "心魔",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.seriesName": "鏖战！五毒其攻侵",
+      "cardData.candidates.length": 15
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-boss-yuan-01",
+    "input": "怨",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_YUAN_T10"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-boss-tan-01",
+    "input": "贪",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_TAN_T10"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-boss-yi-01",
+    "input": "疑",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_YI_T10"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-boss-chi-01",
+    "input": "痴",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_CHI_T10"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
   }
 ]

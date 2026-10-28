@@ -112,3 +112,16 @@ export function sortDungeons<T extends { DungeonID: string }>(list: T[]): T[] {
 export function shortDungeonName(id: string, name: string): string {
     return DUNGEON_PILL_NAME[id] || name.match(/T\d+/)?.[0] || name.replace(/[（(].*$/, '').slice(0, 3);
 }
+
+/**
+ * 默认落点：打开计算器时先定位到哪一档。
+ * 用户拍板 2026-10-28 定为 T17（日常主流档），而非按排序取第一张 —— 否则新补的
+ * T10-T12 一排序就变成默认本，和大多数人的日常本不符。
+ */
+export const DEFAULT_DUNGEON_ID = 'HUIMENG_LINGYUN_T17';
+
+/** 默认副本：优先 DEFAULT_DUNGEON_ID，不存在时回落列表第一张。 */
+export function pickDefaultDungeon<T extends { DungeonID: string }>(list: T[]): T | undefined {
+    if (list.length === 0) return undefined;
+    return list.find((d) => d.DungeonID === DEFAULT_DUNGEON_ID) ?? list[0];
+}
