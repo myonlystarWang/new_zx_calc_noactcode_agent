@@ -1,6 +1,6 @@
 {
   "note": "L1 golden 快照对应的 game_data 数据指纹。由 l1_intent_fixture.mjs --golden 自动写入，请勿手改。",
-  "generatedAt": "2026-10-28T13:07:44.123Z",
+  "generatedAt": "2026-10-28T13:35:17.507Z",
   "digest": "d63d6fbe349c2ae0",
   "fileCount": 30,
   "files": {
