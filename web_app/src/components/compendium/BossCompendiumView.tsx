@@ -35,13 +35,16 @@ type DungeonCategory = 'all' | 'tben' | 'tuanben' | 'trials';
 
 const DUNGEON_CATEGORIES: { id: DungeonCategory; label: string }[] = [
     { id: 'all', label: '全部副本' },
-    { id: 'tben', label: 'T本（T16-T21）' },
+    { id: 'tben', label: 'T本（T10-T21）' },
     { id: 'tuanben', label: '团本（兽神、空桑、天帝、流波）' },
     { id: 'trials', label: '历练与试炼（四象七、悬夜林）' },
 ];
 
 // 二级筛选简写映射
 const DUNGEON_SHORT_LABELS: Record<string, string> = {
+    WUDU_QIGONGQIN_T10: '五毒T10',
+    WUDU_QIGONGQIN_T11: '五毒T11',
+    WUDU_QIGONGQIN_T12: '五毒T12',
     HUIMENG_LINGYUN_T16: 'T16',
     HUIMENG_LINGYUN_T17: 'T17',
     HUIMENG_LINGYUN_T18: 'T18',
@@ -62,6 +65,9 @@ const DUNGEON_SHORT_LABELS: Record<string, string> = {
 
 // 预设排序权重（与用户列出顺序完全一致）
 const DUNGEON_ORDER_MAP: Record<string, number> = {
+    WUDU_QIGONGQIN_T10: 1,
+    WUDU_QIGONGQIN_T11: 2,
+    WUDU_QIGONGQIN_T12: 3,
     HUIMENG_LINGYUN_T16: 10,
     HUIMENG_LINGYUN_T17: 20,
     HUIMENG_LINGYUN_T18: 30,
@@ -81,7 +87,11 @@ const DUNGEON_ORDER_MAP: Record<string, number> = {
 };
 
 const getDungeonCategory = (dungeonId: string): DungeonCategory => {
-    if (dungeonId.startsWith('HUIMENG_LINGYUN') || dungeonId.startsWith('ZHENHAI_DUANLANG')) return 'tben';
+    if (
+        dungeonId.startsWith('HUIMENG_LINGYUN') ||
+        dungeonId.startsWith('ZHENHAI_DUANLANG') ||
+        dungeonId.startsWith('WUDU_QIGONGQIN')
+    ) return 'tben';
     if (
         dungeonId.startsWith('TIANDI_BAOKU') ||
         dungeonId.startsWith('LIU_BO_JING_BIAN') ||

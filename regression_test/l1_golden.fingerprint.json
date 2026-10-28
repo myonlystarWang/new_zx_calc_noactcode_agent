@@ -1,7 +1,7 @@
 {
   "note": "L1 golden 快照对应的 game_data 数据指纹。由 l1_intent_fixture.mjs --golden 自动写入，请勿手改。",
-  "generatedAt": "2026-10-28T06:06:40.786Z",
-  "digest": "2b744143e8399095",
+  "generatedAt": "2026-10-28T10:16:49.715Z",
+  "digest": "5711943319d7537e",
   "fileCount": 30,
   "files": {
     "all_skills_curated_1.json": "fc42ab212944d23e88f0bd97350213f9b52b4e4c23c213a8f3429bd549e1d563",
@@ -11,8 +11,8 @@
     "baoshi.json": "6a2ad09589cf6ea368c0657bf28e277b85632160582d0361330aac698e3aaa80",
     "classes.json": "46e3a9d8d1d682db63a2a8f26b8b2ad8a90059c1d2c3fe17e116c49721bdb273",
     "combat_buffs.json": "65a41eafd9c679a088187a318282e24e4b0022604e9e33f12045927efbce490c",
-    "dungeons.json": "3e3471474920d8765211400d6c3d5cd0c0de249b46260a57b854057356fe6e0f",
-    "dungeons_monsters.json": "487b115d68262e48fa9940f99dd8fa5ee0bf6d503c839339c9219ef033dafbaa",
+    "dungeons.json": "1d3280f75a80cf4edc1a2a8e39025b91d044bb99172eb7dd8997d55c5ab486a1",
+    "dungeons_monsters.json": "5a8d064eb45c905360efffb2dbd0ac7930b2aeb64369a7e4ef0ee544c289fd8b",
     "equip_curated.json": "08cde4459d52894a420bc7f501d02635c1f408b1fc8e24737983ef7da1a30dc8",
     "fabao_curated.json": "68b4d6bbd51f8f8d3d43234a2627cd22c63db2731658e4b43bb8799a06c8736f",
     "fabao_upgrade_exp.json": "19bcd47fbf197d7116408dbb0e7c4c8c074897f57780a818b9d270687bdd92bb",

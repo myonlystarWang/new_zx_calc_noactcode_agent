@@ -3550,5 +3550,491 @@
         "ignoreReduction": 110
       }
     }
+  ],
+  "WUDU_QIGONGQIN_T10": [
+    {
+      "MonsterID": "CHI_T10",
+      "MonsterName": "痴",
+      "DungeonLevel": 1,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 339,
+        "MonsterDefense": 18963,
+        "MonsterHealth": 758932452,
+        "MonsterCriticalHitRateReduction": 58
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 758932452,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 70654,
+        "defense": 18963,
+        "bonusDamage": 156,
+        "damageReduction": 3569,
+        "normalHit": 1586,
+        "normalDodge": 563,
+        "critRate": 137,
+        "critDamage": 953,
+        "resistance": 2000,
+        "critRateReduction": 58,
+        "critDamageReduction": 339,
+        "skillDodge": 118,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "YUAN_T10",
+      "MonsterName": "怨",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 309,
+        "MonsterDefense": 30624,
+        "MonsterHealth": 805856934,
+        "MonsterCriticalHitRateReduction": 63
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 805856934,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 40692,
+        "defense": 30624,
+        "bonusDamage": 156,
+        "damageReduction": 3569,
+        "normalHit": 1586,
+        "normalDodge": 563,
+        "critRate": 137,
+        "critDamage": 903,
+        "resistance": 2000,
+        "critRateReduction": 63,
+        "critDamageReduction": 309,
+        "skillDodge": 118,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "TAN_T10",
+      "MonsterName": "贪",
+      "DungeonLevel": 3,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 388,
+        "MonsterDefense": 75000,
+        "MonsterHealth": 905663648,
+        "MonsterCriticalHitRateReduction": 69
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 905663648,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 36967,
+        "defense": 75000,
+        "bonusDamage": 156,
+        "damageReduction": 5963,
+        "normalHit": 1586,
+        "normalDodge": 563,
+        "critRate": 137,
+        "critDamage": 953,
+        "resistance": 2000,
+        "critRateReduction": 69,
+        "critDamageReduction": 388,
+        "skillDodge": 118,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "CHEN_T10",
+      "MonsterName": "嗔",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 437,
+        "MonsterDefense": 27000,
+        "MonsterHealth": 1223000000,
+        "MonsterCriticalHitRateReduction": 76
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1223000000,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 80200,
+        "defense": 27000,
+        "bonusDamage": 300,
+        "damageReduction": 1446,
+        "normalHit": 2137,
+        "normalDodge": 869,
+        "critRate": 124,
+        "critDamage": 854,
+        "resistance": 2000,
+        "critRateReduction": 76,
+        "critDamageReduction": 437,
+        "skillDodge": 118,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "YI_T10",
+      "MonsterName": "疑",
+      "DungeonLevel": 5,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 598,
+        "MonsterDefense": 27000,
+        "MonsterHealth": 1513773452,
+        "MonsterCriticalHitRateReduction": 83
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1513773452,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 80200,
+        "defense": 27000,
+        "bonusDamage": 30000,
+        "damageReduction": 1446,
+        "normalHit": 2137,
+        "normalDodge": 2604,
+        "critRate": 124,
+        "critDamage": 854,
+        "resistance": 2000,
+        "critRateReduction": 83,
+        "critDamageReduction": 598,
+        "skillDodge": 118,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    }
+  ],
+  "WUDU_QIGONGQIN_T11": [
+    {
+      "MonsterID": "CHI_T11",
+      "MonsterName": "痴",
+      "DungeonLevel": 1,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 455,
+        "MonsterDefense": 2515,
+        "MonsterHealth": 910718942,
+        "MonsterCriticalHitRateReduction": 70
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 910718942,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 107584,
+        "defense": 2515,
+        "bonusDamage": 187,
+        "damageReduction": 42827,
+        "normalHit": 1903,
+        "normalDodge": 676,
+        "critRate": 164,
+        "critDamage": 1192,
+        "resistance": 2200,
+        "critRateReduction": 70,
+        "critDamageReduction": 455,
+        "skillDodge": 142,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "YUAN_T11",
+      "MonsterName": "怨",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 467,
+        "MonsterDefense": 42748,
+        "MonsterHealth": 967028321,
+        "MonsterCriticalHitRateReduction": 76
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 967028321,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 58430,
+        "defense": 42748,
+        "bonusDamage": 187,
+        "damageReduction": 4282,
+        "normalHit": 1903,
+        "normalDodge": 676,
+        "critRate": 164,
+        "critDamage": 1192,
+        "resistance": 2200,
+        "critRateReduction": 76,
+        "critDamageReduction": 467,
+        "skillDodge": 142,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "TAN_T11",
+      "MonsterName": "贪",
+      "DungeonLevel": 3,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 514,
+        "MonsterDefense": 126751,
+        "MonsterHealth": 1086796378,
+        "MonsterCriticalHitRateReduction": 83
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1086796378,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 49160,
+        "defense": 126751,
+        "bonusDamage": 187,
+        "damageReduction": 7155,
+        "normalHit": 1903,
+        "normalDodge": 676,
+        "critRate": 164,
+        "critDamage": 1192,
+        "resistance": 2200,
+        "critRateReduction": 83,
+        "critDamageReduction": 514,
+        "skillDodge": 142,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "CHEN_T11",
+      "MonsterName": "嗔",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 584,
+        "MonsterDefense": 36000,
+        "MonsterHealth": 1467600000,
+        "MonsterCriticalHitRateReduction": 91
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1467600000,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 120240,
+        "defense": 36000,
+        "bonusDamage": 360,
+        "damageReduction": 1735,
+        "normalHit": 2564,
+        "normalDodge": 1043,
+        "critRate": 149,
+        "critDamage": 1061,
+        "resistance": 2200,
+        "critRateReduction": 91,
+        "critDamageReduction": 584,
+        "skillDodge": 142,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "YI_T11",
+      "MonsterName": "疑",
+      "DungeonLevel": 5,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 718,
+        "MonsterDefense": 36000,
+        "MonsterHealth": 1816528142,
+        "MonsterCriticalHitRateReduction": 100
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1816528142,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 120240,
+        "defense": 36000,
+        "bonusDamage": 36000,
+        "damageReduction": 1735,
+        "normalHit": 2564,
+        "normalDodge": 3125,
+        "critRate": 149,
+        "critDamage": 1061,
+        "resistance": 2200,
+        "critRateReduction": 100,
+        "critDamageReduction": 718,
+        "skillDodge": 142,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    }
+  ],
+  "WUDU_QIGONGQIN_T12": [
+    {
+      "MonsterID": "CHI_T12",
+      "MonsterName": "痴",
+      "DungeonLevel": 1,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 546,
+        "MonsterDefense": 30186,
+        "MonsterHealth": 1092862731,
+        "MonsterCriticalHitRateReduction": 84
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1092862731,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 129101,
+        "defense": 30186,
+        "bonusDamage": 224,
+        "damageReduction": 5139,
+        "normalHit": 2283,
+        "normalDodge": 811,
+        "critRate": 197,
+        "critDamage": 1430,
+        "resistance": 2400,
+        "critRateReduction": 84,
+        "critDamageReduction": 546,
+        "skillDodge": 170,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "YUAN_T12",
+      "MonsterName": "怨",
+      "DungeonLevel": 2,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 560,
+        "MonsterDefense": 51298,
+        "MonsterHealth": 1160433985,
+        "MonsterCriticalHitRateReduction": 91
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1160433985,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 70116,
+        "defense": 51298,
+        "bonusDamage": 224,
+        "damageReduction": 5139,
+        "normalHit": 2283,
+        "normalDodge": 811,
+        "critRate": 197,
+        "critDamage": 1430,
+        "resistance": 2400,
+        "critRateReduction": 91,
+        "critDamageReduction": 560,
+        "skillDodge": 170,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "TAN_T12",
+      "MonsterName": "贪",
+      "DungeonLevel": 3,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 616,
+        "MonsterDefense": 152101,
+        "MonsterHealth": 1304155653,
+        "MonsterCriticalHitRateReduction": 99
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1304155653,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 58992,
+        "defense": 152101,
+        "bonusDamage": 224,
+        "damageReduction": 8586,
+        "normalHit": 2283,
+        "normalDodge": 811,
+        "critRate": 197,
+        "critDamage": 1430,
+        "resistance": 2400,
+        "critRateReduction": 99,
+        "critDamageReduction": 616,
+        "skillDodge": 170,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "CHEN_T12",
+      "MonsterName": "嗔",
+      "DungeonLevel": 4,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 701,
+        "MonsterDefense": 43200,
+        "MonsterHealth": 1761120000,
+        "MonsterCriticalHitRateReduction": 109
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 1761120000,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 144288,
+        "defense": 43200,
+        "bonusDamage": 432,
+        "damageReduction": 2082,
+        "normalHit": 3077,
+        "normalDodge": 1251,
+        "critRate": 179,
+        "critDamage": 1273,
+        "resistance": 2400,
+        "critRateReduction": 109,
+        "critDamageReduction": 701,
+        "skillDodge": 170,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    },
+    {
+      "MonsterID": "YI_T12",
+      "MonsterName": "疑",
+      "DungeonLevel": 5,
+      "MonsterAttributeModifiers": {
+        "MonsterCriticalDamagePercentReduction": 861,
+        "MonsterDefense": 43200,
+        "MonsterHealth": 2079833770,
+        "MonsterCriticalHitRateReduction": 120
+      },
+      "role": "boss",
+      "displayAttributes": {
+        "level": 180,
+        "health": 2079833770,
+        "healthBars": 1,
+        "zhenQi": 202775302,
+        "attack": 144288,
+        "defense": 43200,
+        "bonusDamage": 43200,
+        "damageReduction": 2082,
+        "normalHit": 3077,
+        "normalDodge": 3750,
+        "critRate": 179,
+        "critDamage": 1273,
+        "resistance": 2400,
+        "critRateReduction": 120,
+        "critDamageReduction": 861,
+        "skillDodge": 170,
+        "skillHit": 300,
+        "ignoreReduction": 0
+      }
+    }
   ]
 }

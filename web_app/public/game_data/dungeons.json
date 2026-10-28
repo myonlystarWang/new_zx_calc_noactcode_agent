@@ -110,5 +110,26 @@
     "Description": "流波山惊变，炼血堂余孽作乱，考验队伍的综合实力与配合，困难难度（抢先体验服2026年9月11日新版本副本）。",
     "difficulty": "极难",
     "DungeonImportanceWeight": 1
+  },
+  {
+    "DungeonID": "WUDU_QIGONGQIN_T10",
+    "DungeonName": "鏖战！五毒其攻侵（T10）",
+    "Description": "【鏖战！五毒其攻侵】系列日常团队副本之一，低级难度。",
+    "difficulty": "简单",
+    "DungeonImportanceWeight": 1
+  },
+  {
+    "DungeonID": "WUDU_QIGONGQIN_T11",
+    "DungeonName": "鏖战！五毒其攻侵（T11）",
+    "Description": "【鏖战！五毒其攻侵】系列日常团队副本之一，中级难度。",
+    "difficulty": "中等",
+    "DungeonImportanceWeight": 1
+  },
+  {
+    "DungeonID": "WUDU_QIGONGQIN_T12",
+    "DungeonName": "鏖战！五毒其攻侵（T12）",
+    "Description": "【鏖战！五毒其攻侵】系列日常团队副本之一，高级难度。",
+    "difficulty": "较难",
+    "DungeonImportanceWeight": 1
   }
 ]

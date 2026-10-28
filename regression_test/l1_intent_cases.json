@@ -205,7 +205,7 @@
     "input": "T本",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 6,
+      "cardData.candidates.length": 9,
       "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16"
     },
     "tags": [
@@ -233,8 +233,8 @@
     "input": "副本",
     "expect": {
       "cardType": "boss_candidates",
-      "cardData.candidates.length": 16,
-      "cardData.candidates.0.id": "HUIMENG_LINGYUN_T16_TAI_LING_T16"
+      "cardData.candidates.length": 19,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_YI_T10"
     },
     "tags": [
       "standard",
@@ -6815,6 +6815,64 @@
       "variant",
       "equip",
       "gap"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-t10-01",
+    "input": "T10",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T10）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_CHI_T10"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-t12-01",
+    "input": "五毒T12",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.dungeonName": "鏖战！五毒其攻侵（T12）",
+      "cardData.candidates.length": 5,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T12_CHI_T12"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-series-01",
+    "input": "五毒",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.seriesName": "鏖战！五毒其攻侵",
+      "cardData.candidates.length": 15,
+      "cardData.candidates.0.id": "WUDU_QIGONGQIN_T10_CHI_T10"
+    },
+    "tags": [
+      "standard",
+      "dungeon"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "dungeon-wudu-boss-01",
+    "input": "嗔",
+    "expect": {
+      "cardType": "boss_candidates",
+      "cardData.candidates.length": 3
+    },
+    "tags": [
+      "standard",
+      "dungeon"
     ],
     "assert": "strong"
   }

@@ -99,9 +99,12 @@ export interface DungeonCategoryConfig {
 export const DUNGEON_CATEGORIES: DungeonCategoryConfig[] = [
     {
         id: 'tben',
-        label: 'T本（T16-T21）',
-        keywords: ['t本', 't系列', 't16-t21', '梯本', '小队本', '小队副本'],
+        label: 'T本（T10-T21）',
+        keywords: ['t本', 't系列', 't10-t21', 't16-t21', '梯本', '小队本', '小队副本'],
         dungeonIds: [
+            'WUDU_QIGONGQIN_T10',
+            'WUDU_QIGONGQIN_T11',
+            'WUDU_QIGONGQIN_T12',
             'HUIMENG_LINGYUN_T16',
             'HUIMENG_LINGYUN_T17',
             'HUIMENG_LINGYUN_T18',
@@ -147,11 +150,35 @@ export interface DungeonDictionaryItem {
 
 export const DUNGEON_DICTIONARY: DungeonDictionaryItem[] = [
     {
+        dungeonId: 'WUDU_QIGONGQIN_T10',
+        shortLabel: 'T10',
+        fullName: '鏖战！五毒其攻侵（T10）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T10-T21）',
+        aliases: ['t10', '五毒t10', '五毒其攻侵t10', '鏖战t10', '五毒初']
+    },
+    {
+        dungeonId: 'WUDU_QIGONGQIN_T11',
+        shortLabel: 'T11',
+        fullName: '鏖战！五毒其攻侵（T11）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T10-T21）',
+        aliases: ['t11', '五毒t11', '五毒其攻侵t11', '鏖战t11', '五毒中']
+    },
+    {
+        dungeonId: 'WUDU_QIGONGQIN_T12',
+        shortLabel: 'T12',
+        fullName: '鏖战！五毒其攻侵（T12）',
+        categoryId: 'tben',
+        categoryLabel: 'T本（T10-T21）',
+        aliases: ['t12', '五毒t12', '五毒其攻侵t12', '鏖战t12', '五毒高']
+    },
+    {
         dungeonId: 'HUIMENG_LINGYUN_T16',
         shortLabel: 'T16',
         fullName: '会盟！凌云诛众仙（T16）',
         categoryId: 'tben',
-        categoryLabel: 'T本（T16-T21）',
+        categoryLabel: 'T本（T10-T21）',
         aliases: ['t16', '绘梦灵运t16', '绘梦t16', '灵运t16', '凌云t16']
     },
     {
@@ -159,7 +186,7 @@ export const DUNGEON_DICTIONARY: DungeonDictionaryItem[] = [
         shortLabel: 'T17',
         fullName: '会盟！凌云诛众仙（T17）',
         categoryId: 'tben',
-        categoryLabel: 'T本（T16-T21）',
+        categoryLabel: 'T本（T10-T21）',
         aliases: ['t17', '绘梦灵运t17', '绘梦t17', '灵运t17', '凌云t17']
     },
     {
@@ -167,7 +194,7 @@ export const DUNGEON_DICTIONARY: DungeonDictionaryItem[] = [
         shortLabel: 'T18',
         fullName: '会盟！凌云诛众仙（T18）',
         categoryId: 'tben',
-        categoryLabel: 'T本（T16-T21）',
+        categoryLabel: 'T本（T10-T21）',
         aliases: ['t18', '绘梦灵运t18', '绘梦t18', '灵运t18', '凌云t18']
     },
     {
@@ -175,7 +202,7 @@ export const DUNGEON_DICTIONARY: DungeonDictionaryItem[] = [
         shortLabel: 'T19',
         fullName: '镇海！断浪碎晶宫（T19）',
         categoryId: 'tben',
-        categoryLabel: 'T本（T16-T21）',
+        categoryLabel: 'T本（T10-T21）',
         aliases: ['t19', '镇海断浪t19', '断浪t19', '镇海t19', '碎晶宫t19', '断浪碎晶宫t19']
     },
     {
@@ -183,7 +210,7 @@ export const DUNGEON_DICTIONARY: DungeonDictionaryItem[] = [
         shortLabel: 'T20',
         fullName: '镇海！断浪碎晶宫（T20）',
         categoryId: 'tben',
-        categoryLabel: 'T本（T16-T21）',
+        categoryLabel: 'T本（T10-T21）',
         aliases: ['t20', '镇海断浪t20', '断浪t20', '镇海t20', '碎晶宫t20', '断浪碎晶宫t20']
     },
     {
@@ -191,7 +218,7 @@ export const DUNGEON_DICTIONARY: DungeonDictionaryItem[] = [
         shortLabel: 'T21',
         fullName: '镇海！断浪碎晶宫（T21）',
         categoryId: 'tben',
-        categoryLabel: 'T本（T16-T21）',
+        categoryLabel: 'T本（T10-T21）',
         aliases: ['t21', '镇海断浪t21', '断浪t21', '镇海t21', '碎晶宫t21', '断浪碎晶宫t21']
     },
     {
@@ -285,6 +312,13 @@ export interface DungeonSeriesConfig {
 }
 
 export const DUNGEON_SERIES: DungeonSeriesConfig[] = [
+    {
+        seriesId: 'wudu',
+        seriesName: '鏖战！五毒其攻侵',
+        keywords: ['五毒', '五毒其攻侵', '鏖战', '心魔'],
+        dungeonIds: ['WUDU_QIGONGQIN_T10', 'WUDU_QIGONGQIN_T11', 'WUDU_QIGONGQIN_T12'],
+        hintText: '包含【T10】、【T11】、【T12】三种小队梯队。可在下方点选切换查看各难度 BOSS 战斗属性，或输入【T10】/【T11】/【T12】精准直达：'
+    },
     {
         seriesId: 'liubo',
         seriesName: '流波惊变',
@@ -2594,10 +2628,14 @@ export class CopilotService {
                     }
                 }
 
+                const dungeonTotal = allDungeons.length;
+                const bossTotal = allDungeons.reduce(
+                    (sum, d) => sum + (d.Monsters || []).filter(m => m.role === 'boss').length, 0);
+
                 return {
                     id: `msg-${Date.now()}`,
                     sender: 'assistant',
-                    text: `为你速查到诛仙核心副本群（涵盖 T本、团本与试炼共 16 大副本体系与 97 个 BOSS 实战属性数据）。
+                    text: `为你速查到诛仙核心副本群（涵盖 T本、团本与试炼共 ${dungeonTotal} 大副本体系与 ${bossTotal} 个 BOSS 实战属性数据）。
 
 【分类与难度精准检索引导】：
 • 一级大类速查：输入【T本】、【团本】、【副本】

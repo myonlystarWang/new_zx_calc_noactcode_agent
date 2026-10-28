@@ -20,6 +20,9 @@ import { InstallHint } from '../pwa/InstallGuide';
  * 同一副本的不同难度按 1/2/3 编号，例：流波1/流波2、天帝1/天帝2/天帝3。
  */
 const DUNGEON_SHORT_NAME: Record<string, string> = {
+    WUDU_QIGONGQIN_T10: 'T10',
+    WUDU_QIGONGQIN_T11: 'T11',
+    WUDU_QIGONGQIN_T12: 'T12',
     HUIMENG_LINGYUN_T16: 'T16',
     HUIMENG_LINGYUN_T17: 'T17',
     HUIMENG_LINGYUN_T18: 'T18',
