@@ -29,7 +29,7 @@ function onKey(e: KeyboardEvent): void {
  * 弹出全屏预览，提示「长按保存」。
  * 重复调用会先关掉上一张，避免叠层。
  */
-export function showSharePreview(dataUrl: string, hint = '长按图片保存到相册，或直接分享给好友'): void {
+export function showSharePreview(dataUrl: string, hint = '长按图片：选择「发送给朋友」直达微信，或「存储图像」到相册'): void {
     if (typeof document === 'undefined') return;
     close();
 
@@ -44,17 +44,26 @@ export function showSharePreview(dataUrl: string, hint = '长按图片保存到�
         'display:flex',
         'flex-direction:column',
         'align-items:center',
-        'justify-content:center',
-        'gap:14px',
         'padding:16px',
         'box-sizing:border-box',
+        'overflow-y:auto',
         '-webkit-overflow-scrolling:touch',
+    ].join(';');
+
+    const wrap = document.createElement('div');
+    wrap.style.cssText = [
+        'display:flex',
+        'flex-direction:column',
+        'align-items:center',
+        'gap:14px',
+        'margin:auto',
+        'max-width:100%',
     ].join(';');
 
     const img = document.createElement('img');
     img.src = dataUrl;
     img.alt = '分享长图（长按保存）';
-    img.style.cssText = 'max-height:76vh;max-width:100%;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,0.6);';
+    img.style.cssText = 'max-height:74vh;max-width:100%;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,0.6);display:block;';
 
     const tip = document.createElement('p');
     tip.textContent = hint;
@@ -64,7 +73,7 @@ export function showSharePreview(dataUrl: string, hint = '长按图片保存到�
     btn.type = 'button';
     btn.textContent = '关闭';
     btn.style.cssText = [
-        'padding:7px 20px',
+        'padding:7px 22px',
         'border-radius:999px',
         'border:1px solid rgba(229,190,115,0.45)',
         'background:rgba(20,26,38,0.9)',
@@ -74,12 +83,13 @@ export function showSharePreview(dataUrl: string, hint = '长按图片保存到�
     ].join(';');
     btn.addEventListener('click', close);
 
-    // 点遮罩空白处关闭；点图片本身不关（长按保存时会误触）
+    // 点遮罩空白处关闭；点图片/按钮容器空白处关闭
     mask.addEventListener('click', (e) => {
-        if (e.target === mask) close();
+        if (e.target === mask || e.target === wrap) close();
     });
 
-    mask.append(img, tip, btn);
+    wrap.append(img, tip, btn);
+    mask.append(wrap);
     document.body.appendChild(mask);
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', onKey);

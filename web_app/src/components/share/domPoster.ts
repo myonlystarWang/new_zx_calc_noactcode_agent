@@ -271,8 +271,11 @@ export async function renderDomPoster(o: DomPosterOpts): Promise<RenderedDomPost
     ctx.stroke();
     ctx.drawImage(shot, PAD, cardY, cardW, cardH);
 
-    // ---- 右：信息栏（整块垂直居中） ----
-    let y = Math.round((H - railH) / 2);
+    // ---- 右：信息栏（长卡片弹性分布，矮卡片居中） ----
+    const isTall = cardH > railH + 60;
+    const footLine = Math.round(34 * kr);
+
+    let y = isTall ? PAD + 4 : Math.round((H - railH) / 2);
     const railTop = y;
 
     const logoImg = getLogoImage();
@@ -310,28 +313,36 @@ export async function renderDomPoster(o: DomPosterOpts): Promise<RenderedDomPost
     disLines.forEach((line, i) => {
         text(c, line, railX, y + Math.round(fDis * 0.9) + i * disLH, disF, withAlpha(TEXT, 0.52));
     });
-    y += disLines.length * disLH + gap22;
+    const disBottomY = y + disLines.length * disLH;
+
+    // 底部两行位置
+    const footY = isTall ? (H - PAD - 6) : (railTop + railH);
+
+    // 二维码垂直定位：若 tall 则在免责与底部横线之间居中
+    let qrTopY = disBottomY + gap22;
+    if (isTall && o.qrDataUrl) {
+        const qrTotalH = qr + Math.round(20 * kr) + 14;
+        const availableSpace = (footY - footLine) - disBottomY;
+        qrTopY = disBottomY + Math.max(16, Math.round((availableSpace - qrTotalH) / 2));
+    }
 
     // 二维码（右栏居中 + 白底留白）
     if (o.qrDataUrl) {
         const qrImg = getQrImage(o.qrDataUrl);
         const qx = railX + Math.round((railW - qr) / 2);
-        roundRect(ctx, qx - 7, y - 7, qr + 14, qr + 14, 10);
+        roundRect(ctx, qx - 7, qrTopY - 7, qr + 14, qr + 14, 10);
         ctx.fillStyle = '#ffffff';
         ctx.fill();
         if (qrImg.complete && qrImg.naturalWidth > 0) {
-            ctx.drawImage(qrImg, qx, y, qr, qr);
+            ctx.drawImage(qrImg, qx, qrTopY, qr, qr);
         } else {
             ctx.fillStyle = 'rgba(0,0,0,0.08)';
-            ctx.fillRect(qx, y, qr, qr);
+            ctx.fillRect(qx, qrTopY, qr, qr);
         }
-        text(c, '扫码打开 · 自己试一次', qx + qr / 2, y + qr + Math.round(20 * kr), font(fCaption, 500), withAlpha(TEXT, 0.42), 'center');
-        y += qr + gap22;
+        text(c, '扫码打开 · 自己试一次', qx + qr / 2, qrTopY + qr + Math.round(20 * kr), font(fCaption, 500), withAlpha(TEXT, 0.42), 'center');
     }
 
-    // 底部两行（贴右栏内容块底）
-    const footY = railTop + railH;
-    const footLine = Math.round(34 * kr);
+    // 底部两行（贴右栏内容块底或贴海报底）
     ctx.beginPath();
     ctx.moveTo(railX, footY - footLine);
     ctx.lineTo(railX + railW, footY - footLine);

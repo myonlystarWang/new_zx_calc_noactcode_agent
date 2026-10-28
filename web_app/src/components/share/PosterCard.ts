@@ -85,7 +85,7 @@ const ROW_GAP = 20;
 const MAX_PIXELS = 8_000_000;
 
 function heroBlock(c: PosterCtx, hero: PosterHero, y: number): number {
-    const H = 196;
+    const H = 210;
     glassPanel(c, POSTER_PAD, y, POSTER_INNER, H);
     const padX = 32;
 
@@ -109,9 +109,9 @@ function heroBlock(c: PosterCtx, hero: PosterHero, y: number): number {
     }
 
     if (hero.metric2Label) {
-        text(c, hero.metric2Label, rightX, y + 150, font(16, 500), withAlpha(TEXT, 0.42), 'right');
+        text(c, hero.metric2Label, rightX, y + 154, font(16, 500), withAlpha(TEXT, 0.42), 'right');
         const m2 = `${hero.metric2Value || ''}${hero.metric2Unit || ''}`;
-        text(c, m2, rightX, y + 182, font(24, 700), withAlpha(TEXT, 0.86), 'right');
+        text(c, m2, rightX, y + 188, font(24, 700), withAlpha(TEXT, 0.86), 'right');
     }
 
     const nameMaxW = POSTER_INNER - padX * 2 - 300;
@@ -119,11 +119,11 @@ function heroBlock(c: PosterCtx, hero: PosterHero, y: number): number {
         c,
         fitText(c.ctx, hero.title, font(30, 700), Math.max(200, nameMaxW)),
         POSTER_PAD + padX,
-        y + 150,
+        y + 154,
         font(30, 700),
         '#ffffff',
     );
-    text(c, hero.subtitle, POSTER_PAD + padX, y + 182, font(19, 400), withAlpha(TEXT, 0.40));
+    text(c, fitText(c.ctx, hero.subtitle, font(19, 400), nameMaxW), POSTER_PAD + padX, y + 188, font(19, 400), withAlpha(TEXT, 0.40));
     return y + H + 40;
 }
 
@@ -223,7 +223,7 @@ function rowsBlock(c: PosterCtx, rows: PosterRow[], y: number): number {
                 ctx.lineTo(POSTER_PAD, barY + 6);
                 ctx.quadraticCurveTo(POSTER_PAD, barY, POSTER_PAD + 6, barY);
                 ctx.closePath();
-                ctx.fillStyle = 'rgba(255,255,255,0.07)';
+                ctx.fillStyle = 'rgba(255,255,255,0.12)';
                 ctx.fill();
 
                 const ratio = maxRatio > 0 ? Math.max(0, Math.min(1, row.ratio / maxRatio)) : 0;

@@ -34,8 +34,18 @@ export function isIOS(): boolean {
 }
 
 /** 微信 / iOS 走长按保存 */
+export function isMobileDevice(): boolean {
+    if (typeof navigator === 'undefined') return false;
+    const ua = navigator.userAgent;
+    const isTouch = (navigator.maxTouchPoints ?? 0) > 0;
+    const isMobileUa = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const isCoarse = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    return isMobileUa || (isTouch && isCoarse);
+}
+
+/** 微信 / 移动端设备（iOS、安卓手机与平板）降级时统一出图预览（长按保存/分享），桌面端才走文件下载 */
 export function prefersPreviewSave(): boolean {
-    return isWeixin() || isIOS();
+    return isWeixin() || isIOS() || isMobileDevice();
 }
 
 /** Windows 非法字符剔除 + 空格转 '-'，控制长度 */

@@ -14,6 +14,9 @@ import type { PosterModel } from './PosterCard';
 import { trackShareClick } from '../../utils/track';
 import { hideSharePreview, showSharePreview } from './sharePreview';
 
+/** 二维码固定指向线上首页（带来源参数） */
+const QR_TARGET = 'https://zxai.raddishlab.com/#/?src=qr-sim';
+
 export interface UseSharePosterResult {
     busy: boolean;
     share: (build: () => PosterModel | Promise<PosterModel>, filename: string, mode: string) => Promise<void>;
@@ -34,9 +37,31 @@ export function useSharePoster(): UseSharePosterResult {
                 import('../../utils/exportImage'),
                 import('./sharePosterKit'),
             ]);
+
+            // 二维码失败不阻塞出图
+            let qrDataUrl: string | null = null;
+            try {
+                const QRCode = (await import('qrcode')).default;
+                qrDataUrl = await QRCode.toDataURL(QR_TARGET, {
+                    margin: 1,
+                    width: 480,
+                    errorCorrectionLevel: 'M',
+                    color: { dark: '#0a0d0c', light: '#ffffff' },
+                });
+                await kit.preloadQrImage(qrDataUrl);
+            } catch (err) {
+                console.warn('二维码生成失败，改为无码出图:', err);
+            }
+
             // LOGO 必须先就绪，否则页头是空框
             await kit.preloadShareLogo();
-            const { canvas } = renderPoster(await build());
+
+            const model = await build();
+            if (!model.qrDataUrl && qrDataUrl) {
+                model.qrDataUrl = qrDataUrl;
+            }
+
+            const { canvas } = renderPoster(model);
             const result = await exporter.shareImage(canvas, filename, {
                 title: '天书万象 AI · 诛仙3 模拟',
                 text: '天书万象 AI · 诛仙3 模拟',

@@ -15,6 +15,7 @@ import {
     CHIP_GAP,
     CHIP_H,
     CYAN,
+    GOLD_BRIGHT,
     GOLD_MAIN,
     POSTER_INNER,
     POSTER_PAD,
@@ -149,7 +150,7 @@ function condenseHits(hits: ShareHitRow[]): Array<{ label: string; min: number; 
     if (hits.every((h) => same(h.avg, first.avg))) {
         return [line(first, `第 1~${n} 段`, true)];
     }
-    return [line(first, `第 ${first.hitIndex} 段`, false), line(last, `第 ${last.hitIndex} 段`, true)];
+    return [line(first, `第 ${first.hitIndex} 段 (首段)`, false), line(last, `第 ${last.hitIndex} 段 (末段)`, true)];
 }
 
 /** 单趟布局；`paint=false` 时只量算高度。返回内容总高度（含上下 padding）。 */
@@ -170,7 +171,7 @@ function layout(c: PosterCtx, data: ShareCardData, theme: ShareCardTheme): numbe
     );
 
     // ② 主结果卡：副本/BOSS ＋ 参考战力
-    const HERO_H = 196;
+    const HERO_H = 210;
     glassPanel(c, POSTER_PAD, y, POSTER_INNER, HERO_H);
     const heroPadX = 32;
 
@@ -210,11 +211,11 @@ function layout(c: PosterCtx, data: ShareCardData, theme: ShareCardTheme): numbe
         c,
         fitText(ctx, data.dungeonName, font(30, 700), Math.max(200, nameMaxW)),
         POSTER_PAD + heroPadX,
-        y + 150,
+        y + 154,
         font(30, 700),
         '#ffffff',
     );
-    text(c, `当前 BOSS · ${data.bossName}`, POSTER_PAD + heroPadX, y + 182, font(19, 400), dim);
+    text(c, `当前 BOSS · ${data.bossName}`, POSTER_PAD + heroPadX, y + 188, font(19, 400), dim);
     y += HERO_H + 40;
 
     // ③ 角色属性
@@ -349,7 +350,7 @@ function layout(c: PosterCtx, data: ShareCardData, theme: ShareCardTheme): numbe
         if (skill.isMultiHit && skill.hits.length > 0) {
             condenseHits(skill.hits).forEach((hit) => {
                 const hitY = y + 26;
-                text(c, hit.label, POSTER_PAD + 24, hitY, font(21, 500), dim);
+                text(c, hit.label, POSTER_PAD + 24, hitY, font(21, 700), withAlpha(GOLD_MAIN, 0.82));
                 text(c, `${formatNumber(hit.min)} ~ ${formatNumber(hit.max)}`, POSTER_PAD + 200, hitY, font(21, 400), withAlpha(theme.text, 0.30));
                 text(
                     c,
@@ -357,7 +358,7 @@ function layout(c: PosterCtx, data: ShareCardData, theme: ShareCardTheme): numbe
                     POSTER_W - POSTER_PAD,
                     hitY,
                     font(21, hit.isLast ? 700 : 500),
-                    hit.isLast ? withAlpha(theme.text, 0.88) : withAlpha(theme.text, 0.70),
+                    hit.isLast ? GOLD_BRIGHT : withAlpha(theme.text, 0.70),
                     'right',
                 );
                 y += HIT_ROW_H;

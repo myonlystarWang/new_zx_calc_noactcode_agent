@@ -778,7 +778,7 @@ export const ResultSection: React.FC<{ searchNav?: SearchTarget | null; onSearch
                         alt="分享长图（长按保存）"
                         className="max-h-[78vh] max-w-full rounded-xl shadow-2xl"
                     />
-                    <p className="text-slate-300 text-xs">长按图片保存到相册，或直接分享给好友</p>
+                    <p className="text-amber-200/90 text-xs font-medium bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/25">长按图片：选择「发送给朋友」直达微信，或「存储图像」到相册</p>
                     <button
                         type="button"
                         onClick={() => setPreviewUrl(null)}
