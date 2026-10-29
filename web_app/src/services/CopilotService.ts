@@ -764,7 +764,8 @@ export class CopilotService {
                 q.includes('青囊玉书') ||
                 q.includes('白锦道册') ||
                 q.includes('朱翎术纪') ||
-                q.includes('玄甲元略')) &&
+                q.includes('玄甲元略') ||
+                q.includes('特殊洗练')) &&
             !PROFESSIONS.some((pr) => q.includes(pr));
 
         if (isXycTomeQuery) {
@@ -773,7 +774,7 @@ export class CopilotService {
             else if (q.includes('朱雀') || q.includes('朱翎术纪')) initialBeast = '朱雀';
             else if (q.includes('玄武') || q.includes('玄甲元略')) initialBeast = '玄武';
 
-            const wantsSim = q.includes('模拟') || q.includes('洗炼') || q.includes('洗练');
+            const wantsSim = q.includes('模拟') || q.includes('洗炼') || q.includes('洗练') || q.includes('特殊洗练');
             const initialHero = !q.includes('普通');
             const xycLvlMatch = q.match(/(\d{1,2})\s*级/);
             const initialLevel = xycLvlMatch ? Math.min(20, Math.max(1, parseInt(xycLvlMatch[1], 10))) : 1;
@@ -788,7 +789,7 @@ export class CopilotService {
                 return {
                     id: `msg-${Date.now()}`,
                     sender: 'assistant',
-                    text: '为你打开【轩辕策洗练模拟】。洗练不改变属性条数：大衍奇术只洗属性、一元道契只洗技能（仅青龙 / 白虎）、太乙宝函属性与技能同洗；每本上限 10 次，可用轩辕拾遗录提升。',
+                    text: '为你打开【轩辕策洗练模拟】。洗练不改变属性条数：大衍奇术只洗属性、一元道契只洗技能（仅青龙 / 白虎）、太乙宝函属性与技能同洗；上限 10 次，用「轩辕拾遗录·相易」可提到 30 次。青龙 / 白虎英雄版累计洗满 25 次后自动切换【特殊洗练】：三道具齐用、最多锁 2 条、自选本职业 3 级技能必得，共 5 次额度。',
                     time: timeStr,
                     cardType: 'xyc_wash',
                     cardData: {

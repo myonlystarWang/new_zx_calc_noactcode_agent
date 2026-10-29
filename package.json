@@ -24,7 +24,8 @@
     "test:l1": "node scripts/l1_intent_fixture.mjs",
     "test:boss": "node scripts/check_boss_data.mjs",
     "gen:boss": "node scripts/gen_dungeon_bosses.mjs",
-    "gen:fixtures": "node scripts/gen_dungeon_fixtures.mjs"
+    "gen:fixtures": "node scripts/gen_dungeon_fixtures.mjs",
+    "test:xyc": "node scripts/check_xyc_special_wash.mjs"
   },
   "devDependencies": {
     "tsx": "^4.22.3",

@@ -6,12 +6,18 @@ import clsx from 'clsx';
 import { DataService } from '../../services/DataService';
 import {
     WASH_ITEMS,
+    SPECIAL_WASH_FROM,
+    SPECIAL_WASH_LOCK_MAX,
     attrValueAt,
     canRollSkill,
     formatAttrValue,
     getPool,
     identifyBook,
+    inSpecialWash,
     makeRng,
+    specialSkillOptions,
+    specialWash,
+    specialWashLeft,
     wash as washBook,
     type XycBeast,
     type XycBook,
@@ -56,8 +62,6 @@ const UPGRADE_RATES = [
 function upgradeRateAt(level: number): number {
     return UPGRADE_RATES[Math.min(Math.max(level, 0), UPGRADE_RATES.length - 1)];
 }
-/** 「使用轩辕拾遗录」按钮暂时封着不显示（增加洗练次数本身是灰的，缺前置入口） */
-const SHOW_RAISE_MAX = false;
 /** 品阶固定六品（2026-10-26 用户要求删除品阶选择行） */
 const GRADE = 6;
 
@@ -246,6 +250,19 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     const [upgradeTip, setUpgradeTip] = useState<string | null>(null);
     /** 右侧洗练窗默认收起，点左窗「洗炼」才展开 */
     const [washOpen, setWashOpen] = useState(false);
+    /** 特殊洗练：锁定的属性 id（≤2，点左窗属性行切换）与自选的必得技能 id */
+    const [lockIds, setLockIds] = useState<number[]>([]);
+    const [specialSkillId, setSpecialSkillId] = useState<number | null>(null);
+    const lockRef = useRef<number[]>([]);
+    const skillSelRef = useRef<number | null>(null);
+    const setLocks = useCallback((ids: number[]) => {
+        lockRef.current = ids;
+        setLockIds(ids);
+    }, []);
+    const setSkillSel = useCallback((id: number | null) => {
+        skillSelRef.current = id;
+        setSpecialSkillId(id);
+    }, []);
 
     /** 读条（对齐天缘模拟器：busy + barFill/barAnim） */
     const [busy, setBusy] = useState(false);
@@ -306,7 +323,10 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         bookRef.current = next;
         setChangeLines([]);
         setLevel(0);
-    }, [data, version, beast, occ]);
+        // 换书后旧的锁定词条已不存在，特殊洗练的自选技能也按新书重置
+        setLocks([]);
+        setSkillSel(null);
+    }, [data, version, beast, occ, setLocks, setSkillSel]);
 
     // 数据/配置变化后重新鉴定（等级变化不重置书，只改显示）
     const identKey = `${version}|${beast}|${occ}`;
@@ -319,6 +339,28 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     useEffect(() => {
         setBook((prev) => (prev ? { ...prev, level } : prev));
     }, [level]);
+
+    /** 特殊洗练：锁定项随书变化自动剪枝（普通洗练会把未锁词条整组换掉） */
+    useEffect(() => {
+        if (!book) return;
+        const valid = lockRef.current.filter((id) => book.attrs.some((a) => a.id === id));
+        if (valid.length !== lockRef.current.length) setLocks(valid);
+    }, [book, setLocks]);
+
+    /** 特殊洗练：保证自选技能落在当前 青龙/白虎 × 职业 的技能池里（切门派、切系别、换书都重建） */
+    useEffect(() => {
+        if (!data) return;
+        const list = specialSkillOptions(data, beast, occ);
+        const cur = skillSelRef.current;
+        if (list.length === 0) {
+            if (cur !== null) setSkillSel(null);
+            return;
+        }
+        if (cur !== null && list.some((s) => s.id === cur)) return;
+        const onBook = bookRef.current?.skill;
+        const prefer = onBook && list.some((s) => s.id === onBook.id) ? onBook.id : list[0].id;
+        setSkillSel(prefer);
+    }, [data, beast, occ, book, setSkillSel]);
 
     const stopBar = useCallback(() => {
         busyRef.current = false;
@@ -401,7 +443,28 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     const skillEligible = data ? canRollSkill(data, beast, GRADE, book?.attrCount ?? 0) : false;
     /** 剩余可洗次数：用满后必须消耗「轩辕拾遗录」提升上限 */
     const washLeft = book ? Math.max(0, book.washMax - book.washUsed) : 0;
-    const canWash = Boolean(book) && washLeft > 0 && (mode !== 'skill' || skillEligible);
+    /** 特殊洗练区间：青龙/白虎 英雄版 且 已洗满 25 次（上限须先由「相易」提到 30） */
+    const specialMode = Boolean(book && inSpecialWash(book));
+    const specialLeft = book ? specialWashLeft(book) : 0;
+    /** 特殊洗练可选技能（本职业 3 级技能） */
+    const specialSkills = useMemo(() => (data ? specialSkillOptions(data, beast, occ) : []), [data, beast, occ]);
+    const toggleLock = useCallback(
+        (id: number) => {
+            if (busyRef.current || leftBusyRef.current) return;
+            const cur = lockRef.current;
+            if (cur.includes(id)) {
+                setLocks(cur.filter((x) => x !== id));
+                return;
+            }
+            if (cur.length >= SPECIAL_WASH_LOCK_MAX) return;
+            setLocks([...cur, id]);
+        },
+        [setLocks],
+    );
+    /** 特殊洗练不看道具模式（三道具同时消耗），但必须已选好必得技能 */
+    const canWash = specialMode
+        ? Boolean(book) && washLeft > 0 && specialSkillId !== null
+        : Boolean(book) && washLeft > 0 && (mode !== 'skill' || skillEligible);
 
     const toggleWash = useCallback(() => {
         setWashOpen((prev) => {
@@ -522,13 +585,17 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         return out;
     }, [data, pool]);
 
-    /** 执行一手洗练（不动读条） */
+    /** 执行一手洗练（不动读条）：满 25 次后自动走特殊洗练分支 */
     const applyOneWash = useCallback((): boolean => {
         const cur = bookRef.current;
         if (!data || !cur) return false;
         if (cur.washUsed >= cur.washMax) return false;
-        if (mode === 'skill' && !canRollSkill(data, cur.beast, cur.grade, cur.attrCount)) return false;
-        const res = washBook(data, cur, mode, occ, rngRef.current);
+        const special = inSpecialWash(cur);
+        if (!special && mode === 'skill' && !canRollSkill(data, cur.beast, cur.grade, cur.attrCount)) return false;
+        if (special && skillSelRef.current === null) return false;
+        const res = special
+            ? specialWash(data, cur, { lockIds: lockRef.current, skillId: skillSelRef.current }, occ, rngRef.current)
+            : washBook(data, cur, mode, occ, rngRef.current);
         bookRef.current = res.book;
         setBook(res.book);
         for (const ch of res.changed) {
@@ -546,6 +613,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         const cur = bookRef.current;
         if (!data || !cur) return true;
         if (cur.washUsed >= cur.washMax) return true;
+        if (inSpecialWash(cur)) return skillSelRef.current === null;
         if (mode === 'skill' && !canRollSkill(data, cur.beast, cur.grade, cur.attrCount)) return true;
         return false;
     }, [data, mode]);
@@ -609,6 +677,14 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         setAuto(true);
         const loop = () => {
             if (!autoRef.current) return;
+            // 洗到 25 次进入特殊洗练时自动停手：锁定哪两条、必得哪个技能要玩家自己选，
+            // 不能连着把 5 次额度烧掉（这 5 次是整本最贵的部分）
+            if (bookRef.current && inSpecialWash(bookRef.current)) {
+                autoRef.current = false;
+                setAuto(false);
+                finishBar();
+                return;
+            }
             if (washBlocked()) {
                 autoRef.current = false;
                 setAuto(false);
@@ -826,20 +902,64 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             <div style={{ color: C_WHITE }} className="text-[12px]">
                                 洗练次数 {book.washUsed}/{book.washMax}
                             </div>
+                            {specialMode && (
+                                <div className="text-[12px]" style={{ color: '#ffbe50' }}>
+                                    特殊洗练 · 剩 {specialLeft} 次
+                                </div>
+                            )}
                             <div style={{ color: C_WHITE }} className="text-[12px]">
                                 等级 {book.level}
                             </div>
 
                             <div className="flex flex-col mt-0.5">
-                                {attrRows.map((row, idx) => (
-                                    <div key={`${row.id}-${idx}`} className="flex items-center min-w-0" style={{ color: C_STAT }}>
-                                        <SlotMark />
-                                        <span className="truncate text-[12px]">
-                                            {row.name} +{row.text}
-                                        </span>
-                                    </div>
-                                ))}
+                                {attrRows.map((row, idx) => {
+                                    const locked = lockIds.includes(row.id);
+                                    const lockable = specialMode && !busy && !leftBusy;
+                                    const full = lockIds.length >= SPECIAL_WASH_LOCK_MAX && !locked;
+                                    return (
+                                        <div
+                                            key={`${row.id}-${idx}`}
+                                            onClick={lockable ? () => toggleLock(row.id) : undefined}
+                                            title={
+                                                specialMode
+                                                    ? locked
+                                                        ? '点击取消锁定'
+                                                        : full
+                                                          ? `最多锁定 ${SPECIAL_WASH_LOCK_MAX} 条`
+                                                          : '点击锁定这条属性（特殊洗练后不变）'
+                                                    : undefined
+                                            }
+                                            className={clsx(
+                                                'flex items-center min-w-0 rounded-[2px] -mx-1 px-1',
+                                                lockable && (locked || !full) ? 'cursor-pointer' : undefined,
+                                            )}
+                                            style={{
+                                                color: C_STAT,
+                                                background: locked ? 'rgba(255,190,80,0.14)' : undefined,
+                                                boxShadow: locked ? 'inset 0 0 0 1px rgba(255,190,80,0.45)' : undefined,
+                                            }}
+                                            data-xyc-attr={row.id}
+                                            data-xyc-lock={locked ? '1' : undefined}
+                                        >
+                                            <SlotMark />
+                                            <span className="truncate text-[12px] flex-1 min-w-0">
+                                                {row.name} +{row.text}
+                                            </span>
+                                            {locked && (
+                                                <span className="shrink-0 ml-1 text-[10.5px] leading-none" style={{ color: '#ffbe50' }}>
+                                                    锁定
+                                                </span>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </div>
+
+                            {specialMode && (
+                                <div className="text-[11px] mt-0.5 leading-[16px]" style={{ color: '#a8813c' }}>
+                                    点属性行锁定（{lockIds.length}/{SPECIAL_WASH_LOCK_MAX}）
+                                </div>
+                            )}
 
                             {book.skill && (
                                 <div className="xyc-skill-line text-[12px] mt-0.5 break-words" style={{ color: C_STAT }}>
@@ -908,7 +1028,19 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             >
                                 升级
                             </button>
-                            <button type="button" disabled title="增加洗练次数：本站暂不模拟" style={{ ...btnStyle(false), padding: '6px 0' }}>
+                            <button
+                                type="button"
+                                onClick={raiseWashMax}
+                                disabled={!canRaiseMax || busy || leftBusy}
+                                title={
+                                    canRaiseMax
+                                        ? `消耗「轩辕拾遗录·相易」把洗练次数上限提到 ${nextWashCap}；累计满 ${SPECIAL_WASH_FROM} 次后自动切换为特殊洗练（官方未公布消耗数量，本站按 1 个计）`
+                                        : washLeft > 0
+                                          ? '洗练次数用满后才能提升上限'
+                                          : `当前上限已是 ${book.washMax} 次`
+                                }
+                                style={{ ...btnStyle(canRaiseMax && !busy && !leftBusy), padding: '6px 0' }}
+                            >
                                 增加洗练次数
                             </button>
                             <button
@@ -956,7 +1088,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                 {washOpen && (
                     <div id="xyc-wash-anchor" className="xyc-right w-full min-w-0 rounded-[4px] overflow-hidden flex flex-col" style={CARD_STYLE}>
                         <div className="relative flex items-center justify-center px-3 py-2" style={TITLE_BAR_STYLE}>
-                            <span style={TITLE_TEXT_STYLE}>洗 练</span>
+                            <span style={TITLE_TEXT_STYLE}>{specialMode ? '特 殊 洗 练' : '洗 练'}</span>
                             {/* 右上角关闭：与神机「自动锻造」面板同款，收起后可从左卡「洗炼」按钮再展开 */}
                             <button
                                 type="button"
@@ -969,50 +1101,149 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             </button>
                         </div>
 
-                        {/* 三种洗练道具：只放图标，点图标切换，选中态高亮 */}
-                        <div className="px-3 py-3 flex items-center justify-center gap-5" style={{ borderBottom: '1px solid #2a4054' }}>
-                            {WASH_ITEMS.map((it) => {
-                                const active = it.mode === mode;
-                                const blocked = it.mode === 'skill' && !skillEligible;
-                                const icon = ITEM_ICONS[it.mode];
-                                return (
-                                    <button
-                                        key={it.mode}
-                                        type="button"
-                                        onClick={() => setMode(it.mode)}
-                                        disabled={busy || leftBusy}
-                                        title={`${it.name} · ${it.short}：${it.desc}`}
-                                        className="relative w-11 h-11 rounded-[2px] overflow-hidden flex items-center justify-center cursor-pointer transition-all disabled:cursor-not-allowed"
-                                        style={{
-                                            background: active
-                                                ? 'linear-gradient(180deg, #1b3348 0%, #12212e 100%)'
-                                                : 'linear-gradient(180deg, #0d1922 0%, #070d13 100%)',
-                                            border: `1px solid ${active ? '#5f8fc9' : '#22303f'}`,
-                                            boxShadow: active
-                                                ? '0 0 10px rgba(70,232,251,0.35), inset 0 1px 0 rgba(255,255,255,0.12)'
-                                                : 'inset 0 1px 3px rgba(0,0,0,0.6)',
-                                            opacity: blocked || busy ? 0.45 : 1,
-                                        }}
-                                    >
-                                        <span
-                                            className="absolute inset-0 flex items-center justify-center text-[14px]"
-                                            style={{ color: active ? '#8fb0c8' : '#3d5a72', fontFamily: SIM_FONT }}
-                                        >
-                                            {icon.ch}
-                                        </span>
-                                        <img
-                                            src={icon.src}
-                                            alt={it.name}
-                                            className="relative w-full h-full object-contain"
-                                            style={{ imageRendering: 'pixelated' }}
-                                            onError={(e) => {
-                                                e.currentTarget.style.opacity = '0';
+                        {/* 三种洗练道具：只放图标，点图标切换，选中态高亮。
+                            特殊洗练（25 次后）改为三道具同时消耗，不再可选模式。 */}
+                        {specialMode ? (
+                            <div
+                                className="px-3 py-2.5 flex flex-col gap-2"
+                                style={{
+                                    borderBottom: '1px solid #2a4054',
+                                    background: 'linear-gradient(180deg, rgba(120,80,20,0.28) 0%, rgba(60,40,10,0.10) 100%)',
+                                }}
+                            >
+                                <div className="flex items-center justify-center gap-3">
+                                    {(['both', 'attr', 'skill'] as XycWashMode[]).map((m) => (
+                                        <div
+                                            key={m}
+                                            className="relative w-8 h-8 rounded-[2px] overflow-hidden flex items-center justify-center"
+                                            style={{
+                                                background: 'linear-gradient(180deg, #1b3348 0%, #12212e 100%)',
+                                                border: '1px solid #a8813c',
+                                                boxShadow: '0 0 8px rgba(255,190,80,0.25), inset 0 1px 0 rgba(255,255,255,0.12)',
                                             }}
-                                        />
-                                    </button>
-                                );
-                            })}
-                        </div>
+                                            title={WASH_ITEMS.find((w) => w.mode === m)?.name}
+                                        >
+                                            <img
+                                                src={ITEM_ICONS[m].src}
+                                                alt={WASH_ITEMS.find((w) => w.mode === m)?.name}
+                                                className="w-full h-full object-contain"
+                                                style={{ imageRendering: 'pixelated' }}
+                                                onError={(e) => {
+                                                    e.currentTarget.style.opacity = '0';
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="text-center text-[11.5px] leading-[16px]" style={{ color: '#ffd08a' }}>
+                                    特殊洗练 · 剩 {specialLeft} 次
+                                    <br />
+                                    太乙宝函 + 大衍奇术 + 一元道契 同时消耗
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="px-3 py-3 flex items-center justify-center gap-5" style={{ borderBottom: '1px solid #2a4054' }}>
+                                {WASH_ITEMS.map((it) => {
+                                    const active = it.mode === mode;
+                                    const blocked = it.mode === 'skill' && !skillEligible;
+                                    const icon = ITEM_ICONS[it.mode];
+                                    return (
+                                        <button
+                                            key={it.mode}
+                                            type="button"
+                                            onClick={() => setMode(it.mode)}
+                                            disabled={busy || leftBusy}
+                                            title={`${it.name} · ${it.short}：${it.desc}`}
+                                            className="relative w-11 h-11 rounded-[2px] overflow-hidden flex items-center justify-center cursor-pointer transition-all disabled:cursor-not-allowed"
+                                            style={{
+                                                background: active
+                                                    ? 'linear-gradient(180deg, #1b3348 0%, #12212e 100%)'
+                                                    : 'linear-gradient(180deg, #0d1922 0%, #070d13 100%)',
+                                                border: `1px solid ${active ? '#5f8fc9' : '#22303f'}`,
+                                                boxShadow: active
+                                                    ? '0 0 10px rgba(70,232,251,0.35), inset 0 1px 0 rgba(255,255,255,0.12)'
+                                                    : 'inset 0 1px 3px rgba(0,0,0,0.6)',
+                                                opacity: blocked || busy ? 0.45 : 1,
+                                            }}
+                                        >
+                                            <span
+                                                className="absolute inset-0 flex items-center justify-center text-[14px]"
+                                                style={{ color: active ? '#8fb0c8' : '#3d5a72', fontFamily: SIM_FONT }}
+                                            >
+                                                {icon.ch}
+                                            </span>
+                                            <img
+                                                src={icon.src}
+                                                alt={it.name}
+                                                className="relative w-full h-full object-contain"
+                                                style={{ imageRendering: 'pixelated' }}
+                                                onError={(e) => {
+                                                    e.currentTarget.style.opacity = '0';
+                                                }}
+                                            />
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        )}
+
+                        {/* 特殊洗练：必得技能（本职业 3 级技能）+ 锁定槽（≤2，洗后不变） */}
+                        {specialMode && (
+                            <div className="px-3 py-2 flex flex-col gap-2" style={{ borderBottom: '1px solid #2a4054' }}>
+                                <div className="flex items-center gap-2 min-w-0">
+                                    <span className="text-[11.5px] shrink-0 w-[54px] whitespace-nowrap" style={{ color: '#8fb0c8' }}>
+                                        必得技能
+                                    </span>
+                                    <select
+                                        value={specialSkillId ?? ''}
+                                        onChange={(e) => setSkillSel(Number(e.target.value))}
+                                        disabled={busy || leftBusy || specialSkills.length === 0}
+                                        className="flex-1 min-w-0 h-[26px] px-1.5 text-[12px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0] cursor-pointer disabled:cursor-not-allowed"
+                                        style={{ fontFamily: SIM_FONT }}
+                                        title="特殊洗练洗前自选本职业 3 级技能，洗后必得该技能"
+                                    >
+                                        {specialSkills.map((s) => (
+                                            <option key={s.id} value={s.id}>
+                                                {s.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="flex items-center gap-2 min-w-0">
+                                    <span className="text-[11.5px] shrink-0 w-[54px] whitespace-nowrap" style={{ color: '#8fb0c8' }}>
+                                        锁定
+                                    </span>
+                                    <div className="flex-1 min-w-0 flex items-center gap-1.5">
+                                        {Array.from({ length: SPECIAL_WASH_LOCK_MAX }).map((_, i) => {
+                                            const id = lockIds[i];
+                                            const has = id !== undefined;
+                                            return (
+                                                <button
+                                                    key={i}
+                                                    type="button"
+                                                    onClick={has ? () => toggleLock(id) : undefined}
+                                                    disabled={busy || leftBusy}
+                                                    className="flex-1 min-w-0 h-[26px] px-1.5 text-[12px] rounded-[2px] truncate"
+                                                    style={{
+                                                        background: has ? 'rgba(255,190,80,0.14)' : '#08121c',
+                                                        border: `1px ${has ? 'solid #a8813c' : 'dashed #21394f'}`,
+                                                        color: has ? '#ffd08a' : '#4a657c',
+                                                        cursor: has ? 'pointer' : 'default',
+                                                        fontFamily: SIM_FONT,
+                                                    }}
+                                                    title={has ? '点击取消锁定' : '点击左侧属性行锁定（最多 2 条）'}
+                                                >
+                                                    {has ? data.attrs[String(id)]?.name ?? `属性${id}` : '空'}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                                <div className="text-[10.5px] leading-[15px]" style={{ color: '#6f8ba4' }}>
+                                    锁定条洗后种类与数值均不变；未锁 {Math.max(0, book.attrCount - lockIds.length)} 条种类与数值都会重掷
+                                </div>
+                            </div>
+                        )}
 
                         {/* 操作区 */}
                         <div className="px-3 py-2 flex flex-col gap-2">
@@ -1074,22 +1305,11 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 </button>
                             </div>
 
-                            {SHOW_RAISE_MAX && canRaiseMax && (
-                                <button
-                                    type="button"
-                                    onClick={raiseWashMax}
-                                    className="w-full py-1 rounded-[3px] text-[11.5px] cursor-pointer"
-                                    style={{ background: '#241a2e', border: '1px solid #5a4a7a', color: '#d8c7ff' }}
-                                    title="洗练次数已用满，消耗「轩辕拾遗录」提升洗练次数上限"
-                                >
-                                    使用轩辕拾遗录（洗练上限 {book.washMax} → {nextWashCap}）
-                                </button>
-                            )}
-
                             {/* 本次洗练属性变化 */}
                             {changeLines.length > 0 && (
                                 <div
                                     key={changeSeq}
+                                    data-xyc-change
                                     className="rounded-[3px] overflow-hidden animate-in fade-in duration-150"
                                     style={{
                                         border: '1px solid #2a4054',
@@ -1123,6 +1343,9 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                             return (
                                                 <div
                                                     key={i}
+                                                    data-xyc-change-row={line.name}
+                                                    data-xyc-change-to={line.to}
+                                                    data-xyc-change-from={line.from}
                                                     className="flex items-baseline gap-2 min-w-0 text-[11.5px] leading-[18px] whitespace-nowrap"
                                                     style={{ letterSpacing: line.isSkill ? '0.6px' : undefined }}
                                                 >

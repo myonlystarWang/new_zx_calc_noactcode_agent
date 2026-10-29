@@ -214,6 +214,11 @@ export function rollSkill(data: XycRefineData, beast: XycBeast, occ: string, gra
     return { id: def.id, name: def.name, variant: def.variant, level, replace: def.replace };
 }
 
+/** 特殊洗练的可选技能（本职业 3 级技能；青龙 / 白虎 各一套，互不通用） */
+export function specialSkillOptions(data: XycRefineData, beast: XycBeast, occ: string): XycSkillDef[] {
+    return data?.skill?.pool?.[beast]?.[occ] ?? [];
+}
+
 export interface IdentifyOptions {
     version: XycVersion;
     beast: XycBeast;
@@ -252,6 +257,112 @@ export interface WashResult {
     changed: Array<{ kind: 'attr'; id: number; before: number | null; after: number | null } | { kind: 'skill'; before: string | null; after: string | null }>;
     gotSkill: boolean;
     lostSkill: boolean;
+}
+
+/* ─────────────────────── 特殊洗练（官方 2026-03-31 更新） ───────────────────────
+ * 官方原文要点（公众号《下周更新抢先看！轩辕策洗练上限提升》，2026-03-27 发布）：
+ * 1. 青龙〈青囊玉书〉·英雄版 / 白虎〈白锦道册〉·英雄版 可用「轩辕拾遗录·相易」把上限提到 30；
+ * 2. 洗练次数达到 25 次后，下一次洗练切换为「轩辕策特殊洗练」，需 太乙宝函 + 大衍奇术 + 一元道契 同时使用；
+ * 3. 特殊洗练前可选本职业 3 级技能，洗后必得该技能；不可单独洗技能或单独洗属性；
+ * 4. 每次最多锁 2 条属性，锁定属性洗后不变；未锁属性「种类与数值均变」，数值在最低值与最高值之间随机。
+ *
+ * 数值建模：官方「最低值~最高值之间随机」按用户 2026-10-27 拍板的口径实现 ——
+ * 仍走五档（新洗出的词条共用一次新的档位投掷），保证与普通洗练同一套数值模型。
+ */
+
+/** 进入特殊洗练的累计洗练次数门槛 */
+export const SPECIAL_WASH_FROM = 25;
+/** 特殊洗练每次最多锁定条数 */
+export const SPECIAL_WASH_LOCK_MAX = 2;
+/** 特殊洗练必得的技能等级（官方：本职业 3 级技能） */
+export const SPECIAL_WASH_SKILL_LEVEL = 3;
+
+/** 该策是否具备特殊洗练资格：仅青龙 / 白虎 英雄版 */
+export function supportsSpecialWash(book: XycBook): boolean {
+    return book.version === '英雄' && (book.beast === '青龙' || book.beast === '白虎');
+}
+
+/** 当前是否处于特殊洗练区间（次数已达 25 且还有剩余次数） */
+export function inSpecialWash(book: XycBook): boolean {
+    return supportsSpecialWash(book) && book.washUsed >= SPECIAL_WASH_FROM && book.washUsed < book.washMax;
+}
+
+/** 特殊洗练剩余次数（不在区间内返回 0） */
+export function specialWashLeft(book: XycBook): number {
+    if (!supportsSpecialWash(book) || book.washUsed < SPECIAL_WASH_FROM) return 0;
+    return Math.max(0, book.washMax - book.washUsed);
+}
+
+export interface SpecialWashOptions {
+    /** 锁定的属性 id（最多 2 条，必须在当前书上；不在书上的会被忽略） */
+    lockIds: number[];
+    /** 自选的本职业 3 级技能 id（必得） */
+    skillId: number | null;
+}
+
+/**
+ * 执行一次特殊洗练：
+ * - 锁定条（≤2）种类与数值均保持原样，槽位不动；
+ * - 其余槽位从「排除已锁属性」的池里不放回重抽，共用一次新的档位投掷；
+ * - 技能强制为所选 3 级技能。
+ */
+export function specialWash(
+    data: XycRefineData,
+    book: XycBook,
+    opts: SpecialWashOptions,
+    occ: string,
+    rng: Rng,
+): WashResult {
+    const pool = getPool(data, book.version, book.beast, book.grade);
+    const unchanged: WashResult = { book, changed: [], gotSkill: false, lostSkill: false };
+    if (!pool) return unchanged;
+    if (!inSpecialWash(book)) return unchanged;
+
+    const lockSet = new Set((opts.lockIds || []).slice(0, SPECIAL_WASH_LOCK_MAX));
+    const locked = book.attrs.filter((a) => lockSet.has(a.id));
+    const lockedIds = new Set(locked.map((a) => a.id));
+    const remainPool: XycPool = { ...pool, attrs: pool.attrs.filter((a) => !lockedIds.has(a.id)) };
+    const need = Math.max(0, book.attrCount - locked.length);
+    const tier = rollTier(pool, rng);
+    const fresh = rollAttrs(remainPool, need, tier, rng);
+
+    // 锁定的槽位原地保留，其余槽位按顺序填入新词条
+    const queue = [...fresh];
+    const attrs = book.attrs.map((a) => (lockedIds.has(a.id) ? a : queue.shift() ?? a));
+
+    const beforeById = new Map(book.attrs.map((a) => [a.id, a.base]));
+    const afterById = new Map(attrs.map((a) => [a.id, a.base]));
+    const changed: WashResult['changed'] = [];
+    for (const id of new Set([...beforeById.keys(), ...afterById.keys()])) {
+        const b = beforeById.get(id) ?? null;
+        const a = afterById.get(id) ?? null;
+        if (b !== null && a !== null && Math.abs(b - a) < 1e-9) continue;
+        changed.push({ kind: 'attr', id, before: b, after: a });
+    }
+
+    // 技能：必须命中当前门派技能池里的自选项，等级固定 3 级
+    const list = data.skill.pool?.[book.beast]?.[occ] ?? [];
+    const def = opts.skillId == null ? null : list.find((s) => s.id === opts.skillId) ?? null;
+    const nextSkill: XycSkillRoll | null = def
+        ? { id: def.id, name: def.name, variant: def.variant, level: SPECIAL_WASH_SKILL_LEVEL, replace: def.replace }
+        : null;
+    const beforeName = book.skill ? `${book.skill.name} ${book.skill.level}级` : null;
+    const afterName = nextSkill ? `${nextSkill.name} ${nextSkill.level}级` : null;
+    if (beforeName !== afterName) changed.push({ kind: 'skill', before: beforeName, after: afterName });
+
+    return {
+        book: {
+            ...book,
+            attrs,
+            tier,
+            skill: nextSkill,
+            washUsed: book.washUsed + 1,
+            washTotal: book.washTotal + 1,
+        },
+        changed,
+        gotSkill: !book.skill && Boolean(nextSkill),
+        lostSkill: Boolean(book.skill) && !nextSkill,
+    };
 }
 
 /**

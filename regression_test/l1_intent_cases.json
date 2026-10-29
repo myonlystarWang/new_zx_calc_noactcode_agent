@@ -7861,5 +7861,68 @@
       "wip"
     ],
     "assert": "strong"
+  },
+  {
+    "id": "xyc-special-01",
+    "input": "特殊洗练",
+    "expect": {
+      "cardType": "xyc_wash"
+    },
+    "tags": [
+      "standard",
+      "xyc"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "xyc-special-02",
+    "input": "轩辕策特殊洗练",
+    "expect": {
+      "cardType": "xyc_wash"
+    },
+    "tags": [
+      "standard",
+      "xyc"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "xyc-special-03",
+    "input": "青龙策特殊洗练",
+    "expect": {
+      "cardType": "xyc_wash",
+      "cardData.initialBeast": "青龙"
+    },
+    "tags": [
+      "standard",
+      "xyc"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "xyc-special-04",
+    "input": "白虎策特殊洗练 英雄",
+    "expect": {
+      "cardType": "xyc_wash",
+      "cardData.initialBeast": "白虎",
+      "cardData.initialVersion": "英雄"
+    },
+    "tags": [
+      "standard",
+      "xyc"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "xyc-special-05",
+    "input": "轩辕策洗练上限30",
+    "expect": {
+      "cardType": "xyc_wash"
+    },
+    "tags": [
+      "standard",
+      "xyc"
+    ],
+    "assert": "strong"
   }
 ]
