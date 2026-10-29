@@ -99,7 +99,7 @@ export function calcYunlingLuck(
             tier: beatRate < 20.0 ? '非酋' : '坎坷',
             badge: streakProb <= 0.01 ? '极罕见连败' : '遭遇连败',
             headline: `遭遇了 ${streakPct.toFixed(1)}% 的${streakProb <= 0.01 ? '极罕见' : ''}连败`,
-            subText: `单级最多消耗 ${maxTriesInLevel} 手（击败了 ${beatRate.toFixed(1)}% 的玩家）`,
+            subText: '单级最多消耗 ${maxTriesInLevel} 手，比 ${(100 - beatRate).toFixed(1)}% 的玩家消耗更多',
             tone: 'red',
         };
     }

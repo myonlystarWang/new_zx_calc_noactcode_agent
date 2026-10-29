@@ -567,244 +567,15 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                     }}
                 >
 
-                {/* 标题栏：米金字体居中 */}
-                <div
-                    className="relative flex items-center justify-between px-3 py-2 -mx-3.5 -mt-3.5 mb-3 rounded-t-[3px]"
-                    style={{
-                        background: 'linear-gradient(180deg, #192636 0%, #101a24 100%)',
-                        borderBottom: '1px solid #283e54',
-                    }}
-                >
-                    <div className="w-5" />
-                    <span
-                        className="text-[16px] font-bold tracking-[3px] select-none"
-                        style={{
-                            color: '#f7f4bb',
-                            textShadow: '0 0 10px rgba(247,244,187,0.35), 0 1px 2px #000000',
-                        }}
-                    >
-                        神机属性锻造
-                    </span>
-                    <div className="flex items-center gap-2">
-                        <button
-                            type="button"
-                            onClick={handleShareCard}
-                            disabled={shareBusy}
-                            title={shareBusy ? '正在生成图片…' : '分享锻造结果（长图）'}
-                            className="transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                            style={{ color: '#6ff0c8' }}
-                        >
-                            <Share2 className="w-4 h-4" />
-                        </button>
-                        {/* 问号仅作装饰，不可点击 */}
-                        <span
-                            style={{ color: '#6b89a8' }}
-                            title="洗练规则"
-                            aria-hidden="true"
-                            className="select-none cursor-default pointer-events-none"
-                        >
-                            <HelpCircle className="w-4 h-4" />
-                        </span>
-                    </div>
-                </div>
-
-                {/* 品质 + 蕴灵 */}
-                <div className="flex flex-wrap items-center gap-1.5 mb-2">
-                    {SHENJI_QUALITIES.map((q) => (
-                        <button
-                            key={q}
-                            type="button"
-                            onClick={() => handleQualityChange(q)}
-                            className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
-                            style={chipStyle(quality === q, getEquipQualityColor(q))}
-                        >
-                            {q}
-                        </button>
-                    ))}
-                    <span className="mx-1 h-3.5 w-px" style={{ background: '#22384d' }} />
-                    {[11, 13, 15].map((y) => (
-                        <button
-                            key={y}
-                            type="button"
-                            onClick={() => handleYunlingChange(y as YunlingTier)}
-                            className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
-                            style={chipStyle(yunling === y)}
-                        >
-                            +{y}
-                        </button>
-                    ))}
-                </div>
-
-                {/* 部位 */}
-                <div className="flex flex-wrap items-center gap-1.5 mb-3 pb-2.5" style={{ borderBottom: '1px solid #1a2a3b' }}>
-                    {SHENJI_SLOTS.map((s) => (
-                        <button
-                            key={s}
-                            type="button"
-                            onClick={() => handleSlotChange(s)}
-                            className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
-                            style={chipStyle(slot === s)}
-                        >
-                            {s}
-                        </button>
-                    ))}
-                    {!poolReady && <span className="text-[11px] ml-2" style={{ color: '#ff8080' }}>该组合暂无神机池</span>}
-                </div>
-
-                {/* 左右属性卡片区 */}
-                <div ref={shareCardRef} data-share-root className="grid grid-cols-1 @md:grid-cols-[1fr_auto_1fr] items-stretch gap-2.5">
-                    <ForgePanel
-                        side="left"
-                        slot={slot}
-                        quality={quality}
-                        rolls={left}
-                        chooseEnabled={left.length > 0 && !forging}
-                        onChoose={() => handleChoose('left')}
-                    />
-
-                    {/* 居中过渡箭头：游戏原版质感箭头 */}
-                    <div className="flex items-center justify-center select-none pointer-events-none px-1">
-                        <img
-                            src="/game_data/equip_icons/game_arrow.png"
-                            alt="->"
-                            className="w-[46px] h-[32px] object-contain opacity-80 hidden @md:block"
-                            onError={(e) => {
-                                (e.currentTarget as HTMLElement).style.display = 'none';
-                            }}
-                        />
-                        <span className="text-[20px] leading-none rotate-90 @md:hidden text-[#4e749a]">↓</span>
-                    </div>
-
-                    <ForgePanel
-                        side="right"
-                        slot={slot}
-                        quality={quality}
-                        rolls={right}
-                        chooseEnabled={right.length > 0 && !forging}
-                        onChoose={() => handleChoose('right')}
-                    />
-                </div>
-
-                {/* 读条 + 锻造按钮 */}
-                <div className="relative mt-3.5">
-                    <div className="mx-auto" style={{ width: BAR_W }}>
-                        <div
-                            className="relative overflow-hidden"
-                            style={{
-                                width: BAR_W,
-                                height: 10,
-                                borderRadius: 999,
-                                background: '#081219',
-                                border: `1px solid ${forging ? '#389bb5' : '#182b38'}`,
-                                boxShadow: forging
-                                    ? 'inset 0 0 6px rgba(0,200,220,0.3), 0 0 8px rgba(0,200,220,0.4)'
-                                    : 'inset 0 1px 3px rgba(0,0,0,0.8)',
-                                transition: 'border-color .15s, box-shadow .15s',
-                            }}
-                        >
-                            <div
-                                style={{
-                                    height: '100%',
-                                    width: `${Math.round(barFill * 100)}%`,
-                                    borderRadius: 999,
-                                    background: 'linear-gradient(90deg, #0c7585 0%, #15b8cf 50%, #46e8fb 100%)',
-                                    boxShadow: barFill > 0 ? '0 0 8px rgba(30,220,245,0.7)' : 'none',
-                                    transition: barAnim ? `width ${FORGE_MS - 20}ms linear` : 'none',
-                                }}
-                            />
-                        </div>
-
-                        <div className="flex gap-2.5 mt-2.5">
-                            <button
-                                type="button"
-                                disabled={!poolReady || forging}
-                                onClick={handleForge}
-                                className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
-                                style={{
-                                    background: poolReady && !forging
-                                        ? 'linear-gradient(180deg, #2b3d50 0%, #162432 100%)'
-                                        : 'rgba(16, 26, 36, 0.6)',
-                                    border: `1px solid ${poolReady && !forging ? '#416282' : '#203244'}`,
-                                    boxShadow: poolReady && !forging
-                                        ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.5)'
-                                        : 'none',
-                                    color: poolReady && !forging ? '#edf5fc' : '#4a657c',
-                                    cursor: poolReady && !forging ? 'pointer' : 'not-allowed',
-                                    fontFamily: SIM_FONT,
-                                }}
-                            >
-                                锻造
-                            </button>
-                            <button
-                                type="button"
-                                disabled={!poolReady}
-                                onClick={handleAutoToggle}
-                                className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
-                                style={{
-                                    background: auto
-                                        ? 'linear-gradient(180deg, #872e22 0%, #4f1710 100%)'
-                                        : showAutoPanel
-                                            ? 'rgba(16, 26, 36, 0.6)'
-                                            : poolReady
-                                                ? 'linear-gradient(180deg, #274563 0%, #142a3d 100%)'
-                                                : 'rgba(16, 26, 36, 0.6)',
-                                    border: `1px solid ${auto ? '#b34739' : showAutoPanel ? '#1a2938' : poolReady ? '#3c678f' : '#203244'}`,
-                                    boxShadow: auto
-                                        ? '0 0 12px rgba(220,60,40,0.5), inset 0 1px 0 rgba(255,255,255,0.2)'
-                                        : showAutoPanel
-                                            ? 'none'
-                                            : poolReady
-                                                ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.5)'
-                                                : 'none',
-                                    color: auto ? '#ffffff' : showAutoPanel ? '#4a657c' : poolReady ? '#ffffff' : '#4a657c',
-                                    cursor: poolReady ? 'pointer' : 'not-allowed',
-                                    fontFamily: SIM_FONT,
-                                }}
-                                title={showAutoPanel && !auto ? '自动锻造面板已开启（点击可收起）' : undefined}
-                            >
-                                {auto ? '停止' : '自动锻造'}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* 已锻造次数：宽卡片靠按钮组右侧绝对定位（PC 原样），窄卡片落到按钮下方居中，不再溢出卡片 */}
-                    <span
-                        className="block mt-2 text-center whitespace-nowrap text-[12px] tabular-nums select-none @md:mt-0 @md:absolute @md:text-left"
-                        style={{ left: 'calc(50% + 122px)', bottom: 8, color: '#5b7894', fontFamily: SIM_FONT }}
-                    >
-                        已锻造 <b style={{ color: '#ffd94d', fontWeight: 600 }}>{forgeCount}</b> 次
-                    </span>
-                </div>
-
-                {/* 分享引导文案：紧随按钮/次数下方，单行，无图标 */}
-                <div
-                    className="mt-2 text-center text-[11.5px] whitespace-nowrap select-none transition-colors"
-                    style={{ color: forgeCount > 0 ? '#86a8c7' : '#47637f' }}
-                >
-                    点击右上角分享，一键生成高清战报长图
-                </div>
-            </div>
-
-            {/* 右侧并排 / 窄屏纵向堆叠：自动锻造独立窗口（与游戏实机 1:1 还原） */}
-            {showAutoPanel && (
-                <div
-                    className="shenji-auto-card w-full rounded-[4px] p-3.5 select-none"
-                    style={{
-                        background: 'linear-gradient(180deg, #131b24 0%, #0c1219 100%)',
-                        border: '1px solid #283e54',
-                        fontFamily: SIM_FONT,
-                        boxShadow: '0 12px 36px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)',
-                    }}
-                >
-                    {/* 标题栏：与左卡「神机属性锻造」完全同规格（py-2 / 16px / tracking 3px）；
-                        关闭按钮绝对定位 —— 若留在流内，移动端全局 button{min-height:28px} 会把标题栏撑高 2px。 */}
+                    {/* 标题栏：米金字体居中 */}
                     <div
-                        className="relative flex items-center justify-center px-3 py-2 -mx-3.5 -mt-3.5 mb-3 rounded-t-[3px]"
+                        className="relative flex items-center justify-between px-3 py-2 -mx-3.5 -mt-3.5 mb-3 rounded-t-[3px]"
                         style={{
                             background: 'linear-gradient(180deg, #192636 0%, #101a24 100%)',
                             borderBottom: '1px solid #283e54',
                         }}
                     >
+                        <div className="w-5" />
                         <span
                             className="text-[16px] font-bold tracking-[3px] select-none"
                             style={{
@@ -812,135 +583,364 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                                 textShadow: '0 0 10px rgba(247,244,187,0.35), 0 1px 2px #000000',
                             }}
                         >
-                            自动锻造
+                            神机属性锻造
                         </span>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                if (auto) stopAll();
-                                setShowAutoPanel(false);
-                            }}
-                            className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors"
-                            title="关闭自动锻造"
-                        >
-                            <X className="w-3.5 h-3.5" />
-                        </button>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={handleShareCard}
+                                disabled={shareBusy}
+                                title={shareBusy ? '正在生成图片…' : '分享锻造结果（长图）'}
+                                className="transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                                style={{ color: '#6ff0c8' }}
+                            >
+                                <Share2 className="w-4 h-4" />
+                            </button>
+                            {/* 问号仅作装饰，不可点击 */}
+                            <span
+                                style={{ color: '#6b89a8' }}
+                                title="洗练规则"
+                                aria-hidden="true"
+                                className="select-none cursor-default pointer-events-none"
+                            >
+                                <HelpCircle className="w-4 h-4" />
+                            </span>
+                        </div>
                     </div>
 
-                    {/* 红色规则说明：与原版客户端完全一致 */}
-                    <div
-                        className="px-1 py-1 mb-3 text-[12px] leading-[18px] text-[#e04538]"
-                        style={{ textShadow: '0 1px 2px #000000' }}
-                    >
-                        <div>根据预设属性自动锻造</div>
-                        <div>只有当锻造后的神机属性相匹配且对应品质等于或者高于预设品质时方会停止锻造。</div>
+                    {/* 品质 + 蕴灵 */}
+                    <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                        {SHENJI_QUALITIES.map((q) => (
+                            <button
+                                key={q}
+                                type="button"
+                                onClick={() => handleQualityChange(q)}
+                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
+                                style={chipStyle(quality === q, getEquipQualityColor(q))}
+                            >
+                                {q}
+                            </button>
+                        ))}
+                        <span className="mx-1 h-3.5 w-px" style={{ background: '#22384d' }} />
+                        {[11, 13, 15].map((y) => (
+                            <button
+                                key={y}
+                                type="button"
+                                onClick={() => handleYunlingChange(y as YunlingTier)}
+                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
+                                style={chipStyle(yunling === y)}
+                            >
+                                +{y}
+                            </button>
+                        ))}
                     </div>
 
-                    {/* 3行预设属性目标：窄屏绝对防换行布局 */}
-                    <div className="space-y-2.5">
-                        {[0, 1, 2].map((i) => {
-                            const unlocked = i < pools.length;
-                            const level = i === 0 ? 11 : i === 1 ? 13 : 15;
-                            const options = attrOptionsBySlot[i] ?? [];
-                            const curTarget = targets[i] ?? { attrName: '无', minTier: 0 };
-                            return (
+                    {/* 部位 */}
+                    <div className="flex flex-wrap items-center gap-1.5 mb-3 pb-2.5" style={{ borderBottom: '1px solid #1a2a3b' }}>
+                        {SHENJI_SLOTS.map((s) => (
+                            <button
+                                key={s}
+                                type="button"
+                                onClick={() => handleSlotChange(s)}
+                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
+                                style={chipStyle(slot === s)}
+                            >
+                                {s}
+                            </button>
+                        ))}
+                        {!poolReady && <span className="text-[11px] ml-2" style={{ color: '#ff8080' }}>该组合暂无神机池</span>}
+                    </div>
+
+                    {/* 左右属性卡片区 */}
+                    <div ref={shareCardRef} data-share-root className="grid grid-cols-1 @md:grid-cols-[1fr_auto_1fr] items-stretch gap-2.5">
+                        <ForgePanel
+                            side="left"
+                            slot={slot}
+                            quality={quality}
+                            rolls={left}
+                            chooseEnabled={left.length > 0 && !forging}
+                            onChoose={() => handleChoose('left')}
+                        />
+
+                        {/* 居中过渡箭头：游戏原版质感箭头 */}
+                        <div className="flex items-center justify-center select-none pointer-events-none px-1">
+                            <img
+                                src="/game_data/equip_icons/game_arrow.png"
+                                alt="->"
+                                className="w-[46px] h-[32px] object-contain opacity-80 hidden @md:block"
+                                onError={(e) => {
+                                    (e.currentTarget as HTMLElement).style.display = 'none';
+                                }}
+                            />
+                            <span className="text-[20px] leading-none rotate-90 @md:hidden text-[#4e749a]">↓</span>
+                        </div>
+
+                        <ForgePanel
+                            side="right"
+                            slot={slot}
+                            quality={quality}
+                            rolls={right}
+                            chooseEnabled={right.length > 0 && !forging}
+                            onChoose={() => handleChoose('right')}
+                        />
+                    </div>
+
+                    {/* 读条 + 锻造按钮 */}
+                    <div className="relative mt-3.5">
+                        <div className="mx-auto" style={{ width: BAR_W }}>
+                            <div
+                                className="relative overflow-hidden"
+                                style={{
+                                    width: BAR_W,
+                                    height: 10,
+                                    borderRadius: 999,
+                                    background: '#081219',
+                                    border: `1px solid ${forging ? '#389bb5' : '#182b38'}`,
+                                    boxShadow: forging
+                                        ? 'inset 0 0 6px rgba(0,200,220,0.3), 0 0 8px rgba(0,200,220,0.4)'
+                                        : 'inset 0 1px 3px rgba(0,0,0,0.8)',
+                                    transition: 'border-color .15s, box-shadow .15s',
+                                }}
+                            >
                                 <div
-                                    key={i}
-                                    className={`flex items-center gap-2 ${unlocked ? '' : 'opacity-35 pointer-events-none'}`}
+                                    style={{
+                                        height: '100%',
+                                        width: `${Math.round(barFill * 100)}%`,
+                                        borderRadius: 999,
+                                        background: 'linear-gradient(90deg, #0c7585 0%, #15b8cf 50%, #46e8fb 100%)',
+                                        boxShadow: barFill > 0 ? '0 0 8px rgba(30,220,245,0.7)' : 'none',
+                                        transition: barAnim ? `width ${FORGE_MS - 20}ms linear` : 'none',
+                                    }}
+                                />
+                            </div>
+
+                            <div className="flex gap-2.5 mt-2.5">
+                                <button
+                                    type="button"
+                                    disabled={!poolReady || forging}
+                                    onClick={handleForge}
+                                    className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
+                                    style={{
+                                        background: poolReady && !forging
+                                            ? 'linear-gradient(180deg, #2b3d50 0%, #162432 100%)'
+                                            : 'rgba(16, 26, 36, 0.6)',
+                                        border: `1px solid ${poolReady && !forging ? '#416282' : '#203244'}`,
+                                        boxShadow: poolReady && !forging
+                                            ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.5)'
+                                            : 'none',
+                                        color: poolReady && !forging ? '#edf5fc' : '#4a657c',
+                                        cursor: poolReady && !forging ? 'pointer' : 'not-allowed',
+                                        fontFamily: SIM_FONT,
+                                    }}
                                 >
-                                    <span className="w-[50px] shrink-0 text-[13px] text-[#7ea0bd] font-medium whitespace-nowrap">
-                                        属性{i + 1}:
-                                    </span>
-                                    <select
-                                        disabled={!unlocked}
-                                        value={unlocked ? curTarget.attrName : `需蕴灵+${level}解锁`}
-                                        onChange={(e) => handleTargetAttrNameChange(i, e.target.value)}
-                                        className="flex-1 min-w-0 h-[28px] px-1.5 text-[12px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0] truncate"
-                                        title={unlocked ? curTarget.attrName : `需蕴灵+${level}解锁`}
-                                    >
-                                        {!unlocked ? (
-                                            <option value={`需蕴灵+${level}解锁`}>需蕴灵+{level}解锁</option>
-                                        ) : (
-                                            <>
-                                                <option value="无">无</option>
-                                                {options.map((opt) => (
-                                                    <option key={opt} value={opt}>
-                                                        {opt}
-                                                    </option>
-                                                ))}
-                                            </>
-                                        )}
-                                    </select>
-                                    <select
-                                        disabled={!unlocked}
-                                        value={curTarget.minTier}
-                                        onChange={(e) => handleTargetMinTierChange(i, Number(e.target.value))}
-                                        className="w-[96px] shrink-0 h-[28px] px-1 text-[12px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0]"
-                                    >
-                                        {BASE_QUALITY_OPTIONS.map((q) => (
-                                            <option key={q.value} value={q.value} style={{ color: q.color }}>
-                                                {q.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            );
-                        })}
+                                    锻造
+                                </button>
+                                <button
+                                    type="button"
+                                    disabled={!poolReady}
+                                    onClick={handleAutoToggle}
+                                    className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
+                                    style={{
+                                        background: auto
+                                            ? 'linear-gradient(180deg, #872e22 0%, #4f1710 100%)'
+                                            : showAutoPanel
+                                                ? 'rgba(16, 26, 36, 0.6)'
+                                                : poolReady
+                                                    ? 'linear-gradient(180deg, #274563 0%, #142a3d 100%)'
+                                                    : 'rgba(16, 26, 36, 0.6)',
+                                        border: `1px solid ${auto ? '#b34739' : showAutoPanel ? '#1a2938' : poolReady ? '#3c678f' : '#203244'}`,
+                                        boxShadow: auto
+                                            ? '0 0 12px rgba(220,60,40,0.5), inset 0 1px 0 rgba(255,255,255,0.2)'
+                                            : showAutoPanel
+                                                ? 'none'
+                                                : poolReady
+                                                    ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 5px rgba(0,0,0,0.5)'
+                                                    : 'none',
+                                        color: auto ? '#ffffff' : showAutoPanel ? '#4a657c' : poolReady ? '#ffffff' : '#4a657c',
+                                        cursor: poolReady ? 'pointer' : 'not-allowed',
+                                        fontFamily: SIM_FONT,
+                                    }}
+                                    title={showAutoPanel && !auto ? '自动锻造面板已开启（点击可收起）' : undefined}
+                                >
+                                    {auto ? '停止' : '自动锻造'}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* 已锻造次数：宽卡片靠按钮组右侧绝对定位（PC 原样），窄卡片落到按钮下方居中，不再溢出卡片 */}
+                        <span
+                            className="block mt-2 text-center whitespace-nowrap text-[12px] tabular-nums select-none @md:mt-0 @md:absolute @md:text-left"
+                            style={{ left: 'calc(50% + 122px)', bottom: 8, color: '#5b7894', fontFamily: SIM_FONT }}
+                        >
+                            已锻造 <b style={{ color: '#ffd94d', fontWeight: 600 }}>{forgeCount}</b> 次
+                        </span>
                     </div>
 
-                    {/* 达成目标时的动态提示 */}
-                    {targetHitMsg && (
-                        <div className="mt-3 text-center text-[12px] py-1.5 px-2 rounded-[2px] bg-[#143324] border border-[#276e4c] text-[#6fe8a8] font-medium animate-pulse">
-                            {targetHitMsg}
-                        </div>
-                    )}
-
-                    {/* 底部控制按钮（开始锻造/停止锻造，无神机石道具方格） */}
-                    {/* 按钮组收在 BAR_W 内居中：与主卡「锻造/自动锻造」按钮组、读条同一宽度轴，宽面板下不被拉满整行 */}
-                    <div className="pt-3 mt-3 border-t border-[#1a2d40]">
-                        <div className="mx-auto flex gap-2.5" style={{ width: BAR_W }}>
-                        <button
-                            type="button"
-                            disabled={!poolReady || auto}
-                            onClick={startAutoForge}
-                            className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
-                            style={{
-                                background: poolReady && !auto
-                                    ? 'linear-gradient(180deg, #274563 0%, #142a3d 100%)'
-                                    : 'rgba(16, 26, 36, 0.6)',
-                                border: `1px solid ${poolReady && !auto ? '#3c678f' : '#203244'}`,
-                                boxShadow: poolReady && !auto
-                                    ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.5)'
-                                    : 'none',
-                                color: poolReady && !auto ? '#ffffff' : '#4a657c',
-                                cursor: poolReady && !auto ? 'pointer' : 'not-allowed',
-                            }}
-                        >
-                            开始锻造
-                        </button>
-                        <button
-                            type="button"
-                            disabled={!auto}
-                            onClick={stopAll}
-                            className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
-                            style={{
-                                background: auto
-                                    ? 'linear-gradient(180deg, #872e22 0%, #4f1710 100%)'
-                                    : 'rgba(16, 26, 36, 0.6)',
-                                border: `1px solid ${auto ? '#b34739' : '#203244'}`,
-                                boxShadow: auto
-                                    ? '0 0 12px rgba(220,60,40,0.5), inset 0 1px 0 rgba(255,255,255,0.2)'
-                                    : 'none',
-                                color: auto ? '#ffffff' : '#4a657c',
-                                cursor: auto ? 'pointer' : 'not-allowed',
-                            }}
-                        >
-                            停止锻造
-                        </button>
-                        </div>
+                    {/* 分享引导文案：紧随按钮/次数下方，单行，无图标 */}
+                    <div
+                        className="mt-2 text-center text-[11.5px] whitespace-nowrap select-none transition-colors"
+                        style={{ color: forgeCount > 0 ? '#86a8c7' : '#47637f' }}
+                    >
+                        点击右上角分享，一键生成高清长图
                     </div>
                 </div>
-            )}
+
+                {/* 右侧并排 / 窄屏纵向堆叠：自动锻造独立窗口（与游戏实机 1:1 还原） */}
+                {showAutoPanel && (
+                    <div
+                        className="shenji-auto-card w-full rounded-[4px] p-3.5 select-none"
+                        style={{
+                            background: 'linear-gradient(180deg, #131b24 0%, #0c1219 100%)',
+                            border: '1px solid #283e54',
+                            fontFamily: SIM_FONT,
+                            boxShadow: '0 12px 36px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)',
+                        }}
+                    >
+                        {/* 标题栏：与左卡「神机属性锻造」完全同规格（py-2 / 16px / tracking 3px）；
+                        关闭按钮绝对定位 —— 若留在流内，移动端全局 button{min-height:28px} 会把标题栏撑高 2px。 */}
+                        <div
+                            className="relative flex items-center justify-center px-3 py-2 -mx-3.5 -mt-3.5 mb-3 rounded-t-[3px]"
+                            style={{
+                                background: 'linear-gradient(180deg, #192636 0%, #101a24 100%)',
+                                borderBottom: '1px solid #283e54',
+                            }}
+                        >
+                            <span
+                                className="text-[16px] font-bold tracking-[3px] select-none"
+                                style={{
+                                    color: '#f7f4bb',
+                                    textShadow: '0 0 10px rgba(247,244,187,0.35), 0 1px 2px #000000',
+                                }}
+                            >
+                                自动锻造
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (auto) stopAll();
+                                    setShowAutoPanel(false);
+                                }}
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors"
+                                title="关闭自动锻造"
+                            >
+                                <X className="w-3.5 h-3.5" />
+                            </button>
+                        </div>
+
+                        {/* 红色规则说明：与原版客户端完全一致 */}
+                        <div
+                            className="px-1 py-1 mb-3 text-[12px] leading-[18px] text-[#e04538]"
+                            style={{ textShadow: '0 1px 2px #000000' }}
+                        >
+                            <div>根据预设属性自动锻造</div>
+                            <div>只有当锻造后的神机属性相匹配且对应品质等于或者高于预设品质时方会停止锻造。</div>
+                        </div>
+
+                        {/* 3行预设属性目标：窄屏绝对防换行布局 */}
+                        <div className="space-y-2.5">
+                            {[0, 1, 2].map((i) => {
+                                const unlocked = i < pools.length;
+                                const level = i === 0 ? 11 : i === 1 ? 13 : 15;
+                                const options = attrOptionsBySlot[i] ?? [];
+                                const curTarget = targets[i] ?? { attrName: '无', minTier: 0 };
+                                return (
+                                    <div
+                                        key={i}
+                                        className={`flex items-center gap-2 ${unlocked ? '' : 'opacity-35 pointer-events-none'}`}
+                                    >
+                                        <span className="w-[50px] shrink-0 text-[13px] text-[#7ea0bd] font-medium whitespace-nowrap">
+                                            属性{i + 1}:
+                                        </span>
+                                        <select
+                                            disabled={!unlocked}
+                                            value={unlocked ? curTarget.attrName : `需蕴灵+${level}解锁`}
+                                            onChange={(e) => handleTargetAttrNameChange(i, e.target.value)}
+                                            className="flex-1 min-w-0 h-[28px] px-1.5 text-[12px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0] truncate"
+                                            title={unlocked ? curTarget.attrName : `需蕴灵+${level}解锁`}
+                                        >
+                                            {!unlocked ? (
+                                                <option value={`需蕴灵+${level}解锁`}>需蕴灵+{level}解锁</option>
+                                            ) : (
+                                                <>
+                                                    <option value="无">无</option>
+                                                    {options.map((opt) => (
+                                                        <option key={opt} value={opt}>
+                                                            {opt}
+                                                        </option>
+                                                    ))}
+                                                </>
+                                            )}
+                                        </select>
+                                        <select
+                                            disabled={!unlocked}
+                                            value={curTarget.minTier}
+                                            onChange={(e) => handleTargetMinTierChange(i, Number(e.target.value))}
+                                            className="w-[96px] shrink-0 h-[28px] px-1 text-[12px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0]"
+                                        >
+                                            {BASE_QUALITY_OPTIONS.map((q) => (
+                                                <option key={q.value} value={q.value} style={{ color: q.color }}>
+                                                    {q.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* 达成目标时的动态提示 */}
+                        {targetHitMsg && (
+                            <div className="mt-3 text-center text-[12px] py-1.5 px-2 rounded-[2px] bg-[#143324] border border-[#276e4c] text-[#6fe8a8] font-medium animate-pulse">
+                                {targetHitMsg}
+                            </div>
+                        )}
+
+                        {/* 底部控制按钮（开始锻造/停止锻造，无神机石道具方格） */}
+                        {/* 按钮组收在 BAR_W 内居中：与主卡「锻造/自动锻造」按钮组、读条同一宽度轴，宽面板下不被拉满整行 */}
+                        <div className="pt-3 mt-3 border-t border-[#1a2d40]">
+                            <div className="mx-auto flex gap-2.5" style={{ width: BAR_W }}>
+                                <button
+                                    type="button"
+                                    disabled={!poolReady || auto}
+                                    onClick={startAutoForge}
+                                    className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
+                                    style={{
+                                        background: poolReady && !auto
+                                            ? 'linear-gradient(180deg, #274563 0%, #142a3d 100%)'
+                                            : 'rgba(16, 26, 36, 0.6)',
+                                        border: `1px solid ${poolReady && !auto ? '#3c678f' : '#203244'}`,
+                                        boxShadow: poolReady && !auto
+                                            ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.5)'
+                                            : 'none',
+                                        color: poolReady && !auto ? '#ffffff' : '#4a657c',
+                                        cursor: poolReady && !auto ? 'pointer' : 'not-allowed',
+                                    }}
+                                >
+                                    开始锻造
+                                </button>
+                                <button
+                                    type="button"
+                                    disabled={!auto}
+                                    onClick={stopAll}
+                                    className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider transition-all font-medium select-none"
+                                    style={{
+                                        background: auto
+                                            ? 'linear-gradient(180deg, #872e22 0%, #4f1710 100%)'
+                                            : 'rgba(16, 26, 36, 0.6)',
+                                        border: `1px solid ${auto ? '#b34739' : '#203244'}`,
+                                        boxShadow: auto
+                                            ? '0 0 12px rgba(220,60,40,0.5), inset 0 1px 0 rgba(255,255,255,0.2)'
+                                            : 'none',
+                                        color: auto ? '#ffffff' : '#4a657c',
+                                        cursor: auto ? 'pointer' : 'not-allowed',
+                                    }}
+                                >
+                                    停止锻造
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

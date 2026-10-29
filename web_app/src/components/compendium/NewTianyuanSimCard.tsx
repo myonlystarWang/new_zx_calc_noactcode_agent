@@ -81,18 +81,18 @@ const TITLE_TEXT_STYLE: React.CSSProperties = {
 function tabStyle(active: boolean): React.CSSProperties {
     return active
         ? {
-              background: '#1b3348',
-              border: '1px solid #5f8fc9',
-              color: '#d6ecff',
-              boxShadow: '0 0 8px rgba(70,232,251,0.18), inset 0 1px 0 rgba(255,255,255,0.12)',
-              fontFamily: SIM_FONT,
-          }
+            background: '#1b3348',
+            border: '1px solid #5f8fc9',
+            color: '#d6ecff',
+            boxShadow: '0 0 8px rgba(70,232,251,0.18), inset 0 1px 0 rgba(255,255,255,0.12)',
+            fontFamily: SIM_FONT,
+        }
         : {
-              background: '#0f1a26',
-              border: '1px solid #2a415a',
-              color: '#9fb6c9',
-              fontFamily: SIM_FONT,
-          };
+            background: '#0f1a26',
+            border: '1px solid #2a415a',
+            color: '#9fb6c9',
+            fontFamily: SIM_FONT,
+        };
 }
 
 /** 装备 tooltip 右侧竖排按钮（紫黑底 + 银紫边） */
@@ -573,6 +573,12 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                                     ))}
                                 </div>
                                 <div>
+                                    <div
+                                        className="mt-1 text-[11.5px] select-none transition-colors"
+                                        style={{ color: item.level > 0 ? '#86a8c7' : '#47637f' }}
+                                    >
+                                        点击右上角分享，一键生成高清战报长图
+                                    </div>
                                     <button
                                         type="button"
                                         onClick={() => setShowInfo((v) => !v)}
@@ -609,184 +615,176 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                             </button>
                         </div>
                     </div>
-
-                    {/* 分享引导文案：放在左卡底部，独立容器，绝不破坏属性卡截图与排版 */}
-                    <div
-                        className="py-1.5 px-3 text-center text-[11.5px] border-t border-[#1a2938] whitespace-nowrap select-none transition-colors"
-                        style={{ color: item.level > 0 ? '#86a8c7' : '#47637f', background: 'rgba(10,18,26,0.6)' }}
-                    >
-                        点击右上角分享，一键生成高清战报长图
-                    </div>
                 </div>
 
                 {/* ── 窗口 2：天缘属性精炼（点「精炼」后才出现） ───── */}
                 {refineOpen && (
-                <div className="nt-sim-right w-full min-w-0 rounded-[4px] overflow-hidden flex flex-col" style={CARD_STYLE}>
-                    <div className="relative flex items-center justify-center px-3 py-2" style={TITLE_BAR_STYLE}>
-                        <span style={TITLE_TEXT_STYLE}>天缘属性精炼</span>
-                        <button
-                            type="button"
-                            onClick={() => {
-                                stopAll();
-                                setRefineOpen(false);
-                            }}
-                            className="absolute right-3 cursor-pointer hover:brightness-150"
-                            title="关闭精炼窗口"
-                        >
-                            <X className="w-3.5 h-3.5" style={{ color: '#8aa0b8' }} />
-                        </button>
-                    </div>
-
-                    <div className="p-3 flex flex-col gap-2.5 flex-1">
-                        {/* 祝福石：图标 + 使用/取消（选中后可再次点击撤销） */}
-                        <div className="flex flex-col items-center gap-1">
+                    <div className="nt-sim-right w-full min-w-0 rounded-[4px] overflow-hidden flex flex-col" style={CARD_STYLE}>
+                        <div className="relative flex items-center justify-center px-3 py-2" style={TITLE_BAR_STYLE}>
+                            <span style={TITLE_TEXT_STYLE}>天缘属性精炼</span>
                             <button
                                 type="button"
-                                onClick={toggleRuixiang}
-                                className="relative w-[54px] h-[54px] rounded-[2px] flex items-center justify-center cursor-pointer transition-all overflow-hidden"
-                                style={{
-                                    border: `1px solid ${ruixiangOpen || item.ruixiangUsed ? '#46e8fb' : '#2f4a62'}`,
-                                    background: 'radial-gradient(circle at 50% 35%, #1b3346 0%, #0a141d 76%)',
+                                onClick={() => {
+                                    stopAll();
+                                    setRefineOpen(false);
                                 }}
-                                title={
-                                    item.ruixiangUsed
-                                        ? '取消瑞祥符（回退本次天命）'
-                                        : canRuixiang
-                                          ? '使用瑞祥符：展开属性列表，选择一条 +3 次天命'
-                                          : `瑞祥符仅 +${data.refine.ruixiangLevels.join('/+')} 可用`
-                                }
+                                className="absolute right-3 cursor-pointer hover:brightness-150"
+                                title="关闭精炼窗口"
                             >
-                                <img
-                                    src="/game_data/equip_icons/ruixiang_rune.png"
-                                    alt="瑞祥符"
-                                    className="w-full h-full object-cover"
-                                    style={{ filter: item.ruixiangUsed ? 'none' : 'grayscale(0.4) brightness(0.85)' }}
-                                />
-                                <span className="absolute bottom-0 right-0.5 text-[9px] font-mono" style={{ color: '#c7e4f5' }}>
-                                    {item.ruixiangUsed ? 0 : 1}
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={toggleRuixiang}
-                                className="text-[11px] cursor-pointer hover:brightness-125 transition-all"
-                                style={{ color: item.ruixiangUsed || ruixiangOpen ? '#ff8080' : '#9adfff' }}
-                            >
-                                {item.ruixiangUsed || ruixiangOpen ? '取消使用瑞祥符' : '使用瑞祥符'}
+                                <X className="w-3.5 h-3.5" style={{ color: '#8aa0b8' }} />
                             </button>
                         </div>
 
-                        {/* 属性选择（点击使用瑞祥符后出现，选中才消耗次数） */}
-                        {ruixiangOpen && !item.ruixiangUsed && (
-                            <div className="rounded-[3px] border border-[#3c678f]/50 bg-black/50 px-2 py-1.5">
-                                <div className="flex flex-wrap justify-center gap-1">
-                                    {item.attrs.map((attr, idx) => (
-                                        <button
-                                            key={`${attr.def.id}-${idx}`}
-                                            type="button"
-                                            onClick={() => chooseRuixiang(idx)}
-                                            className="px-1.5 py-0.5 rounded-sm text-[10.5px] border border-[#3c678f] text-[#9adfff] hover:bg-[#1e3a50] cursor-pointer"
-                                        >
-                                            {attrLabel(attr.def)}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* 结果提示 */}
-                        {msg && (
-                            <div
-                                className="rounded-[2px] px-2.5 py-1.5 text-center animate-in fade-in duration-150"
-                                style={
-                                    msg.ok
-                                        ? { background: 'rgba(111,232,168,0.13)', border: '1px solid rgba(111,232,168,0.5)' }
-                                        : { background: '#2a1a17', border: '1px solid #6b3a30' }
-                                }
-                            >
-                                <div
-                                    className={clsx('text-[12.5px] font-medium leading-[18px]', msg.ok && 'animate-pulse')}
+                        <div className="p-3 flex flex-col gap-2.5 flex-1">
+                            {/* 祝福石：图标 + 使用/取消（选中后可再次点击撤销） */}
+                            <div className="flex flex-col items-center gap-1">
+                                <button
+                                    type="button"
+                                    onClick={toggleRuixiang}
+                                    className="relative w-[54px] h-[54px] rounded-[2px] flex items-center justify-center cursor-pointer transition-all overflow-hidden"
                                     style={{
-                                        color: msg.ok ? '#6fe8a8' : '#eda392',
-                                        textShadow: msg.ok ? '0 0 10px rgba(111,232,168,0.45)' : 'none',
+                                        border: `1px solid ${ruixiangOpen || item.ruixiangUsed ? '#46e8fb' : '#2f4a62'}`,
+                                        background: 'radial-gradient(circle at 50% 35%, #1b3346 0%, #0a141d 76%)',
                                     }}
+                                    title={
+                                        item.ruixiangUsed
+                                            ? '取消瑞祥符（回退本次天命）'
+                                            : canRuixiang
+                                                ? '使用瑞祥符：展开属性列表，选择一条 +3 次天命'
+                                                : `瑞祥符仅 +${data.refine.ruixiangLevels.join('/+')} 可用`
+                                    }
                                 >
-                                    {msg.title}
-                                </div>
+                                    <img
+                                        src="/game_data/equip_icons/ruixiang_rune.png"
+                                        alt="瑞祥符"
+                                        className="w-full h-full object-cover"
+                                        style={{ filter: item.ruixiangUsed ? 'none' : 'grayscale(0.4) brightness(0.85)' }}
+                                    />
+                                    <span className="absolute bottom-0 right-0.5 text-[9px] font-mono" style={{ color: '#c7e4f5' }}>
+                                        {item.ruixiangUsed ? 0 : 1}
+                                    </span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={toggleRuixiang}
+                                    className="text-[11px] cursor-pointer hover:brightness-125 transition-all"
+                                    style={{ color: item.ruixiangUsed || ruixiangOpen ? '#ff8080' : '#9adfff' }}
+                                >
+                                    {item.ruixiangUsed || ruixiangOpen ? '取消使用瑞祥符' : '使用瑞祥符'}
+                                </button>
                             </div>
-                        )}
 
-                        {/* 读条 + 按钮（收窄，对齐神机锻造） */}
-                        <div className="mx-auto w-full max-w-[240px]">
-                            <div
-                                className="relative overflow-hidden w-full"
-                                style={{
-                                    height: 10,
-                                    borderRadius: 999,
-                                    background: '#081219',
-                                    border: `1px solid ${busy ? '#389bb5' : '#182b38'}`,
-                                    boxShadow: busy
-                                        ? 'inset 0 0 6px rgba(0,200,220,0.3), 0 0 8px rgba(0,200,220,0.4)'
-                                        : 'inset 0 1px 3px rgba(0,0,0,0.8)',
-                                    transition: 'border-color .15s, box-shadow .15s',
-                                }}
-                            >
+                            {/* 属性选择（点击使用瑞祥符后出现，选中才消耗次数） */}
+                            {ruixiangOpen && !item.ruixiangUsed && (
+                                <div className="rounded-[3px] border border-[#3c678f]/50 bg-black/50 px-2 py-1.5">
+                                    <div className="flex flex-wrap justify-center gap-1">
+                                        {item.attrs.map((attr, idx) => (
+                                            <button
+                                                key={`${attr.def.id}-${idx}`}
+                                                type="button"
+                                                onClick={() => chooseRuixiang(idx)}
+                                                className="px-1.5 py-0.5 rounded-sm text-[10.5px] border border-[#3c678f] text-[#9adfff] hover:bg-[#1e3a50] cursor-pointer"
+                                            >
+                                                {attrLabel(attr.def)}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* 结果提示 */}
+                            {msg && (
                                 <div
+                                    className="rounded-[2px] px-2.5 py-1.5 text-center animate-in fade-in duration-150"
+                                    style={
+                                        msg.ok
+                                            ? { background: 'rgba(111,232,168,0.13)', border: '1px solid rgba(111,232,168,0.5)' }
+                                            : { background: '#2a1a17', border: '1px solid #6b3a30' }
+                                    }
+                                >
+                                    <div
+                                        className={clsx('text-[12.5px] font-medium leading-[18px]', msg.ok && 'animate-pulse')}
+                                        style={{
+                                            color: msg.ok ? '#6fe8a8' : '#eda392',
+                                            textShadow: msg.ok ? '0 0 10px rgba(111,232,168,0.45)' : 'none',
+                                        }}
+                                    >
+                                        {msg.title}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* 读条 + 按钮（收窄，对齐神机锻造） */}
+                            <div className="mx-auto w-full max-w-[240px]">
+                                <div
+                                    className="relative overflow-hidden w-full"
                                     style={{
-                                        height: '100%',
-                                        width: `${Math.round(barFill * 100)}%`,
+                                        height: 10,
                                         borderRadius: 999,
-                                        background: 'linear-gradient(90deg, #0c7585 0%, #15b8cf 50%, #46e8fb 100%)',
-                                        boxShadow: barFill > 0 ? '0 0 8px rgba(30,220,245,0.7)' : 'none',
-                                        transition: barAnim ? `width ${REFINE_MS - 20}ms linear` : 'none',
+                                        background: '#081219',
+                                        border: `1px solid ${busy ? '#389bb5' : '#182b38'}`,
+                                        boxShadow: busy
+                                            ? 'inset 0 0 6px rgba(0,200,220,0.3), 0 0 8px rgba(0,200,220,0.4)'
+                                            : 'inset 0 1px 3px rgba(0,0,0,0.8)',
+                                        transition: 'border-color .15s, box-shadow .15s',
                                     }}
-                                />
+                                >
+                                    <div
+                                        style={{
+                                            height: '100%',
+                                            width: `${Math.round(barFill * 100)}%`,
+                                            borderRadius: 999,
+                                            background: 'linear-gradient(90deg, #0c7585 0%, #15b8cf 50%, #46e8fb 100%)',
+                                            boxShadow: barFill > 0 ? '0 0 8px rgba(30,220,245,0.7)' : 'none',
+                                            transition: barAnim ? `width ${REFINE_MS - 20}ms linear` : 'none',
+                                        }}
+                                    />
+                                </div>
+
+                                <div className="flex gap-2.5 mt-2.5">
+                                    <button
+                                        type="button"
+                                        disabled={busy || item.level >= maxLevel}
+                                        onClick={handleSingle}
+                                        className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider font-medium transition-all whitespace-nowrap"
+                                        style={btnStyle(!busy && item.level < maxLevel)}
+                                    >
+                                        单次精炼
+                                    </button>
+                                    <button
+                                        type="button"
+                                        disabled={!auto && item.level >= maxLevel}
+                                        onClick={toggleAuto}
+                                        className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider font-medium transition-all whitespace-nowrap"
+                                        style={btnStyle(auto || item.level < maxLevel, auto ? 'danger' : 'normal')}
+                                    >
+                                        {auto ? (
+                                            <span className="inline-flex items-center justify-center gap-1">
+                                                <Square className="w-3 h-3" /> 停止
+                                            </span>
+                                        ) : (
+                                            '连续精炼'
+                                        )}
+                                    </button>
+                                </div>
                             </div>
 
-                            <div className="flex gap-2.5 mt-2.5">
-                                <button
-                                    type="button"
-                                    disabled={busy || item.level >= maxLevel}
-                                    onClick={handleSingle}
-                                    className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider font-medium transition-all whitespace-nowrap"
-                                    style={btnStyle(!busy && item.level < maxLevel)}
-                                >
-                                    单次精炼
-                                </button>
-                                <button
-                                    type="button"
-                                    disabled={!auto && item.level >= maxLevel}
-                                    onClick={toggleAuto}
-                                    className="flex-1 py-1.5 rounded-[3px] text-[13px] tracking-wider font-medium transition-all whitespace-nowrap"
-                                    style={btnStyle(auto || item.level < maxLevel, auto ? 'danger' : 'normal')}
-                                >
-                                    {auto ? (
-                                        <span className="inline-flex items-center justify-center gap-1">
-                                            <Square className="w-3 h-3" /> 停止
-                                        </span>
-                                    ) : (
-                                        '连续精炼'
-                                    )}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* 规则：蓝字 + 红字关键词 */}
-                        <div className="text-[12px] leading-[20px]" style={{ color: '#9adfff' }}>
-                            <div>
-                                1.精炼等级达到<span style={{ color: '#ff4d4d' }}>3.6.9.10级</span>时有概率触发天命；
-                            </div>
-                            <div>
-                                2.天缘属性的<span style={{ color: '#ff4d4d' }}>条目越多</span>，触发天命的概率越大；
-                            </div>
-                            <div>
-                                3.在精炼等级为<span style={{ color: '#ff4d4d' }}>2.5.8级</span>时可以使用
-                                <span style={{ color: '#ff4d4d' }}>瑞祥符</span>，必定令指定属性触发
-                                <span style={{ color: '#ff4d4d' }}>3次</span>天命强化；
+                            {/* 规则：蓝字 + 红字关键词 */}
+                            <div className="text-[12px] leading-[20px]" style={{ color: '#9adfff' }}>
+                                <div>
+                                    1.精炼等级达到<span style={{ color: '#ff4d4d' }}>3.6.9.10级</span>时有概率触发天命；
+                                </div>
+                                <div>
+                                    2.天缘属性的<span style={{ color: '#ff4d4d' }}>条目越多</span>，触发天命的概率越大；
+                                </div>
+                                <div>
+                                    3.在精炼等级为<span style={{ color: '#ff4d4d' }}>2.5.8级</span>时可以使用
+                                    <span style={{ color: '#ff4d4d' }}>瑞祥符</span>，必定令指定属性触发
+                                    <span style={{ color: '#ff4d4d' }}>3次</span>天命强化；
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 )}
             </div>
 

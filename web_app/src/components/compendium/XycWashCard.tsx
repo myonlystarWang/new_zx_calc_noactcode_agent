@@ -92,18 +92,18 @@ const C_WHITE = '#ffffff';
 function tabStyle(active: boolean): React.CSSProperties {
     return active
         ? {
-              background: '#1b3348',
-              border: '1px solid #5f8fc9',
-              color: '#d6ecff',
-              boxShadow: '0 0 8px rgba(70,232,251,0.18), inset 0 1px 0 rgba(255,255,255,0.12)',
-              fontFamily: SIM_FONT,
-          }
+            background: '#1b3348',
+            border: '1px solid #5f8fc9',
+            color: '#d6ecff',
+            boxShadow: '0 0 8px rgba(70,232,251,0.18), inset 0 1px 0 rgba(255,255,255,0.12)',
+            fontFamily: SIM_FONT,
+        }
         : {
-              background: '#0f1a26',
-              border: '1px solid #2a415a',
-              color: '#7f9ab0',
-              fontFamily: SIM_FONT,
-          };
+            background: '#0f1a26',
+            border: '1px solid #2a415a',
+            color: '#7f9ab0',
+            fontFamily: SIM_FONT,
+        };
 }
 
 /**
@@ -930,7 +930,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             className="mt-1.5 text-center text-[11.5px] whitespace-nowrap select-none transition-colors"
                             style={{ color: (book?.washUsed ?? 0) > 0 ? '#86a8c7' : '#47637f' }}
                         >
-                            点击右上角分享，一键生成高清战报长图
+                            点击右上角分享，一键生成高清长图
                         </div>
 
                         {/* 升级结果提示：固定 16px 高占位，失败文案出现/消失都不顶动布局 */}
