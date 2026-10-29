@@ -608,15 +608,14 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                                 重置
                             </button>
                         </div>
+                    </div>
 
-                        {/* 分享引导文案 */}
-                        <div
-                            className="mt-2.5 text-center text-[12px] flex items-center justify-center gap-1 select-none transition-colors"
-                            style={{ color: item.level > 0 ? '#86a8c7' : '#47637f' }}
-                        >
-                            <Share2 className="w-3.5 h-3.5 shrink-0" style={{ color: item.level > 0 ? '#6ff0c8' : '#3f5670' }} />
-                            <span>提示：点击右上角分享图标，可一键生成高清战报长图</span>
-                        </div>
+                    {/* 分享引导文案：放在左卡底部，独立容器，绝不破坏属性卡截图与排版 */}
+                    <div
+                        className="py-1.5 px-3 text-center text-[11.5px] border-t border-[#1a2938] whitespace-nowrap select-none transition-colors"
+                        style={{ color: item.level > 0 ? '#86a8c7' : '#47637f', background: 'rgba(10,18,26,0.6)' }}
+                    >
+                        点击右上角分享，一键生成高清战报长图
                     </div>
                 </div>
 

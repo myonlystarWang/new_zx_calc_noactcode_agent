@@ -6146,7 +6146,7 @@
     "input": "各类模拟器",
     "expect": {
       "cardType": "sim_hub",
-      "cardData.options.length": 4
+      "cardData.options.length": 6
     },
     "tags": [
       "hub",

@@ -776,13 +776,12 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                     </span>
                 </div>
 
-                {/* 分享引导文案 */}
+                {/* 分享引导文案：紧随按钮/次数下方，单行，无图标 */}
                 <div
-                    className="mt-3 text-center text-[12px] flex items-center justify-center gap-1 select-none transition-colors"
+                    className="mt-2 text-center text-[11.5px] whitespace-nowrap select-none transition-colors"
                     style={{ color: forgeCount > 0 ? '#86a8c7' : '#47637f' }}
                 >
-                    <Share2 className="w-3.5 h-3.5 shrink-0" style={{ color: forgeCount > 0 ? '#6ff0c8' : '#3f5670' }} />
-                    <span>提示：点击右上角分享图标，可一键生成高清战报长图</span>
+                    点击右上角分享，一键生成高清战报长图
                 </div>
             </div>
 

@@ -2122,10 +2122,12 @@ export class CopilotService {
                 cardData: {
                     title: '各类模拟器导航',
                     options: [
-                        { key: 'xyc_wash', label: '轩辕策洗练', query: '轩辕策洗练' },
+                        { key: 'calc', label: '战力计算器', query: '计算器', workspaceMode: 'calc' },
+                        { key: 'arena', label: '副本训练场', query: '训练场', workspaceMode: 'arena' },
+                        { key: 'xyc_wash', label: '轩辕策洗练', query: '轩辕策洗练', workspaceMode: 'xyc' },
                         { key: 'shenji', label: '神机洗练', query: '神机洗练' },
-                        { key: 'yunling', label: '神隐蕴灵', query: '神隐蕴灵' },
-                        { key: 'tianyuan_sim', label: '新天缘精炼', query: '新天缘精炼' },
+                        { key: 'yunling', label: '神隐蕴灵', query: '神隐蕴灵', workspaceMode: 'yunling' },
+                        { key: 'tianyuan_sim', label: '新天缘精炼', query: '新天缘精炼', workspaceMode: 'newtianyuan' },
                     ]
                 }
             };

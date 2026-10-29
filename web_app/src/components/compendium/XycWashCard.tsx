@@ -925,6 +925,14 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             </button>
                         </div>
 
+                        {/* 分享引导文案：紧随操作按钮下方 */}
+                        <div
+                            className="mt-1.5 text-center text-[11.5px] whitespace-nowrap select-none transition-colors"
+                            style={{ color: (book?.washUsed ?? 0) > 0 ? '#86a8c7' : '#47637f' }}
+                        >
+                            点击右上角分享，一键生成高清战报长图
+                        </div>
+
                         {/* 升级结果提示：固定 16px 高占位，失败文案出现/消失都不顶动布局 */}
                         <div className="h-4 mt-1 text-center text-[11px] leading-4 font-sans" style={{ color: '#f87171' }}>
                             {upgradeTip || ''}
@@ -940,15 +948,6 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             >
                                 {showInfo ? '收起轩辕策信息卡 ▲' : '查看轩辕策信息卡 ▼'}
                             </button>
-                        </div>
-
-                        {/* 分享引导文案 */}
-                        <div
-                            className="mt-2.5 text-center text-[12px] flex items-center justify-center gap-1 select-none transition-colors"
-                            style={{ color: (book?.washUsed ?? 0) > 0 ? '#86a8c7' : '#47637f' }}
-                        >
-                            <Share2 className="w-3.5 h-3.5 shrink-0" style={{ color: (book?.washUsed ?? 0) > 0 ? '#6ff0c8' : '#3f5670' }} />
-                            <span>提示：点击右上角分享图标，可一键生成高清战报长图</span>
                         </div>
                     </div>
                 </div>

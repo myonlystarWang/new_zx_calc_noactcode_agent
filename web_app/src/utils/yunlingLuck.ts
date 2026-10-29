@@ -86,8 +86,8 @@ export function calcYunlingLuck(
             beatRate,
             tier: '欧皇',
             badge: '欧皇前 5%',
-            headline: `击败了 ${beatRate.toFixed(1)}% 的洗练玩家`,
-            subText: '当前总手数处于全服前 5% 的欧皇区间',
+            headline: `击败了 ${beatRate.toFixed(1)}% 的玩家`,
+            subText: '总消耗处于全服前 5% 的欧皇区间',
             tone: 'gold',
         };
     }
@@ -99,7 +99,7 @@ export function calcYunlingLuck(
             tier: beatRate < 20.0 ? '非酋' : '坎坷',
             badge: streakProb <= 0.01 ? '极罕见连败' : '遭遇连败',
             headline: `遭遇了 ${streakPct.toFixed(1)}% 的${streakProb <= 0.01 ? '极罕见' : ''}连败`,
-            subText: `单级最多消耗 ${maxTriesInLevel} 手（击败了 ${beatRate.toFixed(1)}% 的洗练玩家）`,
+            subText: `单级最多消耗 ${maxTriesInLevel} 手（击败了 ${beatRate.toFixed(1)}% 的玩家）`,
             tone: 'red',
         };
     }
@@ -109,8 +109,8 @@ export function calcYunlingLuck(
             beatRate,
             tier: '大吉',
             badge: '气运亨通',
-            headline: `击败了 ${beatRate.toFixed(1)}% 的洗练玩家`,
-            subText: '当前手数明显优于大盘平均表现',
+            headline: `击败了 ${beatRate.toFixed(1)}% 的玩家`,
+            subText: '总消耗远少于大多数玩家，运气绝佳',
             tone: 'gold',
         };
     }
@@ -120,8 +120,8 @@ export function calcYunlingLuck(
             beatRate,
             tier: '平稳',
             badge: '气运平稳',
-            headline: `击败了 ${beatRate.toFixed(1)}% 的洗练玩家`,
-            subText: '当前总手数处于全服主流均值区间',
+            headline: `击败了 ${beatRate.toFixed(1)}% 的玩家`,
+            subText: '总消耗处于全服主流平均区间',
             tone: 'cyan',
         };
     }
@@ -131,8 +131,8 @@ export function calcYunlingLuck(
             beatRate,
             tier: '坎坷',
             badge: '略有波折',
-            headline: `击败了 ${beatRate.toFixed(1)}% 的洗练玩家`,
-            subText: `当前总手数稍多于大盘，略有波折`,
+            headline: `击败了 ${beatRate.toFixed(1)}% 的玩家`,
+            subText: '总消耗略高于平均水平，略有波折',
             tone: 'slate',
         };
     }
@@ -141,8 +141,8 @@ export function calcYunlingLuck(
         beatRate,
         tier: '非酋',
         badge: '非酋时刻',
-        headline: `击败了 ${beatRate.toFixed(1)}% 的洗练玩家`,
-        subText: `当前总手数处于全服后 15% 坎坷区间`,
+        headline: `击败了 ${beatRate.toFixed(1)}% 的玩家`,
+        subText: '总消耗处于全服后 15% 的坎坷区间',
         tone: 'red',
     };
 }
