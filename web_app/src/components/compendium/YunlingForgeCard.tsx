@@ -128,6 +128,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
     const [equipName, setEquipName] = useState<string | null>(null);
 
     const [level, setLevel] = useState(0);
+    const [startLevel, setStartLevel] = useState(0);
     const [equipLuck, setEquipLuck] = useState(0);
     const [personLuck, setPersonLuck] = useState(300);
     const [rows, setRows] = useState<LevelRow[]>(emptyRows);
@@ -206,6 +207,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
     const resetAll = useCallback(() => {
         stopAll();
         setLevel(0);
+        setStartLevel(0);
         setEquipLuck(0);
         setRows(emptyRows());
         setTotalTries(0);
@@ -329,7 +331,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                     equipName,
                     qualityLabel: String(quality),
                     slotLabel: String(slot),
-                    startLevel: 0,
+                    startLevel,
                     level,
                     equipLuck,
                     personLuck,
@@ -342,7 +344,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
             `装备蕴灵_${equipName || slot}_+${level}_${todayText()}`,
             'yunling',
         );
-    }, [sharePoster, equipName, quality, slot, level, equipLuck, personLuck, rows, totalTries, totalCost]);
+    }, [sharePoster, equipName, quality, slot, startLevel, level, equipLuck, personLuck, rows, totalTries, totalCost]);
     const target = Math.min(YUNLING_MAX, level + 1);
     const luck = luckBreakdown(cfg, 0);
     /** 本级已失败手数：驱动软保底与读数 */
@@ -511,7 +513,7 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                                 item={equip}
                                 allEquips={equips}
                                 refLevel={level}
-                                onRefLevelChange={(lv) => { stopAll(); setLevel(lv); }}
+                                onRefLevelChange={(lv) => { stopAll(); setLevel(lv); setStartLevel(lv); }}
                                 hideStepper
                                 hideShenjiPool
                                 className="!max-w-none !bg-transparent !border-0 !shadow-none !backdrop-blur-none !p-0"
@@ -536,7 +538,13 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                             <span className="flex items-center gap-1">
                                 <button
                                     type="button"
-                                    onClick={() => setLevel((v) => Math.max(0, v - 1))}
+                                    onClick={() =>
+                                        setLevel((v) => {
+                                            const next = Math.max(0, v - 1);
+                                            setStartLevel(next);
+                                            return next;
+                                        })
+                                    }
                                     disabled={locked || level <= 0}
                                     className="w-[20px] h-[20px] flex items-center justify-center rounded-[2px] text-[13px] leading-none transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
                                     style={{ background: '#14212c', border: '1px solid #2a415a', color: '#cfe8fa' }}
@@ -552,7 +560,13 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                                 </b>
                                 <button
                                     type="button"
-                                    onClick={() => setLevel((v) => Math.min(YUNLING_MAX, v + 1))}
+                                    onClick={() =>
+                                        setLevel((v) => {
+                                            const next = Math.min(YUNLING_MAX, v + 1);
+                                            setStartLevel(next);
+                                            return next;
+                                        })
+                                    }
                                     disabled={locked || level >= YUNLING_MAX}
                                     className="w-[20px] h-[20px] flex items-center justify-center rounded-[2px] text-[13px] leading-none transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
                                     style={{ background: '#14212c', border: '1px solid #2a415a', color: '#cfe8fa' }}
@@ -774,6 +788,15 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                             >
                                 重置
                             </button>
+                        </div>
+
+                        {/* 分享引导文案 */}
+                        <div
+                            className="mt-3 text-center text-[12px] flex items-center justify-center gap-1 select-none transition-colors"
+                            style={{ color: totalTries > 0 ? '#86a8c7' : '#47637f' }}
+                        >
+                            <Share2 className="w-3.5 h-3.5 shrink-0" style={{ color: totalTries > 0 ? '#6ff0c8' : '#3f5670' }} />
+                            <span>提示：点击右上角分享图标，可一键生成战报长图并附带全服运气排名与击败率</span>
                         </div>
                     </div>
                 </div>

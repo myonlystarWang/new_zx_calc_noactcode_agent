@@ -775,6 +775,15 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                         已锻造 <b style={{ color: '#ffd94d', fontWeight: 600 }}>{forgeCount}</b> 次
                     </span>
                 </div>
+
+                {/* 分享引导文案 */}
+                <div
+                    className="mt-3 text-center text-[12px] flex items-center justify-center gap-1 select-none transition-colors"
+                    style={{ color: forgeCount > 0 ? '#86a8c7' : '#47637f' }}
+                >
+                    <Share2 className="w-3.5 h-3.5 shrink-0" style={{ color: forgeCount > 0 ? '#6ff0c8' : '#3f5670' }} />
+                    <span>提示：点击右上角分享图标，可一键生成高清战报长图</span>
+                </div>
             </div>
 
             {/* 右侧并排 / 窄屏纵向堆叠：自动锻造独立窗口（与游戏实机 1:1 还原） */}

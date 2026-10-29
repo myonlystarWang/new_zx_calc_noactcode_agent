@@ -24,6 +24,7 @@ import {
     posterFooter,
     posterFrame,
     posterHeader,
+    roundRect,
     sectionHead,
     text,
     withAlpha,
@@ -60,8 +61,15 @@ export interface PosterRow {
     ratio?: number;
 }
 
+export interface PosterCallout {
+    badge: string;
+    headline: string;
+    subText?: string;
+    tone?: 'gold' | 'cyan' | 'red' | 'slate';
+}
+
 export type PosterSection =
-    | { kind: 'cells'; index: string; title: string; hint?: string; cells: PosterCell[] }
+    | { kind: 'cells'; index: string; title: string; hint?: string; cells: PosterCell[]; callout?: PosterCallout }
     | { kind: 'chips'; index: string; title: string; hint?: string; chips: string[] }
     | { kind: 'rows'; index: string; title: string; hint?: string; rows: PosterRow[] };
 
@@ -125,6 +133,72 @@ function heroBlock(c: PosterCtx, hero: PosterHero, y: number): number {
     );
     text(c, fitText(c.ctx, hero.subtitle, font(19, 400), nameMaxW), POSTER_PAD + padX, y + 188, font(19, 400), withAlpha(TEXT, 0.40));
     return y + H + 40;
+}
+
+function calloutBlock(c: PosterCtx, callout: PosterCallout, y: number): number {
+    const H = callout.subText ? 88 : 62;
+    const padX = 24;
+    const tone = callout.tone || 'cyan';
+
+    if (c.paint) {
+        const { ctx } = c;
+        roundRect(ctx, POSTER_PAD, y, POSTER_INNER, H, 12);
+        const g = ctx.createLinearGradient(POSTER_PAD, y, POSTER_PAD + POSTER_INNER, y + H);
+        if (tone === 'gold') {
+            g.addColorStop(0, 'rgba(40,32,18,0.88)');
+            g.addColorStop(1, 'rgba(20,16,10,0.94)');
+            ctx.fillStyle = g;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(229,190,115,0.45)';
+        } else if (tone === 'red') {
+            g.addColorStop(0, 'rgba(46,20,20,0.88)');
+            g.addColorStop(1, 'rgba(24,10,10,0.94)');
+            ctx.fillStyle = g;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(248,113,113,0.45)';
+        } else {
+            g.addColorStop(0, 'rgba(16,32,44,0.88)');
+            g.addColorStop(1, 'rgba(10,20,30,0.94)');
+            ctx.fillStyle = g;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(70,232,251,0.35)';
+        }
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+    const badgeBg =
+        tone === 'gold'
+            ? 'rgba(229,190,115,0.15)'
+            : tone === 'red'
+              ? 'rgba(248,113,113,0.15)'
+              : 'rgba(70,232,251,0.12)';
+    const badgeFg = tone === 'gold' ? GOLD_MAIN : tone === 'red' ? '#f87171' : CYAN;
+    const badgeBorder =
+        tone === 'gold'
+            ? 'rgba(229,190,115,0.45)'
+            : tone === 'red'
+              ? 'rgba(248,113,113,0.45)'
+              : 'rgba(70,232,251,0.35)';
+
+    const bw = chip(c, callout.badge, POSTER_PAD + padX, y + 16, {
+        bg: badgeBg,
+        fg: badgeFg,
+        border: badgeBorder,
+        size: 19,
+        weight: 700,
+        height: 30,
+        radius: 8,
+    });
+
+    const headColor = tone === 'gold' ? goldFill(c.ctx, y + 16, 28) : tone === 'red' ? '#fca5a5' : '#e6fffb';
+    text(c, callout.headline, POSTER_PAD + padX + bw + 14, y + 38, font(23, 700), headColor);
+
+    if (callout.subText) {
+        text(c, callout.subText, POSTER_PAD + padX + 2, y + 70, font(17, 400), withAlpha(TEXT, 0.65));
+    }
+
+    return y + H + 18;
 }
 
 function cellsBlock(c: PosterCtx, cells: PosterCell[], y: number): number {
@@ -269,7 +343,10 @@ function layoutPoster(c: PosterCtx, model: PosterModel): number {
 
     model.sections.forEach((sec) => {
         y = sectionHead(c, sec.index, sec.title, sec.hint || '', y, TEXT);
-        if (sec.kind === 'cells') y = cellsBlock(c, sec.cells, y);
+        if (sec.kind === 'cells') {
+            if (sec.callout) y = calloutBlock(c, sec.callout, y);
+            y = cellsBlock(c, sec.cells, y);
+        }
         else if (sec.kind === 'chips') y = chipsBlock(c, sec.chips, y);
         else y = rowsBlock(c, sec.rows, y);
         y += 24;

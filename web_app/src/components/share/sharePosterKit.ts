@@ -150,20 +150,23 @@ export function chip(
     label: string,
     x: number,
     y: number,
-    opts: { bg: string; fg: string; border: string; size?: number; weight?: FontWeight },
+    opts: { bg: string; fg: string; border: string; size?: number; weight?: FontWeight; height?: number; radius?: number },
 ): number {
     const f = font(opts.size ?? 24, opts.weight ?? 500);
     c.ctx.font = f;
-    const w = Math.ceil(c.ctx.measureText(label).width) + 40;
+    const h = opts.height ?? CHIP_H;
+    const r = opts.radius ?? 14;
+    const pad = opts.height ? 24 : 40;
+    const w = Math.ceil(c.ctx.measureText(label).width) + pad;
     if (c.paint) {
-        roundRect(c.ctx, x, y, w, CHIP_H, 14);
+        roundRect(c.ctx, x, y, w, h, r);
         c.ctx.fillStyle = opts.bg;
         c.ctx.fill();
         c.ctx.lineWidth = 1;
         c.ctx.strokeStyle = opts.border;
         c.ctx.stroke();
     }
-    text(c, label, x + w / 2, y + CHIP_H / 2 + 8, f, opts.fg, 'center');
+    text(c, label, x + w / 2, y + h / 2 + (opts.size ?? 24) * 0.35, f, opts.fg, 'center');
     return w;
 }
 

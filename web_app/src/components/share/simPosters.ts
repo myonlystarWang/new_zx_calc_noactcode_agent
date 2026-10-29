@@ -6,6 +6,7 @@
  */
 import type { PosterModel, PosterSection } from './PosterCard';
 import { DEFAULT_SITE_URL, todayText } from './sharePosterKit';
+import { calcYunlingLuck } from '../../utils/yunlingLuck';
 
 const DISCLAIMER =
     '本图由天书万象 AI 依据官方数据模拟生成，\n可能存在误差，请以游戏内实际为准。';
@@ -36,8 +37,17 @@ export function buildYunlingPoster(o: YunlingPosterInput): PosterModel {
         .map((row, i) => ({ target: i + 1, tries: row.tries, cost: row.cost }))
         .filter((r) => r.tries > 0 && r.target > start && r.target <= end);
 
-    const maxTries = levels.reduce((m, r) => Math.max(m, r.tries), 0);
+    let maxTries = 0;
+    let maxTriesLevel = start + 1;
+    levels.forEach((r) => {
+        if (r.tries > maxTries) {
+            maxTries = r.tries;
+            maxTriesLevel = r.target;
+        }
+    });
+
     const avgPerHand = o.totalTries > 0 ? o.totalCost / o.totalTries : 0;
+    const luck = calcYunlingLuck(start, end, o.totalTries, maxTries, maxTriesLevel);
 
     const sections: PosterSection[] = [
         {
@@ -57,6 +67,12 @@ export function buildYunlingPoster(o: YunlingPosterInput): PosterModel {
             index: '02',
             title: '关键指标',
             hint: `${start} → ${end}`,
+            callout: {
+                badge: luck.badge,
+                headline: luck.headline,
+                subText: luck.subText,
+                tone: luck.tone,
+            },
             cells: [
                 { label: '总手数', value: `${int(o.totalTries)} 手` },
                 { label: '月德符合计', value: int(o.totalCost) },
