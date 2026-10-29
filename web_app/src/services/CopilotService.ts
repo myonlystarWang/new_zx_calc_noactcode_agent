@@ -2243,13 +2243,18 @@ export class CopilotService {
                 cardType: 'sim_hub',
                 cardData: {
                     title: '各类模拟器导航',
+                    // 只有「战力计算器 / 副本训练场」走右分屏：它们本来就没有对话内嵌卡，
+                    // 打开分屏就是唯一入口。其余四个都有信息卡（xyc_wash / shenji_forge /
+                    // yunling_forge / tianyuan_sim），**必须按 query 重发**，不能再塞 workspaceMode ——
+                    // 否则点「轩辕策洗练」会跳到分屏的"轩辕策属性"页（模式是 xyc，内容对不上），
+                    // 点「神隐蕴灵」也会跳过信息卡（2026-10-29 线上反馈）。
                     options: [
                         { key: 'calc', label: '战力计算器', query: '计算器', workspaceMode: 'calc' },
                         { key: 'arena', label: '副本训练场', query: '训练场', workspaceMode: 'arena' },
-                        { key: 'xyc_wash', label: '轩辕策洗练', query: '轩辕策洗练', workspaceMode: 'xyc' },
+                        { key: 'xyc_wash', label: '轩辕策洗练', query: '轩辕策洗练' },
                         { key: 'shenji', label: '神机洗练', query: '神机洗练' },
-                        { key: 'yunling', label: '神隐蕴灵', query: '神隐蕴灵', workspaceMode: 'yunling' },
-                        { key: 'tianyuan_sim', label: '新天缘精炼', query: '新天缘精炼', workspaceMode: 'newtianyuan' },
+                        { key: 'yunling', label: '神隐蕴灵', query: '神隐蕴灵' },
+                        { key: 'tianyuan_sim', label: '新天缘精炼', query: '新天缘精炼' },
                     ]
                 }
             };
