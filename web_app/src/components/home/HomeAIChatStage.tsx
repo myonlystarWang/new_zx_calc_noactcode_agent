@@ -54,6 +54,19 @@ import { trackCardClick } from '../../utils/track';
  * card_click 的主体名：className / slot / title 取第一个有值的。
  * 没有它只知道「有人点了技能查询」，不知道「哪个职业的技能查询」。
  */
+/**
+ * 「点一下直接开右分屏」的白名单 —— 只有**没有对话内嵌卡**的工具才配进来。
+ *
+ * 规则来源：MEMORY「新功能默认对话内嵌卡」+ 2026-10-29 线上反馈
+ * （「各类模拟器」导航卡点「轩辕策洗练」被 395ebc7 塞了 workspaceMode，结果跳过
+ *  洗练信息卡、直接开分屏的"轩辕策属性"页，内容根本不是洗练）。
+ *
+ * 为什么做成白名单而不是只删字段：**光删字段挡不住下次手滑**。以后谁再给不在这
+ * 里的 key 加 workspaceMode，这里会忽略它、退回发查询词，最多多出一个本该有的卡片，
+ * 不会再把用户从对话里踹到分屏去。
+ */
+const WORKSPACE_ONLY_OPTION_KEYS = new Set(['calc', 'arena', 'server']);
+
 const cardSubject = (cd: any): string =>
     String(cd?.className || cd?.slot || cd?.title || '').slice(0, 16);
 
@@ -816,12 +829,22 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                             key={opt.key}
                                                             type="button"
                                                         onClick={() => {
-                                                            // 选项可直接指定右分屏模式（如「伤害计算」→ calc），
-                                                            // 否则只发查询词、由意图匹配决定卡片
+                                                            // 只有白名单 key 才允许直开分屏；其余一律发查询词，
+                                                            // 由意图匹配决定出哪张内嵌卡（见 WORKSPACE_ONLY_OPTION_KEYS）
                                                             trackCardClick(String(msg.cardType || ''), opt.key, cardSubject(msg.cardData));
-                                                            if (opt.workspaceMode && onOpenSplitWorkspace) {
-                                                                onOpenSplitWorkspace(opt.workspaceMode as WorkspaceMode);
+                                                            const direct =
+                                                                Boolean(opt.workspaceMode) &&
+                                                                WORKSPACE_ONLY_OPTION_KEYS.has(opt.key) &&
+                                                                Boolean(onOpenSplitWorkspace);
+                                                            if (direct) {
+                                                                onOpenSplitWorkspace!(opt.workspaceMode as WorkspaceMode);
                                                             } else {
+                                                                if (opt.workspaceMode && !WORKSPACE_ONLY_OPTION_KEYS.has(opt.key)) {
+                                                                    // 开发期提示：有内嵌卡的入口不该带 workspaceMode
+                                                                    console.warn(
+                                                                        `[hub] 选项 ${opt.key} 带 workspaceMode 但不在直开白名单里，已退回发送查询词`,
+                                                                    );
+                                                                }
                                                                 onSendMessage(opt.query);
                                                             }
                                                         }}
