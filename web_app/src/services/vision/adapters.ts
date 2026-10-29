@@ -1,12 +1,32 @@
 /**
  * 服务端识别结果 → 前端可渲染的 RecognizedPanel。
- * 这里做三件事：字段按注册表排序补空、label/raw 双校验、算出引擎快照。
+ * 这里做四件事：字段按注册表排序补空、label/raw/value 三重校验、职业是否对得上、算出引擎快照。
+ *
+ * 2026-10-29 加的两道校验（线上实测 mistral 会稳定把右列「减免暴伤」的值填进左列「致命一击」，
+ * 并把气血 250832 读成 2508332）：
+ *   校验四 value ↔ raw 数值一致 —— 拦「模型自己算错 / 多读少读一位」
+ *   校验五 raw 必须来自 label 匹配的那一行 —— 拦「左右列串位」
+ * 这两条之所以必须加：label 校验和 raw 存在性校验用的都是模型自己给的 label / textLines，
+ * 同源幻觉永远自洽，等于没校验。
  */
 import type { FieldCell, PanelKind, RecognizedPanel } from './types';
 import { fieldsFor } from './fieldRegistry';
 import { mapToEngine } from './mapToEngine';
+import { DataService } from '../DataService';
 
 const norm = (s: any) => String(s ?? '').replace(/\s+/g, '').toLowerCase();
+
+/** 从原文里抽出所有数字（去千分位；保留小数） */
+function numsIn(s: string): number[] {
+    return (String(s).replace(/,/g, '').match(/\d+(?:\.\d+)?/g) || [])
+        .map(Number)
+        .filter(n => Number.isFinite(n));
+}
+
+/** 数值相等判定：容忍小数截断（487.1 vs 487.10）与千分位写法差异 */
+function sameNum(a: number, b: number): boolean {
+    return Math.abs(a - b) <= Math.max(0.05, Math.abs(b) * 1e-4);
+}
 
 function parseBars(raw: { label: string; raw: string }[], fields: FieldCell[]): RecognizedPanel['bars'] {
     const pick = (labels: string[]) => raw.find(l => labels.some(x => norm(l.label).includes(norm(x))));
@@ -30,6 +50,24 @@ function parseBars(raw: { label: string; raw: string }[], fields: FieldCell[]): 
         mpCur: mp.cur, mpMax: mp.max,
         thirdCur: third.cur, thirdMax: third.max
     };
+}
+
+/**
+ * 职业名能否对上职业表。
+ * 对不上 = 模型幻觉（实测把「百灵」读成「元灵」），必须显式告知，不能静默保留上一个职业。
+ * 职业表还没加载完时返回 undefined（不下结论，避免误判）。
+ */
+function resolveClass(classRaw?: string): { known?: boolean; className?: string } {
+    if (!classRaw) return {};
+    let classes: any[] = [];
+    try {
+        classes = DataService.getInstance().getClasses() || [];
+    } catch {
+        return {};
+    }
+    if (classes.length === 0) return {};
+    const hit = classes.find((c: any) => c.ClassName === classRaw || c.ClassID === classRaw);
+    return hit ? { known: true, className: hit.ClassName } : { known: false };
 }
 
 export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?: { provider?: string | null; quality?: 'full' | 'partial'; issues?: string[] }): RecognizedPanel {
@@ -68,7 +106,7 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
         const label = raw?.label ?? def.label;
         let status = (raw?.status as FieldCell['status']) || (value === null ? 'absent' : 'ok');
 
-        // 校验一：label 必须对号（拦「整列错位」）
+        // 校验一：label 必须对号（拦「整列错位」的第一道，用的是模型自报的 label，单靠它不够）
         if (status !== 'absent' && value !== null && def.expectedLabels.length > 0) {
             const ok = def.expectedLabels.some(e => norm(label).includes(norm(e)));
             if (!ok) {
@@ -78,9 +116,9 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
         }
         // 校验二：raw 必须能在转录文本里找到（只对「数值型面板行」生效；
         // 轩辕策/天缘的书名、品阶等来自标题，不在 textLines 里；手填项本就没有 raw）
-        if (status !== 'absent' && value !== null && !def.manual && raw?.raw && def.expectedLabels.length > 0 && textLines.length > 0) {
+        if (status !== 'absent' && status !== 'invalid' && value !== null && !def.manual && raw?.raw && def.expectedLabels.length > 0 && textLines.length > 0) {
             const hit = textLines.some(l => norm(l.raw).includes(norm(raw.raw)) || norm(raw.raw).includes(norm(l.raw)));
-            if (!hit && textLines.length > 0) {
+            if (!hit) {
                 status = 'invalid';
                 issues.push(`${def.label}：图中未找到出处`);
             }
@@ -91,6 +129,28 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
                 status = 'invalid';
                 issues.push('最小攻大于最大攻，可能抄串行');
             }
+        }
+        // 校验四：value 必须能在 raw 原文里找到（拦「模型自己算错 / 多读一位」，如 250832 → 2508332）
+        if (status !== 'absent' && status !== 'invalid' && typeof value === 'number' && raw?.raw) {
+            const nums = numsIn(raw.raw);
+            if (nums.length > 0 && !nums.some(n => sameNum(n, value))) {
+                status = 'invalid';
+                issues.push(`${def.label}：数值 ${value} 与原文「${raw.raw}」不符`);
+            }
+        }
+        // 校验五：raw 所在的那一行，标签必须也匹配（拦「左右列串位」：
+        // 实测 201.3% 属于「减免暴伤」行，却被填进了「致命一击」）
+        if (status !== 'absent' && status !== 'invalid' && typeof value === 'number' && raw?.raw && def.expectedLabels.length > 0 && textLines.length > 0) {
+            const hitLines = textLines.filter(l => norm(l.raw).includes(norm(raw.raw)) || norm(raw.raw).includes(norm(l.raw)));
+            if (hitLines.length > 0 && !hitLines.some(l => def.expectedLabels.some(e => norm(l.label).includes(norm(e))))) {
+                status = 'invalid';
+                issues.push(`${def.label}：该数值在图中属于「${hitLines[0].label}」行，疑似左右列串位`);
+            }
+        }
+        // 校验六：进引擎的数值没有原文佐证 → 降为「需复核」（仍带入，但卡上标黄，不静默采信）
+        if (status === 'ok' && def.engine && !def.manual && value !== null && !raw?.raw) {
+            status = 'low_confidence';
+            issues.push(`${def.label}：无原文佐证，请复核`);
         }
 
         return {
@@ -107,10 +167,21 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
         };
     });
 
-    // 只有角色面板需要「另有 N 项」计数；轩辕策/天缘的词条已经单独渲染
-    const extraCount = kind === 'character_panel'
-        ? Math.max(0, textLines.length - cells.filter(c => c.status === 'ok').length)
-        : 0;
+    // 「另有 N 项」= 转录到了、但没有任何字段认领的行（例如第三槽的「灵力」）。
+    // 不能用「textLines 条数 − ok 字段数」：字段被校验判 invalid 时那一行其实已经被认领，
+    // 再算进「另有」会误导用户以为漏了数据。
+    const BAR_LABELS = ['气血', '血量', '真气', '法力', '灵力', '元力', '元气', '第三'];
+    const claimed = textLines.map(l => {
+        const n = norm(l.raw);
+        if (BAR_LABELS.some(b => norm(l.label).includes(norm(b)))) return true;
+        return cells.some(c => c.raw && (norm(c.raw).includes(n) || n.includes(norm(c.raw))));
+    });
+    const extraCount = kind === 'character_panel' ? claimed.filter(x => !x).length : 0;
+
+    const classInfo = kind === 'character_panel' ? resolveClass(serverPanel?.character?.classRaw) : {};
+    if (classInfo.known === false) {
+        issues.push(`职业「${serverPanel?.character?.classRaw}」不在职业表里，请手动选`);
+    }
 
     const base: RecognizedPanel = {
         kind,
@@ -120,7 +191,9 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
         degraded: false,
         quality: meta?.quality || 'full',
         extraCount,
-        character: serverPanel?.character || undefined,
+        character: serverPanel?.character
+            ? { ...serverPanel.character, classUnknown: classInfo.known === false }
+            : undefined,
         bars: parseBars(textLines, cells),
         fields: cells,
         attrs: attrs.length > 0 ? attrs : undefined,

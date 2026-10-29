@@ -22,6 +22,11 @@ interface AppContextType extends AppState {
     updateBuffValue: (buffId: string, value: number) => void;
     selectDungeon: (dungeonId: string, monsterId?: string) => void;
     restoreBuffState: (activeIds: string[], values: Record<string, number>) => void;
+    /** 识图带入后仍未识别到的引擎必填项：计算器里显示「—」提醒手动补 */
+    unfilledKeys: string[];
+    setUnfilledKeys: (keys: string[]) => void;
+    /** 用户手动填了某一项 → 取消它的「待填」标记 */
+    markAttributeFilled: (key: string) => void;
 }
 
 /** 属性基线：分享编码（shareSnapshot.ts）依赖此常量做差分，改动需同步考虑旧链接兼容 */
@@ -67,6 +72,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const [selectedDungeonId, setSelectedDungeonId] = useState<string | null>(null);
     const [selectedMonsterId, setSelectedMonsterId] = useState<string | null>(null);
+
+    /** 「待填」标记：只由识图带入写入，用户填一次就清掉；持久化以免刷新后又装成识别到了 */
+    const [unfilledKeys, setUnfilledKeys] = useState<string[]>(() =>
+        safeParseLocalStorage<string[]>('zx_unfilled_attrs', [])
+    );
 
     useEffect(() => {
         const initData = async () => {
@@ -115,6 +125,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         localStorage.setItem('zx_buff_values', JSON.stringify(buffValues));
     }, [buffValues]);
 
+    useEffect(() => {
+        localStorage.setItem('zx_unfilled_attrs', JSON.stringify(unfilledKeys));
+    }, [unfilledKeys]);
+
     const updateCharacterAttributes = (attrs: CharacterAttributes) => {
         setUserCharacter(prev => ({
             ...prev,
@@ -141,6 +155,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             ...prev,
             [buffId]: value
         }));
+    };
+
+    const markAttributeFilled = (key: string) => {
+        setUnfilledKeys(prev => (prev.includes(key) ? prev.filter(k => k !== key) : prev));
     };
 
     const selectDungeon = (dungeonId: string, monsterId?: string) => {
@@ -172,7 +190,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             toggleBuff,
             updateBuffValue,
             selectDungeon,
-            restoreBuffState
+            restoreBuffState,
+            unfilledKeys,
+            setUnfilledKeys,
+            markAttributeFilled
         }}>
             {children}
         </AppContext.Provider>

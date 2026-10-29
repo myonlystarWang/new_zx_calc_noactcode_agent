@@ -84,7 +84,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     onOpenSplitWorkspace,
 }) => {
     const navigate = useNavigate();
-    const { updateCharacterAttributes, updateCharacterClass, selectDungeon, userCharacter } = useApp();
+    const { updateCharacterAttributes, updateCharacterClass, selectDungeon, userCharacter, setUnfilledKeys } = useApp();
 
     const handleBringToCalculator = useCallback((dungeonId: string, monsterId: string) => {
         selectDungeon(dungeonId, monsterId);
@@ -228,13 +228,21 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         const classObj = clsRaw ? classes.find(c => c.ClassName === clsRaw || c.ClassID === clsRaw) : undefined;
         const f = panel.character?.factionRaw;
         const faction = f === '佛' ? 'FO' : f === '魔' ? 'MO' : f === '仙' ? 'XIAN' : undefined;
-        if (classObj) updateCharacterClass(classObj.ClassID, faction || 'XIAN');
+        if (classObj) {
+            updateCharacterClass(classObj.ClassID, faction || 'XIAN');
+        } else if (panel.character?.classUnknown) {
+            // 职业名对不上职业表（模型幻觉）：置空，逼用户手动选一次。
+            // 绝不能静默沿用上一个职业——用户会以为识别对了，拿着别人的技能算伤害。
+            updateCharacterClass('', faction || userCharacter.Faction);
+        }
 
         const attrs = panel.engine.attrs as Record<string, number>;
         if (Object.keys(attrs).length > 0) {
             // 只覆盖识别到的键，其余保留计算器当前值
             updateCharacterAttributes({ ...userCharacter.BaseAttributes, ...attrs });
         }
+        // 缺项在计算器里标成「待填」并显示「—」，别再让默认基线值冒充识别结果
+        setUnfilledKeys(panel.kind === 'character_panel' ? panel.engine.missingRequired : []);
 
         if (onOpenSplitWorkspace) {
             onOpenSplitWorkspace('calc');
@@ -269,18 +277,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
         }
         // 旧天缘没有模拟器，只有图鉴卡：用正常意图链路取卡
         onSendMessage(`旧天缘 ${seed.name || ''}`.trim());
-    };
-
-    const handleArchivePanel = (panel: RecognizedPanel) => {
-        try {
-            const key = 'zx_panel_archive_v1';
-            const list = JSON.parse(localStorage.getItem(key) || '[]');
-            const label = [panel.character?.classRaw, panel.character?.factionRaw].filter(Boolean).join('·') || '面板';
-            list.push({ at: new Date().toISOString(), name: `${label} ${new Date().toLocaleString()}`, panel });
-            localStorage.setItem(key, JSON.stringify(list.slice(-50)));
-        } catch {
-            /* 配额满时静默，不打断对话 */
-        }
     };
 
     return (
@@ -378,7 +374,6 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             <VisionReviewCard
                                                 panel={msg.cardData.panel as RecognizedPanel}
                                                 onImport={handleImportReviewPanel}
-                                                onArchive={handleArchivePanel}
                                                 onOpenXyc={handleOpenXyc}
                                                 onOpenTianyuan={handleOpenTianyuan}
                                             />

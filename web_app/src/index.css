@@ -1267,6 +1267,22 @@ input[type="number"] {
   background: rgba(6, 182, 212, 0.7);
 }
 
+/* 输入框宽度跟着内容走：战斗增益的虚线底要刚好包住数字，不能是固定宽度的空尾巴。
+   field-sizing 在 Chromium 123+ / Safari 18.2+ 生效；不支持的浏览器退回 min-width（仍然可编辑）。 */
+.num-inline {
+  field-sizing: content;
+  min-width: 1.6em;
+  max-width: 100%;
+  /* 数字输入框去掉上下箭头，否则会多出约 14px 的固定宽度，虚线底又变长 */
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.num-inline::-webkit-outer-spin-button,
+.num-inline::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* ==========================================================================
    战力计算器原生容器查询两列自适应（零插件依赖，100% 原生稳健生效）
    ========================================================================== */

@@ -32,6 +32,7 @@ const ALLOWED_EVENTS = new Set([
   'install_prompt',
   'static_page',
   'chat_send',
+  'vision_result',
 ]);
 
 /** 单条请求体上限，超过直接丢弃（防刷） */

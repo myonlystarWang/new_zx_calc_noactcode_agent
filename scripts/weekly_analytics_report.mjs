@@ -134,6 +134,16 @@ async function main() {
     GROUP BY ch ORDER BY clicks DESC
   `);
 
+  // 6.5 识图识别质量（vision_result，2026-10-29 起）
+  const visionRows = await query(`
+    SELECT blob2 AS kind, count() AS n, count(DISTINCT index1) AS sessions,
+           avg(double1) AS avg_ok, avg(double2) AS avg_total,
+           countIf(double3 = 1) AS degraded_n
+    FROM ${DATASET}
+    WHERE blob1 = 'vision_result' AND timestamp > NOW() - INTERVAL '7' DAY
+    GROUP BY kind ORDER BY n DESC
+  `);
+
   // 7. ★ 上次入库发布（2026-10-28 15:10:08）之后新增的 AI 兜底缺口
   const recentGapRows = await query(`
     SELECT blob3 AS q, count() AS n, count(DISTINCT index1) AS sessions,
@@ -230,6 +240,24 @@ ${sessionRows.map(r => `- **${r.env || '未知/默认环境'}**：${r.sessions} 
 ${fontRows.map(r => `| \`${r.status}\` | ${r.n} | ${r.sessions} | ${Number(r.avg_serif).toFixed(1)} 片 | ${r.status === 'ok' ? '正常加载' : r.status === 'partial' ? '部分分片降级' : '未加载'} |`).join('\n')}
 
 > **结论**：主标题字体分片正常加载率保持在 97% 以上，未发生大规模 CDN 退化。
+
+---
+
+## 4.5 识图识别质量（vision_result）
+
+| 面板类型 | 次数 | 会话 | 平均识别字段 | 降级次数 | 字段完整度 |
+|---|---|---|---|---|---|
+${visionRows.length === 0
+  ? '| （本期无数据） | - | - | - | - | - |'
+  : visionRows.map(r => {
+      const ok = Number(r.avg_ok || 0);
+      const tot = Number(r.avg_total || 0);
+      return `| \`${r.kind}\` | ${r.n} | ${r.sessions} | ${ok.toFixed(1)} / ${tot.toFixed(1)} | ${r.degraded_n} | ${tot > 0 ? ((ok / tot) * 100).toFixed(0) + '%' : '-'} |`;
+    }).join('\n')}
+
+> **口径**：\`v1\`=识别成功字段数、\`v2\`=字段总数、\`v3\`=1 表示降级（视觉模型全挂）。
+> 字段数按面板类型不同（角色面板 14 项 / 轩辕策 6 项 / 天缘 4 项），**跨类型不可直接比**。
+> 完整度 < 70% 说明该类型该换模型或补提示词。
 
 ---
 

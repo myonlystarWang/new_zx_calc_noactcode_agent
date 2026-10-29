@@ -53,7 +53,13 @@ export interface RecognizedPanel {
     quality: 'full' | 'partial' | 'degraded';
     /** 识别到但不进卡的项数量（面板 30 项 vs 卡上 7 项） */
     extraCount: number;
-    character?: { classRaw?: string; factionRaw?: string; levelRaw?: string };
+    character?: {
+        classRaw?: string;
+        factionRaw?: string;
+        levelRaw?: string;
+        /** 职业名对不上职业表（模型幻觉）—— 带入时职业置空，必须显式提示 */
+        classUnknown?: boolean;
+    };
     /** character_panel 资源条：气血 / 真气 / 第三槽 */
     bars?: { hpCur?: number; hpMax?: number; mpCur?: number; mpMax?: number; thirdCur?: number; thirdMax?: number };
     /** 按展示顺序排列的字段（注册表顺序） */

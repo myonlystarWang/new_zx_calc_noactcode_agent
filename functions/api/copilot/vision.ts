@@ -44,13 +44,14 @@ const VISION_SYSTEM_PROMPT = `你是《诛仙3》截图录入员。你只做转�
 【二、逐行转录】按视觉顺序把"标签:数值"抄一遍，包括你看不懂含义的行。这一步必须真实，不允许脑补。
 
 【三、面板行序地图（取值必须对号）】
-角色属性面板的值区是**两列**，每行一个属性，取的是左侧标签右边的数字：
+角色属性面板的值区是**两列**，每行左右各一个属性，都要取：
   第1行：攻击(min–max)  | 防御            → attackMin / attackMax / defense
-  第2行：普攻命中        | 普攻躲闪        → 不取（不要填进任何 key）
+  第2行：普攻命中        | 普攻躲闪        → physHit / physDodge
   第3行：致命伤害        | 致命一击        → critDamage / critRate
-  第4行：减免暴伤        | 减免暴击        → 不取
-  第5行：技能命中        | 技能躲闪        → 不取
+  第4行：减免暴伤        | 减免暴击        → critDamageReduction / critRateReduction
+  第5行：技能命中        | 技能躲闪        → skillHit / skillDodge
   顶部资源条：气血 cur/max、真气 cur/max、第三槽 cur/max → health / mana 取斜杠后的上限
+  **左右两列绝不能串**：第 3 行左=致命伤害、右=致命一击；第 4 行左=减免暴伤、右=减免暴击。
 轩辕策的取值：标题里的 青龙/白虎/朱雀/玄武 → beast，尖括号里的书名 → bookName，末尾「·英雄版」→ heroVersion；「六品」→ tier；★ 个数 → stars；「洗炼次数 4/10」→ washUsed=4；「等级 20」→ level；「（进阶技能）霜池映月III 《碧海》 3级」→ advSkillName / advSkillVariant / advSkillLevel。
 阵营的取值：标题形如「175级 昭冥五重 飞升仙」→ classRaw=昭冥、factionRaw=仙（取"仙/魔/佛"这一个字，**不要写"飞升"**，也不要带"五重"）。
 轩辕策英雄版：标题末尾「·英雄版」→ heroVersion=true（布尔 true/false，不要写"英雄版"这个字符串）。
@@ -59,7 +60,7 @@ const VISION_SYSTEM_PROMPT = `你是《诛仙3》截图录入员。你只做转�
 
 【四、取字段】每个字段必须同时给 label（图上该行左侧的中文标签），label 必须来自上面的行序地图；没看到就 status="absent"、value=null，并且 raw、label 都为 null。
 
-character_panel 的 key（只这 8 个，不要输出别的）：attackMin / attackMax / defense / health / mana / critDamage / critRate / monsterDamageBonus
+character_panel 的 key（只这 14 个，不要输出别的）：attackMin / attackMax / defense / physHit / physDodge / critDamage / critRate / critDamageReduction / critRateReduction / skillHit / skillDodge / health / mana / monsterDamageBonus
 xyc 的 key：beast / bookName / heroVersion / tier / stars / washUsed / level / advSkillName / advSkillVariant / advSkillLevel
 tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attrs 数组**（天缘的全部「天命+N 属性 +值」行）
 
@@ -75,13 +76,15 @@ tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attr
 【五、反例铁律（最常见的错，逐条避开）】
 - 角色属性面板上没有"对怪增伤"这一行 → monsterDamageBonus 必须 absent，不得填 78 / 82 / 65 / 49.6。
 - 致命伤害 与 致命一击 是两行：前者是暴击伤害（如 1889.6%），后者是暴击率（如 261.0%）。不要互换。
-- 普攻命中（如 3610）、普攻躲闪（2906）、技能命中（369.5）、技能躲闪（77.5）都不是攻击力，也不是暴击率，不得填进 critRate / critDamage / ignoreReduction。
+- 普攻命中（如 3610）、普攻躲闪（2906）、技能命中（369.5）、技能躲闪（77.5）都不是攻击力，也不是暴击率，不得填进 critRate / critDamage / ignoreReduction —— 它们各有自己的 key（physHit / physDodge / skillHit / skillDodge）。
+- **实测最常错的一处**：把第 4 行右边的「减免暴伤 201.3%」填进第 3 行右边的「致命一击」。取完每一行都要回头核一次：致命一击 = 第 3 行右边，减免暴伤 = 第 4 行左边。
+- **value 必须与 raw 里的数字逐位一致**：raw 写 "250832/250832" 时 value 只能是 250832，不许写成 2508332（多读一位）；raw 写 "10345/10345" 时 value 只能是 10345。
 - 气血 814972/1604910 → health 取上限 1604910，不取当前值。
 - 青龙/白虎/朱雀/玄武 只是轩辕策书名的前缀（写进 beast），不要另立字段。
 - 天缘标题括号里的「+2真气」是后缀（suffix），不是一条词条，不要放进 attrs。
 - 图里没有「攻击 x-y / 致命伤害 / 书名<…> / 天缘+N」这类面板特征（例如攻略表格、属性清单截图）时，panelKind 必须是 unknown，fields 全部 absent。**表格里某一行的文字看起来像"天命+10"也不算天缘面板**。
 
-【六、输出】只输出一个 JSON，不要 markdown 代码块，不要任何解释文字。**必须按示例把所有 8 个 key 都列出来**（没有的就写 absent），不要省略：
+【六、输出】只输出一个 JSON，不要 markdown 代码块，不要任何解释文字。**必须按示例把所有 14 个 key 都列出来**（没有的就写 absent），不要省略：
 {"panelKind":"character_panel","kindEvidence":["致命一击","血炼值"],"kindConfidence":0.9,
  "textLines":[{"label":"攻击","raw":"26918-151478"},{"label":"致命一击","raw":"261.0%"}],
  "fields":[
@@ -92,6 +95,12 @@ tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attr
   {"key":"mana","label":"真气","raw":"1145140/2983930","value":2983930,"status":"ok"},
   {"key":"critDamage","label":"致命伤害","raw":"1889.6%","value":1889.6,"status":"ok"},
   {"key":"critRate","label":"致命一击","raw":"261.0%","value":261.0,"status":"ok"},
+  {"key":"physHit","label":"普攻命中","raw":"3610","value":3610,"status":"ok"},
+  {"key":"physDodge","label":"普攻躲闪","raw":"2906","value":2906,"status":"ok"},
+  {"key":"critDamageReduction","label":"减免暴伤","raw":"742.1%","value":742.1,"status":"ok"},
+  {"key":"critRateReduction","label":"减免暴击","raw":"132.9%","value":132.9,"status":"ok"},
+  {"key":"skillHit","label":"技能命中","raw":"369.5","value":369.5,"status":"ok"},
+  {"key":"skillDodge","label":"技能躲闪","raw":"77.5","value":77.5,"status":"ok"},
   {"key":"monsterDamageBonus","label":null,"raw":null,"value":null,"status":"absent"}
  ],
  "character":{"classRaw":"昭冥","factionRaw":"仙","levelRaw":"175"},
@@ -286,6 +295,12 @@ const EXPECTED_LABELS: Record<string, string[]> = {
     mana: ['真气', '法力'],
     critDamage: ['致命伤害', '致命一击伤害'],
     critRate: ['致命一击', '致命一击率'],
+    physHit: ['普攻命中'],
+    physDodge: ['普攻躲闪'],
+    critDamageReduction: ['减免暴伤', '减免暴击伤害'],
+    critRateReduction: ['减免暴击', '减免暴击率'],
+    skillHit: ['技能命中'],
+    skillDodge: ['技能躲闪'],
     monsterDamageBonus: ['对怪增伤', '对怪物增伤', '怪增']
 };
 
@@ -305,6 +320,18 @@ function validateParsed(parsed: any): { issues: string[]; parsed: any } {
                 f.status = 'invalid';
                 f.reason = `label 不符（期望 ${expected.join('/')}，实际 ${f.label ?? '空'}）`;
                 issues.push(`LABEL_MISMATCH:${f.key}`);
+                continue;
+            }
+        }
+        // 数值一致性：value 必须能在 raw 里找到（拦「模型多读一位 / 自己算错」，
+        // 实测 250832 被读成 2508332、10345 被读成 10346）
+        if (f.raw && typeof f.value === 'number') {
+            const nums = (String(f.raw).replace(/,/g, '').match(/\d+(?:\.\d+)?/g) || []).map(Number);
+            const near = (a: number, b: number) => Math.abs(a - b) <= Math.max(0.05, Math.abs(b) * 1e-4);
+            if (nums.length > 0 && !nums.some(n => near(n, f.value as number))) {
+                f.status = 'invalid';
+                f.reason = `value ${f.value} 与 raw「${f.raw}」不符`;
+                issues.push(`VALUE_RAW_MISMATCH:${f.key}`);
                 continue;
             }
         }

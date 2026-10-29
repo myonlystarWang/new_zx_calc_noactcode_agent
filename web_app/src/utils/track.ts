@@ -148,6 +148,31 @@ export function trackChatSend(src: 'local' | 'ai' | 'vision', text?: string): vo
   track('chat_send', payload);
 }
 
+/**
+ * 识图结果。`chat_send(src=vision)` 只能回答「发了几张图」，
+ * 回答不了「识别成功没 / 识别到几个字段 / 降级率多少」——那才是识图要不要继续投入的依据。
+ *
+ * 槽位：detail=面板类型 ｜ v1=识别成功字段数 ｜ v2=字段总数 ｜ v3=是否降级 ｜ extra=模型通道前缀
+ * 每张图 1 条，量级 ≈ 每天个位数，相对 10 万点/天免费额度可忽略。
+ */
+export function trackVisionResult(
+  panelKind: string,
+  okFields: number,
+  totalFields: number,
+  degraded: boolean,
+  provider?: string | null,
+): void {
+  // provider 形如 cf-workers-ai:@cf/mistralai/...，只留通道名，避免把模型全名写进 blob
+  const ch = (provider || '').split(':')[0].slice(0, 24);
+  track('vision_result', {
+    detail: panelKind.slice(0, 24),
+    v1: okFields,
+    v2: totalFields,
+    v3: degraded ? 1 : 0,
+    extra: ch,
+  });
+}
+
 // ---------------------------------------------------------------
 // font_check
 // ---------------------------------------------------------------

@@ -4,6 +4,7 @@ import { AttributeCard } from '../ui/AttributeCard';
 import { ClassSelector } from './ClassSelector';
 import { FactionSelector } from './FactionSelector';
 import { PresetManager } from './PresetManager';
+import { useApp, defaultAttributes } from '../../context/AppContext';
 
 interface AttributePanelProps {
     attributes: CharacterAttributes;
@@ -11,7 +12,17 @@ interface AttributePanelProps {
 }
 
 export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onChange }) => {
+    const { unfilledKeys, markAttributeFilled } = useApp();
+
+    /**
+     * 是否「识图没识别到 + 还是默认基线」——两个条件同时满足才显示「—」：
+     * 用户自己填过的（值 ≠ 基线）照常显示数字，不会被误标成待填。
+     */
+    const isUnset = (key: keyof CharacterAttributes): boolean =>
+        unfilledKeys.includes(key as string) && attributes[key] === defaultAttributes[key];
+
     const handleChange = (key: keyof CharacterAttributes, value: number) => {
+        markAttributeFilled(key as string);
         // 处理最小攻击和最大攻击的限制条件
         let actualValue = value;
 
@@ -58,6 +69,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                     <div className="calc-attr-grid grid grid-cols-2 gap-3">
                         <AttributeCard
                             label="最小攻击"
+                            unset={isUnset('CharacterMinAttack')}
                             tag="Min"
                             value={attributes.CharacterMinAttack}
                             onChange={(v) => handleChange('CharacterMinAttack', v)}
@@ -67,6 +79,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         />
                         <AttributeCard
                             label="最大攻击"
+                            unset={isUnset('CharacterMaxAttack')}
                             tag="Max"
                             value={attributes.CharacterMaxAttack}
                             onChange={(v) => handleChange('CharacterMaxAttack', v)}
@@ -76,6 +89,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         />
                         <AttributeCard
                             label="气血值"
+                            unset={isUnset('CharacterHealth')}
                             tag="HP"
                             value={attributes.CharacterHealth}
                             onChange={(v) => handleChange('CharacterHealth', v)}
@@ -85,6 +99,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         />
                         <AttributeCard
                             label="真气值"
+                            unset={isUnset('CharacterMana')}
                             tag="MP"
                             value={attributes.CharacterMana}
                             onChange={(v) => handleChange('CharacterMana', v)}
@@ -98,6 +113,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                     <div className="calc-attr-grid grid grid-cols-2 gap-3">
                         <AttributeCard
                             label="防御"
+                            unset={isUnset('CharacterDefense')}
                             tag="DEF"
                             value={attributes.CharacterDefense}
                             onChange={(v) => handleChange('CharacterDefense', v)}
@@ -107,6 +123,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         />
                         <AttributeCard
                             label="暴伤%"
+                            unset={isUnset('CharacterCriticalHitDamagePercent')}
                             tag="CRIT"
                             value={attributes.CharacterCriticalHitDamagePercent}
                             onChange={(v) => handleChange('CharacterCriticalHitDamagePercent', v)}
@@ -116,6 +133,7 @@ export const AttributePanel: React.FC<AttributePanelProps> = ({ attributes, onCh
                         />
                         <AttributeCard
                             label="对怪增伤%"
+                            unset={isUnset('CharacterMonsterDamageIncreasePercent')}
                             tag="M-DMG"
                             value={attributes.CharacterMonsterDamageIncreasePercent}
                             onChange={(v) => handleChange('CharacterMonsterDamageIncreasePercent', v)}
