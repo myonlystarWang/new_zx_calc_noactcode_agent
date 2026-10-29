@@ -678,6 +678,36 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                             </div>
                                         )}
 
+                                        {/* 6.1b 暂未开放/规划中功能卡片 */}
+                                        {msg.cardType === 'wip_feature' && msg.cardData && (
+                                            <div className="rounded-xl bg-[#121824] border border-amber-500/30 p-4 space-y-2.5">
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <div className="text-sm font-bold text-amber-300 flex items-center gap-2">
+                                                        <span>{msg.cardData.title}</span>
+                                                        <span className="text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 font-normal">
+                                                            {msg.cardData.category}
+                                                        </span>
+                                                    </div>
+                                                    <span className="text-xs text-amber-400/90 font-medium">开发中</span>
+                                                </div>
+                                                <div className="text-xs text-slate-300 leading-relaxed">
+                                                    {msg.cardData.desc}
+                                                </div>
+                                                {msg.cardData.recommendedQuery && (
+                                                    <div className="pt-1 flex items-center gap-2">
+                                                        <span className="text-xs text-slate-400">推荐速查：</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => onSendMessage(msg.cardData.recommendedQuery)}
+                                                            className="px-2.5 py-1 rounded bg-cyan-600/25 hover:bg-cyan-600/45 border border-cyan-500/40 text-cyan-200 text-xs cursor-pointer transition-colors"
+                                                        >
+                                                            {msg.cardData.recommendedQuery}
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
                                         {/* 6.1 核心功能与微工具导航卡片 */}
                                         {msg.cardType === 'tool_card' && msg.cardData && (
                                             <div className="rounded-xl bg-[#121824] border border-cyan-500/30 p-4 flex items-center justify-between gap-4">

@@ -71,7 +71,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'tianyuan_sim' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge' | 'xyc_tome' | 'xyc_wash' | 'xyc_hub';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'tianyuan_sim' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge' | 'xyc_tome' | 'xyc_wash' | 'xyc_hub' | 'wip_feature';
     cardData?: any;
 }
 
@@ -605,10 +605,17 @@ export class CopilotService {
         // 「四象」= 四象七副本的简写（用户 2026-10-23 明确：与轩辕策无关，走副本 BOSS）
         if (q === '四象') q = '四象七';
 
-        // 玩家高频同音/错别字与特定别名归一（2026-10-28 线上 Gap 归口）
+        // 玩家高频同音/错别字与特定别名归一（2026-10-28 / 2026-10-29 线上 Gap 归口）
         if (q === '黄帝内径') q = '黄帝内经';
         if (q === '归去来玄') q = '归去来';
         if (q === '奥义提升') q = '天琊';
+        if (q === '四灵元本') q = '四灵本元';
+        if (q === '天音天数') q = '天音天书';
+        if (q.includes('轩辕册')) q = q.replace(/轩辕册/g, '轩辕策');
+        if (q.includes('伤心花') && (q.includes('真气') || q.includes('爆') || q.includes('血炼'))) {
+            // 法宝极端真气/血炼问答：优先定位法宝【伤心花】图鉴做兜底
+            q = '伤心花';
+        }
 
         const dataService = DataService.getInstance();
         const now = new Date();
@@ -628,6 +635,118 @@ export class CopilotService {
         // ====================================================
         // 核心系统微工具与独立页面意图识别（高优先级，避免被实体槽位分词误伤）
         // ====================================================
+
+        // 0.0 WIP 规划中功能与攻略专项提示（2026-10-29 线上净增量 Gap 收口）
+        const WIP_REGISTRY: Array<{
+            matcher: (query: string) => boolean;
+            featureName: string;
+            category: string;
+            desc: string;
+            recommendedQuery?: string;
+        }> = [
+            {
+                matcher: (s) => s.includes('轮回世界') || s.includes('身世') || s.includes('灵猫'),
+                featureName: '轮回世界攻略',
+                category: '系统玩法攻略',
+                desc: '包含身世选择、灵猫天赋与轮回世界全线通关指南。功能还在开发中，暂未开放。',
+                recommendedQuery: '玩法攻略',
+            },
+            {
+                matcher: (s) => s === '周天' || s === '天罡周天' || s.includes('周天星宿'),
+                featureName: '周天系统',
+                category: '星宿属性进阶',
+                desc: '包含周天属性激活与星宿进阶数值矩阵。功能还在开发中，暂未开放。',
+                recommendedQuery: '星宿',
+            },
+            {
+                matcher: (s) => s.includes('帝鸿') || s.includes('帝鸿魄'),
+                featureName: '帝鸿轩辕策进阶',
+                category: '轩辕策进阶系统',
+                desc: '包含帝鸿魄洗练、神皇属性转化与高阶词条洗练规则。功能还在开发中，暂未开放。',
+                recommendedQuery: '轩辕策',
+            },
+            {
+                matcher: (s) => s.includes('至圣灵轩符'),
+                featureName: '至圣灵轩符道具指南',
+                category: '洗练道具百科',
+                desc: '包含至圣灵轩符洗练保底机制与获取途径一览。功能还在开发中，暂未开放。',
+                recommendedQuery: '轩辕策洗练',
+            },
+            {
+                matcher: (s) => s.includes('阵灵阵容') || s.includes('阵灵搭配') || s.includes('阵灵模拟'),
+                featureName: '阵灵模拟与阵容搭配',
+                category: '阵灵进阶工具',
+                desc: '包含 6金2紫/克制阵容克性评分与阵法模拟器。功能还在开发中，暂未开放。',
+                recommendedQuery: '阵灵升级',
+            },
+            {
+                matcher: (s) => s.includes('人物传') || s.includes('曾书书'),
+                featureName: '人物传剧情攻略',
+                category: '任务剧情指南',
+                desc: '包含曾书书等全人物传支线分支与成就奖励速查。功能还在开发中，暂未开放。',
+                recommendedQuery: '玩法攻略',
+            },
+            {
+                matcher: (s) => (s.includes('佛焚香') || s.includes('归云')) && (s.includes('加点') || s.includes('玩') || s.includes('怎么')),
+                featureName: '门派流派进阶攻略',
+                category: '门派战术流派',
+                desc: '包含佛焚香加点、归云输出循环等高阶流派配装指南。功能还在开发中，暂未开放。',
+                recommendedQuery: '职业状态',
+            },
+            {
+                matcher: (s) => s.includes('状态图标') || s.includes('buff图标'),
+                featureName: '战斗状态图标大全',
+                category: '实战辅助手册',
+                desc: '包含诛仙3全门派不利与有利状态图标与对应机制。功能还在开发中，暂未开放。',
+                recommendedQuery: '职业状态',
+            },
+            {
+                matcher: (s) => s.includes('真气') && (s.includes('极限') || s.includes('极致') || s.includes('攻略')),
+                featureName: '极致真气攻略',
+                category: '极致属性系列',
+                desc: '包含青云/鬼王真气上限理论峰值与各部位堆叠清单。功能还在开发中，暂未开放。',
+                recommendedQuery: '玩法攻略',
+            },
+            {
+                matcher: (s) => s.includes('化灵'),
+                featureName: '化灵系统全景攻略',
+                category: '系统玩法攻略',
+                desc: '包含化灵属性上限、进阶消耗与实战边际收益。功能还在开发中，暂未开放。',
+                recommendedQuery: '属性测算',
+            },
+            {
+                matcher: (s) => s.includes('元婴') && (s.includes('升级') || s.includes('归劫') || s.includes('洗')),
+                featureName: '元婴洗练升级指南',
+                category: '装备进阶攻略',
+                desc: '包含元婴归劫概率、道胎升级经验与定制属性。功能还在开发中，暂未开放。',
+                recommendedQuery: '装备',
+            },
+            {
+                matcher: (s) => s === '坐骑' || s.includes('坐骑大全') || s.includes('坐骑移速'),
+                featureName: '坐骑全图鉴',
+                category: '图鉴全景资料',
+                desc: '包含全网坐骑移速、飞行坐骑与获取渠道汇总。功能还在开发中，暂未开放。',
+                recommendedQuery: '全景导航',
+            },
+        ];
+
+        const hitWip = WIP_REGISTRY.find(item => item.matcher(q));
+        if (hitWip) {
+            return {
+                id: `msg-${Date.now()}`,
+                sender: 'assistant',
+                text: `【${hitWip.featureName}】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【${hitWip.recommendedQuery || '全景导航'}】：`,
+                time: timeStr,
+                cardType: 'wip_feature',
+                cardData: {
+                    title: hitWip.featureName,
+                    category: hitWip.category,
+                    desc: hitWip.desc,
+                    recommendedQuery: hitWip.recommendedQuery || '全景导航',
+                    statusText: '功能还在开发中，暂未开放',
+                },
+            };
+        }
 
         // 3.98 轩辕策属性信息卡（xyc_tome）—— 已提到微工具区首位（与新天缘精炼同级优先）
         // 四系 × 普通/英雄 × Lv.1–20 全词条区间（装备大类「轩辕策」入口 / 裸「轩辕策」均走此卡）
@@ -1277,6 +1396,8 @@ export class CopilotService {
         // 覆盖 4 团队减益（易伤/绿点/紫点/破防）与 7 增益（专注/加爆伤/加攻击/加血/加蓝/加防御/加怪增）
         // ------------------------------------------------------------
         const isGenericStatus =
+            q === '状态' ||
+            q === '群体专注' ||
             q === '职业状态' ||
             q === '各职业状态' ||
             q === '全职业状态' ||
@@ -1291,7 +1412,7 @@ export class CopilotService {
 
         if (isGenericStatus) {
             statusClass = '逐霜';
-        } else if (q !== '状态' && (q.endsWith('状态') || ((q.includes('状态') || q.includes('增益')) && profs.some(p => q.includes(p))))) {
+        } else if (q.endsWith('状态') || ((q.includes('状态') || q.includes('增益')) && profs.some(p => q.includes(p)))) {
             // 兼容前缀阵营，如「魔青罗状态」/「佛英招状态」
             for (const f of ['仙', '魔', '佛']) {
                 if (q.includes(f)) {
@@ -2147,6 +2268,9 @@ export class CopilotService {
                 q === '阵灵' ||
                 q === '阵灵攻略' ||
                 q === '阵灵升阶' ||
+                q.includes('金卡升级') ||
+                q.includes('紫卡升级') ||
+                q.includes('一张金卡') ||
                 q.includes('沧浪冰珠') ||
                 q.includes('沧热聚灵丹') ||
                 q.includes('聚灵丹') ||

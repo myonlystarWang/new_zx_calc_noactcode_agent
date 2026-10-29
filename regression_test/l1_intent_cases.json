@@ -2166,13 +2166,16 @@
   {
     "id": "t15b-status-bare-01",
     "input": "状态",
-    "expect": null,
+    "expect": {
+      "cardType": "class_status",
+      "cardData.className": "逐霜"
+    },
     "tags": [
       "class-status",
       "guard"
     ],
     "assert": "strong",
-    "note": "裸「状态」无职业前缀不触发"
+    "note": "裸「状态」默认引导至全职业战斗状态档案（热门逐霜，T-15b扩展）"
   },
   {
     "id": "t15b-status-generic-01",
@@ -7550,6 +7553,312 @@
       "standard",
       "dungeon",
       "dot-name"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-status-01",
+    "input": "状态",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.className": "逐霜"
+    },
+    "tags": [
+      "gap",
+      "class_status"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-status-focus-01",
+    "input": "群体专注",
+    "expect": {
+      "cardType": "class_status",
+      "cardData.className": "逐霜"
+    },
+    "tags": [
+      "gap",
+      "class_status"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-xyc-ce-01",
+    "input": "轩辕册",
+    "expect": {
+      "cardType": "xyc_tome"
+    },
+    "tags": [
+      "gap",
+      "xyc"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-xyc-hero-01",
+    "input": "轩辕册英雄",
+    "expect": {
+      "cardType": "xyc_tome",
+      "cardData.initialHero": true
+    },
+    "tags": [
+      "gap",
+      "xyc"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-silin-yuanben-01",
+    "input": "四灵元本",
+    "expect": {
+      "cardType": "silin_benyuan"
+    },
+    "tags": [
+      "gap",
+      "silin"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-zhenling-gold-01",
+    "input": "一张金卡升级满级",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "gap",
+      "zhenling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-zhenling-purple-01",
+    "input": "紫卡升级",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "gap",
+      "zhenling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-zhenling-juling-01",
+    "input": "聚灵",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "gap",
+      "zhenling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-zhenling-dan-01",
+    "input": "聚灵丹",
+    "expect": {
+      "cardType": "zhenling_upgrade"
+    },
+    "tags": [
+      "gap",
+      "zhenling"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-fabao-shangxinhua-01",
+    "input": "伤心花8爆有多少真气",
+    "expect": {
+      "cardType": "fabao",
+      "cardData.name": "伤心花"
+    },
+    "tags": [
+      "gap",
+      "fabao"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-skill-tianyin-tianshu-01",
+    "input": "天音天数",
+    "expect": {
+      "cardType": "skill_candidates",
+      "cardData.skill.group_kind": "tianshu"
+    },
+    "tags": [
+      "gap",
+      "skill"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-lunhui-01",
+    "input": "轮回世界，身世，灵猫",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "轮回世界攻略"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-zhoutian-01",
+    "input": "周天",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "周天系统"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-dihongpo-01",
+    "input": "帝鸿魄",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "帝鸿轩辕策进阶"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-zhisheng-01",
+    "input": "至圣灵轩符",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "至圣灵轩符道具指南"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-zhenling-lineup-01",
+    "input": "阵灵阵容",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "阵灵模拟与阵容搭配"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-zengshushu-01",
+    "input": "曾书书人物传攻略",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "人物传剧情攻略"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-fofenxiang-01",
+    "input": "佛焚香怎么玩",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "门派流派进阶攻略"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-guiyun-01",
+    "input": "归云现在怎么加点",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "门派流派进阶攻略"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-status-icon-01",
+    "input": "状态图标",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "战斗状态图标大全"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-zhenqi-01",
+    "input": "极致真气攻略",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "极致真气攻略"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-hualing-01",
+    "input": "化灵",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "化灵系统全景攻略"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-yuanying-01",
+    "input": "元婴如何升级",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "元婴洗练升级指南"
+    },
+    "tags": [
+      "gap",
+      "wip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "gap-wip-zuoji-01",
+    "input": "坐骑",
+    "expect": {
+      "cardType": "wip_feature",
+      "cardData.title": "坐骑全图鉴"
+    },
+    "tags": [
+      "gap",
+      "wip"
     ],
     "assert": "strong"
   }

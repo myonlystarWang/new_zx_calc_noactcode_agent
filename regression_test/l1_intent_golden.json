@@ -37191,7 +37191,612 @@
       ]
     }
   },
-  "t15b-status-bare-01": null,
+  "t15b-status-bare-01": {
+    "sender": "assistant",
+    "text": "为你呈现全职业战斗状态档案（默认展示热门【逐霜】）。可在卡片内自由切换职业，也可直接发送【青云状态】、【天音状态】、【焚香状态】等快速查看：",
+    "cardType": "class_status",
+    "cardData": {
+      "className": "逐霜",
+      "isDps": true,
+      "factions": [
+        "仙",
+        "魔佛"
+      ],
+      "metrics": [
+        "易伤",
+        "绿点",
+        "紫点",
+        "破防"
+      ],
+      "roles": [
+        {
+          "faction": "仙",
+          "roleType": "dps",
+          "rating": "S+",
+          "abilities": [
+            "T0输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 79,
+          "focusType": [
+            "self"
+          ]
+        },
+        {
+          "faction": "魔佛",
+          "roleType": "dps",
+          "rating": "S+",
+          "abilities": [
+            "T0输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 49,
+          "focusType": [
+            "self"
+          ]
+        }
+      ],
+      "allRoles": [
+        {
+          "name": "焚香",
+          "faction": "佛",
+          "damageBoost": 100,
+          "greenPoint": "×2",
+          "purplePoint": 4,
+          "defenseBreak": 100,
+          "focus": 30,
+          "abilities": [
+            "群神佑",
+            "技能增伤",
+            "绿点翻倍"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "天音",
+          "faction": "佛",
+          "damageBoost": 30,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 20,
+          "abilities": [
+            "救人",
+            "免控",
+            "免死",
+            "解控",
+            "减伤",
+            "血槽"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "天华",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 62,
+          "abilities": [
+            "救人",
+            "超级单体增益"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "太昊",
+          "faction": "仙",
+          "damageBoost": 10,
+          "greenPoint": 220,
+          "purplePoint": 50,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "增加急速",
+            "T0状态输出"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "昭冥",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 60,
+          "abilities": [
+            "对怪增伤",
+            "单体附身",
+            "延长持续",
+            "清除CD"
+          ],
+          "rating": "S",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "青罗",
+          "faction": "魔",
+          "damageBoost": 40,
+          "greenPoint": 360,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "单体加暴伤",
+            "T1状态输出"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support",
+          "critDamage": 200
+        },
+        {
+          "name": "青罗",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 300,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 0,
+          "critDamage": 280,
+          "abilities": [
+            "单体加暴伤",
+            "T1状态输出"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "画影",
+          "faction": "仙",
+          "damageBoost": 60,
+          "greenPoint": 150,
+          "purplePoint": 30,
+          "defenseBreak": 100,
+          "focus": "27+",
+          "abilities": [
+            "群锁血",
+            "免死",
+            "加攻击",
+            "每40万真气+1群体专注"
+          ],
+          "rating": "S",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "英招",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 340,
+          "purplePoint": 35,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "团队加攻防",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 6,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 385,
+          "purplePoint": 16,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 21,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼道",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 300,
+          "purplePoint": 18,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "洞主"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "释罗",
+          "faction": "魔",
+          "damageBoost": 40,
+          "greenPoint": 200,
+          "purplePoint": 30,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "T1状态输出",
+            "抗怪",
+            "冰墙"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "烈山",
+          "faction": "魔",
+          "damageBoost": 30,
+          "greenPoint": 300,
+          "purplePoint": 60,
+          "defenseBreak": 80,
+          "focus": 0,
+          "abilities": [
+            "最高紫点"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "百灵",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 360,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "救人",
+            "群免死",
+            "加攻击",
+            "加血上限"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "百灵",
+          "faction": "魔佛",
+          "damageBoost": 0,
+          "greenPoint": 300,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "救人",
+            "群免死",
+            "加攻击",
+            "加血上限"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "破军",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 360,
+          "purplePoint": 29,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "T1状态输出"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "牵机",
+          "faction": "仙",
+          "damageBoost": 50,
+          "greenPoint": 0,
+          "purplePoint": 35,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "群破防"
+          ],
+          "rating": "A",
+          "roleType": "support"
+        },
+        {
+          "name": "九黎",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 425,
+          "purplePoint": 45,
+          "defenseBreak": 190,
+          "focus": 0,
+          "abilities": [
+            "增加气血",
+            "增加攻击",
+            "抗怪",
+            "增加爆伤"
+          ],
+          "rating": "A",
+          "roleType": "support",
+          "critDamage": 20
+        },
+        {
+          "name": "长生堂",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 300,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "T1+输出"
+          ],
+          "rating": "A",
+          "roleType": "support"
+        },
+        {
+          "name": "怀光",
+          "faction": "仙",
+          "damageBoost": 20,
+          "greenPoint": 120,
+          "purplePoint": 39,
+          "defenseBreak": 180,
+          "focus": "0+",
+          "abilities": [
+            "T1状态输出",
+            "每4万真气+1专注"
+          ],
+          "rating": "A",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "合欢",
+          "faction": "魔",
+          "damageBoost": 42,
+          "greenPoint": 75,
+          "purplePoint": 35,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "结算",
+            "T1输出"
+          ],
+          "rating": "A",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "逐霜",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 79,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "逐霜",
+          "faction": "魔佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 49,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "归云",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 90,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "归云",
+          "faction": "仙佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "仙",
+          "damageBoost": 5,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 50,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 50,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "涅羽",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": "70+",
+          "abilities": [
+            "T0输出",
+            "每10万真气+1自身专注"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        }
+      ],
+      "allClasses": [
+        "焚香",
+        "天音",
+        "天华",
+        "太昊",
+        "昭冥",
+        "青罗",
+        "画影",
+        "英招",
+        "鬼王",
+        "鬼道",
+        "释罗",
+        "烈山",
+        "百灵",
+        "破军",
+        "牵机",
+        "九黎",
+        "长生堂",
+        "怀光",
+        "合欢",
+        "逐霜",
+        "归云",
+        "青云",
+        "涅羽"
+      ]
+    }
+  },
   "t15b-status-generic-01": {
     "sender": "assistant",
     "text": "为你呈现全职业战斗状态档案（默认展示热门【逐霜】）。可在卡片内自由切换职业，也可直接发送【青云状态】、【天音状态】、【焚香状态】等快速查看：",
@@ -254969,6 +255574,4403 @@
       "critDmgRed": 900,
       "hp": 1228738310,
       "route": "/compendium/boss?d=SIXIANG_QI&m=ZUI_XUAN_YE"
+    }
+  },
+  "gap-status-01": {
+    "sender": "assistant",
+    "text": "为你呈现全职业战斗状态档案（默认展示热门【逐霜】）。可在卡片内自由切换职业，也可直接发送【青云状态】、【天音状态】、【焚香状态】等快速查看：",
+    "cardType": "class_status",
+    "cardData": {
+      "className": "逐霜",
+      "isDps": true,
+      "factions": [
+        "仙",
+        "魔佛"
+      ],
+      "metrics": [
+        "易伤",
+        "绿点",
+        "紫点",
+        "破防"
+      ],
+      "roles": [
+        {
+          "faction": "仙",
+          "roleType": "dps",
+          "rating": "S+",
+          "abilities": [
+            "T0输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 79,
+          "focusType": [
+            "self"
+          ]
+        },
+        {
+          "faction": "魔佛",
+          "roleType": "dps",
+          "rating": "S+",
+          "abilities": [
+            "T0输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 49,
+          "focusType": [
+            "self"
+          ]
+        }
+      ],
+      "allRoles": [
+        {
+          "name": "焚香",
+          "faction": "佛",
+          "damageBoost": 100,
+          "greenPoint": "×2",
+          "purplePoint": 4,
+          "defenseBreak": 100,
+          "focus": 30,
+          "abilities": [
+            "群神佑",
+            "技能增伤",
+            "绿点翻倍"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "天音",
+          "faction": "佛",
+          "damageBoost": 30,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 20,
+          "abilities": [
+            "救人",
+            "免控",
+            "免死",
+            "解控",
+            "减伤",
+            "血槽"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "天华",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 62,
+          "abilities": [
+            "救人",
+            "超级单体增益"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "太昊",
+          "faction": "仙",
+          "damageBoost": 10,
+          "greenPoint": 220,
+          "purplePoint": 50,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "增加急速",
+            "T0状态输出"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "昭冥",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 60,
+          "abilities": [
+            "对怪增伤",
+            "单体附身",
+            "延长持续",
+            "清除CD"
+          ],
+          "rating": "S",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "青罗",
+          "faction": "魔",
+          "damageBoost": 40,
+          "greenPoint": 360,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "单体加暴伤",
+            "T1状态输出"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support",
+          "critDamage": 200
+        },
+        {
+          "name": "青罗",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 300,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 0,
+          "critDamage": 280,
+          "abilities": [
+            "单体加暴伤",
+            "T1状态输出"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "画影",
+          "faction": "仙",
+          "damageBoost": 60,
+          "greenPoint": 150,
+          "purplePoint": 30,
+          "defenseBreak": 100,
+          "focus": "27+",
+          "abilities": [
+            "群锁血",
+            "免死",
+            "加攻击",
+            "每40万真气+1群体专注"
+          ],
+          "rating": "S",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "英招",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 340,
+          "purplePoint": 35,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "团队加攻防",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 6,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 385,
+          "purplePoint": 16,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 21,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼道",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 300,
+          "purplePoint": 18,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "洞主"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "释罗",
+          "faction": "魔",
+          "damageBoost": 40,
+          "greenPoint": 200,
+          "purplePoint": 30,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "T1状态输出",
+            "抗怪",
+            "冰墙"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "烈山",
+          "faction": "魔",
+          "damageBoost": 30,
+          "greenPoint": 300,
+          "purplePoint": 60,
+          "defenseBreak": 80,
+          "focus": 0,
+          "abilities": [
+            "最高紫点"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "百灵",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 360,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "救人",
+            "群免死",
+            "加攻击",
+            "加血上限"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "百灵",
+          "faction": "魔佛",
+          "damageBoost": 0,
+          "greenPoint": 300,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "救人",
+            "群免死",
+            "加攻击",
+            "加血上限"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "破军",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 360,
+          "purplePoint": 29,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "T1状态输出"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "牵机",
+          "faction": "仙",
+          "damageBoost": 50,
+          "greenPoint": 0,
+          "purplePoint": 35,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "群破防"
+          ],
+          "rating": "A",
+          "roleType": "support"
+        },
+        {
+          "name": "九黎",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 425,
+          "purplePoint": 45,
+          "defenseBreak": 190,
+          "focus": 0,
+          "abilities": [
+            "增加气血",
+            "增加攻击",
+            "抗怪",
+            "增加爆伤"
+          ],
+          "rating": "A",
+          "roleType": "support",
+          "critDamage": 20
+        },
+        {
+          "name": "长生堂",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 300,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "T1+输出"
+          ],
+          "rating": "A",
+          "roleType": "support"
+        },
+        {
+          "name": "怀光",
+          "faction": "仙",
+          "damageBoost": 20,
+          "greenPoint": 120,
+          "purplePoint": 39,
+          "defenseBreak": 180,
+          "focus": "0+",
+          "abilities": [
+            "T1状态输出",
+            "每4万真气+1专注"
+          ],
+          "rating": "A",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "合欢",
+          "faction": "魔",
+          "damageBoost": 42,
+          "greenPoint": 75,
+          "purplePoint": 35,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "结算",
+            "T1输出"
+          ],
+          "rating": "A",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "逐霜",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 79,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "逐霜",
+          "faction": "魔佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 49,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "归云",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 90,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "归云",
+          "faction": "仙佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "仙",
+          "damageBoost": 5,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 50,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 50,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "涅羽",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": "70+",
+          "abilities": [
+            "T0输出",
+            "每10万真气+1自身专注"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        }
+      ],
+      "allClasses": [
+        "焚香",
+        "天音",
+        "天华",
+        "太昊",
+        "昭冥",
+        "青罗",
+        "画影",
+        "英招",
+        "鬼王",
+        "鬼道",
+        "释罗",
+        "烈山",
+        "百灵",
+        "破军",
+        "牵机",
+        "九黎",
+        "长生堂",
+        "怀光",
+        "合欢",
+        "逐霜",
+        "归云",
+        "青云",
+        "涅羽"
+      ]
+    }
+  },
+  "gap-status-focus-01": {
+    "sender": "assistant",
+    "text": "为你呈现全职业战斗状态档案（默认展示热门【逐霜】）。可在卡片内自由切换职业，也可直接发送【青云状态】、【天音状态】、【焚香状态】等快速查看：",
+    "cardType": "class_status",
+    "cardData": {
+      "className": "逐霜",
+      "isDps": true,
+      "factions": [
+        "仙",
+        "魔佛"
+      ],
+      "metrics": [
+        "易伤",
+        "绿点",
+        "紫点",
+        "破防"
+      ],
+      "roles": [
+        {
+          "faction": "仙",
+          "roleType": "dps",
+          "rating": "S+",
+          "abilities": [
+            "T0输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 79,
+          "focusType": [
+            "self"
+          ]
+        },
+        {
+          "faction": "魔佛",
+          "roleType": "dps",
+          "rating": "S+",
+          "abilities": [
+            "T0输出"
+          ],
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 49,
+          "focusType": [
+            "self"
+          ]
+        }
+      ],
+      "allRoles": [
+        {
+          "name": "焚香",
+          "faction": "佛",
+          "damageBoost": 100,
+          "greenPoint": "×2",
+          "purplePoint": 4,
+          "defenseBreak": 100,
+          "focus": 30,
+          "abilities": [
+            "群神佑",
+            "技能增伤",
+            "绿点翻倍"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "天音",
+          "faction": "佛",
+          "damageBoost": 30,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 20,
+          "abilities": [
+            "救人",
+            "免控",
+            "免死",
+            "解控",
+            "减伤",
+            "血槽"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "天华",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 62,
+          "abilities": [
+            "救人",
+            "超级单体增益"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "太昊",
+          "faction": "仙",
+          "damageBoost": 10,
+          "greenPoint": 220,
+          "purplePoint": 50,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "增加急速",
+            "T0状态输出"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "昭冥",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 60,
+          "abilities": [
+            "对怪增伤",
+            "单体附身",
+            "延长持续",
+            "清除CD"
+          ],
+          "rating": "S",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "青罗",
+          "faction": "魔",
+          "damageBoost": 40,
+          "greenPoint": 360,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "单体加暴伤",
+            "T1状态输出"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support",
+          "critDamage": 200
+        },
+        {
+          "name": "青罗",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 300,
+          "purplePoint": 0,
+          "defenseBreak": 100,
+          "focus": 0,
+          "critDamage": 280,
+          "abilities": [
+            "单体加暴伤",
+            "T1状态输出"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "画影",
+          "faction": "仙",
+          "damageBoost": 60,
+          "greenPoint": 150,
+          "purplePoint": 30,
+          "defenseBreak": 100,
+          "focus": "27+",
+          "abilities": [
+            "群锁血",
+            "免死",
+            "加攻击",
+            "每40万真气+1群体专注"
+          ],
+          "rating": "S",
+          "focusType": [
+            "group"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "英招",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 340,
+          "purplePoint": 35,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "团队加攻防",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 6,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 385,
+          "purplePoint": 16,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼王",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 345,
+          "purplePoint": 21,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "九变",
+            "抗怪"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "鬼道",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 300,
+          "purplePoint": 18,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "洞主"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "释罗",
+          "faction": "魔",
+          "damageBoost": 40,
+          "greenPoint": 200,
+          "purplePoint": 30,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "T1状态输出",
+            "抗怪",
+            "冰墙"
+          ],
+          "rating": "S",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "烈山",
+          "faction": "魔",
+          "damageBoost": 30,
+          "greenPoint": 300,
+          "purplePoint": 60,
+          "defenseBreak": 80,
+          "focus": 0,
+          "abilities": [
+            "最高紫点"
+          ],
+          "rating": "S",
+          "roleType": "support"
+        },
+        {
+          "name": "百灵",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 360,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "救人",
+            "群免死",
+            "加攻击",
+            "加血上限"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "百灵",
+          "faction": "魔佛",
+          "damageBoost": 0,
+          "greenPoint": 300,
+          "purplePoint": 25,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "救人",
+            "群免死",
+            "加攻击",
+            "加血上限"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "破军",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 360,
+          "purplePoint": 29,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "T1状态输出"
+          ],
+          "rating": "A+",
+          "roleType": "support"
+        },
+        {
+          "name": "牵机",
+          "faction": "仙",
+          "damageBoost": 50,
+          "greenPoint": 0,
+          "purplePoint": 35,
+          "defenseBreak": 100,
+          "focus": 0,
+          "abilities": [
+            "群破防"
+          ],
+          "rating": "A",
+          "roleType": "support"
+        },
+        {
+          "name": "九黎",
+          "faction": "佛",
+          "damageBoost": 40,
+          "greenPoint": 425,
+          "purplePoint": 45,
+          "defenseBreak": 190,
+          "focus": 0,
+          "abilities": [
+            "增加气血",
+            "增加攻击",
+            "抗怪",
+            "增加爆伤"
+          ],
+          "rating": "A",
+          "roleType": "support",
+          "critDamage": 20
+        },
+        {
+          "name": "长生堂",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 300,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "T1+输出"
+          ],
+          "rating": "A",
+          "roleType": "support"
+        },
+        {
+          "name": "怀光",
+          "faction": "仙",
+          "damageBoost": 20,
+          "greenPoint": 120,
+          "purplePoint": 39,
+          "defenseBreak": 180,
+          "focus": "0+",
+          "abilities": [
+            "T1状态输出",
+            "每4万真气+1专注"
+          ],
+          "rating": "A",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "合欢",
+          "faction": "魔",
+          "damageBoost": 42,
+          "greenPoint": 75,
+          "purplePoint": 35,
+          "defenseBreak": 0,
+          "focus": 0,
+          "abilities": [
+            "结算",
+            "T1输出"
+          ],
+          "rating": "A",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "support"
+        },
+        {
+          "name": "逐霜",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 79,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "逐霜",
+          "faction": "魔佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 49,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "归云",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 90,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "归云",
+          "faction": "仙佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T0输出"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "仙",
+          "damageBoost": 5,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 50,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "魔",
+          "damageBoost": 0,
+          "greenPoint": 50,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "青云",
+          "faction": "佛",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": 30,
+          "abilities": [
+            "T1输出"
+          ],
+          "rating": "A+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        },
+        {
+          "name": "涅羽",
+          "faction": "仙",
+          "damageBoost": 0,
+          "greenPoint": 0,
+          "purplePoint": 0,
+          "defenseBreak": 0,
+          "focus": "70+",
+          "abilities": [
+            "T0输出",
+            "每10万真气+1自身专注"
+          ],
+          "rating": "S+",
+          "focusType": [
+            "self"
+          ],
+          "roleType": "dps"
+        }
+      ],
+      "allClasses": [
+        "焚香",
+        "天音",
+        "天华",
+        "太昊",
+        "昭冥",
+        "青罗",
+        "画影",
+        "英招",
+        "鬼王",
+        "鬼道",
+        "释罗",
+        "烈山",
+        "百灵",
+        "破军",
+        "牵机",
+        "九黎",
+        "长生堂",
+        "怀光",
+        "合欢",
+        "逐霜",
+        "归云",
+        "青云",
+        "涅羽"
+      ]
+    }
+  },
+  "gap-xyc-ce-01": {
+    "sender": "assistant",
+    "text": "为你呈现【轩辕策属性全览】。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：",
+    "cardType": "xyc_tome",
+    "cardData": {
+      "rules": {
+        "standard": {
+          "gj": {
+            "name": "固定攻击",
+            "min": 200,
+            "max": 1000,
+            "gain": 20,
+            "unit": ""
+          },
+          "fy": {
+            "name": "固定防御",
+            "min": 100,
+            "max": 300,
+            "gain": 10,
+            "unit": ""
+          },
+          "qx": {
+            "name": "固定气血",
+            "min": 2000,
+            "max": 6000,
+            "gain": 100,
+            "unit": ""
+          },
+          "zq": {
+            "name": "固定真气",
+            "min": 500,
+            "max": 3000,
+            "gain": 50,
+            "unit": ""
+          },
+          "gj_r": {
+            "name": "攻击",
+            "min": 3.5,
+            "max": 10,
+            "gain": 0.4,
+            "unit": "%"
+          },
+          "fy_r": {
+            "name": "防御",
+            "min": 5,
+            "max": 10,
+            "gain": 0.5,
+            "unit": "%"
+          },
+          "qx_r": {
+            "name": "气血",
+            "min": 2,
+            "max": 8,
+            "gain": 0.2,
+            "unit": "%"
+          },
+          "zq_r": {
+            "name": "真气",
+            "min": 2,
+            "max": 8,
+            "gain": 0.2,
+            "unit": "%"
+          },
+          "ql_xy": {
+            "name": "眩晕抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_ds": {
+            "name": "定身抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_jnmz": {
+            "name": "技能命中",
+            "min": 5,
+            "max": 15,
+            "gain": 0.5,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_bs": {
+            "name": "致命一击伤害",
+            "min": 20,
+            "max": 60,
+            "gain": 1,
+            "unit": "%",
+            "beast": "青龙"
+          },
+          "bh_kx": {
+            "name": "克仙",
+            "min": 3,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "bh_mh": {
+            "name": "魅惑抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "白虎"
+          },
+          "bh_jbj": {
+            "name": "减免致命一击率",
+            "min": 1,
+            "max": 5,
+            "gain": 0.1,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "bh_bj": {
+            "name": "致命一击率",
+            "min": 5,
+            "max": 12,
+            "gain": 0.3,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "zq_km": {
+            "name": "克魔",
+            "min": 3,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "朱雀"
+          },
+          "zq_yl": {
+            "name": "元力值",
+            "min": 500,
+            "max": 1600,
+            "gain": 40,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "zq_yswn": {
+            "name": "元神威能",
+            "min": 20,
+            "max": 70,
+            "gain": 2,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "zq_hs": {
+            "name": "昏睡抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "xw_kf": {
+            "name": "克佛",
+            "min": 3,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "玄武"
+          },
+          "xw_xr": {
+            "name": "虚弱抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "玄武"
+          },
+          "xw_jbs": {
+            "name": "减免致命一击伤害",
+            "min": 4,
+            "max": 8,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "玄武"
+          },
+          "xw_ws": {
+            "name": "无视减免",
+            "min": 3,
+            "max": 12,
+            "gain": 0.3,
+            "unit": "%",
+            "beast": "玄武"
+          }
+        },
+        "hero": {
+          "gj": {
+            "name": "固定攻击",
+            "min": 280,
+            "max": 1400,
+            "gain": 20,
+            "unit": ""
+          },
+          "fy": {
+            "name": "固定防御",
+            "min": 125,
+            "max": 375,
+            "gain": 10,
+            "unit": ""
+          },
+          "qx": {
+            "name": "固定气血",
+            "min": 2800,
+            "max": 8400,
+            "gain": 100,
+            "unit": ""
+          },
+          "zq": {
+            "name": "固定真气",
+            "min": 700,
+            "max": 4200,
+            "gain": 50,
+            "unit": ""
+          },
+          "gj_r": {
+            "name": "攻击",
+            "min": 4.4,
+            "max": 12.5,
+            "gain": 0.4,
+            "unit": "%"
+          },
+          "fy_r": {
+            "name": "防御",
+            "min": 4.4,
+            "max": 12.5,
+            "gain": 0.5,
+            "unit": "%"
+          },
+          "qx_r": {
+            "name": "气血",
+            "min": 2.5,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%"
+          },
+          "zq_r": {
+            "name": "真气",
+            "min": 2.5,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%"
+          },
+          "ql_xy": {
+            "name": "眩晕抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_ds": {
+            "name": "定身抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_jnmz": {
+            "name": "技能命中",
+            "min": 6.3,
+            "max": 18.8,
+            "gain": 0.5,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_bs": {
+            "name": "致命一击伤害",
+            "min": 25,
+            "max": 75,
+            "gain": 1,
+            "unit": "%",
+            "beast": "青龙"
+          },
+          "bh_kx": {
+            "name": "克仙",
+            "min": 4.2,
+            "max": 14,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "bh_mh": {
+            "name": "魅惑抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "白虎"
+          },
+          "bh_jbj": {
+            "name": "减免致命一击率",
+            "min": 1.3,
+            "max": 6.3,
+            "gain": 0.1,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "bh_bj": {
+            "name": "致命一击率",
+            "min": 6.3,
+            "max": 15,
+            "gain": 0.3,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "zq_km": {
+            "name": "克魔",
+            "min": 4.2,
+            "max": 14,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "朱雀"
+          },
+          "zq_yl": {
+            "name": "元力值",
+            "min": 700,
+            "max": 2240,
+            "gain": 40,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "zq_yswn": {
+            "name": "元神威能",
+            "min": 25,
+            "max": 88,
+            "gain": 2,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "zq_hs": {
+            "name": "昏睡抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "xw_kf": {
+            "name": "克佛",
+            "min": 4.2,
+            "max": 14,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "玄武"
+          },
+          "xw_xr": {
+            "name": "虚弱抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "玄武"
+          },
+          "xw_jbs": {
+            "name": "减免致命一击伤害",
+            "min": 5.6,
+            "min20": 9.6,
+            "max": 11.2,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "玄武"
+          },
+          "xw_ws": {
+            "name": "无视减免",
+            "min": 3.8,
+            "max": 15,
+            "gain": 0.3,
+            "unit": "%",
+            "beast": "玄武"
+          }
+        },
+        "beasts": {
+          "青龙": {
+            "color": "#11ff11",
+            "tag": "ql",
+            "specificKeys": [
+              "ql_xy",
+              "ql_ds",
+              "ql_jnmz",
+              "ql_bs"
+            ]
+          },
+          "白虎": {
+            "color": "#ffcb4a",
+            "tag": "bh",
+            "specificKeys": [
+              "bh_kx",
+              "bh_mh",
+              "bh_jbj",
+              "bh_bj"
+            ]
+          },
+          "朱雀": {
+            "color": "#ff4d4f",
+            "tag": "zq",
+            "specificKeys": [
+              "zq_km",
+              "zq_yl",
+              "zq_yswn",
+              "zq_hs"
+            ]
+          },
+          "玄武": {
+            "color": "#11aaff",
+            "tag": "xw",
+            "specificKeys": [
+              "xw_kf",
+              "xw_xr",
+              "xw_jbs",
+              "xw_ws"
+            ]
+          }
+        },
+        "commonKeys": [
+          "gj",
+          "fy",
+          "qx",
+          "zq",
+          "gj_r",
+          "fy_r",
+          "qx_r",
+          "zq_r"
+        ]
+      },
+      "meta": {
+        "_source": "轩辕策四系书名与品阶，取自完美世界官方专题「天书第四卷---轩辕策」(event51.wanmei.com/zhuxian/201410/xinban/details2.htm)",
+        "tiers": [
+          "一品",
+          "二品",
+          "三品",
+          "四品",
+          "五品",
+          "六品"
+        ],
+        "currentTier": "六品",
+        "maxLevel": 20,
+        "minLevel": 1,
+        "washBaseMax": 10,
+        "washExtraMax": 4,
+        "variants": [
+          "英雄",
+          "大地",
+          "天空",
+          "碧海"
+        ],
+        "books": {
+          "青龙": {
+            "bookName": "青囊玉书",
+            "color": "#11ff11"
+          },
+          "白虎": {
+            "bookName": "白锦道册",
+            "color": "#ffcb4a"
+          },
+          "朱雀": {
+            "bookName": "朱翎术纪",
+            "color": "#ff4d4f"
+          },
+          "玄武": {
+            "bookName": "玄甲元略",
+            "color": "#11aaff"
+          }
+        }
+      },
+      "initialBeast": "青龙",
+      "initialHero": true,
+      "initialLevel": 1
+    }
+  },
+  "gap-xyc-hero-01": {
+    "sender": "assistant",
+    "text": "为你呈现【轩辕策属性全览】。青龙 / 白虎 / 朱雀 / 玄武 四系 × 普通·英雄 双版，Lv.1–20 全词条区间与每级固定增益：",
+    "cardType": "xyc_tome",
+    "cardData": {
+      "rules": {
+        "standard": {
+          "gj": {
+            "name": "固定攻击",
+            "min": 200,
+            "max": 1000,
+            "gain": 20,
+            "unit": ""
+          },
+          "fy": {
+            "name": "固定防御",
+            "min": 100,
+            "max": 300,
+            "gain": 10,
+            "unit": ""
+          },
+          "qx": {
+            "name": "固定气血",
+            "min": 2000,
+            "max": 6000,
+            "gain": 100,
+            "unit": ""
+          },
+          "zq": {
+            "name": "固定真气",
+            "min": 500,
+            "max": 3000,
+            "gain": 50,
+            "unit": ""
+          },
+          "gj_r": {
+            "name": "攻击",
+            "min": 3.5,
+            "max": 10,
+            "gain": 0.4,
+            "unit": "%"
+          },
+          "fy_r": {
+            "name": "防御",
+            "min": 5,
+            "max": 10,
+            "gain": 0.5,
+            "unit": "%"
+          },
+          "qx_r": {
+            "name": "气血",
+            "min": 2,
+            "max": 8,
+            "gain": 0.2,
+            "unit": "%"
+          },
+          "zq_r": {
+            "name": "真气",
+            "min": 2,
+            "max": 8,
+            "gain": 0.2,
+            "unit": "%"
+          },
+          "ql_xy": {
+            "name": "眩晕抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_ds": {
+            "name": "定身抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_jnmz": {
+            "name": "技能命中",
+            "min": 5,
+            "max": 15,
+            "gain": 0.5,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_bs": {
+            "name": "致命一击伤害",
+            "min": 20,
+            "max": 60,
+            "gain": 1,
+            "unit": "%",
+            "beast": "青龙"
+          },
+          "bh_kx": {
+            "name": "克仙",
+            "min": 3,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "bh_mh": {
+            "name": "魅惑抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "白虎"
+          },
+          "bh_jbj": {
+            "name": "减免致命一击率",
+            "min": 1,
+            "max": 5,
+            "gain": 0.1,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "bh_bj": {
+            "name": "致命一击率",
+            "min": 5,
+            "max": 12,
+            "gain": 0.3,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "zq_km": {
+            "name": "克魔",
+            "min": 3,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "朱雀"
+          },
+          "zq_yl": {
+            "name": "元力值",
+            "min": 500,
+            "max": 1600,
+            "gain": 40,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "zq_yswn": {
+            "name": "元神威能",
+            "min": 20,
+            "max": 70,
+            "gain": 2,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "zq_hs": {
+            "name": "昏睡抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "xw_kf": {
+            "name": "克佛",
+            "min": 3,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "玄武"
+          },
+          "xw_xr": {
+            "name": "虚弱抗性",
+            "min": 20,
+            "max": 80,
+            "gain": 1,
+            "unit": "",
+            "beast": "玄武"
+          },
+          "xw_jbs": {
+            "name": "减免致命一击伤害",
+            "min": 4,
+            "max": 8,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "玄武"
+          },
+          "xw_ws": {
+            "name": "无视减免",
+            "min": 3,
+            "max": 12,
+            "gain": 0.3,
+            "unit": "%",
+            "beast": "玄武"
+          }
+        },
+        "hero": {
+          "gj": {
+            "name": "固定攻击",
+            "min": 280,
+            "max": 1400,
+            "gain": 20,
+            "unit": ""
+          },
+          "fy": {
+            "name": "固定防御",
+            "min": 125,
+            "max": 375,
+            "gain": 10,
+            "unit": ""
+          },
+          "qx": {
+            "name": "固定气血",
+            "min": 2800,
+            "max": 8400,
+            "gain": 100,
+            "unit": ""
+          },
+          "zq": {
+            "name": "固定真气",
+            "min": 700,
+            "max": 4200,
+            "gain": 50,
+            "unit": ""
+          },
+          "gj_r": {
+            "name": "攻击",
+            "min": 4.4,
+            "max": 12.5,
+            "gain": 0.4,
+            "unit": "%"
+          },
+          "fy_r": {
+            "name": "防御",
+            "min": 4.4,
+            "max": 12.5,
+            "gain": 0.5,
+            "unit": "%"
+          },
+          "qx_r": {
+            "name": "气血",
+            "min": 2.5,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%"
+          },
+          "zq_r": {
+            "name": "真气",
+            "min": 2.5,
+            "max": 10,
+            "gain": 0.2,
+            "unit": "%"
+          },
+          "ql_xy": {
+            "name": "眩晕抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_ds": {
+            "name": "定身抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_jnmz": {
+            "name": "技能命中",
+            "min": 6.3,
+            "max": 18.8,
+            "gain": 0.5,
+            "unit": "",
+            "beast": "青龙"
+          },
+          "ql_bs": {
+            "name": "致命一击伤害",
+            "min": 25,
+            "max": 75,
+            "gain": 1,
+            "unit": "%",
+            "beast": "青龙"
+          },
+          "bh_kx": {
+            "name": "克仙",
+            "min": 4.2,
+            "max": 14,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "bh_mh": {
+            "name": "魅惑抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "白虎"
+          },
+          "bh_jbj": {
+            "name": "减免致命一击率",
+            "min": 1.3,
+            "max": 6.3,
+            "gain": 0.1,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "bh_bj": {
+            "name": "致命一击率",
+            "min": 6.3,
+            "max": 15,
+            "gain": 0.3,
+            "unit": "%",
+            "beast": "白虎"
+          },
+          "zq_km": {
+            "name": "克魔",
+            "min": 4.2,
+            "max": 14,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "朱雀"
+          },
+          "zq_yl": {
+            "name": "元力值",
+            "min": 700,
+            "max": 2240,
+            "gain": 40,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "zq_yswn": {
+            "name": "元神威能",
+            "min": 25,
+            "max": 88,
+            "gain": 2,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "zq_hs": {
+            "name": "昏睡抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "朱雀"
+          },
+          "xw_kf": {
+            "name": "克佛",
+            "min": 4.2,
+            "max": 14,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "玄武"
+          },
+          "xw_xr": {
+            "name": "虚弱抗性",
+            "min": 28,
+            "max": 112,
+            "gain": 1,
+            "unit": "",
+            "beast": "玄武"
+          },
+          "xw_jbs": {
+            "name": "减免致命一击伤害",
+            "min": 5.6,
+            "min20": 9.6,
+            "max": 11.2,
+            "gain": 0.2,
+            "unit": "%",
+            "beast": "玄武"
+          },
+          "xw_ws": {
+            "name": "无视减免",
+            "min": 3.8,
+            "max": 15,
+            "gain": 0.3,
+            "unit": "%",
+            "beast": "玄武"
+          }
+        },
+        "beasts": {
+          "青龙": {
+            "color": "#11ff11",
+            "tag": "ql",
+            "specificKeys": [
+              "ql_xy",
+              "ql_ds",
+              "ql_jnmz",
+              "ql_bs"
+            ]
+          },
+          "白虎": {
+            "color": "#ffcb4a",
+            "tag": "bh",
+            "specificKeys": [
+              "bh_kx",
+              "bh_mh",
+              "bh_jbj",
+              "bh_bj"
+            ]
+          },
+          "朱雀": {
+            "color": "#ff4d4f",
+            "tag": "zq",
+            "specificKeys": [
+              "zq_km",
+              "zq_yl",
+              "zq_yswn",
+              "zq_hs"
+            ]
+          },
+          "玄武": {
+            "color": "#11aaff",
+            "tag": "xw",
+            "specificKeys": [
+              "xw_kf",
+              "xw_xr",
+              "xw_jbs",
+              "xw_ws"
+            ]
+          }
+        },
+        "commonKeys": [
+          "gj",
+          "fy",
+          "qx",
+          "zq",
+          "gj_r",
+          "fy_r",
+          "qx_r",
+          "zq_r"
+        ]
+      },
+      "meta": {
+        "_source": "轩辕策四系书名与品阶，取自完美世界官方专题「天书第四卷---轩辕策」(event51.wanmei.com/zhuxian/201410/xinban/details2.htm)",
+        "tiers": [
+          "一品",
+          "二品",
+          "三品",
+          "四品",
+          "五品",
+          "六品"
+        ],
+        "currentTier": "六品",
+        "maxLevel": 20,
+        "minLevel": 1,
+        "washBaseMax": 10,
+        "washExtraMax": 4,
+        "variants": [
+          "英雄",
+          "大地",
+          "天空",
+          "碧海"
+        ],
+        "books": {
+          "青龙": {
+            "bookName": "青囊玉书",
+            "color": "#11ff11"
+          },
+          "白虎": {
+            "bookName": "白锦道册",
+            "color": "#ffcb4a"
+          },
+          "朱雀": {
+            "bookName": "朱翎术纪",
+            "color": "#ff4d4f"
+          },
+          "玄武": {
+            "bookName": "玄甲元略",
+            "color": "#11aaff"
+          }
+        }
+      },
+      "initialBeast": "青龙",
+      "initialHero": true,
+      "initialLevel": 1
+    }
+  },
+  "gap-silin-yuanben-01": {
+    "sender": "assistant",
+    "text": "为你速查到装备【四灵本元】（伏龙鼎镶嵌）。支持四灵切换与 1~5 阶切换，逐阶查看可能词条、五阶满值、本阶折算数值与精确概率：",
+    "cardType": "silin_benyuan",
+    "cardData": {
+      "data": {
+        "systemName": "四灵本元",
+        "category": "装备系统 · 伏龙鼎镶嵌",
+        "shortName": "本元",
+        "source": "用户实机截图 9 张（tooltip 实测）＋ 完美游戏论坛《四灵本元属性概率表》（Excel 截图）",
+        "version": "2026-10-21 v1",
+        "description": "四灵本元为伏龙鼎四面的镶嵌灵物，分黄鸟、烛龙、饕餮、夔牛四灵，每灵独立一系，共 1~5 阶。同灵同阶的『本元名』固定，词条为概率产出：阶 N 的本元最多 N+1 条词条，每条按对应阶的概率池独立抽取。属合成式系统（低阶合成高阶），故本项目只做『每阶可能词条 + 概率』速查，不做随机模拟器。",
+        "dropStatus": "不会掉落（绑定，不可交易）",
+        "rules": {
+          "spiritCount": 4,
+          "maxTier": 5,
+          "slotRule": "阶 N 的本元 = N+1 条词条；前 N 条对应 1..N 阶概率池，最后 1 条从 1..N 阶累计池中抽取（实测 5 阶样本中存在同阶双词条，规则待进一步验证）",
+          "slotCountByTier": {
+            "1": 2,
+            "2": 3,
+            "3": 4,
+            "4": 5,
+            "5": 6
+          },
+          "slotCountConfidence": "3/4/5 阶由 6 张实测 tooltip 验证（4/5/6 条）；1 阶为按规律推定，2 阶实测出现 4 条（其中 1 条疑为面板透字，待核）",
+          "valueScale": {
+            "1": 0.0625,
+            "2": 0.125,
+            "3": 0.25,
+            "4": 0.5,
+            "5": 1
+          },
+          "valueScaleNote": "本表『数值』列为五阶满值。实测折算系数：二阶 12.5%、三阶 25%、四阶 50%、五阶 100%；一阶按等比推定为 6.25%。词条数值只按『本元阶位』折算，与词条出自哪一阶池无关（如五阶黄鸟可带一阶『固定攻击 4160』的满值）。",
+          "resistanceRule": "『抗性（五行之一）』为虚弱/眩晕/昏睡/定身/魅惑五系，出现概率为五系合计，单系均等分（例：一阶合计 34%，单系 6.8%）；同一件本元可出现两条不同系的抗性（实测钧天玄霆：虚弱抗性 + 昏睡抗性）",
+          "bindNote": "镶嵌于伏龙鼎鼎身对应灵兽一面；五阶实机红字注释：『注：镶嵌后瑞灵呈祥增益效果额外增加5%。』"
+        },
+        "attributeDictionary": {
+          "技能命中": {
+            "display": "增加技能命中",
+            "isPercent": false
+          },
+          "技能躲闪": {
+            "display": "增加技能躲闪",
+            "isPercent": false
+          },
+          "普攻命中": {
+            "display": "命中",
+            "isPercent": false
+          },
+          "普攻躲闪": {
+            "display": "躲闪",
+            "isPercent": false
+          },
+          "暴伤": {
+            "display": "暴击伤害",
+            "isPercent": true
+          },
+          "减暴伤": {
+            "display": "受到致命一击伤害减少",
+            "isPercent": true
+          },
+          "暴击": {
+            "display": "暴击率",
+            "isPercent": true
+          },
+          "减暴击": {
+            "display": "被致命一击的概率减少",
+            "isPercent": true
+          },
+          "防御": {
+            "display": "基础防御",
+            "isPercent": false
+          },
+          "基础防御": {
+            "display": "基础防御",
+            "isPercent": false
+          },
+          "固定攻击": {
+            "display": "固定攻击",
+            "isPercent": false
+          },
+          "攻击固定值": {
+            "display": "固定攻击",
+            "isPercent": false
+          },
+          "小攻": {
+            "display": "基础最小攻击",
+            "isPercent": false
+          },
+          "固定气血": {
+            "display": "固定气血",
+            "isPercent": false
+          },
+          "基础气血": {
+            "display": "基础气血",
+            "isPercent": false
+          },
+          "固定真气": {
+            "display": "固定真气",
+            "isPercent": false
+          },
+          "基础真气": {
+            "display": "基础真气",
+            "isPercent": false
+          },
+          "元力值": {
+            "display": "元力",
+            "isPercent": false
+          },
+          "防御百分比": {
+            "display": "防御百分比",
+            "isPercent": true
+          },
+          "减免伤害固定值": {
+            "display": "减免伤害固定值",
+            "isPercent": false
+          },
+          "减免百分比": {
+            "display": "减免百分比",
+            "isPercent": true
+          },
+          "无视": {
+            "display": "无视人物伤害减免",
+            "isPercent": true
+          },
+          "冲灵": {
+            "display": "冲灵",
+            "isPercent": true
+          },
+          "化灵": {
+            "display": "化灵",
+            "isPercent": true
+          },
+          "对人族增伤": {
+            "display": "对人族伤害增加",
+            "isPercent": true
+          },
+          "对神裔增伤": {
+            "display": "对神裔伤害增加",
+            "isPercent": true
+          },
+          "对天脉增伤": {
+            "display": "对天脉伤害增加",
+            "isPercent": true
+          },
+          "对苍祇增伤": {
+            "display": "对苍祇伤害增加",
+            "isPercent": true
+          },
+          "对人族减伤": {
+            "display": "受到人族伤害减少",
+            "isPercent": true
+          },
+          "对神裔减伤": {
+            "display": "受到神裔伤害减少",
+            "isPercent": true
+          },
+          "对天脉减伤": {
+            "display": "受到天脉伤害减少",
+            "isPercent": true
+          },
+          "对苍祇减伤": {
+            "display": "受到苍祇伤害减少",
+            "isPercent": true
+          },
+          "抗性（五行之一）": {
+            "display": "五种抗性",
+            "isPercent": false,
+            "isGroup": true
+          }
+        },
+        "spirits": [
+          {
+            "id": "kuiniu",
+            "name": "夔牛",
+            "slotFace": "伏龙鼎 · 夔牛面",
+            "theme": "减伤 + 冲灵（防御向）",
+            "tierNames": {
+              "1": "雷纹",
+              "2": "夔骨",
+              "3": "震鼓",
+              "4": "风雷",
+              "5": "钧天玄霆"
+            },
+            "flavor": {
+              "1": "雷纹初现，风雷暗藏。",
+              "2": "夔骨铮铮，雷力贯通。",
+              "3": "震鼓如雷，声动四野。",
+              "4": "风雷俱发，威势滔天。",
+              "5": "钧天玄霆，天威浩荡。"
+            },
+            "bestPicks": [
+              "冲灵",
+              "减免伤害固定值",
+              "对苍祇减伤",
+              "对天脉减伤",
+              "暴伤",
+              "技能命中"
+            ],
+            "pools": {
+              "1": [
+                {
+                  "attr": "技能命中",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "防御",
+                  "value": 960,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "2": [
+                {
+                  "attr": "暴伤",
+                  "value": 24,
+                  "isPercent": true,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "普攻命中",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "3": [
+                {
+                  "attr": "对天脉减伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "sheetValue": "0.08",
+                  "rate": 0.25
+                },
+                {
+                  "attr": "普攻躲闪",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定攻击",
+                  "value": 480,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "4": [
+                {
+                  "attr": "对苍祇减伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "sheetValue": "0.08",
+                  "rate": 0.25
+                },
+                {
+                  "attr": "小攻",
+                  "value": 80,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定真气",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "5": [
+                {
+                  "attr": "冲灵",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "减免伤害固定值",
+                  "value": 32000,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.166,
+                  "perElementRate": 0.0332
+                },
+                {
+                  "attr": "防御百分比",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "元力值",
+                  "value": 320,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "固定气血",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.17
+                }
+              ]
+            }
+          },
+          {
+            "id": "huangniao",
+            "name": "黄鸟",
+            "slotFace": "伏龙鼎 · 黄鸟面",
+            "theme": "增伤 + 化灵（输出向）",
+            "tierNames": {
+              "1": "羽灵",
+              "2": "金翎",
+              "3": "扶摇",
+              "4": "九霄",
+              "5": "玄黄天音"
+            },
+            "flavor": {
+              "1": "羽翼初展，灵性自生。",
+              "2": "金翎耀日，灵鸟通神。",
+              "3": "扶摇直上，乘风万里。",
+              "4": "九霄之极，羽翼遮天。",
+              "5": "玄黄天音，大道共鸣。"
+            },
+            "bestPicks": [
+              "化灵",
+              "减免伤害固定值",
+              "对神裔增伤",
+              "对人族增伤",
+              "减暴伤",
+              "技能躲闪"
+            ],
+            "pools": {
+              "1": [
+                {
+                  "attr": "技能躲闪",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "攻击固定值",
+                  "value": 4160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "2": [
+                {
+                  "attr": "减暴伤",
+                  "value": 24,
+                  "isPercent": true,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "普攻命中",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "3": [
+                {
+                  "attr": "对人族增伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "普攻躲闪",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定气血",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "4": [
+                {
+                  "attr": "对神裔增伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "小攻",
+                  "value": 80,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定真气",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "5": [
+                {
+                  "attr": "化灵",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "减免伤害固定值",
+                  "value": 32000,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.166,
+                  "perElementRate": 0.0332
+                },
+                {
+                  "attr": "防御百分比",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "元力值",
+                  "value": 320,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "基础防御",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.17
+                }
+              ]
+            }
+          },
+          {
+            "id": "zhulong",
+            "name": "烛龙",
+            "slotFace": "伏龙鼎 · 烛龙面",
+            "theme": "暴击 + 减免百分比（暴击向）",
+            "tierNames": {
+              "1": "萤烛",
+              "2": "龙息",
+              "3": "幽明",
+              "4": "九阴",
+              "5": "烛照太初"
+            },
+            "flavor": {
+              "1": "微光如萤，烛龙初醒。",
+              "2": "龙息初吐，灵韵渐生。",
+              "3": "幽明莫测，神目洞虚。",
+              "4": "九阴之极，寒光凛冽。",
+              "5": "烛照太初，鸿蒙始开。"
+            },
+            "bestPicks": [
+              "减免百分比",
+              "减免伤害固定值",
+              "对天脉增伤",
+              "对苍祇增伤",
+              "暴击",
+              "—"
+            ],
+            "pools": {
+              "1": [
+                {
+                  "attr": "基础真气",
+                  "value": 6400,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "固定真气",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "2": [
+                {
+                  "attr": "暴击",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "普攻命中",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "3": [
+                {
+                  "attr": "对天脉增伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "普攻躲闪",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定气血",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "4": [
+                {
+                  "attr": "对苍祇增伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "小攻",
+                  "value": 80,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定攻击",
+                  "value": 480,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "5": [
+                {
+                  "attr": "减免百分比",
+                  "value": 1.6,
+                  "isPercent": true,
+                  "sheetValue": "0.016",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "减免伤害固定值",
+                  "value": 32000,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.166,
+                  "perElementRate": 0.0332
+                },
+                {
+                  "attr": "防御百分比",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "元力值",
+                  "value": 320,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "基础防御",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.17
+                }
+              ]
+            }
+          },
+          {
+            "id": "taotie",
+            "name": "饕餮",
+            "slotFace": "伏龙鼎 · 饕餮面",
+            "theme": "气血 + 无视（血牛向）",
+            "tierNames": {
+              "1": "贪噬",
+              "2": "吞渊",
+              "3": "饕煞",
+              "4": "噬心",
+              "5": "归墟无厌"
+            },
+            "flavor": {
+              "1": "贪婪吞噬，初显凶性。",
+              "2": "吞渊之势，深不可测。",
+              "3": "饕煞凶威，煞气纵横。",
+              "4": "噬空之能，虚空崩裂。",
+              "5": "归墟无厌，万物终焉。"
+            },
+            "bestPicks": [
+              "无视",
+              "减免伤害固定值",
+              "对神裔减伤",
+              "对人族减伤",
+              "减暴击",
+              "—"
+            ],
+            "pools": {
+              "1": [
+                {
+                  "attr": "基础气血",
+                  "value": 6400,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "固定气血",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "2": [
+                {
+                  "attr": "减暴击",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "普攻命中",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.33
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.34,
+                  "perElementRate": 0.068
+                }
+              ],
+              "3": [
+                {
+                  "attr": "对人族减伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "普攻躲闪",
+                  "value": 160,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定真气",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "4": [
+                {
+                  "attr": "对神裔减伤",
+                  "value": 8,
+                  "isPercent": true,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "小攻",
+                  "value": 80,
+                  "isPercent": false,
+                  "rate": 0.25
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.25,
+                  "perElementRate": 0.05
+                },
+                {
+                  "attr": "固定攻击",
+                  "value": 480,
+                  "isPercent": false,
+                  "rate": 0.25
+                }
+              ],
+              "5": [
+                {
+                  "attr": "无视",
+                  "value": 1.6,
+                  "isPercent": true,
+                  "sheetValue": "0.016",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "减免伤害固定值",
+                  "value": 32000,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "抗性（五行之一）",
+                  "value": 16,
+                  "isPercent": false,
+                  "rate": 0.166,
+                  "perElementRate": 0.0332
+                },
+                {
+                  "attr": "防御百分比",
+                  "value": 3.2,
+                  "isPercent": true,
+                  "sheetValue": "0.032",
+                  "rate": 0.166
+                },
+                {
+                  "attr": "元力值",
+                  "value": 320,
+                  "isPercent": false,
+                  "rate": 0.166
+                },
+                {
+                  "attr": "基础防御",
+                  "value": 800,
+                  "isPercent": false,
+                  "rate": 0.17
+                }
+              ]
+            }
+          }
+        ],
+        "tierSamples": [
+          {
+            "spirit": "夔牛",
+            "tier": 2,
+            "itemName": "夔牛本元·夔骨",
+            "lines": [
+              "虚弱抗性 +2",
+              "暴击伤害 +3.00%",
+              "命中 +20"
+            ],
+            "rawTooltip": "夔牛本元·夔骨 / 不会掉落 / 二阶 / 虚弱抗性 +2 / 暴击伤害 +3.00% / 命中 +20（其后灰色『致命一击伤害 +27.00%』『对苍祇减伤 +6.75%』为背后角色面板透字，非本元词条）",
+            "check": "2 = 16×12.5%，3% = 24×12.5%，20 = 160×12.5% → 二阶系数 12.5%"
+          },
+          {
+            "spirit": "烛龙",
+            "tier": 3,
+            "itemName": "烛龙本元·幽明",
+            "lines": [
+              "暴击率 +2.00%",
+              "固定真气 +200",
+              "魅惑抗性 +4",
+              "对天脉伤害增加 2.0%"
+            ],
+            "check": "2% = 8×25%，200 = 800×25%，4 = 16×25% → 三阶系数 25%"
+          },
+          {
+            "spirit": "黄鸟",
+            "tier": 3,
+            "itemName": "黄鸟本元·扶摇",
+            "lines": [
+              "受到致命一击伤害减少 6.00%",
+              "增加技能躲闪 4.00",
+              "固定气血 +200",
+              "对人族伤害增加 2.0%"
+            ],
+            "check": "6% = 24×25%，4 = 16×25%，200 = 800×25%，2% = 8×25% → 三阶系数 25%"
+          },
+          {
+            "spirit": "黄鸟",
+            "tier": 4,
+            "itemName": "黄鸟本元·九霄",
+            "lines": [
+              "魅惑抗性 +8",
+              "受到致命一击伤害减少 12.00%",
+              "躲闪 +80",
+              "固定真气 +400",
+              "对神裔伤害增加 4.0%"
+            ],
+            "check": "8 = 16×50%，12% = 24×50%，80 = 160×50%，400 = 800×50%，4% = 8×50% → 四阶系数 50%"
+          },
+          {
+            "spirit": "夔牛",
+            "tier": 4,
+            "itemName": "夔牛本元·风雷",
+            "lines": [
+              "基础防御 +480",
+              "暴击伤害 +12.00%",
+              "命中 +80",
+              "基础最小攻击 +40",
+              "眩晕抗性 +8"
+            ],
+            "check": "12% = 24×50%，80 = 160×50%，40 = 80×50%，8 = 16×50%；480 = 960(一阶防御)×50% → 一阶『防御 960』应为『基础防御 960』",
+            "anomaly": "表中夔牛三阶另有『固定攻击 480』，与本次 480 数值相同但非同一词条，需再取一张三阶截图区分"
+          },
+          {
+            "spirit": "饕餮",
+            "tier": 5,
+            "itemName": "饕餮本元·归墟无厌",
+            "lines": [
+              "躲闪 +160",
+              "受到神裔伤害减少 8.0%",
+              "基础气血 +6400",
+              "受到人族伤害减少 8.0%",
+              "昏睡抗性 +16",
+              "无视人物伤害减免 +1.60%"
+            ],
+            "check": "全为五阶满值（100%）；6 条词条 = 5+1；出现两条不同系的减伤词条"
+          },
+          {
+            "spirit": "黄鸟",
+            "tier": 5,
+            "itemName": "黄鸟本元·玄黄天音",
+            "lines": [
+              "躲闪 +160",
+              "固定攻击 +4160",
+              "虚弱抗性 +16",
+              "基础最小攻击 +80",
+              "减免伤害固定值 32000",
+              "基础防御 +800"
+            ],
+            "check": "五阶 100%；含一阶『攻击固定值 4160』与三/四阶词条，证明高阶池累计沿用低阶词条"
+          },
+          {
+            "spirit": "烛龙",
+            "tier": 5,
+            "itemName": "烛龙本元·烛照太初",
+            "lines": [
+              "基础真气 +6400",
+              "暴击率 +8.00%",
+              "对苍祇伤害增加 8.0%",
+              "定身抗性 +16",
+              "元力 +320",
+              "防御 +3%"
+            ],
+            "check": "五阶 100%；『防御 +3%』= 防御百分比 3.20% 的实机四舍五入显示"
+          },
+          {
+            "spirit": "夔牛",
+            "tier": 5,
+            "itemName": "夔牛本元·钧天玄霆",
+            "lines": [
+              "命中 +160",
+              "暴击伤害 +24.00%",
+              "固定真气 +800",
+              "虚弱抗性 +16",
+              "防御 +3%",
+              "昏睡抗性 +16"
+            ],
+            "check": "五阶 100%；出现两条抗性（虚弱 + 昏睡），且出现二阶『暴伤 24%』满值，佐证『最后 1 条取自累计池』"
+          }
+        ],
+        "openQuestions": [
+          "一阶本元名（四灵各缺 1 个）；夔牛三阶、黄鸟二阶、烛龙四阶、饕餮一~四阶本元名均缺失",
+          "二阶实测出现 4 条词条，与『阶+1』推定的 3 条冲突，需再取一张二阶截图确认（疑第 4 条为面板透字）",
+          "五阶 tooltip 红字『……同类增益效果额外增加 5%。』原文被裁切，需补全（是否为本元镶嵌后的套装式加成）",
+          "抗性五系是否严格均等（表中只给合计 34%/25%/16.6%），暂按均等分",
+          "『减暴击 8%』的实机显示文案（疑为『受到致命一击率降低』）缺实测截图",
+          "夔牛三阶『固定攻击 480』与风雷实测『基础防御 +480』的区分",
+          "一阶本元是否存在 2 条词条（当前为推定）",
+          "本元是否可分解/合成继承词条（包裹内有『本元分解』按钮，合成规则未知）"
+        ]
+      }
+    }
+  },
+  "gap-zhenling-gold-01": {
+    "sender": "assistant",
+    "text": "为你速查到【阵灵聚灵升级消耗对照表】。支持查看金卡与紫卡 1~12 阶沧浪冰珠与沧热聚灵丹消耗及 6金2紫主流顶配全套测算：",
+    "cardType": "zhenling_upgrade",
+    "cardData": {
+      "data": {
+        "title": "阵灵聚灵升级消耗对照表",
+        "category": "阵灵",
+        "subCategory": "聚灵",
+        "description": "阵灵 1~12 阶聚灵消耗金卡与紫卡对照表（沧浪冰珠与沧热聚灵丹）",
+        "goldPerTierInc": {
+          "bingzhu": 10000,
+          "dan": 8
+        },
+        "purplePerTierInc": {
+          "bingzhu": 5000,
+          "dan": 4
+        },
+        "tiers": [
+          {
+            "tier": 1,
+            "gold": {
+              "bingzhu": 10000,
+              "dan": 8
+            },
+            "purple": {
+              "bingzhu": 5000,
+              "dan": 4
+            }
+          },
+          {
+            "tier": 2,
+            "gold": {
+              "bingzhu": 20000,
+              "dan": 16
+            },
+            "purple": {
+              "bingzhu": 10000,
+              "dan": 8
+            }
+          },
+          {
+            "tier": 3,
+            "gold": {
+              "bingzhu": 30000,
+              "dan": 24
+            },
+            "purple": {
+              "bingzhu": 15000,
+              "dan": 12
+            }
+          },
+          {
+            "tier": 4,
+            "gold": {
+              "bingzhu": 40000,
+              "dan": 32
+            },
+            "purple": {
+              "bingzhu": 20000,
+              "dan": 16
+            }
+          },
+          {
+            "tier": 5,
+            "gold": {
+              "bingzhu": 50000,
+              "dan": 40
+            },
+            "purple": {
+              "bingzhu": 25000,
+              "dan": 20
+            }
+          },
+          {
+            "tier": 6,
+            "gold": {
+              "bingzhu": 60000,
+              "dan": 48
+            },
+            "purple": {
+              "bingzhu": 30000,
+              "dan": 24
+            }
+          },
+          {
+            "tier": 7,
+            "gold": {
+              "bingzhu": 70000,
+              "dan": 56
+            },
+            "purple": {
+              "bingzhu": 35000,
+              "dan": 28
+            }
+          },
+          {
+            "tier": 8,
+            "gold": {
+              "bingzhu": 80000,
+              "dan": 64
+            },
+            "purple": {
+              "bingzhu": 40000,
+              "dan": 32
+            }
+          },
+          {
+            "tier": 9,
+            "gold": {
+              "bingzhu": 90000,
+              "dan": 72
+            },
+            "purple": {
+              "bingzhu": 45000,
+              "dan": 36
+            }
+          },
+          {
+            "tier": 10,
+            "gold": {
+              "bingzhu": 100000,
+              "dan": 80
+            },
+            "purple": {
+              "bingzhu": 50000,
+              "dan": 40
+            }
+          },
+          {
+            "tier": 11,
+            "gold": {
+              "bingzhu": 110000,
+              "dan": 88
+            },
+            "purple": {
+              "bingzhu": 55000,
+              "dan": 44
+            }
+          },
+          {
+            "tier": 12,
+            "gold": {
+              "bingzhu": 120000,
+              "dan": 96
+            },
+            "purple": {
+              "bingzhu": 60000,
+              "dan": 48
+            }
+          }
+        ],
+        "singleCardTotal": {
+          "gold": {
+            "bingzhu": 780000,
+            "dan": 624
+          },
+          "purple": {
+            "bingzhu": 390000,
+            "dan": 312
+          }
+        },
+        "presetCombos": [
+          {
+            "name": "6金2紫 12阶满聚灵",
+            "tag": "主流顶配",
+            "goldCount": 6,
+            "purpleCount": 2,
+            "targetTier": 12,
+            "bingzhu": 5460000,
+            "dan": 4368,
+            "desc": "6 张金卡满 12 阶 + 2 张紫卡满 12 阶全套聚灵总消耗"
+          }
+        ]
+      }
+    }
+  },
+  "gap-zhenling-purple-01": {
+    "sender": "assistant",
+    "text": "为你速查到【阵灵聚灵升级消耗对照表】。支持查看金卡与紫卡 1~12 阶沧浪冰珠与沧热聚灵丹消耗及 6金2紫主流顶配全套测算：",
+    "cardType": "zhenling_upgrade",
+    "cardData": {
+      "data": {
+        "title": "阵灵聚灵升级消耗对照表",
+        "category": "阵灵",
+        "subCategory": "聚灵",
+        "description": "阵灵 1~12 阶聚灵消耗金卡与紫卡对照表（沧浪冰珠与沧热聚灵丹）",
+        "goldPerTierInc": {
+          "bingzhu": 10000,
+          "dan": 8
+        },
+        "purplePerTierInc": {
+          "bingzhu": 5000,
+          "dan": 4
+        },
+        "tiers": [
+          {
+            "tier": 1,
+            "gold": {
+              "bingzhu": 10000,
+              "dan": 8
+            },
+            "purple": {
+              "bingzhu": 5000,
+              "dan": 4
+            }
+          },
+          {
+            "tier": 2,
+            "gold": {
+              "bingzhu": 20000,
+              "dan": 16
+            },
+            "purple": {
+              "bingzhu": 10000,
+              "dan": 8
+            }
+          },
+          {
+            "tier": 3,
+            "gold": {
+              "bingzhu": 30000,
+              "dan": 24
+            },
+            "purple": {
+              "bingzhu": 15000,
+              "dan": 12
+            }
+          },
+          {
+            "tier": 4,
+            "gold": {
+              "bingzhu": 40000,
+              "dan": 32
+            },
+            "purple": {
+              "bingzhu": 20000,
+              "dan": 16
+            }
+          },
+          {
+            "tier": 5,
+            "gold": {
+              "bingzhu": 50000,
+              "dan": 40
+            },
+            "purple": {
+              "bingzhu": 25000,
+              "dan": 20
+            }
+          },
+          {
+            "tier": 6,
+            "gold": {
+              "bingzhu": 60000,
+              "dan": 48
+            },
+            "purple": {
+              "bingzhu": 30000,
+              "dan": 24
+            }
+          },
+          {
+            "tier": 7,
+            "gold": {
+              "bingzhu": 70000,
+              "dan": 56
+            },
+            "purple": {
+              "bingzhu": 35000,
+              "dan": 28
+            }
+          },
+          {
+            "tier": 8,
+            "gold": {
+              "bingzhu": 80000,
+              "dan": 64
+            },
+            "purple": {
+              "bingzhu": 40000,
+              "dan": 32
+            }
+          },
+          {
+            "tier": 9,
+            "gold": {
+              "bingzhu": 90000,
+              "dan": 72
+            },
+            "purple": {
+              "bingzhu": 45000,
+              "dan": 36
+            }
+          },
+          {
+            "tier": 10,
+            "gold": {
+              "bingzhu": 100000,
+              "dan": 80
+            },
+            "purple": {
+              "bingzhu": 50000,
+              "dan": 40
+            }
+          },
+          {
+            "tier": 11,
+            "gold": {
+              "bingzhu": 110000,
+              "dan": 88
+            },
+            "purple": {
+              "bingzhu": 55000,
+              "dan": 44
+            }
+          },
+          {
+            "tier": 12,
+            "gold": {
+              "bingzhu": 120000,
+              "dan": 96
+            },
+            "purple": {
+              "bingzhu": 60000,
+              "dan": 48
+            }
+          }
+        ],
+        "singleCardTotal": {
+          "gold": {
+            "bingzhu": 780000,
+            "dan": 624
+          },
+          "purple": {
+            "bingzhu": 390000,
+            "dan": 312
+          }
+        },
+        "presetCombos": [
+          {
+            "name": "6金2紫 12阶满聚灵",
+            "tag": "主流顶配",
+            "goldCount": 6,
+            "purpleCount": 2,
+            "targetTier": 12,
+            "bingzhu": 5460000,
+            "dan": 4368,
+            "desc": "6 张金卡满 12 阶 + 2 张紫卡满 12 阶全套聚灵总消耗"
+          }
+        ]
+      }
+    }
+  },
+  "gap-zhenling-juling-01": {
+    "sender": "assistant",
+    "text": "为你速查到【阵灵聚灵升级消耗对照表】。支持查看金卡与紫卡 1~12 阶沧浪冰珠与沧热聚灵丹消耗及 6金2紫主流顶配全套测算：",
+    "cardType": "zhenling_upgrade",
+    "cardData": {
+      "data": {
+        "title": "阵灵聚灵升级消耗对照表",
+        "category": "阵灵",
+        "subCategory": "聚灵",
+        "description": "阵灵 1~12 阶聚灵消耗金卡与紫卡对照表（沧浪冰珠与沧热聚灵丹）",
+        "goldPerTierInc": {
+          "bingzhu": 10000,
+          "dan": 8
+        },
+        "purplePerTierInc": {
+          "bingzhu": 5000,
+          "dan": 4
+        },
+        "tiers": [
+          {
+            "tier": 1,
+            "gold": {
+              "bingzhu": 10000,
+              "dan": 8
+            },
+            "purple": {
+              "bingzhu": 5000,
+              "dan": 4
+            }
+          },
+          {
+            "tier": 2,
+            "gold": {
+              "bingzhu": 20000,
+              "dan": 16
+            },
+            "purple": {
+              "bingzhu": 10000,
+              "dan": 8
+            }
+          },
+          {
+            "tier": 3,
+            "gold": {
+              "bingzhu": 30000,
+              "dan": 24
+            },
+            "purple": {
+              "bingzhu": 15000,
+              "dan": 12
+            }
+          },
+          {
+            "tier": 4,
+            "gold": {
+              "bingzhu": 40000,
+              "dan": 32
+            },
+            "purple": {
+              "bingzhu": 20000,
+              "dan": 16
+            }
+          },
+          {
+            "tier": 5,
+            "gold": {
+              "bingzhu": 50000,
+              "dan": 40
+            },
+            "purple": {
+              "bingzhu": 25000,
+              "dan": 20
+            }
+          },
+          {
+            "tier": 6,
+            "gold": {
+              "bingzhu": 60000,
+              "dan": 48
+            },
+            "purple": {
+              "bingzhu": 30000,
+              "dan": 24
+            }
+          },
+          {
+            "tier": 7,
+            "gold": {
+              "bingzhu": 70000,
+              "dan": 56
+            },
+            "purple": {
+              "bingzhu": 35000,
+              "dan": 28
+            }
+          },
+          {
+            "tier": 8,
+            "gold": {
+              "bingzhu": 80000,
+              "dan": 64
+            },
+            "purple": {
+              "bingzhu": 40000,
+              "dan": 32
+            }
+          },
+          {
+            "tier": 9,
+            "gold": {
+              "bingzhu": 90000,
+              "dan": 72
+            },
+            "purple": {
+              "bingzhu": 45000,
+              "dan": 36
+            }
+          },
+          {
+            "tier": 10,
+            "gold": {
+              "bingzhu": 100000,
+              "dan": 80
+            },
+            "purple": {
+              "bingzhu": 50000,
+              "dan": 40
+            }
+          },
+          {
+            "tier": 11,
+            "gold": {
+              "bingzhu": 110000,
+              "dan": 88
+            },
+            "purple": {
+              "bingzhu": 55000,
+              "dan": 44
+            }
+          },
+          {
+            "tier": 12,
+            "gold": {
+              "bingzhu": 120000,
+              "dan": 96
+            },
+            "purple": {
+              "bingzhu": 60000,
+              "dan": 48
+            }
+          }
+        ],
+        "singleCardTotal": {
+          "gold": {
+            "bingzhu": 780000,
+            "dan": 624
+          },
+          "purple": {
+            "bingzhu": 390000,
+            "dan": 312
+          }
+        },
+        "presetCombos": [
+          {
+            "name": "6金2紫 12阶满聚灵",
+            "tag": "主流顶配",
+            "goldCount": 6,
+            "purpleCount": 2,
+            "targetTier": 12,
+            "bingzhu": 5460000,
+            "dan": 4368,
+            "desc": "6 张金卡满 12 阶 + 2 张紫卡满 12 阶全套聚灵总消耗"
+          }
+        ]
+      }
+    }
+  },
+  "gap-zhenling-dan-01": {
+    "sender": "assistant",
+    "text": "为你速查到【阵灵聚灵升级消耗对照表】。支持查看金卡与紫卡 1~12 阶沧浪冰珠与沧热聚灵丹消耗及 6金2紫主流顶配全套测算：",
+    "cardType": "zhenling_upgrade",
+    "cardData": {
+      "data": {
+        "title": "阵灵聚灵升级消耗对照表",
+        "category": "阵灵",
+        "subCategory": "聚灵",
+        "description": "阵灵 1~12 阶聚灵消耗金卡与紫卡对照表（沧浪冰珠与沧热聚灵丹）",
+        "goldPerTierInc": {
+          "bingzhu": 10000,
+          "dan": 8
+        },
+        "purplePerTierInc": {
+          "bingzhu": 5000,
+          "dan": 4
+        },
+        "tiers": [
+          {
+            "tier": 1,
+            "gold": {
+              "bingzhu": 10000,
+              "dan": 8
+            },
+            "purple": {
+              "bingzhu": 5000,
+              "dan": 4
+            }
+          },
+          {
+            "tier": 2,
+            "gold": {
+              "bingzhu": 20000,
+              "dan": 16
+            },
+            "purple": {
+              "bingzhu": 10000,
+              "dan": 8
+            }
+          },
+          {
+            "tier": 3,
+            "gold": {
+              "bingzhu": 30000,
+              "dan": 24
+            },
+            "purple": {
+              "bingzhu": 15000,
+              "dan": 12
+            }
+          },
+          {
+            "tier": 4,
+            "gold": {
+              "bingzhu": 40000,
+              "dan": 32
+            },
+            "purple": {
+              "bingzhu": 20000,
+              "dan": 16
+            }
+          },
+          {
+            "tier": 5,
+            "gold": {
+              "bingzhu": 50000,
+              "dan": 40
+            },
+            "purple": {
+              "bingzhu": 25000,
+              "dan": 20
+            }
+          },
+          {
+            "tier": 6,
+            "gold": {
+              "bingzhu": 60000,
+              "dan": 48
+            },
+            "purple": {
+              "bingzhu": 30000,
+              "dan": 24
+            }
+          },
+          {
+            "tier": 7,
+            "gold": {
+              "bingzhu": 70000,
+              "dan": 56
+            },
+            "purple": {
+              "bingzhu": 35000,
+              "dan": 28
+            }
+          },
+          {
+            "tier": 8,
+            "gold": {
+              "bingzhu": 80000,
+              "dan": 64
+            },
+            "purple": {
+              "bingzhu": 40000,
+              "dan": 32
+            }
+          },
+          {
+            "tier": 9,
+            "gold": {
+              "bingzhu": 90000,
+              "dan": 72
+            },
+            "purple": {
+              "bingzhu": 45000,
+              "dan": 36
+            }
+          },
+          {
+            "tier": 10,
+            "gold": {
+              "bingzhu": 100000,
+              "dan": 80
+            },
+            "purple": {
+              "bingzhu": 50000,
+              "dan": 40
+            }
+          },
+          {
+            "tier": 11,
+            "gold": {
+              "bingzhu": 110000,
+              "dan": 88
+            },
+            "purple": {
+              "bingzhu": 55000,
+              "dan": 44
+            }
+          },
+          {
+            "tier": 12,
+            "gold": {
+              "bingzhu": 120000,
+              "dan": 96
+            },
+            "purple": {
+              "bingzhu": 60000,
+              "dan": 48
+            }
+          }
+        ],
+        "singleCardTotal": {
+          "gold": {
+            "bingzhu": 780000,
+            "dan": 624
+          },
+          "purple": {
+            "bingzhu": 390000,
+            "dan": 312
+          }
+        },
+        "presetCombos": [
+          {
+            "name": "6金2紫 12阶满聚灵",
+            "tag": "主流顶配",
+            "goldCount": 6,
+            "purpleCount": 2,
+            "targetTier": 12,
+            "bingzhu": 5460000,
+            "dan": 4368,
+            "desc": "6 张金卡满 12 阶 + 2 张紫卡满 12 阶全套聚灵总消耗"
+          }
+        ]
+      }
+    }
+  },
+  "gap-fabao-shangxinhua-01": {
+    "sender": "assistant",
+    "text": "为你速查到法宝【伤心花】（通用法宝）。支持在下方卡片中直接切换【普通/承/真】形态与【1~5阶】技能数值：",
+    "cardType": "fabao",
+    "cardData": {
+      "id": 119,
+      "name": "伤心花",
+      "grade": "通用法宝",
+      "fabao": {
+        "id": 119
+      }
+    }
+  },
+  "gap-skill-tianyin-tianshu-01": {
+    "sender": "assistant",
+    "text": "为你速查到【天音】门派技能（共 120 个），可在下方快速点选查看 1:1 原生说明与等级推演：",
+    "cardType": "skill_candidates",
+    "cardData": {
+      "candidates": [
+        {
+          "id": 669,
+          "name": "明王妙喻",
+          "el_max": 1,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 15,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 670,
+          "name": "驭物神通",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 15,
+          "occ": 10,
+          "tags": [],
+          "affects": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 671,
+          "name": "天花乱坠",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 25,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 672,
+          "name": "一语道破",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 25,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 673,
+          "name": "御空法诀",
+          "el_max": 2,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 25,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 674,
+          "name": "明镜如沉",
+          "el_max": 2,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 45,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 675,
+          "name": "无尽苦海",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 45,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 676,
+          "name": "度尽劫波",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 45,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 677,
+          "name": "相续不空",
+          "el_max": 4,
+          "el_cd": 40000,
+          "el_mp": 126,
+          "el_req": 45,
+          "occ": 10,
+          "tags": [],
+          "affects": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 678,
+          "name": "乾坤正气",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 75,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 679,
+          "name": "色即是空",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 75,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 680,
+          "name": "空即是色",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 75,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 681,
+          "name": "醍醐灌顶",
+          "el_max": 5,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 75,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 682,
+          "name": "袈裟蔽天",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 105,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 683,
+          "name": "因果报应",
+          "el_max": 2,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 105,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 684,
+          "name": "净世佛心",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 105,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 685,
+          "name": "天舞宝轮",
+          "el_max": 4,
+          "el_cd": 8000,
+          "el_mp": 916,
+          "el_req": 120,
+          "occ": 10,
+          "affects": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 686,
+          "name": "降魔真言",
+          "el_max": 2,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 15,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 687,
+          "name": "万物通达",
+          "el_max": 2,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 15,
+          "occ": 10,
+          "tags": [],
+          "affects": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 688,
+          "name": "往生极乐",
+          "el_max": 2,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 25,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 689,
+          "name": "菩提荫佑",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 25,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 691,
+          "name": "空冥禅念",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 45,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 692,
+          "name": "梵经心语",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 45,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 693,
+          "name": "金刚破魔",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 45,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 694,
+          "name": "伏魔真诀",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 45,
+          "occ": 10,
+          "tags": [],
+          "affects": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 695,
+          "name": "金刚不坏",
+          "el_max": 3,
+          "el_cd": 100000,
+          "el_mp": 600,
+          "el_req": 75,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 696,
+          "name": "极乐禅言",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 75,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 697,
+          "name": "顿悟之偈",
+          "el_max": 3,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 75,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 698,
+          "name": "邪魔退散",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 75,
+          "occ": 10,
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        },
+        {
+          "id": 699,
+          "name": "无常轮渡",
+          "el_max": 4,
+          "el_cd": 0,
+          "el_mp": 0,
+          "el_req": 105,
+          "occ": 10,
+          "tags": [],
+          "group_name": "天音·天书",
+          "group_kind": "tianshu"
+        }
+      ],
+      "query": "天音天书",
+      "skill": {
+        "id": 669,
+        "name": "明王妙喻"
+      }
+    }
+  },
+  "gap-wip-lunhui-01": {
+    "sender": "assistant",
+    "text": "【轮回世界攻略】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【玩法攻略】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "轮回世界攻略",
+      "category": "系统玩法攻略",
+      "desc": "包含身世选择、灵猫天赋与轮回世界全线通关指南。功能还在开发中，暂未开放。",
+      "recommendedQuery": "玩法攻略",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-zhoutian-01": {
+    "sender": "assistant",
+    "text": "【周天系统】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【星宿】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "周天系统",
+      "category": "星宿属性进阶",
+      "desc": "包含周天属性激活与星宿进阶数值矩阵。功能还在开发中，暂未开放。",
+      "recommendedQuery": "星宿",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-dihongpo-01": {
+    "sender": "assistant",
+    "text": "【帝鸿轩辕策进阶】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【轩辕策】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "帝鸿轩辕策进阶",
+      "category": "轩辕策进阶系统",
+      "desc": "包含帝鸿魄洗练、神皇属性转化与高阶词条洗练规则。功能还在开发中，暂未开放。",
+      "recommendedQuery": "轩辕策",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-zhisheng-01": {
+    "sender": "assistant",
+    "text": "【至圣灵轩符道具指南】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【轩辕策洗练】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "至圣灵轩符道具指南",
+      "category": "洗练道具百科",
+      "desc": "包含至圣灵轩符洗练保底机制与获取途径一览。功能还在开发中，暂未开放。",
+      "recommendedQuery": "轩辕策洗练",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-zhenling-lineup-01": {
+    "sender": "assistant",
+    "text": "【阵灵模拟与阵容搭配】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【阵灵升级】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "阵灵模拟与阵容搭配",
+      "category": "阵灵进阶工具",
+      "desc": "包含 6金2紫/克制阵容克性评分与阵法模拟器。功能还在开发中，暂未开放。",
+      "recommendedQuery": "阵灵升级",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-zengshushu-01": {
+    "sender": "assistant",
+    "text": "【人物传剧情攻略】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【玩法攻略】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "人物传剧情攻略",
+      "category": "任务剧情指南",
+      "desc": "包含曾书书等全人物传支线分支与成就奖励速查。功能还在开发中，暂未开放。",
+      "recommendedQuery": "玩法攻略",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-fofenxiang-01": {
+    "sender": "assistant",
+    "text": "【门派流派进阶攻略】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【职业状态】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "门派流派进阶攻略",
+      "category": "门派战术流派",
+      "desc": "包含佛焚香加点、归云输出循环等高阶流派配装指南。功能还在开发中，暂未开放。",
+      "recommendedQuery": "职业状态",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-guiyun-01": {
+    "sender": "assistant",
+    "text": "【门派流派进阶攻略】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【职业状态】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "门派流派进阶攻略",
+      "category": "门派战术流派",
+      "desc": "包含佛焚香加点、归云输出循环等高阶流派配装指南。功能还在开发中，暂未开放。",
+      "recommendedQuery": "职业状态",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-status-icon-01": {
+    "sender": "assistant",
+    "text": "【战斗状态图标大全】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【职业状态】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "战斗状态图标大全",
+      "category": "实战辅助手册",
+      "desc": "包含诛仙3全门派不利与有利状态图标与对应机制。功能还在开发中，暂未开放。",
+      "recommendedQuery": "职业状态",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-zhenqi-01": {
+    "sender": "assistant",
+    "text": "【极致真气攻略】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【玩法攻略】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "极致真气攻略",
+      "category": "极致属性系列",
+      "desc": "包含青云/鬼王真气上限理论峰值与各部位堆叠清单。功能还在开发中，暂未开放。",
+      "recommendedQuery": "玩法攻略",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-hualing-01": {
+    "sender": "assistant",
+    "text": "【化灵系统全景攻略】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【属性测算】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "化灵系统全景攻略",
+      "category": "系统玩法攻略",
+      "desc": "包含化灵属性上限、进阶消耗与实战边际收益。功能还在开发中，暂未开放。",
+      "recommendedQuery": "属性测算",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-yuanying-01": {
+    "sender": "assistant",
+    "text": "【元婴洗练升级指南】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【装备】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "元婴洗练升级指南",
+      "category": "装备进阶攻略",
+      "desc": "包含元婴归劫概率、道胎升级经验与定制属性。功能还在开发中，暂未开放。",
+      "recommendedQuery": "装备",
+      "statusText": "功能还在开发中，暂未开放"
+    }
+  },
+  "gap-wip-zuoji-01": {
+    "sender": "assistant",
+    "text": "【坐骑全图鉴】功能还在开发中，暂未开放。已为你记录至产品需求库，敬请期待后续版本上线！\n你也可以先行查阅相关的【全景导航】：",
+    "cardType": "wip_feature",
+    "cardData": {
+      "title": "坐骑全图鉴",
+      "category": "图鉴全景资料",
+      "desc": "包含全网坐骑移速、飞行坐骑与获取渠道汇总。功能还在开发中，暂未开放。",
+      "recommendedQuery": "全景导航",
+      "statusText": "功能还在开发中，暂未开放"
     }
   },
   "gen-equip-修武-武器": {
