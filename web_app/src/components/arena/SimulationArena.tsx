@@ -2599,10 +2599,20 @@ function PartyRail({
             </div>
 
             <div className="flex-1 overflow-y-auto p-3 space-y-2">
-                <button
-                    type="button"
+                {/* 外层用 div[role=button] 而不是 <button>：里面还有 10 个技能 <button>，
+                    button 套 button 是非法 HTML（React 会报 "cannot be a descendant"）。
+                    键盘可达性由 tabIndex + onKeyDown 补齐。 */}
+                <div
+                    role="button"
+                    tabIndex={0}
                     onClick={onOpenDps}
-                    className="w-full text-left rounded-xl border border-cyan-500/25 bg-cyan-500/10 p-3 hover:border-cyan-400/60 transition-colors"
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            onOpenDps();
+                        }
+                    }}
+                    className="w-full text-left rounded-xl border border-cyan-500/25 bg-cyan-500/10 p-3 hover:border-cyan-400/60 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60"
                 >
                     <div className="flex items-center justify-between gap-2">
                         <span className="text-sm font-black text-slate-100">逐霜 · {FACTION_LABEL[dpsFaction]}</span>
@@ -2629,7 +2639,7 @@ function PartyRail({
                             );
                         })}
                     </div>
-                </button>
+                </div>
 
                 {supports.map((support, index) => {
                     const skills = getSupportSkills(support.classId, support.faction);
