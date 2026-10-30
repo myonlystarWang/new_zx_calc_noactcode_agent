@@ -354,6 +354,8 @@ export function nextWashMax(data: XycRefineData, beast: XycBeast, current: numbe
 
 /** 进入特殊洗练的累计洗练次数门槛 */
 export const SPECIAL_WASH_FROM = 25;
+/** 特殊洗练要求的上限：必须先吃「轩辕拾遗录·相易」把上限顶到 30（26~30 这 5 次额度） */
+export const SPECIAL_WASH_MIN_MAX = 30;
 /** 特殊洗练每次最多锁定条数 */
 export const SPECIAL_WASH_LOCK_MAX = 2;
 /** 特殊洗练必得的技能等级（官方：本职业 3 级技能） */
@@ -366,10 +368,16 @@ export function supportsSpecialWash(book: XycBook): boolean {
 
 /**
  * 是否展示特殊洗练 UI（三道具 / 必得技能 / 锁定槽）。
- * 达 25 次即展示 —— 包括 30/30 已用满的情况：此时只是没次数可洗，界面仍要给出来。
+ * 前提是**已经用「相易」把上限顶到 30**（未用之前只有 25 次，26~30 这 5 次根本不存在，
+ * 25/25 时也不该冒出锁定与必得技能 —— 2026-10-30 玩家实测反馈）。
+ * 达到 30 上限后，从第 25 次起展示，含 30/30 已用满（此时只是没次数可洗，界面仍给出来）。
  */
 export function showSpecialWash(book: XycBook): boolean {
-    return supportsSpecialWash(book) && book.washUsed >= SPECIAL_WASH_FROM;
+    return (
+        supportsSpecialWash(book) &&
+        book.washMax >= SPECIAL_WASH_MIN_MAX &&
+        book.washUsed >= SPECIAL_WASH_FROM
+    );
 }
 
 /** 当前是否处于特殊洗练区间（次数已达 25 且还有剩余次数） */

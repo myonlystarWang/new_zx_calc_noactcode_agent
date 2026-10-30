@@ -291,8 +291,14 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     const [changeSeq, setChangeSeq] = useState(0);
     /** 升级失败提示（0.5s 后自动消失；固定高度占位，不顶动布局） */
     const [upgradeTip, setUpgradeTip] = useState<string | null>(null);
-    /** 上限提升成功提示（消耗了哪种轩辕拾遗录、上限从多少到多少），绿色，与失败的红色提示共用同一行 */
-    const [raiseTip, setRaiseTip] = useState<string | null>(null);
+    /** 上一次「使用道具」的结果（面板底部一行；窄屏只显示道具名，宽屏补上限变化与星级） */
+    const [raiseResult, setRaiseResult] = useState<{
+        item: string;
+        from: number;
+        to: number;
+        add: number;
+        star: number;
+    } | null>(null);
     /** 右侧洗练窗默认收起，点左窗「洗炼」才展开 */
     const [washOpen, setWashOpen] = useState(false);
     /** 右侧「增加洗练次数」窗：与洗练窗互斥（点哪个只开哪个，另一个自动关） */
@@ -795,10 +801,14 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         const updated = { ...cur, washMax: step.to, star: step.star };
         bookRef.current = updated;
         setBook(updated);
-        setRaiseTip(
-            `已使用「${shortItemName(step.item)}」：洗练上限 ${cur.washMax} → ${step.to}（+${step.add}）· 激活 ${step.star} 星`,
-        );
-        window.setTimeout(() => setRaiseTip(null), 4000);
+        setRaiseResult({
+            item: shortItemName(step.item),
+            from: cur.washMax,
+            to: step.to,
+            add: step.add,
+            star: step.star,
+        });
+        window.setTimeout(() => setRaiseResult(null), 4000);
     }, [data]);
 
     /** 分享：hook 必须挂在提前 return 之前 —— React hooks 规则，
@@ -1351,7 +1361,13 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                     </div>
                                 </div>
                                 <div className="text-[10.5px] leading-[15px]" style={{ color: '#6f8ba4' }}>
-                                    锁定条洗后种类与数值均不变；未锁 {Math.max(0, book.attrCount - lockIds.length)} 条种类与数值都会重掷
+                                    {/* 窄屏压成一行，避免换行把面板撑高 */}
+                                    <span className="hidden @[420px]:inline">
+                                        锁定条洗后种类与数值均不变；未锁 {Math.max(0, book.attrCount - lockIds.length)} 条种类与数值都会重掷
+                                    </span>
+                                    <span className="@[420px]:hidden">
+                                        锁定条不变 · 未锁 {Math.max(0, book.attrCount - lockIds.length)} 条重掷
+                                    </span>
                                 </div>
                             </div>
                         )}
@@ -1544,7 +1560,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                     </div>
                                 </div>
 
-                                {/* 描述：这次用下去会变成什么样（效果 / 星级 / 兑换） */}
+                                {/* 描述：只留「上限变化 + 获取途径」（星级与属性说明按 2026-10-30 反馈去掉） */}
                                 <div data-xyc-raise-desc className="px-3 py-2.5 flex flex-col gap-1 text-[11.5px] leading-[18px]">
                                     <div className="flex items-baseline justify-between gap-2">
                                         <span style={{ color: '#7fa3c0' }}>洗练上限</span>
@@ -1554,14 +1570,6 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                             <span style={{ color: '#4ade80', fontWeight: 700 }}>{nextStep.to}</span>
                                             <span style={{ color: '#4ade80' }}>（+{nextStep.add}）</span>
                                         </span>
-                                    </div>
-                                    <div className="flex items-baseline justify-between gap-2">
-                                        <span style={{ color: '#7fa3c0' }}>激活星级</span>
-                                        <span style={{ color: '#ffdc50', letterSpacing: '1px' }}>{'★'.repeat(nextStep.star)}</span>
-                                    </div>
-                                    <div className="flex items-baseline justify-between gap-2">
-                                        <span style={{ color: '#7fa3c0' }}>属性 / 技能</span>
-                                        <span style={{ color: '#dbe7f5' }}>不变</span>
                                     </div>
                                     <div className="mt-0.5 pt-1.5 flex flex-col gap-0.5" style={{ borderTop: '1px solid #1e2d3d' }}>
                                         <span style={{ color: '#7fa3c0' }}>获取途径</span>
@@ -1593,28 +1601,37 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                     >
                                         使用道具
                                     </button>
-                                    <div
-                                        className="mt-1.5 text-center text-[11px] leading-[16px]"
-                                        style={{ color: canRaiseMax ? '#7fa3c0' : '#f0b46a' }}
-                                    >
-                                        {canRaiseMax
-                                            ? `消耗 1 个 · 上限 +${nextStep.add} · 点亮 ${nextStep.star} 星`
-                                            : washLeft > 0
-                                              ? `洗练次数未用满（剩 ${washLeft} 次）`
-                                              : `已达本策上限 ${washCap} 次`}
-                                    </div>
+                                    {/* 只在不可用时给一句原因；可用时不再挂「消耗 1 个 · 上限 +N」这类说明 */}
+                                    {!canRaiseMax && (
+                                        <div
+                                            className="mt-1.5 text-center text-[11px] leading-[16px]"
+                                            style={{ color: '#f0b46a' }}
+                                        >
+                                            {washLeft > 0 ? `洗练次数未用满（剩 ${washLeft} 次）` : `已达本策上限 ${washCap} 次`}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div
-                                    data-xyc-raise-result={raiseTip ? 'ok' : 'idle'}
-                                    className="px-3 py-2 min-h-[34px] text-[11.5px] leading-[18px]"
+                                    data-xyc-raise-result={raiseResult ? 'ok' : 'idle'}
+                                    className="px-3 py-2 text-[11.5px] leading-[18px]"
                                     style={{
                                         borderTop: '1px solid #2a4054',
                                         background: '#08121a',
-                                        color: raiseTip ? '#6ee7a8' : '#5b7894',
+                                        color: raiseResult ? '#6ee7a8' : '#5b7894',
                                     }}
                                 >
-                                    {raiseTip || '点「使用道具」后，这里显示结果：上限变化与星级'}
+                                    {raiseResult ? (
+                                        <>
+                                            已使用「{raiseResult.item}」
+                                            {/* 窄屏只留道具名，避免换行；宽屏补一句极简结果（上限 + 星） */}
+                                            <span className="hidden @[420px]:inline">
+                                                ：上限 {raiseResult.from} → {raiseResult.to} · {raiseResult.star} 星
+                                            </span>
+                                        </>
+                                    ) : (
+                                        '使用道具后显示结果'
+                                    )}
                                 </div>
                             </>
                         ) : (

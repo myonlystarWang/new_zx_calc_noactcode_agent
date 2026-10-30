@@ -84,8 +84,11 @@ const identifyWith = (ids, extra = {}) => {
     // 30/30 用满：界面仍要展示特殊洗练模块（锁槽 / 必得技能），只是不能再洗
     ok(E.showSpecialWash({ ...normal, washUsed: 30, washMax: 30 }), '普通青龙 30/30 也应展示特殊洗练界面');
     ok(!E.inSpecialWash({ ...normal, washUsed: 30, washMax: 30 }), '30/30 已无剩余次数，不应再进可洗区间');
-    ok(E.showSpecialWash({ ...heroQl, washUsed: 25, washMax: 25 }), '25/25 用满同样展示界面');
+    // 达到 25 次 → 不展示；必须先用「相易」把上限顶到 30 才进特殊洗练（2026-10-30 玩家反馈）
+    ok(!E.showSpecialWash({ ...heroQl, washUsed: 25, washMax: 25 }), '25/25（未用相易）不应展示特殊洗练界面');
+    ok(E.showSpecialWash({ ...heroQl, washUsed: 25, washMax: 30 }), '用相易（上限 30）后 25 次起应展示特殊洗练界面');
     ok(!E.showSpecialWash({ ...heroZq, washUsed: 25, washMax: 25 }), '朱雀不展示特殊洗练界面');
+    ok(E.SPECIAL_WASH_MIN_MAX === 30, '特殊洗练要求上限 30');
     ok(E.specialWashLeft({ ...heroQl, washUsed: 10, washMax: 30 }) === 0, '未达门槛时额度应为 0');
 }
 
