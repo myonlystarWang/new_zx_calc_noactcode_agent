@@ -649,6 +649,36 @@ for (const c of cases) {
     }
 }
 
+/* ---------------- 5b. 系列入口不自环审计（失败即整轮 FAIL） ----------------
+ * 背景（2026-10-30 EP07 抓素材时实测）：`法身` 既是部位名又是系列名，
+ * slot_hub 的「法身」选项 query 也是「法身」→ 点下去又命中同一个 slot_hub，
+ * 用户点进去永远回到同一张卡（死循环）。同理可复现于任何 label === slot 的系列。
+ *
+ * 断言：任一 slot_hub 的每个选项，点下去都不能再返回同一个 slot 的 slot_hub。
+ */
+{
+    const HUB_SLOTS = ['项链', '戒指', '锦囊', '罡气', '法身', '玺绶'];
+    const loops = [];
+    let optionCount = 0;
+    for (const slot of HUB_SLOTS) {
+        const hub = await runOne(slot);
+        if (!hub || hub.cardType !== 'slot_hub') continue;
+        for (const opt of hub.cardData?.options || []) {
+            optionCount++;
+            const r = await runOne(opt.query);
+            if (r && r.cardType === 'slot_hub' && r.cardData?.slot === slot) {
+                loops.push(`${slot}→${opt.label}(${opt.query})`);
+            }
+        }
+    }
+    if (loops.length) {
+        failCaseCount++;
+        failLines.push(`FAIL audit:series-hub-self-loop 点进去又回到同一张系列卡的入口：${loops.join(' / ')}`);
+    } else {
+        console.log(`AUDIT 系列入口：${optionCount} 个系列选项全部能进到下一层，无自环`);
+    }
+}
+
 /* ---------------- 6. 蕴灵属性映射审计（数据驱动；失败即整轮 FAIL） ----------------
  * 背景（2026-10-30）：`EquipDetailCard` 旧实现把「头盔」直接映射成 hp（气血），
  * 但数据里头盔只有 def + mp、没有 hp。头盔点到 +1 之后气血行不渲染、防御行不加成，

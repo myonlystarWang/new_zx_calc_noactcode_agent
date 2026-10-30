@@ -1666,16 +1666,14 @@
     "id": "slot-hub-fashen-01",
     "input": "法身",
     "expect": {
-      "cardType": "slot_hub",
-      "cardData.slot": "法身",
-      "cardData.options.length": 2
+      "cardType": "equip_candidates"
     },
     "tags": [
       "slot-hub",
       "series"
     ],
     "assert": "strong",
-    "note": "T-16 用户分诊：法身/金身两分类实证全覆盖（27+27），无其他选项"
+    "note": "2026-10-30 改：法身系列名与部位名同名，slot_hub 会自环（点进去回到同一张卡）→ 法身改为直出候选；金身另有独立入口"
   },
   {
     "id": "slot-hub-xishou-01",
