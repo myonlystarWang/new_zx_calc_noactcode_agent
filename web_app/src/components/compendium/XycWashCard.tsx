@@ -1517,9 +1517,6 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                     <div className="text-[12.5px]" style={{ color: '#f7f4bb' }}>
                                         {nextStep.item}
                                     </div>
-                                    <div className="text-[11px]" style={{ color: '#7fa3c0' }}>
-                                        适用品阶：六品轩辕策
-                                    </div>
                                 </div>
 
                                 {/* 描述：这次用下去会变成什么样（效果 / 星级 / 兑换） */}
