@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { DataService } from '../../services/DataService';
 import {
     WASH_ITEMS,
-    SPECIAL_WASH_FROM,
     SPECIAL_WASH_LOCK_MAX,
     attrValueAt,
     canRollSkill,
@@ -15,6 +14,8 @@ import {
     identifyBook,
     inSpecialWash,
     makeRng,
+    nextWashMax,
+    washMaxStages,
     specialSkillOptions,
     specialWash,
     specialWashLeft,
@@ -703,11 +704,12 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         if (!data) return;
         setBook((prev) => {
             if (!prev) return prev;
-            const heroBeast = prev.version === '英雄' && ['青龙', '白虎'].includes(prev.beast);
-            const cap = heroBeast ? data.meta.heroWashMaxWithItem : data.meta.washMaxWithItem;
-            const next = { ...prev, washMax: Math.max(prev.washMax, cap) };
-            bookRef.current = next;
-            return next;
+            // 一次只升一档：10 → 25 →（青龙/白虎英雄版才有）30
+            const next = nextWashMax(data, prev.version, prev.beast, prev.washMax);
+            if (next === null) return prev;
+            const updated = { ...prev, washMax: next };
+            bookRef.current = updated;
+            return updated;
         });
     }, [data]);
 
@@ -750,11 +752,11 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         const raw = attrValueAt(pool, roll, book.level);
         return { id: roll.id, name: def?.name || `属性${roll.id}`, text: formatAttrValue(data, roll.id, raw) };
     });
-    const heroBeast = book.version === '英雄' && ['青龙', '白虎'].includes(book.beast);
-    const washCap = heroBeast ? data.meta.heroWashMaxWithItem : data.meta.washMaxWithItem;
-    /** 洗练次数用满后，才允许消耗「轩辕拾遗录」提升上限 */
-    const canRaiseMax = washLeft === 0 && book.washMax < washCap;
-    const nextWashCap = Math.max(book.washMax, washCap);
+    /** 本策最终能达到的上限（青龙/白虎英雄版 30，其余 25） */
+    const washCap = washMaxStages(data, book.version, book.beast).at(-1) ?? data.meta.baseWashMax;
+    /** 洗练次数用满后，才允许消耗「轩辕拾遗录」提升上限；一次只升一档 */
+    const nextWashCap = nextWashMax(data, book.version, book.beast, book.washMax);
+    const canRaiseMax = washLeft === 0 && nextWashCap !== null;
 
     return (
         <div className={clsx('@container w-full min-w-0', className)}>
@@ -1034,10 +1036,10 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 disabled={!canRaiseMax || busy || leftBusy}
                                 title={
                                     canRaiseMax
-                                        ? `消耗「轩辕拾遗录·相易」把洗练次数上限提到 ${nextWashCap}；累计满 ${SPECIAL_WASH_FROM} 次后自动切换为特殊洗练（官方未公布消耗数量，本站按 1 个计）`
+                                        ? `消耗 1 个「轩辕拾遗录·相易」把洗练次数上限 ${book.washMax} → ${nextWashCap}（一次只升一档：10 → 25 → 30，最后一档仅青龙 / 白虎英雄版有）`
                                         : washLeft > 0
                                           ? '洗练次数用满后才能提升上限'
-                                          : `当前上限已是 ${book.washMax} 次`
+                                          : `当前上限已是 ${book.washMax} 次（本策上限 ${washCap} 次）`
                                 }
                                 style={{ ...btnStyle(canRaiseMax && !busy && !leftBusy), padding: '6px 0' }}
                             >

@@ -270,6 +270,35 @@ export interface WashResult {
  * 仍走五档（新洗出的词条共用一次新的档位投掷），保证与普通洗练同一套数值模型。
  */
 
+/**
+ * 洗练次数上限的**阶梯**：一次「增加洗练次数」只升一档，不是一步到位。
+ *
+ * 数据来自 `xyc_refine.json` 的 meta：`baseWashMax=10` / `washMaxWithItem=25` /
+ * `heroWashMaxWithItem=30`。所以：
+ * - 普通 / 典藏版（含朱雀、玄武英雄版）：10 → 25
+ * - 青龙 / 白虎英雄版：10 → 25 → 30（多出 25→30 这一档，才有 25~30 的 5 次特殊洗练额度）
+ *
+ * 2026-10-30 线上反馈：原来英雄版直接 10 → 30，玩家在游戏里却只能先到 25
+ * （第一档要被「轩辕拾遗录·相易」卡住），两边对不上。
+ */
+export function washMaxStages(data: XycRefineData, version: XycVersion, beast: XycBeast): number[] {
+    const heroBeast = version === '英雄' && (beast === '青龙' || beast === '白虎');
+    const cap = heroBeast ? data.meta.heroWashMaxWithItem : data.meta.washMaxWithItem;
+    const stages = [data.meta.baseWashMax, data.meta.washMaxWithItem];
+    if (cap > data.meta.washMaxWithItem) stages.push(cap);
+    return stages.filter((v, i, arr) => i === 0 || v > arr[i - 1]);
+}
+
+/** 下一档上限；已经到顶返回 null（UI 据此禁用「增加洗练次数」） */
+export function nextWashMax(
+    data: XycRefineData,
+    version: XycVersion,
+    beast: XycBeast,
+    current: number,
+): number | null {
+    return washMaxStages(data, version, beast).find((v) => v > current) ?? null;
+}
+
 /** 进入特殊洗练的累计洗练次数门槛 */
 export const SPECIAL_WASH_FROM = 25;
 /** 特殊洗练每次最多锁定条数 */

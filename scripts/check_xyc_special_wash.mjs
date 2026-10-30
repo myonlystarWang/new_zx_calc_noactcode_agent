@@ -84,6 +84,34 @@ const identifyWith = (ids, extra = {}) => {
     ok(E.specialWashLeft({ ...heroQl, washUsed: 10, washMax: 30 }) === 0, '未达门槛时额度应为 0');
 }
 
+// ── 1b. 上限阶梯：一次「增加洗练次数」只升一档（2026-10-30 线上反馈） ──
+{
+    const heroQl = identify({});
+    const heroBh = identify({ beast: '白虎' });
+    const heroZq = identify({ beast: '朱雀' });
+    const normal = identify({ version: '普通' });
+
+    const fmt = (a) => a.join('→');
+    ok(fmt(E.washMaxStages(data, '英雄', '青龙')) === '10→25→30', `青龙英雄版阶梯应为 10→25→30，实际 ${fmt(E.washMaxStages(data, '英雄', '青龙'))}`);
+    ok(fmt(E.washMaxStages(data, '英雄', '白虎')) === '10→25→30', `白虎英雄版阶梯应为 10→25→30，实际 ${fmt(E.washMaxStages(data, '英雄', '白虎'))}`);
+    ok(fmt(E.washMaxStages(data, '英雄', '朱雀')) === '10→25', `朱雀英雄版阶梯应为 10→25（无 30 档），实际 ${fmt(E.washMaxStages(data, '英雄', '朱雀'))}`);
+    ok(fmt(E.washMaxStages(data, '普通', '青龙')) === '10→25', `普通版阶梯应为 10→25，实际 ${fmt(E.washMaxStages(data, '普通', '青龙'))}`);
+
+    // 关键回归：洗满 10 次后第一次点「增加洗练次数」只能到 25，不是一步 30
+    ok(E.nextWashMax(data, '英雄', '青龙', 10) === 25, '10 次后第一档应到 25（不能一步跳 30）');
+    ok(E.nextWashMax(data, '英雄', '青龙', 25) === 30, '25 次后第二档应到 30');
+    ok(E.nextWashMax(data, '英雄', '青龙', 30) === null, '到 30 后不应再有下一档');
+    ok(E.nextWashMax(data, '英雄', '朱雀', 25) === null, '非青龙/白虎到 25 即封顶');
+    ok(E.nextWashMax(data, '普通', '青龙', 25) === null, '普通版到 25 即封顶');
+
+    // 只升到 25 的英雄版不能进特殊洗练（必须再升到 30 才有 25~30 的 5 次额度）
+    ok(!E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 25 }), '只升到 25 的英雄版不应进特殊洗练');
+    ok(E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 30 }), '升到 30 的英雄版应进特殊洗练');
+    ok(!E.inSpecialWash({ ...heroBh, washUsed: 25, washMax: 25 }), '白虎只升到 25 时同样不进特殊洗练');
+    ok(!E.inSpecialWash({ ...heroZq, washUsed: 25, washMax: 25 }), '朱雀到 25 后不进特殊洗练');
+    ok(!E.inSpecialWash({ ...normal, washUsed: 25, washMax: 25 }), '普通版到 25 后不进特殊洗练');
+}
+
 // ── 2. 锁定行为（单次） ──
 {
     const base = identifyWith([LOCK_A, LOCK_B, 12, 14, 0], { washUsed: 25, washMax: 30 });

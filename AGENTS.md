@@ -4,21 +4,27 @@
 
 ---
 
-## 1. 产品形态：只有一个主入口
+## 1. 产品形态：聊天为主入口，「有卡出卡、无卡才分屏」
 
 ```
 首页（聊天窗口）
    └─ 输入问题 / 点药丸 / 点卡片
-        └─ 右侧双轨工作区 SplitScreenWorkspace（calc / arena / server / xyc / newtianyuan / ninglingqi / yunling）
+        ├─ 有内嵌卡的功能  → 聊天里直接出卡（绝大多数功能都走这条）
+        └─ 没有内嵌卡的功能 → 右侧双轨工作区 SplitScreenWorkspace（calc / arena / server）
 ```
 
-- **所有功能都在右侧分屏里跑**，用户不再进入独立页面。
-- `/calculator`、`/arena`、`/compendium/*`、`/tools/*` 这些路由页**产品上已停用**：Header 没有入口，聊天卡片一律走 `onOpenSplitWorkspace(mode)`。
+- `/calculator`、`/arena`、`/compendium/*`、`/tools/*` 这些路由页**产品上已停用**：Header 没有入口，不要再往这些页面加功能，也不要以它们为验收对象。
+- **「路由页停用」≠「卡片一律跳分屏」。** 判据只有一个：**这个功能有没有对话内嵌卡**。
+  - 有卡（轩辕策洗练、神隐蕴灵、新天缘精炼、神机洗练、图鉴、副本 BOSS、职业分流…）→ 必须 `onSendMessage(query)`，由 `CopilotService.matchLocalIntent` 出卡。
+  - 无卡（战力计算器 / 副本训练场 / 开服雷达）→ 才允许 `onOpenSplitWorkspace(mode)`。
+- 这条规则已**硬编码**在 `HomeAIChatStage.tsx` 的 `WORKSPACE_ONLY_OPTION_KEYS`（当前只有 `calc` / `arena` / `server`）：hub 选项即使写了 `workspaceMode`，key 不在白名单也会被忽略、退回发查询词并 `console.warn`。
+- **新增 hub 选项 / 新增分屏模式前，必须先回答一句**：它有对话内嵌卡吗？有就别碰 `workspaceMode`（2026-10-29 就因为在「轩辕策洗练 / 神隐蕴灵 / 新天缘精炼」上误加 `workspaceMode`，把三张信息卡全部吞掉，轩辕策还落到内容无关的「属性」页）。
 - 代码里仍有 2 处 fallback 跳路由：`HomeAIChatStage.tsx` 第 85、224 行（`if (onOpenSplitWorkspace) {...} else { navigate('/calculator') }`）。`HomePage` 一定会传 `onOpenSplitWorkspace`，所以实际不会触发；**但不要以这两处为理由去改路由页**。
 
 ### 结论
-> 任何 UI 改动、任何移动端适配，**验收对象是「聊天 + 右分屏」这条路径**，不是路由页。
+> 任何 UI 改动、任何移动端适配，**验收对象是「聊天（+ 必要时右分屏）」这条路径**，不是路由页。
 > 只改路由页 = 用户看不见。
+> 只删 `workspaceMode` 字段 = 挡不住下次手滑，所以白名单在代码里，不在文档里。
 
 ---
 
@@ -50,7 +56,7 @@
 4. 类型与回归：
    ```bash
    cd web_app && node ../node_modules/typescript/bin/tsc -b
-   node scripts/l1_intent_fixture.mjs        # 期望 1024/1024 PASS
+   node scripts/l1_intent_fixture.mjs        # 期望 1114/1114 PASS（以脚本输出的实际数字为准）
    ```
 5. 审计脚本（本地、不入库，`scratch/` 已被 gitignore）：
    - `scratch/mobile_audit/audit.mjs <url> [w] [h]` — 溢出/滚动/触控目标
