@@ -195,9 +195,10 @@ export { React, renderToStaticMarkup, VisionReviewCard, fromServerPanel, degrade
     ok(html['tianyuan-old'].includes('查旧天缘图鉴'), '旧天缘按钮文案不对');
     ok(html['tianyuan-new'].includes('+5.8%'), '天缘词条行未渲染');
 
-    /* 天缘卡 = 新天缘模拟器版式：部位 tab + 天缘等级可改 + 金色标题；名称/部位不再在栅格里重复 */
-    ok(html['tianyuan-new'].includes('data-testid="vision-tianyuan-body"'), '天缘卡缺新天缘版式 body');
-    ok(['甲', '刃', '盔'].every(p => html['tianyuan-new'].includes(`data-part="${p}"`)), '天缘卡缺 甲/刃/盔 部位切换');
+    /* 天缘卡 = 金色标题 + 逐行天命档；名称/部位不在栅格重复，部位 tab 与天缘加减已按用户口径移除 */
+    ok(html['tianyuan-new'].includes('data-testid="vision-tianyuan-body"'), '天缘卡缺天缘版式 body');
+    ok(!html['tianyuan-new'].includes('data-part="'), '天缘卡不该再有 甲/刃/盔 部位切换（标题已写明部位）');
+    ok(!html['tianyuan-new'].includes('data-testid="vision-hint"'), '天缘卡不该再有底部虚线说明');
     ok(!html['tianyuan-new'].includes('data-field-key="name"'), '天缘卡不该再在栅格里重复「名称」行');
     ok(html['tianyuan-new'].includes('天缘 +10'), '天缘标题应带天缘等级');
     /* 天命档必须逐行显示，且能点改（用户口径：图上有天命+几就要看得见） */

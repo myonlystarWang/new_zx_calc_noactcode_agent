@@ -586,12 +586,27 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
             data-degraded={live.degraded ? '1' : '0'}
             data-class-unknown={classUnknown ? '1' : '0'}
             className={clsx(
-                '@container w-full max-w-xl rounded-xl border bg-[#121824] p-3.5 sm:p-4 shadow-md',
+                '@container w-full max-w-md rounded-xl border bg-[#121824] p-3.5 sm:p-4 shadow-md',
                 live.degraded ? 'border-amber-600/30' : 'border-cyan-500/20',
                 className
             )}
         >
-            {/* 头部 */}
+            {/* 头部：天缘卡的金色标题、天缘等级、逐行天命档都由下方 body 承担，
+                再叠一层同名头部就是纯重复 —— 非降级态只保留「只看原图」入口 */}
+            {live.kind === 'tianyuan' && !live.degraded ? (
+                live.imageRef && onPeek ? (
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            data-action="peek"
+                            onClick={() => onPeek(live.imageRef!)}
+                            className="text-[11px] text-slate-400 hover:text-cyan-300 transition-colors"
+                        >
+                            只看原图
+                        </button>
+                    </div>
+                ) : null
+            ) : (
             <div className="flex flex-col gap-2 border-b border-white/5 pb-3">
                 <div className="flex items-center justify-between gap-2 min-w-0">
                     <div className="flex items-center gap-2 min-w-0">
@@ -673,6 +688,7 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                     ))}
                 </div>
             </div>
+            )}
 
             {/* 降级条：说清「为什么一个数都没采信」，不再一律甩一句「没有可用的视觉模型」 */}
             {live.degraded && (
@@ -988,69 +1004,14 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </div>
             )}
 
-            {/* 天缘：对齐「新天缘模拟器」（NewTianyuanDetailCard）的版式 ——
-                部位 tab / 金色标题 / 天命等级步进 / 词条行；词条与天命档都可点改，改完满值对照实时重算 */}
+            {/* 天缘：金色标题（带天缘等级）+ 逐行天命档 + 词条行；词条与天命档都可点改，改完满值对照实时重算。
+                部位（甲/刃/盔）与天缘等级不再给切换控件 —— 标题已经写明，2026-10-30 用户口径去掉 */}
             {live.kind === 'tianyuan' && (
                 <div
                     data-testid="vision-tianyuan-body"
                     className="mt-3 rounded-xl border border-[#232c3d] bg-[#070b12]/95 px-3 py-2.5 flex flex-col gap-2 min-w-0"
                     style={{ fontFamily: FONT_SONG, letterSpacing: '0.3px', boxShadow: 'inset 0 0 16px rgba(16, 28, 48, 0.35)' }}
                 >
-                    <div className="flex items-center justify-between gap-2 flex-wrap">
-                        {/* 部位 = 属性表的分组键，认错就整张对照全错，必须能改 */}
-                        <div className="flex items-center gap-1">
-                            {['甲', '刃', '盔'].map(p => {
-                                const on = String(live.tianyuan?.part || '') === p;
-                                return (
-                                    <button
-                                        key={p}
-                                        type="button"
-                                        data-part={p}
-                                        onClick={() => patchMeta({ part: p })}
-                                        title={`切到「${p}」部位（决定用哪张天命属性表）`}
-                                        className={clsx(
-                                            'px-2 py-0.5 rounded text-[11px] border transition-colors font-sans cursor-pointer',
-                                            on
-                                                ? 'bg-amber-500/20 text-amber-300 border-amber-400/60 font-bold'
-                                                : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/60'
-                                        )}
-                                    >
-                                        {p}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                        {/* 天命等级：掉落预览图里没有这一行，玩家必须能自己填 */}
-                        <div className="flex items-center gap-1 shrink-0 font-sans">
-                            <span className="text-[11px] text-slate-400">天缘</span>
-                            <button
-                                type="button"
-                                onClick={() => patchMeta({ tianyuanLevel: Math.max(0, (live.tianyuan?.tianyuanLevel ?? 0) - 1) })}
-                                className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-800 border border-slate-700 text-slate-200 hover:text-white cursor-pointer"
-                            >
-                                −
-                            </button>
-                            <InlineEdit
-                                value={`+${tianyuanLevel}`}
-                                width="2.8rem"
-                                className="font-mono text-[12px] text-center font-bold"
-                                style={{ color: tianyuanLevelColor, textShadow: tianyuanLevel > 0 ? `0 0 8px ${tianyuanLevelColor}55` : 'none' }}
-                                title="天缘等级：可直接填 0~10（掉落预览图没有这行，填一个就能算差距）"
-                                onCommit={v => {
-                                    const n = Number(String(v).replace(/[^\d]/g, ''));
-                                    patchMeta({ tianyuanLevel: Number.isFinite(n) ? Math.max(0, Math.min(10, n)) : 0 });
-                                }}
-                            />
-                            <button
-                                type="button"
-                                onClick={() => patchMeta({ tianyuanLevel: Math.min(10, (live.tianyuan?.tianyuanLevel ?? 0) + 1) })}
-                                className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-amber-600/30 border border-amber-500/50 text-amber-200 hover:text-white cursor-pointer"
-                            >
-                                +
-                            </button>
-                        </div>
-                    </div>
-
                     <div className="font-bold text-[14px] leading-snug break-words" style={{ color: '#ffd272' }}>
                         {live.tianyuan?.name || String(live.fields.find(f => f.key === 'name')?.value ?? '天缘')}
                         <span
@@ -1123,8 +1084,8 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                             );
                         })}
                     </div>
-                    <div className="text-[10.5px] text-slate-500 leading-snug">
-                        词条条数按图上实际行数（3~5 条都可能）；每条前面的「天命+N」决定它能吃多少额外档，点一下就能改。
+                    <div className="text-[10.5px] text-slate-500 leading-snug whitespace-nowrap overflow-hidden text-ellipsis">
+                        「天命+N」决定该行吃的额外档，点数字可改
                     </div>
                 </div>
             )}
@@ -1409,10 +1370,13 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </button>
             </div>
 
-                {/* 提示行：一句话说清，PC 与移动端都单行不换行 */}
-                <div data-testid="vision-hint" className="mt-1.5 text-[11px] text-slate-400 leading-relaxed whitespace-nowrap overflow-hidden text-ellipsis">
-                    虚线底可点改（回车生效）；<span className="text-slate-500">灰字不参与计算</span>
-                </div>
+                {/* 提示行：只有角色面板才有「灰字不参与计算」这回事，天缘/轩辕策不再挂说明
+                    （2026-10-30 用户口径：最底部那行不需要） */}
+                {live.kind === 'character_panel' && (
+                    <div data-testid="vision-hint" className="mt-1.5 text-[11px] text-slate-400 leading-relaxed whitespace-nowrap overflow-hidden text-ellipsis">
+                        虚线底可点改（回车生效）；<span className="text-slate-500">灰字不参与计算</span>
+                    </div>
+                )}
             </div>
         </div>
     );
