@@ -73,7 +73,7 @@ export interface CopilotMessage {
     text: string;
     time: string;
     image?: string;
-    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'xyc_diag' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'tianyuan_sim' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge' | 'xyc_tome' | 'xyc_wash' | 'xyc_hub' | 'wip_feature';
+    cardType?: 'boss' | 'boss_candidates' | 'skill' | 'skill_candidates' | 'fabao' | 'fabao_candidates' | 'equip' | 'equip_candidates' | 'ceiling' | 'server' | 'c_panel_review' | 'tool_card' | 'class_hub' | 'slot_hub' | 'class_status' | 'peizhang' | 'ninglingqi' | 'pet_pledge' | 'zhenling_upgrade' | 'fabao_upgrade' | 'shenji_forge' | 'exp_hub' | 'measure_hub' | 'guide_hub' | 'top_hub' | 'equip_hub' | 'skill_hub' | 'jiuwenlang' | 'tianyuan_old' | 'tianyuan_new' | 'tianyuan_sim' | 'xingsu' | 'baoshi' | 'fashion_skill' | 'silin_benyuan' | 'tianyuan_hub' | 'sim_hub' | 'yunling_forge' | 'xyc_tome' | 'xyc_wash' | 'xyc_hub' | 'wip_feature';
     cardData?: any;
 }
 
@@ -1044,39 +1044,6 @@ export class CopilotService {
                         { key: 'sixiangqi', label: '四象七 · 副本 BOSS', query: '四象七' },
                     ],
                 },
-            };
-        }
-
-        // 4. 轩辕策属性模拟
-        // T-12（R2 裁决）：带职业前缀的「职业+轩辕策」是技能查询（技能数据有 27 个「职业·轩辕策」组），
-        // 排除后落技能分支；仅裸「轩辕策」才走本工具卡
-        if (
-            !q.includes('四象七') &&
-            !q.includes('四象7') &&
-            !q.includes('七杀') &&
-            !PROFESSIONS.some(pr => q.includes(pr.toLowerCase())) &&
-            (
-                q.includes('轩辕策') ||
-                q.includes('四象') ||
-                q.includes('青龙书') ||
-                q.includes('白虎书') ||
-                q.includes('玄武书') ||
-                q.includes('朱雀书')
-            )
-        ) {
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: '已为你定位【轩辕策属性模拟】。填入任意阶数数值，即可反推其 1 阶初始底子、20 阶满级极限属性以及极品毕业度评级。',
-                time: timeStr,
-                cardType: 'xyc_diag',
-                cardData: {
-                    title: '轩辕策属性模拟',
-                    desc: '支持青龙/白虎/朱雀/玄武 1~20 阶成长推算与毕业度评定',
-                    workspaceMode: 'xyc',
-                    route: '/tools/xyc',
-                    btnText: '进入轩辕策属性'
-                }
             };
         }
 

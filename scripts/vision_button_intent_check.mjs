@@ -52,7 +52,10 @@ const cases = [
     ['新天缘', 'tianyuan_sim', undefined],
     /* 识图卡「打开轩辕策洗练」按钮发的 query：必须落 xyc_wash 洗练卡，不是分屏、也不是 xyc_tome */
     ['轩辕策洗练 青龙 英雄 六品 20级', 'xyc_wash', undefined],
-    ['轩辕策洗练 玄武 普通 三品 1级', 'xyc_wash', undefined]
+    ['轩辕策洗练 玄武 普通 三品 1级', 'xyc_wash', undefined],
+    /* 裸「轩辕策」仍出属性信息卡（旧 xyc_diag「轩辕策属性模拟」入口已删：它是死代码且跳右分屏） */
+    ['轩辕策', 'xyc_tome', undefined],
+    ['青龙书', 'xyc_tome', undefined]
 ];
 
 const fails = [];
