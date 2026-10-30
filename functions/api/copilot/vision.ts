@@ -56,7 +56,9 @@ const VISION_SYSTEM_PROMPT = `你是《诛仙3》截图录入员。你只做转�
 阵营的取值：标题形如「175级 昭冥五重 飞升仙」→ classRaw=昭冥、factionRaw=仙（取"仙/魔/佛"这一个字，**不要写"飞升"**，也不要带"五重"）。
 轩辕策英雄版：标题末尾「·英雄版」→ heroVersion=true（布尔 true/false，不要写"英雄版"这个字符串）。
 进阶技能保留罗马数字后缀：「山雨欲来III」就写 山雨欲来III，不要截成 山雨欲来。
-天缘的取值：标题「上玄佑万辰须弥盔（+2真气）」→ name=上玄佑万辰须弥盔、part=盔、suffix=+2真气（去掉空格）；「天缘+10」→ tianyuanLevel=10；随后每一行「天命+2 真气 +5.8%」都进 attrs 数组：tianming=2、name=真气、value=+5.8%。**天缘有几行输出几行，不许合并、不许省略。**
+天缘的取值：标题「上玄佑万辰须弥盔（+2真气）」→ name=上玄佑万辰须弥盔、part=盔、suffix=+2真气（去掉空格）；「天缘+10」「天缘+10（天命祝福）」→ tianyuanLevel=10（括号里的"天命祝福"不写进任何字段）；随后每一行「天命+2 真气 +5.8%」都进 attrs 数组：tianming=2、name=真气、value=+5.8%。**天缘有几行输出几行（3~5 条都可能），不许合并、不许省略。**
+- 某一行只写「天命」两个字、没有 +N（游戏原文如此，等于 +0）→ 这一行的 attrs 里必须写 `"tianming":0`，**不许省略这个字段、也不许编一个数字**。
+- 图上完全没有「天缘+N」这一行（掉落预览里只有「天缘」两个字）→ tianyuanLevel 不要输出，**绝对不要猜一个等级**。
 
 【四、取字段】每个字段必须同时给 label（图上该行左侧的中文标签），label 必须来自上面的行序地图；没看到就 status="absent"、value=null，并且 raw、label 都为 null。
 
@@ -68,7 +70,7 @@ tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attr
 [{"tianming":2,"name":"真气","value":"+5.8%"},{"tianming":1,"name":"固定攻击","value":"+2057"}]
 - name 取属性名（保留「固定」前缀，如 固定攻击 / 固定真气 / 固定气血）
 - value 保留原文的正负号与百分号，不要换算成数字
-- tianming 只有天缘有（天命+N 的 N）；轩辕策词条用 wash / extra 装括号增量：
+- tianming 只有天缘有（天命+N 的 N）。**每一条天缘词条都必须带 tianming**：有 +N 就写 N，「天命」无数字写 0 —— 这一项决定该行能吃多少额外档，漏了满值就算不准。轩辕策词条用 wash / extra 装括号增量：
   「固定防御 +215（+14.0）（+42.3）」→ name=固定防御、value=+215、wash="+14.0"、extra="+42.3"
   **「洗炼次数 14/10+4」里的 14 只写进 washUsed，绝对不能填进任何词条的 wash**（这是最常见的错）
 - 天缘一张图有几行词条就输出几条，漏行等于丢数据
@@ -82,7 +84,8 @@ tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attr
 - 气血 814972/1604910 → health 取上限 1604910，不取当前值。
 - 青龙/白虎/朱雀/玄武 只是轩辕策书名的前缀（写进 beast），不要另立字段。
 - 天缘标题括号里的「+2真气」是后缀（suffix），不是一条词条，不要放进 attrs。
-- 图里没有「攻击 x-y / 致命伤害 / 书名<…> / 天缘+N」这类面板特征（例如攻略表格、属性清单截图）时，panelKind 必须是 unknown，fields 全部 absent。**表格里某一行的文字看起来像"天命+10"也不算天缘面板**。
+- 图里没有「攻击 x-y / 致命伤害 / 书名<…> / 天缘·天命」这类面板特征（例如攻略表格、属性清单截图）时，panelKind 必须是 unknown，fields 全部 absent。**表格里某一行的文字看起来像"天命+10"也不算天缘面板**。
+- 天缘的「天缘+N」不是必需的：掉落预览只有「天缘」两个字也是天缘面板（=天缘+0），照常按上述规则取 attrs。
 
 【六、输出】只输出一个 JSON，不要 markdown 代码块，不要任何解释文字。**必须按示例把所有 14 个 key 都列出来**（没有的就写 absent），不要省略：
 {"panelKind":"character_panel","kindEvidence":["致命一击","血炼值"],"kindConfidence":0.9,
@@ -432,6 +435,9 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
         const userPrompt = body.prompt?.trim() || '请识别这张截图并输出 JSON。';
         const attempts: { provider: string; error?: string }[] = [];
         let best: { parsed: any; issues: string[]; provider: string; score: number } | null = null;
+        /** 闸门拒了也要记住「模型认为是哪个体系」：降级时前端据此给准确引导，而不是一律塞角色面板 */
+        let recognizedKind: string | null = null;
+        let recognizedKindEvidence: string[] = [];
 
         /** 校验 + 完整性闸门：字段对不齐或太少就换下一条通道，避免把错位数据带进计算 */
         const tryResult = (r: TransportResult) => {
@@ -443,6 +449,11 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
             const { parsed, issues } = validateParsed(raw);
             // 归一化（只统一格式，不补值）→ 标准化闸门（不是标准面板图就不算一次有效结果）
             const norm = normalizePanel(parsed);
+            const kindOf = norm.panel?.panelKind;
+            if (kindOf && kindOf !== 'unknown' && !recognizedKind) {
+                recognizedKind = kindOf;
+                recognizedKindEvidence = Array.isArray(norm.panel?.kindEvidence) ? norm.panel.kindEvidence.slice(0, 4) : [];
+            }
             const std = assessStandardness(norm.panel);
             if (!std.standard) {
                 attempts.push({ provider: r.provider, error: `非标准面板[${std.code}]: ${std.detail}` });
@@ -517,19 +528,42 @@ export const onRequestPost = async (context: { request: Request; env: Env }) => 
             });
         }
 
-        // 一条都没拿到：明确降级，绝不返回面板数值
+        // 一条都没拿到：明确降级，绝不返回面板数值。
+        // degradedReason 三分类，前端据此说人话（旧实现一律说「没有可用的视觉模型」，实测模型明明在跑，
+        // 只是把图判成了非标准面板 —— 用户看不懂这条假话）。
+        const nonStandard = attempts.some(a => /非标准面板/.test(a.error || ''));
+        const noBinding = attempts.some(a => /AI binding 未注入/.test(a.error || ''))
+            && attempts.every(a => /AI binding 未注入|JSON 解析失败/.test(a.error || ''));
+        const degradedReason = noBinding ? 'no_key' : nonStandard ? 'non_standard' : 'provider_error';
+
+        const kindHint: Record<string, string> = {
+            tianyuan: '这张像天缘，但没读到「天命 属性 +值」这样的词条行，不敢带进计算。请截「天缘」详情面板（含全部天命行），或直接说装备名查词条池。',
+            xyc: '这张像轩辕策，但书名 / 四系书型没对上。请截完整的轩辕策详情（含书名、洗炼次数、进阶技能）。',
+            character_panel: '这张像角色属性面板，但致命伤害 / 致命一击这排对不齐，不敢带进计算。请截完整的 C 键属性面板（含顶部气血真气条）。',
+            equip: '这是装备图。直接说装备名，我出图鉴卡更快。',
+            fabao: '这是法宝图。说法宝名，我出特技卡。',
+            skill: '这是技能图。说技能名，我出技能卡。',
+            boss: '这是 BOSS 界面。先说要打哪个副本。',
+            combat_log: '战报不能反推面板，请上传角色属性面板截图。'
+        };
+        const fallbackText = degradedReason === 'non_standard'
+            ? (recognizedKind && kindHint[recognizedKind]) || '这张图不是标准面板截图。请截「角色属性面板（C 键）」「轩辕策详情」或「天缘详情」的完整面板再试。'
+            : degradedReason === 'no_key'
+                ? '识图功能受限：服务端没有注入视觉模型通道（详见 /api/copilot/diag）。可以手动填写下面的空卡，或稍后重试。'
+                : '识图通道临时不可用（超时或额度），这次没有拿到任何数值。可以手动填写下面的空卡，或稍后重试。';
+
         return json({
             ok: false,
             provider: null,
             degraded: true,
-            degradedReason: attempts.some(a => /AI binding/.test(a.error || '')) ? 'no_key' : 'provider_error',
+            degradedReason,
+            recognizedKind,
+            recognizedKindEvidence,
             lastError: attempts.map(a => `${a.provider}: ${a.error}`).join(' | ').slice(0, 300),
             attempts,
             result: {
                 mode: 'general',
-                rawExplanation: attempts.some(a => /非标准面板/.test(a.error || ''))
-                    ? '这张图不是标准面板截图。请截「角色属性面板（C 键）」「轩辕策详情」或「天缘详情」的完整面板再试。'
-                    : '识图功能受限：当前没有可用的视觉模型（详见 /api/copilot/diag）。请手动填写属性，或稍后重试。'
+                rawExplanation: fallbackText
             }
         });
     } catch (error: any) {

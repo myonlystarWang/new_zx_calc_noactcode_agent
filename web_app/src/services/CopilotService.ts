@@ -12,6 +12,7 @@ import { downscaleDataUrl } from '../utils/imageDownscale';
 import { pinyin } from 'pinyin-pro';
 import type { Dungeon, Monster, CuratedEquipItem, CuratedSkillItem, FabaoItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
+import { EQUIP_HUB_GROUPS, EQUIP_HUB_OPTIONS } from './equipHubOptions';
 
 export const UNIFIED_NOT_FOUND_REPLY =
     '天书万象 AI 暂时未能完全理解您的意思。建议尝试使用“关键词+空格”组合检索，例如：\n' +
@@ -84,6 +85,9 @@ export interface VisionExtractionResult {
     provider?: string | null;
     degraded?: boolean;
     degradedReason?: string;
+    /** 降级时也要带上「模型认为是哪个体系」，否则前端只能默认角色面板（天缘图会掉进战力计算） */
+    recognizedKind?: string | null;
+    recognizedKindEvidence?: string[];
     lastError?: string;
     quality?: 'full' | 'partial';
     issues?: string[];
@@ -1999,25 +2003,18 @@ export class CopilotService {
             return {
                 id: `msg-${Date.now()}`,
                 sender: 'assistant',
-                text: '为你呈现【装备全景】导航，涵盖三大品质主装、特种首饰、四灵本元与宝石镶嵌体系：',
+                text: '为你呈现【装备全景】导航：主装三系与六部位、其他装备细节（项链 / 戒指 / 锦囊 / 玺绶 / 罡气 / 法身 / 金身 / 佩章 / 勋章 / 护符）、以及四灵本元与宝石等养成系统：',
                 time: timeStr,
                 cardType: 'equip_hub',
                 cardData: {
                     title: '装备全景导航',
-                    options: [
-                        { key: 'zhaowu', label: '昭武装备', query: '昭武' },
-                        { key: 'zhangwu', label: '彰武装备', query: '彰武' },
-                        { key: 'xiuwu', label: '修武装备', query: '修武' },
-                        { key: 'peizhang', label: '圣粹佩章', query: '佩章' },
-                        { key: 'silin_benyuan', label: '四灵本元', query: '四灵本元' },
-                        { key: 'ninglingqi', label: '宸极凝灵契', query: '凝灵契' },
-                        { key: 'jiuwenlang', label: '九纹琅', query: '九纹琅' },
-                        { key: 'tianyuan_old', label: '旧天缘', query: '旧天缘' },
-                        { key: 'tianyuan_new', label: '新天缘', query: '新天缘' },
-                        { key: 'xyc_tome', label: '轩辕策', query: '轩辕策属性' },
-                        { key: 'shenji', label: '神级首饰', query: '神级项链' },
-                        { key: 'baoshi', label: '宝石属性', query: '宝石' },
-                    ]
+                    // 唯一真相在 equipHubOptions.ts：数据里有的部位，这里必须有入口。
+                    // 缺一个就会被 scripts/check_equip_hub_coverage.mjs 挡下来。
+                    groups: EQUIP_HUB_GROUPS.map(g => ({
+                        label: g.label,
+                        options: g.options.map(o => ({ key: o.key, label: o.label, query: o.query })),
+                    })),
+                    options: EQUIP_HUB_OPTIONS.map(o => ({ key: o.key, label: o.label, query: o.query, group: o.group })),
                 }
             };
         }
@@ -3866,6 +3863,8 @@ export class CopilotService {
                         provider: json.provider ?? null,
                         degraded: Boolean(json.degraded),
                         degradedReason: json.degradedReason,
+                        recognizedKind: json.recognizedKind ?? null,
+                        recognizedKindEvidence: json.recognizedKindEvidence,
                         lastError: json.lastError,
                         quality: json.quality,
                         issues: json.issues

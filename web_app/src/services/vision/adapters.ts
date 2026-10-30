@@ -95,7 +95,16 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
         .map(a => ({
             name: String(a.name ?? ''),
             value: String(a.value ?? ''),
-            tianming: typeof a.tianming === 'number' ? a.tianming : (typeof a.tianming === 'string' && a.tianming.trim() !== '' ? Number(a.tianming) : undefined),
+            // 天命档：0 是合法值（图上只写「天命」= +0），不能当"没读到"丢掉
+            tianming: (() => {
+                const raw = a.tianming;
+                if (typeof raw === 'number' && Number.isFinite(raw)) return Math.max(0, Math.min(10, Math.round(raw)));
+                if (typeof raw === 'string') {
+                    const d = raw.replace(/[^0-9]/g, '');
+                    return d === '' ? undefined : Math.max(0, Math.min(10, Number(d)));
+                }
+                return undefined;
+            })(),
             wash: a.wash ? String(a.wash) : undefined,
             extra: a.extra ? String(a.extra) : undefined
         }));
@@ -228,8 +237,10 @@ export function fromServerPanel(serverPanel: any, imageRef: string | null, meta?
 }
 
 /** 降级态：没有任何数值，只留一张可手填的空卡 */
-export function degradedPanel(envelope: { degradedReason?: string; lastError?: string; panel?: any }, imageRef: string | null): RecognizedPanel {
-    const kind: PanelKind = (envelope?.panel?.panelKind as PanelKind) || 'character_panel';
+export function degradedPanel(envelope: { degradedReason?: string; lastError?: string; panel?: any; recognizedKind?: string | null; recognizedKindEvidence?: string[] }, imageRef: string | null): RecognizedPanel {
+    // 体系优先取服务端「模型认为的 kind」：闸门拒了不代表没认出来。
+    // 旧实现一律默认 character_panel，天缘 / 轩辕策图会被硬塞进「带入计算器」空卡。
+    const kind: PanelKind = ((envelope?.recognizedKind || envelope?.panel?.panelKind) as PanelKind) || 'character_panel';
     const cells: FieldCell[] = fieldsFor(kind).map(def => ({
         key: def.key,
         label: def.label,
@@ -245,7 +256,7 @@ export function degradedPanel(envelope: { degradedReason?: string; lastError?: s
     const base: RecognizedPanel = {
         kind,
         kindConfidence: 0,
-        kindEvidence: [],
+        kindEvidence: Array.isArray(envelope?.recognizedKindEvidence) ? envelope.recognizedKindEvidence : [],
         provider: null,
         degraded: true,
         degradedReason: envelope?.degradedReason || 'provider_error',

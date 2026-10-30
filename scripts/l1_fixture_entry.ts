@@ -6,3 +6,5 @@
  */
 export { DataService, isValidEquip, isValidSkill } from '../web_app/src/services/DataService';
 export { CopilotService } from '../web_app/src/services/CopilotService';
+export { EQUIP_HUB_OPTIONS, EQUIP_HUB_GROUPS, EQUIP_HUB_COVERED_SLOTS } from '../web_app/src/services/equipHubOptions';
+export { getEquipRefKey, YUNLING_SLOTS } from '../web_app/src/utils/equipStatKey';

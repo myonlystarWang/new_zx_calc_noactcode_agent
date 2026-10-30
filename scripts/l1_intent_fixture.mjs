@@ -68,7 +68,7 @@ try {
 } finally {
     try { fs.unlinkSync(BUNDLE); } catch { /* ignore */ }
 }
-const { DataService, CopilotService, isValidEquip, isValidSkill } = mod;
+const { DataService, CopilotService, isValidEquip, isValidSkill, EQUIP_HUB_OPTIONS, EQUIP_HUB_COVERED_SLOTS, getEquipRefKey, YUNLING_SLOTS } = mod;
 
 /* ---------------- 2. mock DataService：fs 读真实 game_data + 复用真实过滤器 ---------------- */
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -609,6 +609,79 @@ for (const c of cases) {
         for (const f of failures) failLines.push(`     - ${f}`);
     }
     results.push({ id: c.id, input: c.input, norm: gnorm });
+}
+
+/* ---------------- 5. 装备导航覆盖度审计（数据驱动；失败即整轮 FAIL） ----------------
+ * 背景（2026-10-30）：equip_hub 曾只挂 12 个入口，漏了 项链 / 戒指 / 锦囊 / 罡气 /
+ * 法身 / 金身 / 玺绶 / 勋章 / 护符 —— 这些部位**能打字查到，但导航里点不出来**，
+ * 用户侧表现为「我明明规划过，你给我弄没了」。意图夹具当时全绿，因为夹具只测
+ * 「这句话能出什么卡」，没有一条测「导航里有没有这个入口」。
+ *
+ * 这条审计补的就是那个洞，两条断言：
+ *   A. equip_curated.json 出现的每个 slot，导航里必须至少有一个入口（缺 = 漏挂）；
+ *   B. 导航里每个入口的 query，点下去必须命中一张卡（死链 = 入口白摆）。
+ */
+{
+    const dataSlots = Array.from(new Set(
+        readJson(path.join(GAME_DATA, 'equip_curated.json'))
+            .map((e) => e.slot)
+            .filter(Boolean)
+    ));
+    const covered = new Set(EQUIP_HUB_COVERED_SLOTS);
+    const missingSlots = dataSlots.filter((s) => !covered.has(s));
+
+    const deadEntries = [];
+    for (const opt of EQUIP_HUB_OPTIONS) {
+        const r = await runOne(opt.query);
+        if (!r || r.__error || !r.cardType) deadEntries.push(`${opt.label}(${opt.query})`);
+    }
+
+    if (missingSlots.length) {
+        failCaseCount++;
+        failLines.push(`FAIL audit:equip-hub-coverage 数据里有、导航里没有的部位：${missingSlots.join(' / ')}`);
+    }
+    if (deadEntries.length) {
+        failCaseCount++;
+        failLines.push(`FAIL audit:equip-hub-dead-entry 点了出不来卡片的入口：${deadEntries.join(' / ')}`);
+    }
+    if (!missingSlots.length && !deadEntries.length) {
+        console.log(`AUDIT 装备导航：${dataSlots.length} 个数据部位全部有入口，${EQUIP_HUB_OPTIONS.length} 个入口全部命中卡片`);
+    }
+}
+
+/* ---------------- 6. 蕴灵属性映射审计（数据驱动；失败即整轮 FAIL） ----------------
+ * 背景（2026-10-30）：`EquipDetailCard` 旧实现把「头盔」直接映射成 hp（气血），
+ * 但数据里头盔只有 def + mp、没有 hp。头盔点到 +1 之后气血行不渲染、防御行不加成，
+ * 画面上「加了等于没加」，标题却写着（蕴灵 +1）。同类的还有 靴子(def+hp) 必须取 hp。
+ *
+ * 这条审计对拍数据：每个可蕴灵部位都必须落到一个**真实存在的数值字段**上。
+ */
+{
+    const yunlingItems = readJson(path.join(GAME_DATA, 'equip_curated.json'))
+        .filter((e) => Array.isArray(e.ref) && e.ref.length > 0 && YUNLING_SLOTS.includes(e.slot || ''));
+
+    const slotMap = new Map();
+    const bad = new Set();
+    for (const it of yunlingItems) {
+        const key = getEquipRefKey(it);
+        if (!key) {
+            bad.add(`${it.slot}：没有可承接蕴灵加成的属性字段（${it.name}）`);
+            continue;
+        }
+        slotMap.set(it.slot, key);
+        const value = key === 'atk' ? it.atk?.[0] : it[key];
+        if (typeof value !== 'number') {
+            bad.add(`${it.slot} → ${key} 字段缺失（${it.name}）`);
+        }
+    }
+
+    if (bad.size) {
+        failCaseCount++;
+        failLines.push(`FAIL audit:yunling-stat 蕴灵加成落不到属性上：\n     - ${[...bad].slice(0, 8).join('\n     - ')}`);
+    } else {
+        const mapText = [...slotMap.entries()].map(([s, k]) => `${s}→${k}`).join(' / ');
+        console.log(`AUDIT 蕴灵映射：${yunlingItems.length} 件可蕴灵装备，${slotMap.size} 个部位全部落到真实字段（${mapText}）`);
+    }
 }
 
 for (const line of failLines) console.log(line);

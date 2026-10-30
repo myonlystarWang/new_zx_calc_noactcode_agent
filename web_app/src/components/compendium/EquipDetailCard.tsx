@@ -7,6 +7,7 @@ import {
     getEquipQualityColor
 } from '../../constants/gameColorSystem';
 import { getEquipSeries } from '../../utils/equipSeries';
+import { getEquipRefKey, YUNLING_SLOTS } from '../../utils/equipStatKey';
 import { DataService } from '../../services/DataService';
 
 export interface EquipDetailCardProps {
@@ -26,8 +27,6 @@ export interface EquipDetailCardProps {
     /** 隐藏「神机洗炼属性池」整块（蕴灵模拟等场景只看装备本体） */
     hideShenjiPool?: boolean;
 }
-
-const YUNLING_SLOTS = ['武器', '头盔', '帽子', '衣服', '靴子', '鞋', '腰带', '袖甲', '护腕'];
 
 function formatAttrText(text: string): string {
     if (!text) return '';
@@ -60,18 +59,6 @@ function formatAttrText(text: string): string {
 
     // 如果 + 或 - 前面紧挨着非空白字符，补充一个空格，对齐游戏原生规范（如 "攻击 +36.00%"）
     return res.replace(/([^\s])([+\-＋－])/g, '$1 $2');
-}
-
-function getRefKey(it: CuratedEquipItem): 'atk' | 'def' | 'hp' | 'mp' | null {
-    const slot = it.slot || '';
-    if (slot === '武器' || it.atk) return 'atk';
-    if (slot === '衣服') return 'def';
-    if (slot === '袖甲' || slot === '护腕') return 'mp';
-    if (['靴子', '鞋', '头盔', '帽子', '腰带'].includes(slot)) return 'hp';
-    if (it.hp) return 'hp';
-    if (it.def) return 'def';
-    if (it.mp) return 'mp';
-    return null;
 }
 
 function parseAttrAndRate(raw: string) {
@@ -181,7 +168,7 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
     const qualityColor = useMemo(() => getEquipQualityColor(currentItem.q, currentItem.name), [currentItem.q, currentItem.name]);
     const yunlingColor = useMemo(() => getYunlingColor(refLevel), [refLevel]);
     const titleColor = hasYunling ? yunlingColor : qualityColor;
-    const targetRefKey = useMemo(() => getRefKey(currentItem), [currentItem]);
+    const targetRefKey = useMemo(() => getEquipRefKey(currentItem), [currentItem]);
 
     // 计算当前 +N 阶炼器数值加成
     const currentRefBonus = useMemo(() => {

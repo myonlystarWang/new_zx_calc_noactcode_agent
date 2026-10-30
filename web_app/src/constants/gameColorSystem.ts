@@ -29,6 +29,32 @@ export const GAME_COLORS = {
 } as const;
 
 /**
+ * 诛仙3 经典炼器等级色（+0 白 ~ +10，17173 十六进制原值）。
+ * **唯一真相**：新天缘模拟器（`NewTianyuanSimCard`）与识图卡（`VisionReviewCard`）都用它，
+ * 天缘等级「天缘+N」和每条词条的天命档「天命+N」共用同一套色阶 —— 玩家在模拟器里认过的颜色，
+ * 贴图校对卡里必须一模一样，否则会以为识别错了。
+ */
+export const REFINE_LEVEL_COLORS = [
+    '#ffffff', // +0
+    '#f2d3ff', // +1
+    '#bcffd2', // +2
+    '#fff38e', // +3
+    '#ffc0db', // +4
+    '#ff00ff', // +5
+    '#95aeff', // +6
+    '#426aff', // +7
+    '#6dffff', // +8
+    '#45ff45', // +9
+    '#c5ff54'  // +10
+] as const;
+
+/** 等级 → 炼器色（越界夹到 0~10，缺省按 +0 白） */
+export function getRefineLevelColor(level: number | null | undefined): string {
+    const n = Number.isFinite(Number(level)) ? Math.round(Number(level)) : 0;
+    return REFINE_LEVEL_COLORS[Math.max(0, Math.min(10, n))];
+}
+
+/**
  * 蕴灵等级对应色彩映射（修武、昭武、彰武、混虚系列完全一致）
  * +0 ~ +10: 淡白紫 (#d1e4f7)
  * +11: 碧绿 (#00ff00)

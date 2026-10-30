@@ -75,7 +75,7 @@ export const CHARACTER_PANEL_FIELDS: FieldDef[] = [
     { key: 'health', label: '气血上限', unit: 'point', engine: true, engineKey: 'CharacterHealth', expectedLabels: ['气血', '气血值'], hideInGrid: true },
     { key: 'mana', label: '真气上限', unit: 'point', engine: true, engineKey: 'CharacterMana', expectedLabels: ['真气', '法力'], hideInGrid: true },
     // 面板没有 → 手填
-    { key: 'monsterDamageBonus', label: '对怪增伤', unit: 'percent', engine: true, engineKey: 'CharacterMonsterDamageIncreasePercent', expectedLabels: ['对怪增伤', '对怪物增伤', '怪增'], manual: true, absentHint: '面板无此项 · 点此填写' }
+    { key: 'monsterDamageBonus', label: '对怪增伤', unit: 'percent', engine: true, engineKey: 'CharacterMonsterDamageIncreasePercent', expectedLabels: ['对怪增伤', '对怪物增伤', '怪增'], manual: true, absentHint: '面板无此项' }
 ];
 
 /** 轩辕策：按 tooltip 层级，词条单独走 attrs，不进 fields */

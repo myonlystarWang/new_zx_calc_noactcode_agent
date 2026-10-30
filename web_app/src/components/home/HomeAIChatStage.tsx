@@ -824,9 +824,14 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                     {msg.cardData.title || '分类导航'} · 点选直达对应功能
                                                 </div>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {(msg.cardData.options || []).map((opt: { key: string; label: string; query: string; workspaceMode?: string }) => (
+                                                    {(msg.cardData.options || []).map((opt: { key: string; label: string; query: string; group?: string; workspaceMode?: string }, optIdx: number, optArr: Array<{ group?: string }>) => (
+                                                        <div key={opt.key} className="contents">
+                                                        {opt.group && opt.group !== optArr[optIdx - 1]?.group && (
+                                                            <div className="w-full pt-1 text-[11px] font-semibold tracking-[0.14em] text-slate-400">
+                                                                {opt.group}
+                                                            </div>
+                                                        )}
                                                         <button
-                                                            key={opt.key}
                                                             type="button"
                                                         onClick={() => {
                                                             // 只有白名单 key 才允许直开分屏；其余一律发查询词，
@@ -852,6 +857,7 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
                                                         >
                                                             {opt.label}
                                                         </button>
+                                                        </div>
                                                     ))}
                                                 </div>
                                             </div>

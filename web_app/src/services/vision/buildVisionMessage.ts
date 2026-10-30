@@ -6,7 +6,7 @@
  */
 import type { CopilotMessage, VisionExtractionResult } from '../CopilotService';
 import { degradedPanel, fromServerPanel } from './adapters';
-import { UNSUPPORTED_HINT } from './fieldRegistry';
+import { UNSUPPORTED_HINT, kindLabel } from './fieldRegistry';
 import { trackVisionResult } from '../../utils/track';
 
 export function buildVisionMessage(
@@ -38,6 +38,18 @@ export function buildVisionMessage(
         const hint = UNSUPPORTED_HINT[panel.kind];
         if (hint) {
             return { id, sender: 'assistant', text: hint, time: timeStr };
+        }
+
+        // 降级 + 非角色面板：绝不出「角色属性面板 / 带入计算器」卡。
+        // 天缘、轩辕策这些体系的空卡没有任何可填项（名称/等级是文本字段），出了只会误导；
+        // 识别到的体系用文字说清楚 —— 这正是「不支持就直说」的落点。
+        if (panel.degraded && panel.kind !== 'character_panel') {
+            return {
+                id,
+                sender: 'assistant',
+                text: diag.rawExplanation || `这张图像是${kindLabel(panel.kind)}，但没读到可用的数值，暂不支持这样直接录入。请截完整面板再试。`,
+                time: timeStr
+            };
         }
 
         // 职业对不上职业表：必须在聊天里就说，不能等用户点开卡片才发现

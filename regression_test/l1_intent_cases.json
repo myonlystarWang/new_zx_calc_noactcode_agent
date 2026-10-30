@@ -7924,5 +7924,41 @@
       "xyc"
     ],
     "assert": "strong"
+  },
+  {
+    "id": "equip-slot-medal-01",
+    "input": "勋章",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "standard",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "equip-slot-amulet-01",
+    "input": "护符",
+    "expect": {
+      "cardType": "equip"
+    },
+    "tags": [
+      "standard",
+      "equip"
+    ],
+    "assert": "strong"
+  },
+  {
+    "id": "equip-quality-xiuwu-01",
+    "input": "修武",
+    "expect": {
+      "cardType": "equip_candidates"
+    },
+    "tags": [
+      "standard",
+      "equip"
+    ],
+    "assert": "strong"
   }
 ]

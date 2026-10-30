@@ -1,9 +1,16 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Copy, Check, ArrowRight, Info, AlertTriangle } from 'lucide-react';
 import type { FieldCell, RecognizedPanel } from '../../services/vision/types';
 import { fieldDef } from '../../services/vision/fieldRegistry';
 import { DataService } from '../../services/DataService';
+import {
+    buildXycCeiling,
+    buildTianyuanCeiling,
+    fmtCeilingValue,
+    worstRow,
+    type CeilingReport
+} from '../../services/vision/ceiling';
 import { mapToEngine } from '../../services/vision/mapToEngine';
 import { classCoverage } from '../../services/vision/classCoverage';
 import {
@@ -15,7 +22,7 @@ import {
     type SimTarget
 } from '../../services/vision/runPanelSimulation';
 import { DungeonBossPicker } from './DungeonBossPicker';
-import { GAME_COLORS } from '../../constants/gameColorSystem';
+import { GAME_COLORS, getRefineLevelColor } from '../../constants/gameColorSystem';
 
 /** 与轩辕策信息卡（XycTomeDetailCard）同字体：游戏 tooltip 版式 */
 const FONT_SONG = '"SimSun", "宋体", "Microsoft YaHei", sans-serif';
@@ -23,6 +30,119 @@ const FONT_SONG = '"SimSun", "宋体", "Microsoft YaHei", sans-serif';
 const BRACKET_RED = '#ff4d4f';
 /** 角色面板数值色：对齐游戏 C 界面的青蓝（不是轩辕策 tooltip 的 #8080ff 紫蓝） */
 const PANEL_CYAN = '#63d2ea';
+
+/**
+ * 虚线可点改的单元格：与角色面板那套一致（点数字 → 输入框，Enter/失焦提交，Esc 取消）。
+ * 天缘 / 轩辕策的「天命+N、词条值、等级、品阶」都走它，避免每处写一遍输入框。
+ */
+function InlineEdit({
+    value,
+    display,
+    onCommit,
+    kind = 'text',
+    width = '4.5rem',
+    className,
+    style,
+    title,
+    align = 'right',
+    variant = 'underline'
+}: {
+    value: string | number | null | undefined;
+    /** 非编辑态的展示文本（默认 = value）；编辑框里仍只放裸值，避免把括号一起改进去 */
+    display?: string;
+    onCommit: (v: string) => void;
+    kind?: 'text' | 'number';
+    width?: string;
+    className?: string;
+    /** 只给非编辑态（徽章配色用，编辑框里不该带等级色） */
+    style?: React.CSSProperties;
+    title?: string;
+    align?: 'left' | 'right';
+    /** underline = 下底虚线（正文数值）；badge = 带底色的胶囊（天缘的「天命+N」这种标签） */
+    variant?: 'underline' | 'badge';
+}) {
+    const [editing, setEditing] = useState(false);
+    const [draft, setDraft] = useState('');
+    if (editing) {
+        return (
+            <input
+                autoFocus
+                type={kind === 'number' ? 'number' : 'text'}
+                value={draft}
+                onChange={e => setDraft(e.target.value)}
+                onBlur={() => { setEditing(false); onCommit(draft); }}
+                onKeyDown={e => {
+                    if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
+                    if (e.key === 'Escape') setEditing(false);
+                }}
+                className={clsx(
+                    'bg-black/60 border border-cyan-500/40 rounded px-1 py-0 font-mono text-[11px] text-slate-100 outline-none',
+                    align === 'right' ? 'text-right' : 'text-left',
+                    className
+                )}
+                style={{ width }}
+            />
+        );
+    }
+    const shown = display ?? (value === null || value === undefined || value === '' ? '—' : String(value));
+    return (
+        <button
+            type="button"
+            onClick={() => { setDraft(String(value ?? '')); setEditing(true); }}
+            title={title || '点此修改'}
+            style={style}
+            className={clsx(
+                'cursor-text whitespace-nowrap',
+                variant === 'badge'
+                    ? 'px-1.5 py-[1px] rounded border transition-colors'
+                    : 'border-b border-dashed border-white/25 hover:border-cyan-400/80',
+                align === 'right' ? 'text-right' : 'text-left',
+                className
+            )}
+        >
+            {shown}
+        </button>
+    );
+}
+
+/**
+ * 「怎么截图才识别得准」——识图翻车时最有用的一块。
+ * 贴在降级 / 算不出差距的位置：玩家不知道要截哪块区域，是这类问题最大的来源。
+ */
+/** 全屏截图 / 超宽长图的判定：面积过大或长宽比失衡，模型会把界面文字一起读进来 */
+function isImageTooBig(size?: { w: number; h: number } | null): boolean {
+    if (!size) return false;
+    return size.w * size.h > 2_600_000 || Math.max(size.w, size.h) / Math.max(1, Math.min(size.w, size.h)) > 2.2;
+}
+
+function CaptureGuide({ defaultOpen = false, size }: { defaultOpen?: boolean; size?: { w: number; h: number } | null }) {
+    const tooBig = isImageTooBig(size);
+    return (
+        <details
+            open={defaultOpen}
+            data-testid="vision-capture-guide"
+            className="mt-2.5 rounded-lg border border-slate-700/60 bg-slate-900/50 px-3 py-2"
+        >
+            <summary className="cursor-pointer text-[11.5px] font-bold text-slate-300 select-none">
+                怎么截图才识别得准（点开看）
+                {tooBig && <span className="ml-1.5 text-amber-400 font-normal">· 这张图范围偏大</span>}
+            </summary>
+            {tooBig && size && (
+                <div className="mt-1.5 flex items-start gap-1.5 text-[11px] text-amber-400 leading-snug">
+                    <AlertTriangle className="w-3 h-3 mt-0.5 shrink-0" />
+                    <span>这张图 {size.w}×{size.h}，范围偏大：模型会把界面文字一起读进来，小字也更容易糊。建议只截面板那一块再发。</span>
+                </div>
+            )}
+            <ul className="mt-1.5 flex flex-col gap-1 text-[11px] text-slate-400 leading-snug list-disc pl-4">
+                <li><span className="text-slate-300 font-bold">一张图只截一个面板</span>：裁到面板边缘，别带聊天框 / 背包 / 地面背景。</li>
+                <li><span className="text-slate-300 font-bold">角色属性</span>：C 键面板，要含顶部「气血 / 真气」条 + 下面 5 行（攻击…技能躲闪）。</li>
+                <li><span className="text-slate-300 font-bold">天缘</span>：要含标题「上玄佑万辰须弥甲/刃/盔」+「天缘+N」+ 全部「天命+N 属性 值」行。掉落预览图没有天缘等级，算不了差距。</li>
+                <li><span className="text-slate-300 font-bold">轩辕策</span>：要含书名（青龙〈青囊玉书〉·英雄版）+ 品阶星级 + 洗炼次数 + 等级 + 全部属性行与进阶技能。</li>
+                <li>字太小就把游戏界面拉窄放大再截；长边别超过 1600px，超了会被压缩反而更糊。</li>
+            </ul>
+        </details>
+    );
+}
 
 export interface VisionReviewCardProps {
     panel: RecognizedPanel;
@@ -43,6 +163,16 @@ const fmtNum = (v: number | string | null): string => {
     if (typeof v === 'string') return v;
     return v.toLocaleString();
 };
+
+/**
+ * 通道回执的可读化：把 `cf-workers-ai:@cf/mistralai/mistral-small-3.1-24b-instruct: … | …`
+ * 拆成一条通道一行，并去掉前缀，只留模型短名。诊断要留，但玩家不该被裸 provider 串糊脸。
+ */
+const prettyIssues = (issues: string[]): string[] =>
+    issues
+        .flatMap(s => String(s).split(/\s+\|\s+/))
+        .map(s => s.replace(/^[a-z][a-z0-9-]*:@cf\/[^/]+\//i, '').replace(/-instruct\b/g, ''))
+        .filter(Boolean);
 
 const withUnit = (cell: FieldCell): string => {
     if (cell.value === null || cell.value === '') return '';
@@ -113,9 +243,10 @@ const GameRow: React.FC<{
                 <button
                     type="button"
                     onClick={onStartEdit}
-                    title={cell.reason || (cell.raw ? `原文「${cell.raw}」` : undefined)}
+                    title={cell.reason || (cell.raw ? `原文「${cell.raw}」` : '点此填写')}
                     className={clsx(
-                        'font-mono whitespace-nowrap shrink-0 cursor-text text-right pb-[1px]',
+                        // min-w-0 + truncate：移动端两列窄容器里「点此填写」不得把整行顶出卡外
+                        'font-mono whitespace-nowrap shrink-0 min-w-0 overflow-hidden text-ellipsis cursor-text text-right pb-[1px]',
                         'border-b border-dashed transition-colors text-[12px] @[400px]:text-[13px]',
                         bad
                             ? 'border-rose-400/60 hover:border-rose-300'
@@ -125,7 +256,7 @@ const GameRow: React.FC<{
                     )}
                     style={{ color: valueColor }}
                 >
-                    {absent ? (cell.reason || '未识别 · 点此填写') : withUnit(cell)}
+                    {absent ? (cell.reason || '点此填写') : withUnit(cell)}
                 </button>
             )}
         </div>
@@ -195,30 +326,94 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
     const [overrides, setOverrides] = useState<Record<string, number | null>>({});
     const [editingKey, setEditingKey] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+    /** 天缘 / 轩辕策的标题级信息（部位、天命等级、四系、版本、品阶、等级、洗炼次数）手改覆盖 */
+    const [meta, setMeta] = useState<{
+        part?: string; tianyuanLevel?: number;
+        beast?: string; heroVersion?: boolean; tier?: string; level?: number; washUsed?: number; stars?: number;
+    }>({});
+    /** 词条行手改（按行号），只覆盖展示用的文本 / 天命档 */
+    const [attrEdits, setAttrEdits] = useState<Record<number, { name?: string; value?: string; tianming?: number; wash?: string; extra?: string }>>({});
+    const patchMeta = useCallback((patch: Record<string, unknown>) => setMeta(prev => ({ ...prev, ...patch })), []);
+    const patchAttr = useCallback((idx: number, patch: { name?: string; value?: string; tianming?: number; wash?: string; extra?: string }) => {
+        setAttrEdits(prev => ({ ...prev, [idx]: { ...(prev[idx] || {}), ...patch } }));
+    }, []);
 
     /** 覆盖用户手改的值，并重算引擎快照 */
     const live = useMemo<RecognizedPanel>(() => {
-        if (Object.keys(overrides).length === 0) return panel;
-        const fields = panel.fields.map(f => {
-            if (!(f.key in overrides)) return f;
-            const v = overrides[f.key];
-            return {
-                ...f,
-                value: v,
-                status: (v === null ? 'absent' : 'ok') as FieldCell['status'],
-                source: (v === null ? 'none' : 'user') as FieldCell['source'],
-                confidence: v === null ? 0 : 1
-            };
-        });
-        const next = { ...panel, fields };
+        const hasFieldOv = Object.keys(overrides).length > 0;
+        const hasMeta = Object.keys(meta).length > 0;
+        const hasAttr = Object.keys(attrEdits).length > 0;
+        if (!hasFieldOv && !hasMeta && !hasAttr) return panel;
+        const fields = hasFieldOv
+            ? panel.fields.map(f => {
+                if (!(f.key in overrides)) return f;
+                const v = overrides[f.key];
+                return {
+                    ...f,
+                    value: v,
+                    status: (v === null ? 'absent' : 'ok') as FieldCell['status'],
+                    source: (v === null ? 'none' : 'user') as FieldCell['source'],
+                    confidence: v === null ? 0 : 1
+                };
+            })
+            : panel.fields;
+        const attrs = hasAttr
+            ? (panel.attrs || []).map((a, i) => ({ ...a, ...(attrEdits[i] || {}) }))
+            : panel.attrs;
+        const next: RecognizedPanel = { ...panel, fields, attrs };
+        if (panel.kind === 'xyc') next.xyc = { ...panel.xyc, ...meta };
+        if (panel.kind === 'tianyuan') next.tianyuan = { ...panel.tianyuan, ...meta };
         next.engine = mapToEngine(next);
         return next;
-    }, [panel, overrides]);
+    }, [panel, overrides, meta, attrEdits]);
 
     const setField = useCallback((key: string, v: number | null) => {
         setOverrides(prev => ({ ...prev, [key]: v }));
         setEditingKey(null);
     }, []);
+
+    /**
+     * 满属性对照：按图里声称的等级 / 天缘+N 折算上限。
+     * 数据走 DataService 的缓存（xyc_refine 214KB / new_tianyuan_data 24KB），只在需要时拉。
+     */
+    const [ceiling, setCeiling] = useState<CeilingReport | null>(null);
+    const attrsKey = useMemo(
+        // 天命档也要进 key：改「天命+N」会改上限，不进 key 就不会重算
+        () => (live.attrs || []).map(a => `${a.name}${a.value}#${a.tianming ?? ''}`).join('|'),
+        [live.attrs]
+    );
+    useEffect(() => {
+        let alive = true;
+        setCeiling(null);
+        const ds = DataService.getInstance();
+        (async () => {
+            try {
+                if (live.kind === 'xyc') {
+                    const data = await ds.getXycRefine();
+                    if (alive) setCeiling(buildXycCeiling(live, data));
+                } else if (live.kind === 'tianyuan') {
+                    const data = await ds.getNewTianYuanData();
+                    if (alive) setCeiling(buildTianyuanCeiling(live, data));
+                }
+            } catch (e) {
+                console.warn('满属性数据加载失败，跳过差距计算', e);
+            }
+        })();
+        return () => { alive = false; };
+    }, [live.kind, attrsKey, live.xyc?.level, live.xyc?.heroVersion, live.xyc?.tier, live.xyc?.beast, live.tianyuan?.tianyuanLevel, live.tianyuan?.part, live.tianyuan?.name]);
+
+    const ceilingWorst = useMemo(() => worstRow(ceiling), [ceiling]);
+
+    /** 原图尺寸：用来判断「这是不是一张范围过大的全屏截图」 */
+    const [imgSize, setImgSize] = useState<{ w: number; h: number } | null>(null);
+    useEffect(() => {
+        const src = panel.imageRef;
+        if (!src || !src.startsWith('data:')) return;
+        const img = new Image();
+        img.onload = () => setImgSize({ w: img.naturalWidth, h: img.naturalHeight });
+        img.src = src;
+        return () => { img.onload = null; };
+    }, [panel.imageRef]);
 
     // 职业覆盖：技能池为空（如昭冥·仙）直接禁用，绝不借其它职业技能
     const coverage = useMemo(
@@ -331,20 +526,24 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
 
     /**
      * 角色面板的栅格：按游戏行序两列排；攻击 min–max 合并成一格；
-     * 气血/真气由顶部资源条承担（没有资源条时退回栅格，避免丢数据）。
+     * 气血/真气永久由顶部资源条承担 —— 资源条现在是常驻的（没识别到也能点着填），
+     * 栅格里再放一份「气血上限 / 真气上限」就是重复且挤爆窄容器。
      */
     const gridItems = useMemo(() => {
         if (live.kind !== 'character_panel') {
+            // 天缘：名称/部位已经上了新 body（部位 tab + 金色标题），栅格里再列一遍就是重复
+            if (live.kind === 'tianyuan') return [];
             return live.fields
-                .filter(f => live.kind === 'xyc' ? (f.key === 'level' || f.status !== 'ok') : true)
+                .filter(f => live.kind === 'xyc'
+                    ? (f.key === 'level' || f.status !== 'ok')
+                    : (f.status === 'ok' || f.status === 'low_confidence'))
                 .map(f => ({ type: 'single' as const, cell: f, span: false }));
         }
-        const hasBars = Boolean(live.bars && (live.bars.hpMax || live.bars.mpMax || live.bars.thirdMax));
         const items: Array<{ type: 'single'; cell: FieldCell; span: boolean } | { type: 'attack' }> = [];
         const skipped = new Set<string>();
         for (const cell of live.fields) {
             const def = fieldDef(live.kind, cell.key);
-            if (hasBars && def?.hideInGrid) continue;
+            if (def?.hideInGrid) continue;
             if (skipped.has(cell.key)) continue;
             if (cell.key === 'attackMin') {
                 const maxCell = live.fields.find(f => f.key === 'attackMax');
@@ -369,11 +568,16 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
     const factionText = live.character?.factionRaw;
     const classUnknown = Boolean(live.character?.classUnknown);
 
-    /** 新天缘判定（用户口径）：识别成「上玄佑万」就是新天缘，其余走旧天缘 */
+    /** 新天缘判定（用户口径）：识别成「上玄佑万」就是新天缘，其余走旧天缘。
+        OCR 常把「上玄佑」读成「上古佑」（实测），所以「万辰」也算命中，否则新天缘会被送去旧图鉴。 */
     const tianyuanName = live.tianyuan?.name || String(live.fields.find(f => f.key === 'name')?.value ?? '');
     const tianyuanPart = live.tianyuan?.part || String(live.fields.find(f => f.key === 'part')?.value ?? '');
     const isNewTianyuan = live.kind === 'tianyuan'
-        && (/上玄佑万/.test(tianyuanName) || /上玄佑万/.test(tianyuanPart));
+        && (/上玄佑万|万辰/.test(tianyuanName) || /上玄佑万|万辰/.test(tianyuanPart));
+
+    /** 天缘等级色：与新天缘模拟器同一套炼器色阶（+0 白 … +10 黄绿），玩家认过的颜色不能变 */
+    const tianyuanLevel = typeof live.tianyuan?.tianyuanLevel === 'number' ? live.tianyuan.tianyuanLevel : 0;
+    const tianyuanLevelColor = getRefineLevelColor(tianyuanLevel);
 
     return (
         <div
@@ -458,20 +662,31 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                             天缘 +{live.tianyuan.tianyuanLevel}
                         </span>
                     )}
-                    {!live.degraded && (
+                    {!live.degraded && (live.kind === 'tianyuan' ? (
+                        <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50 whitespace-nowrap font-mono">
+                            天命 ×{live.attrs?.length ?? 0}
+                        </span>
+                    ) : (
                         <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50 whitespace-nowrap font-mono">
                             识别 {live.fields.filter(f => f.status === 'ok' || f.status === 'low_confidence').length}/{live.fields.length}
                         </span>
-                    )}
+                    ))}
                 </div>
             </div>
 
-            {/* 降级条 */}
+            {/* 降级条：说清「为什么一个数都没采信」，不再一律甩一句「没有可用的视觉模型」 */}
             {live.degraded && (
                 <div data-testid="vision-degraded" className="mt-3 px-3 py-2 rounded-lg bg-amber-950/30 border border-amber-700/30 text-[11px] text-amber-300/90 leading-relaxed">
-                    识图功能受限：当前没有可用的视觉模型，下面的数值一个都没有识别到。你可以手工填写，或稍后重试。
+                    {live.degradedReason === 'non_standard'
+                        ? '这张图没通过「标准面板」校验，所以一个数值都没有采信。下面的空卡可以手工填写，或截完整面板（含顶部气血真气条 / 全部天命词条行）重传。'
+                        : live.degradedReason === 'no_key'
+                            ? '服务端没配置视觉模型通道，这次没有识别到任何数值。下面的空卡可以手工填写。'
+                            : '识图通道这次没拿到结果（超时 / 额度 / 解析失败），一个数值都没有采信。下面的空卡可以手工填写，或稍后重试。'}
                 </div>
             )}
+
+            {/* 降级时直接把「怎么截」摊开：这是玩家最需要的一条信息 */}
+            {live.degraded && <CaptureGuide defaultOpen size={imgSize} />}
 
             {/* 职业未识别：带入时职业会置空，必须先说清楚 */}
             {classUnknown && (
@@ -488,26 +703,30 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
             )}
 
             {/* 资源条（仅角色属性面板）：数值居中压在条内，对齐游戏 C 界面。
+                气血/真气是引擎必填项，条**常驻**——没识别到时给一条空条也能点着填上限，
+                否则这两项既没条、又在栅格里被 hideInGrid 掉，等于无处可填。
                 「当前值」不参与伤害计算、只决定条长，所以不给改；点数字改的是「上限」（进引擎）。 */}
-            {live.kind === 'character_panel' && live.bars && (live.bars.hpMax || live.bars.mpMax) && (
+            {live.kind === 'character_panel' && (
                 <div className="mt-3 flex flex-col gap-1">
                     {([
-                        ['气血', live.bars.hpCur, live.bars.hpMax, 'from-red-950/95 via-red-800/90 to-red-600/85', 'health'],
-                        ['真气', live.bars.mpCur, live.bars.mpMax, 'from-blue-950/95 via-blue-800/90 to-blue-600/85', 'mana'],
-                        ['第三槽', live.bars.thirdCur, live.bars.thirdMax, 'from-violet-950/95 via-violet-800/90 to-violet-600/85', '']
+                        ['气血', live.bars?.hpCur, live.bars?.hpMax, 'from-red-950/95 via-red-800/90 to-red-600/85', 'health'],
+                        ['真气', live.bars?.mpCur, live.bars?.mpMax, 'from-blue-950/95 via-blue-800/90 to-blue-600/85', 'mana'],
+                        ['第三槽', live.bars?.thirdCur, live.bars?.thirdMax, 'from-violet-950/95 via-violet-800/90 to-violet-600/85', '']
                     ] as const).map(([label, cur, max, grad, fieldKey]) => {
-                        if (!max) return null;
                         const cell = fieldKey ? live.fields.find(f => f.key === fieldKey) : undefined;
+                        // 第三槽没数据就不占位；气血/真气有 cell 就必须出条（哪怕是空的）
+                        if (!max && !cell) return null;
                         const editing = Boolean(cell && editingKey === cell.key);
                         const bad = cell?.status === 'invalid';
-                        const pct = Math.max(4, Math.min(100, ((cur || max) / Number(max)) * 100));
+                        const empty = !max;
+                        const pct = empty ? 0 : Math.max(4, Math.min(100, ((cur || max) / Number(max)) * 100));
                         return (
                             <div
                                 key={label}
                                 data-field-key={fieldKey || undefined}
                                 data-field-status={cell?.status}
                                 data-bar={label}
-                                title={`${label}：${fmtNum(cur || max)} / ${fmtNum(max)}`}
+                                title={empty ? `${label}：未识别，点此填写上限` : `${label}：${fmtNum(cur || max)} / ${fmtNum(max)}`}
                                 className="relative h-7 @[420px]:h-[21px] rounded-full bg-white/[0.04] border border-white/10 overflow-hidden"
                             >
                                 <div
@@ -523,6 +742,25 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                                         onKeyDown={e => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); }}
                                         className="absolute inset-0 w-full bg-black/85 px-2 text-center font-mono text-[11px] font-bold text-slate-100 outline-none"
                                     />
+                                ) : empty ? (
+                                    <button
+                                        type="button"
+                                        disabled={!cell}
+                                        onClick={() => cell && setEditingKey(cell.key)}
+                                        title={`${label}上限未识别，点此填写（进引擎的值）`}
+                                        className="absolute inset-0 min-h-0 flex items-center justify-center px-2 whitespace-nowrap font-mono leading-none"
+                                        style={{ fontFamily: FONT_SONG }}
+                                    >
+                                        <span
+                                            className="text-[11px] pb-[1px] border-b border-dashed"
+                                            style={{
+                                                color: bad ? BRACKET_RED : '#d99a3c',
+                                                borderColor: bad ? 'rgba(251,113,133,0.6)' : 'rgba(217,154,60,0.55)'
+                                            }}
+                                        >
+                                            {label}未识别 · 点此填写上限
+                                        </span>
+                                    </button>
                                 ) : (
                                     <button
                                         type="button"
@@ -593,6 +831,95 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 })}
             </div>
 
+            {/* 轩辕策：识别到的四系 / 版本 / 品阶 / 等级 / 洗炼次数都能改 —— 这五个字段任意一个错，
+                满属性对照就会整体算错（池是按「系 × 版本 × 品阶」取的）。 */}
+            {live.kind === 'xyc' && (
+                <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5" data-testid="vision-xyc-meta">
+                    <div className="flex items-center gap-1">
+                        {['青龙', '白虎', '朱雀', '玄武'].map(b => {
+                            const on = String(live.xyc?.beast || '') === b;
+                            return (
+                                <button
+                                    key={b}
+                                    type="button"
+                                    data-beast={b}
+                                    onClick={() => patchMeta({ beast: b })}
+                                    title={`四系决定词条池（${b}）`}
+                                    className={clsx(
+                                        'px-1.5 py-0.5 rounded text-[11px] border transition-colors cursor-pointer',
+                                        on
+                                            ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400/60 font-bold'
+                                            : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/60'
+                                    )}
+                                >
+                                    {b}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => patchMeta({ heroVersion: !live.xyc?.heroVersion })}
+                        title="普通版 / 英雄版：英雄版各词条上限更高"
+                        className={clsx(
+                            'px-1.5 py-0.5 rounded text-[11px] border transition-colors cursor-pointer',
+                            live.xyc?.heroVersion
+                                ? 'bg-amber-500/20 text-amber-200 border-amber-400/60 font-bold'
+                                : 'text-slate-400 border-slate-700 hover:text-slate-200'
+                        )}
+                    >
+                        {live.xyc?.heroVersion ? '英雄版' : '普通版'}
+                    </button>
+                    <select
+                        value={live.xyc?.tier || '六品'}
+                        onChange={e => patchMeta({ tier: e.target.value })}
+                        title="品阶：决定词条池档位"
+                        className="px-1 py-0.5 rounded text-[11px] bg-slate-800 border border-slate-700 text-slate-200 outline-none cursor-pointer"
+                    >
+                        {['一品', '二品', '三品', '四品', '五品', '六品'].map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                    <div className="flex items-center gap-1 text-[11px] text-slate-400">
+                        <span>等级</span>
+                        <button
+                            type="button"
+                            onClick={() => patchMeta({ level: Math.max(1, (live.xyc?.level ?? 1) - 1) })}
+                            className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-800 border border-slate-700 text-slate-200 hover:text-white cursor-pointer"
+                        >
+                            −
+                        </button>
+                        <InlineEdit
+                            value={live.xyc?.level ?? '—'}
+                            kind="number"
+                            width="2.4rem"
+                            className="font-mono text-[11px] text-slate-100"
+                            title="等级：直接填 1~20（词条上限按等级逐级上涨）"
+                            onCommit={v => {
+                                const n = Number(v.replace(/[^\d]/g, ''));
+                                patchMeta({ level: Number.isFinite(n) && n > 0 ? Math.max(1, Math.min(20, n)) : undefined });
+                            }}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => patchMeta({ level: Math.min(20, (live.xyc?.level ?? 1) + 1) })}
+                            className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-cyan-600/30 border border-cyan-500/50 text-cyan-200 hover:text-white cursor-pointer"
+                        >
+                            +
+                        </button>
+                    </div>
+                    <div className="flex items-center gap-1 text-[11px] text-slate-400">
+                        <span>洗炼</span>
+                        <InlineEdit
+                            value={live.xyc?.washUsed}
+                            kind="number"
+                            width="2.6rem"
+                            className="font-mono text-[11px] text-slate-100"
+                            title="洗炼次数（不参与满值计算，只做记录）"
+                            onCommit={v => patchMeta({ washUsed: v.trim() === '' ? undefined : Number(v) })}
+                        />
+                    </div>
+                </div>
+            )}
+
             {/* 轩辕策：属性 + 进阶技能，1:1 还原游戏 tooltip 版式（对齐 XycTomeDetailCard）
                 —— 属性名与数值统一游戏蓝，括号内绿=洗炼、红=额外，进阶技能排在属性下方同款蓝字 */}
             {live.kind === 'xyc' && ((live.attrs?.length || 0) > 0 || Boolean(live.advSkill?.name || live.advSkill?.variant)) && (
@@ -605,12 +932,50 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                     }}
                 >
                     {(live.attrs || []).map((a, i) => (
-                        <div key={i} className="flex items-baseline gap-1.5 text-[13px] leading-[22px] min-w-0" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                        <div key={i} className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0 text-[13px] leading-[22px] min-w-0" style={{ color: GAME_COLORS.STAT_BLUE }}>
                             <span className="shrink-0">·</span>
-                            <span className="shrink-0">{a.name}</span>
-                            <span className="font-mono shrink-0">{a.value}</span>
-                            {a.wash && <span className="font-mono text-[12px] shrink-0" style={{ color: GAME_COLORS.MINT_GREEN }}>({a.wash})</span>}
-                            {a.extra && <span className="font-mono text-[12px] shrink-0" style={{ color: BRACKET_RED }}>({a.extra})</span>}
+                            <InlineEdit
+                                value={a.name}
+                                width="5rem"
+                                align="left"
+                                title="属性名（要能在词条池里对上，否则算不出满值）"
+                                className="text-[13px]"
+                                onCommit={v => patchAttr(i, { name: v.trim() })}
+                            />
+                            <InlineEdit
+                                value={a.value}
+                                width="4.5rem"
+                                align="left"
+                                title="词条主值（括号里的洗炼增量不计入差距）"
+                                className="font-mono text-[13px]"
+                                onCommit={v => patchAttr(i, { value: v.trim() })}
+                            />
+                            {a.wash && (
+                                <span style={{ color: GAME_COLORS.MINT_GREEN }}>
+                                    <InlineEdit
+                                        value={a.wash}
+                                        display={`(${a.wash})`}
+                                        width="4rem"
+                                        align="left"
+                                        title="洗炼增量（只展示，不计入差距）"
+                                        className="font-mono text-[12px]"
+                                        onCommit={v => patchAttr(i, { wash: v.trim() })}
+                                    />
+                                </span>
+                            )}
+                            {a.extra && (
+                                <span style={{ color: BRACKET_RED }}>
+                                    <InlineEdit
+                                        value={a.extra}
+                                        display={`(${a.extra})`}
+                                        width="4rem"
+                                        align="left"
+                                        title="额外增量（只展示，不计入差距）"
+                                        className="font-mono text-[12px]"
+                                        onCommit={v => patchAttr(i, { extra: v.trim() })}
+                                    />
+                                </span>
+                            )}
                         </div>
                     ))}
                     {(live.advSkill?.name || live.advSkill?.variant) && (
@@ -623,25 +988,230 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </div>
             )}
 
-            {/* 天缘天命词条 */}
-            {live.kind !== 'xyc' && live.kind !== 'character_panel' && Array.isArray(live.attrs) && live.attrs.length > 0 && (
-                <div className="mt-2.5 flex flex-col gap-1">
-                    {live.attrs.map((a, i) => (
-                        <div key={i} className="flex items-baseline gap-1.5 text-xs">
-                            {typeof a.tianming === 'number' ? (
-                                <span className="px-1 rounded text-[10px] font-mono text-slate-300 bg-slate-800/70 border border-slate-700/50 shrink-0">
-                                    天命+{a.tianming}
-                                </span>
-                            ) : (
-                                <span className="text-slate-500 text-[10px]">⊙</span>
-                            )}
-                            <span className="text-slate-300 min-w-[64px]">{a.name}</span>
-                            <span className="font-mono font-bold text-slate-100">{a.value}</span>
-                            {a.wash && <span className="font-mono text-[11px] text-emerald-400">({a.wash})</span>}
-                            {a.extra && <span className="font-mono text-[11px] text-rose-400">({a.extra})</span>}
+            {/* 天缘：对齐「新天缘模拟器」（NewTianyuanDetailCard）的版式 ——
+                部位 tab / 金色标题 / 天命等级步进 / 词条行；词条与天命档都可点改，改完满值对照实时重算 */}
+            {live.kind === 'tianyuan' && (
+                <div
+                    data-testid="vision-tianyuan-body"
+                    className="mt-3 rounded-xl border border-[#232c3d] bg-[#070b12]/95 px-3 py-2.5 flex flex-col gap-2 min-w-0"
+                    style={{ fontFamily: FONT_SONG, letterSpacing: '0.3px', boxShadow: 'inset 0 0 16px rgba(16, 28, 48, 0.35)' }}
+                >
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                        {/* 部位 = 属性表的分组键，认错就整张对照全错，必须能改 */}
+                        <div className="flex items-center gap-1">
+                            {['甲', '刃', '盔'].map(p => {
+                                const on = String(live.tianyuan?.part || '') === p;
+                                return (
+                                    <button
+                                        key={p}
+                                        type="button"
+                                        data-part={p}
+                                        onClick={() => patchMeta({ part: p })}
+                                        title={`切到「${p}」部位（决定用哪张天命属性表）`}
+                                        className={clsx(
+                                            'px-2 py-0.5 rounded text-[11px] border transition-colors font-sans cursor-pointer',
+                                            on
+                                                ? 'bg-amber-500/20 text-amber-300 border-amber-400/60 font-bold'
+                                                : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/60'
+                                        )}
+                                    >
+                                        {p}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        {/* 天命等级：掉落预览图里没有这一行，玩家必须能自己填 */}
+                        <div className="flex items-center gap-1 shrink-0 font-sans">
+                            <span className="text-[11px] text-slate-400">天缘</span>
+                            <button
+                                type="button"
+                                onClick={() => patchMeta({ tianyuanLevel: Math.max(0, (live.tianyuan?.tianyuanLevel ?? 0) - 1) })}
+                                className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-800 border border-slate-700 text-slate-200 hover:text-white cursor-pointer"
+                            >
+                                −
+                            </button>
+                            <InlineEdit
+                                value={`+${tianyuanLevel}`}
+                                width="2.8rem"
+                                className="font-mono text-[12px] text-center font-bold"
+                                style={{ color: tianyuanLevelColor, textShadow: tianyuanLevel > 0 ? `0 0 8px ${tianyuanLevelColor}55` : 'none' }}
+                                title="天缘等级：可直接填 0~10（掉落预览图没有这行，填一个就能算差距）"
+                                onCommit={v => {
+                                    const n = Number(String(v).replace(/[^\d]/g, ''));
+                                    patchMeta({ tianyuanLevel: Number.isFinite(n) ? Math.max(0, Math.min(10, n)) : 0 });
+                                }}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => patchMeta({ tianyuanLevel: Math.min(10, (live.tianyuan?.tianyuanLevel ?? 0) + 1) })}
+                                className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-amber-600/30 border border-amber-500/50 text-amber-200 hover:text-white cursor-pointer"
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="font-bold text-[14px] leading-snug break-words" style={{ color: '#ffd272' }}>
+                        {live.tianyuan?.name || String(live.fields.find(f => f.key === 'name')?.value ?? '天缘')}
+                        <span
+                            className="text-[12.5px] font-normal ml-1 whitespace-nowrap"
+                            style={{
+                                color: tianyuanLevelColor,
+                                textShadow: tianyuanLevel > 0 ? `0 0 8px ${tianyuanLevelColor}55` : 'none'
+                            }}
+                        >
+                            天缘 +{tianyuanLevel}
+                            {tianyuanLevel >= 10 ? '（天命祝福）' : ''}
+                        </span>
+                        {live.tianyuan?.suffix && <span className="text-[12px] text-emerald-300 ml-1">（{live.tianyuan.suffix}）</span>}
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                        {(live.attrs || []).map((a, i) => {
+                            const n = typeof a.tianming === 'number' && Number.isFinite(a.tianming) ? a.tianming : 0;
+                            return (
+                                <div
+                                    key={i}
+                                    data-tianyuan-attr={i}
+                                    className="flex items-baseline gap-1.5 text-[13px] leading-[22px] min-w-0 flex-wrap"
+                                    style={{ color: GAME_COLORS.STAT_BLUE }}
+                                >
+                                    <InlineEdit
+                                        value={n}
+                                        display={n > 0 ? `天命+${n}` : '天命'}
+                                        kind="number"
+                                        variant="badge"
+                                        width="3rem"
+                                        align="left"
+                                        title={
+                                            n > 0
+                                                ? `天命+${n}：这一行吃「前 ${n} 档」累计额外系数（每行各算各的）。点数字可改`
+                                                : '天命：这一行没吃额外档。点一下可以改成 +1~+10'
+                                        }
+                                        // 天命档沿用炼器色阶：+5 品红、+1 淡紫、0 白 —— 与新天缘模拟器完全一致
+                                        className="font-mono text-[10.5px] shrink-0"
+                                        style={{
+                                            color: getRefineLevelColor(n),
+                                            borderColor: `${getRefineLevelColor(n)}59`,
+                                            background: `${getRefineLevelColor(n)}1f`,
+                                            textShadow: n > 0 ? `0 0 8px ${getRefineLevelColor(n)}55` : 'none'
+                                        }}
+                                        onCommit={v => {
+                                            const num = Number(String(v).replace(/[+\s]/g, ''));
+                                            patchAttr(i, { tianming: Number.isFinite(num) && String(v).trim() !== '' ? Math.max(0, Math.min(10, Math.round(num))) : 0 });
+                                        }}
+                                    />
+                                    <InlineEdit
+                                        value={a.name}
+                                        width="4.5rem"
+                                        align="left"
+                                        title="属性名（要能在属性表里对上，否则算不出满值）"
+                                        className="text-[13px]"
+                                        onCommit={v => patchAttr(i, { name: v.trim() })}
+                                    />
+                                    <InlineEdit
+                                        value={a.value}
+                                        width="4.5rem"
+                                        align="left"
+                                        title="词条主值（括号里的洗炼增量不计入差距）"
+                                        className="font-mono font-bold text-[13px]"
+                                        onCommit={v => patchAttr(i, { value: v.trim() })}
+                                    />
+                                    {a.wash && <span className="font-mono text-[11px] text-emerald-400">({a.wash})</span>}
+                                    {a.extra && <span className="font-mono text-[11px] text-rose-400">({a.extra})</span>}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className="text-[10.5px] text-slate-500 leading-snug">
+                        词条条数按图上实际行数（3~5 条都可能）；每条前面的「天命+N」决定它能吃多少额外档，点一下就能改。
+                    </div>
+                </div>
+            )}
+
+            {/* 满属性对照：贴天缘 / 轩辕策图，玩家真正要的是「离满还差多少」。
+                满值按图里声称的等级 / 天缘+N 折算（轩辕策 = 池上限 + step×等级；天缘 = initMax + 等级×每级增益 + 天命档） */}
+            {(live.kind === 'xyc' || live.kind === 'tianyuan') && ceiling && (
+                <div data-testid="vision-ceiling" className="mt-2.5 rounded-xl border border-slate-800/80 bg-slate-900/40 px-3 py-2.5">
+                    <div className="flex items-baseline justify-between gap-2">
+                        <span className="text-[12px] font-bold text-slate-200">满属性对照</span>
+                        {ceiling.overall !== null && (
+                            <span className="font-mono text-[12px] text-cyan-300" title="各词条完成度的平均值">
+                                {Math.round(ceiling.overall * 100)}%
+                            </span>
+                        )}
+                    </div>
+                    {/* 口径行：天缘会带「（图上没有等级行）」这类说明，窄卡下允许折行，别截成省略号 */}
+                    <div className="mt-0.5 text-[10px] text-slate-500 leading-snug" title={ceiling.basis}>
+                        {ceiling.basis} · 按同等级理论上限折算
+                    </div>
+
+                    {ceiling.rows.length > 0 && (
+                        <div className="mt-2 flex flex-col gap-1.5">
+                            {ceiling.rows.map((r, i) => {
+                                const pctW = Math.round(r.pct * 100);
+                                const barColor = r.pct >= 0.95 ? '#34d399' : r.pct >= 0.85 ? '#22d3ee' : '#f59e0b';
+                                return (
+                                    <div
+                                        key={`${r.name}-${i}`}
+                                        className="min-w-0"
+                                        data-ceiling-row={r.name}
+                                        title={r.note}
+                                    >
+                                        <div className="flex items-baseline gap-1.5 text-[11.5px] min-w-0">
+                                            <span className="text-slate-300 shrink-0 truncate max-w-[45%]">{r.name}</span>
+                                            {typeof r.destiny === 'number' && r.destiny > 0 && (
+                                                <span className="shrink-0 font-mono text-[9.5px] text-fuchsia-300/80">+{r.destiny}</span>
+                                            )}
+                                            <span className="flex-1 min-w-2" />
+                                            <span className="font-mono text-slate-100 shrink-0">{fmtCeilingValue(r.current, r.unit)}</span>
+                                            {/* 四舍五入导致当前值比上限高 0.1 时按「已满」处理，满值就显示当前值 —— 否则出现「7.2% / 7.1% 已满」的自相矛盾 */}
+                                            <span className="font-mono text-slate-500 shrink-0">/ {fmtCeilingValue(Math.max(r.ceiling, r.current), r.unit)}</span>
+                                            <span
+                                                className={clsx('font-mono shrink-0 text-right w-[54px]', r.diff < 0 ? 'text-rose-400' : r.diff <= 0 ? 'text-emerald-400' : 'text-amber-300')}
+                                                title={`完成度 ${pctW}%`}
+                                            >
+                                                {r.diff < 0 ? '超上限' : r.diff <= 0 ? '已满' : `-${fmtCeilingValue(r.diff, r.unit)}`}
+                                            </span>
+                                        </div>
+                                        <div className="mt-1 h-[3px] rounded-full bg-white/10 overflow-hidden">
+                                            <div className="h-full rounded-full" style={{ width: `${pctW}%`, background: r.diff < 0 ? '#fb7185' : barColor }} />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    {ceiling.rows.length > 0 && !ceilingWorst && ceiling.rows.every(r => r.diff >= 0) && (
+                        <div className="mt-2 text-[11px] text-emerald-400">全部词条已达同等级上限。</div>
+                    )}
+
+                    {ceilingWorst && ceiling.rows.length > 0 && (
+                        <div className="mt-2 text-[11px] text-slate-400 leading-snug">
+                            最短板：<span className="text-amber-300">{ceilingWorst.name}</span>
+                            {' '}差 {fmtCeilingValue(ceilingWorst.diff, ceilingWorst.unit)}（{Math.round(ceilingWorst.pct * 100)}%）
+                        </div>
+                    )}
+
+                    {ceiling.warnings.map((w, i) => (
+                        <div key={i} className="mt-1.5 flex items-start gap-1.5 text-[10.5px] text-amber-500/90 leading-snug">
+                            <AlertTriangle className="w-3 h-3 mt-0.5 shrink-0" />
+                            <span className="min-w-0">{w}</span>
                         </div>
                     ))}
+
+                    {ceiling.rows.some(r => r.wash || r.extra) && (
+                        <div className="mt-1.5 text-[10px] text-slate-500">
+                            括号内洗炼增量只展示，未计入差距（当前值一律取括号前的主值）。
+                        </div>
+                    )}
                 </div>
+            )}
+
+            {/* 算不出差距（缺等级 / 缺天缘+N / 部位或系对不上）时，直接给「该截哪块」 */}
+            {(live.kind === 'xyc' || live.kind === 'tianyuan') && ceiling && ceiling.rows.length === 0 && (
+                <CaptureGuide defaultOpen size={imgSize} />
             )}
 
             {/* 未进卡项计数 */}
@@ -651,11 +1221,31 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </div>
             )}
 
-            {/* 校验提示 */}
+            {/* 角色面板认不全 / 图范围明显偏大时给截图指引，默认折叠，不抢视线 */}
+            {!live.degraded && (
+                (live.kind === 'character_panel' && (live.quality === 'partial' || live.engine.missingRequired.length > 0))
+                || isImageTooBig(imgSize)
+            ) && <CaptureGuide size={imgSize} />}
+
+            {/* 校验提示：正常结果直接列问题；降级时把每通道回执收进「技术详情」，
+                裸串（cf-workers-ai:@cf/mistralai/...）对玩家没有任何意义 */}
             {live.issues.length > 0 && (
                 <div className="mt-2 flex items-start gap-1.5 text-[11px] text-amber-600/90 leading-relaxed">
                     <Info className="w-3 h-3 mt-0.5 shrink-0" />
-                    <span>{live.issues.slice(0, 3).join('；')}</span>
+                    {live.degraded ? (
+                        <details className="min-w-0">
+                            <summary className="cursor-pointer text-[11px] text-slate-400 hover:text-slate-300">
+                                识别技术详情（{prettyIssues(live.issues).length} 条通道回执）
+                            </summary>
+                            <div className="mt-1 flex flex-col gap-1 font-mono text-[10px] text-slate-500 break-all">
+                                {prettyIssues(live.issues).map((s, i) => (
+                                    <span key={i}>{s}</span>
+                                ))}
+                            </div>
+                        </details>
+                    ) : (
+                        <span>{live.issues.slice(0, 3).join('；')}</span>
+                    )}
                 </div>
             )}
 
@@ -742,8 +1332,9 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 </div>
             )}
 
-            {/* 操作区：吸在卡片底部——卡片再长，「带入计算器」也始终在视野内可点 */}
-            <div className="sticky bottom-0 z-10 -mx-3.5 sm:-mx-4 mt-3 px-3.5 sm:px-4 pt-2.5 pb-1 border-t border-white/5 bg-[#121824] before:content-[''] before:absolute before:inset-x-0 before:-top-7 before:h-7 before:bg-gradient-to-t before:from-[#121824] before:to-transparent before:pointer-events-none">
+            {/* 操作区：**不做 sticky**。吸底按钮会盖住「满属性对照」的最后 1~2 行 ——
+                而玩家正是冲着那几行结论来的，遮挡比多点一次滚动糟糕得多 */}
+            <div className="relative z-10 -mx-3.5 sm:-mx-4 mt-3 px-3.5 sm:px-4 pt-2.5 pb-1 border-t border-white/5 bg-[#121824]">
             <div className="flex items-center gap-2 flex-wrap">
                 {/* 只有角色属性面板才谈得上「带入计算器」：轩辕策/天缘没有引擎属性，带过去是空操作 */}
                 {live.kind === 'character_panel' && (

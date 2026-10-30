@@ -151,7 +151,13 @@ export function normalizePanel(input: any): NormalizeResult {
         }
         if (Array.isArray(panel.attrs)) {
             for (const a of panel.attrs) {
-                if (a && (a.tianming === 0 || a.tianming === '0' || a.tianming === '')) a.tianming = null;
+                if (!a) continue;
+                // 「天命」这一行没有 +N：**N=0 是合法值**（游戏原文就是「天命」两个字），
+                // 不能像以前那样把 0 抹成 null —— 抹掉后前端只剩「—」，满值也算不出这一行的额外档。
+                if (typeof a.tianming === 'string') {
+                    const digits = String(a.tianming).replace(/[^0-9]/g, '');
+                    a.tianming = digits === '' ? null : Number(digits);
+                }
             }
         }
     }
@@ -199,19 +205,27 @@ export function assessStandardness(panel: any): Standardness {
 
     if (kind === 'tianyuan') {
         const name = String(f.name?.value ?? '');
+        const part = String(f.part?.value ?? '');
         const lv = Number(f.tianyuanLevel?.value);
-        const attrs = Array.isArray(panel?.attrs) ? panel.attrs.length : 0;
-        if (!/万辰须弥/.test(name)) {
-            return { standard: false, code: 'SIGNATURE_MISSING', detail: `名称不是须弥系列（"${name}"）` };
-        }
-        if (!Number.isFinite(lv) || lv <= 0) {
-            return { standard: false, code: 'SIGNATURE_MISSING', detail: '缺「天缘+N」' };
-        }
+        const attrs: any[] = Array.isArray(panel?.attrs) ? panel.attrs : [];
         // 天缘一件装备最多 6 条天命；>8 必是把整张表格当词条读了
-        if (attrs > 8) {
-            return { standard: false, code: 'ATTRS_IMPLAUSIBLE', detail: `天命词条 ${attrs} 条，超出装备上限` };
+        if (attrs.length > 8) {
+            return { standard: false, code: 'ATTRS_IMPLAUSIBLE', detail: `天命词条 ${attrs.length} 条，超出装备上限` };
         }
-        return { standard: true, code: 'ok', detail: `天缘+${lv}，${attrs} 条天命` };
+        // 硬签名 = 「[天命+N] 属性 +值」词条行。装备名 OCR 极不可靠（实测 上玄佑万辰须弥刃 → 上古佑万辰颈弓刃），
+        // 名字只作弱证据，绝不能再当闸门 —— 否则读错一个字就把整张天缘图判成「非标准」。
+        // 另外 tianming 缺失不再拦：图上只写「天命」= +0，属性行本身才是天缘的证据。
+        const tmRows = attrs.filter(a => a && a.name && /[+\-]?\d/.test(String(a.value ?? ''))).length;
+        if (tmRows < 1) {
+            return { standard: false, code: 'SIGNATURE_MISSING', detail: '没读到「天命 属性 +值」词条行' };
+        }
+        const sig = /万辰|须弥|上玄佑|天缘/.test(`${name}${part}${allText(panel)}`);
+        if (!sig) {
+            return { standard: false, code: 'SIGNATURE_MISSING', detail: `图里没有须弥系列特征（名称"${name || part || '空'}"）` };
+        }
+        // 「天缘+N」等级行不是每张图都有（掉落预览只有「天缘」二字）→ 只降证据不拦
+        const lvText = Number.isFinite(lv) && lv > 0 ? `天缘+${lv}` : '天缘等级未读出';
+        return { standard: true, code: 'ok', detail: `${name || part || '天缘'}（${lvText}），${tmRows} 条天命` };
     }
 
     return { standard: false, code: 'KIND_UNKNOWN', detail: `未支持的体系 kind=${kind}` };

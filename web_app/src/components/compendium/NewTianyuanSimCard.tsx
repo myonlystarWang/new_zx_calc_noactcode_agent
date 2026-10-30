@@ -11,6 +11,7 @@ import {
     rollItem,
     refineOnce,
 } from '../../utils/newTianyuanSim';
+import { REFINE_LEVEL_COLORS } from '../../constants/gameColorSystem';
 
 export interface NewTianyuanSimCardProps {
     cardData?: {
@@ -29,20 +30,8 @@ const ATTR_SLOT_H = 7 * 22;
 /** 装备基础属性蓝（与 EquipDetailCard / COLORS.STAT_BLUE 一致） */
 const STAT_BLUE = '#8080ff';
 
-/** 诛仙3 经典炼器等级色（0 白 + 1~10，17173 十六进制原值） */
-const REFINE_COLORS = [
-    '#ffffff', // +0
-    '#f2d3ff', // +1
-    '#bcffd2', // +2
-    '#fff38e', // +3
-    '#ffc0db', // +4
-    '#ff00ff', // +5
-    '#95aeff', // +6
-    '#426aff', // +7
-    '#6dffff', // +8
-    '#45ff45', // +9
-    '#c5ff54', // +10
-];
+/** 诛仙3 经典炼器等级色（0 白 + 1~10，17173 十六进制原值）—— 定义在 gameColorSystem，识图卡共用 */
+const REFINE_COLORS = REFINE_LEVEL_COLORS;
 
 const SLOT_IMG: Record<string, string> = {
     blade: '/game_data/equip_icons/tianyuan_blade.png',
