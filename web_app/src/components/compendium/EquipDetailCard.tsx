@@ -7,7 +7,7 @@ import {
     getEquipQualityColor
 } from '../../constants/gameColorSystem';
 import { getEquipSeries } from '../../utils/equipSeries';
-import { getEquipRefKey, YUNLING_SLOTS } from '../../utils/equipStatKey';
+import { getEquipRefKey, isYunlingEquip } from '../../utils/equipStatKey';
 import { DataService } from '../../services/DataService';
 
 export interface EquipDetailCardProps {
@@ -150,10 +150,8 @@ export const EquipDetailCard: React.FC<EquipDetailCardProps> = ({
         return seriesInfo.items[seriesInfo.currentIndex + 1] || null;
     }, [seriesInfo]);
 
-    // 判断当前装备是否属于蕴灵炼器范畴（防具/武器且具备 ref 梯度）
-    const hasYunling = useMemo(() => {
-        return Boolean(currentItem.ref && currentItem.ref.length > 0 && YUNLING_SLOTS.includes(currentItem.slot || ''));
-    }, [currentItem.ref, currentItem.slot]);
+    // 判断当前装备是否属于蕴灵范畴（可蕴灵部位 + 有 ref 梯度）—— 判定走 equipStatKey 的唯一入口
+    const hasYunling = useMemo(() => isYunlingEquip(currentItem), [currentItem]);
 
     // 格式化装备全名，防止（男）（男）重复
     const cleanName = useMemo(() => {

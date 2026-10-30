@@ -16,8 +16,29 @@ import type { CuratedEquipItem } from '../types';
 
 export type EquipStatKey = 'atk' | 'def' | 'hp' | 'mp';
 
-/** 可蕴灵的部位（与 `EquipDetailCard` 的 `YUNLING_SLOTS` 保持一致） */
-export const YUNLING_SLOTS = ['武器', '头盔', '帽子', '衣服', '靴子', '鞋', '腰带', '袖甲', '护腕'];
+/**
+ * 可蕴灵的真实部位 —— 与 `equip_curated.json` 的 slot 一一对应（就这 6 个）。
+ *
+ * **禁止往里塞口语别名**（帽子 / 鞋 / 护腕）：这一层拿到的永远是数据里的标准名，
+ * 别名归一是输入层的事（`CopilotService` 的 `slotAliases`）。塞进来只会让后来的人
+ * 以为「帽子」是真实部位，写新映射时照着加分支 —— 头盔那次就是这么错的。
+ */
+export const YUNLING_SLOTS = ['武器', '头盔', '衣服', '靴子', '腰带', '袖甲'] as const;
+
+/**
+ * 这件装备能不能打「蕴灵 +N」——**唯一判定入口**。
+ *
+ * 条件：数据里有 `ref` 梯度（1~20 级的加成值）且部位属于可蕴灵部位。
+ * `EquipDetailCard`（要不要显示 −/+ 步进器）与 `CopilotService`（提示语写「可强化」
+ * 还是「可换同系」）都调这一个函数：这两处曾各写一份白名单，一份 9 项带别名、
+ * 一份 6 项，今天恰好等价，数据一变就会分叉（卡片说能 +1、回复说能换系）。
+ */
+export function isYunlingEquip(it: Pick<CuratedEquipItem, 'slot' | 'ref'>): boolean {
+    return Boolean(
+        Array.isArray(it.ref) && it.ref.length > 0
+        && (YUNLING_SLOTS as readonly string[]).includes(it.slot || '')
+    );
+}
 
 /**
  * 返回该装备的蕴灵加成应该加到哪个属性字段；无法判定返回 null。

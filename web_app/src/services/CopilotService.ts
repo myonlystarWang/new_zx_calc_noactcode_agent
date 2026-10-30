@@ -12,6 +12,7 @@ import { downscaleDataUrl } from '../utils/imageDownscale';
 import { pinyin } from 'pinyin-pro';
 import type { Dungeon, Monster, CuratedEquipItem, CuratedSkillItem, FabaoItem } from '../types';
 import { getEquipSeries, collapseSeriesCandidates } from '../utils/equipSeries';
+import { isYunlingEquip } from '../utils/equipStatKey';
 import { EQUIP_HUB_GROUPS, EQUIP_HUB_OPTIONS } from './equipHubOptions';
 
 export const UNIFIED_NOT_FOUND_REPLY =
@@ -2503,9 +2504,9 @@ export class CopilotService {
             targetRefLevel = parseInt(refMatch[1], 10);
         }
 
-        const YUNLING_SLOTS = ['武器', '头盔', '衣服', '靴子', '腰带', '袖甲'];
-        const isYunling = (it: CuratedEquipItem) =>
-            Boolean(it.ref && it.ref.length > 0 && YUNLING_SLOTS.includes(it.slot || ''));
+        // 可蕴灵判定走 equipStatKey 的唯一入口（别在这里再写一份白名单：
+        // 曾与 EquipDetailCard 各持一份、列表还不一致，数据一变就会一个说「能 +1」、一个说「能换系」）
+        const isYunling = (it: CuratedEquipItem) => isYunlingEquip(it);
 
         const buildEquipReplyText = (it: CuratedEquipItem, allList?: CuratedEquipItem[]) => {
             const qText = it.q ? `${it.q}品质 · ` : '';

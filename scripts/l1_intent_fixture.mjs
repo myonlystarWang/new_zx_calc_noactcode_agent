@@ -714,6 +714,52 @@ for (const c of cases) {
     }
 }
 
+/* ---------------- 7. 可蕴灵判定的「唯一真相」（静态扫描源码；失败即整轮 FAIL） ----------------
+ * 背景（2026-10-30）：`EquipDetailCard` 与 `CopilotService` 曾各持一份可蕴灵部位白名单 ——
+ * 一份 9 项（混进了 帽子 / 鞋 / 护腕 这些口语别名）、一份 6 项。数据里 slot 只有 6 个标准名，
+ * 所以两边今天恰好等价；可一旦数据里冒出别名，就会出现「卡片显示 −/+ 步进器、AI 回复却
+ * 说能换同系」的分叉 —— 与「头盔 → hp」同源：同一个概念两个真相。
+ *
+ * 两条断言：
+ *   A. `YUNLING_SLOTS` 全仓只许定义一次，且必须在 `utils/equipStatKey.ts`；
+ *   B. 白名单里不许出现口语别名（帽子/鞋/护腕…）—— 别名归一属输入层的 `slotAliases`，
+ *      放进白名单只会让后来人以为「帽子」是真实部位。
+ */
+{
+    const srcFiles = [];
+    const walk = (dir) => {
+        for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+            const p = path.join(dir, e.name);
+            if (e.isDirectory()) walk(p);
+            else if (/\.(ts|tsx)$/.test(e.name)) srcFiles.push(p);
+        }
+    };
+    walk(path.join(ROOT, 'web_app', 'src'));
+
+    const CANON = path.join(ROOT, 'web_app', 'src', 'utils', 'equipStatKey.ts');
+    const defs = srcFiles.filter(f => /(?:const|export const)\s+YUNLING_SLOTS\s*=/.test(fs.readFileSync(f, 'utf8')));
+    const dupDefs = defs.filter(f => path.resolve(f) !== path.resolve(CANON)).map(f => path.relative(ROOT, f));
+
+    const statSrc = fs.readFileSync(CANON, 'utf8');
+    const listMatch = statSrc.match(/export const YUNLING_SLOTS\s*=\s*\[([^\]]*)\]/);
+    const list = listMatch ? [...listMatch[1].matchAll(/'([^']+)'/g)].map(m => m[1]) : [];
+    const ALIAS_WORDS = ['帽子', '帽', '冠', '盔', '鞋', '履', '护腕', '手套', '袖', '袖子'];
+    const aliasInList = list.filter(s => ALIAS_WORDS.includes(s));
+
+    if (!listMatch || list.length === 0) {
+        failCaseCount++;
+        failLines.push('FAIL audit:yunling-single-source 没能在 utils/equipStatKey.ts 里找到 YUNLING_SLOTS 定义');
+    } else if (dupDefs.length) {
+        failCaseCount++;
+        failLines.push(`FAIL audit:yunling-single-source 可蕴灵白名单被定义了多份（唯一真相应为 utils/equipStatKey.ts）：${dupDefs.join(' / ')}`);
+    } else if (aliasInList.length) {
+        failCaseCount++;
+        failLines.push(`FAIL audit:yunling-alias-in-whitelist 白名单混进了口语别名 ${aliasInList.join(' / ')} —— 这一层拿到的是数据里的标准 slot，别名应在输入层归一`);
+    } else {
+        console.log(`AUDIT 可蕴灵判定：白名单唯一（${list.join('/')}），无别名污染，${srcFiles.length} 个源文件扫描通过`);
+    }
+}
+
 for (const line of failLines) console.log(line);
 
 if (MODE_GOLDEN) {
