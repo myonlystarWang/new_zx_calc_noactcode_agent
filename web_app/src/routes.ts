@@ -28,8 +28,6 @@ export const ROUTE = {
     skills: '/compendium/skills',
     support: '/compendium/support',
     boss: '/compendium/boss',
-    fabao: '/compendium/fabao',
-    equip: '/compendium/equip',
     tools: '/tools',
     serverRadar: '/tools/server',
     xycSimulator: '/tools/xyc',
@@ -43,7 +41,7 @@ export const ROUTE = {
 export type PrimaryTab = 'home' | 'calculator' | 'arena' | 'compendium' | 'tools' | 'changelog' | 'about' | 'feedback';
 
 /** 资料库一级子页（与 CompendiumView 的 CompendiumPrimaryTab 对齐） */
-export const COMPENDIUM_SEGMENTS = ['ceiling', 'skills', 'support', 'boss', 'fabao', 'equip'] as const;
+export const COMPENDIUM_SEGMENTS = ['ceiling', 'skills', 'support', 'boss'] as const;
 
 /** 极致属性攻略下的二级属性分类（真相来源为 CompendiumView 的 ATTRIBUTE_SUB_TABS） */
 const ATTRIBUTE_SUB_TAB_IDS = ['ignore', 'reduction', 'critReduction', 'critRate', 'critDamage', 'monsterDamageBonus', 'dodge'] as const;
@@ -72,7 +70,7 @@ export function compendiumSubFromLocation(pathname: string, search: URLSearchPar
     const parts = pathname.split('/').filter(Boolean);
     if (parts[0] !== 'compendium') return undefined;
     const seg = parts[1];
-    if (seg === 'skills' || seg === 'support' || seg === 'boss' || seg === 'fabao' || seg === 'equip') return seg;
+    if (seg === 'skills' || seg === 'support' || seg === 'boss') return seg;
     // ceiling 或缺省 → 一级「极致属性攻略」，二级分类由 ?attr= 决定
     const attr = search.get('attr');
     if (attr && isAttributeSubTab(attr)) return attr as SubTab;
@@ -107,8 +105,6 @@ export function titleForPath(pathname: string): string {
             skills: '职业技能速查',
             support: '职业状态一览',
             boss: '副本 BOSS 速查',
-            fabao: '精选法宝图鉴',
-            equip: '精选装备图鉴',
         };
         return `${map[parts[1]] || '全景战斗资料库'} · ${SITE_NAME}`;
     }
@@ -193,12 +189,6 @@ export function buildPathFromTarget(t: SearchTarget): string {
                 setParam(params, 'm', t.monsterId);
                 return withQuery(ROUTE.boss, params);
             }
-            if (sub === 'fabao') {
-                return ROUTE.fabao;
-            }
-            if (sub === 'equip') {
-                return ROUTE.equip;
-            }
             if (sub === 'ceiling') {
                 setParam(params, 'item', t.item);
                 return withQuery(ROUTE.ceiling, params);
@@ -262,12 +252,6 @@ export function parseLocationToTarget(pathname: string, search: URLSearchParams)
                 dungeonId: search.get('d') || undefined,
                 monsterId: search.get('m') || undefined,
             };
-        }
-        if (seg === 'fabao') {
-            return { tab: 'compendium', sub: 'fabao' };
-        }
-        if (seg === 'equip') {
-            return { tab: 'compendium', sub: 'equip' };
         }
         // ceiling（含二级分类）
         const attr = search.get('attr');
