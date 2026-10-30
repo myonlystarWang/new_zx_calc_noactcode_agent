@@ -61,3 +61,8 @@ scripts/test_*_seek.mjs
 
 # 构建期生成：GEO 静态数据页（scripts/build_static_pages.mjs）
 web_app/public/data/
+
+# 本地文档库（方案/分析/截图，505 个文件）——2026-10-30 从 GitHub 移除并重写历史
+/doc/
+# agent 工具链（本地校验脚本，非线上运行依赖）——同上
+/agent_tool/
