@@ -1012,10 +1012,13 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                     className="mt-3 rounded-xl border border-[#232c3d] bg-[#070b12]/95 px-3 py-2.5 flex flex-col gap-2 min-w-0"
                     style={{ fontFamily: FONT_SONG, letterSpacing: '0.3px', boxShadow: 'inset 0 0 16px rgba(16, 28, 48, 0.35)' }}
                 >
+                    {/* 第一行只放名字；天缘等级 / 祝福 / 后缀挪到下一行，紧贴天命词条行（用户 2026-10-30 口径） */}
                     <div className="font-bold text-[14px] leading-snug break-words" style={{ color: '#ffd272' }}>
                         {live.tianyuan?.name || String(live.fields.find(f => f.key === 'name')?.value ?? '天缘')}
+                    </div>
+                    <div className="flex items-baseline gap-1 flex-wrap text-[12.5px] leading-snug -mt-1">
                         <span
-                            className="text-[12.5px] font-normal ml-1 whitespace-nowrap"
+                            className="whitespace-nowrap"
                             style={{
                                 color: tianyuanLevelColor,
                                 textShadow: tianyuanLevel > 0 ? `0 0 8px ${tianyuanLevelColor}55` : 'none'
@@ -1024,7 +1027,7 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                             天缘 +{tianyuanLevel}
                             {tianyuanLevel >= 10 ? '（天命祝福）' : ''}
                         </span>
-                        {live.tianyuan?.suffix && <span className="text-[12px] text-emerald-300 ml-1">（{live.tianyuan.suffix}）</span>}
+                        {live.tianyuan?.suffix && <span className="text-emerald-300">（{live.tianyuan.suffix}）</span>}
                     </div>
 
                     <div className="flex flex-col gap-1">
@@ -1084,8 +1087,9 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                             );
                         })}
                     </div>
+                    {/* 可点提示：天命徽章是胶囊、属性名/值是虚线底，两种都要说清（用户 2026-10-30 口径） */}
                     <div className="text-[10.5px] text-slate-500 leading-snug whitespace-nowrap overflow-hidden text-ellipsis">
-                        「天命+N」决定该行吃的额外档，点数字可改
+                        点「天命+N」改额外档；虚线下划线的词条可点改
                     </div>
                 </div>
             )}
