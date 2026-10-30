@@ -1571,16 +1571,33 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                             <span style={{ color: '#4ade80' }}>（+{nextStep.add}）</span>
                                         </span>
                                     </div>
-                                    <div className="mt-0.5 pt-1.5 flex flex-col gap-0.5" style={{ borderTop: '1px solid #1e2d3d' }}>
-                                        <span style={{ color: '#7fa3c0' }}>获取途径</span>
-                                        <span style={{ color: '#dbe7f5' }}>{exchangeLine(nextStep)}</span>
-                                        {/* 基础档（逍遥）没有上一层，累计那句话会重复，直接省略 */}
-                                        {nextStep.from && (
-                                            <span style={{ color: '#7fa3c0' }}>
-                                                {exchangeTotal(nextStep, data.meta.washMaxSteps ?? [])}
-                                            </span>
-                                        )}
-                                    </div>
+                                    {/* 获取途径：除最后一档（相易：上一层 + 帝鸿玄章 ×50000）外都压成一行，
+                                        窄屏也放得下；基础档（逍遥）的 note 只是兑换员，同样走一行 */}
+                                    {nextStep.from && nextStep.note ? (
+                                        <div className="mt-0.5 pt-1.5 flex flex-col gap-0.5" style={{ borderTop: '1px solid #1e2d3d' }}>
+                                            <span style={{ color: '#7fa3c0' }}>获取途径</span>
+                                            <span style={{ color: '#dbe7f5' }}>{exchangeLine(nextStep)}</span>
+                                            {nextStep.from && (
+                                                <span style={{ color: '#7fa3c0' }}>
+                                                    {exchangeTotal(nextStep, data.meta.washMaxSteps ?? [])}
+                                                </span>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div
+                                            className="mt-0.5 pt-1.5 flex flex-wrap items-baseline gap-x-1.5"
+                                            style={{ borderTop: '1px solid #1e2d3d' }}
+                                        >
+                                            <span className="shrink-0" style={{ color: '#7fa3c0' }}>获取途径</span>
+                                            <span style={{ color: '#dbe7f5' }}>{exchangeLine(nextStep)}</span>
+                                            {/* 基础档（逍遥）没有上一层，累计那句会重复，直接省略 */}
+                                            {nextStep.from && (
+                                                <span style={{ color: '#7fa3c0' }}>
+                                                    · {exchangeTotal(nextStep, data.meta.washMaxSteps ?? [])}
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* 使用道具 + 点击后的结果说明 */}
