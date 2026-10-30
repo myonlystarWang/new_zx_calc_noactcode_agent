@@ -104,6 +104,11 @@ export interface XycBook {
     skill: XycSkillRoll | null;
     washUsed: number;
     washMax: number;
+    /**
+     * 六品轩辕策星级（0~5）：每用一档「轩辕拾遗录」激活一星。
+     * 0 星 = 初始 10 次上限；逍遥★ → 秋水★★ → 齐物★★★ → 尽年★★★★ → 相易★★★★★（30 次上限）
+     */
+    star: number;
     /** 累计洗练次数（含超过上限后继续的，仅统计用） */
     washTotal: number;
 }
@@ -251,6 +256,7 @@ export function identifyBook(data: XycRefineData, opts: IdentifyOptions, rng: Rn
         skill,
         washUsed: 0,
         washMax: pool.washMax || data.meta.baseWashMax,
+        star: 0,
         washTotal: 0,
     };
 }

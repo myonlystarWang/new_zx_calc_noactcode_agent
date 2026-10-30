@@ -16,6 +16,7 @@ import {
     makeRng,
     nextWashStep,
     washMaxStages,
+    washMaxSteps,
     specialSkillOptions,
     specialWash,
     specialWashLeft,
@@ -746,10 +747,10 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         if (cur.washUsed < cur.washMax) return;
         const step = nextWashStep(data, cur.beast, cur.washMax);
         if (!step) return;
-        const updated = { ...cur, washMax: step.to };
+        const updated = { ...cur, washMax: step.to, star: step.star };
         bookRef.current = updated;
         setBook(updated);
-        setRaiseTip(`消耗「${step.item}」· 上限 ${cur.washMax} → ${step.to}（+${step.add}）`);
+        setRaiseTip(`消耗「${step.item}」· 上限 ${cur.washMax} → ${step.to}（+${step.add}）· 激活 ${step.star} 星`);
         window.setTimeout(() => setRaiseTip(null), 2000);
     }, [data]);
 
@@ -794,6 +795,8 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     });
     /** 本策最终能达到的上限（青龙/白虎英雄版 30，其余 25） */
     const washCap = washMaxStages(data, book.beast).at(-1) ?? data.meta.baseWashMax;
+    /** 满档星数：青龙 / 白虎 5 档（★★★★★），朱雀 / 玄武 4 档（★★★★，25 次封顶） */
+    const maxStar = washMaxSteps(data, book.beast).length;
     /** 洗练次数用满后，才允许消耗「轩辕拾遗录」提升上限；一次只升一档，每档绑一种道具 */
     const nextStep = nextWashStep(data, book.beast, book.washMax);
     const canRaiseMax = washLeft === 0 && nextStep !== null;
@@ -939,7 +942,16 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             </div>
                             <div style={{ color: C_STAT }} className="text-[12px] flex items-center gap-1">
                                 <span>{gradeName}</span>
-                                <span style={{ color: '#ffdc50' }}>★★★</span>
+                                {/* 星级随「增加洗练次数」变化：每用一档拾遗录 +1 星；灰星是本策还能点亮的档数 */}
+                                <span
+                                    className="inline-flex items-center"
+                                    style={{ letterSpacing: '1px' }}
+                                    data-xyc-star={book.star}
+                                    title={`${book.star} 星 / ${maxStar} 星（每用一档轩辕拾遗录点亮一星）`}
+                                >
+                                    <span style={{ color: '#ffdc50' }}>{'★'.repeat(book.star)}</span>
+                                    <span style={{ color: '#3f4a5c' }}>{'★'.repeat(Math.max(0, maxStar - book.star))}</span>
+                                </span>
                             </div>
                             <div style={{ color: C_WHITE }} className="text-[12px]">
                                 洗练次数 {book.washUsed}/{book.washMax}

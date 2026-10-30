@@ -127,6 +127,10 @@ const identifyWith = (ids, extra = {}) => {
     // 折算到基础档：相易 = 8 个逍遥
     ok(steps.slice(1).reduce((n, x) => n * (x.need ?? 1), 1) === 8, '相易应折算为 8 个逍遥');
 
+    // 星级：新鉴定的策 0 星，每用一档拾遗录 +1 星，用满 5 档 = 5 星（2026-10-30 玩家拍板）
+    ok(identify({}).star === 0, '新鉴定的策应为 0 星');
+    ok(identify({ version: '普通' }).star === 0, '新鉴定的普通版也应为 0 星');
+
     // 逐档推进：每次只进一档，到顶返回 null
     const chainTo = [];
     let cur = 10;
