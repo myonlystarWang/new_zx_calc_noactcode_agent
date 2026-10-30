@@ -151,6 +151,8 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
     const [item, setItem] = useState<TianyuanItem | null>(null);
     const [busy, setBusy] = useState(false);
     const [auto, setAuto] = useState(false);
+    /** 精炼/连续精炼进行中：锁死本卡所有切换控件（部位），避免中途换装把读条状态打乱 */
+    const switchLocked = busy || auto;
     const [barFill, setBarFill] = useState(0);
     const [barAnim, setBarAnim] = useState(false);
     const [msg, setMsg] = useState<{ ok: boolean; level: number; title: string } | null>(null);
@@ -519,8 +521,10 @@ export const NewTianyuanSimCard: React.FC<NewTianyuanSimCardProps> = ({ cardData
                                         setPieceKey(p.key);
                                         regenerate(p.key);
                                     }}
-                                    className="px-3.5 py-1.5 rounded-[3px] text-[12px] transition-colors cursor-pointer whitespace-nowrap"
-                                    style={tabStyle(active)}
+                                    disabled={switchLocked}
+                                    title={switchLocked ? '精炼进行中，先停止再切换部位' : undefined}
+                                    className="px-3.5 py-1.5 rounded-[3px] text-[12px] transition-colors cursor-pointer whitespace-nowrap disabled:cursor-not-allowed"
+                                    style={{ ...tabStyle(active), opacity: switchLocked && !active ? 0.4 : 1 }}
                                 >
                                     {p.shortName}
                                 </button>

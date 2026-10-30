@@ -137,6 +137,8 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
     const [msg, setMsg] = useState<{ ok: boolean; level: number; title: string; sub: string } | null>(null);
     const [busy, setBusy] = useState(false);
     const [auto, setAuto] = useState(false);
+    /** 蕴灵/连续蕴灵进行中：锁死本卡所有切换控件（品质 / 部位 / 装备），避免中途换配把读条状态打乱 */
+    const switchLocked = busy || auto;
     const [barFill, setBarFill] = useState(0);
     const [barAnim, setBarAnim] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
@@ -460,8 +462,10 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                                 key={q}
                                 type="button"
                                 onClick={() => handleQuality(q)}
-                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
-                                style={chipStyle(quality === q, getEquipQualityColor(q))}
+                                disabled={switchLocked}
+                                title={switchLocked ? '蕴灵进行中，先停止再切换品质' : undefined}
+                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors disabled:cursor-not-allowed"
+                                style={{ ...chipStyle(quality === q, getEquipQualityColor(q)), opacity: switchLocked && quality !== q ? 0.4 : 1 }}
                             >
                                 {q}
                             </button>
@@ -474,8 +478,10 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                                 key={s}
                                 type="button"
                                 onClick={() => handleSlot(s)}
-                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
-                                style={chipStyle(slot === s)}
+                                disabled={switchLocked}
+                                title={switchLocked ? '蕴灵进行中，先停止再切换部位' : undefined}
+                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors disabled:cursor-not-allowed"
+                                style={{ ...chipStyle(slot === s), opacity: switchLocked && slot !== s ? 0.4 : 1 }}
                             >
                                 {s}
                             </button>
@@ -484,7 +490,9 @@ export const YunlingForgeCard: React.FC<YunlingForgeCardProps> = ({ cardData, cl
                     <select
                         value={equip?.name ?? ''}
                         onChange={(e) => { setEquipName(e.target.value); resetAll(); }}
-                        className="ylf-equip-select flex-1 min-w-[170px] h-[26px] px-1.5 text-[12.5px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0]"
+                        disabled={switchLocked}
+                        title={switchLocked ? '蕴灵进行中，先停止再换装备' : undefined}
+                        className="ylf-equip-select flex-1 min-w-[170px] h-[26px] px-1.5 text-[12.5px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0] disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                         {candidates.length === 0 && <option value="">该组合暂无蕴灵装备</option>}
                         {candidates.map((e) => (

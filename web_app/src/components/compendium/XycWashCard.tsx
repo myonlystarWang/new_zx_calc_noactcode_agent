@@ -297,6 +297,9 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     const [washOpen, setWashOpen] = useState(false);
     /** 右侧「增加洗练次数」窗：与洗练窗互斥（点哪个只开哪个，另一个自动关） */
     const [raiseOpen, setRaiseOpen] = useState(false);
+    /** 面板锚点必须用 ref：同一聊天里可以有多张洗练卡，全局 id 只会命中第一张 */
+    const washAnchorRef = useRef<HTMLDivElement>(null);
+    const raiseAnchorRef = useRef<HTMLDivElement>(null);
     /** 特殊洗练：锁定的属性 id（≤2，点左窗属性行切换）与自选的必得技能 id */
     const [lockIds, setLockIds] = useState<number[]>([]);
     const [specialSkillId, setSpecialSkillId] = useState<number | null>(null);
@@ -359,11 +362,37 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         bookRef.current = book;
     }, [book]);
 
+    /** 立刻停掉读条并解除忙碌（换书 / 关窗 / 停止连续洗练都走这里，保证 busy 不会残留） */
+    const stopBar = useCallback(() => {
+        busyRef.current = false;
+        setBusy(false);
+        if (timerRef.current) {
+            window.clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+        if (barRef.current) {
+            window.clearTimeout(barRef.current);
+            barRef.current = null;
+        }
+        setBarFill(0);
+        setBarAnim(false);
+    }, []);
+
+    /** 关闭洗练窗：停连续洗练 + 掐读条，保证再打开时是干净状态 */
+    const closeWash = useCallback(() => {
+        autoRef.current = false;
+        setAuto(false);
+        stopBar();
+        setWashOpen(false);
+    }, [stopBar]);
+
     /** 鉴定 = 换一本新的：属性重掷 + 洗练次数归零 + **等级归 0**（升到 20 靠「升级」逐级点） */
     const regenerate = useCallback(() => {
         if (!data) return;
         autoRef.current = false;
         setAuto(false);
+        // 换书必须把在跑的读条一起掐掉：否则旧计时器回来时往新书上写结果，busy 永远清不掉
+        stopBar();
         setUpgradeTip(null);
         const next = identifyBook(data, { version, beast, grade: GRADE, level: 0, occ }, rngRef.current);
         setBook(next);
@@ -373,7 +402,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         // 换书后旧的锁定词条已不存在，特殊洗练的自选技能也按新书重置
         setLocks([]);
         setSkillSel(null);
-    }, [data, version, beast, occ, setLocks, setSkillSel]);
+    }, [data, version, beast, occ, setLocks, setSkillSel, stopBar]);
 
     // 数据/配置变化后重新鉴定（等级变化不重置书，只改显示）
     const identKey = `${version}|${beast}|${occ}`;
@@ -408,21 +437,6 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         const prefer = onBook && list.some((s) => s.id === onBook.id) ? onBook.id : list[0].id;
         setSkillSel(prefer);
     }, [data, beast, occ, book, setSkillSel]);
-
-    const stopBar = useCallback(() => {
-        busyRef.current = false;
-        setBusy(false);
-        if (timerRef.current) {
-            window.clearTimeout(timerRef.current);
-            timerRef.current = null;
-        }
-        if (barRef.current) {
-            window.clearTimeout(barRef.current);
-            barRef.current = null;
-        }
-        setBarFill(0);
-        setBarAnim(false);
-    }, []);
 
     /** 一轮洗练跑完：清计时器、解除忙碌（读条已在 washOnce 里瞬间清空） */
     const finishBar = useCallback(() => {
@@ -514,6 +528,9 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         ? Boolean(book) && washLeft > 0 && specialSkillId !== null
         : Boolean(book) && washLeft > 0 && (mode !== 'skill' || skillEligible);
 
+    /** 洗练 / 鉴定 / 升级读条进行中：锁死本卡所有切换控件（系别 / 版本 / 门派），避免中途换书把状态打乱 */
+    const switchLocked = busy || leftBusy;
+
     const toggleWash = useCallback(() => {
         // 与「增加洗练次数」窗互斥：两个按钮各开各的窗，点谁就关掉另一个
         setRaiseOpen(false);
@@ -521,7 +538,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
             const next = !prev;
             if (next) {
                 requestAnimationFrame(() => {
-                    document.getElementById('xyc-wash-anchor')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                    washAnchorRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
                 });
             }
             return next;
@@ -535,7 +552,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
             const next = !prev;
             if (next) {
                 requestAnimationFrame(() => {
-                    document.getElementById('xyc-raise-anchor')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                    raiseAnchorRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
                 });
             }
             return next;
@@ -756,7 +773,11 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                 return;
             }
             washOnce(() => {
-                if (!autoRef.current) return;
+                // 中途被停（换书 / 点停止 / 关窗）：必须把忙碌态清掉，否则整张卡会卡在「进行中」谁也点不动
+                if (!autoRef.current) {
+                    finishBar();
+                    return;
+                }
                 loop();
             });
         };
@@ -896,17 +917,20 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                         </div>
                     </div>
 
-                    {/* 四系切换 */}
+                    {/* 四系切换（洗练/读条进行中锁死，避免中途换书） */}
                     <div className="flex items-center gap-1.5 px-2.5 py-2" style={{ borderBottom: '1px solid #2a4054', background: '#0b141c' }}>
                         {BEAST_ORDER.map((b) => (
                             <button
                                 key={b}
                                 type="button"
                                 onClick={() => setBeast(b)}
-                                className="flex-1 px-1 py-1 rounded-[3px] text-[12px] transition-colors cursor-pointer whitespace-nowrap"
+                                disabled={switchLocked}
+                                title={switchLocked ? '洗练进行中，先停止再切换系别' : undefined}
+                                className="flex-1 px-1 py-1 rounded-[3px] text-[12px] transition-colors cursor-pointer whitespace-nowrap disabled:cursor-not-allowed"
                                 style={{
                                     ...tabStyle(b === beast),
                                     color: b === beast ? '#d6ecff' : '#7f9ab0',
+                                    opacity: switchLocked && b !== beast ? 0.4 : 1,
                                 }}
                             >
                                 {b}
@@ -921,8 +945,10 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 key={v}
                                 type="button"
                                 onClick={() => setVersion(v)}
-                                className="px-2.5 py-1 rounded-[3px] text-[12px] cursor-pointer whitespace-nowrap"
-                                style={tabStyle(v === version)}
+                                disabled={switchLocked}
+                                title={switchLocked ? '洗练进行中，先停止再切换版本' : undefined}
+                                className="px-2.5 py-1 rounded-[3px] text-[12px] cursor-pointer whitespace-nowrap disabled:cursor-not-allowed"
+                                style={{ ...tabStyle(v === version), opacity: switchLocked && v !== version ? 0.4 : 1 }}
                             >
                                 {v}
                             </button>
@@ -930,9 +956,10 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                         <select
                             value={occ}
                             onChange={(e) => setOcc(e.target.value)}
-                            className="ml-auto h-[26px] w-[104px] px-1.5 text-[12.5px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0] cursor-pointer shrink-0"
-                            style={{ fontFamily: SIM_FONT }}
-                            title="门派：决定进阶技能从哪个门派的技能池里抽"
+                            disabled={switchLocked}
+                            className="ml-auto h-[26px] w-[104px] px-1.5 text-[12.5px] rounded-[2px] bg-[#08121c] border border-[#21394f] text-[#d6e7f7] outline-none focus:border-[#4d82b0] cursor-pointer shrink-0 disabled:cursor-not-allowed"
+                            style={{ fontFamily: SIM_FONT, opacity: switchLocked ? 0.5 : 1 }}
+                            title={switchLocked ? '洗练进行中，先停止再切换门派' : '门派：决定进阶技能从哪个门派的技能池里抽'}
                         >
                             {OCC_ORDER.map((o) => (
                                 <option key={o} value={o}>
@@ -1126,11 +1153,11 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             </button>
                             <button
                                 type="button"
-                                onClick={toggleWash}
-                                disabled={busy || leftBusy}
-                                title={washOpen ? '收起洗练面板' : '洗炼：展开右侧道具洗练面板'}
+                                onClick={washOpen ? closeWash : toggleWash}
+                                disabled={!washOpen && leftBusy}
+                                title={washOpen ? '收起洗练面板（进行中会一并停止）' : '洗炼：展开右侧道具洗练面板'}
                                 style={{
-                                    ...(washOpen && !busy && !leftBusy ? ACTIVE_BTN : btnStyle(!busy && !leftBusy)),
+                                    ...(washOpen ? ACTIVE_BTN : btnStyle(!leftBusy)),
                                     padding: '6px 0',
                                 }}
                             >
@@ -1171,16 +1198,15 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
 
                 {/* ───────── 窗口 2：洗练（点「洗炼」才展开） ───────── */}
                 {washOpen && (
-                    <div id="xyc-wash-anchor" className="xyc-right w-full min-w-0 rounded-[4px] overflow-hidden flex flex-col" style={CARD_STYLE}>
+                    <div ref={washAnchorRef} data-xyc-wash-panel="1" className="xyc-right w-full min-w-0 rounded-[4px] overflow-hidden flex flex-col" style={CARD_STYLE}>
                         <div className="relative flex items-center justify-center px-3 py-2" style={TITLE_BAR_STYLE}>
                             <span style={TITLE_TEXT_STYLE}>{specialMode ? '特 殊 洗 练' : '洗 练'}</span>
-                            {/* 右上角关闭：与神机「自动锻造」面板同款，收起后可从左卡「洗炼」按钮再展开 */}
+                            {/* 右上角关闭：任何时候都能关（洗练中也允许，关掉的同时掐掉读条与连续洗练） */}
                             <button
                                 type="button"
-                                onClick={toggleWash}
-                                disabled={busy}
-                                title="关闭洗练面板"
-                                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors disabled:cursor-not-allowed"
+                                onClick={closeWash}
+                                title="关闭洗练面板（进行中会一并停止）"
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors"
                             >
                                 <X className="w-3.5 h-3.5" />
                             </button>
@@ -1468,7 +1494,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                 {/* ───────── 窗口 3：增加洗练次数（与洗练窗互斥：点谁只开谁） ───────── */}
                 {raiseOpen && (
                     <div
-                        id="xyc-raise-anchor"
+                        ref={raiseAnchorRef}
                         data-xyc-raise-panel="1"
                         className="xyc-right w-full min-w-0 rounded-[4px] overflow-hidden flex flex-col"
                         style={CARD_STYLE}
@@ -1478,9 +1504,8 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             <button
                                 type="button"
                                 onClick={toggleRaise}
-                                disabled={busy}
                                 title="关闭增加洗练次数面板"
-                                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors disabled:cursor-not-allowed"
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors"
                             >
                                 <X className="w-3.5 h-3.5" />
                             </button>

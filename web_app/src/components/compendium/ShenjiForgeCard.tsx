@@ -281,6 +281,8 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
     const [right, setRight] = useState<ShenjiRoll[]>([]);
     const [forging, setForging] = useState(false);
     const [auto, setAuto] = useState(false);
+    /** 锻造/自动锻造进行中：锁死本卡所有切换控件（品质 / 蕴灵 / 部位），避免中途换池把读条状态打乱 */
+    const switchLocked = forging || auto;
     /** 读条填充宽度（0~1）。读完停在 1，下次锻造才瞬间归零 */
     const [barFill, setBarFill] = useState(0);
     /** 是否启用过渡动画（归零那一刻必须关掉，否则会看到倒退） */
@@ -615,8 +617,10 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                                 key={q}
                                 type="button"
                                 onClick={() => handleQualityChange(q)}
-                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
-                                style={chipStyle(quality === q, getEquipQualityColor(q))}
+                                disabled={switchLocked}
+                                title={switchLocked ? '锻造进行中，先停止再切换品质' : undefined}
+                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors disabled:cursor-not-allowed"
+                                style={{ ...chipStyle(quality === q, getEquipQualityColor(q)), opacity: switchLocked && quality !== q ? 0.4 : 1 }}
                             >
                                 {q}
                             </button>
@@ -627,8 +631,10 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                                 key={y}
                                 type="button"
                                 onClick={() => handleYunlingChange(y as YunlingTier)}
-                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
-                                style={chipStyle(yunling === y)}
+                                disabled={switchLocked}
+                                title={switchLocked ? '锻造进行中，先停止再切换蕴灵等级' : undefined}
+                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors disabled:cursor-not-allowed"
+                                style={{ ...chipStyle(yunling === y), opacity: switchLocked && yunling !== y ? 0.4 : 1 }}
                             >
                                 +{y}
                             </button>
@@ -642,8 +648,10 @@ export const ShenjiForgeCard: React.FC<ShenjiForgeCardProps> = ({ cardData, clas
                                 key={s}
                                 type="button"
                                 onClick={() => handleSlotChange(s)}
-                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors"
-                                style={chipStyle(slot === s)}
+                                disabled={switchLocked}
+                                title={switchLocked ? '锻造进行中，先停止再切换部位' : undefined}
+                                className="px-2.5 py-[3px] rounded-[2px] text-[13px] transition-colors disabled:cursor-not-allowed"
+                                style={{ ...chipStyle(slot === s), opacity: switchLocked && slot !== s ? 0.4 : 1 }}
                             >
                                 {s}
                             </button>
