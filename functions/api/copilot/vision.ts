@@ -56,7 +56,7 @@ const VISION_SYSTEM_PROMPT = `你是《诛仙3》截图录入员。你只做转�
 阵营的取值：标题形如「175级 昭冥五重 飞升仙」→ classRaw=昭冥、factionRaw=仙（取"仙/魔/佛"这一个字，**不要写"飞升"**，也不要带"五重"）。
 轩辕策英雄版：标题末尾「·英雄版」→ heroVersion=true（布尔 true/false，不要写"英雄版"这个字符串）。
 进阶技能保留罗马数字后缀：「山雨欲来III」就写 山雨欲来III，不要截成 山雨欲来。
-天缘的取值：标题「上玄佑万辰须弥盔（+2真气）」→ name=上玄佑万辰须弥盔、part=盔、suffix=+2真气（去掉空格）；「天缘+10」「天缘+10（天命祝福）」→ tianyuanLevel=10（括号里的"天命祝福"不写进任何字段）；随后每一行「天命+2 真气 +5.8%」都进 attrs 数组：tianming=2、name=真气、value=+5.8%。**天缘有几行输出几行（3~5 条都可能），不许合并、不许省略。**
+天缘的取值：标题「上玄佑万辰须弥盔（+2真气）」→ name=上玄佑万辰须弥盔、part=盔；**标题括号里的「+2真气」一律丢掉，不要输出 suffix、也不要放进 attrs**；「天缘+10」「天缘+10（天命祝福）」→ tianyuanLevel=10（括号里的"天命祝福"不写进任何字段）；随后每一行「天命+2 真气 +5.8%」都进 attrs 数组：tianming=2、name=真气、value=+5.8%。**天缘有几行输出几行（3~5 条都可能），不许合并、不许省略。**
 - 某一行只写「天命」两个字、没有 +N（游戏原文如此，等于 +0）→ 这一行的 attrs 里必须写 "tianming": 0，**不许省略这个字段、也不许编一个数字**。
 - 图上完全没有「天缘+N」这一行（掉落预览里只有「天缘」两个字）→ tianyuanLevel 不要输出，**绝对不要猜一个等级**。
 
@@ -64,7 +64,7 @@ const VISION_SYSTEM_PROMPT = `你是《诛仙3》截图录入员。你只做转�
 
 character_panel 的 key（只这 14 个，不要输出别的）：attackMin / attackMax / defense / physHit / physDodge / critDamage / critRate / critDamageReduction / critRateReduction / skillHit / skillDodge / health / mana / monsterDamageBonus
 xyc 的 key：beast / bookName / heroVersion / tier / stars / washUsed / level / advSkillName / advSkillVariant / advSkillLevel
-tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attrs 数组**（天缘的全部「天命+N 属性 +值」行）
+tianyuan 的 key：name / part / tianyuanLevel，**并必须输出 attrs 数组**（天缘的全部「天命+N 属性 +值」行）
 
 【四之二、attrs 数组】轩辕策与天缘用它承载词条行，格式：
 [{"tianming":2,"name":"真气","value":"+5.8%"},{"tianming":1,"name":"固定攻击","value":"+2057"}]
@@ -83,7 +83,7 @@ tianyuan 的 key：name / part / suffix / tianyuanLevel，**并必须输出 attr
 - **value 必须与 raw 里的数字逐位一致**：raw 写 "250832/250832" 时 value 只能是 250832，不许写成 2508332（多读一位）；raw 写 "10345/10345" 时 value 只能是 10345。
 - 气血 814972/1604910 → health 取上限 1604910，不取当前值。
 - 青龙/白虎/朱雀/玄武 只是轩辕策书名的前缀（写进 beast），不要另立字段。
-- 天缘标题括号里的「+2真气」是后缀（suffix），不是一条词条，不要放进 attrs。
+- 天缘标题括号里的「+2真气」既不进 attrs、也不要单独成字段（suffix 已废弃，2026-10-31）。
 - 图里没有「攻击 x-y / 致命伤害 / 书名<…> / 天缘·天命」这类面板特征（例如攻略表格、属性清单截图）时，panelKind 必须是 unknown，fields 全部 absent。**表格里某一行的文字看起来像"天命+10"也不算天缘面板**。
 - 天缘的「天缘+N」不是必需的：掉落预览只有「天缘」两个字也是天缘面板（=天缘+0），照常按上述规则取 attrs。
 

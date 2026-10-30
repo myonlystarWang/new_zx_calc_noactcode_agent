@@ -640,11 +640,7 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                                 {factionText}
                             </span>
                         )}
-                        {live.tianyuan?.suffix && (
-                            <span className="px-1.5 py-0.5 rounded text-[11px] font-bold border bg-emerald-500/10 border-emerald-500/30 text-emerald-300 shrink-0">
-                                {live.tianyuan.suffix}
-                            </span>
-                        )}
+                        {/* 天缘标题里的「（+2真气）」后缀不显示：不影响计算，玩家只当噪音（2026-10-31） */}
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                         {live.imageRef && onPeek && (
@@ -995,7 +991,9 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                     className="mt-3 rounded-xl border border-[#232c3d] bg-[#070b12]/95 px-3 py-2.5 flex flex-col gap-2 min-w-0"
                     style={{ fontFamily: FONT_SONG, letterSpacing: '0.3px', boxShadow: 'inset 0 0 16px rgba(16, 28, 48, 0.35)' }}
                 >
-                    {/* 第一行只放名字；天缘等级 / 祝福 / 后缀挪到下一行，紧贴天命词条行（用户 2026-10-30 口径） */}
+                    {/* 第一行只放名字；天缘等级 /（+10 天命祝福）挪到下一行，紧贴天命词条行（用户 2026-10-30 口径）。
+                        标题里 OCR 出来的「（+2真气）」这类后缀不再显示：它不影响任何计算，
+                        玩家看了只会问「这是什么」—— 提示词侧也已不再抽取该字段（2026-10-31） */}
                     <div className="font-bold text-[14px] leading-snug break-words" style={{ color: '#ffd272' }}>
                         {live.tianyuan?.name || String(live.fields.find(f => f.key === 'name')?.value ?? '天缘')}
                     </div>
@@ -1010,7 +1008,6 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                             天缘 +{tianyuanLevel}
                             {tianyuanLevel >= 10 ? '（天命祝福）' : ''}
                         </span>
-                        {live.tianyuan?.suffix && <span className="text-emerald-300">（{live.tianyuan.suffix}）</span>}
                     </div>
 
                     <div className="flex flex-col gap-1">

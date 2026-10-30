@@ -1106,9 +1106,13 @@ export class CopilotService {
         }
 
         // 5a2. 新版天缘模拟卡（对话内嵌）：开箱生成 + 精炼天命，不跳转 tools
-        // 新天缘整类优先给模拟器（下方可展开信息卡），仅「X级」数值查询走信息卡
+        // 新天缘整类优先给模拟器（下方可展开信息卡），仅「X级 / 词条池 / 信息卡」这类查询走信息卡
+        //（识图卡的「查新天缘词条池」按钮直接发这条 query，不能被模拟器抢走）
         const isNewTianyuanSimQuery =
             !q.includes('旧天缘') &&
+            !q.includes('词条池') &&
+            !q.includes('词条表') &&
+            !q.includes('信息卡') &&
             !/\d{1,2}\s*级/.test(q) &&
             (
                 q.includes('须弥') ||

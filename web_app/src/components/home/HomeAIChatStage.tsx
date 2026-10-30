@@ -281,11 +281,11 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     /** 天缘分流（用户口径）：上玄佑万 → 新天缘词条池（带 seed）；其它 → 旧天缘图鉴（走 L1 意图） */
     const handleOpenTianyuan = (seed: { groupName?: string; level?: number; name?: string; isNew: boolean }) => {
         if (seed.isNew) {
-            if (onOpenSplitWorkspace) {
-                onOpenSplitWorkspace('newtianyuan', { tyGroupName: seed.groupName, tyLevel: seed.level });
-            } else {
-                navigate('/tools/newtianyuan');
-            }
+            // 新天缘信息卡是对话内嵌卡（tianyuan_new），不走右分屏 ——
+            // 发一条带「词条池」的 query，由 matchLocalIntent 5 号分支出卡，并带上部位与等级预填。
+            // （5a2 模拟器分支已排除「词条池」，不会再抢这条查询）
+            const q = `新天缘词条池 ${seed.groupName || ''}${typeof seed.level === 'number' ? ` ${seed.level}级` : ''}`.trim();
+            onSendMessage(q);
             return;
         }
         // 旧天缘没有模拟器，只有图鉴卡：用正常意图链路取卡

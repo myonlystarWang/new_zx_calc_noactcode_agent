@@ -128,6 +128,13 @@ export { React, renderToStaticMarkup, VisionReviewCard, fromServerPanel, degrade
 
     const TY_OLD = { ...TY_NEW, fields: TY_NEW.fields.map(f => f.key === 'name' ? { ...f, value: '天命·头盔' } : f) };
 
+    /** 「上玄佑万辰须弥盔（+2真气）」里的后缀：模型以前会抽成 suffix 显示在卡上，玩家看不懂。
+     *  2026-10-31 起：提示词不再抽它，卡片也不再渲染 —— 这条用例专门钉住「不许再出现」。 */
+    const TY_SUFFIX = {
+        ...TY_NEW,
+        fields: [...TY_NEW.fields, { key: 'suffix', label: '后缀', raw: '上玄佑万辰须弥盔（+2真气）', value: '+2真气', status: 'ok' }]
+    };
+
     /** 用户原图回归：mistral 把「上玄佑万辰须弥刃」读成「上古佑万辰颈弓刃」，图上也没有「天缘+N」。
      *  这两点都不该让它掉进「角色属性面板 / 带入计算器」。 */
     const TY_BLADE = {
@@ -154,6 +161,7 @@ export { React, renderToStaticMarkup, VisionReviewCard, fromServerPanel, degrade
         'xyc': fromServerPanel(XYC, null, {}),
         'tianyuan-new': fromServerPanel(TY_NEW, null, {}),
         'tianyuan-old': fromServerPanel(TY_OLD, null, {}),
+        'tianyuan-suffix': fromServerPanel(TY_SUFFIX, null, {}),
         'tianyuan-ocr-name': fromServerPanel(TY_BLADE, null, {}),
         'degraded': degradedPanel({ degradedReason: 'no_key', lastError: 'AI binding 未注入' }, null),
         'degraded-tianyuan': degradedPanel({ degradedReason: 'non_standard', recognizedKind: 'tianyuan', lastError: '非标准面板[SIGNATURE_MISSING]: …' }, null)
@@ -207,6 +215,8 @@ export { React, renderToStaticMarkup, VisionReviewCard, fromServerPanel, degrade
     /* 配色 = 新天缘模拟器同一套炼器色阶（玩家认过的颜色不能变）：+1 淡紫 / +2 淡绿 / +10 黄绿 */
     ok(html['tianyuan-new'].includes('#f2d3ff') && html['tianyuan-new'].includes('#bcffd2'), '天命档必须按炼器色阶着色（+1 淡紫 #f2d3ff / +2 淡绿 #bcffd2）');
     ok(html['tianyuan-new'].includes('#c5ff54'), '天缘 +10 必须用 +10 的炼器色 #c5ff54（与模拟器一致）');
+    /* 卡片里还有一处序列化的字段 JSON（data-* 属性），所以只断言「肉眼可见的括号后缀」不再出现 */
+    ok(!html['tianyuan-suffix'].includes('（+2真气）'), '标题里的「（+2真气）」后缀不该再显示（玩家看不懂、也不参与计算）');
 
     /* 轩辕策卡 = 游戏 tooltip 版式（对齐 XycTomeDetailCard）：书名 → 品阶+星级 → 洗炼次数 → 等级 → 词条
        2026-10-31 口径：四系由识别决定不再给切换；等级去掉 −/+；品阶仍是可改的下拉 */
