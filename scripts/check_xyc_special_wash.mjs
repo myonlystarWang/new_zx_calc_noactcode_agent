@@ -84,7 +84,7 @@ const identifyWith = (ids, extra = {}) => {
     ok(E.specialWashLeft({ ...heroQl, washUsed: 10, washMax: 30 }) === 0, '未达门槛时额度应为 0');
 }
 
-// ── 1b. 上限阶梯：一次「增加洗练次数」只升一档（2026-10-30 线上反馈） ──
+// ── 1b. 上限阶梯：五档「轩辕拾遗录」逐档提升（2026-10-30 玩家提供道具说明） ──
 {
     const heroQl = identify({});
     const heroBh = identify({ beast: '白虎' });
@@ -92,17 +92,52 @@ const identifyWith = (ids, extra = {}) => {
     const normal = identify({ version: '普通' });
 
     const fmt = (a) => a.join('→');
-    ok(fmt(E.washMaxStages(data, '英雄', '青龙')) === '10→25→30', `青龙英雄版阶梯应为 10→25→30，实际 ${fmt(E.washMaxStages(data, '英雄', '青龙'))}`);
-    ok(fmt(E.washMaxStages(data, '英雄', '白虎')) === '10→25→30', `白虎英雄版阶梯应为 10→25→30，实际 ${fmt(E.washMaxStages(data, '英雄', '白虎'))}`);
-    ok(fmt(E.washMaxStages(data, '英雄', '朱雀')) === '10→25', `朱雀英雄版阶梯应为 10→25（无 30 档），实际 ${fmt(E.washMaxStages(data, '英雄', '朱雀'))}`);
-    ok(fmt(E.washMaxStages(data, '普通', '青龙')) === '10→25', `普通版阶梯应为 10→25，实际 ${fmt(E.washMaxStages(data, '普通', '青龙'))}`);
+    // 逍遥 +4 → 秋水 +3 → 齐物 +3 → 尽年 +5 → 相易 +5，起始 10，合计 30
+    ok(fmt(E.washMaxStages(data, '英雄', '青龙')) === '10→14→17→20→25→30',
+        `青龙英雄版阶梯应为 10→14→17→20→25→30，实际 ${fmt(E.washMaxStages(data, '英雄', '青龙'))}`);
+    ok(fmt(E.washMaxStages(data, '英雄', '白虎')) === '10→14→17→20→25→30',
+        `白虎英雄版阶梯应为 10→14→17→20→25→30，实际 ${fmt(E.washMaxStages(data, '英雄', '白虎'))}`);
+    // 朱雀 / 玄武英雄版、普通 / 典藏版：meta 封顶 25，用完「尽年」即止
+    ok(fmt(E.washMaxStages(data, '英雄', '朱雀')) === '10→14→17→20→25',
+        `朱雀英雄版阶梯应为 10→14→17→20→25，实际 ${fmt(E.washMaxStages(data, '英雄', '朱雀'))}`);
+    ok(fmt(E.washMaxStages(data, '普通', '青龙')) === '10→14→17→20→25',
+        `普通版阶梯应为 10→14→17→20→25，实际 ${fmt(E.washMaxStages(data, '普通', '青龙'))}`);
 
-    // 关键回归：洗满 10 次后第一次点「增加洗练次数」只能到 25，不是一步 30
-    ok(E.nextWashMax(data, '英雄', '青龙', 10) === 25, '10 次后第一档应到 25（不能一步跳 30）');
-    ok(E.nextWashMax(data, '英雄', '青龙', 25) === 30, '25 次后第二档应到 30');
+    // 每档绑定的道具、加次数、星级（顺序即游戏内提升顺序，不能错位）
+    const steps = E.washMaxSteps(data, '英雄', '青龙');
+    ok(steps.map((x) => x.item).join('/') ===
+        '轩辕拾遗录·逍遥/轩辕拾遗录·秋水/轩辕拾遗录·齐物/轩辕拾遗录·尽年/轩辕拾遗录·相易',
+        `道具顺序不对：${steps.map((x) => x.item).join('/')}`);
+    ok(steps.map((x) => x.add).join('+') === '4+3+3+5+5', `加次数应为 4+3+3+5+5，实际 ${steps.map((x) => x.add).join('+')}`);
+    ok(steps.map((x) => x.star).join('') === '12345', `星级应为 1~5，实际 ${steps.map((x) => x.star).join('')}`);
+    ok(steps.reduce((a, b) => a + b.add, data.meta.baseWashMax) === 30, '五档加满应正好到 30');
+    for (const st of steps) {
+        ok(fs.existsSync(path.join(ROOT, 'web_app/public/game_data/equip_icons', st.icon)),
+            `图标文件缺失：${st.icon}`);
+    }
+    // 朱雀/普通版没有「相易」那一档
+    ok(E.washMaxSteps(data, '英雄', '朱雀').length === 4, '朱雀英雄版只应有 4 档（无相易）');
+    ok(E.washMaxSteps(data, '普通', '青龙').length === 4, '普通版只应有 4 档（无相易）');
+
+    // 逐档推进：每次只进一档，到顶返回 null
+    const chain = [];
+    let cur = 10;
+    for (let i = 0; i < 6; i++) {
+        const nx = E.nextWashMax(data, '英雄', '青龙', cur);
+        if (nx === null) break;
+        chain.push(nx);
+        cur = nx;
+    }
+    ok(chain.join('→') === '14→17→20→25→30', `逐档推进应为 14→17→20→25→30，实际 ${chain.join('→')}`);
     ok(E.nextWashMax(data, '英雄', '青龙', 30) === null, '到 30 后不应再有下一档');
     ok(E.nextWashMax(data, '英雄', '朱雀', 25) === null, '非青龙/白虎到 25 即封顶');
     ok(E.nextWashMax(data, '普通', '青龙', 25) === null, '普通版到 25 即封顶');
+
+    // 下一档必须带上「这一档该用什么道具」
+    ok(E.nextWashStep(data, '英雄', '青龙', 10)?.item === '轩辕拾遗录·逍遥', '10 次后下一档应用逍遥');
+    ok(E.nextWashStep(data, '英雄', '青龙', 20)?.item === '轩辕拾遗录·尽年', '20 次后下一档应用尽年');
+    ok(E.nextWashStep(data, '英雄', '青龙', 25)?.item === '轩辕拾遗录·相易', '25 次后下一档应用相易');
+    ok(E.nextWashStep(data, '英雄', '青龙', 30) === null, '到顶后不应有下一档道具');
 
     // 只升到 25 的英雄版不能进特殊洗练（必须再升到 30 才有 25~30 的 5 次额度）
     ok(!E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 25 }), '只升到 25 的英雄版不应进特殊洗练');

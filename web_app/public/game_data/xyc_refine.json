@@ -26,6 +26,38 @@
   "baseWashMax": 10,
   "washMaxWithItem": 25,
   "heroWashMaxWithItem": 30,
+  "washMaxSteps": [
+   {
+    "item": "轩辕拾遗录·逍遥",
+    "icon": "xyc_washup_xiaoyao.png",
+    "add": 4,
+    "star": 1
+   },
+   {
+    "item": "轩辕拾遗录·秋水",
+    "icon": "xyc_washup_qiushui.png",
+    "add": 3,
+    "star": 2
+   },
+   {
+    "item": "轩辕拾遗录·齐物",
+    "icon": "xyc_washup_qiwu.png",
+    "add": 3,
+    "star": 3
+   },
+   {
+    "item": "轩辕拾遗录·尽年",
+    "icon": "xyc_washup_jinnian.png",
+    "add": 5,
+    "star": 4
+   },
+   {
+    "item": "轩辕拾遗录·相易",
+    "icon": "xyc_washup_xiangyi.png",
+    "add": 5,
+    "star": 5
+   }
+  ],
   "skillNeedGrade": 3,
   "skillNeedAttrCount": 4,
   "skillBeasts": [

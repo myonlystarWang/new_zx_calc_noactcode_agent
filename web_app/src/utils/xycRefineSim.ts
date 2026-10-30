@@ -58,6 +58,8 @@ export interface XycRefineData {
         baseWashMax: number;
         washMaxWithItem: number;
         heroWashMaxWithItem: number;
+        /** 上限提升阶梯（每档一种「轩辕拾遗录」，见 2026-10-30 玩家提供的道具说明） */
+        washMaxSteps?: XycWashMaxStepRaw[];
         skillNeedGrade: number;
         skillNeedAttrCount: number;
         skillBeasts: string[];
@@ -271,32 +273,82 @@ export interface WashResult {
  */
 
 /**
- * 洗练次数上限的**阶梯**：一次「增加洗练次数」只升一档，不是一步到位。
+ * 「增加洗练次数」的一档：消耗哪种「轩辕拾遗录」，加多少，用完上限是多少。
  *
- * 数据来自 `xyc_refine.json` 的 meta：`baseWashMax=10` / `washMaxWithItem=25` /
- * `heroWashMaxWithItem=30`。所以：
- * - 普通 / 典藏版（含朱雀、玄武英雄版）：10 → 25
- * - 青龙 / 白虎英雄版：10 → 25 → 30（多出 25→30 这一档，才有 25~30 的 5 次特殊洗练额度）
- *
- * 2026-10-30 线上反馈：原来英雄版直接 10 → 30，玩家在游戏里却只能先到 25
- * （第一档要被「轩辕拾遗录·相易」卡住），两边对不上。
+ * 2026-10-30 玩家提供 5 张游戏内道具说明截图，逐条抄录（均已标注「可洗炼的轩辕策品阶：六品」）：
+ * ```
+ * 逍遥  +4 次 / 激活一星       10 → 14
+ * 秋水  +3 次 / 激活二星       14 → 17
+ * 齐物  +3 次 / 激活三星       17 → 20
+ * 尽年  +5 次 / 激活四星       20 → 25
+ * 相易  +5 次 / 激活五星       25 → 30
+ * ```
+ * 合计 +20，起始 10 → 30，与游戏里「26/30」「特殊洗练·剩 4 次」完全对得上。
  */
-export function washMaxStages(data: XycRefineData, version: XycVersion, beast: XycBeast): number[] {
-    const heroBeast = version === '英雄' && (beast === '青龙' || beast === '白虎');
-    const cap = heroBeast ? data.meta.heroWashMaxWithItem : data.meta.washMaxWithItem;
-    const stages = [data.meta.baseWashMax, data.meta.washMaxWithItem];
-    if (cap > data.meta.washMaxWithItem) stages.push(cap);
-    return stages.filter((v, i, arr) => i === 0 || v > arr[i - 1]);
+export interface XycWashMaxStepRaw {
+    /** 道具名（游戏内全名，如「轩辕拾遗录·逍遥」） */
+    item: string;
+    /** 图标文件名，位于 /game_data/equip_icons/ 下 */
+    icon: string;
+    /** 本档增加的上限次数 */
+    add: number;
+    /** 同时激活的轩辕策星级（1~5，六品专用） */
+    star: number;
 }
 
-/** 下一档上限；已经到顶返回 null（UI 据此禁用「增加洗练次数」） */
+export interface XycWashMaxStep extends XycWashMaxStepRaw {
+    /** 用完本档道具后的洗练上限 */
+    to: number;
+}
+
+/**
+ * 本策可用的上限阶梯（已按版本封顶裁剪）。
+ *
+ * - 普通 / 典藏、朱雀 / 玄武英雄版：最高 25（用完「尽年」即封顶）
+ * - 青龙 / 白虎 英雄版：最高 30（多一档「相易」，也是唯一能凑出 25→30 特殊洗练额度的路径）
+ */
+export function washMaxSteps(
+    data: XycRefineData,
+    version: XycVersion,
+    beast: XycBeast,
+): XycWashMaxStep[] {
+    const heroBeast = version === '英雄' && (beast === '青龙' || beast === '白虎');
+    const cap = heroBeast ? data.meta.heroWashMaxWithItem : data.meta.washMaxWithItem;
+    const raw = data.meta.washMaxSteps ?? [];
+    const out: XycWashMaxStep[] = [];
+    let cur = data.meta.baseWashMax;
+    for (const s of raw) {
+        const to = cur + s.add;
+        if (to > cap) break;
+        out.push({ ...s, to });
+        cur = to;
+    }
+    return out;
+}
+
+/** 所有上限档位（含起始值），用于断言与展示 */
+export function washMaxStages(data: XycRefineData, version: XycVersion, beast: XycBeast): number[] {
+    return [data.meta.baseWashMax, ...washMaxSteps(data, version, beast).map((s) => s.to)];
+}
+
+/** 下一档（含要消耗的道具）；已封顶返回 null —— UI 据此禁用「增加洗练次数」并显示对应图标 */
+export function nextWashStep(
+    data: XycRefineData,
+    version: XycVersion,
+    beast: XycBeast,
+    current: number,
+): XycWashMaxStep | null {
+    return washMaxSteps(data, version, beast).find((s) => s.to > current) ?? null;
+}
+
+/** 下一档上限；已经到顶返回 null */
 export function nextWashMax(
     data: XycRefineData,
     version: XycVersion,
     beast: XycBeast,
     current: number,
 ): number | null {
-    return washMaxStages(data, version, beast).find((v) => v > current) ?? null;
+    return nextWashStep(data, version, beast, current)?.to ?? null;
 }
 
 /** 进入特殊洗练的累计洗练次数门槛 */

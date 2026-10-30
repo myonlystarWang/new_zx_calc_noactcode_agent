@@ -14,7 +14,7 @@ import {
     identifyBook,
     inSpecialWash,
     makeRng,
-    nextWashMax,
+    nextWashStep,
     washMaxStages,
     specialSkillOptions,
     specialWash,
@@ -249,6 +249,8 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     const [changeSeq, setChangeSeq] = useState(0);
     /** 升级失败提示（0.5s 后自动消失；固定高度占位，不顶动布局） */
     const [upgradeTip, setUpgradeTip] = useState<string | null>(null);
+    /** 上限提升成功提示（消耗了哪种轩辕拾遗录、上限从多少到多少），绿色，与失败的红色提示共用同一行 */
+    const [raiseTip, setRaiseTip] = useState<string | null>(null);
     /** 右侧洗练窗默认收起，点左窗「洗炼」才展开 */
     const [washOpen, setWashOpen] = useState(false);
     /** 特殊洗练：锁定的属性 id（≤2，点左窗属性行切换）与自选的必得技能 id */
@@ -702,15 +704,17 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
 
     const raiseWashMax = useCallback(() => {
         if (!data) return;
-        setBook((prev) => {
-            if (!prev) return prev;
-            // 一次只升一档：10 → 25 →（青龙/白虎英雄版才有）30
-            const next = nextWashMax(data, prev.version, prev.beast, prev.washMax);
-            if (next === null) return prev;
-            const updated = { ...prev, washMax: next };
-            bookRef.current = updated;
-            return updated;
-        });
+        const cur = bookRef.current;
+        if (!cur) return;
+        // 次数没用满时不允许提升（游戏里「增加洗练次数」只在洗满后可用）
+        if (cur.washUsed < cur.washMax) return;
+        const step = nextWashStep(data, cur.version, cur.beast, cur.washMax);
+        if (!step) return;
+        const updated = { ...cur, washMax: step.to };
+        bookRef.current = updated;
+        setBook(updated);
+        setRaiseTip(`消耗「${step.item}」· 上限 ${cur.washMax} → ${step.to}（+${step.add}）`);
+        window.setTimeout(() => setRaiseTip(null), 2000);
     }, [data]);
 
     /** 分享：hook 必须挂在提前 return 之前 —— React hooks 规则，
@@ -754,9 +758,9 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     });
     /** 本策最终能达到的上限（青龙/白虎英雄版 30，其余 25） */
     const washCap = washMaxStages(data, book.version, book.beast).at(-1) ?? data.meta.baseWashMax;
-    /** 洗练次数用满后，才允许消耗「轩辕拾遗录」提升上限；一次只升一档 */
-    const nextWashCap = nextWashMax(data, book.version, book.beast, book.washMax);
-    const canRaiseMax = washLeft === 0 && nextWashCap !== null;
+    /** 洗练次数用满后，才允许消耗「轩辕拾遗录」提升上限；一次只升一档，每档绑一种道具 */
+    const nextStep = nextWashStep(data, book.version, book.beast, book.washMax);
+    const canRaiseMax = washLeft === 0 && nextStep !== null;
 
     return (
         <div className={clsx('@container w-full min-w-0', className)}>
@@ -1035,15 +1039,28 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 onClick={raiseWashMax}
                                 disabled={!canRaiseMax || busy || leftBusy}
                                 title={
-                                    canRaiseMax
-                                        ? `消耗 1 个「轩辕拾遗录·相易」把洗练次数上限 ${book.washMax} → ${nextWashCap}（一次只升一档：10 → 25 → 30，最后一档仅青龙 / 白虎英雄版有）`
+                                    canRaiseMax && nextStep
+                                        ? `消耗 1 个「${nextStep.item}」：洗练上限 ${book.washMax} → ${nextStep.to}（+${nextStep.add} 次）\n同时激活六品轩辕策 ${nextStep.star} 星；该操作不改变属性与技能`
                                         : washLeft > 0
                                           ? '洗练次数用满后才能提升上限'
                                           : `当前上限已是 ${book.washMax} 次（本策上限 ${washCap} 次）`
                                 }
                                 style={{ ...btnStyle(canRaiseMax && !busy && !leftBusy), padding: '6px 0' }}
                             >
-                                增加洗练次数
+                                <span className="inline-flex items-center justify-center gap-1 min-w-0">
+                                    {nextStep && (
+                                        <img
+                                            src={`/game_data/equip_icons/${nextStep.icon}`}
+                                            alt={nextStep.item}
+                                            className="w-[16px] h-[16px] object-contain shrink-0"
+                                            style={{ imageRendering: 'pixelated' }}
+                                            onError={(e) => {
+                                                e.currentTarget.style.display = 'none';
+                                            }}
+                                        />
+                                    )}
+                                    <span className="whitespace-nowrap">增加洗练次数</span>
+                                </span>
                             </button>
                             <button
                                 type="button"
@@ -1068,8 +1085,11 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                         </div>
 
                         {/* 升级结果提示：固定 16px 高占位，失败文案出现/消失都不顶动布局 */}
-                        <div className="h-4 mt-1 text-center text-[11px] leading-4 font-sans" style={{ color: '#f87171' }}>
-                            {upgradeTip || ''}
+                        <div
+                            className="h-4 mt-1 text-center text-[11px] leading-4 font-sans truncate"
+                            style={{ color: raiseTip ? '#6ee7a8' : '#f87171' }}
+                        >
+                            {raiseTip || upgradeTip || ''}
                         </div>
 
                         {/* 底部：展开/收起轩辕策属性信息卡（与新天缘精炼卡同款，左对齐） */}

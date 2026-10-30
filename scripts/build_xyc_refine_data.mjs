@@ -235,6 +235,18 @@ const data = {
         baseWashMax: 10,
         washMaxWithItem: 25,
         heroWashMaxWithItem: 30,
+        /**
+         * 上限提升阶梯（2026-10-30 玩家提供 5 张道具说明图，逐条抄录）：
+         * 逍遥 +4（激活一星）→ 秋水 +3（二星）→ 齐物 +3（三星）→ 尽年 +5（四星）→ 相易 +5（五星）
+         * 起始 10 + 20 = 30，与游戏「26/30」一致；道具说明均标注「可洗炼的轩辕策品阶：六品」。
+         */
+        washMaxSteps: [
+            { item: '轩辕拾遗录·逍遥', icon: 'xyc_washup_xiaoyao.png', add: 4, star: 1 },
+            { item: '轩辕拾遗录·秋水', icon: 'xyc_washup_qiushui.png', add: 3, star: 2 },
+            { item: '轩辕拾遗录·齐物', icon: 'xyc_washup_qiwu.png', add: 3, star: 3 },
+            { item: '轩辕拾遗录·尽年', icon: 'xyc_washup_jinnian.png', add: 5, star: 4 },
+            { item: '轩辕拾遗录·相易', icon: 'xyc_washup_xiangyi.png', add: 5, star: 5 },
+        ],
         /** 技能出现的前置条件（官方：三品以上且四条及以上属性；朱雀/玄武不附带技能） */
         skillNeedGrade: 3,
         skillNeedAttrCount: 4,
