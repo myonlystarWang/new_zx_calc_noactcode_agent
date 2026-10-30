@@ -2,7 +2,7 @@
  * 轩辕策「特殊洗练」逻辑回归（纯 Node，不需要浏览器）
  *
  * 覆盖官方 2026-03-31 更新的四条规则 + 数值口径（2026-10-27 用户拍板：新洗词条共用一次新档）：
- *  1. 仅 青龙/白虎 英雄版可进特殊洗练；累计洗练达 25 次后进入，上限 30 → 5 次额度
+ *  1. 青龙/白虎 可进特殊洗练（普通版与英雄版规则一致）；累计洗练达 25 次后进入，上限 30 → 5 次额度
  *  2. 锁定 ≤2 条：种类与数值均不变、槽位不动；未锁槽位种类与数值都重掷
  *  3. 自选本职业 3 级技能，洗后必得（等级固定 3）
  *  4. 新洗出的词条共用一次新的档位投掷 → 用官方五档表；统计值对齐
@@ -68,7 +68,7 @@ const identifyWith = (ids, extra = {}) => {
     const heroQl = identify({});
     const heroBh = identify({ beast: '白虎' });
     const heroZq = identify({ beast: '朱雀' });
-    ok(!E.supportsSpecialWash(normal), '普通版不应具备特殊洗练资格');
+    ok(E.supportsSpecialWash(normal), '普通版与英雄版规则一致，也应具备特殊洗练资格');
     ok(E.supportsSpecialWash(heroQl), '青龙英雄版应具备特殊洗练资格');
     ok(E.supportsSpecialWash(heroBh), '白虎英雄版应具备特殊洗练资格');
     ok(!E.supportsSpecialWash(heroZq), '朱雀英雄版不应具备特殊洗练资格');
@@ -81,6 +81,11 @@ const identifyWith = (ids, extra = {}) => {
     ok(E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 30 }), '25 次时应进入特殊洗练');
     ok(!E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 25 }), '未提升上限（25）时不应进入特殊洗练');
     ok(E.specialWashLeft({ ...heroQl, washUsed: 26, washMax: 30 }) === 4, '第 26 次后应剩 4 次额度');
+    // 30/30 用满：界面仍要展示特殊洗练模块（锁槽 / 必得技能），只是不能再洗
+    ok(E.showSpecialWash({ ...normal, washUsed: 30, washMax: 30 }), '普通青龙 30/30 也应展示特殊洗练界面');
+    ok(!E.inSpecialWash({ ...normal, washUsed: 30, washMax: 30 }), '30/30 已无剩余次数，不应再进可洗区间');
+    ok(E.showSpecialWash({ ...heroQl, washUsed: 25, washMax: 25 }), '25/25 用满同样展示界面');
+    ok(!E.showSpecialWash({ ...heroZq, washUsed: 25, washMax: 25 }), '朱雀不展示特殊洗练界面');
     ok(E.specialWashLeft({ ...heroQl, washUsed: 10, washMax: 30 }) === 0, '未达门槛时额度应为 0');
 }
 

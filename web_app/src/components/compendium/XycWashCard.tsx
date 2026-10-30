@@ -19,6 +19,7 @@ import {
     washMaxSteps,
     specialSkillOptions,
     specialWash,
+    showSpecialWash,
     specialWashLeft,
     wash as washBook,
     type XycBeast,
@@ -490,7 +491,8 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     /** 剩余可洗次数：用满后必须消耗「轩辕拾遗录」提升上限 */
     const washLeft = book ? Math.max(0, book.washMax - book.washUsed) : 0;
     /** 特殊洗练区间：青龙/白虎 英雄版 且 已洗满 25 次（上限须先由「相易」提到 30） */
-    const specialMode = Boolean(book && inSpecialWash(book));
+    // UI 从 25 次起就切特殊模式（含 30/30 用满：只是没次数，界面照给）；真正能不能洗看 inSpecialWash / washLeft
+    const specialMode = Boolean(book && showSpecialWash(book));
     const specialLeft = book ? specialWashLeft(book) : 0;
     /** 特殊洗练可选技能（本职业 3 级技能） */
     const specialSkills = useMemo(() => (data ? specialSkillOptions(data, beast, occ) : []), [data, beast, occ]);

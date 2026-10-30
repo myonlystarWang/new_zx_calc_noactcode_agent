@@ -359,14 +359,22 @@ export const SPECIAL_WASH_LOCK_MAX = 2;
 /** 特殊洗练必得的技能等级（官方：本职业 3 级技能） */
 export const SPECIAL_WASH_SKILL_LEVEL = 3;
 
-/** 该策是否具备特殊洗练资格：仅青龙 / 白虎 英雄版 */
+/** 该策是否具备特殊洗练资格：青龙 / 白虎（普通版与英雄版规则一致，2026-10-30 玩家确认） */
 export function supportsSpecialWash(book: XycBook): boolean {
-    return book.version === '英雄' && (book.beast === '青龙' || book.beast === '白虎');
+    return book.beast === '青龙' || book.beast === '白虎';
+}
+
+/**
+ * 是否展示特殊洗练 UI（三道具 / 必得技能 / 锁定槽）。
+ * 达 25 次即展示 —— 包括 30/30 已用满的情况：此时只是没次数可洗，界面仍要给出来。
+ */
+export function showSpecialWash(book: XycBook): boolean {
+    return supportsSpecialWash(book) && book.washUsed >= SPECIAL_WASH_FROM;
 }
 
 /** 当前是否处于特殊洗练区间（次数已达 25 且还有剩余次数） */
 export function inSpecialWash(book: XycBook): boolean {
-    return supportsSpecialWash(book) && book.washUsed >= SPECIAL_WASH_FROM && book.washUsed < book.washMax;
+    return showSpecialWash(book) && book.washUsed < book.washMax;
 }
 
 /** 特殊洗练剩余次数（不在区间内返回 0） */
