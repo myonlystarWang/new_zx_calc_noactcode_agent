@@ -265,17 +265,18 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     };
 
     /** 轩辕策：把「系 / 普通·英雄 / 品阶 / 进阶技能」带进模拟器 */
-    const handleOpenXyc = (seed: { beast?: string; isHero?: boolean; level?: number; advSkill?: any }) => {
-        if (onOpenSplitWorkspace) {
-            onOpenSplitWorkspace('xyc', {
-                xycBeast: seed.beast,
-                xycIsHero: seed.isHero,
-                xycLevel: seed.level,
-                xycAdvSkill: seed.advSkill
-            });
-        } else {
-            navigate('/tools/xyc');
-        }
+    const handleOpenXyc = (seed: { beast?: string; isHero?: boolean; tier?: string; level?: number; advSkill?: any }) => {
+        // 轩辕策洗练是对话内嵌卡（xyc_wash），不许再开右分屏：
+        // 分屏 mode='xyc' 落的是「轩辕策属性」页，内容和洗练对不上（2026-10-29 线上踩过）。
+        // 洗练卡的 seed 全靠 query 关键字解析：四系名 / 英雄·普通 / N品 / N级。
+        const q = [
+            '轩辕策洗练',
+            seed.beast || '',
+            seed.isHero ? '英雄' : '普通',
+            seed.tier || '',
+            typeof seed.level === 'number' ? `${seed.level}级` : ''
+        ].filter(Boolean).join(' ').trim();
+        onSendMessage(q);
     };
 
     /** 天缘分流（用户口径）：上玄佑万 → 新天缘词条池（带 seed）；其它 → 旧天缘图鉴（走 L1 意图） */

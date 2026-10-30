@@ -49,7 +49,10 @@ const cases = [
     ['新天缘词条池 上玄佑万辰须弥甲 0级', 'tianyuan_new', '上玄佑万辰须弥甲'],
     ['新天缘词条池', 'tianyuan_new', undefined],
     ['新天缘精炼', 'tianyuan_sim', undefined],
-    ['新天缘', 'tianyuan_sim', undefined]
+    ['新天缘', 'tianyuan_sim', undefined],
+    /* 识图卡「打开轩辕策洗练」按钮发的 query：必须落 xyc_wash 洗练卡，不是分屏、也不是 xyc_tome */
+    ['轩辕策洗练 青龙 英雄 六品 20级', 'xyc_wash', undefined],
+    ['轩辕策洗练 玄武 普通 三品 1级', 'xyc_wash', undefined]
 ];
 
 const fails = [];
@@ -60,8 +63,24 @@ for (const [q, wantType, wantGroup] of cases) {
     const lvl = msg?.cardData?.initialLevel;
     const okType = got === wantType;
     const okGroup = wantGroup === undefined || group === wantGroup;
-    console.log(`${okType && okGroup ? 'PASS' : 'FAIL'}  ${q.padEnd(34)} → ${got}${group ? ' · ' + group : ''}${typeof lvl === 'number' ? ' · ' + lvl + '级' : ''}`);
+    const extra = got === 'xyc_wash'
+        ? ` · ${msg.cardData.initialBeast}/${msg.cardData.initialVersion}/${msg.cardData.initialGrade}品/${msg.cardData.initialLevel}级`
+        : '';
+    console.log(`${okType && okGroup ? 'PASS' : 'FAIL'}  ${q.padEnd(34)} → ${got}${group ? ' · ' + group : ''}${typeof lvl === 'number' ? ' · ' + lvl + '级' : ''}${extra}`);
     if (!okType || !okGroup) fails.push({ q, got, group, wantType, wantGroup });
+}
+
+/* 轩辕策洗练卡：四系 / 版本 / 品阶 / 等级 必须按识图卡的 seed 预填 */
+const washExpect = [
+    ['轩辕策洗练 青龙 英雄 六品 20级', { initialBeast: '青龙', initialVersion: '英雄', initialGrade: 6, initialLevel: 20 }],
+    ['轩辕策洗练 玄武 普通 三品 1级', { initialBeast: '玄武', initialVersion: '普通', initialGrade: 3, initialLevel: 1 }]
+];
+for (const [q, want] of washExpect) {
+    const msg = await svc.matchLocalIntent(q, '00:00');
+    const got = msg?.cardData || {};
+    const bad = Object.entries(want).filter(([k, v]) => got[k] !== v);
+    console.log(`${bad.length ? 'FAIL' : 'PASS'}  预填 ${q.padEnd(24)} → ${JSON.stringify({ beast: got.initialBeast, ver: got.initialVersion, grade: got.initialGrade, lv: got.initialLevel })}`);
+    if (bad.length) fails.push({ q, bad });
 }
 
 console.log(fails.length ? `\n❌ ${fails.length} 项失败` : '\n✅ 全部通过');

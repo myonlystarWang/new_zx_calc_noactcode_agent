@@ -156,8 +156,14 @@ export interface VisionReviewCardProps {
     onImport?: (panel: RecognizedPanel) => void;
     /** 算副本秒伤（战力指数） */
     onSimulate?: (panel: RecognizedPanel) => void;
-    /** 轩辕策：带 seed 打开模拟器（系别 / 普通·英雄 / 品阶 / 进阶技能） */
-    onOpenXyc?: (seed: { beast?: string; isHero?: boolean; level?: number; advSkill?: RecognizedPanel['advSkill'] }) => void;
+    /** 轩辕策：带 seed 走对话内嵌的洗练模拟卡（系别 / 普通·英雄 / 品阶 / 等级 / 进阶技能） */
+    onOpenXyc?: (seed: {
+        beast?: string;
+        isHero?: boolean;
+        tier?: string;
+        level?: number;
+        advSkill?: RecognizedPanel['advSkill'];
+    }) => void;
     /** 天缘：新天缘（上玄佑万…）带 seed 打开词条池；旧天缘交给旧天缘图鉴 */
     onOpenTianyuan?: (seed: { groupName?: string; level?: number; name?: string; isNew: boolean }) => void;
     onPeek?: (image: string) => void;
@@ -1321,12 +1327,13 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                             onClick={() => onOpenXyc({
                                 beast: live.xyc?.beast,
                                 isHero: live.xyc?.heroVersion,
+                                tier: live.xyc?.tier,
                                 level: live.xyc?.level,
                                 advSkill: live.advSkill
                             })}
                             className="px-3.5 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-900 text-xs font-black transition-colors shadow-sm"
                         >
-                            打开轩辕策模拟
+                            打开轩辕策洗练
                         </button>
                     )}
                 {/* 秒伤推演还没接完，先置灰，别让用户点了以为坏了 */}
