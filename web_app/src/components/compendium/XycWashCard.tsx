@@ -160,10 +160,14 @@ function btnStyle(enabled: boolean, tone: 'normal' | 'danger' = 'normal'): React
     };
 }
 
-/** 已展开态：与禁用灰同色，但仍可点击（再点收起） */
-const MUTED_BTN: React.CSSProperties = {
+/** 右侧面板已展开态：青边高亮，避免和「禁用灰」混淆（四键里两个开关按钮共用） */
+const ACTIVE_BTN: React.CSSProperties = {
     ...btnStyle(false),
+    background: 'linear-gradient(180deg, #1d3f52 0%, #0d2230 100%)',
+    border: '1px solid #46e8fb',
+    color: '#d9fbff',
     cursor: 'pointer',
+    boxShadow: '0 0 10px rgba(70,232,251,0.35), inset 0 1px 0 rgba(255,255,255,0.16)',
 };
 
 /** 游戏里属性行前的「⊘」圆形禁止符号 */
@@ -290,6 +294,8 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
     const [raiseTip, setRaiseTip] = useState<string | null>(null);
     /** 右侧洗练窗默认收起，点左窗「洗炼」才展开 */
     const [washOpen, setWashOpen] = useState(false);
+    /** 右侧「增加洗练次数」窗：与洗练窗互斥（点哪个只开哪个，另一个自动关） */
+    const [raiseOpen, setRaiseOpen] = useState(false);
     /** 特殊洗练：锁定的属性 id（≤2，点左窗属性行切换）与自选的必得技能 id */
     const [lockIds, setLockIds] = useState<number[]>([]);
     const [specialSkillId, setSpecialSkillId] = useState<number | null>(null);
@@ -507,11 +513,27 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         : Boolean(book) && washLeft > 0 && (mode !== 'skill' || skillEligible);
 
     const toggleWash = useCallback(() => {
+        // 与「增加洗练次数」窗互斥：两个按钮各开各的窗，点谁就关掉另一个
+        setRaiseOpen(false);
         setWashOpen((prev) => {
             const next = !prev;
             if (next) {
                 requestAnimationFrame(() => {
                     document.getElementById('xyc-wash-anchor')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                });
+            }
+            return next;
+        });
+    }, []);
+
+    /** 点左窗「增加洗练次数」：关掉洗练窗，展开本窗（再点一次收起） */
+    const toggleRaise = useCallback(() => {
+        setWashOpen(false);
+        setRaiseOpen((prev) => {
+            const next = !prev;
+            if (next) {
+                requestAnimationFrame(() => {
+                    document.getElementById('xyc-raise-anchor')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
                 });
             }
             return next;
@@ -750,8 +772,10 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         const updated = { ...cur, washMax: step.to, star: step.star };
         bookRef.current = updated;
         setBook(updated);
-        setRaiseTip(`消耗「${step.item}」· 上限 ${cur.washMax} → ${step.to}（+${step.add}）· 激活 ${step.star} 星`);
-        window.setTimeout(() => setRaiseTip(null), 2000);
+        setRaiseTip(
+            `已使用「${shortItemName(step.item)}」：洗练上限 ${cur.washMax} → ${step.to}（+${step.add}）· 激活 ${step.star} 星`,
+        );
+        window.setTimeout(() => setRaiseTip(null), 4000);
     }, [data]);
 
     /** 分享：hook 必须挂在提前 return 之前 —— React hooks 规则，
@@ -1084,31 +1108,19 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             </button>
                             <button
                                 type="button"
-                                onClick={raiseWashMax}
-                                disabled={!canRaiseMax || busy || leftBusy}
+                                onClick={toggleRaise}
+                                disabled={busy || leftBusy}
                                 title={
-                                    canRaiseMax && nextStep
-                                        ? `消耗 1 个「${nextStep.item}」：洗练上限 ${book.washMax} → ${nextStep.to}（+${nextStep.add} 次）\n同时激活六品轩辕策 ${nextStep.star} 星；该操作不改变属性与技能`
-                                        : washLeft > 0
-                                          ? '洗练次数用满后才能提升上限'
-                                          : `当前上限已是 ${book.washMax} 次（本策上限 ${washCap} 次）`
+                                    raiseOpen
+                                        ? '收起「增加洗练次数」面板'
+                                        : '增加洗练次数：展开右侧面板，消耗「轩辕拾遗录」提升洗练上限并点亮星级'
                                 }
-                                style={{ ...btnStyle(canRaiseMax && !busy && !leftBusy), padding: '6px 0' }}
+                                style={{
+                                    ...(raiseOpen && !busy && !leftBusy ? ACTIVE_BTN : btnStyle(!busy && !leftBusy)),
+                                    padding: '6px 0',
+                                }}
                             >
-                                <span className="inline-flex items-center justify-center gap-1 min-w-0">
-                                    {nextStep && (
-                                        <img
-                                            src={`/game_data/equip_icons/${nextStep.icon}`}
-                                            alt={nextStep.item}
-                                            className="w-[16px] h-[16px] object-contain shrink-0"
-                                            style={{ imageRendering: 'pixelated' }}
-                                            onError={(e) => {
-                                                e.currentTarget.style.display = 'none';
-                                            }}
-                                        />
-                                    )}
-                                    <span className="whitespace-nowrap">增加洗练次数</span>
-                                </span>
+                                <span className="whitespace-nowrap">增加洗练次数</span>
                             </button>
                             <button
                                 type="button"
@@ -1116,25 +1128,13 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 disabled={busy || leftBusy}
                                 title={washOpen ? '收起洗练面板' : '洗炼：展开右侧道具洗练面板'}
                                 style={{
-                                    ...(washOpen && !busy && !leftBusy ? MUTED_BTN : btnStyle(!busy && !leftBusy)),
+                                    ...(washOpen && !busy && !leftBusy ? ACTIVE_BTN : btnStyle(!busy && !leftBusy)),
                                     padding: '6px 0',
                                 }}
                             >
                                 洗炼
                             </button>
                         </div>
-                            {/* 兑换链：当前这一档要换出来需要什么、累计多少个 */}
-                            {nextStep && (
-                                <div
-                                    className="mt-1.5 text-center text-[11px] leading-[15px]"
-                                    style={{ color: '#7fa3c0' }}
-                                    data-xyc-exchange
-                                    title={`${nextStep.item}：${exchangeLine(nextStep)}（${exchangeTotal(nextStep, data.meta.washMaxSteps ?? [])}）`}
-                                >
-                                    换 1 个{shortItemName(nextStep.item)}：{exchangeLine(nextStep)}
-                                </div>
-                            )}
-
 
                         {/* 分享引导文案：紧随操作按钮下方 */}
                         <div
@@ -1144,12 +1144,13 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                             点击右上角分享，一键生成高清长图
                         </div>
 
-                        {/* 升级结果提示：固定 16px 高占位，失败文案出现/消失都不顶动布局 */}
+                        {/* 升级失败提示：固定 16px 高占位，文案出现/消失都不顶动布局。
+                            「增加洗练次数」的结果不再显示在这里 —— 归到右侧面板内。 */}
                         <div
                             className="h-4 mt-1 text-center text-[11px] leading-4 font-sans truncate"
-                            style={{ color: raiseTip ? '#6ee7a8' : '#f87171' }}
+                            style={{ color: '#f87171' }}
                         >
-                            {raiseTip || upgradeTip || ''}
+                            {upgradeTip || ''}
                         </div>
 
                         {/* 底部：展开/收起轩辕策属性信息卡（与新天缘精炼卡同款，左对齐） */}
@@ -1459,6 +1460,147 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 </div>
                             )}
                         </div>
+                    </div>
+                )}
+
+                {/* ───────── 窗口 3：增加洗练次数（与洗练窗互斥：点谁只开谁） ───────── */}
+                {raiseOpen && (
+                    <div
+                        id="xyc-raise-anchor"
+                        data-xyc-raise-panel="1"
+                        className="xyc-right w-full min-w-0 rounded-[4px] overflow-hidden flex flex-col"
+                        style={CARD_STYLE}
+                    >
+                        <div className="relative flex items-center justify-center px-3 py-2" style={TITLE_BAR_STYLE}>
+                            <span style={{ ...TITLE_TEXT_STYLE, fontSize: 14, letterSpacing: 2 }}>增 加 洗 练 次 数</span>
+                            <button
+                                type="button"
+                                onClick={toggleRaise}
+                                disabled={busy}
+                                title="关闭增加洗练次数面板"
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full text-[#8ea8c2] hover:text-[#ffffff] hover:bg-[#284159] transition-colors disabled:cursor-not-allowed"
+                            >
+                                <X className="w-3.5 h-3.5" />
+                            </button>
+                        </div>
+
+                        {nextStep ? (
+                            <>
+                                {/* 道具：图标 + 全名 + 适用品阶 */}
+                                <div
+                                    className="px-3 py-3 flex flex-col items-center gap-1.5"
+                                    style={{
+                                        borderBottom: '1px solid #2a4054',
+                                        background: 'linear-gradient(180deg, rgba(120,80,20,0.20) 0%, rgba(60,40,10,0.08) 100%)',
+                                    }}
+                                >
+                                    <div
+                                        className="w-[64px] h-[64px] rounded-[3px] flex items-center justify-center"
+                                        style={{
+                                            background: '#0a1219',
+                                            border: '1px solid #4a3a1e',
+                                            boxShadow: 'inset 0 0 14px rgba(255,190,80,0.14)',
+                                        }}
+                                    >
+                                        <img
+                                            src={`/game_data/equip_icons/${nextStep.icon}`}
+                                            alt={nextStep.item}
+                                            className="w-[56px] h-[56px] object-contain"
+                                            style={{ imageRendering: 'pixelated' }}
+                                            onError={(e) => {
+                                                e.currentTarget.style.visibility = 'hidden';
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="text-[12.5px]" style={{ color: '#f7f4bb' }}>
+                                        {nextStep.item}
+                                    </div>
+                                    <div className="text-[11px]" style={{ color: '#7fa3c0' }}>
+                                        适用品阶：六品轩辕策
+                                    </div>
+                                </div>
+
+                                {/* 描述：这次用下去会变成什么样（效果 / 星级 / 兑换） */}
+                                <div data-xyc-raise-desc className="px-3 py-2.5 flex flex-col gap-1 text-[11.5px] leading-[18px]">
+                                    <div className="flex items-baseline justify-between gap-2">
+                                        <span style={{ color: '#7fa3c0' }}>洗练上限</span>
+                                        <span className="font-mono">
+                                            <span style={{ color: '#dbe7f5' }}>{book.washMax}</span>
+                                            <span style={{ color: '#3d6382' }}>{'\u00A0→\u00A0'}</span>
+                                            <span style={{ color: '#4ade80', fontWeight: 700 }}>{nextStep.to}</span>
+                                            <span style={{ color: '#4ade80' }}>（+{nextStep.add}）</span>
+                                        </span>
+                                    </div>
+                                    <div className="flex items-baseline justify-between gap-2">
+                                        <span style={{ color: '#7fa3c0' }}>激活星级</span>
+                                        <span style={{ color: '#ffdc50', letterSpacing: '1px' }}>{'★'.repeat(nextStep.star)}</span>
+                                    </div>
+                                    <div className="flex items-baseline justify-between gap-2">
+                                        <span style={{ color: '#7fa3c0' }}>属性 / 技能</span>
+                                        <span style={{ color: '#dbe7f5' }}>不变</span>
+                                    </div>
+                                    <div className="mt-0.5 pt-1.5 flex flex-col gap-0.5" style={{ borderTop: '1px solid #1e2d3d' }}>
+                                        <span style={{ color: '#7fa3c0' }}>获取途径</span>
+                                        <span style={{ color: '#dbe7f5' }}>{exchangeLine(nextStep)}</span>
+                                        {/* 基础档（逍遥）没有上一层，累计那句话会重复，直接省略 */}
+                                        {nextStep.from && (
+                                            <span style={{ color: '#7fa3c0' }}>
+                                                {exchangeTotal(nextStep, data.meta.washMaxSteps ?? [])}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* 使用道具 + 点击后的结果说明 */}
+                                <div className="px-3 pb-2">
+                                    <button
+                                        type="button"
+                                        onClick={raiseWashMax}
+                                        disabled={!canRaiseMax || busy || leftBusy}
+                                        title={
+                                            canRaiseMax
+                                                ? `消耗 1 个「${nextStep.item}」：洗练上限 ${book.washMax} → ${nextStep.to}，激活 ${nextStep.star} 星`
+                                                : washLeft > 0
+                                                  ? `洗练次数还剩 ${washLeft} 次，用满后才能提升`
+                                                  : `当前上限已是 ${book.washMax} 次（本策上限 ${washCap} 次）`
+                                        }
+                                        className="w-full py-1.5 rounded-[3px] text-[12.5px] font-bold whitespace-nowrap"
+                                        style={btnStyle(canRaiseMax && !busy && !leftBusy)}
+                                    >
+                                        使用道具
+                                    </button>
+                                    <div
+                                        className="mt-1.5 text-center text-[11px] leading-[16px]"
+                                        style={{ color: canRaiseMax ? '#7fa3c0' : '#f0b46a' }}
+                                    >
+                                        {canRaiseMax
+                                            ? `消耗 1 个 · 上限 +${nextStep.add} · 点亮 ${nextStep.star} 星`
+                                            : washLeft > 0
+                                              ? `洗练次数未用满（剩 ${washLeft} 次）`
+                                              : `已达本策上限 ${washCap} 次`}
+                                    </div>
+                                </div>
+
+                                <div
+                                    data-xyc-raise-result={raiseTip ? 'ok' : 'idle'}
+                                    className="px-3 py-2 min-h-[34px] text-[11.5px] leading-[18px]"
+                                    style={{
+                                        borderTop: '1px solid #2a4054',
+                                        background: '#08121a',
+                                        color: raiseTip ? '#6ee7a8' : '#5b7894',
+                                    }}
+                                >
+                                    {raiseTip || '点「使用道具」后，这里显示结果：上限变化与星级'}
+                                </div>
+                            </>
+                        ) : (
+                            <div className="px-3 py-6 text-center text-[12px]" style={{ color: '#7fa3c0' }}>
+                                本策已达到上限 {washCap} 次
+                                <div className="mt-1 text-[11px]" style={{ color: '#5b7894' }}>
+                                    五档「轩辕拾遗录」已全部用完
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
