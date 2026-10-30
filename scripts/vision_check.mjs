@@ -212,6 +212,11 @@ export { React, renderToStaticMarkup, VisionReviewCard, fromServerPanel, degrade
     ok(html['xyc'].includes('data-testid="vision-xyc-meta"'), '轩辕策卡缺元信息编辑条');
     ok(['青龙', '白虎', '朱雀', '玄武'].every(b => html['xyc'].includes(`data-beast="${b}"`)), '轩辕策卡缺四系切换');
     ok(html['xyc'].includes('英雄版'), '轩辕策卡缺普通/英雄切换');
+    /* 去重（2026-10-30 口径）：品阶/洗炼/版本只在元信息行出现一次，头部徽章不重复；等级不再有 −/+ 步进 */
+    ok(!html['xyc'].includes('洗炼 4/10'), '头部不该再重复「洗炼 x/10」徽章');
+    ok(!html['xyc'].includes('>−<'), '轩辕策等级不该再有 −/+ 步进（改回虚线点击编辑）');
+    ok((html['xyc'].match(/<select/g) || []).length === 1, '品阶应仍是元信息行里唯一的下拉');
+    ok(!html['xyc'].includes('·英雄版'), '标题里不该再重复版本（下面有普通/英雄切换）');
 
     /* 降级时直接把「怎么截」摊开 */
     ok(html['degraded'].includes('data-testid="vision-capture-guide"'), '降级态缺「怎么截图」指引');

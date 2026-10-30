@@ -535,7 +535,8 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
             if (live.kind === 'tianyuan') return [];
             return live.fields
                 .filter(f => live.kind === 'xyc'
-                    ? (f.key === 'level' || f.status !== 'ok')
+                    // 轩辕策的 四系/版本/品阶/等级/洗炼 全在下面那一条元信息里，栅格只兜「没识别到」的字段
+                    ? f.status !== 'ok'
                     : (f.status === 'ok' || f.status === 'low_confidence'))
                 .map(f => ({ type: 'single' as const, cell: f, span: false }));
         }
@@ -560,7 +561,8 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
     const attackMax = live.fields.find(f => f.key === 'attackMax');
 
     const headerTitle = live.kind === 'xyc'
-        ? [live.xyc?.beast ? `${live.xyc.beast}<${live.xyc.bookName || '策'}>` : '轩辕策', live.xyc?.heroVersion ? '·英雄版' : ''].join('')
+        // 版本（普通/英雄）下面有独立控件，标题里不再重复一遍
+        ? (live.xyc?.beast ? `${live.xyc.beast}<${live.xyc.bookName || '策'}>` : '轩辕策')
         : live.kind === 'tianyuan'
             ? (live.tianyuan?.name || '天缘属性')
             : (live.character?.classRaw || '角色属性面板');
@@ -656,20 +658,13 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                             {live.character.levelRaw} 级
                         </span>
                     )}
-                    {live.xyc?.tier && (
-                        <span className="px-1.5 py-0.5 rounded bg-cyan-950/60 text-cyan-200 border border-cyan-500/50 whitespace-nowrap font-bold">{live.xyc.tier}</span>
-                    )}
+                    {/* 品阶 / 洗炼下面就是可改控件，头部不再重复这两个徽章（2026-10-30 口径） */}
                     {typeof live.xyc?.stars === 'number' && (
                         <span
                             className="px-1.5 py-0.5 rounded bg-slate-800/60 border border-slate-700/50 whitespace-nowrap tracking-[1px]"
                             style={{ color: GAME_COLORS.GOLD_AMBER }}
                         >
                             {'★'.repeat(Math.max(0, Math.min(10, live.xyc.stars)))}
-                        </span>
-                    )}
-                    {typeof live.xyc?.washUsed === 'number' && (
-                        <span className="px-1.5 py-0.5 rounded bg-slate-800/60 text-slate-300 border border-slate-700/50 whitespace-nowrap font-mono">
-                            洗炼 {live.xyc.washUsed}/10
                         </span>
                     )}
                     {live.kind === 'tianyuan' && typeof live.tianyuan?.tianyuanLevel === 'number' && (
@@ -848,91 +843,81 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
             </div>
 
             {/* 轩辕策：识别到的四系 / 版本 / 品阶 / 等级 / 洗炼次数都能改 —— 这五个字段任意一个错，
-                满属性对照就会整体算错（池是按「系 × 版本 × 品阶」取的）。 */}
+                满属性对照就会整体算错（池是按「系 × 版本 × 品阶」取的）。
+                一条元信息行，每组 shrink-0：窄卡下整组换行，不会把「等级 / 洗炼」拆散 */}
             {live.kind === 'xyc' && (
-                <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1.5" data-testid="vision-xyc-meta">
-                    <div className="flex items-center gap-1">
-                        {['青龙', '白虎', '朱雀', '玄武'].map(b => {
-                            const on = String(live.xyc?.beast || '') === b;
-                            return (
-                                <button
-                                    key={b}
-                                    type="button"
-                                    data-beast={b}
-                                    onClick={() => patchMeta({ beast: b })}
-                                    title={`四系决定词条池（${b}）`}
-                                    className={clsx(
-                                        'px-1.5 py-0.5 rounded text-[11px] border transition-colors cursor-pointer',
-                                        on
-                                            ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400/60 font-bold'
-                                            : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/60'
-                                    )}
-                                >
-                                    {b}
-                                </button>
-                            );
-                        })}
-                    </div>
-                    <button
-                        type="button"
-                        onClick={() => patchMeta({ heroVersion: !live.xyc?.heroVersion })}
-                        title="普通版 / 英雄版：英雄版各词条上限更高"
-                        className={clsx(
-                            'px-1.5 py-0.5 rounded text-[11px] border transition-colors cursor-pointer',
-                            live.xyc?.heroVersion
-                                ? 'bg-amber-500/20 text-amber-200 border-amber-400/60 font-bold'
-                                : 'text-slate-400 border-slate-700 hover:text-slate-200'
-                        )}
-                    >
-                        {live.xyc?.heroVersion ? '英雄版' : '普通版'}
-                    </button>
-                    <select
-                        value={live.xyc?.tier || '六品'}
-                        onChange={e => patchMeta({ tier: e.target.value })}
-                        title="品阶：决定词条池档位"
-                        className="px-1 py-0.5 rounded text-[11px] bg-slate-800 border border-slate-700 text-slate-200 outline-none cursor-pointer"
-                    >
-                        {['一品', '二品', '三品', '四品', '五品', '六品'].map(t => <option key={t} value={t}>{t}</option>)}
-                    </select>
-                    <div className="flex items-center gap-1 text-[11px] text-slate-400">
-                        <span>等级</span>
+                <div className="mt-3 flex flex-wrap items-center gap-1.5 min-w-0" data-testid="vision-xyc-meta">
+                        <div className="flex items-center gap-1 shrink-0">
+                            {['青龙', '白虎', '朱雀', '玄武'].map(b => {
+                                const on = String(live.xyc?.beast || '') === b;
+                                return (
+                                    <button
+                                        key={b}
+                                        type="button"
+                                        data-beast={b}
+                                        onClick={() => patchMeta({ beast: b })}
+                                        title={`四系决定词条池（${b}）`}
+                                        className={clsx(
+                                            'px-1.5 py-0.5 rounded text-[11px] border transition-colors cursor-pointer whitespace-nowrap',
+                                            on
+                                                ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400/60 font-bold'
+                                                : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/60'
+                                        )}
+                                    >
+                                        {b}
+                                    </button>
+                                );
+                            })}
+                        </div>
                         <button
                             type="button"
-                            onClick={() => patchMeta({ level: Math.max(1, (live.xyc?.level ?? 1) - 1) })}
-                            className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-800 border border-slate-700 text-slate-200 hover:text-white cursor-pointer"
+                            onClick={() => patchMeta({ heroVersion: !live.xyc?.heroVersion })}
+                            title="普通版 / 英雄版：英雄版各词条上限更高"
+                            className={clsx(
+                                'px-1.5 py-0.5 rounded text-[11px] border transition-colors cursor-pointer shrink-0 whitespace-nowrap',
+                                live.xyc?.heroVersion
+                                    ? 'bg-amber-500/20 text-amber-200 border-amber-400/60 font-bold'
+                                    : 'text-slate-400 border-slate-700 hover:text-slate-200'
+                            )}
                         >
-                            −
+                            {live.xyc?.heroVersion ? '英雄版' : '普通版'}
                         </button>
-                        <InlineEdit
-                            value={live.xyc?.level ?? '—'}
-                            kind="number"
-                            width="2.4rem"
-                            className="font-mono text-[11px] text-slate-100"
-                            title="等级：直接填 1~20（词条上限按等级逐级上涨）"
-                            onCommit={v => {
-                                const n = Number(v.replace(/[^\d]/g, ''));
-                                patchMeta({ level: Number.isFinite(n) && n > 0 ? Math.max(1, Math.min(20, n)) : undefined });
-                            }}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => patchMeta({ level: Math.min(20, (live.xyc?.level ?? 1) + 1) })}
-                            className="px-1.5 py-0.5 rounded text-[11px] font-bold bg-cyan-600/30 border border-cyan-500/50 text-cyan-200 hover:text-white cursor-pointer"
-                        >
-                            +
-                        </button>
-                    </div>
-                    <div className="flex items-center gap-1 text-[11px] text-slate-400">
-                        <span>洗炼</span>
-                        <InlineEdit
-                            value={live.xyc?.washUsed}
-                            kind="number"
-                            width="2.6rem"
-                            className="font-mono text-[11px] text-slate-100"
-                            title="洗炼次数（不参与满值计算，只做记录）"
-                            onCommit={v => patchMeta({ washUsed: v.trim() === '' ? undefined : Number(v) })}
-                        />
-                    </div>
+                        <div className="flex items-center gap-1 shrink-0 text-[11px] text-slate-400 whitespace-nowrap">
+                            <span>品阶</span>
+                            <select
+                                value={live.xyc?.tier || '六品'}
+                                onChange={e => patchMeta({ tier: e.target.value })}
+                                title="品阶：决定词条池档位"
+                                className="px-1 py-0.5 rounded text-[11px] bg-slate-800 border border-slate-700 text-slate-200 outline-none cursor-pointer"
+                            >
+                                {['一品', '二品', '三品', '四品', '五品', '六品'].map(t => <option key={t} value={t}>{t}</option>)}
+                            </select>
+                        </div>
+                        <div className="flex items-center gap-1 shrink-0 text-[11px] text-slate-400 whitespace-nowrap">
+                            <span>等级</span>
+                            <InlineEdit
+                                value={live.xyc?.level ?? '—'}
+                                kind="number"
+                                width="2.4rem"
+                                className="font-mono text-[11px] text-slate-100"
+                                title="等级：直接填 1~20（词条上限按等级逐级上涨）"
+                                onCommit={v => {
+                                    const n = Number(v.replace(/[^\d]/g, ''));
+                                    patchMeta({ level: Number.isFinite(n) && n > 0 ? Math.max(1, Math.min(20, n)) : undefined });
+                                }}
+                            />
+                        </div>
+                        <div className="flex items-center gap-1 shrink-0 text-[11px] text-slate-400 whitespace-nowrap">
+                            <span>洗炼</span>
+                            <InlineEdit
+                                value={live.xyc?.washUsed}
+                                kind="number"
+                                width="2.6rem"
+                                className="font-mono text-[11px] text-slate-100"
+                                title="洗炼次数（不参与满值计算，只做记录）"
+                                onCommit={v => patchMeta({ washUsed: v.trim() === '' ? undefined : Number(v) })}
+                            />
+                        </div>
                 </div>
             )}
 
