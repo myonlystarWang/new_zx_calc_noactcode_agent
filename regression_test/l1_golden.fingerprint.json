@@ -1,7 +1,7 @@
 {
   "note": "L1 golden 快照对应的 game_data 数据指纹。由 l1_intent_fixture.mjs --golden 自动写入，请勿手改。",
-  "generatedAt": "2026-10-30T01:43:03.250Z",
-  "digest": "24461c8fbc5902eb",
+  "generatedAt": "2026-10-30T01:57:25.111Z",
+  "digest": "7331cbce4c747094",
   "fileCount": 30,
   "files": {
     "all_skills_curated_1.json": "fc42ab212944d23e88f0bd97350213f9b52b4e4c23c213a8f3429bd549e1d563",
@@ -30,7 +30,7 @@
     "tianyuan_old.json": "1aafde64f0487ddd404ab4534fa26238e7be524e21176f5cab735e934a97ea09",
     "xingsu_upgrade.json": "12681e716b7548574d2b38e450bfeb97b23043b2f4ca412ce6d43d3b190493ac",
     "xyc_adv_skills.json": "4b78da4ed6aaf40e732a55e2586cfc877fa8c1309254439ff61e3fb62dccb449",
-    "xyc_refine.json": "f9cbd94add4110bc91c413d9e242abb59d9b17d82c6d10c928016abeca67c736",
+    "xyc_refine.json": "b477e005e4620a8b162292cbf0cd42eba9f353d1038329279ba723f7b3a6a4cb",
     "xyc_rules.json": "0949da4c6e816f8a78a54f7154f6ccab2995b8bbafe052df849927dab203513a",
     "xyc_tomes.json": "b76d5a303867affc271f48890c3b892cb4fc2ada7d98ea0027abb6202a8dd195",
     "zhenling_upgrade.json": "60d1396e018fccca86911a2262ac2fd5f32bf888f80281dad7cff5b0aaebde7a"

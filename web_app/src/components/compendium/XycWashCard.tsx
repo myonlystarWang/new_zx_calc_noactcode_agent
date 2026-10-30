@@ -221,6 +221,42 @@ const ITEM_ICONS: Record<XycWashMode, { src: string; ch: string }> = {
     both: { src: '/game_data/equip_icons/xyc_item_68828.png', ch: '函' },
 };
 
+/** 「轩辕拾遗录·逍遥」→「逍遥」，按钮与提示里都用短名 */
+const shortItemName = (item: string) => item.replace('轩辕拾遗录·', '');
+
+/** 换 1 个本档道具需要什么：`尽年 ×1 + 帝鸿玄章 ×50000` */
+function exchangeLine(step: {
+    item: string;
+    from?: string | null;
+    need?: number;
+    note?: string | null;
+}): string {
+    if (!step.from) return '河阳充值奖品兑换员处兑换';
+    const n = step.need ?? 1;
+    const tail = step.note ? ` + ${step.note.replace(/^另需/, '')}` : '';
+    return `${shortItemName(step.from)} ×${n}${tail}`;
+}
+
+/** 一路折算到最基础那档（逍遥），给 tooltip 用 */
+function exchangeTotal(
+    step: { item: string; from?: string | null; need?: number; note?: string | null },
+    all: Array<{ item: string; from?: string | null; need?: number; note?: string | null }>,
+): string {
+    const byItem = new Map(all.map((s) => [s.item, s]));
+    let cur = step;
+    let n = 1;
+    const chain: string[] = [];
+    while (cur.from) {
+        const prev = byItem.get(cur.from);
+        if (!prev) break;
+        n *= cur.need ?? 1;
+        chain.unshift(`${shortItemName(prev.item)} ×${n}`);
+        cur = prev;
+    }
+    const tail = step.note ? ` + ${step.note.replace(/^另需/, '')}` : '';
+    return `累计需要 ${chain[0] ?? shortItemName(step.item)}${tail}`;
+}
+
 export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className }) => {
     const [data, setData] = useState<XycRefineData | null>(null);
     const [loadErr, setLoadErr] = useState<string | null>(null);
@@ -708,7 +744,7 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         if (!cur) return;
         // 次数没用满时不允许提升（游戏里「增加洗练次数」只在洗满后可用）
         if (cur.washUsed < cur.washMax) return;
-        const step = nextWashStep(data, cur.version, cur.beast, cur.washMax);
+        const step = nextWashStep(data, cur.beast, cur.washMax);
         if (!step) return;
         const updated = { ...cur, washMax: step.to };
         bookRef.current = updated;
@@ -757,9 +793,9 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
         return { id: roll.id, name: def?.name || `属性${roll.id}`, text: formatAttrValue(data, roll.id, raw) };
     });
     /** 本策最终能达到的上限（青龙/白虎英雄版 30，其余 25） */
-    const washCap = washMaxStages(data, book.version, book.beast).at(-1) ?? data.meta.baseWashMax;
+    const washCap = washMaxStages(data, book.beast).at(-1) ?? data.meta.baseWashMax;
     /** 洗练次数用满后，才允许消耗「轩辕拾遗录」提升上限；一次只升一档，每档绑一种道具 */
-    const nextStep = nextWashStep(data, book.version, book.beast, book.washMax);
+    const nextStep = nextWashStep(data, book.beast, book.washMax);
     const canRaiseMax = washLeft === 0 && nextStep !== null;
 
     return (
@@ -1075,6 +1111,18 @@ export const XycWashCard: React.FC<XycWashCardProps> = ({ cardData, className })
                                 洗炼
                             </button>
                         </div>
+                            {/* 兑换链：当前这一档要换出来需要什么、累计多少个 */}
+                            {nextStep && (
+                                <div
+                                    className="mt-1.5 text-center text-[11px] leading-[15px]"
+                                    style={{ color: '#7fa3c0' }}
+                                    data-xyc-exchange
+                                    title={`${nextStep.item}：${exchangeLine(nextStep)}（${exchangeTotal(nextStep, data.meta.washMaxSteps ?? [])}）`}
+                                >
+                                    换 1 个{shortItemName(nextStep.item)}：{exchangeLine(nextStep)}
+                                </div>
+                            )}
+
 
                         {/* 分享引导文案：紧随操作按钮下方 */}
                         <div

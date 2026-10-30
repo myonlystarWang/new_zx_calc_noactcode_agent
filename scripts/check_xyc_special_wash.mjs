@@ -86,25 +86,29 @@ const identifyWith = (ids, extra = {}) => {
 
 // ── 1b. 上限阶梯：五档「轩辕拾遗录」逐档提升（2026-10-30 玩家提供道具说明） ──
 {
+    const normalQl = identify({ version: '普通' });
     const heroQl = identify({});
     const heroBh = identify({ beast: '白虎' });
     const heroZq = identify({ beast: '朱雀' });
-    const normal = identify({ version: '普通' });
+    const heroXw = identify({ beast: '玄武' });
 
     const fmt = (a) => a.join('→');
-    // 逍遥 +4 → 秋水 +3 → 齐物 +3 → 尽年 +5 → 相易 +5，起始 10，合计 30
-    ok(fmt(E.washMaxStages(data, '英雄', '青龙')) === '10→14→17→20→25→30',
-        `青龙英雄版阶梯应为 10→14→17→20→25→30，实际 ${fmt(E.washMaxStages(data, '英雄', '青龙'))}`);
-    ok(fmt(E.washMaxStages(data, '英雄', '白虎')) === '10→14→17→20→25→30',
-        `白虎英雄版阶梯应为 10→14→17→20→25→30，实际 ${fmt(E.washMaxStages(data, '英雄', '白虎'))}`);
-    // 朱雀 / 玄武英雄版、普通 / 典藏版：meta 封顶 25，用完「尽年」即止
-    ok(fmt(E.washMaxStages(data, '英雄', '朱雀')) === '10→14→17→20→25',
-        `朱雀英雄版阶梯应为 10→14→17→20→25，实际 ${fmt(E.washMaxStages(data, '英雄', '朱雀'))}`);
-    ok(fmt(E.washMaxStages(data, '普通', '青龙')) === '10→14→17→20→25',
-        `普通版阶梯应为 10→14→17→20→25，实际 ${fmt(E.washMaxStages(data, '普通', '青龙'))}`);
+    // 封顶只看系别：青龙 / 白虎 30，朱雀 / 玄武 25；普通 / 典藏 / 英雄完全一样
+    ok(fmt(E.washMaxStages(data, '青龙')) === '10→14→17→20→25→30', `青龙应为 10→14→17→20→25→30，实际 ${fmt(E.washMaxStages(data, '青龙'))}`);
+    ok(fmt(E.washMaxStages(data, '白虎')) === '10→14→17→20→25→30', `白虎应为 10→14→17→20→25→30，实际 ${fmt(E.washMaxStages(data, '白虎'))}`);
+    for (const beast of ['朱雀', '玄武']) {
+        ok(fmt(E.washMaxStages(data, beast)) === '10→14→17→20→25',
+            `${beast} 应为 10→14→17→20→25，实际 ${fmt(E.washMaxStages(data, beast))}`);
+    }
+    // 版本无关（普通版与英雄版完全一致）—— 2026-10-30 玩家确认。
+    // 引擎签名已不含 version，从结构上杜绝「按版本分支」；这里只断言封顶来自系别表。
+    ok(data.meta.washMaxCapByBeast?.['青龙'] === 30 && data.meta.washMaxCapByBeast?.['朱雀'] === 25,
+        'washMaxCapByBeast 应为 青龙 30 / 朱雀 25');
+    ok(E.washMaxSteps(data, '朱雀').length === 4, '朱雀只应有 4 档（无相易）');
+    ok(E.washMaxSteps(data, '玄武').length === 4, '玄武只应有 4 档（无相易）');
 
-    // 每档绑定的道具、加次数、星级（顺序即游戏内提升顺序，不能错位）
-    const steps = E.washMaxSteps(data, '英雄', '青龙');
+    // 每档绑定的道具、加次数、星级、兑换来源
+    const steps = E.washMaxSteps(data, '青龙');
     ok(steps.map((x) => x.item).join('/') ===
         '轩辕拾遗录·逍遥/轩辕拾遗录·秋水/轩辕拾遗录·齐物/轩辕拾遗录·尽年/轩辕拾遗录·相易',
         `道具顺序不对：${steps.map((x) => x.item).join('/')}`);
@@ -112,39 +116,44 @@ const identifyWith = (ids, extra = {}) => {
     ok(steps.map((x) => x.star).join('') === '12345', `星级应为 1~5，实际 ${steps.map((x) => x.star).join('')}`);
     ok(steps.reduce((a, b) => a + b.add, data.meta.baseWashMax) === 30, '五档加满应正好到 30');
     for (const st of steps) {
-        ok(fs.existsSync(path.join(ROOT, 'web_app/public/game_data/equip_icons', st.icon)),
-            `图标文件缺失：${st.icon}`);
+        ok(fs.existsSync(path.join(ROOT, 'web_app/public/game_data/equip_icons', st.icon)), `图标文件缺失：${st.icon}`);
     }
-    // 朱雀/普通版没有「相易」那一档
-    ok(E.washMaxSteps(data, '英雄', '朱雀').length === 4, '朱雀英雄版只应有 4 档（无相易）');
-    ok(E.washMaxSteps(data, '普通', '青龙').length === 4, '普通版只应有 4 档（无相易）');
+    // 兑换链：逍遥为基础档；其后每档 2 换 1；相易是尽年 ×1 + 帝鸿玄章 ×50000
+    ok(!steps[0].from, '逍遥应为基础档（无前置）');
+    const chain = steps.slice(1).map((x) => `${x.from}×${x.need}`).join('|');
+    ok(chain === '轩辕拾遗录·逍遥×2|轩辕拾遗录·秋水×2|轩辕拾遗录·齐物×2|轩辕拾遗录·尽年×1',
+        `兑换链不对：${chain}`);
+    ok((steps[4].note || '').includes('50000'), `相易应注明帝鸿玄章 50000，实际 ${steps[4].note}`);
+    // 折算到基础档：相易 = 8 个逍遥
+    ok(steps.slice(1).reduce((n, x) => n * (x.need ?? 1), 1) === 8, '相易应折算为 8 个逍遥');
 
     // 逐档推进：每次只进一档，到顶返回 null
-    const chain = [];
+    const chainTo = [];
     let cur = 10;
     for (let i = 0; i < 6; i++) {
-        const nx = E.nextWashMax(data, '英雄', '青龙', cur);
+        const nx = E.nextWashMax(data, '青龙', cur);
         if (nx === null) break;
-        chain.push(nx);
+        chainTo.push(nx);
         cur = nx;
     }
-    ok(chain.join('→') === '14→17→20→25→30', `逐档推进应为 14→17→20→25→30，实际 ${chain.join('→')}`);
-    ok(E.nextWashMax(data, '英雄', '青龙', 30) === null, '到 30 后不应再有下一档');
-    ok(E.nextWashMax(data, '英雄', '朱雀', 25) === null, '非青龙/白虎到 25 即封顶');
-    ok(E.nextWashMax(data, '普通', '青龙', 25) === null, '普通版到 25 即封顶');
+    ok(chainTo.join('→') === '14→17→20→25→30', `逐档推进应为 14→17→20→25→30，实际 ${chainTo.join('→')}`);
+    ok(E.nextWashMax(data, '青龙', 30) === null, '到 30 后不应再有下一档');
+    ok(E.nextWashMax(data, '朱雀', 25) === null, '朱雀到 25 即封顶');
+    ok(E.nextWashMax(data, '玄武', 25) === null, '玄武到 25 即封顶');
 
     // 下一档必须带上「这一档该用什么道具」
-    ok(E.nextWashStep(data, '英雄', '青龙', 10)?.item === '轩辕拾遗录·逍遥', '10 次后下一档应用逍遥');
-    ok(E.nextWashStep(data, '英雄', '青龙', 20)?.item === '轩辕拾遗录·尽年', '20 次后下一档应用尽年');
-    ok(E.nextWashStep(data, '英雄', '青龙', 25)?.item === '轩辕拾遗录·相易', '25 次后下一档应用相易');
-    ok(E.nextWashStep(data, '英雄', '青龙', 30) === null, '到顶后不应有下一档道具');
+    ok(E.nextWashStep(data, '青龙', 10)?.item === '轩辕拾遗录·逍遥', '10 次后下一档应用逍遥');
+    ok(E.nextWashStep(data, '青龙', 20)?.item === '轩辕拾遗录·尽年', '20 次后下一档应用尽年');
+    ok(E.nextWashStep(data, '青龙', 25)?.item === '轩辕拾遗录·相易', '25 次后下一档应用相易');
+    ok(E.nextWashStep(data, '青龙', 30) === null, '到顶后不应有下一档道具');
 
-    // 只升到 25 的英雄版不能进特殊洗练（必须再升到 30 才有 25~30 的 5 次额度）
-    ok(!E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 25 }), '只升到 25 的英雄版不应进特殊洗练');
-    ok(E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 30 }), '升到 30 的英雄版应进特殊洗练');
+    // 只升到 25 的青龙不能进特殊洗练（必须再升到 30 才有 25~30 的 5 次额度）
+    ok(!E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 25 }), '只升到 25 的青龙不应进特殊洗练');
+    ok(E.inSpecialWash({ ...heroQl, washUsed: 25, washMax: 30 }), '升到 30 的青龙应进特殊洗练');
     ok(!E.inSpecialWash({ ...heroBh, washUsed: 25, washMax: 25 }), '白虎只升到 25 时同样不进特殊洗练');
     ok(!E.inSpecialWash({ ...heroZq, washUsed: 25, washMax: 25 }), '朱雀到 25 后不进特殊洗练');
-    ok(!E.inSpecialWash({ ...normal, washUsed: 25, washMax: 25 }), '普通版到 25 后不进特殊洗练');
+    ok(!E.inSpecialWash({ ...heroXw, washUsed: 25, washMax: 25 }), '玄武到 25 后不进特殊洗练');
+    ok(!E.inSpecialWash({ ...normalQl, washUsed: 25, washMax: 25 }), '普通青龙到 25 后不进特殊洗练（普通版最高也是 30，但这条用 25 上限验证不进特殊区间）');
 }
 
 // ── 2. 锁定行为（单次） ──

@@ -31,33 +31,54 @@
     "item": "轩辕拾遗录·逍遥",
     "icon": "xyc_washup_xiaoyao.png",
     "add": 4,
-    "star": 1
+    "star": 1,
+    "from": null,
+    "need": 0,
+    "note": "河阳充值奖品兑换员"
    },
    {
     "item": "轩辕拾遗录·秋水",
     "icon": "xyc_washup_qiushui.png",
     "add": 3,
-    "star": 2
+    "star": 2,
+    "from": "轩辕拾遗录·逍遥",
+    "need": 2,
+    "note": null
    },
    {
     "item": "轩辕拾遗录·齐物",
     "icon": "xyc_washup_qiwu.png",
     "add": 3,
-    "star": 3
+    "star": 3,
+    "from": "轩辕拾遗录·秋水",
+    "need": 2,
+    "note": null
    },
    {
     "item": "轩辕拾遗录·尽年",
     "icon": "xyc_washup_jinnian.png",
     "add": 5,
-    "star": 4
+    "star": 4,
+    "from": "轩辕拾遗录·齐物",
+    "need": 2,
+    "note": null
    },
    {
     "item": "轩辕拾遗录·相易",
     "icon": "xyc_washup_xiangyi.png",
     "add": 5,
-    "star": 5
+    "star": 5,
+    "from": "轩辕拾遗录·尽年",
+    "need": 1,
+    "note": "另需帝鸿玄章 ×50000"
    }
   ],
+  "washMaxCapByBeast": {
+   "青龙": 30,
+   "白虎": 30,
+   "朱雀": 25,
+   "玄武": 25
+  },
   "skillNeedGrade": 3,
   "skillNeedAttrCount": 4,
   "skillBeasts": [

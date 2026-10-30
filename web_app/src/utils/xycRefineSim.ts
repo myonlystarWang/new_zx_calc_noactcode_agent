@@ -60,6 +60,8 @@ export interface XycRefineData {
         heroWashMaxWithItem: number;
         /** 上限提升阶梯（每档一种「轩辕拾遗录」，见 2026-10-30 玩家提供的道具说明） */
         washMaxSteps?: XycWashMaxStepRaw[];
+        /** 各系别的洗练上限封顶：青龙 / 白虎 30，朱雀 / 玄武 25（与普通 / 英雄版无关） */
+        washMaxCapByBeast?: Record<string, number>;
         skillNeedGrade: number;
         skillNeedAttrCount: number;
         skillBeasts: string[];
@@ -294,6 +296,12 @@ export interface XycWashMaxStepRaw {
     add: number;
     /** 同时激活的轩辕策星级（1~5，六品专用） */
     star: number;
+    /** 兑换上一档需要的道具名（null = 基础档，直接在河阳兑换员处换） */
+    from?: string | null;
+    /** 需要几个 from 道具 */
+    need?: number;
+    /** 附加说明，如「另需帝鸿玄章 ×50000」 */
+    note?: string | null;
 }
 
 export interface XycWashMaxStep extends XycWashMaxStepRaw {
@@ -307,13 +315,10 @@ export interface XycWashMaxStep extends XycWashMaxStepRaw {
  * - 普通 / 典藏、朱雀 / 玄武英雄版：最高 25（用完「尽年」即封顶）
  * - 青龙 / 白虎 英雄版：最高 30（多一档「相易」，也是唯一能凑出 25→30 特殊洗练额度的路径）
  */
-export function washMaxSteps(
-    data: XycRefineData,
-    version: XycVersion,
-    beast: XycBeast,
-): XycWashMaxStep[] {
-    const heroBeast = version === '英雄' && (beast === '青龙' || beast === '白虎');
-    const cap = heroBeast ? data.meta.heroWashMaxWithItem : data.meta.washMaxWithItem;
+export function washMaxSteps(data: XycRefineData, beast: XycBeast): XycWashMaxStep[] {
+    // 封顶只看系别：青龙 / 白虎 30，朱雀 / 玄武 25。
+    // 2026-10-30 玩家确认：普通版与英雄版完全一样，跟版本无关。
+    const cap = data.meta.washMaxCapByBeast?.[beast] ?? data.meta.washMaxWithItem;
     const raw = data.meta.washMaxSteps ?? [];
     const out: XycWashMaxStep[] = [];
     let cur = data.meta.baseWashMax;
@@ -327,28 +332,18 @@ export function washMaxSteps(
 }
 
 /** 所有上限档位（含起始值），用于断言与展示 */
-export function washMaxStages(data: XycRefineData, version: XycVersion, beast: XycBeast): number[] {
-    return [data.meta.baseWashMax, ...washMaxSteps(data, version, beast).map((s) => s.to)];
+export function washMaxStages(data: XycRefineData, beast: XycBeast): number[] {
+    return [data.meta.baseWashMax, ...washMaxSteps(data, beast).map((s) => s.to)];
 }
 
 /** 下一档（含要消耗的道具）；已封顶返回 null —— UI 据此禁用「增加洗练次数」并显示对应图标 */
-export function nextWashStep(
-    data: XycRefineData,
-    version: XycVersion,
-    beast: XycBeast,
-    current: number,
-): XycWashMaxStep | null {
-    return washMaxSteps(data, version, beast).find((s) => s.to > current) ?? null;
+export function nextWashStep(data: XycRefineData, beast: XycBeast, current: number): XycWashMaxStep | null {
+    return washMaxSteps(data, beast).find((s) => s.to > current) ?? null;
 }
 
 /** 下一档上限；已经到顶返回 null */
-export function nextWashMax(
-    data: XycRefineData,
-    version: XycVersion,
-    beast: XycBeast,
-    current: number,
-): number | null {
-    return nextWashStep(data, version, beast, current)?.to ?? null;
+export function nextWashMax(data: XycRefineData, beast: XycBeast, current: number): number | null {
+    return nextWashStep(data, beast, current)?.to ?? null;
 }
 
 /** 进入特殊洗练的累计洗练次数门槛 */
