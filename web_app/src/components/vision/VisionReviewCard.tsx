@@ -31,6 +31,12 @@ const BRACKET_RED = '#ff4d4f';
 /** 角色面板数值色：对齐游戏 C 界面的青蓝（不是轩辕策 tooltip 的 #8080ff 紫蓝） */
 const PANEL_CYAN = '#63d2ea';
 
+/** 轩辕策 tooltip 版式 body 里已经占位的字段键 —— 栅格不再重复渲染同一项 */
+const XYC_BODY_KEYS = new Set([
+    'beast', 'bookName', 'tier', 'stars', 'washUsed', 'level',
+    'advSkillName', 'advSkillVariant', 'advSkillLevel'
+]);
+
 /**
  * 虚线可点改的单元格：与角色面板那套一致（点数字 → 输入框，Enter/失焦提交，Esc 取消）。
  * 天缘 / 轩辕策的「天命+N、词条值、等级、品阶」都走它，避免每处写一遍输入框。
@@ -535,8 +541,9 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
             if (live.kind === 'tianyuan') return [];
             return live.fields
                 .filter(f => live.kind === 'xyc'
-                    // 轩辕策的 四系/版本/品阶/等级/洗炼 全在下面那一条元信息里，栅格只兜「没识别到」的字段
-                    ? f.status !== 'ok'
+                    // 轩辕策的书系/书名/品阶/星级/洗炼/等级/进阶技能都在 tooltip 版式 body 里，
+                    // 栅格只兜「body 里没位置」的字段，避免同一项出现两次
+                    ? (f.status !== 'ok' && !XYC_BODY_KEYS.has(f.key))
                     : (f.status === 'ok' || f.status === 'low_confidence'))
                 .map(f => ({ type: 'single' as const, cell: f, span: false }));
         }
@@ -593,9 +600,9 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 className
             )}
         >
-            {/* 头部：天缘卡的金色标题、天缘等级、逐行天命档都由下方 body 承担，
+            {/* 头部：天缘 / 轩辕策的书名、等级、品阶星级、洗炼次数都由下面的 tooltip 版式 body 承担，
                 再叠一层同名头部就是纯重复 —— 非降级态只保留「只看原图」入口 */}
-            {live.kind === 'tianyuan' && !live.degraded ? (
+            {(live.kind === 'tianyuan' || live.kind === 'xyc') && !live.degraded ? (
                 live.imageRef && onPeek ? (
                     <div className="flex justify-end">
                         <button
@@ -842,150 +849,141 @@ export const VisionReviewCard: React.FC<VisionReviewCardProps> = ({
                 })}
             </div>
 
-            {/* 轩辕策：识别到的四系 / 版本 / 品阶 / 等级 / 洗炼次数都能改 —— 这五个字段任意一个错，
-                满属性对照就会整体算错（池是按「系 × 版本 × 品阶」取的）。
-                一条元信息行，每组 shrink-0：窄卡下整组换行，不会把「等级 / 洗炼」拆散 */}
+            {/* 轩辕策：1:1 对齐游戏 tooltip / 模拟器信息卡（XycTomeDetailCard）的摆放 ——
+                书名 → 品阶+星级 → 洗炼次数 → 等级 → 词条 → 进阶技能。
+                四系由识别结果决定，不再给切换按钮（标题已写明）；版本做成书名后缀的虚线可点，
+                品阶是「看起来像文字」的下拉，洗炼次数 / 等级的数字都可点改（用户 2026-10-31 口径） */}
             {live.kind === 'xyc' && (
-                <div className="mt-3 flex flex-wrap items-center gap-1.5 min-w-0" data-testid="vision-xyc-meta">
-                        <div className="flex items-center gap-1 shrink-0">
-                            {['青龙', '白虎', '朱雀', '玄武'].map(b => {
-                                const on = String(live.xyc?.beast || '') === b;
-                                return (
-                                    <button
-                                        key={b}
-                                        type="button"
-                                        data-beast={b}
-                                        onClick={() => patchMeta({ beast: b })}
-                                        title={`四系决定词条池（${b}）`}
-                                        className={clsx(
-                                            'px-1.5 py-0.5 rounded text-[11px] border transition-colors cursor-pointer whitespace-nowrap',
-                                            on
-                                                ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400/60 font-bold'
-                                                : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/60'
-                                        )}
-                                    >
-                                        {b}
-                                    </button>
-                                );
-                            })}
-                        </div>
+                <div
+                    data-testid="vision-xyc-body"
+                    className="mt-3 rounded-xl border border-[#232c3d] bg-[#070b12]/95 px-3 py-2.5 flex flex-col gap-1 min-w-0"
+                    style={{ fontFamily: FONT_SONG, letterSpacing: '0.3px', boxShadow: 'inset 0 0 16px rgba(16, 28, 48, 0.35)' }}
+                >
+                    <div className="font-bold text-[14px] leading-[22px] break-words" style={{ color: '#ffd272' }}>
+                        {live.xyc?.beast || '轩辕'}〈{live.xyc?.bookName || '策'}〉
                         <button
                             type="button"
+                            data-xyc-hero="1"
                             onClick={() => patchMeta({ heroVersion: !live.xyc?.heroVersion })}
-                            title="普通版 / 英雄版：英雄版各词条上限更高"
+                            title="普通版 / 英雄版：英雄版各词条上限更高，点一下切换"
                             className={clsx(
-                                'px-1.5 py-0.5 rounded text-[11px] border transition-colors cursor-pointer shrink-0 whitespace-nowrap',
+                                'ml-1 text-[12.5px] font-normal border-b border-dashed cursor-pointer transition-colors align-baseline',
                                 live.xyc?.heroVersion
-                                    ? 'bg-amber-500/20 text-amber-200 border-amber-400/60 font-bold'
-                                    : 'text-slate-400 border-slate-700 hover:text-slate-200'
+                                    ? 'text-amber-300 border-amber-400/50 hover:border-amber-300'
+                                    : 'text-slate-400 border-white/25 hover:text-slate-200 hover:border-cyan-400/80'
                             )}
                         >
-                            {live.xyc?.heroVersion ? '英雄版' : '普通版'}
+                            {live.xyc?.heroVersion ? '·英雄版' : '·普通版'}
                         </button>
-                        <div className="flex items-center gap-1 shrink-0 text-[11px] text-slate-400 whitespace-nowrap">
-                            <span>品阶</span>
-                            <select
-                                value={live.xyc?.tier || '六品'}
-                                onChange={e => patchMeta({ tier: e.target.value })}
-                                title="品阶：决定词条池档位"
-                                className="px-1 py-0.5 rounded text-[11px] bg-slate-800 border border-slate-700 text-slate-200 outline-none cursor-pointer"
-                            >
-                                {['一品', '二品', '三品', '四品', '五品', '六品'].map(t => <option key={t} value={t}>{t}</option>)}
-                            </select>
-                        </div>
-                        <div className="flex items-center gap-1 shrink-0 text-[11px] text-slate-400 whitespace-nowrap">
-                            <span>等级</span>
+                    </div>
+
+                    <div className="text-[13px] leading-[22px] flex items-baseline gap-1.5 flex-wrap">
+                        <select
+                            value={live.xyc?.tier || '六品'}
+                            onChange={e => patchMeta({ tier: e.target.value })}
+                            title="品阶：决定词条池档位，点一下可改"
+                            className="bg-transparent border-b border-dashed border-white/25 hover:border-cyan-400/80 outline-none cursor-pointer text-[13px] leading-[22px] py-0 pl-0 pr-0 appearance-none"
+                            style={{ color: GAME_COLORS.STAT_BLUE }}
+                        >
+                            {['一品', '二品', '三品', '四品', '五品', '六品'].map(t => (
+                                <option key={t} value={t} className="bg-slate-900 text-slate-100">{t}</option>
+                            ))}
+                        </select>
+                        {typeof live.xyc?.stars === 'number' && (
+                            <span className="tracking-[1px] whitespace-nowrap" style={{ color: GAME_COLORS.GOLD_AMBER }}>
+                                {'★'.repeat(Math.max(0, Math.min(10, live.xyc.stars)))}
+                            </span>
+                        )}
+                    </div>
+
+                    <div className="text-[13px] leading-[22px] text-slate-300 whitespace-nowrap">
+                        洗炼次数
+                        <span className="ml-1">
                             <InlineEdit
-                                value={live.xyc?.level ?? '—'}
+                                value={live.xyc?.washUsed}
+                                display={typeof live.xyc?.washUsed === 'number' ? `${live.xyc.washUsed}/10` : '—'}
                                 kind="number"
-                                width="2.4rem"
-                                className="font-mono text-[11px] text-slate-100"
+                                width="2rem"
+                                className="font-mono text-[13px] text-slate-100"
+                                title="洗炼次数（不参与满值计算，只做记录），点数字可改"
+                                onCommit={v => patchMeta({ washUsed: v.trim() === '' ? undefined : Number(v) })}
+                            />
+                        </span>
+                    </div>
+
+                    <div className="text-[13px] leading-[22px] whitespace-nowrap" style={{ color: GAME_COLORS.WHITE }}>
+                        等级
+                        <span className="ml-1">
+                            <InlineEdit
+                                value={live.xyc?.level}
+                                kind="number"
+                                width="2.2rem"
+                                className="font-mono text-[13px] text-slate-100"
                                 title="等级：直接填 1~20（词条上限按等级逐级上涨）"
                                 onCommit={v => {
                                     const n = Number(v.replace(/[^\d]/g, ''));
                                     patchMeta({ level: Number.isFinite(n) && n > 0 ? Math.max(1, Math.min(20, n)) : undefined });
                                 }}
                             />
-                        </div>
-                        <div className="flex items-center gap-1 shrink-0 text-[11px] text-slate-400 whitespace-nowrap">
-                            <span>洗炼</span>
-                            <InlineEdit
-                                value={live.xyc?.washUsed}
-                                kind="number"
-                                width="2.6rem"
-                                className="font-mono text-[11px] text-slate-100"
-                                title="洗炼次数（不参与满值计算，只做记录）"
-                                onCommit={v => patchMeta({ washUsed: v.trim() === '' ? undefined : Number(v) })}
-                            />
-                        </div>
-                </div>
-            )}
+                        </span>
+                    </div>
 
-            {/* 轩辕策：属性 + 进阶技能，1:1 还原游戏 tooltip 版式（对齐 XycTomeDetailCard）
-                —— 属性名与数值统一游戏蓝，括号内绿=洗炼、红=额外，进阶技能排在属性下方同款蓝字 */}
-            {live.kind === 'xyc' && ((live.attrs?.length || 0) > 0 || Boolean(live.advSkill?.name || live.advSkill?.variant)) && (
-                <div
-                    className="mt-3 rounded-xl border border-[#232c3d] bg-[#070b12]/95 px-3 py-2.5 flex flex-col gap-1 min-w-0"
-                    style={{
-                        fontFamily: FONT_SONG,
-                        letterSpacing: '0.3px',
-                        boxShadow: 'inset 0 0 16px rgba(16, 28, 48, 0.35)'
-                    }}
-                >
-                    {(live.attrs || []).map((a, i) => (
-                        <div key={i} className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0 text-[13px] leading-[22px] min-w-0" style={{ color: GAME_COLORS.STAT_BLUE }}>
-                            <span className="shrink-0">·</span>
-                            <InlineEdit
-                                value={a.name}
-                                width="5rem"
-                                align="left"
-                                title="属性名（要能在词条池里对上，否则算不出满值）"
-                                className="text-[13px]"
-                                onCommit={v => patchAttr(i, { name: v.trim() })}
-                            />
-                            <InlineEdit
-                                value={a.value}
-                                width="4.5rem"
-                                align="left"
-                                title="词条主值（括号里的洗炼增量不计入差距）"
-                                className="font-mono text-[13px]"
-                                onCommit={v => patchAttr(i, { value: v.trim() })}
-                            />
-                            {a.wash && (
-                                <span style={{ color: GAME_COLORS.MINT_GREEN }}>
-                                    <InlineEdit
-                                        value={a.wash}
-                                        display={`(${a.wash})`}
-                                        width="4rem"
-                                        align="left"
-                                        title="洗炼增量（只展示，不计入差距）"
-                                        className="font-mono text-[12px]"
-                                        onCommit={v => patchAttr(i, { wash: v.trim() })}
-                                    />
-                                </span>
-                            )}
-                            {a.extra && (
-                                <span style={{ color: BRACKET_RED }}>
-                                    <InlineEdit
-                                        value={a.extra}
-                                        display={`(${a.extra})`}
-                                        width="4rem"
-                                        align="left"
-                                        title="额外增量（只展示，不计入差距）"
-                                        className="font-mono text-[12px]"
-                                        onCommit={v => patchAttr(i, { extra: v.trim() })}
-                                    />
-                                </span>
-                            )}
-                        </div>
-                    ))}
-                    {(live.advSkill?.name || live.advSkill?.variant) && (
-                        <div className="text-[13px] leading-[22px] min-w-0 truncate" style={{ color: GAME_COLORS.STAT_BLUE }}>
-                            （进阶技能）{live.advSkill?.name || '—'}
-                            {live.advSkill?.variant && `《${live.advSkill.variant}》`}
-                            {typeof live.advSkill?.level === 'number' && ` ${live.advSkill.level} 级`}
-                        </div>
-                    )}
+                    <div className="flex flex-col gap-1">
+                        {(live.attrs || []).map((a, i) => (
+                            <div key={i} className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0 text-[13px] leading-[22px] min-w-0" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                                <span className="shrink-0">·</span>
+                                <InlineEdit
+                                    value={a.name}
+                                    width="5rem"
+                                    align="left"
+                                    title="属性名（要能在词条池里对上，否则算不出满值）"
+                                    className="text-[13px]"
+                                    onCommit={v => patchAttr(i, { name: v.trim() })}
+                                />
+                                <InlineEdit
+                                    value={a.value}
+                                    width="4.5rem"
+                                    align="left"
+                                    title="词条主值（括号里的洗炼增量不计入差距）"
+                                    className="font-mono text-[13px]"
+                                    onCommit={v => patchAttr(i, { value: v.trim() })}
+                                />
+                                {a.wash && (
+                                    <span style={{ color: GAME_COLORS.MINT_GREEN }}>
+                                        <InlineEdit
+                                            value={a.wash}
+                                            display={`(${a.wash})`}
+                                            width="4rem"
+                                            align="left"
+                                            title="洗炼增量（只展示，不计入差距）"
+                                            className="font-mono text-[12px]"
+                                            onCommit={v => patchAttr(i, { wash: v.trim() })}
+                                        />
+                                    </span>
+                                )}
+                                {a.extra && (
+                                    <span style={{ color: BRACKET_RED }}>
+                                        <InlineEdit
+                                            value={a.extra}
+                                            display={`(${a.extra})`}
+                                            width="4rem"
+                                            align="left"
+                                            title="额外增量（只展示，不计入差距）"
+                                            className="font-mono text-[12px]"
+                                            onCommit={v => patchAttr(i, { extra: v.trim() })}
+                                        />
+                                    </span>
+                                )}
+                            </div>
+                        ))}
+                        {(live.advSkill?.name || live.advSkill?.variant) && (
+                            <div className="text-[13px] leading-[22px] min-w-0 truncate" style={{ color: GAME_COLORS.STAT_BLUE }}>
+                                （进阶技能）{live.advSkill?.name || '—'}
+                                {live.advSkill?.variant && `《${live.advSkill.variant}》`}
+                                {typeof live.advSkill?.level === 'number' && ` ${live.advSkill.level} 级`}
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
 

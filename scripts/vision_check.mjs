@@ -208,15 +208,17 @@ export { React, renderToStaticMarkup, VisionReviewCard, fromServerPanel, degrade
     ok(html['tianyuan-new'].includes('#f2d3ff') && html['tianyuan-new'].includes('#bcffd2'), '天命档必须按炼器色阶着色（+1 淡紫 #f2d3ff / +2 淡绿 #bcffd2）');
     ok(html['tianyuan-new'].includes('#c5ff54'), '天缘 +10 必须用 +10 的炼器色 #c5ff54（与模拟器一致）');
 
-    /* 轩辕策卡：四系 / 版本 / 品阶 / 等级 都能改（系错了满值全错） */
-    ok(html['xyc'].includes('data-testid="vision-xyc-meta"'), '轩辕策卡缺元信息编辑条');
-    ok(['青龙', '白虎', '朱雀', '玄武'].every(b => html['xyc'].includes(`data-beast="${b}"`)), '轩辕策卡缺四系切换');
-    ok(html['xyc'].includes('英雄版'), '轩辕策卡缺普通/英雄切换');
-    /* 去重（2026-10-30 口径）：品阶/洗炼/版本只在元信息行出现一次，头部徽章不重复；等级不再有 −/+ 步进 */
-    ok(!html['xyc'].includes('洗炼 4/10'), '头部不该再重复「洗炼 x/10」徽章');
+    /* 轩辕策卡 = 游戏 tooltip 版式（对齐 XycTomeDetailCard）：书名 → 品阶+星级 → 洗炼次数 → 等级 → 词条
+       2026-10-31 口径：四系由识别决定不再给切换；等级去掉 −/+；品阶仍是可改的下拉 */
+    ok(html['xyc'].includes('data-testid="vision-xyc-body"'), '轩辕策卡缺 tooltip 版式 body');
+    ok(!html['xyc'].includes('data-beast='), '四系不该再有切换按钮（标题已写明）');
     ok(!html['xyc'].includes('>−<'), '轩辕策等级不该再有 −/+ 步进（改回虚线点击编辑）');
-    ok((html['xyc'].match(/<select/g) || []).length === 1, '品阶应仍是元信息行里唯一的下拉');
-    ok(!html['xyc'].includes('·英雄版'), '标题里不该再重复版本（下面有普通/英雄切换）');
+    ok((html['xyc'].match(/<select/g) || []).length === 1, '品阶应仍是唯一的下拉（做成看起来像文字的样子）');
+    ok(html['xyc'].includes('data-xyc-hero="1"'), '版本仍要能点（书名后缀的虚线）');
+    ok(html['xyc'].indexOf('洗炼次数') > 0 && html['xyc'].indexOf('洗炼次数') < html['xyc'].indexOf('等级'),
+        '洗炼次数应在等级之上（游戏 tooltip 顺序）');
+    ok(html['xyc'].indexOf('等级') < html['xyc'].indexOf('（进阶技能）'), '等级应在词条/进阶技能之上（游戏 tooltip 顺序）');
+    ok(!html['xyc'].includes('<h4'), '轩辕策卡不该再有重复的顶部标题栏');
 
     /* 降级时直接把「怎么截」摊开 */
     ok(html['degraded'].includes('data-testid="vision-capture-guide"'), '降级态缺「怎么截图」指引');
