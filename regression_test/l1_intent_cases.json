@@ -66,14 +66,14 @@
     "id": "tool-nlq-01",
     "input": "凝灵契模拟",
     "expect": {
-      "cardType": "tool_card",
-      "cardData.workspaceMode": "ninglingqi"
+      "cardType": "ninglingqi"
     },
     "tags": [
       "standard",
       "tool"
     ],
-    "assert": "strong"
+    "assert": "strong",
+    "note": "凝灵契模拟入口已删（原跳右分屏占位页），改为落对话内嵌凝灵契信息卡 · 2026-10-31"
   },
   {
     "id": "tool-feedback-01",
@@ -2626,8 +2626,7 @@
     "id": "t18-ninglingqi-sim-tool",
     "input": "凝灵契模拟",
     "expect": {
-      "cardType": "tool_card",
-      "cardData.workspaceMode": "ninglingqi"
+      "cardType": "ninglingqi"
     },
     "tags": [
       "tool",
@@ -2635,7 +2634,7 @@
       "ninglingqi"
     ],
     "assert": "strong",
-    "note": "T-18：模拟关键词分流至凝灵契模拟器工具卡"
+    "note": "凝灵契模拟入口已删（原跳右分屏占位页），改为落对话内嵌凝灵契信息卡 · 2026-10-31"
   },
   {
     "id": "t18-pet-pledge-01",

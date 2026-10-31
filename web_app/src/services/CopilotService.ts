@@ -1200,28 +1200,6 @@ export class CopilotService {
             };
         }
 
-        // 6. 凝灵契模拟（显式带“模拟”时走工具卡，普通凝灵契查询走0.56装备信息卡）
-        if (
-            q.includes('凝灵契模拟') ||
-            q.includes('灵契模拟') ||
-            q.includes('模拟凝灵')
-        ) {
-            return {
-                id: `msg-${Date.now()}`,
-                sender: 'assistant',
-                text: '已为你定位【凝灵契模拟】。支持法宝灵契各槽位孔位洗炼概率推演与属性期望成本测算。',
-                time: timeStr,
-                cardType: 'tool_card',
-                cardData: {
-                    title: '凝灵契模拟',
-                    desc: '凝灵契洗炼模拟，支持多槽位孔位锁定与属性结果展示',
-                    workspaceMode: 'ninglingqi',
-                    route: '/tools/ninglingqi',
-                    btnText: '进入凝灵契模拟'
-                }
-            };
-        }
-
         // 7. 仙友留言板（意见反馈）
         if (
             q.includes('留言') ||
@@ -1859,7 +1837,9 @@ export class CopilotService {
             q.includes('宸极·凝灵契') ||
             q.includes('灵契') ||
             q.includes('洗契') ||
-            q.includes('凝灵石');
+            q.includes('凝灵石') ||
+            // 「模拟凝灵」这类倒装说法也要落这张卡（原来的「凝灵契模拟」工具卡已删：它只会打开右分屏占位页）
+            q.includes('模拟凝灵');
 
         if (isNinglingqiQuery && !q.includes('印')) {
             let targetHole = 12;

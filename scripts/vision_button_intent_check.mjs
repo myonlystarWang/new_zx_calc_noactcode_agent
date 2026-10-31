@@ -55,7 +55,11 @@ const cases = [
     ['轩辕策洗练 玄武 普通 三品 1级', 'xyc_wash', undefined],
     /* 裸「轩辕策」仍出属性信息卡（旧 xyc_diag「轩辕策属性模拟」入口已删：它是死代码且跳右分屏） */
     ['轩辕策', 'xyc_tome', undefined],
-    ['青龙书', 'xyc_tome', undefined]
+    ['青龙书', 'xyc_tome', undefined],
+    /* 凝灵契：原来的「凝灵契模拟」工具卡会开右分屏占位页（现已删），一律落对话内嵌信息卡 */
+    ['凝灵契模拟', 'ninglingqi', undefined],
+    ['模拟凝灵', 'ninglingqi', undefined],
+    ['凝灵契', 'ninglingqi', undefined]
 ];
 
 const fails = [];

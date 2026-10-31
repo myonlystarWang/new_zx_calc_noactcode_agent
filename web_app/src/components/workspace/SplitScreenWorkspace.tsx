@@ -8,7 +8,6 @@ import {
   Maximize2,
   Minimize2,
   X,
-  Layers,
   Hammer
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
@@ -35,7 +34,6 @@ export type WorkspaceMode =
   | 'server'
   | 'xyc'
   | 'newtianyuan'
-  | 'ninglingqi'
   | 'yunling';
 
 export interface SplitScreenWorkspaceProps {
@@ -59,7 +57,6 @@ const FEATURE_META: Record<WorkspaceMode, { label: string; icon: React.ReactNode
   server: { label: '开服雷达', icon: <Radio className={WORKSPACE_TAG_ICON} /> },
   xyc: { label: '轩辕策属性', icon: <Compass className={WORKSPACE_TAG_ICON} /> },
   newtianyuan: { label: '天缘属性', icon: <Sparkles className={WORKSPACE_TAG_ICON} /> },
-  ninglingqi: { label: '凝灵契模拟', icon: <Layers className={WORKSPACE_TAG_ICON} /> },
   yunling: { label: '装备蕴灵', icon: <Hammer className={WORKSPACE_TAG_ICON} /> },
 };
 
@@ -179,21 +176,6 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
         {mode === 'newtianyuan' && (
           <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
             <NewTianYuanSimulatorView seed={{ groupName: params?.tyGroupName, level: params?.tyLevel }} />
-          </div>
-        )}
-
-        {mode === 'ninglingqi' && (
-          <div className="p-6 max-w-4xl mx-auto flex flex-col items-center justify-center text-center py-16 space-y-4">
-            <div className="p-4 rounded-2xl bg-cyan-950/40 border border-cyan-500/30 text-cyan-300">
-              <Layers className="w-10 h-10 animate-pulse" />
-            </div>
-            <h3 className="text-lg font-bold text-slate-100">凝灵契 1:1 洗练推演引擎</h3>
-            <p className="text-xs text-slate-400 max-w-md leading-relaxed">
-              严格对照游戏内凝灵契属性网格、属性锁定规则、数值波动、秘效激活条件与凝灵材料消耗推算，将在后续版本全面升级。
-            </p>
-            <div className="flex items-center gap-2 text-xs text-cyan-400 font-mono bg-cyan-950/60 px-3 py-1.5 rounded-full border border-cyan-800/40">
-              <span>状态：数值模型已就绪 · 即将接入</span>
-            </div>
           </div>
         )}
 
