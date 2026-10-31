@@ -267,7 +267,8 @@ export const HomeAIChatStage: React.FC<HomeAIChatStageProps> = ({
     /** 轩辕策：把「系 / 普通·英雄 / 品阶 / 进阶技能」带进模拟器 */
     const handleOpenXyc = (seed: { beast?: string; isHero?: boolean; tier?: string; level?: number; advSkill?: any }) => {
         // 轩辕策洗练是对话内嵌卡（xyc_wash），不许再开右分屏：
-        // 分屏 mode='xyc' 落的是「轩辕策属性」页，内容和洗练对不上（2026-10-29 线上踩过）。
+        // 旧的 mode='xyc' 落的是「轩辕策属性」页，与洗练内容对不上（2026-10-29 线上踩过），
+        // 该模式已于 2026-10-31 从 WorkspaceMode 删除。
         // 洗练卡的 seed 全靠 query 关键字解析：四系名 / 英雄·普通 / N品 / N级。
         const q = [
             '轩辕策洗练',

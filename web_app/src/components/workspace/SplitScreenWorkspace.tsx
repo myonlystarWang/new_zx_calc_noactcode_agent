@@ -3,7 +3,6 @@ import {
   Calculator,
   Swords,
   Radio,
-  Compass,
   Sparkles,
   Maximize2,
   Minimize2,
@@ -18,7 +17,6 @@ import { ResultSection } from '../business/ResultsSection';
 // 计算器（AttributePanel/BuffPanel/ResultsSection）保持同步加载，它是默认视图。
 const SimulationArena = React.lazy(() => import('../arena/SimulationArena').then(m => ({ default: m.SimulationArena })));
 const ServerRadarView = React.lazy(() => import('../tools/ServerRadarView').then(m => ({ default: m.ServerRadarView })));
-const XycSimulatorView = React.lazy(() => import('../tools/XycSimulatorView').then(m => ({ default: m.XycSimulatorView })));
 const NewTianYuanSimulatorView = React.lazy(() => import('../tools/NewTianYuanSimulatorView').then(m => ({ default: m.NewTianYuanSimulatorView })));
 const YunlingSimulatorView = React.lazy(() => import('../tools/YunlingSimulatorView').then(m => ({ default: m.YunlingSimulatorView })));
 import {
@@ -28,11 +26,18 @@ import {
   WORKSPACE_CLOSE_BUTTON
 } from '../ui/accentButtonStyles';
 
+/**
+ * 右分屏的模式。
+ *
+ * **可达的只有 calc / arena / server**（HomeAIChatStage 的 WORKSPACE_ONLY_OPTION_KEYS 也是这三个）。
+ * newtianyuan / yunling 是**保留的备用出口**：目前没有任何入口会传它们（天缘走 tianyuan_new 内嵌卡、
+ * 蕴灵走 yunling_forge 内嵌卡），渲染块留着是为了将来真要恢复「整页模拟器」形态时改一行就能用。
+ * 轩辕策的 'xyc' 已于 2026-10-31 删除（改走 xyc_wash 内嵌洗练卡，属性页只剩 /tools 路由 tab）。
+ */
 export type WorkspaceMode =
   | 'calc'
   | 'arena'
   | 'server'
-  | 'xyc'
   | 'newtianyuan'
   | 'yunling';
 
@@ -55,7 +60,7 @@ const FEATURE_META: Record<WorkspaceMode, { label: string; icon: React.ReactNode
   calc: { label: '战力计算器', icon: <Calculator className={WORKSPACE_TAG_ICON} /> },
   arena: { label: '副本训练场', icon: <Swords className={WORKSPACE_TAG_ICON} /> },
   server: { label: '开服雷达', icon: <Radio className={WORKSPACE_TAG_ICON} /> },
-  xyc: { label: '轩辕策属性', icon: <Compass className={WORKSPACE_TAG_ICON} /> },
+  // 以下两项是保留的备用出口，当前无入口（见 WorkspaceMode 注释）
   newtianyuan: { label: '天缘属性', icon: <Sparkles className={WORKSPACE_TAG_ICON} /> },
   yunling: { label: '装备蕴灵', icon: <Hammer className={WORKSPACE_TAG_ICON} /> },
 };
@@ -160,19 +165,7 @@ export const SplitScreenWorkspace: React.FC<SplitScreenWorkspaceProps> = ({
           </div>
         )}
 
-        {mode === 'xyc' && (
-          <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
-            <XycSimulatorView
-              seed={{
-                beast: params?.xycBeast,
-                isHero: params?.xycIsHero,
-                level: params?.xycLevel,
-                advSkill: params?.xycAdvSkill
-              }}
-            />
-          </div>
-        )}
-
+        {/* 备用出口（当前无入口，保留以防将来恢复整页形态）：newtianyuan / yunling */}
         {mode === 'newtianyuan' && (
           <div className="p-4 max-w-[1760px] mx-auto animate-in fade-in duration-200">
             <NewTianYuanSimulatorView seed={{ groupName: params?.tyGroupName, level: params?.tyLevel }} />
